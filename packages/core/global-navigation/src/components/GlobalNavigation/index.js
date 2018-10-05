@@ -83,11 +83,11 @@ export default class GlobalNavigation
 
       if (
         props[`${drawer}DrawerContents`] &&
-        !props[`is${capitalisedDrawerName}Close`]
+        !props[`on${capitalisedDrawerName}Close`]
       ) {
         /* eslint-disable no-console */
         console.warn(`You have provided an onClick handler for ${drawer}, but no close handler for the drawer.
-        Please pass is${capitalisedDrawerName}Close prop to handle closing of the ${drawer} drawer.`);
+        Please pass on${capitalisedDrawerName}Close prop to handle closing of the ${drawer} drawer.`);
         /* eslint-enable */
       }
 
@@ -178,11 +178,14 @@ export default class GlobalNavigation
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
 
+    console.log('<<<close>>>');
+    console.log(onCloseCallback);
     fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
     if (this[`is${capitalisedDrawerName}Controlled`]) {
+      console.log('if');
       this.setState(
         {
           [`is${capitalisedDrawerName}Open`]: false,
@@ -190,6 +193,7 @@ export default class GlobalNavigation
         onCloseCallback,
       );
     } else {
+      console.log('else');
       // invoke callback in both cases
       onCloseCallback();
     }
