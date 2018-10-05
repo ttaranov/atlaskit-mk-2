@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 10.0.0
+- [major] Icons that do not exist in the main icons package have been removed [6dd05b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dd05b2)
+
 ## 9.6.2
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8
