@@ -1,4 +1,7 @@
-import { getExampleUrl } from '@atlaskit/visual-regression/helper';
+import {
+  getExampleUrl,
+  takeElementScreenshot,
+} from '@atlaskit/visual-regression/helper';
 import { colorPalette } from '@atlaskit/editor-common';
 
 import { insertMedia as integrationInsertMedia } from '../integration/_helpers';
@@ -244,11 +247,6 @@ export const baseTests = [
       appearance: ['full-page', 'comment'],
     })),
   Array.from(colorPalette.values()).map(key => {
-    // TO-DO remove this once this branch change with color is merged
-    // @ts-ignore
-    if (key === 'Light gray' && !process.env.PROD) {
-      key = 'Light grey';
-    }
     return {
       name: `Text color: ${key}`,
       clickSelector: `span[aria-label="${
