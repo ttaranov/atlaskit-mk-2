@@ -1,4 +1,4 @@
-import { akColorB400 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { MarkSpec } from 'prosemirror-model';
 import { SEARCH_QUERY } from '../groups';
 
@@ -13,7 +13,7 @@ export const mentionQuery: MarkSpec = {
       {
         'data-mention-query': 'true',
         'data-active': node.attrs.active,
-        style: `color: ${akColorB400}`,
+        style: `color: ${colors.B400}`,
       },
     ];
   },

@@ -6,10 +6,10 @@ import { relativeSize, akEditorElementMinWidth } from '../consts';
 
 export const panelSharedStyles = css`
   & .ak-editor-panel {
-    border-radius: ${borderRadius}px;
+    border-radius: ${borderRadius()}px;
     margin: ${relativeSize(1.142)}px 0;
-    font-size: ${fontSize}px;
-    padding: ${gridSize}px;
+    font-size: ${fontSize()}px;
+    padding: ${gridSize()}px;
     min-width: ${akEditorElementMinWidth}px;
 
     .ak-editor-panel__icon {

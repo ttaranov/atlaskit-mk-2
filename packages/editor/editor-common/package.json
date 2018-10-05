@@ -32,7 +32,6 @@
     "@atlaskit/profilecard": "^4.0.10",
     "@atlaskit/size-detector": "^5.0.4",
     "@atlaskit/theme": "^6.0.0",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-view": "^1.0.0",
     "ajv": "^4.11.3",
