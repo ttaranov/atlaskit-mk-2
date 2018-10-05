@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TableCssClassName as ClassName } from '../../types';
 
 export interface ButtonProps {
   style?: object;
@@ -14,17 +15,17 @@ const DeleteButton = ({
   onMouseLeave,
 }: ButtonProps) => (
   <div
-    className="pm-table-controls__delete-button-wrap"
+    className={ClassName.CONTROLS_DELETE_BUTTON_WRAP}
     style={style}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
     <button
       type="button"
-      className="pm-table-controls__delete-button"
+      className={ClassName.CONTROLS_DELETE_BUTTON}
       onClick={onClick}
     >
-      <span className="pm-button-icon">
+      <span className={ClassName.CONTROLS_BUTTON_ICON}>
         <svg
           width="24"
           height="24"

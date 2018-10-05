@@ -275,4 +275,25 @@ describe('media-single', () => {
       });
     });
   });
+
+  it('should be able to show mediaSingle without height or width', () => {
+    const { editorView } = editor(
+      doc(
+        p('text'),
+        mediaSingle()(
+          media({
+            id: temporaryFileId,
+            type: 'file',
+            collection: testCollectionName,
+          })(),
+        ),
+        p(),
+      ),
+    );
+
+    const mediaSingleDom = editorView.dom.querySelector('.media-single');
+    expect(mediaSingleDom).toBeInstanceOf(HTMLElement);
+    expect(mediaSingleDom!.getAttribute('width')).toBe('250');
+    expect(mediaSingleDom!.getAttribute('height')).toBe('200');
+  });
 });

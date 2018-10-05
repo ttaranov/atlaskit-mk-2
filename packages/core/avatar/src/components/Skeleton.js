@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-
 import StyledSkeleton from '../styled/Skeleton';
 import type { SizeType, AppearanceType } from '../types';
 

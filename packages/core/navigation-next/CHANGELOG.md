@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.16.0
+- [minor] introduce flyout on hover, with feature-flag property [5c00034](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c00034)
+
 ## 3.15.6
 - [patch] Avoid re-mount of custom components on re-render [1a47c0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a47c0b)
 

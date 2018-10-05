@@ -19,5 +19,5 @@ export const Ellipsis = styled.span`
  * with rest of the buttons
  */
 export const StyledButton = styled(Button)`
-  padding: ${gridSize() / 2}px 0;
+  padding: ${gridSize() / 2}px;
 `;

@@ -1,5 +1,8 @@
 # @atlaskit/theme
 
+## 6.1.0
+- [minor] Adds new theming API to Avatar and AvatarItem components [79dd93f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79dd93f)
+
 ## 6.0.4
 - [patch] Added assistive styles from util-shared-styles [dc563c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc563c1)
 

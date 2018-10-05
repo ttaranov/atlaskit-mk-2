@@ -22,7 +22,7 @@ interface UnloadEvent extends Event {
 // This is a stop-gap for preventing the user from losing their work. Eventually
 // this will be replaced with drafts/auto-save functionality
 function beforeUnloadHandler(e: UnloadEvent) {
-  // The beforeUnload dialog is implemented inconsistenly.
+  // The beforeUnload dialog is implemented inconsistently.
   // The following is the most cross-browser approach.
   const confirmationMessage =
     'You have an unsaved comment. Are you sure you want to leave without saving?';
@@ -77,7 +77,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
     Only use this method when instrumenting something that isn't instrumented itself (like Editor)
     Once editor is instrumented use the analyticsEvent passed in by editor instead.
 
-    nestedDepth is always 0 when using the save handlers in this file. 
+    nestedDepth is always 0 when using the save handlers in this file.
     Because a new comment created on the conversation itself is always going to be the top comment.
 
     @deprecated
@@ -110,6 +110,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       containerId,
       placeholder,
       disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
 
     if (!conversation) {
@@ -141,6 +142,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
         placeholder={placeholder}
         disableScrollTo={disableScrollTo}
         sendAnalyticsEvent={this.sendEditorAnalyticsEvent}
+        allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
       />
     ));
   }

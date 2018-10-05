@@ -12,9 +12,9 @@ import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 ['Inline', 'Block'].forEach(async extensionType => {
   BrowserTestCase(
     `Extension: Insert ${extensionType} extension`,
-    { skip: ['edge', 'ie'] },
+    { skip: ['ie'] },
     async client => {
-      const page = await new Page(client);
+      const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);

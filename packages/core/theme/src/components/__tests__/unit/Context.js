@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { Consumer, Provider } from '../Context';
+import { Consumer, Provider } from '../../Context';
 
 test('Consumer', () => {
   expect(typeof Consumer).toBe('object');

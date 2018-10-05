@@ -16,7 +16,7 @@ BrowserTestCase(
   'paste tests on message editor: plain text',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(clipboardHelper);
     await sample.isVisible(clipboardInput);
     await sample.type(clipboardInput, 'This text is plain.');
@@ -36,7 +36,7 @@ BrowserTestCase(
   'paste tests on message editor: text formatting',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(clipboardHelper);
     await sample.isVisible(clipboardInput);
     const testData =
@@ -60,7 +60,7 @@ describe.skip('Tables are not enabled in the message editor', () => {
     'paste tests on message editor: table',
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
-      const sample = await new Page(client);
+      const sample = new Page(client);
       await sample.goto(clipboardHelper);
       await sample.isVisible(clipboardInput);
       await sample.type(
@@ -84,7 +84,7 @@ BrowserTestCase(
   'paste tests on message editor: bullet list',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(clipboardHelper);
     await sample.isVisible(clipboardInput);
     await sample.type(
@@ -107,7 +107,7 @@ BrowserTestCase(
   'paste tests on message editor: ordered list',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(clipboardHelper);
     await sample.isVisible(clipboardInput);
     await sample.type(

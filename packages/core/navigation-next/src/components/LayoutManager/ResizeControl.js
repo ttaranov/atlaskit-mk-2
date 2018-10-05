@@ -8,6 +8,7 @@ import {
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
+import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -161,6 +162,8 @@ type Props = WithAnalyticsEventsProps & {
   children: State => any,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
   expandCollapseAffordanceRef: Ref<'button'>,
+  experimental_flyoutOnHover: boolean,
+  flyoutIsOpen: boolean,
   isDisabled: boolean,
   mouseIsOverNavigation: boolean,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
@@ -174,8 +177,12 @@ type State = {
   isDragging: boolean,
   mouseIsDown: boolean,
   mouseIsOverGrabArea: boolean,
+  showGrabArea: boolean,
   width: number,
 };
+
+/* NOTE: experimental props use an underscore */
+/* eslint-disable camelcase */
 
 class ResizeControl extends PureComponent<Props, State> {
   invalidDragAttempted = false;
@@ -189,8 +196,28 @@ class ResizeControl extends PureComponent<Props, State> {
     initialX: 0,
     mouseIsDown: false,
     mouseIsOverGrabArea: false,
+    showGrabArea: true,
     width: this.props.navigation.state.productNavWidth,
   };
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const { experimental_flyoutOnHover, flyoutIsOpen, navigation } = props;
+    const { isCollapsed } = navigation.state;
+
+    // resolve "hover locking" issue with resize grab area
+    if (experimental_flyoutOnHover) {
+      const showGrabArea = !isCollapsed && !flyoutIsOpen;
+      const mouseIsOverGrabArea = showGrabArea
+        ? state.mouseIsOverGrabArea
+        : false;
+
+      return {
+        mouseIsOverGrabArea,
+        showGrabArea,
+      };
+    }
+
+    return null;
+  }
 
   onResizerChevronClick = () => {
     this.toggleCollapse('chevron');
@@ -357,22 +384,25 @@ class ResizeControl extends PureComponent<Props, State> {
       isDragging,
       mouseIsDown,
       mouseIsOverGrabArea,
+      showGrabArea,
     } = this.state;
     const {
       children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
+      flyoutIsOpen,
       isDisabled,
       mouseIsOverNavigation,
       navigation,
     } = this.props;
-    const { isCollapsed } = navigation.state;
+    const { isCollapsed, isPeeking } = navigation.state;
 
-    const isResizeDisabled = isDisabled || navigation.state.isPeeking;
+    const isResizeDisabled = isDisabled || isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
-    const ButtonIcon =
-      isCollapsed || (didDragOpen && isDragging) ? MenuIcon : ChevronLeft;
+    let ButtonIcon = ChevronLeft;
+    if (isCollapsed || (didDragOpen && isDragging)) ButtonIcon = MenuIcon;
+    if (isCollapsed && flyoutIsOpen) ButtonIcon = ChevronRight;
 
     const button = (
       <Button
@@ -385,21 +415,24 @@ class ResizeControl extends PureComponent<Props, State> {
         <ButtonIcon />
       </Button>
     );
+    const shadowDirection = flyoutIsOpen ? 'to right' : 'to left';
 
     return (
       <Fragment>
         {children(this.state)}
         <Outer>
-          <Shadow isBold={mouseIsDown} />
+          <Shadow direction={shadowDirection} isBold={mouseIsDown} />
           {!isResizeDisabled && (
             <Fragment>
-              <GrabArea
-                isBold={mouseIsDown}
-                showHandle={mouseIsDown || mouseIsOverGrabArea}
-                onMouseEnter={this.mouseEnterGrabArea}
-                onMouseLeave={this.mouseLeaveGrabArea}
-                onMouseDown={this.handleResizeStart}
-              />
+              {showGrabArea && (
+                <GrabArea
+                  isBold={mouseIsDown}
+                  showHandle={mouseIsDown || mouseIsOverGrabArea}
+                  onMouseEnter={this.mouseEnterGrabArea}
+                  onMouseLeave={this.mouseLeaveGrabArea}
+                  onMouseDown={this.handleResizeStart}
+                />
+              )}
               {collapseToggleTooltipContent ? (
                 <Tooltip
                   content={makeTooltipNode(

@@ -21,12 +21,13 @@ BrowserTestCase(
     }"]`;
     const tableControls = '[aria-label="Table floating controls"]';
 
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
     await browser.click(editorSelector);
     await browser.click(insertTableMenu);
+    await browser.waitForSelector(tableControls);
     await browser.type(editorSelector, enterArr);
     await browser.type(editorSelector, arrowUpArr);
     expect(await browser.isExisting(tableControls)).toBe(true);

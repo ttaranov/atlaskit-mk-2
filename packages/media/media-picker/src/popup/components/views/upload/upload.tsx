@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import {
   Card,
-  CardView,
   CardEvent,
   CardAction,
   CardEventHandler,
+  FileIdentifier,
 } from '@atlaskit/media-card';
 import {
   Context,
@@ -218,7 +218,7 @@ export class StatelessUploadView extends Component<
   }
 
   private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
-    const { uploads, onFileClick, onEditorShowImage } = this.props;
+    const { uploads, onFileClick, onEditorShowImage, context } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
       return uploads[b].index - uploads[a].index;
@@ -230,21 +230,18 @@ export class StatelessUploadView extends Component<
 
     return itemsKeys.map(key => {
       const item = this.props.uploads[key];
-      const { progress, file } = item;
+      const { file } = item;
       const { dataURI } = file;
       const mediaType = getMediaTypeFromMimeType(file.metadata.mimeType);
       const fileMetadata: LocalUploadFileMetadata = {
         ...file.metadata,
         mimeType: mediaType,
       };
-
-      // mimeType
       const { id } = fileMetadata;
       const selected = selectedUploadIds.indexOf(id) > -1;
-      const status = progress !== null ? 'uploading' : 'complete';
       const onClick = () => onFileClick(fileMetadata, 'upload');
-
       const actions: CardAction[] = [];
+
       if (mediaType === 'image' && dataURI) {
         actions.push(
           createEditCardAction(
@@ -254,25 +251,21 @@ export class StatelessUploadView extends Component<
           ),
         );
       }
-      // We remove not needed properties from the metadata
-      const { upfrontId, occurrenceKey, ...fileDetails } = file.metadata;
-      const metadata: FileDetails = {
-        ...fileDetails,
-        mediaType,
+      const { upfrontId } = file.metadata;
+      const identifier: FileIdentifier = {
+        id: upfrontId,
+        mediaItemType: 'file',
       };
 
       return {
         key: id,
         el: (
-          <CardView
-            status={status}
-            progress={progress || undefined}
-            mediaItemType={'file'}
-            metadata={metadata}
+          <Card
+            context={context}
+            identifier={identifier}
             dimensions={cardDimension}
             selectable={true}
             selected={selected}
-            dataURI={dataURI}
             onClick={onClick}
             actions={actions}
           />
