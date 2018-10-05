@@ -47,6 +47,7 @@ function runCommand(cmd, resolve, reject) {
 
 async function main() {
   const serverAlreadyRunning = await isReachable('http://localhost:9000');
+  let prodTestStatus;
   if (!serverAlreadyRunning) {
     // Overriding the env variable to start the correct packages
     process.env.VISUAL_REGRESSION = 'true';
@@ -54,16 +55,21 @@ async function main() {
   }
 
   if (!isLocalRun) {
-    const prodSnapshots = await getProdSnapshots();
+    prodTestStatus = await getProdSnapshots();
   }
   const { code, signal } = await runTests();
 
+  console.log(
+    `Exiting tests with exit code: ${prodTestStatus.code} and signale: ${
+      prodTestStatus.signal
+    }`,
+  );
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
 
   if (!serverAlreadyRunning) {
     webpack.stopDevServer();
   }
-  process.exit(code);
+  process.exit(code && prodTestStatus.code);
 }
 
 if (
