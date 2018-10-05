@@ -10,13 +10,20 @@ export interface Props {
   status?: 'online' | 'busy' | 'focus' | 'offline';
 }
 
+interface AvatarText {
+  primaryText: string;
+  secondaryText?: string;
+}
+
 export default class UserPickerItem extends React.PureComponent<Props> {
   private renderAvatar = () => {
     const {
-      user: { avatarUrl },
+      user: { avatarUrl, name },
       status,
     } = this.props;
-    return <Avatar src={avatarUrl} size="medium" presence={status} />;
+    return (
+      <Avatar src={avatarUrl} size="medium" presence={status} name={name} />
+    );
   };
 
   private renderLozenge = () => {
@@ -29,12 +36,26 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     return undefined;
   };
 
+  private generateAvatarText = (): AvatarText => {
+    const {
+      user: { name, nickname },
+    } = this.props;
+    if (name) {
+      return {
+        primaryText: name,
+        secondaryText: nickname,
+      };
+    }
+    return { primaryText: nickname };
+  };
+
   render() {
     const {
-      user: { highlight, name, nickname },
+      user: { highlight },
     } = this.props;
     const nameHighlights = highlight && highlight.name;
     const secondaryHighlights = highlight && highlight.nickname;
+    const { primaryText, secondaryText } = this.generateAvatarText();
 
     return (
       <Item elemAfter={this.renderLozenge()}>
@@ -42,12 +63,18 @@ export default class UserPickerItem extends React.PureComponent<Props> {
           backgroundColor="transparent"
           avatar={this.renderAvatar()}
           primaryText={
-            <HighlightText highlights={nameHighlights}>{name}</HighlightText>
+            <HighlightText highlights={nameHighlights}>
+              {primaryText}
+            </HighlightText>
           }
           secondaryText={
-            <HighlightText highlights={secondaryHighlights}>
-              {nickname}
-            </HighlightText>
+            secondaryText ? (
+              <HighlightText highlights={secondaryHighlights}>
+                {secondaryText}
+              </HighlightText>
+            ) : (
+              undefined
+            )
           }
         />
       </Item>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { HighlightDetail } from '../types';
+import { HighlightRange } from '../types';
 
 type Part = {
   value: string;
@@ -7,7 +7,7 @@ type Part = {
 };
 
 export interface Props {
-  highlights?: HighlightDetail[];
+  highlights?: HighlightRange[];
   children?: string;
 }
 
@@ -24,7 +24,7 @@ export class HighlightText extends React.PureComponent<Props> {
     if (highlights) {
       highlights
         .sort((a, b) => a.start - b.start)
-        .reduce<HighlightDetail[]>((highlights, highlight) => {
+        .reduce<HighlightRange[]>((highlights, highlight) => {
           const lastHighlight = highlights[highlights.length - 1];
           if (!lastHighlight || highlight.start > lastHighlight.end + 1) {
             return highlights.concat(highlight);

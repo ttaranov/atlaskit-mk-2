@@ -32,7 +32,7 @@ describe('HighlightText', () => {
 
   describe('with highlight configuration', () => {
     it(
-      'should highligh none with an empty highligts array',
+      'should highlight none with an empty highlights array',
       testTemplate({ highlights: [] })('Some text'),
     );
 

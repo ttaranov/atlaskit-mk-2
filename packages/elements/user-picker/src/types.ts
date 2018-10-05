@@ -1,18 +1,18 @@
-export interface HighlightDetail {
+export interface HighlightRange {
   start: number;
   end: number;
 }
 
 export interface Highlight {
-  name: HighlightDetail[];
-  nickname: HighlightDetail[];
+  name: HighlightRange[];
+  nickname: HighlightRange[];
 }
 
 export interface User {
   id: string;
   avatarUrl?: string;
   name?: string;
-  nickname?: string;
+  nickname: string;
   highlight?: Highlight;
   lozenge?: string;
 }
