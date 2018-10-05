@@ -31,18 +31,14 @@ export type FileInfo = {
   src: string;
 };
 
-export type ExifOrientationDictionary = {
-  [key: string]: number;
-};
-
 // http://sylvana.net/jpegcrop/exif_orientation.html
-export const ExifOrientation: ExifOrientationDictionary = {
-  'top-left': 1,
-  'top-right': 2,
-  'bottom-right': 3,
-  'bottom-left': 4,
-  'left-top': 5,
-  'right-top': 6,
-  'right-bottom': 7,
-  'left-bottom': 8,
+export const ExifOrientation: { [key: string]: number } = {
+  'top-left': 1, // none
+  'top-right': 2, // flip horizontal
+  'bottom-right': 3, // rotate 180
+  'bottom-left': 4, // flip vertical
+  'left-top': 5, // transpose
+  'right-top': 6, // rotate 90
+  'right-bottom': 7, // transverse
+  'left-bottom': 8, // rotate 270
 };

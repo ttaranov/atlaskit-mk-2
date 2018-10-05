@@ -25,12 +25,6 @@ export const PreviewItem: ComponentClass = styled.li`
   margin-bottom: 10px;
 `;
 
-export const PreviewImageContainer: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  margin: 10px 0;
-`;
-
 export const Code: ComponentClass = styled.code`
   padding: 5px;
   border-radius: 5px;
@@ -46,4 +40,9 @@ export const CloseButton: ComponentClass<
   top: 5px;
   right: 5px;
   cursor: pointer;
+`;
+
+export const OrientationSelectWrapper: ComponentClass = styled.label`
+  margin-bottom: 20px;
+  display: block;
 `;

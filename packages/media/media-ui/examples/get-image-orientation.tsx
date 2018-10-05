@@ -5,9 +5,9 @@ import {
   InputWrapper,
   PreviewList,
   PreviewItem,
-  PreviewImageContainer,
   Code,
   CloseButton,
+  OrientationSelectWrapper,
 } from '../example-helpers/styled';
 import Lozenge from '@atlaskit/lozenge';
 
@@ -17,7 +17,7 @@ const ORIENT_TRANSFORMS: { [key: number]: string } = {
   3: 'rotate(180deg)',
   4: 'rotate(180deg) rotateY(180deg)',
   5: 'rotate(270deg) rotateY(180deg)',
-  6: 'rotate(90deg);transform-origin: top right',
+  6: 'rotate(90deg)',
   7: 'rotate(90deg) rotateY(180deg)',
   8: 'rotate(270deg)',
 };
@@ -25,17 +25,19 @@ const ORIENT_TRANSFORMS: { [key: number]: string } = {
 interface ExamplePreview {
   filename: string;
   src: string;
-  orientation: number | null;
+  orientation: number;
   duration: number;
 }
 
 export interface ExampleState {
   previews: ExamplePreview[];
+  orientation: number;
 }
 
 class Example extends React.Component<{}, ExampleState> {
   state: ExampleState = {
     previews: [],
+    orientation: 0,
   };
 
   onChange = async (e: any) => {
@@ -56,7 +58,14 @@ class Example extends React.Component<{}, ExampleState> {
     this.setState({ previews: [...previews] });
   };
 
+  onSelectOrientation = (e: any) => {
+    const orientation = parseInt(e.target.value, 10);
+    this.setState({ orientation });
+  };
+
   render() {
+    const { orientation } = this.state;
+
     return (
       <Page>
         <Grid>
@@ -83,6 +92,23 @@ class Example extends React.Component<{}, ExampleState> {
             <InputWrapper>
               <input type="file" onChange={this.onChange} />
             </InputWrapper>
+            <OrientationSelectWrapper>
+              Use Orientation:&nbsp;
+              <select
+                defaultValue={`${orientation}`}
+                onChange={this.onSelectOrientation}
+              >
+                <option value="0">From Image (if metadata available)</option>
+                <option value="1">1 (none)</option>
+                <option value="2">2 (flip horizontal)</option>
+                <option value="3">3 (rotate 180)</option>
+                <option value="4">4 (flip vertical)</option>
+                <option value="5">5 (transpose)</option>
+                <option value="6">6 (rotate 90)</option>
+                <option value="7">7 (transverse)</option>
+                <option value="8">8 (rotate 270)</option>
+              </select>
+            </OrientationSelectWrapper>
           </GridColumn>
         </Grid>
         <Grid>
@@ -101,9 +127,12 @@ class Example extends React.Component<{}, ExampleState> {
   };
 
   renderPreviews() {
-    return this.state.previews.map((preview, i) => {
+    const { previews, orientation: forcedOrientation } = this.state;
+    return previews.map((preview, i) => {
+      // const orientation =
+      //   preview.orientation === null ? 1 : preview.orientation;
       const orientation =
-        preview.orientation === null ? 1 : preview.orientation;
+        forcedOrientation === 0 ? preview.orientation : forcedOrientation;
       return (
         <PreviewItem key={`preview-${i}`}>
           <div>
@@ -127,11 +156,10 @@ class Example extends React.Component<{}, ExampleState> {
               duration: <Lozenge>{preview.duration}ms</Lozenge>
             </p>
           </div>
-          <PreviewImageContainer
+          <img
+            src={preview.src}
             style={{ transform: ORIENT_TRANSFORMS[orientation] }}
-          >
-            <img src={preview.src} />
-          </PreviewImageContainer>
+          />
           <CloseButton onClick={this.onRemovePreview(i)}>X</CloseButton>
         </PreviewItem>
       );
