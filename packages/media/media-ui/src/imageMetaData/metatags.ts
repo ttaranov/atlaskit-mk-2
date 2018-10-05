@@ -12,7 +12,7 @@ export async function readImageMetaTags(
       const xmpMetaData = await readPNGXMPMetaData(file);
       return parseXMPMetaData(xmpMetaData);
     } else if (file.type === ImageType.JPEG) {
-      return readJPEGExifMetaData(file);
+      return await readJPEGExifMetaData(file);
     }
   } catch (e) {
     // problem parsing metadata

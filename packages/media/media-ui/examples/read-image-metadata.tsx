@@ -62,11 +62,11 @@ class Example extends React.Component<{}, ExampleState> {
             <h1>Image MetaData Preview</h1>
             <p>
               <Lozenge>@atlaskit/media-ui</Lozenge> exports:{' '}
-              <Code>readImageMetaData(fileInfo:FileInfo)</Code>
+              <Code>readImageMetaData(fileInfo:FileInfo):ImageMetaData</Code>
             </p>
             <p>async Example:</p>
             <Code
-            >{`const { type, width, height, tags } = await readImageMetaData(fileInfo);`}</Code>
+            >{`const { type, width, height, tags: { Orientation, XResolution, PixelXDimension, PixelYDimension } } = await readImageMetaData(fileInfo);`}</Code>
             <p>
               Select a local image to see it's metadata (if available).<br />
               Currently only supports Exif / XMP tags in <b>JPEG</b> and{' '}

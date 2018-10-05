@@ -4,14 +4,14 @@ const { XResolution, YResolution } = SupportedImageMetaTag;
 
 let loadImage: any;
 
-export async function readJPEGExifMetaData(file: File): Promise<any> {
+export function readJPEGExifMetaData(file: File): Promise<ImageMetaDataTags> {
   return new Promise(async (resolve, reject) => {
     // load 3rd party libs on demand
     loadImage = loadImage || (await import('blueimp-load-image'));
 
     loadImage.parseMetaData(file, (data: any) => {
       try {
-        const tags: ImageMetaDataTags = data.exif.getAll();
+        const tags: ImageMetaDataTags = data.exif ? data.exif.getAll() : {};
         Object.keys(tags).forEach(key => {
           const value = tags[key];
           if (
