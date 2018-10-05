@@ -5,7 +5,7 @@ import AvatarGroupType from '@atlaskit/avatar-group';
 import { colors } from '@atlaskit/theme';
 import * as Loadable from 'react-loadable';
 
-const AvatarGroup = Loadable({
+export const AvatarGroupLoadable = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal-task-decision-avatargroup" */
     '@atlaskit/avatar-group').then(module => module.default),
@@ -29,7 +29,7 @@ export default class Partipants extends PureComponent<Props, {}> {
 
   render() {
     return (
-      <AvatarGroup
+      <AvatarGroupLoadable
         appearance="stack"
         borderColor={colors.N20}
         maxCount={4}
