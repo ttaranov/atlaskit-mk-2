@@ -138,7 +138,7 @@ export class CollectionFetcher {
     const collection = collectionCache[collectionName];
     const isLoading = collection ? collection.isLoadingNextPage : false;
 
-    if (!collection || isLoading) {
+    if (!collection || !collection.nextInclusiveStartKey || isLoading) {
       return;
     }
 

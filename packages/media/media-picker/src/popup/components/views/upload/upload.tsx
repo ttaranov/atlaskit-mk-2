@@ -6,7 +6,6 @@ import {
   Card,
   CardView,
   CardEvent,
-  OnLoadingChangeState,
   CardAction,
   CardEventHandler,
 } from '@atlaskit/media-card';
@@ -122,7 +121,6 @@ export class StatelessUploadView extends Component<
       contentPart = this.renderRecentsView(cards);
     }
 
-    //threshold={2000} delay={1000}
     return (
       <InfiniteScroll
         height="100%"
@@ -139,13 +137,18 @@ export class StatelessUploadView extends Component<
   private onThresholdReachedListener = () => {
     const { isLoadingNextPage } = this.state;
     const { context } = this.props;
+
     if (isLoadingNextPage) {
       return;
     }
 
     this.setState({ isLoadingNextPage: true }, async () => {
-      await context.collection.loadNextPage(RECENTS_COLLECTION);
-      this.setState({ isLoadingNextPage: false });
+      try {
+        await context.collection.loadNextPage(RECENTS_COLLECTION);
+        this.setState({ isLoadingNextPage: false });
+      } catch (e) {
+        this.setState({ isLoadingNextPage: false });
+      }
     });
   };
 
