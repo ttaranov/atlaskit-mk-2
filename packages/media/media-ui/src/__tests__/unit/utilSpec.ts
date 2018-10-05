@@ -7,6 +7,12 @@ import {
   mockFileReaderError,
 } from '../../test-helpers/mockFileReader';
 
+const GlobalFile = global.File;
+const GlobalFileCtor = (blobParts: [], filename: string, flags?: {}) =>
+  new GlobalFile(blobParts, filename, flags);
+
+global.File = jest.fn().mockImplementation(GlobalFileCtor);
+
 import {
   dataURItoFile,
   fileToArrayBuffer,
@@ -17,10 +23,11 @@ import {
 
 describe('Image Meta Data Util', () => {
   describe('dataURItoFile()', () => {
-    let tinyPngFile: File;
+    const tinyPngFile = dataURItoFile('data:image/png;base64,', 'filename.png');
+    console.log(tinyPngFile);
 
-    beforeEach(() => {
-      tinyPngFile = dataURItoFile('data:image/png;base64,', 'filename.png');
+    afterEach(() => {
+      global.File = jest.fn().mockImplementation(GlobalFileCtor);
     });
 
     it('should preserve mimeType', () => {
@@ -31,13 +38,21 @@ describe('Image Meta Data Util', () => {
       expect(tinyPngFile.name).toEqual('filename.png');
     });
 
-    it('should still convert bad dataURI to File', () => {
-      const file = dataURItoFile('very-bad-data');
-      expect(file).toBeInstanceOf(File);
+    it('should still convert malformed dataURI to File', () => {
+      expect(() => dataURItoFile('very-bad-data')).not.toThrow();
     });
 
     it('should throw message on empty dataURI', () => {
       expect(() => dataURItoFile('')).toThrowError('dataURI not found');
+    });
+
+    it('should return File on IE11', () => {
+      global.File = jest.fn().mockImplementation(() => {
+        throw new Error('No constructor for File on IE11!');
+      });
+      let file: File | undefined = undefined;
+      expect(() => (file = dataURItoFile('some-data'))).not.toThrow();
+      expect(file && (file as File).name).toBe('untitled');
     });
   });
 
@@ -76,13 +91,24 @@ describe('Image Meta Data Util', () => {
 
   describe('fileToArrayBuffer()', () => {
     const file = dataURItoFile('some-data');
+    let fileReader: any;
+
+    beforeEach(() => {
+      fileReader = mockFileReader(new ArrayBuffer(5));
+    });
+
+    afterEach(() => {
+      unmockFileReader();
+    });
 
     it('should return a Uint8Array with data from a file with data', async () => {
       const array = await fileToArrayBuffer(file);
+      expect(fileReader.readAsArrayBuffer).toHaveBeenCalledWith(file);
       expect(array.length).toBeGreaterThan(0);
     });
 
     it('should return an empty array from an empty file', async () => {
+      fileReader.result = new ArrayBuffer(0);
       const emptyFile = new File([], 'some-filename', { type: 'some-type' });
       const array = await fileToArrayBuffer(emptyFile);
       expect(array).toHaveLength(0);

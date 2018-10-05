@@ -22,6 +22,10 @@ class MockFileReader {
   readAsDataURL = jest.fn().mockImplementation((): void => {
     this.loadEvent();
   });
+
+  readAsArrayBuffer = jest.fn().mockImplementation((): void => {
+    this.loadEvent();
+  });
 }
 
 const mockFileReaderError = { message: 'error' };
