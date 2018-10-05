@@ -162,6 +162,7 @@ export class StatelessUploadView extends Component<
 
   private renderLoadingNextPageView = () => {
     const { isLoadingNextPage } = this.state;
+
     return (
       <LoadingNextPageWrapper>
         {isLoadingNextPage && <Spinner />}
@@ -285,7 +286,6 @@ export class StatelessUploadView extends Component<
       setUpfrontIdDeferred,
     } = this.props;
     const { items } = recents;
-    console.log(items.length);
     const selectedRecentFiles = selectedItems
       .filter(item => item.serviceName === 'recent_files')
       .map(item => item.id);
@@ -345,8 +345,8 @@ export class StatelessUploadView extends Component<
           <Card
             context={context}
             identifier={{
+              id,
               mediaItemType: 'file',
-              id: id,
               collectionName: recentsCollection,
             }}
             dimensions={cardDimension}

@@ -43,7 +43,6 @@
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
-    "lodash.debounce": "^4.0.8",
     "react-lazily-render": "^1.1.0",
     "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",

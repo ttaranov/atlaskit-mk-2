@@ -117,6 +117,7 @@ export class CollectionFetcher {
       })
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
+
         this.populateCache(contents, collectionName);
         collection.items = mergeItems(items.data.contents, collection.items);
 
