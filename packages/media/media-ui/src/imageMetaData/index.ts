@@ -21,7 +21,6 @@ export {
   ImageMetaDataTags,
   FileInfo,
   ExifOrientation,
-  ExifOrientationTransforms,
 } from './types';
 
 export async function getImageInfo(

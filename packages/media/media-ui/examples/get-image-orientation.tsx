@@ -8,6 +8,7 @@ import {
   Code,
   CloseButton,
   OrientationSelectWrapper,
+  PreviewImageContainer,
 } from '../example-helpers/styled';
 import Lozenge from '@atlaskit/lozenge';
 
@@ -73,12 +74,14 @@ class Example extends React.Component<{}, ExampleState> {
             <h1>Image Orientation Preview</h1>
             <p>
               <Lozenge>@atlaskit/media-ui</Lozenge> exports:{' '}
-              <Code>getOrientation(file:File)</Code>
+              <Code>getOrientation(file:File): number</Code>
             </p>
             <p>
               async Example:
               <br />
-              <Code>const orientation = await getOrientation(file);</Code>
+              <Code>
+                const orientation: number = await getOrientation(file);
+              </Code>
             </p>
             <p>
               Select a local image to see it's Exif orientation (if available).<br />
@@ -156,10 +159,12 @@ class Example extends React.Component<{}, ExampleState> {
               duration: <Lozenge>{preview.duration}ms</Lozenge>
             </p>
           </div>
-          <img
-            src={preview.src}
-            style={{ transform: ORIENT_TRANSFORMS[orientation] }}
-          />
+          <PreviewImageContainer>
+            <img
+              src={preview.src}
+              style={{ transform: ORIENT_TRANSFORMS[orientation] }}
+            />
+          </PreviewImageContainer>
           <CloseButton onClick={this.onRemovePreview(i)}>X</CloseButton>
         </PreviewItem>
       );

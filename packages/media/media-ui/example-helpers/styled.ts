@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ComponentClass, ButtonHTMLAttributes, HTMLAttributes } from 'react';
+import { ComponentClass, ButtonHTMLAttributes } from 'react';
 
 export const InputWrapper: ComponentClass = styled.div`
   margin: 20px 0;
@@ -40,6 +40,11 @@ export const CloseButton: ComponentClass<
   top: 5px;
   right: 5px;
   cursor: pointer;
+`;
+
+export const PreviewImageContainer: ComponentClass = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const OrientationSelectWrapper: ComponentClass = styled.label`
