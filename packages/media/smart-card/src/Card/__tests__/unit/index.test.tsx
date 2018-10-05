@@ -56,7 +56,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
@@ -72,7 +72,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
@@ -88,7 +88,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ForbiddenView).exists()).toBeTruthy();
@@ -104,7 +104,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.UnauthorisedView).exists()).toBeTruthy();
@@ -122,7 +122,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
@@ -141,7 +141,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
@@ -164,7 +164,7 @@ describe('Card', () => {
       />,
     );
 
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
@@ -218,7 +218,7 @@ describe('Card', () => {
     );
 
     // wait for the data to be loaded
-    client.get('https://www.atlassian.com/');
+    client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(

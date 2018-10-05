@@ -162,7 +162,7 @@ describe('Client', () => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -189,7 +189,7 @@ describe('Client', () => {
       createClient()
         .register(OBJECT_URL, v4(), cardUpdateFn1)
         .register(OBJECT_URL, v4(), cardUpdateFn2)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -207,7 +207,7 @@ describe('Client', () => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -223,7 +223,7 @@ describe('Client', () => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result[1].status).toEqual('unauthorized');
@@ -241,7 +241,7 @@ describe('Client', () => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result[1].status).toEqual('forbidden');
@@ -259,7 +259,7 @@ describe('Client', () => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result[1].status).toEqual('errored');
@@ -282,7 +282,7 @@ describe('Client', () => {
           resolve(stack);
         }
       };
-      client.register(OBJECT_URL, v4(), cardUpdateFn).get(OBJECT_URL);
+      client.register(OBJECT_URL, v4(), cardUpdateFn).resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -304,7 +304,7 @@ describe('Client', () => {
 
       createClient({ TEMPORARY_resolver })
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -324,7 +324,7 @@ describe('Client', () => {
 
       createClient({ TEMPORARY_resolver })
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -343,7 +343,7 @@ describe('Client', () => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient({ TEMPORARY_resolver })
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -363,7 +363,7 @@ describe('Client', () => {
 
       createClient({ TEMPORARY_resolver })
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -385,7 +385,7 @@ describe('Client', () => {
 
       createClient({ TEMPORARY_resolver })
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .get(OBJECT_URL);
+        .resolve(OBJECT_URL);
     });
 
     expect(result).toMatchObject([

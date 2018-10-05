@@ -67,7 +67,7 @@ class InnerWithObject extends React.Component<
     const {
       state: { definitionId },
     } = this.state;
-    client.register(url, uuid, this.updateState).get(url, definitionId);
+    client.register(url, uuid, this.updateState).resolve(url, definitionId);
   }
 
   updateState = (state: ObjectState) => {
@@ -79,13 +79,13 @@ class InnerWithObject extends React.Component<
     const { uuid } = this.state;
     if (this.props.client !== prevProps.client) {
       prevProps.client.deregister(prevProps.url, uuid);
-      client.register(url, uuid, this.updateState).get(url);
+      client.register(url, uuid, this.updateState).resolve(url);
     }
     if (this.props.url !== prevProps.url) {
       client
         .deregister(prevProps.url, uuid)
         .register(url, uuid, this.updateState)
-        .get(url);
+        .resolve(url);
     }
     return;
   }
