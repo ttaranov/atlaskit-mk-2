@@ -1,5 +1,14 @@
 # @atlaskit/global-search
 
+## 5.9.4
+- [patch] icon-file-type and icon-object publish glyphs, svgs, and es5 instead of just dist [0823d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0823d35)
+
+## 5.9.3
+- [patch] Exposure event gets trigger on initial load instead when search results return [b89cda9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b89cda9)
+
+## 5.9.2
+- [patch] Trim search input [488257d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/488257d)
+
 ## 5.9.1
 - [patch] Updated dependencies [709b239](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/709b239)
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)

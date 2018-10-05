@@ -204,7 +204,7 @@ describe('@atlaskit/tree - utils/tree', () => {
       expect(newPages.items['1'].children).toEqual(['1-2', '1-1']);
     });
 
-    it('should set hasChildren and isExpanded to false if no parent child left', () => {
+    it('should set hasChildren and isExpanded to false if no child left under parent', () => {
       const newPages = moveItemOnTree(
         treeWithTwoBranches,
         { parentId: '1-1', index: 0 },
@@ -222,6 +222,48 @@ describe('@atlaskit/tree - utils/tree', () => {
       expect(finalPages.items['1-1'].isExpanded).toBe(false);
       expect(finalPages.items['1-1'].hasChildren).toBe(false);
       expect(finalPages.items['1-2'].children.length).toEqual(4);
+    });
+
+    it('should append to subtree when destination index is not specified and children are loaded', () => {
+      const newPages = moveItemOnTree(
+        treeWithTwoBranches,
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2' },
+      );
+      expect(newPages.items['1-1'].children.length).toBe(1);
+      expect(newPages.items['1-1'].children[0]).toBe('1-1-2');
+      expect(newPages.items['1-2'].children.length).toBe(3);
+      expect(newPages.items['1-2'].children[0]).toBe('1-2-1');
+      expect(newPages.items['1-2'].children[1]).toBe('1-2-2');
+      expect(newPages.items['1-2'].children[2]).toBe('1-1-1');
+    });
+
+    it('should not append to subtree when destination index is not specified and children are not loaded', () => {
+      const treeWithChildrenNotLoaded = mutateTree(
+        treeWithTwoBranches,
+        '1-2-1',
+        { hasChildren: true },
+      );
+      const newPages = moveItemOnTree(
+        treeWithChildrenNotLoaded,
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2-1' },
+      );
+      expect(newPages.items['1-1'].children.length).toBe(1);
+      expect(newPages.items['1-1'].children[0]).toBe('1-1-2');
+      expect(newPages.items['1-2-1'].children.length).toBe(0);
+    });
+
+    it('should nest if parent is a leaf item', () => {
+      const newPages = moveItemOnTree(
+        treeWithTwoBranches,
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2-1' },
+      );
+      expect(newPages.items['1-1'].children.length).toBe(1);
+      expect(newPages.items['1-1'].children[0]).toBe('1-1-2');
+      expect(newPages.items['1-2-1'].children.length).toBe(1);
+      expect(newPages.items['1-2-1'].children[0]).toBe('1-1-1');
     });
   });
 });

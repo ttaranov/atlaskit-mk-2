@@ -1,20 +1,19 @@
 // @flow
+
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import {
+  borderRadius,
+  colors,
+  gridSize,
+  math,
+  themed,
+  withTheme,
+} from '@atlaskit/theme';
 import type { AvatarClickType } from '../types';
 
-const activeBackgroundColor = themed({
-  light: colors.B50,
-  dark: colors.DN40,
-});
-const hoverBackgroundColor = themed({
-  light: colors.N30,
-  dark: colors.DN50,
-});
-const focusBorderColor = themed({
-  light: colors.B200,
-  dark: colors.B75,
-});
+const focusBorderColor = themed({ light: colors.B200, dark: colors.B75 });
+const textColors = themed({ light: colors.N900, dark: colors.DN600 });
+const subtleTextColors = themed({ light: colors.N200, dark: colors.DN300 });
 
 type getBackgroundColorType = {
   backgroundColor?: string,
@@ -22,6 +21,7 @@ type getBackgroundColorType = {
   isActive?: boolean,
   isHover?: boolean,
   isSelected?: boolean,
+  mode: 'dark' | 'light',
   onClick?: AvatarClickType,
 };
 
@@ -39,12 +39,12 @@ export function getBackgroundColor({
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    themedBackgroundColor = hoverBackgroundColor;
+    themedBackgroundColor = colors.backgroundHover;
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    themedBackgroundColor = activeBackgroundColor;
+    themedBackgroundColor = colors.backgroundActive;
   }
 
   return themedBackgroundColor;
@@ -55,6 +55,7 @@ type getStylesType = {|
   isActive?: boolean,
   isDisabled?: boolean,
   isFocus?: boolean,
+  mode: 'dark' | 'light',
   onClick?: AvatarClickType,
 |};
 
@@ -133,10 +134,10 @@ export const Content = styled.div`
   line-height: 1.4;
   padding-left: ${gridSize}px;
 `;
-export const PrimaryText = styled.div`
-  ${truncateText} color: ${colors.text};
-`;
-export const SecondaryText = styled.div`
-  ${truncateText} color: ${colors.subtleText};
+export const PrimaryText = withTheme(styled.div`
+  ${truncateText} color: ${textColors};
+`);
+export const SecondaryText = withTheme(styled.div`
+  ${truncateText} color: ${subtleTextColors};
   font-size: 0.85em;
-`;
+`);

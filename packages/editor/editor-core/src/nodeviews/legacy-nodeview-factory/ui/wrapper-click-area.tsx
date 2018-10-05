@@ -19,6 +19,8 @@ interface Props {
   pluginState: ReactNodeViewState;
   providerFactory: ProviderFactory;
   view: EditorView;
+
+  onSelection?: (selected: boolean) => void;
 }
 
 const Wrapper = styled.div`
@@ -59,11 +61,16 @@ export default function wrapComponentWithClickArea(
       anchorPos: number,
       headPos: number,
     ) => {
-      const { getPos } = this.props;
+      const { getPos, onSelection } = this.props;
       const nodePos = getPos();
 
-      this.setState({
-        selected: nodePos >= anchorPos && nodePos < headPos,
+      const selected = nodePos >= anchorPos && nodePos < headPos;
+
+      const oldSelected = this.state.selected;
+      this.setState({ selected }, () => {
+        if (onSelection && selected !== oldSelected) {
+          onSelection(selected);
+        }
       });
     };
 

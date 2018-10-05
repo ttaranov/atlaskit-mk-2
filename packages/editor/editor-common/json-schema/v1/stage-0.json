@@ -1819,7 +1819,7 @@
           }
         ]
       },
-      "minItems": 1
+      "minItems": 0
     },
     "table_cell_content": {
       "type": "array",

@@ -1,5 +1,10 @@
 # @atlaskit/media-test-helpers
 
+## 18.2.2
+- [patch] Updated dependencies [2d848cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d848cd)
+  - @atlaskit/media-core@24.0.3
+  - @atlaskit/media-store@7.0.0
+
 ## 18.2.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/dropdown-menu@6.1.17

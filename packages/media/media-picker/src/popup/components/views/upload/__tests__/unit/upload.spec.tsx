@@ -3,8 +3,7 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
-import { FileDetails } from '@atlaskit/media-core';
-import { Card, CardView } from '@atlaskit/media-card';
+import { Card } from '@atlaskit/media-card';
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { fakeContext } from '@atlaskit/media-test-helpers';
@@ -137,6 +136,7 @@ describe('<StatelessUploadView />', () => {
   });
 
   it('should render currently uploading items', () => {
+    const upfrontId = Promise.resolve('id1');
     const mockStateOverride: Partial<State> = {
       uploads: {
         uploadId1: {
@@ -145,11 +145,9 @@ describe('<StatelessUploadView />', () => {
               id: 'id1',
               mimeType: 'image/jpeg',
               name: 'some-file-name',
-              size: 42,
+              upfrontId,
             },
           },
-          progress: 10,
-          timeStarted: 0,
         } as LocalUpload,
       },
       selectedItems: [
@@ -159,71 +157,19 @@ describe('<StatelessUploadView />', () => {
         },
       ] as SelectedItem[],
     };
-    const expectedMetadata: FileDetails = {
-      id: 'id1',
-      name: 'some-file-name',
-      size: 42,
-      mediaType: 'image',
-      mimeType: 'image/jpeg',
-    };
     const component = mount(getUploadViewElement(false, [], mockStateOverride));
-    expect(component.find(CardView)).toHaveLength(1);
-    expect(component.find(CardView).props().metadata).toEqual(expectedMetadata);
-    expect(component.find(CardView).props().status).toEqual('uploading');
-    expect(component.find(CardView).props().progress).toEqual(10);
-    expect(component.find(CardView).props().dimensions).toEqual({
+
+    expect(component.find(Card)).toHaveLength(1);
+    expect(component.find(Card).prop('dimensions')).toEqual({
       width: 162,
       height: 108,
     });
-    expect(component.find(CardView).props().selectable).toEqual(true);
-    expect(component.find(CardView).props().selected).toEqual(true);
-  });
-
-  it('should render right mediaType for uploading files', () => {
-    const mockStateOverride: Partial<State> = {
-      uploads: {
-        uploadId1: {
-          file: {
-            metadata: {
-              id: 'id1',
-              mimeType: 'video/mp4',
-            },
-          },
-        } as LocalUpload,
-        uploadId2: {
-          file: {
-            metadata: {
-              id: 'id2',
-              mimeType: 'application/pdf',
-            },
-          },
-        } as LocalUpload,
-      },
-    };
-    const component = mount(getUploadViewElement(false, [], mockStateOverride));
-    expect(component.find(CardView)).toHaveLength(2);
-    expect(
-      component
-        .find(CardView)
-        .first()
-        .props().metadata,
-    ).toEqual(
-      expect.objectContaining({
-        mediaType: 'video',
-        mimeType: 'video/mp4',
-      }),
-    );
-    expect(
-      component
-        .find(CardView)
-        .last()
-        .props().metadata,
-    ).toEqual(
-      expect.objectContaining({
-        mediaType: 'doc',
-        mimeType: 'application/pdf',
-      }),
-    );
+    expect(component.find(Card).prop('selectable')).toEqual(true);
+    expect(component.find(Card).prop('selected')).toEqual(true);
+    expect(component.find(Card).prop('identifier')).toEqual({
+      id: upfrontId,
+      mediaItemType: 'file',
+    });
   });
 });
 
@@ -262,7 +208,6 @@ describe('<UploadView />', () => {
               upfrontId,
             },
             dataURI: 'some-data-uri',
-            // upfrontId
           },
           index: 0,
           events: [],
@@ -359,7 +304,7 @@ describe('<UploadView />', () => {
     const { component } = createConnectedComponent(state);
     expect(
       component
-        .find(CardView)
+        .find(Card)
         .first()
         .props().actions,
     ).toContainEqual({
@@ -376,13 +321,14 @@ describe('<UploadView />', () => {
 
     const props = component
       .find(Card)
-      .first()
+      .last()
       .props();
     if (props.onClick) {
       props.onClick({ mediaItemDetails: { id: 'some-id' } } as any);
     } else {
       fail('onClick property is missing in props');
     }
+
     expect(dispatch.mock.calls[0][0]).toEqual({
       id: 'some-id',
       type: 'SET_UPFRONT_ID_DEFERRED',

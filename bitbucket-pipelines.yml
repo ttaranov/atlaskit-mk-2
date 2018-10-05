@@ -92,7 +92,7 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Testing
+            name: Browser Integration Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile

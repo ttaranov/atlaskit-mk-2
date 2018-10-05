@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import GlobalItemInner, { globalItemStyles } from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import type { IconAppearance } from '../../types';
+import { withGlobalItemAnalytics } from '../../utils/analytics';
 
 type Props = {
   /** Standard aria-haspopup prop */
@@ -12,6 +13,8 @@ type Props = {
   children?: Node,
   /** href to pass to linkComponent.  */
   href?: string,
+  /** An id used for analytics to identify the item when it is clicked. If passed in, an event will be fired on the navigation channel. */
+  id?: string,
   /** Causes the item to appear with a persistent selected background state. */
   isSelected?: boolean,
   /** Component to be used to create the link in the global item. A default
@@ -28,7 +31,7 @@ type Props = {
   appearance: IconAppearance,
 };
 
-export default class GlobalItem extends PureComponent<Props> {
+class GlobalItem extends PureComponent<Props> {
   static defaultProps = {
     onMouseDown: () => {},
     size: 'small',
@@ -119,3 +122,7 @@ export default class GlobalItem extends PureComponent<Props> {
     );
   }
 }
+
+export { GlobalItem as GlobalItemBase };
+
+export default withGlobalItemAnalytics(GlobalItem);

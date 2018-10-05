@@ -253,7 +253,10 @@ export default class Editor extends React.Component<
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
-        <WidthEmitter editorView={editorView!} />
+        <WidthEmitter
+          editorView={editorView!}
+          contentArea={this.scrollContainer}
+        />
       </FullPageEditorWrapper>
     );
   }

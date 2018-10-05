@@ -16,7 +16,7 @@ BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',
   { skip: ['safari', 'edge'] }, // Safari and Edge have issues at the moment
   async client => {
-    const onBoardingTest = await new Page(client);
+    const onBoardingTest = new Page(client);
     await onBoardingTest.goto(urlOnBoarding);
     await onBoardingTest.click(OnBoardingDefault);
     const menuIsVisible = await onBoardingTest.isVisible(OnBoardingMenuTitle);

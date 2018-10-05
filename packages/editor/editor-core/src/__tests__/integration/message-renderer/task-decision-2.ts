@@ -22,7 +22,7 @@ BrowserTestCase(
   'task-decision: can paste rich text into an action',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(clipboardHelper);
     await browser.isVisible(clipboardInput);
     await browser.type(
@@ -45,7 +45,7 @@ BrowserTestCase(
   'task-decision: can paste plain text into an action',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(clipboardHelper);
     await browser.isVisible(clipboardInput);
     await browser.type(
@@ -69,7 +69,7 @@ BrowserTestCase(
   'task-decision: can edit an action',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadActionButton);
     await browser.waitForSelector('ol');
@@ -84,7 +84,7 @@ BrowserTestCase(
   'task-decision: can insert mention into an action using click',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitFor(editable);
     await browser.type(editable, '[] ');

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import Spinner from '@atlaskit/spinner';
@@ -8,7 +8,7 @@ import { Provider } from 'unstated';
 
 import { NavigationProvider, ViewController } from '../../../';
 import BaseItem from '../../../components/Item';
-import { components } from '../../components';
+import ItemsRenderer, { components } from '../../components';
 
 const { GoToItem, Item } = components;
 
@@ -85,6 +85,55 @@ describe('navigation-next view renderer', () => {
           .after({ isActive: false, isHover: true, isSelected: false }),
       );
       expect(itemAfter.find(Spinner)).toHaveLength(1);
+    });
+  });
+
+  describe('ItemsRenderer', () => {
+    const didMountSpy = jest.fn();
+    class Corgie extends Component<{}> {
+      componentDidMount() {
+        didMountSpy();
+      }
+      render() {
+        return null;
+      }
+    }
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should render items correctly', () => {
+      const InlineCustom = () => null;
+      const items = [
+        { id: 'headerSection', type: 'HeaderSection', items: [] },
+        { id: 'menuSection', type: 'MenuSection', items: [] },
+        { type: 'Item', id: 'item' },
+        { type: InlineCustom, id: 'inlineCustom' },
+        { type: 'Corgie', id: 'corgie' },
+      ];
+      const wrapper = shallow(
+        <ItemsRenderer items={items} customComponents={{ Corgie }} />,
+      );
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should cache custom components with analytics', () => {
+      const items = [{ type: 'Corgie', id: 'corgie' }];
+      const wrapper = mount(
+        <ItemsRenderer items={items} customComponents={{ Corgie }} />,
+      );
+      expect(didMountSpy).toHaveBeenCalledTimes(1);
+      wrapper.setProps({ foo: 1 });
+      expect(didMountSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should cache inline custom components with analytics', () => {
+      const items = [{ type: Corgie, id: 'corgieSpy' }];
+      const wrapper = mount(<ItemsRenderer items={items} />);
+      expect(didMountSpy).toHaveBeenCalledTimes(1);
+      wrapper.setProps({ foo: 1 });
+      expect(didMountSpy).toHaveBeenCalledTimes(1);
     });
   });
 });

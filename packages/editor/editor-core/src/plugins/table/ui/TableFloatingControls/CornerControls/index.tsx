@@ -7,6 +7,7 @@ import { tableToolbarSize } from '../../styles';
 import InsertButton from '../InsertButton';
 import { hoverTable, insertColumn, insertRow } from '../../../actions';
 import { getLineMarkerWidth } from '../utils';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   editorView: EditorView;
@@ -36,13 +37,13 @@ export default class CornerControls extends Component<Props, any> {
     const tableHeight = tableRef.offsetHeight;
     return (
       <div
-        className={`pm-table-corner-controls ${
+        className={`${ClassName.CORNER_CONTROLS} ${
           isTableSelected(state.selection) ? 'active' : ''
         }`}
       >
         <button
           type="button"
-          className={`pm-table-corner-button ${
+          className={`${ClassName.CONTROLS_CORNER_BUTTON} ${
             isTableInDanger ? 'danger' : ''
           }`}
           onClick={this.selectTable}

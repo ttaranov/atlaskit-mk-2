@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tree",
-  "version": "3.0.4",
+  "version": "4.0.0",
   "description": "A React Component for displaying expandable and sortable tree hierarchies",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,7 +15,7 @@
   "dependencies": {
     "css-box-model": "^1.0.0",
     "memoize-one": "^3.0.1",
-    "react-beautiful-dnd": "^9.0.0"
+    "react-beautiful-dnd-next": "10.0.0-alpha.1"
   },
   "peerDependencies": {
     "react": "^16.4.0"
