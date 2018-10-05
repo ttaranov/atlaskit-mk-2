@@ -102,6 +102,16 @@ pipelines:
             caches:
               - node
         - step:
+            name: Visual Regression
+            script:
+              - source ./build/visual-regression/puppeteer.sh
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - yarn add puppeteer
+              - node build/ci-scripts/run.tool.if.changed.js vr -- yarn test:vr:changed 
+            caches:
+              - node          
+        - step:
             name: Building website
             script:
               - source ./build-setup.sh

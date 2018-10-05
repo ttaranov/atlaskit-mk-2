@@ -10,9 +10,9 @@ import {
 } from '../_utils';
 
 const mediaSingleLayouts = {
-  center: 'Align center',
-  'wrap-left': 'Align left',
-  'wrap-right': 'Align right',
+  center: 'Center',
+  'wrap-left': 'Wrap left',
+  'wrap-right': 'Wrap right',
   wide: 'Wide',
   'full-width': 'Full width',
 };
@@ -45,9 +45,7 @@ describe('Snapshot Test: Media', () => {
 
       // change layouts
       for (const layout of Object.keys(mediaSingleLayouts)) {
-        const layoutButton = `[aria-label="Change layout to ${
-          mediaSingleLayouts[layout]
-        }"]`;
+        const layoutButton = `[aria-label="${mediaSingleLayouts[layout]}"]`;
         await page.waitForSelector(layoutButton);
         await page.click(layoutButton);
 
@@ -78,10 +76,7 @@ describe('Snapshot Test: Media', () => {
 
       // change layouts
       for (const layout of Object.keys(mediaSingleLayouts)) {
-        const layoutButton = `[aria-label="Change layout to ${
-          mediaSingleLayouts[layout]
-        }"]`;
-
+        const layoutButton = `[aria-label="${mediaSingleLayouts[layout]}"]`;
         await page.waitForSelector(layoutButton);
         await page.click(layoutButton);
 

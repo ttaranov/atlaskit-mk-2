@@ -10,12 +10,16 @@ const webpack = require('../../build/webdriver-runner/utils/webpack');
 * and run and wait for visual-regression tests complete
 */
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
+const isLocalRun = process.env.RUN_LOCAL_ONLY === 'true';
+const watch = process.env.WATCH ? '--watch' : '';
 
 // function to generate snapshot from production website
 function getProdSnapshots() {
   return new Promise((resolve, reject) => {
-    // --runInBand to run in headless mode since parallel thread is not supported on chromeless
-    const cmd = `VISUAL_REGRESSION=true PROD=true jest -u --runInBand`;
+    let cmd = `VISUAL_REGRESSION=true PROD=true jest -u`;
+    if (process.env.WATCH === 'true') {
+      cmd = `${cmd} --watch`;
+    }
     runCommand(cmd, resolve, reject);
   });
 }
@@ -23,7 +27,7 @@ function getProdSnapshots() {
 // function to run tests and compare snapshot against prod snapshot
 function runTests() {
   return new Promise((resolve, reject) => {
-    const cmd = `VISUAL_REGRESSION=true jest --runInBand`;
+    const cmd = `VISUAL_REGRESSION=true jest`;
     runCommand(cmd, resolve, reject);
   });
 }
@@ -49,7 +53,9 @@ async function main() {
     await webpack.startDevServer();
   }
 
-  const prodSnapshots = await getProdSnapshots();
+  if (!isLocalRun) {
+    const prodSnapshots = await getProdSnapshots();
+  }
   const { code, signal } = await runTests();
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
@@ -60,7 +66,14 @@ async function main() {
   process.exit(code);
 }
 
-main().catch(err => {
-  console.error(err.toString());
-  process.exit(1);
-});
+if (
+  !process.env.BITBUCKET_BRANCH ||
+  !process.env.BITBUCKET_BRANCH.includes('skip-vr')
+) {
+  main().catch(err => {
+    console.error(err.toString());
+    process.exit(1);
+  });
+} else {
+  console.log('skipping vr test since the branch includes skip-vr');
+}
