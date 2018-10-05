@@ -10,10 +10,11 @@ import {
   createEvent,
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
-import { setNodeSelection, setTextSelection } from '../../../../utils';
+import { setNodeSelection } from '../../../../utils';
 import imageUpload from '../../../../plugins/image-upload';
 import codeBlockPlugin from '../../../../plugins/code-block';
 import mediaPlugin from '../../../../plugins/media';
+import { insertExternalImage } from '../../../../plugins/image-upload/pm-plugins/commands';
 
 describe('image-upload', () => {
   const testImgSrc =
@@ -32,114 +33,46 @@ describe('image-upload', () => {
       pluginKey: imageUploadPluginKey,
     });
 
-  it('allows change handler to be registered', () => {
-    const { pluginState } = editor(doc(p('')));
+  it('supports inserting an external image via command', () => {
+    const { editorView } = editor(doc(p('{<>}')));
 
-    pluginState.subscribe(jest.fn());
-  });
-
-  it('allows an image to be added at the current collapsed selection', () => {
-    const { editorView, pluginState } = editor(doc(p('{<>}')));
-
-    pluginState.addImage(editorView)({ src: testImgSrc });
-
+    insertExternalImage({ src: testImgSrc })(
+      editorView.state,
+      editorView.dispatch,
+    );
     expect(editorView.state.doc).toEqualDocument(doc(testImg()));
   });
 
-  it('should get current state immediately once subscribed', () => {
-    const { pluginState } = editor(doc(p('{<}'), testImg(), p('{>}')));
-    const spy = jest.fn();
-    pluginState.subscribe(spy);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(pluginState).toHaveProperty('active', false);
-    expect(pluginState).toHaveProperty('enabled', true);
-    expect(pluginState).toHaveProperty('src', undefined);
-    expect(pluginState).toHaveProperty('element', undefined);
-  });
-
-  it('emits a change when an image is selected', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}'), testImg()));
-    const spy = jest.fn();
-    pluginState.subscribe(spy);
-
-    setNodeSelection(editorView, sel + 2);
-
-    expect(spy).toHaveBeenCalledTimes(2);
-  });
-
-  it('does not emits a change when unsubscribe', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}'), testImg()));
-    const spy = jest.fn();
-    pluginState.subscribe(spy);
-    pluginState.unsubscribe(spy);
-
-    setNodeSelection(editorView, sel + 2);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('does not emit multiple changes when an image is not selected', () => {
-    const { editorView, pluginState, refs } = editor(
-      doc(p('{<>}t{a}e{b}st'), testImg()),
-    );
-    const { a, b } = refs;
-    const spy = jest.fn();
-    pluginState.subscribe(spy);
-
-    setTextSelection(editorView, a + 2);
-    setTextSelection(editorView, b + 2);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('does not emit multiple changes when an image is selected multiple times', () => {
-    const { pluginState } = editor(doc(p('{<>}'), testImg()));
-    const spy = jest.fn();
-
-    pluginState.subscribe(spy);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('emits a change event when selection leaves an image', () => {
-    const { editorView, pluginState, sel, refs } = editor(
-      doc(p('{a}test{<>}'), testImg()),
-    );
-    const { a } = refs;
-    const spy = jest.fn();
-    setNodeSelection(editorView, sel + 2);
-    pluginState.subscribe(spy);
-
-    setTextSelection(editorView, a);
-
-    expect(spy).toHaveBeenCalledTimes(2);
-  });
-
   it('permits an image to be added when an image is selected', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{<>}'), testImg()));
+    const { editorView, sel } = editor(doc(p('{<>}'), testImg()));
     setNodeSelection(editorView, sel + 2);
 
-    pluginState.addImage(editorView)({ src: testImgSrc });
-
+    insertExternalImage({ src: testImgSrc })(
+      editorView.state,
+      editorView.dispatch,
+    );
     expect(editorView.state.doc).toEqualDocument(
       doc(p(), testImg(), testImg()),
     );
   });
 
   it('permits an image to be added when there is selected text', () => {
-    const { editorView, pluginState } = editor(doc(p('{<}hello{>}')));
+    const { editorView } = editor(doc(p('{<}hello{>}')));
 
-    pluginState.addImage(editorView)({ src: testImgSrc });
-
+    insertExternalImage({ src: testImgSrc })(
+      editorView.state,
+      editorView.dispatch,
+    );
     expect(editorView.state.doc).toEqualDocument(doc(p('hello'), testImg()));
   });
 
   it('inserts an image after the code block if selection is inside code block', () => {
-    const { editorView, pluginState } = editor(doc(code_block()('{<>}')));
+    const { editorView } = editor(doc(code_block()('{<>}')));
 
-    pluginState.addImage(editorView)({ src: testImgSrc });
-
+    insertExternalImage({ src: testImgSrc })(
+      editorView.state,
+      editorView.dispatch,
+    );
     expect(editorView.state.doc).toEqualDocument(
       doc(code_block()(), testImg()),
     );

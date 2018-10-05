@@ -4,8 +4,11 @@ import { isPastedFile } from '../../../utils/clipboard';
 import { isDroppedFile } from '../../../utils/drag-drop';
 import { analyticsService } from '../../../analytics';
 
-import { canInsertMedia, isMediaSelected } from '../utils';
-import { ImageUploadHandler, ImageUploadState } from '../types';
+import {
+  canInsertMedia,
+  isMediaSelected,
+} from '../utils';
+import { ImageUploadHandler, ImageUploadPluginState } from '../types';
 import { EditorView } from 'prosemirror-view';
 import { startImageUpload, insertExternalImage } from './commands';
 
@@ -35,14 +38,14 @@ export const createPlugin = ({ dispatch, providerFactory }) => {
 
   return new Plugin({
     state: {
-      init(config, state: EditorState): ImageUploadState {
+      init(config, state: EditorState): ImageUploadPluginState {
         return {
           active: false,
           enabled: canInsertMedia(state),
           hidden: !state.schema.nodes.media || !state.schema.nodes.mediaSingle,
         };
       },
-      apply(tr, pluginState: ImageUploadState, oldState, newState) {
+      apply(tr, pluginState: ImageUploadPluginState, oldState, newState) {
         const newActive = isMediaSelected(newState);
         const newEnabled = canInsertMedia(newState);
 
@@ -97,12 +100,14 @@ export const createPlugin = ({ dispatch, providerFactory }) => {
       return {
         update(view, prevState) {
           const { state: editorState } = view;
-          const currentState: ImageUploadState = stateKey.getState(
+          const currentState: ImageUploadPluginState = stateKey.getState(
             editorState,
           )!;
 
           // if we've add a new upload to the state, execute the uploadHandler
-          const oldState: ImageUploadState = stateKey.getState(prevState)!;
+          const oldState: ImageUploadPluginState = stateKey.getState(
+            prevState,
+          )!;
           if (
             currentState.activeUpload !== oldState.activeUpload &&
             currentState.activeUpload &&

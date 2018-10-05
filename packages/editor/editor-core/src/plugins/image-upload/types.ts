@@ -14,7 +14,7 @@ export type ImageUploadPluginAction = {
   event?: Event;
 };
 
-export type ImageUploadState = {
+export type ImageUploadPluginState = {
   active: boolean;
   enabled: boolean;
   hidden: boolean;
