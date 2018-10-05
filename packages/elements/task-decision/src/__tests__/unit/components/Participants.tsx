@@ -12,7 +12,6 @@ describe('<Participants/>', () => {
   it('Should render a loadable', () => {
     const participants = getParticipants(2);
     const component = mount(<Participants participants={participants} />);
-    console.log(component.debug());
     expect(component.find('LoadableComponent').length).toEqual(1);
     expect(component.find('loading').length).toEqual(1);
   });
