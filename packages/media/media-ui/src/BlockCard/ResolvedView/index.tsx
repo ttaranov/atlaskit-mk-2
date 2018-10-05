@@ -26,7 +26,6 @@ import {
 } from './styled';
 import Transition from './Transition';
 import { LozengeViewModel } from '../../types';
-import { ComponentClass } from 'enzyme';
 
 export interface ContextViewModel {
   icon?: string;
@@ -57,7 +56,7 @@ export interface BadgeViewModel {
 
 export interface DetailViewModel {
   title?: string;
-  icon?: string | JSX.Element;
+  icon?: string | React.ReactNode;
   badge?: BadgeViewModel;
   lozenge?: LozengeViewModel;
   text?: string;
@@ -365,7 +364,7 @@ export class ResolvedView extends React.Component<
   }
 
   renderWithToolTip(
-    Elem: ComponentClass<any>,
+    Elem: React.ComponentClass<any>,
     model: { text: string; tooltip?: string },
   ) {
     if (model.tooltip) {

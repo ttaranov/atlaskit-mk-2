@@ -21,7 +21,6 @@
     "@atlaskit/media-ui": "^6.0.0",
     "@atlaskit/theme": "^6.0.0",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
-    "@types/react": "^16.3.0",
     "react-lazily-render": "^1.1.0",
     "rxjs": "^5.5.0",
     "uuid": "^3.1.0"
@@ -41,6 +40,7 @@
     "@atlaskit/select": "^6.0.0",
     "@types/enzyme": "^3.1.6",
     "@types/fetch-mock": "^6.0.3",
+    "@types/react": "^16.3.0",
     "abortcontroller-polyfill": "^1.1.9",
     "brace": "^0.11.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
