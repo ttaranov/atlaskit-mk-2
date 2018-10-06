@@ -37,7 +37,12 @@ export default class FlagActions extends Component<Props, {}> {
         hasDivider={!!index}
         useMidDot={!isBold}
       >
-        <StyledButton {...action} appearance={appearance}>
+        <StyledButton
+          onClick={action.onClick}
+          href={action.href}
+          target={action.target}
+          appearance={appearance}
+        >
           {action.content}
         </StyledButton>
       </Action>

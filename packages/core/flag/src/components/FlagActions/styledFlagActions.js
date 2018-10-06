@@ -37,22 +37,30 @@ export const Action = styled.div`
 `;
 
 const height = `${gridSize() * 3 / parseInt(fontSize(), 10)}em`;
+/**
+ * the following styles are to override the styles of button
+ * when button renders an anchor it uses specifity to we the following styles
+ * and !important as some styles in button come with !important
+ */
 export const StyledButton = styled(Button)`
-  background: ${buttonBackgroundColor};
-  color: ${buttonTextColor} !important;
-  cursor: pointer;
-  font-weight: 500;
-  height: ${height} !important;
-  line-height: ${height} !important;
-  padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize())}px;
-  text-decoration: none;
-  user-select: none;
-  vertical-align: baseline;
-  &:hover {
-    text-decoration: underline;
-  }
+  &,
+  a& {
+    background: ${buttonBackgroundColor};
+    color: ${buttonTextColor} !important;
+    cursor: pointer;
+    font-weight: 500;
+    height: ${height} !important;
+    line-height: ${height} !important;
+    padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize())}px;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: baseline;
+    &:hover {
+      text-decoration: underline;
+    }
 
-  &:focus {
-    box-shadow: 0 0 0 2px ${flagFocusRingColor};
+    &:focus {
+      box-shadow: 0 0 0 2px ${flagFocusRingColor};
+    }
   }
 `;

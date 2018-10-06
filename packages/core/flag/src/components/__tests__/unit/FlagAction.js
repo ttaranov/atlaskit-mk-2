@@ -63,4 +63,22 @@ describe('actions prop', () => {
     });
     expect(flag.find(Button).length).toBe(1);
   });
+  it('should pass down href and target to the button', () => {
+    flag = mount(generateFlag({ appearance: 'info', isDismissAllowed: true }));
+    flag.setState({ isExpanded: true });
+    flag.setProps({
+      actions: [
+        {
+          content: 'Hello!',
+          href: 'https://atlaskit.atlassian.com/',
+          target: '_blank',
+        },
+      ],
+      description: 'Hi there',
+    });
+    expect(flag.find(Button).prop('href')).toBe(
+      'https://atlaskit.atlassian.com/',
+    );
+    expect(flag.find(Button).prop('target')).toBe('_blank');
+  });
 });
