@@ -54,7 +54,6 @@ describe('actions prop', () => {
     expect(flag.find(Actions).prop('appearance')).toBe('info');
   });
 
-<<<<<<< HEAD
   it('should render atlaskit button as action', () => {
     flag = mount(generateFlag({ appearance: 'info', isDismissAllowed: true }));
     flag.setState({ isExpanded: true });
@@ -63,13 +62,5 @@ describe('actions prop', () => {
       description: 'Hi there',
     });
     expect(flag.find(Button).length).toBe(1);
-=======
-  it('should pass href to the action with href', () => {
-    const buttonLink = flag
-      .find(Action)
-      .at(2)
-      .find('button');
-    expect(buttonLink.prop('href')).toBe('hrefString');
->>>>>>> added tests and docs for href in flag
   });
 });
