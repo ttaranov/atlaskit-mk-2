@@ -6,7 +6,6 @@ import Info from '@atlaskit/icon/glyph/info';
 import Tick from '@atlaskit/icon/glyph/check-circle';
 import Warning from '@atlaskit/icon/glyph/warning';
 import { colors } from '@atlaskit/theme';
-import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import Flag from '../src';
 
 const FlagActions = [
