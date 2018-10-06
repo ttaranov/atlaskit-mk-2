@@ -17,7 +17,7 @@ describe('Feature Flag Client', () => {
       const client = new FeatureFlagClient({
         analyticsHandler,
         flags: {
-          'my.flag': false,
+          'my.flag': { value: false },
         },
       });
 
@@ -28,12 +28,12 @@ describe('Feature Flag Client', () => {
       const client = new FeatureFlagClient({
         analyticsHandler,
         flags: {
-          'my.flag': false,
+          'my.flag': { value: false },
         },
       });
 
       client.setFlags({
-        'my.first.flag': true,
+        'my.first.flag': { value: true },
       });
 
       client.setFlags({
@@ -64,7 +64,7 @@ describe('Feature Flag Client', () => {
       const client = new FeatureFlagClient({
         analyticsHandler,
         flags: {
-          'my.flag': false,
+          'my.flag': { value: false },
         },
       });
 
@@ -97,11 +97,23 @@ describe('Feature Flag Client', () => {
         expect(client.getBooleanValue('my.flag', { default: true })).toBe(true);
       });
 
+      test('should throw in DEV if flag does not have a "value" attribute', () => {
+        const createClient = () =>
+          new FeatureFlagClient({
+            analyticsHandler,
+            flags: {
+              'my.flag': false,
+            } as any,
+          });
+
+        expect(createClient).toThrow('my.flag is not a valid flag');
+      });
+
       test('should return default if flag is not boolean', () => {
         const client = new FeatureFlagClient({
           analyticsHandler,
           flags: {
-            'my.string.flag': 'string.value',
+            'my.string.flag': { value: 'string.value' },
             'my.variation.flag': {
               value: 'experiment',
               explanation: {
@@ -125,7 +137,7 @@ describe('Feature Flag Client', () => {
         const client = new FeatureFlagClient({
           analyticsHandler,
           flags: {
-            'my.boolean.flag': false,
+            'my.boolean.flag': { value: false },
           },
         });
 
@@ -138,7 +150,7 @@ describe('Feature Flag Client', () => {
         const client = new FeatureFlagClient({
           analyticsHandler,
           flags: {
-            'my.boolean.flag': false,
+            'my.boolean.flag': { value: false },
           },
         });
 
@@ -243,11 +255,34 @@ describe('Feature Flag Client', () => {
         expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
+      test('should return default if flag does not have a value attribute', () => {
+        const client = new FeatureFlagClient({
+          analyticsHandler,
+          flags: {
+            'my.variation.a': {
+              value: 'variation-a',
+              explanation: {
+                reason: 'RULE_MATCH',
+                ruleId: '111-bbbbb-ccc',
+              },
+            },
+          },
+        });
+
+        expect(
+          client.getVariantValue('my.flag', {
+            default: 'control',
+            oneOf: ['control', 'experiment'],
+          }),
+        ).toBe('control');
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+      });
+
       test('should return default if flag is boolean, and not fire exposure event', () => {
         const client = new FeatureFlagClient({
           analyticsHandler,
           flags: {
-            'my.flag': true,
+            'my.flag': { value: true },
           },
         });
 
@@ -321,7 +356,7 @@ describe('Feature Flag Client', () => {
         const client = new FeatureFlagClient({
           analyticsHandler,
           flags: {
-            'my.string.flag': 'string.value',
+            'my.string.flag': { value: 'string.value' },
           },
         });
 
@@ -358,33 +393,42 @@ describe('Feature Flag Client', () => {
         expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
-      const STRING_DEFAULT_VALUE = 'defaultValue';
-      const STRING_TEST_VALUE = 'string';
+      describe('invalid types', () => {
+        const STRING_DEFAULT_VALUE = 'defaultValue';
+        const STRING_TEST_VALUE = 'string';
 
-      const INVALID_ITEMS = {
-        boolean: true,
-        object: {},
-        zero: 0,
-        number: 100,
-        'string-not-in-possibleValues': 'abc',
-      };
+        const INVALID_ITEMS = {
+          boolean: true,
+          object: {},
+          zero: 0,
+          number: 100,
+          'string-not-in-possibleValues': 'abc',
+        };
 
-      Object.keys(INVALID_ITEMS).forEach(key => {
-        const wrongValue = INVALID_ITEMS[key];
-        test(`should fall back to defaultValue when given ${key}`, () => {
-          const client = new FeatureFlagClient({
-            analyticsHandler,
-            flags: { 'some-flag': wrongValue },
+        Object.keys(INVALID_ITEMS).forEach(key => {
+          const wrongValue = INVALID_ITEMS[key];
+
+          test(`should fall back to defaultValue when given ${key}`, () => {
+            const client = new FeatureFlagClient({
+              analyticsHandler,
+              flags: {
+                'some-flag': {
+                  value: wrongValue,
+                },
+              },
+            });
+
+            expect(
+              client.getVariantValue('some-flag', {
+                default: STRING_DEFAULT_VALUE,
+                oneOf: [STRING_TEST_VALUE],
+              }),
+            ).toBe(STRING_DEFAULT_VALUE);
+
+            expect(client.flags['some-flag']).toEqual({
+              value: wrongValue,
+            });
           });
-
-          expect(
-            client.getVariantValue('some-flag', {
-              default: STRING_DEFAULT_VALUE,
-              oneOf: [STRING_TEST_VALUE],
-            }),
-          ).toBe(STRING_DEFAULT_VALUE);
-
-          expect(client.flags['some-flag']).toBe(wrongValue);
         });
       });
     });
@@ -404,7 +448,7 @@ describe('Feature Flag Client', () => {
         const client = new FeatureFlagClient({
           analyticsHandler,
           flags: {
-            'my.string.flag': 'string.value',
+            'my.string.flag': { value: 'string.value' },
             'my.experiment': {
               value: 'experiment',
               explanation: {
@@ -431,6 +475,26 @@ describe('Feature Flag Client', () => {
               explanation: {
                 reason: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
+              },
+            },
+          },
+        });
+
+        expect(client.getJSONValue('my.json.flag')).toEqual({
+          nav: 'blue',
+          footer: 'black',
+        });
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+      });
+
+      test('should accept simple flags', () => {
+        const client = new FeatureFlagClient({
+          analyticsHandler,
+          flags: {
+            'my.json.flag': {
+              value: {
+                nav: 'blue',
+                footer: 'black',
               },
             },
           },

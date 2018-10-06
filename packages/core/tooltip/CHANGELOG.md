@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 12.1.2
+- [patch] Fix edgecase where when handleMouseOver was called before handleMouseEnter, causing the mouseCoordinates to be null, and the tooltip to render at the top left of the page [c2694aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2694aa)
+
 ## 12.1.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

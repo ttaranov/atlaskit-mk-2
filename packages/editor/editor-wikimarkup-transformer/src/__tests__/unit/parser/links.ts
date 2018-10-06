@@ -48,6 +48,10 @@ describe('JIRA wiki markup - Links', () => {
       '[CS-240] should know where to end the link',
       `[Link Title|http://www.google.com] boy I hope this doesn't go all the way to here] that would be bad.`,
     ],
+    [
+      '[CS-385] should link text in link format',
+      `[https://splunk.paas-inf.net/en-GB/app/search/search?earliest=\-1d&latest=now|https://www.google.com]`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

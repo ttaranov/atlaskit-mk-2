@@ -1,5 +1,8 @@
 # @atlaskit/adf-utils
 
+## 2.2.4
+- [patch] make attris in ADFNode optioanla as not every node have this value [df13878](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df13878)
+
 ## 2.2.3
 - [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/editor-common@17.0.0

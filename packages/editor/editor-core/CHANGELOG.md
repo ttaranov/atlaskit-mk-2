@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.5.2
+- [patch] center media toolbar; be more selective when resize is enabled [98ca1de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ca1de)
+
 ## 82.5.1
 - [patch] ED-5471 Fix show media single without height or width [a352169](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a352169)
 
