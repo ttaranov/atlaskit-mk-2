@@ -62,7 +62,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 127
+              - source build/ci-scripts/count-flowfixme.sh 125
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
               # Get the commit that we diverged from master at
               - export DIVERGED_AT=$(git merge-base master HEAD)
@@ -92,7 +92,7 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Testing
+            name: Browser Integration Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile

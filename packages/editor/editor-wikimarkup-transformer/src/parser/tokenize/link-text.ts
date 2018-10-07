@@ -3,7 +3,7 @@ import { Schema } from 'prosemirror-model';
 import { Token } from './';
 
 // https://www.atlassian.com
-const LINK_TEXT_REGEXP = /^(https?|irc):\/\/[\w.?\/#-=]*/;
+const LINK_TEXT_REGEXP = /^(https?|irc):\/\/[\w.?\/\\#-=]+/;
 
 export function linkText(input: string, schema: Schema): Token {
   const match = input.match(LINK_TEXT_REGEXP);

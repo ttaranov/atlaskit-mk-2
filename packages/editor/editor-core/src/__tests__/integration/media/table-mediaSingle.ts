@@ -14,7 +14,7 @@ BrowserTestCase(
   'Can insert media single into table',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);

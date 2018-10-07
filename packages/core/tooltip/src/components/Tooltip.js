@@ -162,6 +162,13 @@ class Tooltip extends Component<Props, State> {
 
   handleMouseOver = (e: SyntheticMouseEvent<>) => {
     if (e.target === this.wrapperRef) return;
+    // In the case where a tooltip is newly rendered but immediately becomes hovered,
+    // we need to set the coordinates in the mouseOver event.
+    if (!this.mouseCoordinates)
+      this.mouseCoordinates = {
+        left: e.clientX,
+        top: e.clientY,
+      };
     this.cancelPendingSetState();
     if (Boolean(this.props.content) && !this.state.isVisible) {
       this.cancelPendingSetState = showTooltip(immediatelyShow => {

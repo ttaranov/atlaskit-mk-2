@@ -161,7 +161,9 @@ export default class MediaSingleNode extends Component<
       this.child.props.node.attrs.__key,
     );
 
-    if (width === null && this.mediaReady(mediaState)) {
+    const isLoading = mediaState ? !this.mediaReady(mediaState) : false;
+
+    if ((!width || !height) && !isLoading) {
       width = DEFAULT_WIDTH;
       height = DEFAULT_HEIGHT;
       hideProgress = true;
@@ -185,8 +187,7 @@ export default class MediaSingleNode extends Component<
       layout,
       width,
       height,
-
-      isLoading: !width,
+      isLoading,
 
       containerWidth: this.props.containerWidth,
       lineLength: this.props.lineLength,
@@ -200,7 +201,7 @@ export default class MediaSingleNode extends Component<
       appearance,
     } = this.props;
 
-    let canResize = true;
+    let canResize = !!isResizable && !isLoading;
     const pos = getPos();
     if (pos) {
       const $pos = state.doc.resolve(pos);
@@ -209,7 +210,7 @@ export default class MediaSingleNode extends Component<
         table,
         layoutSection,
       ]);
-      canResize = !!isResizable && !disabledNode;
+      canResize = canResize && !disabledNode;
     }
 
     return canResize ? (

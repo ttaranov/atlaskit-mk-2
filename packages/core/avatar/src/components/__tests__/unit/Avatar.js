@@ -2,12 +2,11 @@
 import React, { type Node } from 'react';
 import { shallow, mount, render } from 'enzyme';
 import Tooltip from '@atlaskit/tooltip';
-import AvatarWithAnalytics, {
-  AvatarWithoutAnalytics as Avatar,
-} from '../../Avatar';
+import Avatar from '../../Avatar';
 import AvatarImage from '../../AvatarImage';
 import Presence from '../../Presence';
 import { getSize } from '../../../styled/utils';
+import { Slot } from '../../../styled/AvatarImage';
 import { AVATAR_SIZES } from '../../../styled/constants';
 
 const busy = 'busy';
@@ -106,8 +105,8 @@ describe('Avatar', () => {
 
   describe('appearance property', () => {
     it('should default to circle avatar', () => {
-      const wrapper = shallow(<Avatar />);
-      expect(wrapper.prop('appearance')).toBe('circle');
+      const wrapper = mount(<Avatar />);
+      expect(wrapper.find(AvatarImage).prop('appearance')).toBe('circle');
     });
 
     it('should apply rounded corners for square avatar', () => {
@@ -158,21 +157,24 @@ describe('Avatar', () => {
   });
 });
 
-describe('AvatarWithAnalytics', () => {
-  beforeEach(() => {
-    jest.spyOn(global.console, 'warn');
-    jest.spyOn(global.console, 'error');
-  });
-  afterEach(() => {
-    global.console.warn.mockRestore();
-    global.console.error.mockRestore();
-  });
-
-  it('should mount without errors', () => {
-    mount(<AvatarWithAnalytics />);
-    /* eslint-disable no-console */
-    expect(console.warn).not.toHaveBeenCalled();
-    expect(console.error).not.toHaveBeenCalled();
-    /* eslint-enable no-console */
-  });
+test('theming - can change background color based on appearance prop', () => {
+  const wrapper = mount(
+    <Avatar
+      isLoading
+      appearance="square"
+      src={src}
+      theme={() => ({
+        avatar(props) {
+          return {
+            backgroundColor: props.appearance === 'square' ? 'red' : 'green',
+          };
+        },
+      })}
+    />,
+  );
+  const style = wrapper
+    .find(Slot)
+    .find('span')
+    .prop('style');
+  expect(style.backgroundColor).toBe('red');
 });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/pagination",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "Pagination component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

@@ -10,7 +10,7 @@ import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { getPluginState } from '../pm-plugins/main';
 import { scaleTable, setColumnWidths } from '../pm-plugins/table-resizing';
 
-import { TablePluginState } from '../types';
+import { TablePluginState, TableCssClassName as ClassName } from '../types';
 import { getCellMinWidth } from '../';
 
 const isIE11 = browser.ie_version === 11;
@@ -132,14 +132,14 @@ class TableComponent extends React.Component<ComponentProps> {
       ? [
           <div
             key="left"
-            className="table-shadow -left"
+            className={`${ClassName.TABLE_SHADOW} -left`}
             ref={elem => {
               this.leftShadow = elem;
             }}
           />,
           <div
             key="right"
-            className="table-shadow -right"
+            className={`${ClassName.TABLE_SHADOW} -right`}
             ref={elem => {
               this.rightShadow = elem;
             }}
@@ -162,7 +162,7 @@ class TableComponent extends React.Component<ComponentProps> {
     const rowControls = [
       <div
         key={0}
-        className={`table-row-controls-wrapper ${
+        className={`${ClassName.ROW_CONTROLS_WRAPPER} ${
           scroll > 0 ? 'scrolling' : ''
         }`}
       >
@@ -185,7 +185,7 @@ class TableComponent extends React.Component<ComponentProps> {
     ];
 
     const columnControls = [
-      <div key={0} className="table-column-controls-wrapper">
+      <div key={0} className={ClassName.COLUMN_CONTROLS_WRAPPER}>
         <ColumnControls
           editorView={view}
           tableRef={tableRef}
@@ -205,13 +205,17 @@ class TableComponent extends React.Component<ComponentProps> {
         style={{
           width: this.getTableContainerWidth(node.attrs.layout, containerWidth),
         }}
-        className={`table-container ${tableActive ? 'with-controls' : ''}`}
+        className={`${ClassName.TABLE_CONTAINER} ${
+          tableActive ? ClassName.WITH_CONTROLS : ''
+        }`}
         data-number-column={node.attrs.isNumberColumnEnabled}
         data-layout={node.attrs.layout}
       >
         {allowControls && rowControls}
         <div
-          className="table-wrapper editor-popup-ignore-scroll-parent"
+          className={`${
+            ClassName.TABLE_NODE_WRAPPER
+          } editor-popup-ignore-scroll-parent`}
           ref={elem => {
             this.wrapper = elem;
             this.props.contentDOM(elem ? elem : undefined);

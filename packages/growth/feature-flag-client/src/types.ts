@@ -7,9 +7,13 @@ export type Reason =
 
 export type RuleId = string;
 
-export type SimpleFlag = boolean | string;
+export type SimpleFlag = {
+  value: boolean | string;
+};
 
-export type JSONFlag = object;
+export type JSONFlag = {
+  value: object;
+};
 
 export type FlagWithEvaluationDetails = {
   value: boolean | string | object;

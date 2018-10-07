@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 82.5.2
+- [patch] center media toolbar; be more selective when resize is enabled [98ca1de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ca1de)
+
+## 82.5.1
+- [patch] ED-5471 Fix show media single without height or width [a352169](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a352169)
+
+## 82.5.0
+- [minor] Allow empty content under doc [47d50ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47d50ad)
+
+## 82.4.2
+- [patch] ED-5457: moving table css classnames to a const [2e1f627](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1f627)
+
 ## 82.4.1
 - [patch] ED-5452: Dynamically add/remove decorations in tables [04b0fde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b0fde)
 

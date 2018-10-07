@@ -1,13 +1,14 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { TableDecorations } from '../types';
+import { TableCssClassName as ClassName } from '../types';
 
 export const createHoverDecoration = (
   cells: { pos: number; node: PmNode }[],
   danger?: boolean,
 ): Decoration[] => {
   const deco = cells.map(cell => {
-    const classes = ['hoveredCell'];
+    const classes = [ClassName.HOVERED_CELL];
     if (danger) {
       classes.push('danger');
     }
