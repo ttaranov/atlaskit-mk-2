@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "8.0.5",
+  "version": "8.0.6",
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
