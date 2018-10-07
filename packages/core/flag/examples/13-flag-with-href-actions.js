@@ -1,12 +1,19 @@
 // @flow
 
-import React from 'react';
+import React, { type Node, Fragment } from 'react';
 import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
 import Tick from '@atlaskit/icon/glyph/check-circle';
 import Warning from '@atlaskit/icon/glyph/warning';
 import { colors } from '@atlaskit/theme';
 import Flag from '../src';
+
+type FlagType = {
+  appearance: string,
+  description: string,
+  title: string,
+  icon: Node,
+};
 
 const FlagActions = [
   {
@@ -22,7 +29,7 @@ const FlagActions = [
   },
 ];
 
-const flagTypes = [
+const flagTypes: Array<FlagType> = [
   {
     appearance: 'error',
     description: 'You need to take action, something has gone terribly wrong!',
@@ -56,18 +63,21 @@ const flagTypes = [
   },
 ];
 
-export default () =>
-  flagTypes.map(flag => (
-    <div key={flag.appearance} style={{ marginBottom: '10px' }}>
-      <Flag
-        appearance={flag.appearance}
-        actions={FlagActions}
-        description={flag.description}
-        icon={flag.icon}
-        id="1"
-        isDismissAllowed
-        key="1"
-        title={flag.title}
-      />
-    </div>
-  ));
+export default () => (
+  <Fragment>
+    {flagTypes.map((flag: FlagType) => (
+      <div key={flag.appearance} style={{ marginBottom: '10px' }}>
+        <Flag
+          appearance={flag.appearance}
+          actions={FlagActions}
+          description={flag.description}
+          icon={flag.icon}
+          id="1"
+          isDismissAllowed
+          key="1"
+          title={flag.title}
+        />
+      </div>
+    ))}
+  </Fragment>
+);
