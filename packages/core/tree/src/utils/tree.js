@@ -7,7 +7,8 @@ import type {
   TreeItemData,
   ItemId,
   TreeItem,
-  TreePosition,
+  TreeSourcePosition,
+  TreeDestinationPosition,
 } from '../types';
 
 import { getParentPath, getIndexAmongSiblings } from './path';
@@ -104,7 +105,10 @@ export const getParent = (tree: TreeData, path: Path): TreeItem => {
   return getItem(tree, parentPath);
 };
 
-export const getTreePosition = (tree: TreeData, path: Path): TreePosition => {
+export const getTreePosition = (
+  tree: TreeData,
+  path: Path,
+): TreeSourcePosition => {
   const parent: TreeItem = getParent(tree, path);
   const index: number = getIndexAmongSiblings(path);
   return {
@@ -113,9 +117,14 @@ export const getTreePosition = (tree: TreeData, path: Path): TreePosition => {
   };
 };
 
+const hasLoadedChildren = (item: TreeItem): boolean =>
+  !!item.hasChildren && item.children.length > 0;
+
+const isLeafItem = (item: TreeItem): boolean => !item.hasChildren;
+
 const removeItemFromTree = (
   tree: TreeData,
-  position: TreePosition,
+  position: TreeSourcePosition,
 ): { tree: TreeData, itemRemoved: TreeItem } => {
   const sourceParent: TreeItem = tree.items[position.parentId];
   const newSourceChildren = [...sourceParent.children];
@@ -133,21 +142,28 @@ const removeItemFromTree = (
 
 const addItemToTree = (
   tree: TreeData,
-  position: TreePosition,
+  position: TreeDestinationPosition,
   item: TreeItem,
 ): TreeData => {
   const destinationParent: TreeItem = tree.items[position.parentId];
   const newDestinationChildren = [...destinationParent.children];
-  newDestinationChildren.splice(position.index, 0, item);
+  if (typeof position.index === 'undefined') {
+    if (hasLoadedChildren(destinationParent) || isLeafItem(destinationParent)) {
+      newDestinationChildren.push(item);
+    }
+  } else {
+    newDestinationChildren.splice(position.index, 0, item);
+  }
   return mutateTree(tree, position.parentId, {
     children: newDestinationChildren,
+    hasChildren: true,
   });
 };
 
 export const moveItemOnTree = (
   tree: TreeData,
-  from: TreePosition,
-  to: TreePosition,
+  from: TreeSourcePosition,
+  to: TreeDestinationPosition,
 ): TreeData => {
   const { tree: treeWithoutSource, itemRemoved } = removeItemFromTree(
     tree,

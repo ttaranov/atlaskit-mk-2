@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "14.0.2",
+  "version": "14.0.3",
   "description": "Includes components that show media cards as a filmstrip",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -20,8 +20,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^13.2.2",
-    "@atlaskit/media-card": "^37.0.0",
+    "@atlaskit/icon": "^14.0.0",
+    "@atlaskit/media-card": "^37.0.1",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "debounce": "^1.0.0",
     "tslib": "^1.8.0"
@@ -32,13 +32,13 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^9.0.9",
-    "@atlaskit/checkbox": "^5.0.0",
-    "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/field-radio-group": "^4.0.3",
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/checkbox": "^5.0.2",
+    "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/field-radio-group": "^4.0.8",
     "@atlaskit/field-range": "^5.0.2",
     "@atlaskit/media-core": "^24.0.2",
-    "@atlaskit/media-test-helpers": "^18.2.0",
+    "@atlaskit/media-test-helpers": "^18.2.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0"
   }

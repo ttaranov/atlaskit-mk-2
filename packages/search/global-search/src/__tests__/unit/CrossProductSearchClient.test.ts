@@ -1,6 +1,8 @@
 import CrossProductSearchClient, {
   CrossProductSearchResponse,
   SearchSession,
+  ScopeResult,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
 import { Scope, ConfluenceItem, PersonItem } from '../../api/types';
 import 'whatwg-fetch';
@@ -28,6 +30,12 @@ function apiWillReturn(state: CrossProductSearchResponse) {
 
   fetchMock.mock('localhost/quicksearch/v1', state, opts);
 }
+
+const abTest: ABTest = {
+  abTestId: 'abTestId',
+  controlId: 'controlId',
+  experimentId: 'experimentId',
+};
 
 const searchSession: SearchSession = {
   referrerId: 'referal-id',
@@ -89,7 +97,7 @@ describe('CrossProductSearchClient', () => {
         scopes: [
           {
             id: 'confluence.space' as Scope,
-            experimentId: '123',
+            abTest,
             results: [
               {
                 title: 'abc',
@@ -116,7 +124,7 @@ describe('CrossProductSearchClient', () => {
         Scope.ConfluenceSpace,
       ]);
       expect(result.results.get(Scope.ConfluenceSpace)).toHaveLength(1);
-      expect(result.experimentId).toBe('123');
+      expect(result.abTest!.experimentId).toBe('experimentId');
 
       const item = result.results.get(
         Scope.ConfluenceSpace,
@@ -136,7 +144,7 @@ describe('CrossProductSearchClient', () => {
         scopes: [
           {
             id: 'jira.issue' as Scope,
-            experimentId: '123',
+            abTest,
             results: [
               {
                 key: 'key-1',
@@ -159,7 +167,7 @@ describe('CrossProductSearchClient', () => {
         Scope.JiraIssue,
       ]);
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
-      expect(result.experimentId).toBe('123');
+      expect(result.abTest!.experimentId).toBe('experimentId');
 
       const item = result.results.get(Scope.JiraIssue)![0] as JiraResult;
       expect(item.name).toEqual('summary');
@@ -174,7 +182,7 @@ describe('CrossProductSearchClient', () => {
     it('should not break with error scopes', async () => {
       const jiraScopes = [Scope.JiraIssue, Scope.JiraBoardProjectFilter];
 
-      const issueErrorScope = {
+      const issueErrorScope: ScopeResult = {
         id: Scope.JiraIssue,
         error: 'something wrong',
         results: [],
@@ -273,7 +281,6 @@ describe('CrossProductSearchClient', () => {
       scopes: [
         {
           id: 'jira.issue' as Scope,
-          experimentId: '123',
           results: [
             {
               key: 'key-1',
@@ -325,5 +332,48 @@ describe('CrossProductSearchClient', () => {
     expect(body.scopes).toEqual(
       expect.arrayContaining(['jira.issue', 'confluence.page,blogpost']),
     );
+  });
+
+  describe('ABTest', () => {
+    it('should get the ab test data', async () => {
+      const abTest = {
+        abTestId: 'abTestId',
+        experimentId: 'experimentId',
+        controlId: 'controlId',
+      };
+
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'confluence.page,blogpost' as Scope,
+            results: [],
+            abTest,
+          },
+        ],
+      });
+
+      const result = await searchClient.getAbTestData(
+        Scope.ConfluencePageBlog,
+        searchSession,
+      );
+      expect(result).toEqual(abTest);
+    });
+
+    it('should not fail when there is no ab test data', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'confluence.page,blogpost' as Scope,
+            results: [],
+          },
+        ],
+      });
+
+      const result = await searchClient.getAbTestData(
+        Scope.ConfluencePageBlog,
+        searchSession,
+      );
+      expect(result).toBeUndefined();
+    });
   });
 });

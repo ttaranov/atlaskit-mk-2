@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { Spinner } from '../../loading';
@@ -7,6 +7,7 @@ import { constructAuthTokenUrl } from '../../utils';
 import { Props as RendererProps } from './pdfRenderer';
 import { ComponentClass } from 'react';
 import { renderDownloadButton } from '../../domain/download';
+import { getArtifactUrl } from '@atlaskit/media-store';
 
 const moduleLoader = () =>
   import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
@@ -16,7 +17,7 @@ const componentLoader: () => Promise<ComponentClass<RendererProps>> = () =>
 
 export type Props = {
   context: Context;
-  item: FileItem;
+  item: ProcessedFileState;
   collectionName?: string;
   onClose?: () => void;
 };
@@ -44,10 +45,12 @@ export class DocViewer extends React.Component<Props, State> {
     }
     const { item, context, collectionName } = this.props;
 
-    const pdfArtifactUrl = getPDFUrl(item);
+    const pdfArtifactUrl = getArtifactUrl(item.artifacts, 'document.pdf');
     if (!pdfArtifactUrl) {
       this.setState({
-        src: Outcome.failed(createError('noPDFArtifactsFound')),
+        src: Outcome.failed(
+          createError('noPDFArtifactsFound', undefined, item),
+        ),
       });
       return;
     }
@@ -62,7 +65,7 @@ export class DocViewer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', undefined, err)),
+        src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }
@@ -96,14 +99,4 @@ export class DocViewer extends React.Component<Props, State> {
       ),
     });
   }
-}
-
-function getPDFUrl(fileItem: FileItem) {
-  const artifact = 'document.pdf';
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
 }

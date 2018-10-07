@@ -1,5 +1,18 @@
 # @atlaskit/media-image
 
+## 37.0.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/button@9.0.13
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/field-radio-group@4.0.8
+  - @atlaskit/toggle@5.0.9
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/media-ui@6.0.1
+  - @atlaskit/icon@14.0.0
+
 ## 37.0.0
 - [major] Add I18n support to media-card [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
 

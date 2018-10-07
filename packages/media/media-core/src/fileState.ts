@@ -3,6 +3,7 @@ import {
   MediaFile,
   MediaStoreResponse,
   MediaType,
+  MediaFileArtifacts,
 } from '@atlaskit/media-store';
 
 export type FileStatus = 'uploading' | 'processing' | 'processed' | 'error';
@@ -38,12 +39,13 @@ export interface ProcessingFileState {
   mimeType: string;
   preview?: FilePreview;
 }
+
 export interface ProcessedFileState {
   status: 'processed';
   id: string;
   name: string;
   size: number;
-  artifacts: Object;
+  artifacts: MediaFileArtifacts;
   mediaType: MediaType;
   mimeType: string;
   binaryUrl: string;

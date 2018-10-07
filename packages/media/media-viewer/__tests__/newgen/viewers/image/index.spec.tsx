@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { FileItem } from '@atlaskit/media-core';
+import { ProcessedFileState } from '@atlaskit/media-core';
 import { awaitError } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import { Stubs, createContext } from '../../../_stubs';
@@ -12,13 +12,15 @@ import {
 import { ErrorMessage } from '../../../../src/newgen/error';
 
 const collectionName = 'some-collection';
-const imageItem: FileItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'image',
-  },
+const imageItem: ProcessedFileState = {
+  id: 'some-id',
+  status: 'processed',
+  name: 'my image',
+  size: 11222,
+  mediaType: 'image',
+  mimeType: 'jpeg',
+  binaryUrl: '',
+  artifacts: {},
 };
 
 function createFixture(
@@ -122,13 +124,15 @@ describe('ImageViewer', () => {
     await response;
     expect(el.state().objectUrl.status).toEqual('SUCCESSFUL');
 
-    const anotherImageItem: FileItem = {
-      type: 'file',
-      details: {
-        id: 'some-other-id',
-        processingStatus: 'succeeded',
-        mediaType: 'image',
-      },
+    const anotherImageItem: ProcessedFileState = {
+      id: 'some-other-id',
+      status: 'processed',
+      name: 'my image',
+      size: 11222,
+      mediaType: 'image',
+      mimeType: 'jpeg',
+      binaryUrl: '',
+      artifacts: {},
     };
 
     el.setProps({ item: anotherImageItem });

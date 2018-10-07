@@ -24,7 +24,7 @@ const changeSelectedNodeLayout = async (page, layoutName) => {
     `Extension: ${layoutName} Layout`,
     { skip: ['edge', 'ie'] },
     async client => {
-      const page = await new Page(client);
+      const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);

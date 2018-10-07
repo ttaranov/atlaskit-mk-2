@@ -1,5 +1,4 @@
 import { PeopleSearchClient } from '../../../api/PeopleSearchClient';
-
 export const noResultsPeopleSearchClient: PeopleSearchClient = {
   search(query: string) {
     return Promise.resolve([]);
@@ -17,3 +16,15 @@ export const errorPeopleSearchClient: PeopleSearchClient = {
     return Promise.reject('error');
   },
 };
+
+export const mockPeopleSearchClient = ({
+  recentPeople,
+  searchResultData,
+}): PeopleSearchClient => ({
+  search(query: string) {
+    return Promise.resolve(searchResultData);
+  },
+  getRecentPeople() {
+    return Promise.resolve(recentPeople);
+  },
+});

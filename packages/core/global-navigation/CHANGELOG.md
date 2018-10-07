@@ -1,5 +1,16 @@
 # @atlaskit/global-navigation
 
+## 5.0.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/drawer@2.1.1
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/navigation-next@3.15.5
+  - @atlaskit/section-message@1.0.8
+  - @atlaskit/icon@14.0.0
+
 ## 5.0.0
 - [major] BREAKING: appSwitcherComponent now completely replaces the GlobalItem component altogether, rather than replacing the wrapping element for a GlobalItem. The props provided to this component have changed. If you still want to use a GlobalItem inside your appSwitcherComponent you should spread these props onto that GlobalItem before applying your own props. FIXES: fix issue with global-navigation drawer 'controlled' status not updating. update how appSwitcher component is handled to fix tooltip and hover state issues. [ac88888](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac88888)
 

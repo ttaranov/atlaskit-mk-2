@@ -10,6 +10,7 @@ import {
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
 import { Scope } from '../../api/types';
 import { Result, ResultsWithTiming } from '../../model/Result';
@@ -201,9 +202,16 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           confSearchElapsedMs,
           peopleElapsedMs,
         },
-        experimentId: xpsearchResults.experimentId,
-        abTest: xpsearchResults.abTest,
       }),
+    );
+  };
+
+  getAbTestData = (sessionId: string): Promise<ABTest | undefined> => {
+    return this.props.crossProductSearchClient.getAbTestData(
+      Scope.ConfluencePageBlog,
+      {
+        sessionId,
+      },
     );
   };
 
@@ -280,6 +288,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       />
     );
   };
+
   render() {
     const { linkComponent, isSendSearchTermsEnabled, logger } = this.props;
 
@@ -292,6 +301,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        getAbTestData={this.getAbTestData}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
         getDisplayedResults={sliceResults}

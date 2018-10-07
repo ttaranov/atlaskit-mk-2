@@ -85,7 +85,7 @@ export function parseString(
           match = parseMacroKeyword(substring) || parseOtherKeyword(substring);
         }
 
-        if (match) {
+        if (match && ignoreTokens.indexOf(match.type) === -1) {
           tokenType = match.type;
           state = processState.TOKEN;
           continue;

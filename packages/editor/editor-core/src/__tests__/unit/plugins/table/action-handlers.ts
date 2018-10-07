@@ -1,4 +1,4 @@
-import { DecorationSet } from 'prosemirror-view';
+import { DecorationSet, Decoration } from 'prosemirror-view';
 import { TextSelection } from 'prosemirror-state';
 import {
   doc,
@@ -12,7 +12,10 @@ import {
   pluginKey,
   defaultTableSelection,
 } from '../../../../plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../../plugins/table/types';
+import {
+  TablePluginState,
+  TableCssClassName as ClassName,
+} from '../../../../plugins/table/types';
 import tablesPlugin from '../../../../plugins/table';
 import {
   handleSetFocus,
@@ -27,6 +30,7 @@ import {
   handleToggleContextualMenu,
   handleSelectionChanged,
 } from '../../../../plugins/table/action-handlers';
+import { TableDecorations } from '../../../../plugins/table/types';
 
 describe('table action handlers', () => {
   const editor = (doc: any) =>
@@ -40,10 +44,17 @@ describe('table action handlers', () => {
   const defaultPluginState = {
     dangerColumns: [],
     dangerRows: [],
-    hoverDecoration: DecorationSet.empty,
+    decorationSet: DecorationSet.empty,
     pluginConfig: {},
     editorHasFocus: true,
   };
+  const getHoverDecoration = () =>
+    Decoration.node(
+      2,
+      6,
+      { class: 'hoveredCell' },
+      { id: TableDecorations.CONTROLS_HOVER },
+    );
 
   describe('#handleSetFocus', () => {
     it('should return a new state with updated editorHasFocus prop', () => {
@@ -70,7 +81,7 @@ describe('table action handlers', () => {
         ...pluginState,
         tableRef,
         tableFloatingToolbarTarget: editorView.dom.querySelector(
-          '.table-wrapper',
+          `.${ClassName.TABLE_NODE_WRAPPER}`,
         ) as HTMLElement,
         tableNode: editorView.state.doc.firstChild,
       });
@@ -114,11 +125,14 @@ describe('table action handlers', () => {
   });
   describe('#handleClearSelection', () => {
     it('should return a new state with default table selection', () => {
+      const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
       const pluginState = {
         ...defaultPluginState,
+        decorationSet: DecorationSet.create(editorView.state.doc, [
+          getHoverDecoration(),
+        ]),
         dangerColumns: [1, 2, 3],
         dangerRows: [1, 2, 3],
-        hoverDecoration: {} as DecorationSet,
         isTableInDanger: true,
         isTableHovered: true,
       };
@@ -126,26 +140,28 @@ describe('table action handlers', () => {
       expect(newState).toEqual({
         ...pluginState,
         ...defaultTableSelection,
+        decorationSet: DecorationSet.empty,
       });
     });
   });
   describe('#handleHoverColumns', () => {
-    it('should return a new state with updated dangerColumns and hoverDecoration props', () => {
+    it('should return a new state with updated dangerColumns and decorationSet props', () => {
       const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
       const pluginState = {
         ...defaultPluginState,
       };
-      const hoverDecoration = {} as DecorationSet;
       const dangerColumns = [0];
       const newState = handleHoverColumns(
         editorView.state,
-        hoverDecoration,
+        [getHoverDecoration()],
         dangerColumns,
       )(pluginState, dispatch);
       expect(newState).toEqual({
         ...pluginState,
         isTableInDanger: false,
-        hoverDecoration,
+        decorationSet: DecorationSet.create(editorView.state.doc, [
+          getHoverDecoration(),
+        ]),
         dangerColumns,
       });
     });
@@ -155,7 +171,7 @@ describe('table action handlers', () => {
         const pluginState = {
           ...defaultPluginState,
         };
-        const hoverDecoration = {} as DecorationSet;
+        const hoverDecoration: Decoration[] = [];
         const dangerColumns = [0, 1];
         const newState = handleHoverColumns(
           editorView.state,
@@ -165,7 +181,7 @@ describe('table action handlers', () => {
         expect(newState).toEqual({
           ...pluginState,
           isTableInDanger: true,
-          hoverDecoration,
+          decorationSet: DecorationSet.empty,
           dangerColumns,
         });
       });
@@ -179,17 +195,18 @@ describe('table action handlers', () => {
       const pluginState = {
         ...defaultPluginState,
       };
-      const hoverDecoration = {} as DecorationSet;
       const dangerRows = [0];
       const newState = handleHoverRows(
         editorView.state,
-        hoverDecoration,
+        [getHoverDecoration()],
         dangerRows,
       )(pluginState, dispatch);
       expect(newState).toEqual({
         ...pluginState,
         isTableInDanger: false,
-        hoverDecoration,
+        decorationSet: DecorationSet.create(editorView.state.doc, [
+          getHoverDecoration(),
+        ]),
         dangerRows,
       });
     });
@@ -201,7 +218,7 @@ describe('table action handlers', () => {
         const pluginState = {
           ...defaultPluginState,
         };
-        const hoverDecoration = {} as DecorationSet;
+        const hoverDecoration: Decoration[] = [];
         const dangerRows = [0, 1];
         const newState = handleHoverRows(
           editorView.state,
@@ -211,7 +228,7 @@ describe('table action handlers', () => {
         expect(newState).toEqual({
           ...pluginState,
           isTableInDanger: true,
-          hoverDecoration,
+          decorationSet: DecorationSet.empty,
           dangerRows,
         });
       });
@@ -219,18 +236,23 @@ describe('table action handlers', () => {
   });
   describe('#handleHoverTable', () => {
     it('should return a new state with updated isTableInDanger and hoverDecoration props', () => {
+      const { editorView } = editor(
+        doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
+      );
       const pluginState = {
         ...defaultPluginState,
       };
-      const hoverDecoration = {} as DecorationSet;
 
-      const newState = handleHoverTable(hoverDecoration, true)(
-        pluginState,
-        dispatch,
-      );
+      const newState = handleHoverTable(
+        editorView.state,
+        [getHoverDecoration()],
+        true,
+      )(pluginState, dispatch);
       expect(newState).toEqual({
         ...pluginState,
-        hoverDecoration,
+        decorationSet: DecorationSet.create(editorView.state.doc, [
+          getHoverDecoration(),
+        ]),
         isTableInDanger: true,
         isTableHovered: true,
       });
@@ -255,7 +277,6 @@ describe('table action handlers', () => {
         ...defaultPluginState,
         dangerColumns: [1, 2, 3],
         dangerRows: [1, 2, 3],
-        hoverDecoration: {} as DecorationSet,
         isTableInDanger: true,
         isTableHovered: true,
         tableNode: undefined,

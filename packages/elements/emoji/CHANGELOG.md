@@ -1,5 +1,16 @@
 # @atlaskit/emoji
 
+## 42.0.2
+- [patch] Remove ua-parser-js to save some pageweight [cf18b9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf18b9f)
+
+## 42.0.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/field-base@11.0.8
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/icon@14.0.0
+
 ## 42.0.0
 - [major] Update RXJS dependency to ^5.5.0 [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
 - [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)

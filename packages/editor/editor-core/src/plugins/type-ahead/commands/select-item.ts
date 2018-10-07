@@ -113,7 +113,10 @@ export const selectItem = (
 
         // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
         if (isChromeWithSelectionBug) {
-          document.getSelection().empty();
+          const selection = document.getSelection();
+          if (selection) {
+            selection.empty();
+          }
         }
 
         // Placing cursor after node + space.

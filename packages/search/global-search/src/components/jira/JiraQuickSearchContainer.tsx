@@ -43,6 +43,7 @@ import {
 import {
   CrossProductSearchClient,
   CrossProductSearchResults,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
 
@@ -164,7 +165,7 @@ export class JiraQuickSearchContainer extends React.Component<
     ) as Promise<Result[]>;
   };
 
-  getJiraRecentItems = (sessionId: string) => {
+  getJiraRecentItems = (sessionId: string): Promise<GenericResultMap> => {
     const jiraRecentItemsPromise = this.props.jiraClient
       .getRecentItems(sessionId)
       .then(items =>
@@ -186,6 +187,7 @@ export class JiraQuickSearchContainer extends React.Component<
         objects: issues,
         containers: [...boards, ...filters, ...projects],
       }));
+
     return handlePromiseError(
       jiraRecentItemsPromise,
       {
@@ -199,6 +201,12 @@ export class JiraQuickSearchContainer extends React.Component<
           error,
         ),
     );
+  };
+
+  getAbTestData = (sessionId: string): Promise<ABTest | undefined> => {
+    return this.props.crossProductSearchClient.getAbTestData(Scope.JiraIssue, {
+      sessionId,
+    });
   };
 
   getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
@@ -280,6 +288,7 @@ export class JiraQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        getAbTestData={this.getAbTestData}
         handleSearchSubmit={this.handleSearchSubmit}
         createAnalyticsEvent={createAnalyticsEvent}
         logger={logger}

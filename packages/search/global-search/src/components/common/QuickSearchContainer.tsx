@@ -21,6 +21,7 @@ import {
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import { objectValues } from '../SearchResultsUtil';
+import { ABTest } from '../../api/CrossProductSearchClient';
 
 const resultMapToArray = (results: GenericResultMap): Result[][] =>
   objectValues(results).reduce((acc: Result[][], value) => [...acc, value], []);
@@ -39,6 +40,7 @@ export interface Props {
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming>;
+  getAbTestData(sessionId: string): Promise<ABTest | undefined>;
 
   /**
    * return displayed groups from result groups
@@ -113,12 +115,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     });
 
     try {
-      const {
-        results,
-        timings,
-        experimentId,
-        abTest,
-      } = await this.props.getSearchResults(
+      const { results, timings } = await this.props.getSearchResults(
         query,
         this.state.searchSessionId,
         startTime,
@@ -142,12 +139,6 @@ export class QuickSearchContainer extends React.Component<Props, State> {
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
-            if (experimentId || abTest) {
-              this.fireExperimentExposureEvent(
-                abTest ? abTest : experimentId,
-                this.state.searchSessionId,
-              );
-            }
           },
         );
       }
@@ -165,15 +156,21 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  fireExperimentExposureEvent = (experimentData, searchSessionId) => {
-    const { createAnalyticsEvent } = this.props;
-
+  fireExperimentExposureEvent = async (searchSessionId: string) => {
+    const { createAnalyticsEvent, getAbTestData, logger } = this.props;
     if (createAnalyticsEvent) {
-      fireExperimentExposureEvent(
-        experimentData,
-        searchSessionId,
-        createAnalyticsEvent,
-      );
+      try {
+        const abTest = await getAbTestData(searchSessionId);
+        if (abTest) {
+          fireExperimentExposureEvent(
+            abTest,
+            searchSessionId,
+            createAnalyticsEvent,
+          );
+        }
+      } catch (e) {
+        logger.safeWarn(LOGGER_NAME, 'error while getting abtest data', e);
+      }
     }
   };
 
@@ -277,10 +274,12 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       });
     }
 
-    const sessionId = this.state.searchSessionId;
+    this.fireExperimentExposureEvent(this.state.searchSessionId);
 
     try {
-      const { results } = await this.props.getRecentItems(sessionId);
+      const { results } = await this.props.getRecentItems(
+        this.state.searchSessionId,
+      );
       this.setState(
         {
           recentItems: results,

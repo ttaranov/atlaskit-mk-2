@@ -19,7 +19,7 @@ urlArray.forEach(url => {
   BrowserTestCase(
     `${url.toUpperCase()} should display its menu once clicked on it and no errors`,
     async client => {
-      const selectTest = await new Page(client);
+      const selectTest = new Page(client);
       await selectTest.goto(urlSelect + url);
       await selectTest.waitForSelector(selectDefault);
       await selectTest.click(selectDefault);

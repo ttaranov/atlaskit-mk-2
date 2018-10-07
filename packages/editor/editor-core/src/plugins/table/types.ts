@@ -1,7 +1,7 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { Transaction } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
-import { TableLayout } from '@atlaskit/editor-common';
+import { TableLayout, TableSharedCssClassName } from '@atlaskit/editor-common';
 
 export type PermittedLayoutsDescriptor = TableLayout[] | 'all';
 export type Cell = { pos: number; node: PmNode };
@@ -25,7 +25,7 @@ export interface PluginConfig {
 export interface TablePluginState {
   dangerColumns: number[];
   dangerRows: number[];
-  hoverDecoration: DecorationSet;
+  decorationSet: DecorationSet;
   pluginConfig: PluginConfig;
   editorHasFocus?: boolean;
   // context menu button is positioned relatively to this DOM node.
@@ -53,3 +53,55 @@ export interface ColumnResizingPlugin {
   cellMinWidth?: number;
   lastColumnResizable?: boolean;
 }
+
+export const enum TableDecorations {
+  CONTROLS_HOVER,
+}
+const clPrefix = 'pm-table-';
+
+export const TableCssClassName = {
+  ...TableSharedCssClassName,
+
+  COLUMN_CONTROLS_WRAPPER: `${clPrefix}column-controls-wrapper`,
+  COLUMN_CONTROLS: `${clPrefix}column-controls`,
+  COLUMN_CONTROLS_INNER: `${clPrefix}column-controls__inner`,
+  COLUMN_CONTROLS_BUTTON_WRAP: `${clPrefix}column-controls__button-wrap`,
+
+  ROW_CONTROLS_WRAPPER: `${clPrefix}row-controls-wrapper`,
+  ROW_CONTROLS: `${clPrefix}row-controls`,
+  ROW_CONTROLS_INNER: `${clPrefix}row-controls__inner`,
+  ROW_CONTROLS_BUTTON_WRAP: `${clPrefix}row-controls__button-wrap`,
+
+  CONTROLS_BUTTON: `${clPrefix}controls__button`,
+  CONTROLS_BUTTON_ICON: `${clPrefix}controls__button-icon`,
+
+  CONTROLS_INSERT_BUTTON: `${clPrefix}controls__insert-button`,
+  CONTROLS_INSERT_BUTTON_INNER: `${clPrefix}controls__insert-button-inner`,
+  CONTROLS_INSERT_BUTTON_WRAP: `${clPrefix}controls__insert-button-wrap`,
+  CONTROLS_INSERT_LINE: `${clPrefix}controls__insert-line`,
+  CONTROLS_INSERT_MARKER: `${clPrefix}controls__insert-marker`,
+  CONTROLS_INSERT_COLUMN: `${clPrefix}controls__insert-column`,
+  CONTROLS_INSERT_ROW: `${clPrefix}controls__insert-row`,
+  CONTROLS_DELETE_BUTTON_WRAP: `${clPrefix}controls__delete-button-wrap`,
+  CONTROLS_DELETE_BUTTON: `${clPrefix}controls__delete-button`,
+
+  CORNER_CONTROLS: `${clPrefix}corner-controls`,
+  CONTROLS_CORNER_BUTTON: `${clPrefix}corner-button`,
+
+  NUMBERED_COLUMN: `${clPrefix}numbered-column`,
+  NUMBERED_COLUMN_BUTTON: `${clPrefix}numbered-column__button`,
+
+  HOVERED_CELL: `${clPrefix}hovered-cell`,
+  HOVERED_TABLE: `${clPrefix}hovered-table`,
+  RESIZING: `${clPrefix}resizing`,
+  TABLE_SHADOW: `${clPrefix}shadow`,
+  WITH_CONTROLS: `${clPrefix}with-controls`,
+
+  CONTEXTUAL_SUBMENU: `${clPrefix}contextual-submenu`,
+  CONTEXTUAL_MENU_TRIGGER: `${clPrefix}contextual-menu-trigger`,
+  CONTEXTUAL_MENU_ICON: `${clPrefix}contextual-submenu-icon`,
+
+  // come from prosemirror-table
+  COLUMN_RESIZE_HANDLE: 'column-resize-handle',
+  SELECTED_CELL: 'selectedCell',
+};

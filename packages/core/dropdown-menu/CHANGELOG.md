@@ -1,5 +1,15 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.17
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/button@9.0.13
+  - @atlaskit/droplist@7.0.10
+  - @atlaskit/item@8.0.8
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/icon@14.0.0
+
 ## 6.1.16
 - [patch] Fixing dropdown-menu analytics [c4098d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4098d0)
 

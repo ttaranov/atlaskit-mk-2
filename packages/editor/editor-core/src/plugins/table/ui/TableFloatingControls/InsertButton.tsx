@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TableCssClassName as ClassName } from '../../types';
 
 export interface ButtonProps {
   type: 'row' | 'column';
@@ -8,15 +9,19 @@ export interface ButtonProps {
 
 const InsertButton = ({ onClick, insertLineStyle, type }: ButtonProps) => (
   <div
-    className={`pm-table-controls__insert-button-wrap pm-table-controls__insert-${type}`}
+    className={`${ClassName.CONTROLS_INSERT_BUTTON_WRAP} ${
+      type === 'row'
+        ? ClassName.CONTROLS_INSERT_ROW
+        : ClassName.CONTROLS_INSERT_COLUMN
+    }`}
   >
-    <div className="pm-table-controls__insert-button-inner">
+    <div className={ClassName.CONTROLS_INSERT_BUTTON_INNER}>
       <button
         type="button"
-        className="pm-table-controls__insert-button"
+        className={ClassName.CONTROLS_INSERT_BUTTON}
         onClick={onClick}
       >
-        <span className="pm-button-icon">
+        <span className={ClassName.CONTROLS_BUTTON_ICON}>
           <svg
             width="24"
             height="24"
@@ -33,8 +38,8 @@ const InsertButton = ({ onClick, insertLineStyle, type }: ButtonProps) => (
         </span>
       </button>
     </div>
-    <div className="pm-table-controls__insert-line" style={insertLineStyle} />
-    <div className="pm-table-controls__insert-marker" />
+    <div className={ClassName.CONTROLS_INSERT_LINE} style={insertLineStyle} />
+    <div className={ClassName.CONTROLS_INSERT_MARKER} />
   </div>
 );
 

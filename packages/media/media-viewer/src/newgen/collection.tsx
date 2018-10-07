@@ -93,9 +93,7 @@ export class Collection extends React.Component<Props, State> {
       next: collection => {
         if (isError(collection)) {
           this.setState({
-            items: Outcome.failed(
-              createError('metadataFailed', undefined, collection),
-            ),
+            items: Outcome.failed(createError('metadataFailed', collection)),
           });
         } else {
           this.setState({

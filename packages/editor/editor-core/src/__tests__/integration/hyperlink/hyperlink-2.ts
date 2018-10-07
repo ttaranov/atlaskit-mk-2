@@ -19,7 +19,7 @@ const copyAsHTMLButton = '#copy-as-html';
     } editor`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
-      const sample = await new Page(client);
+      const sample = new Page(client);
       const linkText1 = 'https://www.google.com';
       await sample.goto(clipboardHelper);
       await sample.isVisible(clipboardInput);

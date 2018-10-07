@@ -25,6 +25,16 @@ type NonStringRef<T> = {
   current: ElementRef<T>,
 } | null;
 
+export type ExperimentalFeatureFlags = {
+  /**
+    NOTE: This property is experimental and may be removed in a minor release.
+
+    Allow the user to invoke a partial display of the navigation when they
+    mouse over the nav area whilst in a collapsed state.
+  */
+  experimental_flyoutOnHover: boolean,
+};
+
 export type GetRefs = ({
   expandCollapseAffordance: NonStringRef<'button'>,
 }) => void;
@@ -45,6 +55,7 @@ export type ConnectedLayoutManagerProps = CollapseListeners & {
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
 };
 
-export type LayoutManagerProps = ConnectedLayoutManagerProps & {
-  navigationUIController: UIController,
-};
+export type LayoutManagerProps = ConnectedLayoutManagerProps &
+  ExperimentalFeatureFlags & {
+    navigationUIController: UIController,
+  };
