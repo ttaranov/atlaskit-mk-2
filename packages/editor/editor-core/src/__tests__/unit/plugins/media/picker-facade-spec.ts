@@ -205,8 +205,6 @@ describe('Media PickerFacade', () => {
         );
         expect(spies.on).toHaveBeenCalledWith('uploads-start', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-preview-update', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-processing', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-status-update', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-error', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-end', fn);
 
@@ -248,18 +246,6 @@ describe('Media PickerFacade', () => {
           stateManager.on(testTemporaryFileId, spy);
         });
 
-        it('should for upload starting', () => {
-          triggerStart();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
-            status: 'uploading',
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
-          });
-        });
-
         it('for new uploads via onNewMedia()', () => {
           const spy = jest.fn();
           facade.onNewMedia(spy);
@@ -279,29 +265,11 @@ describe('Media PickerFacade', () => {
           ]);
         });
 
-        it('for upload progress', () => {
-          triggerStatusUpdate();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            status: 'uploading',
-            progress: testFileProgress.portion,
-          });
-        });
-
         it('for upload preview availability', () => {
           triggerPreviewUpdate();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy.mock.calls[0][0]).toMatchObject({
             thumbnail: preview,
-          });
-        });
-
-        it('for upload processing', () => {
-          triggerProcessing();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            status: 'processing',
-            publicId: testFilePublicId,
           });
         });
 

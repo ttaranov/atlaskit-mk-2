@@ -100,7 +100,12 @@ class MediaNode extends Component<MediaNodeProps, {}> {
     const { node, selected, cardDimensions, onClick } = this.props;
     const { id, type, collection, url, __key } = node.attrs;
 
-    const { fileId = id } = this.pluginState.getMediaNodeState(__key);
+    const getState = this.pluginState.getMediaNodeState(__key);
+    let fileId;
+
+    if (getState && getState.fileId) {
+      fileId = getState!.fileId;
+    }
 
     const identifier: Identifier =
       type === 'external'
@@ -110,7 +115,7 @@ class MediaNode extends Component<MediaNodeProps, {}> {
             mediaItemType: 'external-image',
           }
         : {
-            id: fileId,
+            id: fileId || id,
             mediaItemType: 'file',
             collectionName: collection!,
           };

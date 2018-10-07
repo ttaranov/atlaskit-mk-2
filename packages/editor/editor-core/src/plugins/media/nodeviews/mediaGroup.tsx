@@ -41,14 +41,18 @@ class MediaGroup extends React.Component<MediaGroupProps> {
 
   renderChildNodes = node => {
     const tempIds = [] as any;
+    const existingMedia = [] as any;
     node.forEach((item, childOffset) => {
-      tempIds.push(item.attrs.__key);
-      console.log(tempIds, item.attrs.__fileName);
+      const getState = this.mediaPluginState.stateManager.getState(
+        item.attrs.__key,
+      );
+      getState ? tempIds.push(item.attrs.__key) : existingMedia.push(item);
     });
 
-    const items = tempIds.map((id, idx) => {
+    const tempItems = tempIds.map((id, idx) => {
+      const getState = this.mediaPluginState.stateManager.getState(id);
       const identifier: FileIdentifier = {
-        id: this.mediaPluginState.stateManager.getState(id)!.fileId,
+        id: getState!.fileId,
         mediaItemType: 'file',
       };
       return {
@@ -62,7 +66,25 @@ class MediaGroup extends React.Component<MediaGroupProps> {
         },
       };
     });
-    // console.log('new items are ', items);
+
+    const existingItems = existingMedia.map((item, idx) => {
+      const identifier: FileIdentifier = {
+        id: item.attrs.id,
+        mediaItemType: 'file',
+      };
+      return {
+        filename: item.attrs.__fileName,
+        identifier,
+        selectable: true,
+        selected: this.props.selected === this.props.getPos() + idx + 1,
+        onClick: (e, x) => {
+          setNodeSelection(this.props.view, this.props.getPos() + idx + 1);
+        },
+      };
+    });
+
+    const items = tempItems.concat(existingItems);
+
     return (
       <Filmstrip items={items} context={this.mediaPluginState.mediaContext} />
     );
