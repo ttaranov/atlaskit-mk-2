@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
 import Container, { Action, StyledButton } from './styledFlagActions';
-import type { ActionsType, AppearanceTypes, ActionType } from '../../types';
+import type { ActionsType, AppearanceTypes } from '../../types';
 import { DEFAULT_APPEARANCE } from '../Flag';
 
 type Props = {
