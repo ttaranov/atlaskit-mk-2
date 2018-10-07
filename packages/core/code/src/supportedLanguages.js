@@ -10,6 +10,8 @@ import memoizeOne from 'memoize-one';
  * https://madnight.github.io/githut/#/pull_requests/2018/1
  */
 import coffeescript from 'react-syntax-highlighter/languages/prism/coffeescript';
+import markup from 'react-syntax-highlighter/languages/prism/markup';
+import markupTemplating from 'react-syntax-highlighter/languages/prism/markup-templating';
 import cpp from 'react-syntax-highlighter/languages/prism/cpp';
 import clike from 'react-syntax-highlighter/languages/prism/clike';
 import csharp from 'react-syntax-highlighter/languages/prism/csharp';
@@ -33,6 +35,8 @@ import swift from 'react-syntax-highlighter/languages/prism/swift';
 import typescript from 'react-syntax-highlighter/languages/prism/typescript';
 
 registerLanguage('coffeescript', coffeescript);
+registerLanguage('markup', markup);
+registerLanguage('markup-templating', markupTemplating);
 registerLanguage('cpp', cpp);
 registerLanguage('clike', clike);
 registerLanguage('cs', csharp);
@@ -491,13 +495,15 @@ export const SUPPORTED_LANGUAGES = Object.freeze([
   },
 ]);
 
-export const normalizeLanguage = memoizeOne((language?: string): string => {
-  if (!language) {
-    return '';
-  }
-  const match = SUPPORTED_LANGUAGES.find(val => {
-    return val.name === language || val.alias.includes(language);
-  });
-  // Fallback to plain monospaced text if language passed but not supported
-  return match ? match.value : 'text';
-});
+export const normalizeLanguage = memoizeOne(
+  (language?: string): string => {
+    if (!language) {
+      return '';
+    }
+    const match = SUPPORTED_LANGUAGES.find(val => {
+      return val.name === language || val.alias.includes(language);
+    });
+    // Fallback to plain monospaced text if language passed but not supported
+    return match ? match.value : 'text';
+  },
+);
