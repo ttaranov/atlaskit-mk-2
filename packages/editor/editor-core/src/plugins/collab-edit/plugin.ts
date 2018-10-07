@@ -270,7 +270,7 @@ export class PluginState {
       try {
         decorationSet = decorationSet.map(tr.mapping, tr.doc, {
           // Reapplies decorators those got removed by the state change
-          onRemove: (spec: { pointer: { sessionId: string } }) => {
+          onRemove: spec => {
             if (spec.pointer && spec.pointer.sessionId) {
               const step = tr.steps.filter(isReplaceStep)[0];
               if (step) {

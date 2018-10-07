@@ -30,13 +30,13 @@ export function insertNewLine(): Command {
       const hardBreakNode = hardBreak.create();
 
       if (parent && parent.type.validContent(Fragment.from(hardBreakNode))) {
-        dispatch(state.tr.replaceSelectionWith(hardBreakNode));
+        dispatch && dispatch(state.tr.replaceSelectionWith(hardBreakNode));
         return true;
       }
     }
 
     if (state.selection instanceof TextSelection) {
-      dispatch(state.tr.insertText('\n'));
+      dispatch && dispatch(state.tr.insertText('\n'));
       return true;
     }
 
@@ -50,7 +50,7 @@ export function insertRule(): Command {
     const { rule } = state.schema.nodes;
     if (rule) {
       const ruleNode = rule.create();
-      dispatch(state.tr.insert(to + 1, ruleNode));
+      dispatch && dispatch(state.tr.insert(to + 1, ruleNode));
       return true;
     }
     return false;
@@ -77,7 +77,7 @@ export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
       tr.setSelection(TextSelection.create(state.doc, head, head));
     }
 
-    dispatch(tr);
+    dispatch && dispatch(tr);
     return true;
   };
 }
@@ -139,7 +139,7 @@ export function createParagraphNear(append: boolean = true): Command {
 
     const tr = state.tr.insert(insertPos, paragraph.createAndFill() as PMNode);
     tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
-    dispatch(tr);
+    dispatch && dispatch(tr);
 
     return true;
   };
@@ -210,7 +210,7 @@ export function createParagraphAtEnd(): Command {
     }
     tr.setSelection(TextSelection.create(tr.doc, tr.doc.content.size - 1));
     tr.scrollIntoView();
-    dispatch(tr);
+    dispatch && dispatch(tr);
     return true;
   };
 }
@@ -218,7 +218,7 @@ export function createParagraphAtEnd(): Command {
 export interface Command {
   (
     state: EditorState,
-    dispatch: (tr: Transaction) => void,
+    dispatch?: (tr: Transaction) => void,
     view?: EditorView,
   ): boolean;
 }

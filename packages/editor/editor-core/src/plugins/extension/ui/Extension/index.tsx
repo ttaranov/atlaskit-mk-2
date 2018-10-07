@@ -13,7 +13,7 @@ export interface Props {
   editorView: EditorView;
   node: PMNode;
   providerFactory?: ProviderFactory;
-  handleContentDOMRef: (node: HTMLElement) => void;
+  handleContentDOMRef: (node: HTMLElement | null) => void;
   extensionHandlers: ExtensionHandlers;
 }
 

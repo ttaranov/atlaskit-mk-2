@@ -91,7 +91,8 @@ const moveCursorToNextColumn: Command = (state, dispatch) => {
   if (column.node !== section.node.lastChild) {
     const $nextColumn = state.doc.resolve(column.pos + column.node.nodeSize);
     const shiftedSelection = TextSelection.findFrom($nextColumn, 1);
-    dispatch(state.tr.setSelection(shiftedSelection as TextSelection));
+    dispatch &&
+      dispatch(state.tr.setSelection(shiftedSelection as TextSelection));
   }
   return true;
 };

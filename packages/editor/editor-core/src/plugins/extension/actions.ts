@@ -1,4 +1,4 @@
-import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
+import { NodeSelection } from 'prosemirror-state';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { Slice, Schema } from 'prosemirror-model';
 import {
@@ -47,7 +47,7 @@ export const updateExtensionLayout = (layout): Command => (state, dispatch) => {
     })
     .setMeta(pluginKey, { ...pluginState, layout });
 
-  dispatch(tr);
+  dispatch && dispatch(tr);
 
   return true;
 };
@@ -66,10 +66,7 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
   return true;
 };
 
-export const removeExtension = (): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-) => {
+export const removeExtension = (): Command => (state, dispatch) => {
   const { schema, selection } = state;
   const pluginState = pluginKey.getState(state);
   let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
@@ -79,7 +76,8 @@ export const removeExtension = (): Command => (
   } else {
     tr = removeParentNodeOfType(schema.nodes.bodiedExtension)(tr);
   }
-  dispatch(tr);
+
+  dispatch && dispatch(tr);
 
   return true;
 };

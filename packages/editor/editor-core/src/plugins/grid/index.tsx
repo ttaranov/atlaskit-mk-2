@@ -23,12 +23,13 @@ const calcGridSize = (width: number | undefined) => {
 
 export const displayGrid = (show: boolean, type: GridType): Command => {
   return (state, dispatch) => {
-    dispatch(
-      state.tr.setMeta(stateKey, {
-        visible: show,
-        gridType: type,
-      }),
-    );
+    dispatch &&
+      dispatch(
+        state.tr.setMeta(stateKey, {
+          visible: show,
+          gridType: type,
+        }),
+      );
     return true;
   };
 };
@@ -107,9 +108,6 @@ const gridPlugin: EditorPlugin = {
         render={({
           grid,
           widthState = { width: akEditorFullPageMaxWidth },
-        }: {
-          grid: GridPluginState;
-          widthState?: WidthPluginState;
         }) => {
           if (!grid.visible || !grid.gridSize) {
             return null;

@@ -1,9 +1,4 @@
-import {
-  EditorState,
-  Transaction,
-  Selection,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Selection, TextSelection } from 'prosemirror-state';
 import { removeNodeBefore } from 'prosemirror-utils';
 import { GapCursorSelection, Side } from './selection';
 import { isIgnored } from './utils';
@@ -18,10 +13,7 @@ export const enum Direction {
 export const arrow = (
   direction: Direction,
   endOfTextblock: (dir: string, state?: EditorState) => boolean,
-): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+): Command => (state, dispatch) => {
   const side = direction === Direction.BACKWARD ? Side.LEFT : Side.RIGHT;
 
   const { selection, tr } = state;
@@ -81,14 +73,14 @@ export const arrow = (
     }
   }
 
-  dispatch(tr.setSelection(nextSelection).scrollIntoView());
+  dispatch && dispatch(tr.setSelection(nextSelection).scrollIntoView());
   return true;
 };
 
 export const deleteNode = (direction: Direction): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+  state,
+  dispatch,
+) => {
   if (state.selection instanceof GapCursorSelection) {
     const { $from } = state.selection;
     let { tr } = state;
@@ -97,15 +89,16 @@ export const deleteNode = (direction: Direction): Command => (
     } else if ($from.nodeAfter) {
       tr = tr.delete($from.pos, $from.pos + $from.nodeAfter.nodeSize);
     }
-    dispatch(
-      tr
-        .setSelection(
-          Selection.near(
-            tr.doc.resolve(tr.mapping.map(state.selection.$from.pos)),
-          ),
-        )
-        .scrollIntoView(),
-    );
+    dispatch &&
+      dispatch(
+        tr
+          .setSelection(
+            Selection.near(
+              tr.doc.resolve(tr.mapping.map(state.selection.$from.pos)),
+            ),
+          )
+          .scrollIntoView(),
+      );
     return true;
   }
   return false;
@@ -114,14 +107,12 @@ export const deleteNode = (direction: Direction): Command => (
 export const setGapCursorAtPos = (
   position: number,
   side: Side = Side.LEFT,
-): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+): Command => (state, dispatch) => {
   const $pos = state.doc.resolve(position);
 
   if (GapCursorSelection.valid($pos)) {
-    dispatch(state.tr.setSelection(new GapCursorSelection($pos, side)));
+    dispatch &&
+      dispatch(state.tr.setSelection(new GapCursorSelection($pos, side)));
     return true;
   }
 
@@ -179,10 +170,7 @@ export const setGapCursorForTopLevelBlocks = (
   posAtCoords: (
     coords: { left: number; top: number },
   ) => { pos: number; inside: number } | null | void,
-): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+): Command => (state, dispatch) => {
   // plugin is disabled
   if (!pluginKey.get(state)) {
     return false;
@@ -206,11 +194,14 @@ export const setGapCursorForTopLevelBlocks = (
   if (isAllowed && GapCursorSelection.valid($pos)) {
     // this forces PM to re-render the decoration node if we change the side of the gap cursor, it doesn't do it by default
     if (state.selection instanceof GapCursorSelection) {
-      dispatch(state.tr.setSelection(Selection.near($pos)));
+      dispatch && dispatch(state.tr.setSelection(Selection.near($pos)));
     }
-    dispatch(
-      state.tr.setSelection(new GapCursorSelection($pos, gapCursorCoords.side)),
-    );
+    dispatch &&
+      dispatch(
+        state.tr.setSelection(
+          new GapCursorSelection($pos, gapCursorCoords.side),
+        ),
+      );
     return true;
   }
 

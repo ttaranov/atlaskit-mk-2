@@ -23,7 +23,7 @@ import { Command } from '../../types';
 
 const deletePreviousEmptyListItem = (
   state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  dispatch?: (tr: Transaction) => void,
 ): boolean => {
   const { $from } = state.selection;
   const { listItem } = state.schema.nodes;
@@ -39,11 +39,12 @@ const deletePreviousEmptyListItem = (
 
   if (previousListItemEmpty) {
     const { tr } = state;
-    dispatch(
-      tr
-        .delete($cut.pos - $cut.nodeBefore.nodeSize, $from.pos)
-        .scrollIntoView(),
-    );
+    dispatch &&
+      dispatch(
+        tr
+          .delete($cut.pos - $cut.nodeBefore.nodeSize, $from.pos)
+          .scrollIntoView(),
+      );
     return true;
   }
 
@@ -52,7 +53,7 @@ const deletePreviousEmptyListItem = (
 
 const joinPToPreviousListItem = (
   state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  dispatch?: (tr: Transaction) => void,
 ): boolean => {
   const { $from } = state.selection;
   const { paragraph, bulletList, orderedList } = state.schema.nodes;
@@ -102,7 +103,7 @@ const joinPToPreviousListItem = (
         tr = tr.join($postCut.pos);
       }
 
-      dispatch(tr.scrollIntoView());
+      dispatch && dispatch(tr.scrollIntoView());
       return true;
     }
   }
@@ -299,7 +300,7 @@ export function outdentList(): Command {
           }
         }
 
-        dispatch(tr.scrollIntoView());
+        dispatch && dispatch(tr.scrollIntoView());
         return true;
       }
     }
@@ -348,7 +349,7 @@ export function liftListItems(): Command {
       }
     });
 
-    dispatch(tr);
+    dispatch && dispatch(tr);
 
     return true;
   };

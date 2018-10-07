@@ -8,7 +8,7 @@ export const removeCodeBlock: Command = (state, dispatch) => {
     schema: { nodes },
     tr,
   } = state;
-  dispatch(removeParentNodeOfType(nodes.codeBlock)(tr));
+  dispatch && dispatch(removeParentNodeOfType(nodes.codeBlock)(tr));
   return true;
 };
 
@@ -20,6 +20,7 @@ export const changeLanguage = (language: SelectOption): Command => (
     schema: { nodes },
     tr,
   } = state;
-  dispatch(setParentNodeMarkup(nodes.codeBlock, null, { language })(tr));
+  dispatch &&
+    dispatch(setParentNodeMarkup(nodes.codeBlock, null, { language })(tr));
   return true;
 };

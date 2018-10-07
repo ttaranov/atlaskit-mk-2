@@ -46,7 +46,7 @@ export const replaceQueuedUrlWithCard = (
     });
   }
 
-  dispatch(resolveCard(url)(tr));
+  dispatch && dispatch(resolveCard(url)(tr));
   return true;
 };
 

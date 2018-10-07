@@ -1,18 +1,14 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ResolvedPos } from 'prosemirror-model';
+import { Command } from '../types';
 
-type Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-  view?: EditorView,
-) => boolean;
 type Predicate = (state: EditorState, view?: EditorView) => boolean;
 
 const filter = (predicates: Predicate[] | Predicate, cmd: Command): Command => {
   return function(
     state: EditorState,
-    dispatch: (tr: Transaction) => void,
+    dispatch?: (tr: Transaction) => void | undefined,
     view?: EditorView,
   ): boolean {
     if (!Array.isArray(predicates)) {

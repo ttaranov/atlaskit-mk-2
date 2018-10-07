@@ -191,7 +191,10 @@ export class EmojiState {
 
       // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
       if (isChromeWithSelectionBug) {
-        document.getSelection().empty();
+        const selection = document.getSelection();
+        if (selection) {
+          selection.empty();
+        }
       }
 
       view.dispatch(state.tr.replaceWith(start, end, [node, textNode]));
@@ -203,7 +206,11 @@ export class EmojiState {
     }
   };
 
-  handleProvider = (name: string, provider: Promise<any>): void => {
+  handleProvider = (name: string, provider: Promise<any> | undefined): void => {
+    if (!provider) {
+      return;
+    }
+
     switch (name) {
       case 'emojiProvider':
         provider

@@ -169,7 +169,7 @@ export function bindKeymapWithCommand(
   shortcut: string,
   cmd: (
     state: EditorState,
-    dispatch: (tr: Transaction) => void,
+    dispatch: (tr: Transaction) => undefined,
     editorView?: EditorView,
   ) => boolean,
   keymap: { [key: string]: Function },
@@ -179,7 +179,7 @@ export function bindKeymapWithCommand(
   if (keymap[shortcut]) {
     newCmd = (
       state: EditorState,
-      dispatch: (tr: Transaction) => void,
+      dispatch: (tr: Transaction) => undefined,
       editorView?: EditorView,
     ): boolean => {
       return oldCmd(state, dispatch) || cmd(state, dispatch, editorView);

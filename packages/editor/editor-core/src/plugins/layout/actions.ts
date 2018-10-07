@@ -5,7 +5,8 @@ import { pluginKey, LayoutState } from './pm-plugins/main';
 
 export const insertLayoutColumns: Command = (state, dispatch) => {
   const { layoutSection } = state.schema.nodes;
-  dispatch(safeInsert(layoutSection.createAndFill() as Node)(state.tr));
+  dispatch &&
+    dispatch(safeInsert(layoutSection.createAndFill() as Node)(state.tr));
   return true;
 };
 
@@ -17,7 +18,8 @@ export const setActiveLayoutType = (layoutType: string): Command => (
 ) => {
   const { pos } = pluginKey.getState(state) as LayoutState;
   if (pos !== null) {
-    dispatch(state.tr.setNodeMarkup(pos, undefined, { layoutType }));
+    dispatch &&
+      dispatch(state.tr.setNodeMarkup(pos, undefined, { layoutType }));
     return true;
   }
   return false;
@@ -27,7 +29,7 @@ export const deleteActiveLayoutNode: Command = (state, dispatch) => {
   const { pos } = pluginKey.getState(state) as LayoutState;
   if (pos !== null) {
     const node = state.doc.nodeAt(pos) as Node;
-    dispatch(state.tr.delete(pos, pos + node.nodeSize));
+    dispatch && dispatch(state.tr.delete(pos, pos + node.nodeSize));
     return true;
   }
   return false;

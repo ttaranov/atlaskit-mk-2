@@ -33,7 +33,8 @@ export function setNormalText(): Command {
       selection: { $from, $to },
       schema,
     } = state;
-    dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
+    dispatch &&
+      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
     return true;
   };
 }
@@ -45,9 +46,10 @@ export function setHeading(level: number): Command {
       selection: { $from, $to },
       schema,
     } = state;
-    dispatch(
-      tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
-    );
+    dispatch &&
+      dispatch(
+        tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }),
+      );
     return true;
   };
 }
@@ -100,7 +102,7 @@ function wrapSelectionIn(type): Command {
       );
       tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + 1)));
     }
-    dispatch(tr);
+    dispatch && dispatch(tr);
     return true;
   };
 }
@@ -118,7 +120,7 @@ function insertCodeBlock(): Command {
     tr.setSelection(
       Selection.near(tr.doc.resolve(state.selection.to + moveSel)),
     );
-    dispatch(tr);
+    dispatch && dispatch(tr);
     return true;
   };
 }
