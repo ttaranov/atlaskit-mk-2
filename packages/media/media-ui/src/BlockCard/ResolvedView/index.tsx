@@ -56,7 +56,7 @@ export interface BadgeViewModel {
 
 export interface DetailViewModel {
   title?: string;
-  icon?: string;
+  icon?: string | React.ReactNode;
   badge?: BadgeViewModel;
   lozenge?: LozengeViewModel;
   text?: string;
@@ -363,6 +363,21 @@ export class ResolvedView extends React.Component<
     );
   }
 
+  renderWithToolTip(
+    Elem: React.ComponentClass<any>,
+    model: { text: string; tooltip?: string },
+  ) {
+    if (model.tooltip) {
+      return (
+        <Tooltip content={model.tooltip}>
+          <Elem>{model.text}</Elem>
+        </Tooltip>
+      );
+    } else {
+      return <Elem>{model.text}</Elem>;
+    }
+  }
+
   render() {
     const {
       link,
@@ -392,36 +407,22 @@ export class ResolvedView extends React.Component<
         text={context && context.text}
         onClick={onClick}
       >
-        {preview ? <PreviewView url={preview} /> : null}
+        {preview && <PreviewView url={preview} />}
         <ContentWrapper>
           {this.renderAlert()}
-          {icon || user ? (
+          {(icon || user) && (
             <LeftWrapper>
               {this.renderIcon()}
               {!icon && this.renderUser()}
             </LeftWrapper>
-          ) : null}
+          )}
           <RightWrapper>
             {this.renderThumbnail()}
-            <Tooltip content={title ? title.tooltip : undefined}>
-              <Title>{title ? title.text : undefined}</Title>
-            </Tooltip>
-            {byline &&
-              byline.text && (
-                <Tooltip content={byline ? byline.tooltip : undefined}>
-                  <Byline>{byline ? byline.text : undefined}</Byline>
-                </Tooltip>
-              )}
+            {title && title.text && this.renderWithToolTip(Title, title)}
+            {byline && byline.text && this.renderWithToolTip(Byline, byline)}
             {description &&
-              description.text && (
-                <Tooltip
-                  content={description ? description.tooltip : undefined}
-                >
-                  <Description>
-                    {description ? description.text : undefined}
-                  </Description>
-                </Tooltip>
-              )}
+              description.text &&
+              this.renderWithToolTip(Description, description)}
             <Widgets details={details} />
             {this.renderUsers()}
             {this.renderActions()}
