@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-ui",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "Includes common components and utilities used by other media packages",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -54,13 +54,14 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/checkbox": "^5.0.2",
+    "@atlaskit/button": "^9.0.10",
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/i18n-tools": "^0.3.0",
     "@types/enzyme": "^3.1.6",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jsverify": "^0.8.3",
     "react": "^16.4.0",
-    "react-intl": "^2.6.0"
+    "react-intl": "^2.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz"
   }
 }

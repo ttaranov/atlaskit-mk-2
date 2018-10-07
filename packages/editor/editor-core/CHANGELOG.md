@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 82.5.4
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 82.5.3
+- [patch] Support custom rendering for typeahead items [8e0925d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e0925d)
+
 ## 82.5.2
 - [patch] center media toolbar; be more selective when resize is enabled [98ca1de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ca1de)
 

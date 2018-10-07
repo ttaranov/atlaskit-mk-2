@@ -109,7 +109,7 @@ export interface EditorProps {
 
   // Set this to allow unsupported content in the editor.
   // Anything it doesn’t understand it will wrap in an unsupported block or inline node.
-  // It will render a grey non editable box.
+  // It will render a gray non editable box.
   allowUnsupportedContent?: boolean;
 
   // Enable panel blocks, the thing that displays a coloured box with icons aka info, warning macros.

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "8.0.5",
+  "version": "8.0.6",
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -34,7 +34,7 @@
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2",
-    "react-syntax-highlighter": "^6.0.2"
+    "react-syntax-highlighter": "^8.0.1"
   },
   "keywords": [
     "atlaskit",
