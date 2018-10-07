@@ -115,10 +115,13 @@ export default class WithDifferentChildComponent extends Component<*, *> {
             page,
             hasChildren,
             children,
-            component: Comp,
+            component: CutomComponent,
           }) =>
-            Comp ? (
-              <Comp header="I am the header" imageUrl={exampleImage} />
+            CutomComponent ? (
+              <CutomComponent
+                header="I am the header"
+                imageUrl={exampleImage}
+              />
             ) : (
               <Row
                 expandLabel={'Expand'}
