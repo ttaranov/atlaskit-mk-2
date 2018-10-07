@@ -326,7 +326,7 @@ describe('Context', () => {
       });
 
       return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
+        context.file.upload(file).subscribe({
           next(state) {
             const fileId = state.id;
             context.file.getFileState(fileId).subscribe({
@@ -376,7 +376,7 @@ describe('Context', () => {
       });
 
       return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
+        context.file.upload(file).subscribe({
           next,
           complete() {
             expect(next).toHaveBeenCalledTimes(1);
@@ -395,7 +395,7 @@ describe('Context', () => {
     });
   });
 
-  describe('.uploadFile()', () => {
+  describe('.file.upload()', () => {
     it('should call media-store uploadFile with given arguments', done => {
       const context = createContext();
       const file: UploadableFile = {} as any;
@@ -407,7 +407,7 @@ describe('Context', () => {
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
 
-      context.uploadFile(file).subscribe({
+      context.file.upload(file).subscribe({
         next() {
           expect(uploadFile).toHaveBeenCalled();
           expect(uploadFileMock.mock.calls[0][0]).toBe(file);
@@ -456,7 +456,7 @@ describe('Context', () => {
       const controller = new UploadController();
 
       return new Promise(resolve => {
-        context.uploadFile(file, controller).subscribe({
+        context.file.upload(file, controller).subscribe({
           error() {
             expect(cancelMock).toHaveBeenCalledTimes(1);
             resolve();
@@ -489,7 +489,7 @@ describe('Context', () => {
       (context as any).mediaStore = { getFile };
 
       return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
+        context.file.upload(file).subscribe({
           next(state) {
             expect(state as UploadingFileState).toEqual(
               expect.objectContaining({
@@ -521,7 +521,7 @@ describe('Context', () => {
       (context as any).mediaStore = { getFile };
 
       return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
+        context.file.upload(file).subscribe({
           next(state) {
             expect((state as UploadingFileState).mimeType).toEqual('image/png');
             resolve();
