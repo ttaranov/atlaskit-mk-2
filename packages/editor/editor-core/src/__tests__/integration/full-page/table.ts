@@ -21,7 +21,7 @@ BrowserTestCase(
     }"]`;
     const tableControls = '[aria-label="Table floating controls"]';
 
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);

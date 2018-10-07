@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 9.0.2
+- [patch] Async load avatargroup because it also pulls in dropdown [fb13496](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb13496)
+
 ## 9.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

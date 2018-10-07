@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 14.1.1
+- [patch] Update avatar index exports to fix babel transpilation bug [0208158](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0208158)
+
 ## 14.1.0
 - [minor] Adds new theming API to Avatar and AvatarItem components [79dd93f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79dd93f)
 

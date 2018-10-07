@@ -10,7 +10,7 @@ describe('Traverse#map', () => {
     expect(
       map(
         mentionsDoc,
-        node => node.type === 'mention' && node.attrs.text,
+        node => node.type === 'mention' && node.attrs!.text,
       ).filter(name => !!name),
     ).toEqual(['@Oscar Wallhult', '@mention', '@unknown', '@here', '@all']);
   });

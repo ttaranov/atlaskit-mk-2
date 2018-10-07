@@ -1,6 +1,6 @@
 export type ADFNode = {
   type: string;
-  attrs: { [name: string]: any };
+  attrs?: { [name: string]: any };
   content?: Array<ADFNode>;
   marks?: Array<ADFMark>;
   text?: string;

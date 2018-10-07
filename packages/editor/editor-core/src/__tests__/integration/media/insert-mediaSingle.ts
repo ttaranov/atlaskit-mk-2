@@ -12,7 +12,7 @@ BrowserTestCase(
   'Inserts a media single on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);

@@ -14,7 +14,7 @@ import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
     `Extension: Insert ${extensionType} extension`,
     { skip: ['ie'] },
     async client => {
-      const page = await new Page(client);
+      const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);
