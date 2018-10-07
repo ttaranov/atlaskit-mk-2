@@ -100,9 +100,7 @@ class UploaderExample extends Component<
   onUploadStringClick = () => {
     uploadFile(
       { content: tallImage },
-      {
-        authProvider: defaultMediaPickerAuthProvider,
-      },
+      new MediaStore({ authProvider: defaultMediaPickerAuthProvider }),
       {
         onProgress: this.onProgress,
       },
@@ -126,9 +124,7 @@ class UploaderExample extends Component<
 
     uploadFile(
       { content: file, name: file.name, mimeType: file.type },
-      {
-        authProvider: defaultMediaPickerAuthProvider,
-      },
+      new MediaStore({ authProvider: defaultMediaPickerAuthProvider }),
       {
         onProgress: this.onProgress,
       },
