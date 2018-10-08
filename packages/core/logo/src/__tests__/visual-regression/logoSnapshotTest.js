@@ -17,7 +17,7 @@ describe('Snapshot Test', () => {
   });
 
   examples.forEach(example => {
-    it(`${example.exampleName}-should match prod`, async () => {
+    it(`${example.exampleName}-should match production example`, async () => {
       const url = getExampleUrl(
         example.team,
         example.package,
