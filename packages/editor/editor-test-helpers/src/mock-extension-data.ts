@@ -61,7 +61,7 @@ export const inlineExtensionData = [
       extensionKey: 'status',
       parameters: {
         macroParams: {
-          color: { value: 'Grey' },
+          color: { value: 'Gray' },
           title: { value: 'Medium' },
           subtle: { value: true },
         },

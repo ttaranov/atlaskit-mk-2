@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 5.9.5
+- [patch] fix higlight problem due to duplicate react keys [beeba8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/beeba8a)
+
+## 5.9.4
+- [patch] icon-file-type and icon-object publish glyphs, svgs, and es5 instead of just dist [0823d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0823d35)
+
 ## 5.9.3
 - [patch] Exposure event gets trigger on initial load instead when search results return [b89cda9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b89cda9)
 

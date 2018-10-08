@@ -14,7 +14,7 @@ import {
     `Inserts a media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
 
       await browser.goto(editor.path);
       await browser.click(editor.placeholder);

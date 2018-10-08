@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira-transformer
 
+## 5.0.9
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
 ## 5.0.8
 - [patch] ED-5299: added mediaSingle to jira transformer [d73f846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d73f846)
 

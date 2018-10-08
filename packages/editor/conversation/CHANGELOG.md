@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 10.0.1
+- [patch] Fix allowFeedbackAndHelpButtons prop not being passed through to the CommentContainer by Conversations [76f20a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76f20a3)
+
 ## 10.0.0
 - [major] Reactions state management revisited [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
 - [major] Updated dependencies [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)

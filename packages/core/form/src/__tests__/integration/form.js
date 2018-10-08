@@ -37,7 +37,7 @@ BrowserTestCase(
   'Create repository form should render without errors',
   { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated
   async client => {
-    const formTest = await new Page(client);
+    const formTest = new Page(client);
     await formTest.goto(urlFormCreateRepo);
     await formTest.waitForSelector(createForm);
 

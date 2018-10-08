@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
+import Button from '@atlaskit/button';
 import { FlagWithoutAnalytics as Flag } from '../../Flag';
 import Actions from '../../FlagActions';
 import { Action } from '../../FlagActions/styledFlagActions';
@@ -49,5 +50,15 @@ describe('actions prop', () => {
       description: 'Hi there',
     });
     expect(flag.find(Actions).prop('appearance')).toBe('info');
+  });
+
+  it('should render atlaskit button as action', () => {
+    flag = mount(generateFlag({ appearance: 'info', isDismissAllowed: true }));
+    flag.setState({ isExpanded: true });
+    flag.setProps({
+      actions: [{ content: 'Hello!', onClick: () => {} }],
+      description: 'Hi there',
+    });
+    expect(flag.find(Button).length).toBe(1);
   });
 });
