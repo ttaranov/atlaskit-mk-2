@@ -25,6 +25,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "@atlaskit/media-card": "^38.0.0",
     "@atlaskit/media-test-helpers": "^18.2.3",
     "@types/fetch-mock": "^6.0.3",
     "fetch-mock": "^6.5.2",
