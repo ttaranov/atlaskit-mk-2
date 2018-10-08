@@ -1,25 +1,10 @@
 // @flow
 
 import React, { Fragment, Component } from 'react';
-import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
 
+import { externalContent, spinnerWrapper } from './styles';
 import addParamToUrl from '../../add-param-to-url';
-
-const ExternalContent = styled.iframe`
-  visibility: ${props => (props.hasIframeLoaded ? 'visible' : 'hidden')};
-  height: 100%;
-  width: 100%;
-  border: 0;
-  flex: 1 1 auto;
-`;
-
-const SpinnerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  position: relative;
-  top: 11.25rem;
-`;
 
 type Props = {|
   externalContentUrl: string,
@@ -75,19 +60,20 @@ class NotificationDrawer extends Component<Props, State> {
       ? addParamToUrl(externalContentUrl, 'product', product)
       : drawerUrl;
 
+    console.log(externalContent, spinnerWrapper);
     return (
       <Fragment>
         {!this.state.hasIframeLoaded && (
-          <SpinnerWrapper>
+          <div css={spinnerWrapper}>
             <Spinner size="large" isCompleting={this.state.hasIframeLoaded} />
-          </SpinnerWrapper>
+          </div>
         )}
-        <ExternalContent
+        <iframe
+          css={externalContent(!!this.state.hasIframeLoaded)}
           ref={this.storeIFrame}
           title="Notifications"
           src={drawerUrl}
           onLoad={this.handleIframeLoad}
-          hasIframeLoaded={this.state.hasIframeLoaded}
         />
       </Fragment>
     );
