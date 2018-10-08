@@ -1,5 +1,15 @@
 # @atlaskit/media-viewer
 
+## 22.0.0
+- [patch] Deprecate context.uploadFile & context.getFile. Instead context.file.upload & context.file.getFileState should be used; media-store's uploadFile function now takes MediaStore as a second argument, not MediaApiConfig [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Deprecate context.uploadFile & context.getFile. Instead context.file.upload & context.file.getFileState should be used; media-store's uploadFile function now takes MediaStore as a second argument, not MediaApiConfig [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/media-card@38.0.0
+  - @atlaskit/media-core@24.1.0
+  - @atlaskit/media-store@8.0.0
+  - @atlaskit/media-test-helpers@18.2.3
+
 ## 21.0.5
 - [patch] Bumping dependency on media-store [f28fb3e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28fb3e)
 
