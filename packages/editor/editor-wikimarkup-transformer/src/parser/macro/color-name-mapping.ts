@@ -654,7 +654,7 @@ const mapping = {
     g: 220,
     b: 220,
   },
-  lightgrey: {
+  lightgray: {
     r: 211,
     g: 211,
     b: 211,

@@ -32,6 +32,7 @@ export interface Props {
   hasHeaderRow?: boolean;
   tableHeight?: number;
   dangerRows?: number[];
+  showInsertButton?: boolean;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -53,9 +54,11 @@ export default class TableFloatingControls extends Component<Props, State> {
       isNumberColumnEnabled,
       selection,
       tableHeight,
+      showInsertButton,
     } = this.props;
     return (
       tableRef !== nextProps.tableRef ||
+      showInsertButton !== nextProps.showInsertButton ||
       tableHeight !== nextProps.tableHeight ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
@@ -80,6 +83,7 @@ export default class TableFloatingControls extends Component<Props, State> {
       tableActive,
       hasHeaderRow,
       dangerRows,
+      showInsertButton,
     } = this.props;
 
     if (!tableRef) {
@@ -106,12 +110,12 @@ export default class TableFloatingControls extends Component<Props, State> {
         <CornerControls
           editorView={editorView}
           selection={editorView.state.selection}
-          tableRef={tableRef}
           clearHoverSelection={this.clearHoverSelection}
           isTableInDanger={isTableInDanger}
           isHeaderColumnEnabled={isHeaderColumnEnabled}
           isHeaderRowEnabled={isHeaderRowEnabled}
           isNumberColumnEnabled={isNumberColumnEnabled}
+          showInsertButton={showInsertButton}
         />
         <RowControls
           editorView={editorView}
@@ -125,6 +129,7 @@ export default class TableFloatingControls extends Component<Props, State> {
           isTableInDanger={isTableInDanger}
           selectRow={this.selectRow}
           insertRow={this.insertRow}
+          showInsertButton={showInsertButton}
         />
       </div>
     );

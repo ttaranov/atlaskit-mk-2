@@ -2,6 +2,7 @@ import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
 import {
+  Context,
   ContextConfig,
   MediaCollection,
   MediaCollectionProvider,
@@ -77,11 +78,10 @@ export class Stubs {
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
     blobService?: BlobService,
-    getFile?: () => Observable<FileState>,
-  ) {
+    getFileState?: () => Observable<FileState>,
+  ): Partial<Context> {
     return {
       config,
-      getFile: jest.fn(getFile || (() => Observable.empty())),
       getMediaCollectionProvider: jest.fn(
         () => collectionProvider || Stubs.mediaCollectionProvider(),
       ),
@@ -89,6 +89,11 @@ export class Stubs {
         () => mediaItemProvider || Stubs.mediaItemProvider(),
       ),
       getBlobService: jest.fn(() => blobService || Stubs.blobService()),
+      file: {
+        downloadBinary: jest.fn(),
+        getFileState: jest.fn(getFileState || (() => Observable.empty())),
+        upload: jest.fn(),
+      } as any,
     };
   }
 }
@@ -98,12 +103,12 @@ export interface CreateContextOptions {
   provider?: MediaCollectionProvider;
   authPromise?: Promise<Auth>;
   blobService?: BlobService;
-  getFile?: () => Observable<FileState>;
+  getFileState?: () => Observable<FileState>;
   config?: ContextConfig;
 }
 
 export const createContext = (options?: CreateContextOptions) => {
-  const defaultOptions = {
+  const defaultOptions: CreateContextOptions = {
     subject: undefined,
     provider: undefined,
     authPromise: Promise.resolve<Auth>({
@@ -112,10 +117,10 @@ export const createContext = (options?: CreateContextOptions) => {
       baseUrl: 'some-service-host',
     }),
     blobService: undefined,
-    getFile: undefined,
+    getFileState: undefined,
     config: undefined,
   };
-  const { subject, provider, authPromise, blobService, getFile, config } =
+  const { subject, provider, authPromise, blobService, getFileState, config } =
     options || defaultOptions;
   const authProvider = jest.fn(() => authPromise);
   const contextConfig: ContextConfig = {
@@ -126,6 +131,6 @@ export const createContext = (options?: CreateContextOptions) => {
     provider || Stubs.mediaCollectionProvider(subject),
     Stubs.mediaItemProvider(subject),
     blobService,
-    getFile,
+    getFileState,
   ) as any;
 };

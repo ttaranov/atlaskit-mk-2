@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { PureComponent, Children, ReactElement } from 'react';
+import { PureComponent, Children, ReactNode } from 'react';
 import { ProviderFactory, WithProviders } from '@atlaskit/editor-common';
 import TaskItemWithProviders from './task-item-with-providers';
 import { RendererContext } from '../';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface Props {
   localId: string;
   rendererContext?: RendererContext;
   state?: string;
   providers?: ProviderFactory;
-  children?: ReactElement<any>;
+  children?: ReactNode;
 }
 
 export default class TaskItem extends PureComponent<Props, {}> {
@@ -39,16 +40,22 @@ export default class TaskItem extends PureComponent<Props, {}> {
     }
 
     return (
-      <TaskItemWithProviders
-        objectAri={objectAri}
-        containerAri={containerAri}
-        taskId={localId}
-        isDone={state === 'DONE'}
-        taskDecisionProvider={taskDecisionProvider}
-        contextIdentifierProvider={contextIdentifierProvider}
+      <FabricElementsAnalyticsContext
+        data={{
+          userContext: 'document',
+        }}
       >
-        {children}
-      </TaskItemWithProviders>
+        <TaskItemWithProviders
+          objectAri={objectAri}
+          containerAri={containerAri}
+          taskId={localId}
+          isDone={state === 'DONE'}
+          taskDecisionProvider={taskDecisionProvider}
+          contextIdentifierProvider={contextIdentifierProvider}
+        >
+          {children}
+        </TaskItemWithProviders>
+      </FabricElementsAnalyticsContext>
     );
   };
 

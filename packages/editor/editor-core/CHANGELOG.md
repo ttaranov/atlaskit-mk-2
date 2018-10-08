@@ -1,5 +1,38 @@
 # @atlaskit/editor-core
 
+## 84.0.0
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/renderer@26.0.0
+  - @atlaskit/emoji@43.0.0
+  - @atlaskit/media-card@38.0.0
+  - @atlaskit/media-filmstrip@15.0.0
+  - @atlaskit/media-picker@18.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.14
+  - @atlaskit/editor-json-transformer@4.0.16
+  - @atlaskit/editor-markdown-transformer@2.0.14
+  - @atlaskit/editor-test-helpers@6.2.5
+  - @atlaskit/task-decision@10.0.1
+  - @atlaskit/util-data-test@10.0.12
+  - @atlaskit/media-core@24.1.0
+  - @atlaskit/media-test-helpers@18.2.3
+
+## 83.0.0
+- [major] Upgrade task and decisions and editor to use @atlaskit/analytics-next. Remove usage of @atlaskit/analytics. [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+
+## 82.5.6
+- [patch] ED-5291 Quick insert search now only matches from the start of words [ea8237d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8237d)
+
+## 82.5.5
+- [patch] ED-5454: only render insert row/column buttons when needed [16d17e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16d17e3)
+
+## 82.5.4
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 82.5.3
+- [patch] Support custom rendering for typeahead items [8e0925d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e0925d)
+
 ## 82.5.2
 - [patch] center media toolbar; be more selective when resize is enabled [98ca1de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ca1de)
 

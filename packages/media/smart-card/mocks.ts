@@ -1,10 +1,9 @@
-import mock, { delay, proxy } from 'xhr-mock';
+import * as fm from 'fetch-mock';
 
-const resolveUrl =
-  'https://api-private.stg.atlassian.com/object-resolver/resolve';
-
-const context = '';
-const definitionId = 'google-drive';
+const context = 'Document';
+const googleDefinitionId = 'google';
+const trelloDefinitionId = 'trello';
+const dropboxDefinitionId = 'dropbox';
 
 const serviceAuth = {
   key: 'default',
@@ -15,11 +14,13 @@ const serviceAuth = {
 
 const generator = {
   name: 'Google Drive',
-  icon:
-    'https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico',
+  icon: {
+    url:
+      'https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico',
+  },
 };
 
-const resolvedBody = {
+const genResolvedBody = (definitionId: string, name: string) => ({
   meta: {
     visibility: 'restricted',
     access: 'granted',
@@ -27,13 +28,19 @@ const resolvedBody = {
     definitionId,
   },
   data: {
+    '@type': ['Document'],
     '@context': context,
     generator,
-    name: 'URL A',
+    name,
+    updated: '2018-07-19T03:34:07.930Z',
+    updatedBy: {
+      '@type': 'Person',
+      name: 'Artur Bodera',
+    },
   },
-};
+});
 
-const unauthorisedBody = {
+const genUnauthorisedBody = (definitionId: string) => ({
   meta: {
     visibility: 'restricted',
     access: 'unauthorized',
@@ -44,9 +51,9 @@ const unauthorisedBody = {
     '@context': context,
     generator,
   },
-};
+});
 
-const forbiddenBody = {
+const gebForbiddenBody = (definitionId: string) => ({
   meta: {
     visibility: 'restricted',
     access: 'forbidden',
@@ -57,121 +64,87 @@ const forbiddenBody = {
     '@context': context,
     generator,
   },
-};
+});
 
-const notFoundBody = {
-  meta: {
-    visibility: 'not_found',
-    access: 'forbidden',
-    auth: [serviceAuth],
-    definitionId,
-  },
-  data: {
-    '@context': context,
-    generator,
-  },
-};
+const delayP = (n: number) => new Promise(res => setTimeout(res, n));
 
-const flowResponsesByUrl = {
-  'public-happy': [
-    {
-      status: 200,
-      body: resolvedBody,
-    },
-  ],
-  'private-happy': [
-    {
-      status: 200,
-      body: unauthorisedBody,
-    },
-    {
-      status: 200,
-      body: resolvedBody,
-    },
-  ],
-  'private-happy-b': [
-    {
-      status: 200,
-      body: unauthorisedBody,
-    },
-    {
-      status: 200,
-      body: {
-        ...resolvedBody,
-        data: {
-          ...resolvedBody.data,
-          name: 'URL B',
-        },
-      },
-    },
-  ],
-  'private-happy-c': [
-    {
-      status: 200,
-      body: unauthorisedBody,
-    },
-    {
-      status: 200,
-      body: {
-        ...resolvedBody,
-        data: {
-          ...resolvedBody.data,
-          name: 'URL C',
-        },
-      },
-    },
-  ],
-  'private-forbidden': [
-    {
-      status: 200,
-      body: unauthorisedBody,
-    },
-    {
-      status: 200,
-      body: forbiddenBody,
-    },
-  ],
-  'not-found': [
-    {
-      status: 200,
-      body: notFoundBody,
-    },
-  ],
-  error: [
-    {
-      status: 500,
-    },
-  ],
-};
+export const mockMultipleCards = () => {
+  let c1 = 0;
+  let c2 = 0;
+  let c3 = 0;
+  fm.mock('*', async (_, opts: any) => {
+    await delayP(1000);
 
-const flowIndiciesByUrl = {};
+    const resourceUrl = JSON.parse(opts.body).resourceUrl;
 
-mock.setup();
-
-mock.post(
-  `${resolveUrl}`,
-  delay((req, res) => {
-    const url = JSON.parse(req.body()).resourceUrl;
-    const response =
-      (flowResponsesByUrl as any)[url] &&
-      (flowResponsesByUrl as any)[url][(flowIndiciesByUrl as any)[url] || 0];
-    if (response) {
-      (flowIndiciesByUrl as any)[url] =
-        ((flowIndiciesByUrl as any)[url] || 0) + 1;
-      if (
-        (flowIndiciesByUrl as any)[url] >=
-        (flowResponsesByUrl as any)[url].length
-      ) {
-        (flowIndiciesByUrl as any)[url] = 0;
+    if (resourceUrl.startsWith('google')) {
+      c1++;
+      if (c1 >= 0 && c1 <= 6) {
+        console.log('MOCK:\tgoogle:\terror', c1);
+        return;
       }
-      if (response.status) res.status(response.status);
-      if (response.headers) res.headers(response.headers);
-      if (response.body) res.body(JSON.stringify(response.body));
-      return res;
-    } else {
-      return undefined;
+      if (c1 >= 7 && c1 <= 11) {
+        console.log('MOCK:\tgoogle:\tunauthorisedBody', c1);
+        return genUnauthorisedBody(googleDefinitionId);
+      }
+      if (c1 >= 12 && c1 <= 16) {
+        console.log('MOCK:\tgoogle:\terror', c1);
+        return;
+      }
+      if (c1 >= 17 && c1 <= 21) {
+        console.log('MOCK:\tgoogle:\tforbiddenBody', c1);
+        return gebForbiddenBody(googleDefinitionId);
+      }
+      console.log('MOCK:\tgoogle:\tresolvedBody', c1);
+      return genResolvedBody(googleDefinitionId, resourceUrl);
     }
-  }, 900),
-);
 
-mock.use(proxy);
+    if (resourceUrl.startsWith('trello')) {
+      switch (++c2) {
+        case 1: {
+          console.log('MOCK:\ttrello:\tunauthorisedBody');
+          return genUnauthorisedBody(trelloDefinitionId);
+        }
+        case 2: {
+          console.log('MOCK:\ttrello:\tforbiddenBody');
+          return gebForbiddenBody(trelloDefinitionId);
+        }
+        default: {
+          console.log('MOCK:\ttrello:\tresolvedBody');
+          return genResolvedBody(trelloDefinitionId, resourceUrl);
+        }
+      }
+    }
+
+    if (resourceUrl.startsWith('dropbox')) {
+      switch (++c3) {
+        case 1: {
+          console.log('MOCK:\tdropbox:\terror');
+          return;
+        }
+        case 2: {
+          console.log('MOCK:\tdropbox:\tunauthorisedBody');
+          return genUnauthorisedBody(dropboxDefinitionId);
+        }
+        case 3: {
+          console.log('MOCK:\tdropbox:\terror');
+          return;
+        }
+        case 4: {
+          console.log('MOCK:\tdropbox:\tforbiddenBody');
+          return gebForbiddenBody(dropboxDefinitionId);
+        }
+        case 5: {
+          console.log('MOCK:\tdropbox:\tforbiddenBody');
+          return gebForbiddenBody(dropboxDefinitionId);
+        }
+        default: {
+          console.log('MOCK:\tdropbox:\tresolvedBody');
+          return genResolvedBody(dropboxDefinitionId, resourceUrl);
+        }
+      }
+    }
+
+    throw new Error('Unkonws request type');
+  });
+};

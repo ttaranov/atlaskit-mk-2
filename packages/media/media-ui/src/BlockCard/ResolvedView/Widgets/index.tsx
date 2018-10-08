@@ -16,8 +16,12 @@ export default class Widgets extends React.Component<WidgetsProps> {
     return <Title key="title">{title}:</Title>;
   }
 
-  renderIcon(icon: string) {
-    return <ImageIcon key="icon" src={icon} size={16} />;
+  renderIcon(icon: string | React.ReactNode) {
+    if (typeof icon === 'string') {
+      return <ImageIcon key="icon" src={icon} size={16} />;
+    } else {
+      return icon;
+    }
   }
 
   renderBadge(badge: BadgeViewModel) {
@@ -47,9 +51,22 @@ export default class Widgets extends React.Component<WidgetsProps> {
     return <Text key="text">{text}</Text>;
   }
 
+  renderWidgetDetails(attrs: React.ReactNode[], tooltip?: string) {
+    if (tooltip) {
+      return (
+        <Tooltip content={tooltip}>
+          <WidgetDetails>{attrs}</WidgetDetails>
+        </Tooltip>
+      );
+    } else {
+      return <WidgetDetails>{attrs}</WidgetDetails>;
+    }
+  }
+
   renderWidget(key: any, detail: DetailViewModel) {
     const { title, text, icon, badge, lozenge, tooltip } = detail;
-    const attrs: JSX.Element[] = [];
+
+    const attrs: React.ReactNode[] = [];
 
     if (title) {
       attrs.push(this.renderTitle(title));
@@ -85,9 +102,7 @@ export default class Widgets extends React.Component<WidgetsProps> {
 
     return (
       <WidgetWrapper key={key}>
-        <Tooltip content={tooltip}>
-          <WidgetDetails>{attrs}</WidgetDetails>
-        </Tooltip>
+        {this.renderWidgetDetails(attrs, tooltip)}
       </WidgetWrapper>
     );
   }

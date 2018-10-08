@@ -33,12 +33,12 @@ const createPayload = (
   action: string,
   actionSubject: string,
   eventType: string,
-  actionSubjectID?: string,
+  actionSubjectId?: string,
 ) => (attributes: { [key: string]: any }) => ({
   action,
   actionSubject,
   eventType,
-  actionSubjectID,
+  actionSubjectId,
   attributes: {
     ...attributes,
     packageName,
