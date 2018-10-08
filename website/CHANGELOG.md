@@ -1,5 +1,9 @@
 # @atlaskit/website
 
+## 4.1.13
+- [patch] Updated dependencies [272208b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272208b)
+  - @atlaskit/icon-object@1.0.2
+
 ## 4.1.12
 - [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
 - [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
