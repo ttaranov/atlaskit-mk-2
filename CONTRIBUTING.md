@@ -61,39 +61,49 @@ That all being said, let's dive into it:
 
 ### Getting Started
 
-To clone the repository (you'll need [git](https://git-scm.com/) installed if
+1. To clone the repository (you'll need [git](https://git-scm.com/) installed if
 you don't already), open up your terminal and run the following:
 
-```sh
-git clone git@bitbucket.org:atlassian/atlaskit-mk-2.git
-cd atlaskit-mk-2
-```
+    ```sh
+    git clone git@bitbucket.org:atlassian/atlaskit-mk-2.git
+    cd atlaskit-mk-2
+    ```
 
-Then you'll need both [Node.js](https://nodejs.org/) and
+1. Then you'll need both [Node.js](https://nodejs.org/) and
 [Yarn](https://yarnpkg.com/) installed. If you're on a Mac and have
 [Homebrew](https://brew.sh/) you can run:
 
-```sh
-brew install node yarn
-```
+    ```sh
+    brew install node yarn
+    ```
 
-> **Note:** You must be on Node >=8.4 and Yarn >=1.0
+    > **Note:** You must be on Node >=8.4 and Yarn >=1.0
 
-Then you can install [Bolt](https://github.com/boltpkg/bolt):
+1. Then you can install [Bolt](https://github.com/boltpkg/bolt):
 
-```sh
-yarn global add bolt
-```
+    ```sh
+    yarn global add bolt
+    ```
 
-Now that you have everything you need, you can bootstrap the Atlaskit repo:
+1. Now that you have everything you need, you can bootstrap the Atlaskit repo:
 
-```sh
-cd atlaskit-mk-2
-bolt install
-```
+    ```sh
+    cd atlaskit-mk-2
+    bolt install
+    ```
 
-This will take a minute or two the first time, but every subsequent run should
-only take about a second.
+    This will take a minute or two the first time, but every subsequent run should
+    only take about a second.
+
+1. Now you can start the development server for a specific component you are working on using
+`bolt start <package-name>`, for example: 
+
+    ```sh
+    bolt start navigation-next
+    ```
+
+    This will start the dev server with only packages matching "navigation-next"
+    pattern being served on http://localhost:9000.
 
 #### Linux / Mac / Windows
 
