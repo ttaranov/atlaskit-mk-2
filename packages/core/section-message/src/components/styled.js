@@ -26,18 +26,20 @@ export const Description = styled.div`
   }
 `;
 
-export const Actions = styled.div`
-  display: inline-flex;
+export const Actions = styled.ul`
+  display: block;
+  padding-left: 0px;
   * + & {
     margin-top: 8px;
   }
 `;
 
-export const Action = styled.div`
+export const Action = styled.li`
+  display: inline;
   & + &::before {
     color: ${colors.N500};
-    content: '·';
-    display: inline-block;
+    content: '\00a0\00a0·  ';
+    display: inline;
     text-align: center;
     vertical-align: middle;
     width: ${math.multiply(gridSize, 2)}px;
