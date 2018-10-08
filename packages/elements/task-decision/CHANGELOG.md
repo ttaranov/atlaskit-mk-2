@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 10.0.0
+- [major] Upgrade task and decisions and editor to use @atlaskit/analytics-next. Remove usage of @atlaskit/analytics. [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+
 ## 9.0.2
 - [patch] Async load avatargroup because it also pulls in dropdown [fb13496](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb13496)
 

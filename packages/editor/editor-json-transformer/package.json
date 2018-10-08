@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-json-transformer",
-  "version": "4.0.14",
+  "version": "4.0.15",
   "description": "JSON transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -26,9 +26,9 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/editor-core": "^82.0.0",
-    "@atlaskit/editor-test-helpers": "^6.1.3",
-    "@atlaskit/util-data-test": "^10.0.10",
+    "@atlaskit/editor-core": "^83.0.0",
+    "@atlaskit/editor-test-helpers": "^6.2.4",
+    "@atlaskit/util-data-test": "^10.0.11",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"
   }

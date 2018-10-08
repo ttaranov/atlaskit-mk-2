@@ -1,5 +1,12 @@
 # @atlaskit/conversation
 
+## 10.0.2
+- [patch] Updated dependencies [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+  - @atlaskit/comment@6.0.18
+  - @atlaskit/util-data-test@10.0.11
+  - @atlaskit/editor-core@83.0.0
+  - @atlaskit/renderer@25.0.0
+
 ## 10.0.1
 - [patch] Fix allowFeedbackAndHelpButtons prop not being passed through to the CommentContainer by Conversations [76f20a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76f20a3)
 
