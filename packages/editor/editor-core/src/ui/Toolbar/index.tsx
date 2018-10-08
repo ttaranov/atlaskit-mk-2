@@ -147,13 +147,20 @@ export class ToolbarInner extends React.Component<
   //   });
   // }
 
-  private handleKeydown = e => {
+  private handleKeyDown = e => {
     if (
       typeof this.state.selectedItemIdx === 'undefined' ||
       !this.props.items
     ) {
       return;
     }
+
+    console.log(
+      'keydown',
+      e.key,
+      'currently selected',
+      this.state.selectedItemIdx,
+    );
 
     if (e.key === 'ArrowLeft') {
       this.setState({
@@ -193,7 +200,7 @@ export class ToolbarInner extends React.Component<
     }
 
     return (
-      <div onKeyDown={this.handleKeydown}>
+      <div onKeyDown={this.handleKeyDown}>
         <ToolbarComponentsWrapper>
           {items.map((component, key) => {
             const props = { key, focused: this.state.selectedItemIdx === key };

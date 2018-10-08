@@ -15,7 +15,6 @@ import {
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import {
-  ButtonGroup,
   Separator,
   Wrapper,
   ExpandIconWrapper,
@@ -23,6 +22,7 @@ import {
 } from '../../../../ui/styles';
 import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
 import { toggleBulletList, toggleOrderedList } from '../../commands';
+import ButtonGroup from '../../../../ui/ButtonGroup';
 
 export const messages = defineMessages({
   unorderedList: {
@@ -55,6 +55,7 @@ export interface Props {
   orderedListDisabled?: boolean;
   allowTasks?: boolean;
   disabled?: boolean;
+  focused?: boolean;
   isSmall?: boolean;
   isSeparator?: boolean;
   isReducedSpacing?: boolean;
@@ -126,6 +127,7 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const {
       disabled,
+      focused,
       isSmall,
       isReducedSpacing,
       isSeparator,
@@ -137,12 +139,16 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
     } = this.props;
     const { isDropdownOpen } = this.state;
+    console.log('list focused', focused);
     if (!isSmall) {
       const labelUnorderedList = formatMessage(messages.unorderedList);
       const labelOrderedList = formatMessage(messages.orderedList);
       const labelAction = formatMessage(messages.action);
       return (
-        <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
+        <ButtonGroup
+          width={isReducedSpacing ? 'small' : 'large'}
+          focused={focused}
+        >
           <ToolbarButton
             spacing={isReducedSpacing ? 'none' : 'default'}
             onClick={this.handleBulletListClick}
@@ -197,6 +203,7 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
               spacing={isReducedSpacing ? 'none' : 'default'}
               selected={bulletListActive || orderedListActive}
               disabled={disabled}
+              focused={focused}
               onClick={this.handleTriggerClick}
               title={labelLists}
               iconBefore={

@@ -33,6 +33,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   isReducedSpacing?: boolean;
+  focused?: boolean;
 }
 
 export const messages = defineMessages({
@@ -139,6 +140,7 @@ class ToolbarAdvancedTextFormatting extends PureComponent<
         disabled={disabled}
         onClick={this.handleTriggerClick}
         title={labelMoreFormatting}
+        focused={this.props.focused}
         iconBefore={
           <TriggerWrapper>
             <MoreIcon label={labelMoreFormatting} />

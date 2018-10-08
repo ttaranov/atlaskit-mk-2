@@ -37,6 +37,7 @@ const listPlugin: EditorPlugin = {
     toolbarSize,
     disabled,
     isToolbarReducedSpacing,
+    focused,
   }) {
     const isSmall = toolbarSize < ToolbarSize.L;
     const isSeparator = toolbarSize >= ToolbarSize.S;
@@ -50,6 +51,7 @@ const listPlugin: EditorPlugin = {
             isSeparator={isSeparator}
             isReducedSpacing={isToolbarReducedSpacing}
             disabled={disabled}
+            focused={focused}
             editorView={editorView}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}

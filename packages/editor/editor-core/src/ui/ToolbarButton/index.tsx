@@ -66,8 +66,8 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    console.log('this.button', this.button);
     if (this.props.focused && !prevProps.focused && this.button) {
+      console.log('focusing', this.button);
       this.button.focus();
     }
   }

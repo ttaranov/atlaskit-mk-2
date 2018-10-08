@@ -54,6 +54,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
     popupsScrollableElement,
     toolbarSize,
     disabled,
+    focused,
     isToolbarReducedSpacing,
   }) {
     const buttons = toolbarSizeToButtons(toolbarSize);
@@ -90,6 +91,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               buttons={buttons}
               isReducedSpacing={isToolbarReducedSpacing}
               isDisabled={disabled}
+              focused={focused}
               editorView={editorView}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}

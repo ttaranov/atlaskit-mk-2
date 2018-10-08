@@ -40,12 +40,7 @@ import {
 import { InsertMenuCustomItem } from '../../../../types';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import ToolbarButton from '../../../../ui/ToolbarButton';
-import {
-  Wrapper,
-  ButtonGroup,
-  ExpandIconWrapper,
-  Shortcut,
-} from '../../../../ui/styles';
+import { Wrapper, ExpandIconWrapper, Shortcut } from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
 import { MacroProvider } from '../../../macro/types';
 import { createTable } from '../../../table/actions';
@@ -57,6 +52,7 @@ import { insertLayoutColumns } from '../../../layout/actions';
 import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
 import { Command } from '../../../../commands';
 import { showLinkToolbar } from '../../../hyperlink/commands';
+import ButtonGroup from '../../../../ui/ButtonGroup';
 
 export const messages = defineMessages({
   link: {
@@ -131,6 +127,7 @@ export interface Props {
   buttons: number;
   isReducedSpacing: boolean;
   isDisabled?: boolean;
+  focused?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
   tableSupported?: boolean;
@@ -296,6 +293,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       popupsBoundariesElement,
       popupsScrollableElement,
       isDisabled,
+      focused,
       buttons: numberOfButtons,
       isReducedSpacing,
       intl: { formatMessage },
@@ -330,7 +328,10 @@ class ToolbarInsertBlock extends React.PureComponent<
     );
 
     return (
-      <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
+      <ButtonGroup
+        width={isReducedSpacing ? 'small' : 'large'}
+        focused={focused}
+      >
         {buttons.map(btn => (
           <ToolbarButton
             ref={btn.handleRef || noop}

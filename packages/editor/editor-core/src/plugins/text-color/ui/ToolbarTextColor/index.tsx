@@ -33,6 +33,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   isReducedSpacing?: boolean;
+  focused?: boolean;
 }
 
 class ToolbarTextColor extends React.Component<
@@ -52,6 +53,7 @@ class ToolbarTextColor extends React.Component<
       isReducedSpacing,
       pluginState,
       intl: { formatMessage },
+      focused,
     } = this.props;
 
     const labelTextColor = formatMessage(messages.textColor);
@@ -72,6 +74,7 @@ class ToolbarTextColor extends React.Component<
               selected={isOpen}
               title={labelTextColor}
               onClick={this.toggleOpen}
+              focused={focused}
               iconBefore={
                 <TriggerWrapper>
                   <TextColorIcon

@@ -8,7 +8,7 @@ import {
   code,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { ButtonGroup } from '../../ui/styles';
+// import { ButtonGroup } from '../../ui/styles';
 import {
   plugin as textFormattingPlugin,
   pluginKey as textFormattingPluginKey,
@@ -27,6 +27,7 @@ import keymapPlugin from './pm-plugins/keymap';
 import ToolbarAdvancedTextFormatting from './ui/ToolbarAdvancedTextFormatting';
 import ToolbarTextFormatting from './ui/ToolbarTextFormatting';
 import WithPluginState from '../../ui/WithPluginState';
+import ButtonGroup from '../../ui/ButtonGroup';
 
 export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
@@ -95,6 +96,7 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
     popupsScrollableElement,
     isToolbarReducedSpacing,
     disabled,
+    focused,
   }) {
     return (
       <WithPluginState
@@ -110,7 +112,10 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
           clearFormattingState: ClearFormattingState;
         }): any => {
           return (
-            <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
+            <ButtonGroup
+              width={isToolbarReducedSpacing ? 'small' : 'large'}
+              focused={focused}
+            >
               <ToolbarTextFormatting
                 disabled={disabled}
                 editorView={editorView}

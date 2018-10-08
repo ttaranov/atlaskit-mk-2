@@ -45,6 +45,7 @@ const textColorPlugin: EditorPlugin = {
     popupsScrollableElement,
     disabled,
     isToolbarReducedSpacing,
+    focused,
   }) {
     return (
       <WithPluginState
@@ -61,6 +62,7 @@ const textColorPlugin: EditorPlugin = {
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
             popupsScrollableElement={popupsScrollableElement}
+            focused={focused}
           />
         )}
       />

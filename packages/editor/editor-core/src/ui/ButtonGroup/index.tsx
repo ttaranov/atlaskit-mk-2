@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { HTMLAttributes, ComponentClass, PureComponent } from 'react';
 import styled from 'styled-components';
-// import { ToolbarContext, ToolbarContextValue } from '../Toolbar/ToolbarContext';
-// import ToolbarButton from '../ToolbarButton';
+import ToolbarButton, { Props as ToolbarButtonProps } from '../ToolbarButton';
 
-const ButtonGroupSpan: ComponentClass<
+const Wrapper: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
 > = styled.span`
   display: inline-flex;
@@ -17,73 +16,76 @@ const ButtonGroupSpan: ComponentClass<
 
 export interface Props {
   width?: 'small' | 'large';
+  focused?: boolean;
 }
 
 export interface State {
-  selectedButton?: React.ReactChild;
+  selectedItemIdx: number;
 }
 
-export default class ButtonGroup extends PureComponent<
-  Props,
-  { selectedButton }
-> {
+export default class ButtonGroup extends PureComponent<Props, State> {
   state = {
-    selectedButton: undefined,
+    selectedItemIdx: 0,
   };
-  constructor(props) {
-    super(props);
-  }
-  // private buttonClicked = consumerValue => (
-  //   button: ToolbarButton,
-  //   delta: number,
-  // ) => {
-  //   const children: React.ReactChild[] = React.Children.toArray(
-  //     this.props.children,
-  //   );
 
-  //   const buttonProps = button.props;
-  //   // @ts-ignore
-  //   const allButtonProps = children.map(item => item.props);
-  //   const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
-  //   if (buttonKeypressOriginIndex === -1) {
-  //     console.log("Our button wasn't clicked, bailing from buttonClicked");
-  //     return null;
-  //   }
-  //   console.log('Keypress by button', buttonKeypressOriginIndex);
-  //   console.log('Delta is ', delta);
-  //   const selectedIndex = buttonKeypressOriginIndex + delta;
-  //   console.log('selectedIndex', selectedIndex);
-  //   if (selectedIndex >= 0 && selectedIndex < children.length) {
-  //     console.log('setting state');
-  //     this.setState({
-  //       selectedButton: children[selectedIndex],
-  //     });
-  //   }
+  private handleKeyDown = (e: React.KeyboardEvent<{}>): boolean => {
+    const childCount = React.Children.toArray(this.props.children).filter(
+      child => child instanceof ToolbarButton,
+    ).length;
+    if (!childCount) {
+      return false;
+    }
 
-  //   if (selectedIndex < 0) {
-  //     consumerValue.buttonClickCallback(this, -1);
-  //   }
-  //   if (selectedIndex >= children.length) {
-  //     consumerValue.buttonClickCallback(this, -1);
-  //   }
-  //   return null;
-  // };
+    const { selectedItemIdx } = this.state;
+
+    if (e.key === 'ArrowLeft') {
+      this.setState({ selectedItemIdx: Math.max(selectedItemIdx - 1, 0) });
+    } else if (e.key === 'ArrowRight') {
+      this.setState({
+        selectedItemIdx: Math.min(selectedItemIdx + 1, childCount - 1),
+      });
+    }
+
+    e.preventDefault();
+
+    if (
+      (e.key === 'ArrowLeft' && selectedItemIdx <= 0) ||
+      (e.key === 'ArrowRight' && selectedItemIdx >= childCount - 1)
+    ) {
+      return true;
+    } else {
+      e.stopPropagation();
+      return false;
+    }
+  };
 
   render() {
-    const { width } = this.props;
-    console.log('Buttongroup children:', this.props.children);
+    const { width, children } = this.props;
+    console.log(
+      'button group has children:',
+      this.props.children,
+      'selected',
+      this.state.selectedItemIdx,
+      'group focused',
+      this.props.focused,
+    );
 
     return (
-      // <ToolbarContext.Provider
-      //   value={{
-      //     // buttonClickCallback: this.buttonClicked(value),
-      //     // selectedButton,
-      //   }}
-      // >
-      <ButtonGroupSpan width={width}>{this.props.children}</ButtonGroupSpan>
-      // </ToolbarContext.Provider>
+      <Wrapper onKeyDown={this.handleKeyDown} width={width}>
+        {React.Children.map(children, (child, idx) => {
+          if (child instanceof ToolbarButton) {
+            return React.cloneElement(
+              child as React.ReactElement<any>,
+              {
+                focused:
+                  this.props.focused && this.state.selectedItemIdx === idx,
+              } as ToolbarButtonProps,
+            );
+          } else {
+            return child;
+          }
+        })}
+      </Wrapper>
     );
   }
 }
-
-// value.buttonClickCallback
