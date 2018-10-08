@@ -441,6 +441,7 @@ describe('MediaStore', () => {
             sortDirection: 'desc',
           })
           .then(response => {
+            // We want to exclude all files without size. Contents contains 3 files, 2 of them empty, so we only care about the first one
             expect(response.data.contents).toHaveLength(1);
             expect(response.data.contents).toEqual([data.contents[0]]);
           });

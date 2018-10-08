@@ -258,7 +258,7 @@ describe('CollectionFetcher', () => {
       await collectionFetcher.loadNextPage('recents');
     });
 
-    it('should not fetch items if nextInclusiveStartKey == null', done => {
+    it('should not fetch next page items if current page nextInclusiveStartKey is null', done => {
       const { collectionFetcher, getCollectionItems } = setup(null);
 
       collectionFetcher.getItems('recents').subscribe({

@@ -77,6 +77,14 @@ export const fakeContext = (
     });
   }
 
+  if (stubbedContext.collection) {
+    Object.keys(stubbedContext.collection).forEach(methodName => {
+      wrappedStubbedContext.collection[methodName] = returns(
+        stubbedContext.collection[methodName],
+      );
+    });
+  }
+
   if (stubbedContext.context) {
     Object.keys(stubbedContext.context).forEach(methodName => {
       wrappedStubbedContext.context[methodName] = returns(

@@ -369,10 +369,9 @@ describe('<UploadView />', () => {
     it('should render loading next page state if next page is being loaded', async () => {
       const nextItems = new Promise(resolve => setImmediate(resolve));
       const loadNextPage = jest.fn().mockReturnValue(nextItems);
-      const context = {
-        ...fakeContext(),
+      const context = fakeContext({
         collection: { loadNextPage },
-      } as any;
+      });
       const { component, root } = createConnectedComponent(
         state,
         undefined,
@@ -388,6 +387,13 @@ describe('<UploadView />', () => {
       expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
     });
 
-    it('should not load next collection page if its already being loaded', () => {});
+    it('should not load next collection page if its already being loaded', () => {
+      const { component, context } = createConnectedComponent(state);
+
+      simulateScrollEndReached(component);
+      simulateScrollEndReached(component);
+
+      expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
+    });
   });
 });
