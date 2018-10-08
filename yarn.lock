@@ -12222,7 +12222,7 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.0.1:
     prosemirror-state "^1.0.0"
     w3c-keyname "^1.1.8"
 
-prosemirror-markdown@1.2.0:
+prosemirror-markdown@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.2.0.tgz#8f7fae09b8b74d16304bb51254e656631c52ac6c"
   dependencies:

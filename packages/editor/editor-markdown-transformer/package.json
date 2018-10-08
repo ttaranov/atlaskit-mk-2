@@ -19,7 +19,7 @@
     "@atlaskit/editor-common": "^18.0.0",
     "markdown-it": "^8.4.0",
     "markdown-it-table": "^2.0.4",
-    "prosemirror-markdown": "1.2.0",
+    "prosemirror-markdown": "^1.2.0",
     "prosemirror-model": "^1.6.1"
   },
   "devDependencies": {
