@@ -48,7 +48,7 @@ export const defaultTheme: ItemTheme = {
     secondaryText: colors.N200,
   },
   selected: {
-    background: colors.N0,
+    background: colors.backgroundActive,
     text: colors.N500,
     secondaryText: colors.N200,
   },

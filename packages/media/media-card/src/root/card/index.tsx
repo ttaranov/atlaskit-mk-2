@@ -163,8 +163,8 @@ export class Card extends Component<CardProps, CardState> {
     const resolvedId = await id;
 
     this.unsubscribe();
-    this.subscription = context
-      .getFile(resolvedId, { collectionName })
+    this.subscription = context.file
+      .getFileState(resolvedId, { collectionName })
       .subscribe({
         next: async state => {
           const {

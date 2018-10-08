@@ -26,9 +26,11 @@ export default function<T>(
           observer.next(res as T);
           observer.complete();
         })
-        .catch(observer.error.bind(observer));
-    } catch (err) {
-      observer.error.bind(observer)(err);
+        .catch(e => {
+          observer.error(e);
+        });
+    } catch (e) {
+      observer.error(e);
     }
 
     return () => AC.abort();

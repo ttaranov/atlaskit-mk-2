@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { AnalyticsListener } from '@atlaskit/analytics';
+import FabricAnalyticsListener from '@atlaskit/analytics-listeners';
 
 import { Query } from '../src/types';
 import ResourcedItemList, { Props } from '../src/components/ResourcedItemList';
 import {
+  analyticsWebClientMock,
   createProviders,
   SidebarContainer,
   Grid,
@@ -24,12 +25,6 @@ const initialQueryByLastUpdateDate: Query = {
 interface WithResetState {
   query: Query;
 }
-
-const captureEvent = (name, data) => {
-  // TODO replace with action('analyticsEvent') once working again
-  // tslint:disable-next-line:no-console
-  console.log('analyticsEvent', name, data);
-};
 
 class ResourcedItemListWithReset extends PureComponent<Props, WithResetState> {
   constructor(props: Props) {
@@ -96,7 +91,7 @@ export default () => (
     </Item>
     <Item>
       <h3>Simple - capture analytics</h3>
-      <AnalyticsListener onEvent={captureEvent}>
+      <FabricAnalyticsListener client={analyticsWebClientMock}>
         <SidebarContainer>
           <ResourcedItemList
             renderDocument={renderDocument}
@@ -104,7 +99,7 @@ export default () => (
             taskDecisionProvider={taskDecisionProvider}
           />
         </SidebarContainer>
-      </AnalyticsListener>
+      </FabricAnalyticsListener>
     </Item>
     <Item>
       <h3>Infinite loading</h3>

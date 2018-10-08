@@ -145,8 +145,7 @@ export class StatelessUploadView extends Component<
       try {
         const { context } = this.props;
         await context.collection.loadNextPage(RECENTS_COLLECTION);
-        this.setState({ isLoadingNextPage: false });
-      } catch (e) {
+      } finally {
         this.setState({ isLoadingNextPage: false });
       }
     });

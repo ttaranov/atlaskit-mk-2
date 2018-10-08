@@ -1,10 +1,12 @@
-import { Node as PmNode } from 'prosemirror-model';
 import { Decoration, DecorationSet } from 'prosemirror-view';
-import { TableDecorations } from '../types';
-import { TableCssClassName as ClassName } from '../types';
+import {
+  TableCssClassName as ClassName,
+  TableDecorations,
+  Cell,
+} from '../types';
 
-export const createHoverDecoration = (
-  cells: { pos: number; node: PmNode }[],
+export const createControlsHoverDecoration = (
+  cells: Cell[],
   danger?: boolean,
 ): Decoration[] => {
   const deco = cells.map(cell => {
@@ -19,22 +21,56 @@ export const createHoverDecoration = (
       {
         class: classes.join(' '),
       },
-      { id: TableDecorations.CONTROLS_HOVER },
+      { key: TableDecorations.CONTROLS_HOVER },
     );
   });
 
   return deco;
 };
 
-export const findHoverDecoration = (
+export const findControlsHoverDecoration = (
   decorationSet: DecorationSet,
 ): Decoration[] =>
-  decorationSet
-    .find()
-    .reduce(
-      (decorationArr: Decoration[], deco: Decoration) =>
-        deco.spec.id === TableDecorations.CONTROLS_HOVER
-          ? decorationArr.concat(deco)
-          : decorationArr,
-      [],
+  decorationSet.find(
+    undefined,
+    undefined,
+    spec => spec.key === TableDecorations.CONTROLS_HOVER,
+  );
+
+export const findInsertLineDecoration = (
+  decorationSet: DecorationSet,
+): Decoration[] =>
+  decorationSet.find(undefined, undefined, spec => {
+    return (
+      spec.key === TableDecorations.COLUMN_INSERT_LINE ||
+      spec.key === TableDecorations.ROW_INSERT_LINE
     );
+  });
+
+export const createColumnInsertLineDecoration = (
+  cells: Cell[],
+  columnIndex: number,
+): Decoration[] =>
+  cells.map(cell => {
+    const domNode = document.createElement('div');
+    domNode.className = `${ClassName.COLUMN_INSERT_LINE} ${
+      columnIndex === 0 ? 'left' : 'right'
+    }`;
+    return Decoration.widget(cell.pos + cell.node.nodeSize - 1, domNode, {
+      key: TableDecorations.COLUMN_INSERT_LINE,
+    });
+  });
+
+export const createRowInsertLineDecoration = (
+  cells: Cell[],
+  rowIndex: number,
+): Decoration[] =>
+  cells.map(cell => {
+    const domNode = document.createElement('div');
+    domNode.className = `${ClassName.ROW_INSERT_LINE} ${
+      rowIndex === 0 ? 'top' : 'bottom'
+    }`;
+    return Decoration.widget(cell.pos + cell.node.nodeSize - 1, domNode, {
+      key: TableDecorations.ROW_INSERT_LINE,
+    });
+  });

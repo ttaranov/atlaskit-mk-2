@@ -84,15 +84,15 @@ this is a text as well`,
       '{quote}h3. header three{quote}',
     ],
     [
-      'should transform h4 to Bold and Grey under blockquote',
+      'should transform h4 to Bold and Gray under blockquote',
       '{quote}h4. header four{quote}',
     ],
     [
-      'should transform h5 to Italic and Grey under blockquote',
+      'should transform h5 to Italic and Gray under blockquote',
       '{quote}h5. header five{quote}',
     ],
     [
-      'should transform h6 to Grey under blockquote',
+      'should transform h6 to Gray under blockquote',
       '{quote}h6. header six{quote}',
     ],
     [

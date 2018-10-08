@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "42.0.2",
+  "version": "43.0.0",
   "config": {
     "access": "public"
   },
@@ -42,7 +42,7 @@
     "xregexp": "^3.2.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^24.0.0",
+    "@atlaskit/media-core": "^24.1.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "rxjs": "^5.5.0"
@@ -60,9 +60,9 @@
   "devDependencies": {
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/layer": "^5.0.4",
-    "@atlaskit/media-core": "^24.0.0",
+    "@atlaskit/media-core": "^24.1.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.10",
+    "@atlaskit/util-data-test": "^10.0.12",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

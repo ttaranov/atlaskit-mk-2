@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import Checkbox from '@atlaskit/checkbox';
+import Button from '@atlaskit/button';
 import {
   LinkView,
   ResolvedView,
@@ -41,10 +41,9 @@ class Example extends React.Component {
       <Page>
         <Grid>
           <GridColumn>
-            <Checkbox
-              label="Is selected?"
-              onChange={this.handleSelectedClick}
-            />
+            <Button label="Is selected?" onClick={this.handleSelectedClick}>
+              {this.state.isSelected ? 'Deselect' : 'Make those selected'}
+            </Button>
           </GridColumn>
         </Grid>
         <Grid>
