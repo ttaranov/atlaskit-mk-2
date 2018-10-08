@@ -27,8 +27,11 @@ export const mapJiraItemToResult = (
  */
 export const addJiraResultQueryParams = (
   url: string,
-  queryParams: JiraResultQueyParams,
+  queryParams?: JiraResultQueyParams,
 ) => {
+  if (!queryParams) {
+    return url;
+  }
   const href = new URI(url);
   Object.keys(queryParams)
     .filter(key => !!queryParams[key])

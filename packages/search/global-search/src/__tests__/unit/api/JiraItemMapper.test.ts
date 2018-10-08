@@ -4,7 +4,10 @@ import {
   ContentType,
 } from '../../../../src/model/Result';
 
-import { mapJiraItemToResult } from '../../../../src/api/JiraItemMapper';
+import {
+  mapJiraItemToResult,
+  addJiraResultQueryParams,
+} from '../../../../src/api/JiraItemMapper';
 import {
   generateRandomIssueV1,
   generateRandomJiraIssue,
@@ -14,10 +17,12 @@ import {
 } from '../../../../example-helpers/mockJira';
 import { JiraItemV1, JiraItemV2 } from '../../../api/types';
 
+const sessionId = 'sessionId';
+
 describe('mapJiraItemToResult', () => {
   it('should be able to parse issue V1 response', () => {
     const issue = generateRandomIssueV1() as JiraItemV1;
-    const result = mapJiraItemToResult(issue);
+    const result = mapJiraItemToResult(issue, sessionId);
 
     expect(result).toMatchObject({
       resultId: issue.key,
@@ -34,14 +39,14 @@ describe('mapJiraItemToResult', () => {
 
   it('should be able to parse issue V2 respnse', () => {
     const issue = generateRandomJiraIssue() as JiraItemV2;
-    const result = mapJiraItemToResult(issue);
+    const result = mapJiraItemToResult(issue, sessionId);
 
     const avatar = issue.attributes.avatar || {};
     expect(result).toMatchObject({
       resultId: issue.id,
       avatarUrl: avatar.url,
       name: issue.name,
-      href: issue.url,
+      href: expect.stringMatching(issue.url),
       containerName: issue.attributes.issueTypeName,
       objectKey: issue.attributes.key,
       analyticsType: AnalyticsType.ResultJira,
@@ -52,14 +57,14 @@ describe('mapJiraItemToResult', () => {
 
   it('should be able to parse jira filter', () => {
     const filter = generateRandomJiraFilter() as JiraItemV2;
-    const result = mapJiraItemToResult(filter);
+    const result = mapJiraItemToResult(filter, sessionId);
 
     const avatar = filter.attributes.avatar || {};
     expect(result).toMatchObject({
       resultId: filter.id,
       avatarUrl: avatar.url,
       name: filter.name,
-      href: filter.url,
+      href: expect.stringMatching(filter.url),
       containerName: filter.attributes.ownerName,
       analyticsType: AnalyticsType.ResultJira,
       resultType: ResultType.JiraObjectResult,
@@ -70,14 +75,14 @@ describe('mapJiraItemToResult', () => {
 
   it('should be able to parse jira board', () => {
     const board = generateRandomJiraBoard() as JiraItemV2;
-    const result = mapJiraItemToResult(board);
+    const result = mapJiraItemToResult(board, sessionId);
 
     const avatar = board.attributes.avatar || {};
     expect(result).toMatchObject({
       resultId: board.id,
       avatarUrl: avatar.url,
       name: board.name,
-      href: board.url,
+      href: expect.stringMatching(board.url),
       containerName: board.attributes.containerName,
       analyticsType: AnalyticsType.ResultJira,
       resultType: ResultType.JiraObjectResult,
@@ -88,14 +93,14 @@ describe('mapJiraItemToResult', () => {
 
   it('should be able to parse jira project', () => {
     const project = generateRandomJiraProject() as JiraItemV2;
-    const result = mapJiraItemToResult(project);
+    const result = mapJiraItemToResult(project, sessionId);
 
     const avatar = project.attributes.avatar || {};
     expect(result).toMatchObject({
       resultId: project.id,
       avatarUrl: avatar.url,
       name: project.name,
-      href: project.url,
+      href: expect.stringMatching(project.url),
       containerName: project.attributes.projectType,
       analyticsType: AnalyticsType.ResultJira,
       resultType: ResultType.JiraObjectResult,
@@ -109,7 +114,7 @@ describe('mapJiraItemToResult', () => {
       const avatar = issue.attributes.avatar || {};
       avatar.url = undefined;
       avatar.urls = { ['32x32']: 'http://32url', ['48x48']: 'http://48url' };
-      const result = mapJiraItemToResult(issue);
+      const result = mapJiraItemToResult(issue, sessionId);
       expect(result.avatarUrl).toBe('http://48url');
     });
 
@@ -118,8 +123,41 @@ describe('mapJiraItemToResult', () => {
       const avatar = issue.attributes.avatar || {};
       avatar.url = undefined;
       avatar.urls = { ['32x32']: 'http://32url', ['16x16']: 'http://16url' };
-      const result = mapJiraItemToResult(issue);
+      const result = mapJiraItemToResult(issue, sessionId);
       expect(result.avatarUrl).toBe('http://32url');
+    });
+  });
+
+  describe('AddJiraResultQueryParams', () => {
+    it('should add session attributes to jira url', () => {
+      const url = 'https://product-fabric.atlassian.net/browse/ETH-671';
+      const href = addJiraResultQueryParams(url, {
+        searchSessionId: sessionId,
+        searchContainerId: 'containerId',
+        searchObjectId: 'objectId',
+        searchContentType: ContentType.JiraIssue,
+      });
+      expect(href).toBe(
+        'https://product-fabric.atlassian.net/browse/ETH-671?searchSessionId=sessionId&searchContainerId=containerId&searchObjectId=objectId&searchContentType=jira-issue',
+      );
+    });
+
+    it('should not add falsy session attributes', () => {
+      const url = 'https://product-fabric.atlassian.net/browse/ETH-671';
+      const href = addJiraResultQueryParams(url, {
+        searchSessionId: sessionId,
+        searchContainerId: undefined,
+        searchObjectId: '',
+      });
+      expect(href).toBe(
+        'https://product-fabric.atlassian.net/browse/ETH-671?searchSessionId=sessionId',
+      );
+    });
+
+    it('should support missing query params object', () => {
+      const url = 'https://product-fabric.atlassian.net/browse/ETH-671';
+      const href = addJiraResultQueryParams(url);
+      expect(href).toBe('https://product-fabric.atlassian.net/browse/ETH-671');
     });
   });
 });
