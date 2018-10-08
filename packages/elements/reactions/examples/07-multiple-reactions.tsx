@@ -5,8 +5,8 @@ import { ConnectedReactionsView } from '../src';
 import { ReactionsExampleWrapper } from './examples-util';
 
 const { getEmojiResource } = emoji.storyData;
-const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
-const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
+const demoAri = 'ari:cloud:owner:demo-cloud-id:item/';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/';
 
 export default function Example() {
   return (
@@ -16,10 +16,16 @@ export default function Example() {
           <p>This is a message with some reactions</p>
           <ConnectedReactionsView
             store={store}
-            containerAri={containerAri}
-            ari={demoAri}
+            containerAri={`${containerAri}1`}
+            ari={`${demoAri}1`}
             emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
-            allowAllEmojis={true}
+          />
+          <p>This is another message with some reactions</p>
+          <ConnectedReactionsView
+            store={store}
+            containerAri={`${containerAri}2`}
+            ari={`${demoAri}2`}
+            emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
           />
         </div>
       )}

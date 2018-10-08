@@ -1,23 +1,14 @@
-import * as React from 'react';
-import { ReactionClient, ReactionServiceClient } from '../client';
-import { Reactions } from '../types/Reactions';
-import { ReactionsReadyState, ReactionsState } from '../types/ReactionsState';
-import { ReactionStatus } from '../types/ReactionStatus';
-import { ReactionSummary } from '../types/ReactionSummary';
-import { Updater } from '../types/Updater';
-import { batchByKey } from './batched';
-import { Actions, Context } from './Context';
+import { ReactionClient } from '../client';
+import {
+  Reactions,
+  ReactionsReadyState,
+  ReactionsState,
+  ReactionStatus,
+  ReactionSummary,
+  Updater,
+} from '../types';
+import { batch, batchByKey } from './batched';
 import * as utils from './utils';
-
-const getClient = ({ client, url }: Props): ReactionClient => {
-  if (client) {
-    return client;
-  }
-  if (url) {
-    return new ReactionServiceClient(url);
-  }
-  throw new Error('Missing client');
-};
 
 export type State = {
   reactions: {
@@ -30,36 +21,50 @@ export type State = {
   };
 };
 
-export type Props = {
-  client?: ReactionClient;
-  url?: string;
-};
+export type OnUpdateCallback = (state: State) => void;
 
-export class ReactionContext extends React.Component<Props, State> {
+export interface ReactionsStore {
+  getReactions: (containerAri: string, ...aris: string[]) => void;
+  toggleReaction: (containerAri: string, aris: string, emojiId: string) => void;
+  addReaction: (containerAri: string, aris: string, emojiId: string) => void;
+  getDetailedReaction: (
+    containerAri: string,
+    aris: string,
+    emojiId: string,
+  ) => void;
+  getState: () => State;
+  onChange: (callback: OnUpdateCallback) => void;
+  removeOnChangeListener: (callback: OnUpdateCallback) => void;
+}
+
+export class MemoryReactionsStore implements ReactionsStore {
   private client: ReactionClient;
-  private actions: Actions;
+  private state: State;
+  private callbacks: OnUpdateCallback[] = [];
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
+  constructor(
+    client: ReactionClient,
+    state: State = {
       reactions: {},
       flash: {},
-    };
-    this.client = getClient(props);
-    this.actions = {
-      getReactions: this.getReactions,
-      toggleReaction: this.toggleReaction,
-      addReaction: this.addReaction,
-      getDetailedReaction: this.getDetailedReaction,
-    };
+    },
+  ) {
+    this.client = client;
+    this.state = state;
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { client, url } = this.props;
-    if (prevProps.client !== client || prevProps.url !== url) {
-      this.client = getClient(this.props);
-    }
-  }
+  private setState = (newState: Partial<State>) => {
+    this.state = {
+      ...this.state,
+      ...newState,
+    };
+    this.triggerOnChange();
+  };
+
+  // batch calls to onChange using the latest state in it.
+  private triggerOnChange = batch(() =>
+    this.callbacks.forEach(callback => callback(this.state)),
+  );
 
   private setReactions = (
     containerAri: string,
@@ -274,16 +279,13 @@ export class ReactionContext extends React.Component<Props, State> {
       .then(this.handleDetailedReactionResponse);
   };
 
-  render() {
-    return (
-      <Context.Provider
-        value={{
-          value: this.state,
-          actions: this.actions,
-        }}
-      >
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
+  getState = () => this.state;
+
+  onChange = (callback: OnUpdateCallback): void => {
+    this.callbacks.push(callback);
+  };
+
+  removeOnChangeListener = (toRemove: OnUpdateCallback): void => {
+    this.callbacks = this.callbacks.filter(callback => callback !== toRemove);
+  };
 }
