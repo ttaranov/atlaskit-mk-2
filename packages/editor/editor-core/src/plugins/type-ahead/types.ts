@@ -15,6 +15,10 @@ export type TypeAheadHandler = {
     query: string,
     editorState: EditorState,
     intl: InjectedIntl,
+    meta: {
+      prevActive: boolean;
+      queryChanged: boolean;
+    },
   ) => Array<TypeAheadItem> | Promise<Array<TypeAheadItem>>;
   selectItem: (
     state: EditorState,

@@ -84,7 +84,6 @@ export class ExampleEditor extends React.Component<Props> {
                 appearance="full-page"
                 analyticsHandler={analyticsHandler}
                 quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-                delegateAnalyticsEvent={(...args) => console.log(args)}
                 allowTasksAndDecisions={true}
                 allowCodeBlocks={{ enableKeybindingsForIDE: true }}
                 allowLists={true}

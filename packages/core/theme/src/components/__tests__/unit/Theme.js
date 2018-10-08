@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import { Theme } from '../..';
+import { Theme } from '../../..';
 
 test('no parent', done => {
   mount(

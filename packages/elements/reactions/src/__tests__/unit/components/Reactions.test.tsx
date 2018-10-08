@@ -107,7 +107,7 @@ describe('@atlaskit/reactions/reactions', () => {
           payload: expect.objectContaining({
             action: 'rendered',
             actionSubject: 'reactionView',
-            eventType: 'ops',
+            eventType: 'operational',
             attributes: {
               duration: expect.any(Number),
               packageName: '@atlaskit/reactions',
@@ -173,7 +173,7 @@ describe('@atlaskit/reactions/reactions', () => {
             payload: expect.objectContaining({
               action: 'clicked',
               actionSubject: 'reactionPicker',
-              actionSubjectID: 'emoji',
+              actionSubjectId: 'emoji',
               eventType: 'ui',
               attributes: {
                 duration: expect.any(Number),
@@ -200,7 +200,7 @@ describe('@atlaskit/reactions/reactions', () => {
             payload: expect.objectContaining({
               action: 'clicked',
               actionSubject: 'reactionPicker',
-              actionSubjectID: 'emoji',
+              actionSubjectId: 'emoji',
               eventType: 'ui',
               attributes: {
                 duration: expect.any(Number),
@@ -228,7 +228,7 @@ describe('@atlaskit/reactions/reactions', () => {
               payload: expect.objectContaining({
                 action: 'clicked',
                 actionSubject: 'reactionPicker',
-                actionSubjectID: 'emoji',
+                actionSubjectId: 'emoji',
                 eventType: 'ui',
                 attributes: {
                   duration: expect.any(Number),
@@ -253,7 +253,7 @@ describe('@atlaskit/reactions/reactions', () => {
             payload: expect.objectContaining({
               action: 'clicked',
               actionSubject: 'reactionPicker',
-              actionSubjectID: 'more',
+              actionSubjectId: 'more',
               eventType: 'ui',
               attributes: {
                 duration: expect.any(Number),
@@ -275,7 +275,7 @@ describe('@atlaskit/reactions/reactions', () => {
             payload: expect.objectContaining({
               action: 'clicked',
               actionSubject: 'reactionPicker',
-              actionSubjectID: 'emoji',
+              actionSubjectId: 'emoji',
               eventType: 'ui',
               attributes: {
                 duration: expect.any(Number),
