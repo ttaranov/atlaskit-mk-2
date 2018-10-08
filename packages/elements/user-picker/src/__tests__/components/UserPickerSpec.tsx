@@ -7,6 +7,18 @@ import UserPickerItem from '../../components/UserPickerItem';
 import { User } from '../../types';
 
 const Trigger = () => <div>Hey I'm a trigger</div>;
+const users: User[] = [
+  {
+    id: 'abc-123',
+    name: 'Jace Beleren',
+    nickname: 'jbeleren',
+  },
+  {
+    id: '123-abc',
+    name: 'Chandra Nalaar',
+    nickname: 'cnalaar',
+  },
+];
 
 describe('UserPicker', () => {
   const shallowUserPicker = (props: Partial<Props>) =>
@@ -53,10 +65,21 @@ describe('UserPicker', () => {
     expect(droplist.prop('isLoading')).toBeTruthy();
   });
 
+  it('should pass onSelection prop to UserPickerItem', () => {
+    const onSelection = jest.fn();
+    const component = shallowUserPicker({ users, onSelection });
+    const droplist = component.find(Droplist);
+    expect(
+      droplist
+        .find(UserPickerItem)
+        .at(0)
+        .prop('onSelection'),
+    ).toEqual(onSelection);
+  });
+
   describe('with users', () => {
     it('should render empty user list', () => {
-      const users: User[] = [];
-      const component = shallowUserPicker({ users });
+      const component = shallowUserPicker({ users: [] });
 
       const droplist = component.find(Droplist);
       expect(droplist.prop('isOpen')).toBeFalsy();
@@ -64,18 +87,6 @@ describe('UserPicker', () => {
     });
 
     it('should render some users', () => {
-      const users: User[] = [
-        {
-          id: 'abc-123',
-          name: 'Jace Beleren',
-          nickname: 'jbeleren',
-        },
-        {
-          id: '123-abc',
-          name: 'Chandra Nalaar',
-          nickname: 'cnalaar',
-        },
-      ];
       const component = shallowUserPicker({ users });
 
       const droplist = component.find(Droplist);

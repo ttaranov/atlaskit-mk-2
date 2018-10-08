@@ -2,12 +2,13 @@ import Avatar, { AvatarItem } from '@atlaskit/avatar';
 import Item from '@atlaskit/item';
 import Lozenge from '@atlaskit/lozenge';
 import * as React from 'react';
-import { User } from '../types';
+import { User, OnUserEvent } from '../types';
 import { HighlightText } from './HighlightText';
 
 export interface Props {
   user: User;
   status?: 'online' | 'busy' | 'focus' | 'offline';
+  onSelection?: OnUserEvent;
 }
 
 interface AvatarText {
@@ -49,6 +50,13 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     return { primaryText: nickname };
   };
 
+  private onItemSelection = (): void => {
+    const { user, onSelection } = this.props;
+    if (onSelection) {
+      onSelection(user);
+    }
+  };
+
   render() {
     const {
       user: { highlight },
@@ -58,7 +66,7 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     const { primaryText, secondaryText } = this.generateAvatarText();
 
     return (
-      <Item elemAfter={this.renderLozenge()}>
+      <Item elemAfter={this.renderLozenge()} onClick={this.onItemSelection}>
         <AvatarItem
           backgroundColor="transparent"
           avatar={this.renderAvatar()}

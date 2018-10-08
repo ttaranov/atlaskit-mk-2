@@ -25,6 +25,7 @@ export default class Example extends React.Component<{}, State> {
         trigger={<Button onClick={this.toggleUserPicker}>Click me!</Button>}
         open={isInputFocused}
         users={exampleUsers}
+        onSelection={console.log}
       />
     );
   }

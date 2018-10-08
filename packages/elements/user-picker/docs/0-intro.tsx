@@ -1,6 +1,11 @@
 import { md } from '@atlaskit/docs';
 
 export default md`
+  # WARNING
+
+  This package is still in development and API will change frequently. There will likely be multiple breaking changes
+  in a short span of time and it should not be consumed by customers for the time being.
+
   # User picker
 
   The purpose of the user picker package is to provide UI for displaying a set of users in a a scrollable dropdown.

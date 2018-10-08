@@ -16,3 +16,7 @@ export interface User {
   highlight?: Highlight;
   lozenge?: string;
 }
+
+export interface OnUserEvent {
+  (user: User): void;
+}

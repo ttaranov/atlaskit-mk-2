@@ -44,6 +44,7 @@ export default class Example extends React.Component<{}, State> {
         open={isInputFocused}
         users={users}
         onRequestClose={this.onInputBlur}
+        onSelection={console.log}
       />
     );
   }

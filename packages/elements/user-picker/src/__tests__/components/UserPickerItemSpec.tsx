@@ -148,4 +148,24 @@ describe('UserPickerItem', () => {
       );
     });
   });
+
+  describe('onSelection', () => {
+    it('should call onSelection prop onClick', () => {
+      const onSelection = jest.fn();
+      const component = shallowUserPickerItem({ onSelection });
+
+      const item = component.find(Item);
+      item.simulate('click');
+      expect(onSelection.mock.calls).toHaveLength(1);
+    });
+
+    it('should call onSelection with user', () => {
+      const onSelection = jest.fn();
+      const component = shallowUserPickerItem({ onSelection });
+
+      const item = component.find(Item);
+      item.simulate('click');
+      expect(onSelection.mock.calls[0][0]).toEqual(user);
+    });
+  });
 });

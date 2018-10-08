@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "Fabric component for positioning and scrolling a dropdown",
+  "description": "Fabric component for displaying a list of users",
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
@@ -21,9 +21,7 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^14.0.10",
-    "@atlaskit/button": "^9.0.10",
     "@atlaskit/droplist": "^7.0.9",
-    "@atlaskit/field-text": "^7.0.10",
     "@atlaskit/item": "^8.0.7",
     "@atlaskit/lozenge": "^6.2.1",
     "@atlaskit/util-shared-styles": "^2.10.3"
@@ -44,7 +42,9 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "@atlaskit/button": "^9.0.10",
     "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/field-text": "^7.0.10",
     "@atlaskit/util-data-test": "^10.0.13",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },

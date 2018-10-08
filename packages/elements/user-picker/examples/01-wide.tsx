@@ -34,6 +34,7 @@ export default class Example extends React.Component<{}, State> {
         open={isInputFocused}
         users={exampleUsers}
         width={600}
+        onSelection={console.log}
       />
     );
   }

@@ -1,6 +1,6 @@
 import Droplist from '@atlaskit/droplist';
 import * as React from 'react';
-import { User } from '../../types';
+import { User, OnUserEvent } from '../../types';
 import UserPickerItem from '../UserPickerItem';
 import { PickerStyle } from './styles';
 
@@ -9,7 +9,7 @@ export interface Props {
   users?: User[];
   open?: boolean;
   width?: number;
-  onSelection?: (user: User) => void;
+  onSelection?: OnUserEvent;
   onRequestClose?: () => void;
 }
 
@@ -26,7 +26,7 @@ export class UserPicker extends React.Component<Props, {}> {
   };
 
   render() {
-    const { open, users, trigger, width } = this.props;
+    const { open, users, trigger, width, onSelection } = this.props;
 
     return (
       <PickerStyle width={width}>
@@ -39,7 +39,13 @@ export class UserPicker extends React.Component<Props, {}> {
           shouldFitContainer
         >
           {users &&
-            users.map(user => <UserPickerItem key={user.id} user={user} />)}
+            users.map(user => (
+              <UserPickerItem
+                key={user.id}
+                user={user}
+                onSelection={onSelection}
+              />
+            ))}
         </Droplist>
       </PickerStyle>
     );

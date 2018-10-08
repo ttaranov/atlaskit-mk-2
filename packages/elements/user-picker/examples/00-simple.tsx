@@ -33,6 +33,7 @@ export default class Example extends React.Component<{}, State> {
         }
         open={isInputFocused}
         users={exampleUsers}
+        onSelection={console.log}
       />
     );
   }
