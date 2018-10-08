@@ -9,6 +9,7 @@ import {
   JiraResult,
   ContentType,
 } from '../model/Result';
+import { addJiraResultQueryParams } from './JiraItemMapper';
 
 const RECENT_ITEMS_PATH: string = 'rest/internal/2/productsearch/recent';
 export type RecentItemsCounts = {
@@ -126,27 +127,43 @@ export default class JiraClientImpl implements JiraClient {
       options,
     );
     return recentItems
-      .map(group => this.recentItemGroupToItems(group))
+      .map(group => this.recentItemGroupToItems(group, searchSessionId))
       .reduce((acc, item) => [...acc, ...item], []);
   }
 
-  private recentItemGroupToItems(group: JiraRecentItemGroup) {
+  private recentItemGroupToItems(
+    group: JiraRecentItemGroup,
+    searchSessionId: string,
+  ) {
     const { id, items } = group;
-    return items.map(item => this.recentItemToResultItem(item, id));
+    return items.map(item =>
+      this.recentItemToResultItem(item, id, searchSessionId),
+    );
   }
   private recentItemToResultItem(
     item: JiraRecentItem,
     jiraGroup: JiraResponseGroup,
+    searchSessionId: string,
   ): JiraResult {
+    const containerId = this.getContainerId(item, jiraGroup);
+    const contentType = JiraResponseGroupToContentType[jiraGroup];
+    const resultId = '' + item.id;
+    const href = addJiraResultQueryParams(item.url, {
+      searchSessionId,
+      searchContainerId: containerId,
+      searchContentType: contentType,
+      searchObjectId: resultId,
+    });
+
     return {
       resultType: ResultType.JiraObjectResult,
-      resultId: '' + item.id,
+      resultId,
       name: item.title,
-      href: item.url,
+      href,
       analyticsType: AnalyticsType.RecentJira,
       avatarUrl: `${item.avatarUrl}`,
-      containerId: this.getContainerId(item, jiraGroup),
-      contentType: JiraResponseGroupToContentType[jiraGroup],
+      containerId: containerId,
+      contentType,
       ...this.getTypeSpecificAttributes(item, jiraGroup),
     };
   }

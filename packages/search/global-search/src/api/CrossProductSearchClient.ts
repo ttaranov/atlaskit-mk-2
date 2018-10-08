@@ -195,7 +195,7 @@ function mapItemToResult(
     );
   }
   if (scope.startsWith('jira')) {
-    return mapJiraItemToResult(item as JiraItem);
+    return mapJiraItemToResult(item as JiraItem, searchSessionId);
   }
 
   if (scope === Scope.People) {
