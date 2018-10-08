@@ -2,7 +2,6 @@
 
 import React, { type StatelessFunctionalComponent } from 'react';
 import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
-import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
 import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import type {
@@ -11,7 +10,6 @@ import type {
 } from '../components/GlobalNavigation/types';
 import type { ProductConfigShape } from './types';
 
-const MAX_NOTIFICATIONS_COUNT = 9;
 const isNotEmpty = obj => {
   const values = Object.values(obj);
   return !!(
@@ -44,7 +42,12 @@ type OtherConfig = {
   href?: string,
   badge?: ?StatelessFunctionalComponent<*>,
 };
-function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
+
+function configFactory(
+  onClick: ?() => void,
+  tooltip,
+  otherConfig: OtherConfig = {},
+) {
   const { href } = otherConfig;
   const shouldNotRenderItem = !onClick && !href;
 
@@ -140,10 +143,9 @@ export default function generateProductConfig(
     starredTooltip,
     starredDrawerContents,
 
-    onNotificationClick,
     notificationTooltip,
-    notificationCount,
-    notificationDrawerContents,
+    fabricNotificationLogUrl,
+    cloudId,
 
     appSwitcherComponent,
     appSwitcherTooltip,
@@ -156,18 +158,6 @@ export default function generateProductConfig(
     loginHref,
     profileIconUrl,
   } = props;
-
-  const notificationBadge = {
-    badge: notificationCount
-      ? () => (
-          <Badge
-            max={MAX_NOTIFICATIONS_COUNT}
-            appearance="important"
-            value={notificationCount}
-          />
-        )
-      : null,
-  };
 
   return {
     product: configFactory(onProductClick, productTooltip, {
@@ -187,10 +177,9 @@ export default function generateProductConfig(
       starredTooltip,
     ),
     notification: configFactory(
-      onNotificationClick ||
-        (notificationDrawerContents && openDrawer('notification')),
+      ((fabricNotificationLogUrl || cloudId) && openDrawer('notification')) ||
+        (() => {}),
       notificationTooltip,
-      notificationBadge,
     ),
     help: helpConfigFactory(helpItems, helpTooltip),
     profile: profileConfigFactory(

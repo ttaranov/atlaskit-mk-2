@@ -14,9 +14,11 @@ import generateProductConfig from '../../config/product-config';
 import ItemComponent from '../ItemComponent';
 import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
+import { notificationIntegration } from '../../platform-integration';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
+import type { NotificationIntegration } from '../../platform-integration/notification/types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
@@ -47,8 +49,15 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 
 const noop = () => {};
 
+const localStorage = typeof window === 'object' ? window.localStorage : {};
+
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
+  isSearchDrawerOpen: boolean,
+  isNotificationDrawerOpen: boolean,
+  isStarredDrawerOpen: boolean,
+  notificationBadgeCount: number,
+  isCreateDrawerOpen: boolean,
   isSearchDrawerOpen: boolean,
   isNotificationDrawerOpen: boolean,
   isStarredDrawerOpen: boolean,
@@ -66,6 +75,8 @@ export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
+  notificationIntegrationInstance: NotificationIntegration;
+
   constructor(props: GlobalNavigationProps) {
     super(props);
 
@@ -74,6 +85,7 @@ export default class GlobalNavigation
       isSearchDrawerOpen: false,
       isNotificationDrawerOpen: false,
       isStarredDrawerOpen: false,
+      notificationBadgeCount: 0,
     };
 
     this.drawers.forEach((drawer: DrawerName) => {
@@ -95,9 +107,23 @@ export default class GlobalNavigation
       this.state[`is${capitalisedDrawerName}Open`] =
         props[`is${capitalisedDrawerName}Open`];
     });
+    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
+
+    this.notificationIntegrationInstance = notificationIntegration(
+      fabricNotificationLogUrl,
+      cloudId,
+      locale,
+      product,
+      60000,
+      this.onNotificationBadgeCountUpdated,
+      this.onNotificationBadgeCountUpdating,
+    );
   }
 
-  componentDidUpdate(prevProps: GlobalNavigationProps) {
+  componentDidUpdate(
+    prevProps: GlobalNavigationProps,
+    prevState: GlobalNavigationState,
+  ) {
     this.drawers.forEach(drawer => {
       this.updateDrawerControlledStatus(drawer, this.props);
 
@@ -119,7 +145,78 @@ export default class GlobalNavigation
         });
       }
     });
+
+    console.log('Checking props', this.props);
+
+    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
+
+    if (
+      prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl ||
+      prevProps.cloudId !== cloudId ||
+      prevProps.locale !== locale ||
+      prevProps.product !== product ||
+      !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount
+    ) {
+      console.log('Updating the notification integration');
+      const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
+
+      this.notificationIntegrationInstance = notificationIntegration(
+        fabricNotificationLogUrl,
+        cloudId,
+        locale,
+        product,
+        refreshRate,
+        this.onNotificationBadgeCountUpdated,
+        this.onNotificationBadgeCountUpdating,
+      );
+    }
   }
+
+  onNotificationBadgeCountUpdating = (
+    param: { visibilityChangesSinceTimer?: number | void } = {},
+  ) => {
+    const { visibilityChangesSinceTimer = 0 } = param;
+    if (!this.state.count || visibilityChangesSinceTimer <= 1) {
+      // fetch the count
+      return {};
+    }
+
+    // skip fetch, refresh from local storage if newer
+    const cachedCount = this.getLocalStorageCount();
+    const result = {};
+    if (cachedCount && cachedCount !== this.state.notificationBadgeCount) {
+      result.countOverride = parseInt(cachedCount, 10);
+    } else {
+      result.skip = true;
+    }
+    return result;
+  };
+
+  onNotificationBadgeCountUpdated = (param: { newCount?: number } = {}) => {
+    console.log('Changed state count');
+    const { newCount = 0 } = param;
+    this.updateLocalStorageCount(newCount);
+    this.setState({
+      notificationBadgeCount: newCount,
+    });
+  };
+
+  getLocalStorageCount = () => {
+    try {
+      return localStorage.getItem('notificationBadgeCountCache');
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  };
+
+  updateLocalStorageCount = (newCount: number) => {
+    try {
+      localStorage.setItem('notificationBadgeCountCache', newCount);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   updateDrawerControlledStatus = (
     drawer: DrawerName,
@@ -127,14 +224,7 @@ export default class GlobalNavigation
   ) => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
 
-    if (
-      props[
-        `on${capitalisedDrawerName.substr(
-          0,
-          capitalisedDrawerName.length - 6, // Trim the `Drawer` bit from ${drawerType}Drawer
-        )}Click`
-      ]
-    ) {
+    if (props[`on${capitalisedDrawerName.replace('Drawer', '')}Click`]) {
       this[`is${capitalisedDrawerName}Controlled`] = false;
     } else {
       // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
@@ -148,10 +238,16 @@ export default class GlobalNavigation
 
   openDrawer = (drawerName: DrawerName) => () => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
-    const onOpenCallback =
-      typeof this.props[`on${capitalisedDrawerName}Open`] === 'function'
-        ? this.props[`on${capitalisedDrawerName}Open`]
-        : noop;
+    let onOpenCallback = noop;
+
+    if (typeof this.props[`on${capitalisedDrawerName}Open`] === 'function') {
+      onOpenCallback = this.props[`on${capitalisedDrawerName}Open`];
+    }
+
+    if (drawerName === 'notification') {
+      onOpenCallback = this.notificationIntegrationInstance
+        .onNotificationDrawerOpen;
+    }
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -173,10 +269,16 @@ export default class GlobalNavigation
     analyticsEvent: UIAnalyticsEvent,
   ) => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
-    const onCloseCallback =
-      typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
-        ? this.props[`on${capitalisedDrawerName}Close`]
-        : noop;
+    let onCloseCallback = noop;
+
+    if (typeof this.props[`on${capitalisedDrawerName}Close`] === 'function') {
+      onCloseCallback = this.props[`on${capitalisedDrawerName}Close`];
+    }
+
+    if (drawerName === 'notification') {
+      onCloseCallback = this.notificationIntegrationInstance
+        .onNotificationDrawerClose;
+    }
 
     fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
@@ -199,11 +301,15 @@ export default class GlobalNavigation
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
+    const { badge } = this.notificationIntegrationInstance;
+    console.log('Getting the badge from notification integration');
+
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
         ? {
             ...defaultConfig[item],
             ...productConfig[item],
+            ...(item === 'notification' ? { badge } : {}),
           }
         : null),
     }));
@@ -223,6 +329,7 @@ export default class GlobalNavigation
   render() {
     // TODO: Look into memoizing this to avoid memory bloat
     const { primaryItems, secondaryItems } = this.constructNavItems();
+    const { notificationDrawerContents } = this.notificationIntegrationInstance;
 
     return (
       <NavigationAnalyticsContext
@@ -240,7 +347,10 @@ export default class GlobalNavigation
           />
           {this.drawers.map(drawer => {
             const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-            const DrawerContents = this.props[`${drawer}DrawerContents`];
+            const DrawerContents =
+              drawer === 'notification'
+                ? notificationDrawerContents
+                : this.props[`${drawer}DrawerContents`];
             const shouldUnmountOnExit = this.props[
               `should${capitalisedDrawerName}UnmountOnExit`
             ];
