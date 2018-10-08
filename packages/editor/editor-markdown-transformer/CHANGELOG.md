@@ -1,5 +1,8 @@
 # @atlaskit/editor-markdown-transformer
 
+## 2.0.15
+- [patch] Upgrade markdown-it to reduce duplicate dependencies [a27ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a27ace1)
+
 ## 2.0.14
 - [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
 - [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)

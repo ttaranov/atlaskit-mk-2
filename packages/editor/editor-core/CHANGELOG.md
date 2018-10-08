@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 84.0.1
+- [patch] Upgrade markdown-it to reduce duplicate dependencies [a27ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a27ace1)
+
 ## 84.0.0
 - [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
 - [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
