@@ -9,6 +9,7 @@ import {
   enforceAttributes,
   isFlagWithEvaluationDetails,
   isSimpleFlag,
+  validateFlags,
 } from './lib';
 
 import TrackedFlag from './tracked-flag';
@@ -34,6 +35,11 @@ export default class FeatureFlagClient {
   setFlags(flags: Flags) {
     if (!isObject(flags)) {
       return;
+    }
+
+    // @ts-ignore
+    if (process.env !== 'production') {
+      validateFlags(flags);
     }
 
     this.flags = {

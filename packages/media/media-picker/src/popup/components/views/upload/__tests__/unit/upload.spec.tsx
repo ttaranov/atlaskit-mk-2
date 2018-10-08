@@ -1,13 +1,13 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
-import { FileDetails } from '@atlaskit/media-core';
-import { Card, CardView } from '@atlaskit/media-card';
+import { Card } from '@atlaskit/media-card';
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { fakeContext } from '@atlaskit/media-test-helpers';
+import { Context } from '@atlaskit/media-core';
 import { State, SelectedItem, LocalUpload } from '../../../../../domain';
 import {
   mockStore,
@@ -22,6 +22,7 @@ import {
   StatelessUploadView,
   default as ConnectedUploadView,
 } from '../../upload';
+import { LoadingNextPageWrapper } from '../../styled';
 import { fileClick } from '../../../../../actions/fileClick';
 import { editorShowImage } from '../../../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../../../actions/editRemoteImage';
@@ -36,8 +37,11 @@ const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
 
-const createConnectedComponent = (state: State, reactContext: {} = {}) => {
-  const context = fakeContext();
+const createConnectedComponent = (
+  state: State,
+  reactContext: {} = {},
+  context: Context = fakeContext(),
+) => {
   const store = mockStore(state);
   const dispatch = store.dispatch;
   const root = mount(
@@ -56,7 +60,7 @@ const createConnectedComponent = (state: State, reactContext: {} = {}) => {
     },
   );
   const component = root.find(StatelessUploadView);
-  return { component, dispatch, root };
+  return { component, dispatch, root, context };
 };
 
 describe('<StatelessUploadView />', () => {
@@ -137,6 +141,7 @@ describe('<StatelessUploadView />', () => {
   });
 
   it('should render currently uploading items', () => {
+    const upfrontId = Promise.resolve('id1');
     const mockStateOverride: Partial<State> = {
       uploads: {
         uploadId1: {
@@ -145,11 +150,9 @@ describe('<StatelessUploadView />', () => {
               id: 'id1',
               mimeType: 'image/jpeg',
               name: 'some-file-name',
-              size: 42,
+              upfrontId,
             },
           },
-          progress: 10,
-          timeStarted: 0,
         } as LocalUpload,
       },
       selectedItems: [
@@ -159,71 +162,19 @@ describe('<StatelessUploadView />', () => {
         },
       ] as SelectedItem[],
     };
-    const expectedMetadata: FileDetails = {
-      id: 'id1',
-      name: 'some-file-name',
-      size: 42,
-      mediaType: 'image',
-      mimeType: 'image/jpeg',
-    };
     const component = mount(getUploadViewElement(false, [], mockStateOverride));
-    expect(component.find(CardView)).toHaveLength(1);
-    expect(component.find(CardView).props().metadata).toEqual(expectedMetadata);
-    expect(component.find(CardView).props().status).toEqual('uploading');
-    expect(component.find(CardView).props().progress).toEqual(10);
-    expect(component.find(CardView).props().dimensions).toEqual({
+
+    expect(component.find(Card)).toHaveLength(1);
+    expect(component.find(Card).prop('dimensions')).toEqual({
       width: 162,
       height: 108,
     });
-    expect(component.find(CardView).props().selectable).toEqual(true);
-    expect(component.find(CardView).props().selected).toEqual(true);
-  });
-
-  it('should render right mediaType for uploading files', () => {
-    const mockStateOverride: Partial<State> = {
-      uploads: {
-        uploadId1: {
-          file: {
-            metadata: {
-              id: 'id1',
-              mimeType: 'video/mp4',
-            },
-          },
-        } as LocalUpload,
-        uploadId2: {
-          file: {
-            metadata: {
-              id: 'id2',
-              mimeType: 'application/pdf',
-            },
-          },
-        } as LocalUpload,
-      },
-    };
-    const component = mount(getUploadViewElement(false, [], mockStateOverride));
-    expect(component.find(CardView)).toHaveLength(2);
-    expect(
-      component
-        .find(CardView)
-        .first()
-        .props().metadata,
-    ).toEqual(
-      expect.objectContaining({
-        mediaType: 'video',
-        mimeType: 'video/mp4',
-      }),
-    );
-    expect(
-      component
-        .find(CardView)
-        .last()
-        .props().metadata,
-    ).toEqual(
-      expect.objectContaining({
-        mediaType: 'doc',
-        mimeType: 'application/pdf',
-      }),
-    );
+    expect(component.find(Card).prop('selectable')).toEqual(true);
+    expect(component.find(Card).prop('selected')).toEqual(true);
+    expect(component.find(Card).prop('identifier')).toEqual({
+      id: upfrontId,
+      mediaItemType: 'file',
+    });
   });
 });
 
@@ -262,7 +213,6 @@ describe('<UploadView />', () => {
               upfrontId,
             },
             dataURI: 'some-data-uri',
-            // upfrontId
           },
           index: 0,
           events: [],
@@ -359,7 +309,7 @@ describe('<UploadView />', () => {
     const { component } = createConnectedComponent(state);
     expect(
       component
-        .find(CardView)
+        .find(Card)
         .first()
         .props().actions,
     ).toContainEqual({
@@ -376,13 +326,14 @@ describe('<UploadView />', () => {
 
     const props = component
       .find(Card)
-      .first()
+      .last()
       .props();
     if (props.onClick) {
       props.onClick({ mediaItemDetails: { id: 'some-id' } } as any);
     } else {
       fail('onClick property is missing in props');
     }
+
     expect(dispatch.mock.calls[0][0]).toEqual({
       id: 'some-id',
       type: 'SET_UPFRONT_ID_DEFERRED',
@@ -400,5 +351,49 @@ describe('<UploadView />', () => {
 
     component.find(LocalBrowserButton).simulate('click');
     expect(aHandler).toBeCalled();
+  });
+
+  describe('pagination', () => {
+    const simulateScrollEndReached = (component: ReactWrapper<any, any>) =>
+      (component.instance() as any)['onThresholdReachedListener']();
+
+    it('should load next collection page when threshold is reached', () => {
+      const { component, context } = createConnectedComponent(state);
+
+      simulateScrollEndReached(component);
+
+      expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
+      expect(context.collection.loadNextPage).toBeCalledWith('recents');
+    });
+
+    it('should render loading next page state if next page is being loaded', async () => {
+      const nextItems = new Promise(resolve => setImmediate(resolve));
+      const loadNextPage = jest.fn().mockReturnValue(nextItems);
+      const context = fakeContext({
+        collection: { loadNextPage },
+      });
+      const { component, root } = createConnectedComponent(
+        state,
+        undefined,
+        context,
+      );
+
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
+      simulateScrollEndReached(component);
+      root.update();
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(1);
+      await nextItems;
+      root.update();
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
+    });
+
+    it('should not load next collection page if its already being loaded', () => {
+      const { component, context } = createConnectedComponent(state);
+
+      simulateScrollEndReached(component);
+      simulateScrollEndReached(component);
+
+      expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
+    });
   });
 });

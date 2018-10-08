@@ -1,5 +1,15 @@
 # @atlaskit/emoji
 
+## 43.0.0
+- [patch] Deprecate context.uploadFile & context.getFile. Instead context.file.upload & context.file.getFileState should be used; media-store's uploadFile function now takes MediaStore as a second argument, not MediaApiConfig [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/util-data-test@10.0.12
+  - @atlaskit/media-core@24.1.0
+
+## 42.0.2
+- [patch] Remove ua-parser-js to save some pageweight [cf18b9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf18b9f)
+
 ## 42.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

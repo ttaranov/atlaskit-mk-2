@@ -11,17 +11,6 @@ describe('validate', () => {
     expect(run).toThrowError('doc: required prop missing.');
   });
 
-  it('should throw when content does not meet requirement', () => {
-    const run = () => {
-      validate({
-        type: 'doc',
-        version: 1,
-        content: [],
-      });
-    };
-    expect(run).toThrowError(`doc: 'content' should have more than 1 child.`);
-  });
-
   it('should throw for invalid content', () => {
     const run = () => {
       validate({

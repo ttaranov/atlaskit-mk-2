@@ -1,13 +1,17 @@
 {
   "name": "@atlaskit/icon-file-type",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A React package that contains file-type icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
   "module": "dist/esm/index.js",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "glyph",
+    "svgs",
+    "utils",
+    "es5"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [

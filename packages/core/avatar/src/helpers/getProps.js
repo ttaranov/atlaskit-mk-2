@@ -1,4 +1,5 @@
 // @flow
+
 const getAppearanceProps = props => {
   const {
     appearance,

@@ -1,5 +1,14 @@
 # @atlaskit/media-ui
 
+## 6.1.0
+- [minor] Add pagination to recents view in MediaPicker [4b3c1f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b3c1f5)
+
+## 6.0.3
+- [patch] Refactored the rxjs set up for smart cards [026c96e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026c96e)
+
+## 6.0.2
+- [patch] workaround to handle string size comming from /collection/items [8e99323](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e99323)
+
 ## 6.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

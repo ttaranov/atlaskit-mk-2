@@ -1,8 +1,8 @@
 import { QuickInsertItem } from './types';
 
-export function distance(str1, str2) {
-  const lowerStr2 = str2.toLowerCase().replace(/\s/g, '');
-  return str1
+export function distance(search: string, content: string): number {
+  const lowerContent = content.toLowerCase().replace(/\s/g, '');
+  return search
     .replace(/\s/g, '')
     .toLowerCase()
     .split('')
@@ -12,7 +12,7 @@ export function distance(str1, str2) {
           return acc;
         }
 
-        const indexInStr2 = lowerStr2.indexOf(char, acc.offset);
+        const indexInStr2 = lowerContent.indexOf(char, acc.offset);
 
         if (indexInStr2 === -1) {
           return { dist: Infinity, offset: 0 };
@@ -27,6 +27,24 @@ export function distance(str1, str2) {
       },
       { dist: 0, offset: 0 },
     ).dist;
+}
+
+// Finds the distance of the search string from each word and returns the min.
+// Ensures the search string starts with the letter of one of the words
+export function distanceByWords(search: string, content: string): number {
+  if (search === '') {
+    return 0;
+  }
+  const lowerSearch = search.toLowerCase().replace(/\s/g, '');
+  return content
+    .replace(/\s/g, ' ')
+    .toLowerCase()
+    .split(' ')
+    .filter(word => lowerSearch[0] === word[0])
+    .reduce(
+      (minDist, word, index) => Math.min(minDist, distance(lowerSearch, word)),
+      Infinity,
+    );
 }
 
 export function find(query, items) {
@@ -48,7 +66,7 @@ export function find(query, items) {
     })
     .map(item => {
       const dist = getItemSearchStrings(item).reduce((acc, keyword) => {
-        const interimDist = distance(query, keyword);
+        const interimDist = distanceByWords(query, keyword);
         return interimDist < acc ? interimDist : acc;
       }, Infinity);
 

@@ -7,6 +7,7 @@ const defaultState: Context = {
   onMouseEnter: () => {},
   onMouseLeave: () => {},
   registerResult: () => {},
+  unregisterResult: () => {},
   getIndex: n => Number(n),
 };
 

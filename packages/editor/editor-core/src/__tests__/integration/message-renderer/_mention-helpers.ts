@@ -7,7 +7,7 @@ export const messageEditor = getExampleUrl(
 );
 export const editable = `.ProseMirror`;
 export const picker = '.ak-mention-picker';
-export const lozenge = 'span[data-mention-id="0"]';
+export const lozenge = '[data-mention-id="0"]';
 
 export const insertMention = async (browser, query: string) => {
   await browser.type(editable, '@');

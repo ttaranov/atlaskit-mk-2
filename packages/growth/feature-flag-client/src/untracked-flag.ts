@@ -8,7 +8,7 @@ export default class UntrackedFlag implements Flag {
 
   constructor(flagKey: string, flag: SimpleFlag) {
     this.flagKey = flagKey;
-    this.value = flag;
+    this.value = flag.value;
   }
 
   getBooleanValue(options: {

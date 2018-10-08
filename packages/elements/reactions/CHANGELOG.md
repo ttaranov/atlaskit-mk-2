@@ -1,5 +1,17 @@
 # @atlaskit/reactions
 
+## 14.0.4
+- [patch] Fix malformed operational analytics event [306cf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/306cf0a)
+
+## 14.0.3
+- [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/emoji@43.0.0
+  - @atlaskit/util-data-test@10.0.12
+
+## 14.0.2
+- [patch] Fix letter case 'actionSubjectID' => 'actionSubjectId' [3757992](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3757992)
+
 ## 14.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

@@ -6,7 +6,10 @@ import { MacroProvider } from '../../../../macro';
 import { Wrapper, Header, Content, ContentWrapper } from './styles';
 import { Overlay } from '../styles';
 import ExtensionLozenge from '../Lozenge';
-import { pluginKey as widthPluginKey } from '../../../../width';
+import {
+  pluginKey as widthPluginKey,
+  WidthPluginState,
+} from '../../../../width';
 import { calcExtensionWidth } from '@atlaskit/editor-common';
 import WithPluginState from '../../../../../ui/WithPluginState';
 
@@ -35,15 +38,19 @@ export default class Extension extends Component<Props, any> {
       <WithPluginState
         editorView={view}
         plugins={{
-          width: widthPluginKey,
+          widthState: widthPluginKey,
         }}
-        render={({ width }) => {
+        render={({
+          widthState = { width: 0 },
+        }: {
+          widthState?: WidthPluginState;
+        }) => {
           return (
             <Wrapper
               data-layout={node.attrs.layout}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
-                width: calcExtensionWidth(node.attrs.layout, width),
+                width: calcExtensionWidth(node.attrs.layout, widthState.width),
               }}
             >
               <Overlay className="extension-overlay" />

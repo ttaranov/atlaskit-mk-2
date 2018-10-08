@@ -38,18 +38,21 @@ import {
 import { TableLayout } from '@atlaskit/editor-common';
 import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
-  createHoverDecorationSet,
+  createControlsHoverDecoration,
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
   getSelectionRect,
   isHeaderRowSelected,
   isIsolating,
+  createColumnInsertLineDecoration,
+  createRowInsertLineDecoration,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { outdentList } from '../lists/commands';
 import { mapSlice } from '../../utils/slice';
+import { Cell } from './types';
 
 export const clearHoverSelection: Command = (
   state: EditorState,
@@ -67,19 +70,16 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = columns.reduce(
-      (acc: { pos: number; node: PMNode }[], colIdx) => {
-        const colCells = getCellsInColumn(colIdx)(state.selection);
-        return colCells ? acc.concat(colCells) : acc;
-      },
-      [],
-    );
+    const cells = columns.reduce((acc: Cell[], colIdx) => {
+      const colCells = getCellsInColumn(colIdx)(state.selection);
+      return colCells ? acc.concat(colCells) : acc;
+    }, []);
     dispatch(
       state.tr
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_COLUMNS,
           data: {
-            hoverDecoration: createHoverDecorationSet(cells, state, danger),
+            hoverDecoration: createControlsHoverDecoration(cells, danger),
             dangerColumns: danger ? columns : [],
           },
         })
@@ -96,19 +96,16 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = rows.reduce(
-      (acc: { pos: number; node: PMNode }[], rowIdx) => {
-        const rowCells = getCellsInRow(rowIdx)(state.selection);
-        return rowCells ? acc.concat(rowCells) : acc;
-      },
-      [],
-    );
+    const cells = rows.reduce((acc: Cell[], rowIdx) => {
+      const rowCells = getCellsInRow(rowIdx)(state.selection);
+      return rowCells ? acc.concat(rowCells) : acc;
+    }, []);
     dispatch(
       state.tr
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_ROWS,
           data: {
-            hoverDecoration: createHoverDecorationSet(cells, state, danger),
+            hoverDecoration: createControlsHoverDecoration(cells, danger),
             dangerRows: danger ? rows : [],
           },
         })
@@ -131,7 +128,7 @@ export const hoverTable = (danger?: boolean): Command => (
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_TABLE,
           data: {
-            hoverDecoration: createHoverDecorationSet(cells, state, danger),
+            hoverDecoration: createControlsHoverDecoration(cells, danger),
             isTableInDanger: danger,
           },
         })
@@ -745,4 +742,77 @@ export const selectRow = (row: number): Command => (
       .setMeta('addToHistory', false),
   );
   return true;
+};
+
+export const showColumnInsertLine = (columnIndex: number): Command => (
+  state,
+  dispatch,
+) => {
+  const table = findTable(state.selection);
+  if (table) {
+    const cells = getCellsInColumn(Math.max(columnIndex - 1, 0))(
+      state.selection,
+    );
+    if (cells) {
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.SHOW_COLUMN_INSERT_LINE,
+            data: {
+              insertLineDecoration: createColumnInsertLineDecoration(
+                cells,
+                columnIndex,
+              ),
+              insertLineIndex: columnIndex,
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
+      return true;
+    }
+  }
+  return false;
+};
+
+export const showRowInsertLine = (rowIndex: number): Command => (
+  state,
+  dispatch,
+) => {
+  const table = findTable(state.selection);
+  if (table) {
+    const cells = getCellsInRow(Math.max(rowIndex - 1, 0))(state.selection);
+    if (cells) {
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.SHOW_ROW_INSERT_LINE,
+            data: {
+              insertLineDecoration: createRowInsertLineDecoration(
+                cells,
+                rowIndex,
+              ),
+              insertLineIndex: rowIndex,
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
+      return true;
+    }
+  }
+  return false;
+};
+
+export const hideInsertLine: Command = (state, dispatch) => {
+  const table = findTable(state.selection);
+  if (table) {
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.HIDE_INSERT_LINE,
+        })
+        .setMeta('addToHistory', false),
+    );
+    return true;
+  }
+  return false;
 };

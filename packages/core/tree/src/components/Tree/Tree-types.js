@@ -1,12 +1,17 @@
 // @flow
 import * as React from 'react';
-import { type DraggableLocation } from 'react-beautiful-dnd';
+import type {
+  DraggableLocation,
+  DraggableId,
+  DroppableId,
+} from 'react-beautiful-dnd-next';
 import type {
   TreeData,
   Path,
   ItemId,
   FlattenedTree,
-  TreePosition,
+  TreeSourcePosition,
+  TreeDestinationPosition,
 } from '../../types';
 import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
@@ -21,8 +26,8 @@ export type Props = {|
   onDragStart: (itemId: ItemId) => void,
   /** Function that will be called when the user finishes dragging. */
   onDragEnd: (
-    sourcePosition: TreePosition,
-    destinationPosition: ?TreePosition,
+    sourcePosition: TreeSourcePosition,
+    destinationPosition: ?TreeDestinationPosition,
   ) => void,
   /** Function that will be called to render a single item. */
   renderItem: RenderItemParams => React.Node,
@@ -30,20 +35,31 @@ export type Props = {|
   offsetPerLevel: number,
   /** Boolean to turn on drag&drop re-ordering on the tree */
   isDragEnabled: boolean,
+  /** Boolean to turn on hovering while dragging */
+  isNestingEnabled: boolean,
 |};
 
 export type State = {|
   /** The flattened tree data structure transformed from props.tree */
   flattenedTree: FlattenedTree,
+  // Id of the currently dragged item
+  draggedItemId: ItemId,
+|};
+
+export type Combine = {|
+  draggableId: DraggableId,
+  droppableId: DroppableId,
 |};
 
 export type DragState = {|
-  // Id of the currently dragged item
-  draggedItemId: ItemId,
   // Source location
   source: DraggableLocation,
+  // Dragging mode
+  mode: string,
   // Pending destination location
   destination?: ?DraggableLocation,
   // Last level, while the user moved an item horizontally
   horizontalLevel?: ?number,
+  // Combine for nesting operation
+  combine?: ?Combine,
 |};

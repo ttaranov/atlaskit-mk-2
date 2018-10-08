@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Context, FileItem, MediaType } from '@atlaskit/media-core';
+import {
+  Context,
+  FileState,
+  MediaType,
+  ProcessedFileState,
+} from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs/Subscription';
@@ -29,7 +34,7 @@ export type Props = {
 };
 
 export type State = {
-  item: Outcome<FileItem, MediaViewerError>;
+  item: Outcome<FileState, MediaViewerError>;
 };
 
 const initialState: State = {
@@ -59,30 +64,22 @@ export default class Header extends React.Component<Props, State> {
   private init(props: Props) {
     this.setState(initialState, () => {
       const { context, identifier } = props;
-      const provider = context.getMediaItemProvider(
-        identifier.id,
-        identifier.type,
-        identifier.collectionName,
-      );
-
-      this.subscription = provider.observable().subscribe({
-        next: mediaItem => {
-          if (mediaItem.type === 'file') {
+      this.subscription = context.file
+        .getFileState(identifier.id, {
+          collectionName: identifier.collectionName,
+        })
+        .subscribe({
+          next: file => {
             this.setState({
-              item: Outcome.successful(mediaItem),
+              item: Outcome.successful(file),
             });
-          } else if (mediaItem.type === 'link') {
+          },
+          error: err => {
             this.setState({
-              item: Outcome.failed(createError('linksNotSupported')),
+              item: Outcome.failed(createError('metadataFailed', err)),
             });
-          }
-        },
-        error: err => {
-          this.setState({
-            item: Outcome.failed(createError('metadataFailed', undefined, err)),
-          });
-        },
-      });
+          },
+        });
     });
   }
 
@@ -135,28 +132,30 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
-  private renderMetadataLayout(item: FileItem) {
-    return (
-      <MetadataWrapper>
-        <MetadataIconWrapper>
-          {this.getMediaIcon(item.details.mediaType)}
-        </MetadataIconWrapper>
-        <MedatadataTextWrapper>
-          <MetadataFileName>{item.details.name || 'unknown'}</MetadataFileName>
-          <MetadataSubText>
-            {this.renderFileTypeText(item.details.mediaType)}
-            {this.renderSize(item)}
-          </MetadataSubText>
-        </MedatadataTextWrapper>
-      </MetadataWrapper>
-    );
+  private renderMetadataLayout(item: FileState) {
+    if (item.status === 'processed') {
+      return (
+        <MetadataWrapper>
+          <MetadataIconWrapper>
+            {this.getMediaIcon(item.mediaType)}
+          </MetadataIconWrapper>
+          <MedatadataTextWrapper>
+            <MetadataFileName>{item.name || 'unknown'}</MetadataFileName>
+            <MetadataSubText>
+              {this.renderFileTypeText(item.mediaType)}
+              {this.renderSize(item)}
+            </MetadataSubText>
+          </MedatadataTextWrapper>
+        </MetadataWrapper>
+      );
+    } else {
+      return null;
+    }
   }
 
-  private renderSize = (item: FileItem) => {
-    if (item.details.size) {
-      return (
-        this.renderSeparator() + toHumanReadableMediaSize(item.details.size)
-      );
+  private renderSize = (item: ProcessedFileState) => {
+    if (item.size) {
+      return this.renderSeparator() + toHumanReadableMediaSize(item.size);
     } else {
       return '';
     }

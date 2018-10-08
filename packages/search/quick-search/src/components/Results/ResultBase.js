@@ -33,10 +33,11 @@ class ResultBase extends PureComponent<DefaultProps & Props>
     onClick: () => {},
     type: BASE_RESULT_TYPE,
     context: {
-      registerResult: () => {},
-      onMouseEnter: () => {},
-      onMouseLeave: () => {},
-      sendAnalytics: () => {},
+      registerResult: Function.prototype,
+      unregisterResult: Function.prototype,
+      onMouseEnter: Function.prototype,
+      onMouseLeave: Function.prototype,
+      sendAnalytics: Function.prototype,
       getIndex: () => null,
     },
     analyticsData: {},
@@ -53,6 +54,11 @@ class ResultBase extends PureComponent<DefaultProps & Props>
 
   componentDidUpdate() {
     this.registerResult();
+  }
+
+  componentWillUnmount() {
+    const { context } = this.props;
+    context.unregisterResult(this);
   }
 
   getAnalyticsData() {

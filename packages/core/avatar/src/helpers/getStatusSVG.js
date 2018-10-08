@@ -1,7 +1,8 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
+import { colors, themed, withTheme } from '@atlaskit/theme';
 
 const Svg = props => (
   <svg
@@ -14,24 +15,24 @@ const Svg = props => (
   />
 );
 
-const ApprovedCircle = styled.circle`
+const ApprovedCircle = withTheme(styled.circle`
   fill: ${themed({ light: colors.G400, dark: colors.G300 })};
-`;
-const ApprovedPath = styled.path`
+`);
+const ApprovedPath = withTheme(styled.path`
   fill: ${colors.background};
-`;
-const DeclinedCircle = styled.circle`
+`);
+const DeclinedCircle = withTheme(styled.circle`
   fill: ${themed({ light: colors.R400, dark: colors.R300 })};
-`;
-const DeclinedPath = styled.path`
+`);
+const DeclinedPath = withTheme(styled.path`
   fill: ${colors.background};
-`;
-const LockedCircle = styled.circle`
+`);
+const LockedCircle = withTheme(styled.circle`
   fill: ${themed({ light: colors.N40, dark: colors.DN800 })};
-`;
-const LockedPath = styled.path`
+`);
+const LockedPath = withTheme(styled.path`
   fill: ${themed({ light: colors.N500, dark: colors.DN30 })};
-`;
+`);
 
 export default function getStatusSvg(status: string) {
   switch (status) {

@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component, type Node } from 'react';
 import { Outer } from '../styled/Icon';
 import getStatusSVG from '../helpers/getStatusSVG';

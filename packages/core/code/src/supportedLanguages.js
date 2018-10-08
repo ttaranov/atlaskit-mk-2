@@ -1,6 +1,6 @@
 // @flow
 /* eslint import/no-dynamic-require: 0, global-require: 0 */
-import { registerLanguage } from 'react-syntax-highlighter/prism-light';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism-async-light';
 import memoizeOne from 'memoize-one';
 
 /*
@@ -10,6 +10,8 @@ import memoizeOne from 'memoize-one';
  * https://madnight.github.io/githut/#/pull_requests/2018/1
  */
 import coffeescript from 'react-syntax-highlighter/languages/prism/coffeescript';
+import markup from 'react-syntax-highlighter/languages/prism/markup';
+import markupTemplating from 'react-syntax-highlighter/languages/prism/markup-templating';
 import cpp from 'react-syntax-highlighter/languages/prism/cpp';
 import clike from 'react-syntax-highlighter/languages/prism/clike';
 import csharp from 'react-syntax-highlighter/languages/prism/csharp';
@@ -32,28 +34,30 @@ import sql from 'react-syntax-highlighter/languages/prism/sql';
 import swift from 'react-syntax-highlighter/languages/prism/swift';
 import typescript from 'react-syntax-highlighter/languages/prism/typescript';
 
-registerLanguage('coffeescript', coffeescript);
-registerLanguage('cpp', cpp);
-registerLanguage('clike', clike);
-registerLanguage('cs', csharp);
-registerLanguage('css', css);
-registerLanguage('d', d);
-registerLanguage('go', go);
-registerLanguage('groovy', groovy);
-registerLanguage('java', java);
-registerLanguage('javascript', javascript);
-registerLanguage('kotlin', kotlin);
-registerLanguage('lua', lua);
-registerLanguage('objectivec', objectivec);
-registerLanguage('php', php);
-registerLanguage('python', python);
-registerLanguage('ruby', ruby);
-registerLanguage('rust', rust);
-registerLanguage('scala', scala);
-registerLanguage('shell', shell);
-registerLanguage('sql', sql);
-registerLanguage('swift', swift);
-registerLanguage('typescript', typescript);
+SyntaxHighlighter.registerLanguage('coffeescript', coffeescript);
+SyntaxHighlighter.registerLanguage('markup', markup);
+SyntaxHighlighter.registerLanguage('markup-templating', markupTemplating);
+SyntaxHighlighter.registerLanguage('cpp', cpp);
+SyntaxHighlighter.registerLanguage('clike', clike);
+SyntaxHighlighter.registerLanguage('cs', csharp);
+SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('d', d);
+SyntaxHighlighter.registerLanguage('go', go);
+SyntaxHighlighter.registerLanguage('groovy', groovy);
+SyntaxHighlighter.registerLanguage('java', java);
+SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('kotlin', kotlin);
+SyntaxHighlighter.registerLanguage('lua', lua);
+SyntaxHighlighter.registerLanguage('objectivec', objectivec);
+SyntaxHighlighter.registerLanguage('php', php);
+SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('ruby', ruby);
+SyntaxHighlighter.registerLanguage('rust', rust);
+SyntaxHighlighter.registerLanguage('scala', scala);
+SyntaxHighlighter.registerLanguage('shell', shell);
+SyntaxHighlighter.registerLanguage('sql', sql);
+SyntaxHighlighter.registerLanguage('swift', swift);
+SyntaxHighlighter.registerLanguage('typescript', typescript);
 
 /*
  * These values all those are supported by ADF.

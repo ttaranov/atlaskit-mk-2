@@ -4,7 +4,6 @@ import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
 import { isTableSelected } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
-import { tableToolbarSize } from '../../styles';
 import { tableDeleteButtonSize } from '../../styles';
 import InsertButton from '../InsertButton';
 import DeleteButton from '../DeleteButton';
@@ -20,6 +19,7 @@ import {
   deleteSelectedColumns,
   selectColumn,
 } from '../../../actions';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   editorView: EditorView;
@@ -29,6 +29,7 @@ export interface Props {
   isTableInDanger?: boolean;
   numberOfColumns?: number;
   dangerColumns?: number[];
+  showInsertButton?: boolean;
 }
 
 export default class ColumnControls extends Component<Props, any> {
@@ -43,6 +44,7 @@ export default class ColumnControls extends Component<Props, any> {
       isTableInDanger,
       selection,
       numberOfColumns,
+      showInsertButton,
     } = this.props;
 
     if (nextProps.tableRef) {
@@ -58,6 +60,7 @@ export default class ColumnControls extends Component<Props, any> {
 
     return (
       tableRef !== nextProps.tableRef ||
+      showInsertButton !== nextProps.showInsertButton ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
       numberOfColumns !== nextProps.numberOfColumns ||
@@ -113,7 +116,7 @@ export default class ColumnControls extends Component<Props, any> {
   private classNamesForRow(i, len, selection) {
     const { isTableHovered, isTableInDanger } = this.props;
 
-    const classNames = ['table-column'];
+    const classNames: string[] = [];
 
     if (selection.inSelection(i) || isTableHovered) {
       classNames.push('active');
@@ -136,6 +139,7 @@ export default class ColumnControls extends Component<Props, any> {
     const {
       editorView: { state },
       tableRef,
+      showInsertButton,
     } = this.props;
     if (!tableRef) {
       return null;
@@ -147,7 +151,6 @@ export default class ColumnControls extends Component<Props, any> {
 
     const cols = tr.children;
     const nodes: any = [];
-    const tableHeight = tableRef.offsetHeight;
 
     let prevColWidths = 0;
 
@@ -161,18 +164,16 @@ export default class ColumnControls extends Component<Props, any> {
 
       nodes.push(
         <div
-          className={`pm-table-column-controls__button-wrap ${this.classNamesForRow(
-            i,
-            len,
-            selection,
-          ).join(' ')}`}
+          className={`${
+            ClassName.COLUMN_CONTROLS_BUTTON_WRAP
+          } ${this.classNamesForRow(i, len, selection).join(' ')}`}
           key={i}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           onMouseDown={this.handleMouseDown}
         >
           <button
             type="button"
-            className="pm-table-controls__button"
+            className={ClassName.CONTROLS_BUTTON}
             onMouseDown={() => this.selectColumn(i)}
             onMouseOver={() => this.hoverColumns([i])}
             onMouseOut={this.clearHoverSelection}
@@ -182,10 +183,9 @@ export default class ColumnControls extends Component<Props, any> {
           ) ? (
             <InsertButton
               type="column"
-              onClick={() => this.insertColumn(i + 1)}
-              insertLineStyle={{
-                height: tableHeight + tableToolbarSize,
-              }}
+              index={i + 1}
+              showInsertButton={showInsertButton}
+              onMouseDown={() => this.insertColumn(i + 1)}
             />
           ) : null}
         </div>,
@@ -205,8 +205,8 @@ export default class ColumnControls extends Component<Props, any> {
     }
 
     return (
-      <div className="pm-table-column-controls">
-        <div className="pm-table-column-controls__inner">{nodes}</div>
+      <div className={ClassName.COLUMN_CONTROLS}>
+        <div className={ClassName.COLUMN_CONTROLS_INNER}>{nodes}</div>
       </div>
     );
   }

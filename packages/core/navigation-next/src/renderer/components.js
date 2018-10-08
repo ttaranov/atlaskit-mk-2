@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type ComponentType } from 'react';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
@@ -306,6 +306,29 @@ export const components = { ...itemComponents, ...groupComponents };
  * RENDERER
  */
 class ItemsRenderer extends PureComponent<ItemsRendererProps> {
+  customComponentsWithAnalytics: Map<
+    string | ComponentType<*>,
+    ComponentType<*>,
+  > = new Map();
+
+  getCustomComponent = (type: string | ComponentType<*>) => {
+    // cache custom components wrapped with analytics
+    // to prevent re-mounting of component on re-render
+    const { customComponents = {} } = this.props;
+    let component = this.customComponentsWithAnalytics.get(type);
+    if (!component) {
+      component =
+        typeof type === 'string'
+          ? navigationItemClicked(customComponents[type], type)
+          : navigationItemClicked(
+              type,
+              type.displayName || 'inlineCustomComponent',
+            );
+      this.customComponentsWithAnalytics.set(type, component);
+    }
+    return component;
+  };
+
   render() {
     const { customComponents = {}, items } = this.props;
 
@@ -317,10 +340,7 @@ class ItemsRenderer extends PureComponent<ItemsRendererProps> {
 
       // If they've provided a component as the type
       if (typeof type === 'function') {
-        const CustomComponent = navigationItemClicked(
-          type,
-          type.displayName || 'inlineCustomComponent',
-        );
+        const CustomComponent = this.getCustomComponent(type);
         return (
           <CustomComponent
             key={key}
@@ -352,10 +372,7 @@ class ItemsRenderer extends PureComponent<ItemsRendererProps> {
         // If they've provided a type which matches one of their defined custom
         // components.
         if (customComponents[type]) {
-          const CustomComponent = navigationItemClicked(
-            customComponents[type],
-            type,
-          );
+          const CustomComponent = this.getCustomComponent(type);
           return (
             <CustomComponent
               key={key}

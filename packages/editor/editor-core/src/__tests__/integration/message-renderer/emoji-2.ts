@@ -14,7 +14,7 @@ BrowserTestCase(
   'Emoji: should be able to use emoji inside blockquote',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.type(editable, '> ');
     await browser.type(editable, 'some text ');
@@ -29,7 +29,7 @@ BrowserTestCase(
   'Emoji: should be able to use emoji inside bulletList',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.type(editable, '* ');
     await insertEmoji(browser, 'smile');
@@ -43,7 +43,7 @@ BrowserTestCase(
   'Emoji: should be able to use emoji inside orderedList',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.type(editable, '1. ');
     await insertEmoji(browser, 'a');
@@ -58,7 +58,7 @@ BrowserTestCase(
   'Emoji: should be able remove emoji on backspace',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');
@@ -77,7 +77,7 @@ BrowserTestCase(
   { skip: ['safari', 'ie'] },
   async client => {
     const decisions = 'span[aria-label="Decision"]';
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     // to get steps working on edge since its is slow
@@ -98,7 +98,7 @@ BrowserTestCase(
     const createDecisions = `span[aria-label="${
       messages.decision.defaultMessage
     }"]`;
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');

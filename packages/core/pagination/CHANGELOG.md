@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 8.0.2
+- [patch] Fix styling in IE and maintain it in other browsers [0d67e69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d67e69)
+
 ## 8.0.1
 - [patch] Bump to add icon [8010540](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8010540)
 

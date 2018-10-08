@@ -1,5 +1,11 @@
 # @atlaskit/flag
 
+## 9.0.13
+- [patch] Updated the flag to use atlaskit button [d2084ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2084ad)
+
+## 9.0.12
+- [patch] Updated the flag actions use gridSize and fontSize properly [3e7da11](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e7da11)
+
 ## 9.0.11
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { withAnalytics } from '@atlaskit/analytics';
 import { EditorView } from 'prosemirror-view';
 import { intlShape, IntlShape, IntlProvider } from 'react-intl';
 
@@ -267,10 +266,3 @@ export default class Editor extends React.Component<EditorProps, {}> {
     );
   }
 }
-
-export const EditorWithAnalytics = withAnalytics<typeof Editor>(
-  Editor,
-  {},
-  {},
-  true,
-);

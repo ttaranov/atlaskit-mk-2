@@ -87,6 +87,7 @@ class Pagination extends Component<Props, State> {
           ariaLabel={i18n.prev}
           isDisabled={current === 1}
           onClick={() => this.onPageChange(current - 1)}
+          spacing="none"
         >
           <ChevronLeftLargeIcon size="medium" />
         </StyledButton>
@@ -115,6 +116,7 @@ class Pagination extends Component<Props, State> {
           ariaLabel={i18n.next}
           isDisabled={current === total}
           onClick={() => this.onPageChange(current + 1)}
+          spacing="none"
         >
           <ChevronRightLargeIcon size="medium" />
         </StyledButton>

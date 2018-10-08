@@ -2,7 +2,11 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import type { DropResult, DragUpdate, DragStart } from 'react-beautiful-dnd';
+import type {
+  DropResult,
+  DragUpdate,
+  DragStart,
+} from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
@@ -17,6 +21,7 @@ const dragStart: DragStart = {
     droppableId: 'list',
     index: 1,
   },
+  mode: 'FLUID',
 };
 
 const dragUpdate: DragUpdate = {
@@ -25,6 +30,7 @@ const dragUpdate: DragUpdate = {
     droppableId: 'list',
     index: 4,
   },
+  combine: undefined,
 };
 
 const dropResult: DropResult = {
@@ -47,6 +53,14 @@ describe('@atlaskit/tree - Tree', () => {
 
   beforeEach(() => {
     mockRender.mockClear();
+  });
+
+  describe('#closeParentIfNeeded', () => {
+    it("collapses parent if it's draggen", () => {
+      expect(treeWithTwoBranches.items['1-1'].isExpanded).toBe(true);
+      const newTree = Tree.closeParentIfNeeded(treeWithTwoBranches, '1-1');
+      expect(newTree.items['1-1'].isExpanded).toBe(false);
+    });
   });
 
   describe('#render', () => {
@@ -148,10 +162,11 @@ describe('@atlaskit/tree - Tree', () => {
       ).instance();
       instance.onDragStart(dragStart);
       expect(instance.dragState).toEqual({
-        draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
+        mode: dragStart.mode,
       });
+      expect(instance.state.draggedItemId).toBe(dragStart.draggableId);
     });
     it('calls onDragStart if it is defined', () => {
       const mockOnStartCb = jest.fn();
@@ -185,6 +200,31 @@ describe('@atlaskit/tree - Tree', () => {
         { parentId: '1-2', index: 1 },
       );
     });
+
+    it('calls props.onDragEnd when nesting successfully', () => {
+      const mockOnDragEnd = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragEnd={mockOnDragEnd}
+        />,
+      ).instance();
+      const dropResultWithCombine = {
+        ...dropResult,
+        destination: undefined,
+        combine: {
+          draggableId: '1-2',
+          droppableId: 'list',
+        },
+      };
+      instance.onDragEnd(dropResultWithCombine);
+      expect(mockOnDragEnd).toHaveBeenCalledTimes(1);
+      expect(mockOnDragEnd).toBeCalledWith(
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2' },
+      );
+    });
   });
 
   describe('#onDragUpdate', () => {
@@ -195,10 +235,11 @@ describe('@atlaskit/tree - Tree', () => {
       instance.onDragStart(dragStart);
       instance.onDragUpdate(dragUpdate);
       expect(instance.dragState).toEqual({
-        draggedItemId: dragUpdate.draggableId,
         source: dragUpdate.source,
         destination: dragUpdate.destination,
+        mode: dragUpdate.mode,
       });
+      expect(instance.state.draggedItemId).toBe(dragUpdate.draggableId);
     });
   });
 
@@ -219,9 +260,9 @@ describe('@atlaskit/tree - Tree', () => {
       instance.onDragStart(dragStart);
       instance.onPointerMove();
       expect(instance.dragState).toEqual({
-        draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
+        mode: dragStart.mode,
         horizontalLevel: 1,
       });
     });

@@ -10,7 +10,7 @@ import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 import { getPluginState } from '../pm-plugins/main';
 import { scaleTable, setColumnWidths } from '../pm-plugins/table-resizing';
 
-import { TablePluginState } from '../types';
+import { TablePluginState, TableCssClassName as ClassName } from '../types';
 import { getCellMinWidth } from '../';
 
 const isIE11 = browser.ie_version === 11;
@@ -22,12 +22,13 @@ import {
   checkIfHeaderColumnEnabled,
   checkIfHeaderRowEnabled,
 } from '../utils';
+import { WidthPluginState } from '../../width';
 
 export interface ComponentProps extends Props {
   onComponentMount: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 
-  containerWidth: number;
+  containerWidth: WidthPluginState;
   pluginState: TablePluginState;
 }
 
@@ -75,10 +76,18 @@ class TableComponent extends React.Component<ComponentProps> {
     ) {
       const { node, containerWidth } = this.props;
 
-      setColumnWidths(this.table, node, containerWidth, node.attrs.layout);
+      setColumnWidths(
+        this.table,
+        node,
+        containerWidth.width,
+        node.attrs.layout,
+      );
 
       this.setState(() => ({
-        tableContainerWidth: calcTableWidth(node.attrs.layout, containerWidth),
+        tableContainerWidth: calcTableWidth(
+          node.attrs.layout,
+          containerWidth.width,
+        ),
       }));
     }
   }
@@ -123,14 +132,14 @@ class TableComponent extends React.Component<ComponentProps> {
       ? [
           <div
             key="left"
-            className="table-shadow -left"
+            className={`${ClassName.TABLE_SHADOW} -left`}
             ref={elem => {
               this.leftShadow = elem;
             }}
           />,
           <div
             key="right"
-            className="table-shadow -right"
+            className={`${ClassName.TABLE_SHADOW} -right`}
             ref={elem => {
               this.rightShadow = elem;
             }}
@@ -149,11 +158,12 @@ class TableComponent extends React.Component<ComponentProps> {
     const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
     const { scroll } = this.state;
+    const showInsertButton = typeof pluginState.insertLineIndex !== 'undefined';
 
     const rowControls = [
       <div
         key={0}
-        className={`table-row-controls-wrapper ${
+        className={`${ClassName.ROW_CONTROLS_WRAPPER} ${
           scroll > 0 ? 'scrolling' : ''
         }`}
       >
@@ -171,12 +181,13 @@ class TableComponent extends React.Component<ComponentProps> {
           // pass `selection` and `tableHeight` to control re-render
           selection={view.state.selection}
           tableHeight={tableRef ? tableRef.offsetHeight : undefined}
+          showInsertButton={showInsertButton}
         />
       </div>,
     ];
 
     const columnControls = [
-      <div key={0} className="table-column-controls-wrapper">
+      <div key={0} className={ClassName.COLUMN_CONTROLS_WRAPPER}>
         <ColumnControls
           editorView={view}
           tableRef={tableRef}
@@ -187,6 +198,7 @@ class TableComponent extends React.Component<ComponentProps> {
           // pass `selection` and `numberOfColumns` to control re-render
           selection={view.state.selection}
           numberOfColumns={node.firstChild!.childCount}
+          showInsertButton={showInsertButton}
         />
       </div>,
     ];
@@ -196,13 +208,17 @@ class TableComponent extends React.Component<ComponentProps> {
         style={{
           width: this.getTableContainerWidth(node.attrs.layout, containerWidth),
         }}
-        className={`table-container ${tableActive ? 'with-controls' : ''}`}
+        className={`${ClassName.TABLE_CONTAINER} ${
+          tableActive ? ClassName.WITH_CONTROLS : ''
+        }`}
         data-number-column={node.attrs.isNumberColumnEnabled}
         data-layout={node.attrs.layout}
       >
         {allowControls && rowControls}
         <div
-          className="table-wrapper editor-popup-ignore-scroll-parent"
+          className={`${
+            ClassName.TABLE_NODE_WRAPPER
+          } editor-popup-ignore-scroll-parent`}
           ref={elem => {
             this.wrapper = elem;
             this.props.contentDOM(elem ? elem : undefined);
@@ -242,11 +258,11 @@ class TableComponent extends React.Component<ComponentProps> {
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
 
-  private getTableContainerWidth(layout, containerWidth) {
+  private getTableContainerWidth(layout, containerWidth: WidthPluginState) {
     if (this.props.UNSAFE_allowFlexiColumnResizing) {
       return this.state.tableContainerWidth;
     } else {
-      return calcTableWidth(layout, containerWidth);
+      return calcTableWidth(layout, containerWidth.width);
     }
   }
 
@@ -270,7 +286,7 @@ class TableComponent extends React.Component<ComponentProps> {
         this.table,
         node,
         getPos(),
-        containerWidth,
+        containerWidth.width,
         currentAttrs.layout,
       );
 
@@ -281,7 +297,7 @@ class TableComponent extends React.Component<ComponentProps> {
       this.setState(() => ({
         tableContainerWidth: calcTableWidth(
           currentAttrs.layout,
-          containerWidth,
+          containerWidth.width,
         ),
       }));
     }

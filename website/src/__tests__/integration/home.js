@@ -17,7 +17,7 @@ const atlaskitTitle = 'h1';
 BrowserTestCase(
   `The website home page should be displayed without errors`,
   async client => {
-    const homeTest = await new Page(client);
+    const homeTest = new Page(client);
     await homeTest.goto(urlHome);
     await homeTest.waitForSelector(app);
     const subHeaderTitle = await homeTest.getText(atlaskitTitle);
