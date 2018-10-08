@@ -99,10 +99,10 @@ Now you can start the development server for a specific component you are workin
 `bolt start <pkg-name>`, for example:
 
 ```sh
-bolt start navigation-next
+bolt start button
 ```
 
-This will start the dev server with only packages matching "navigation-next"
+This will start the dev server with only packages matching "button"
 pattern being served on http://localhost:9000.
 
 #### Linux / Mac / Windows
