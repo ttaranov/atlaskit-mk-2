@@ -107,7 +107,7 @@ describe('@atlaskit/reactions/reactions', () => {
           payload: expect.objectContaining({
             action: 'rendered',
             actionSubject: 'reactionView',
-            eventType: 'ops',
+            eventType: 'operational',
             attributes: {
               duration: expect.any(Number),
               packageName: '@atlaskit/reactions',
