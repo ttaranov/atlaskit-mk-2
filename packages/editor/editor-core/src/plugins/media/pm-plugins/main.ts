@@ -34,7 +34,7 @@ import {
 import DefaultMediaStateManager from '../default-state-manager';
 import { insertMediaSingleNode } from '../utils/media-single';
 
-import { hasParentNodeOfType } from 'prosemirror-utils';
+import { hasParentNodeOfType, findParentNodeOfType } from 'prosemirror-utils';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -58,7 +58,8 @@ export class MediaPluginState {
   public showDropzone: boolean = false;
   public element?: HTMLElement;
   public layout: MediaSingleLayout = 'center';
-  private mediaNodes: MediaNodeWithPosHandler[] = [];
+  public mediaNodes: MediaNodeWithPosHandler[] = [];
+  public mediaGroupNodes: object = {};
   private pendingTask = Promise.resolve<MediaState | null>(null);
   public options: MediaPluginOptions;
   private view: EditorView;
@@ -290,13 +291,6 @@ export class MediaPluginState {
 
     if (this.editorAppearance !== 'message' && mediaSingle) {
       files = insertMediaGroupNode(this.view, nonImageAttachments, collection);
-      if (files) {
-        files.mediaNodes.forEach(node => {
-          this.handleMediaNodeMount(node, () => {
-            return files.mediaPos - 2;
-          });
-        });
-      }
       imageAttachments.forEach(mediaState => {
         insertMediaSingleNode(this.view, mediaState, collection);
       });
@@ -413,7 +407,11 @@ export class MediaPluginState {
    * inside of it
    */
   handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
-    removeMediaNode(this.view, node, getPos);
+    let getNode = node;
+    if (!getNode) {
+      getNode = this.view.state.doc.nodeAt(getPos()) as PMNode;
+    }
+    removeMediaNode(this.view, getNode, getPos);
   };
 
   /**
@@ -427,7 +425,7 @@ export class MediaPluginState {
    * Called from React UI Component on componentDidMount
    */
   handleMediaNodeMount = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
-    this.mediaNodes.push({ node, getPos });
+    this.mediaNodes.unshift({ node, getPos });
   };
 
   /**
@@ -649,13 +647,18 @@ export class MediaPluginState {
     };
   }
 
-  private replaceTemporaryNode = (state: MediaState) => {
+  private replaceTemporaryNode = (
+    state: MediaState,
+    isMediaSingle: boolean,
+  ) => {
     const { view } = this;
     if (!view) {
       return;
     }
     const { id, publicId } = state;
-    const mediaNodeWithPos = this.findMediaNode(id);
+    const mediaNodeWithPos = isMediaSingle
+      ? this.findMediaNode(id)
+      : this.mediaGroupNodes[id];
     if (!mediaNodeWithPos) {
       return;
     }
@@ -664,7 +667,7 @@ export class MediaPluginState {
       ...mediaNodeWithPos.node.attrs,
       id: publicId,
     });
-
+    delete this.mediaGroupNodes[id];
     view.dispatch(tr);
   };
 
@@ -679,9 +682,9 @@ export class MediaPluginState {
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
       case 'ready':
-      // this.replaceTemporaryNode(state);
-      // this.stateManager.off(state.id, this.handleMediaState);
-      // break;
+        this.replaceTemporaryNode(state, isImage(state.fileMimeType));
+        this.stateManager.off(state.id, this.handleMediaState);
+        break;
     }
   };
 

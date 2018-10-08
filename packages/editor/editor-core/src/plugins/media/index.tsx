@@ -16,6 +16,8 @@ import MediaSingleEdit from './ui/MediaSingleEdit';
 import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
 import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
 import { CustomMediaPicker, MediaProvider } from './types';
+import WithPluginState from '../../ui/WithPluginState';
+import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 
 export {
   MediaState,
@@ -123,9 +125,33 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
       return null;
     }
 
-    const pluginState = pluginKey.getState(editorView.state);
-
-    return <MediaSingleEdit pluginState={pluginState} />;
+    return (
+      <WithPluginState
+        editorView={editorView}
+        plugins={{
+          mediaState: pluginKey,
+        }}
+        render={({ mediaState }) => {
+          const { element: target, layout } = mediaState;
+          const node = mediaState.selectedMediaNode();
+          const allowBreakout = !!(
+            node &&
+            node.attrs &&
+            node.attrs.width > akEditorFullPageMaxWidth
+          );
+          const allowLayout = !!mediaState.isLayoutSupported();
+          return (
+            <MediaSingleEdit
+              pluginState={mediaState}
+              allowBreakout={allowBreakout}
+              allowLayout={allowLayout}
+              layout={layout}
+              target={target}
+            />
+          );
+        }}
+      />
+    );
   },
 
   secondaryToolbarComponent({ editorView, disabled }) {

@@ -76,6 +76,17 @@ class MediaNode extends Component<MediaNodeProps, {}> {
     this.mediaProvider = props.mediaProvider;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      this.props.selected !== nextProps.selected ||
+      this.state.viewContext !== nextState.viewContext ||
+      this.props.node.attrs.id !== nextProps.node.attrs.id
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   componentDidMount() {
     this.handleNewNode(this.props);
     this.updateContext();
@@ -119,7 +130,7 @@ class MediaNode extends Component<MediaNodeProps, {}> {
             collectionName: collection!,
           };
 
-    console.log('identifier ', identifier, ' context ', this.state.viewContext);
+    console.log(' id ', identifier.id);
 
     return !this.state.viewContext ? (
       <CardView status="loading" dimensions={cardDimensions} />

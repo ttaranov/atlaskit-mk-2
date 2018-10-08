@@ -12,7 +12,7 @@ import { FileIdentifier } from '@atlaskit/media-card';
 import { setNodeSelection } from '../../../utils/index';
 import WithPluginState from '../../../ui/WithPluginState';
 import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
-
+import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
@@ -39,10 +39,26 @@ class MediaGroup extends React.Component<MediaGroupProps> {
     this.mediaPluginState = mediaStateKey.getState(props.view.state);
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (
+      this.props.selected !== nextProps.selected ||
+      this.props.node !== nextProps.node
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   renderChildNodes = node => {
     const tempIds = [] as any;
     const existingMedia = [] as any;
+    this.mediaPluginState.mediaNodes = [];
     node.forEach((item, childOffset) => {
+      this.mediaPluginState.mediaGroupNodes[item.attrs.__key] = {
+        node: item,
+        getPos: () => this.props.getPos() + childOffset + 1,
+      };
       const getState = this.mediaPluginState.stateManager.getState(
         item.attrs.__key,
       );
@@ -61,9 +77,18 @@ class MediaGroup extends React.Component<MediaGroupProps> {
         selectable: true,
         selected: this.props.selected === this.props.getPos() + idx + 1,
         onClick: (e, x) => {
-          console.log('clicked ', this.props.getPos() + idx + 1);
           setNodeSelection(this.props.view, this.props.getPos() + idx + 1);
         },
+        actions: [
+          {
+            handler: this.mediaPluginState.handleMediaNodeRemoval.bind(
+              null,
+              null,
+              () => this.props.getPos() + idx + 1,
+            ),
+            icon: <EditorCloseIcon label="close" />,
+          },
+        ],
       };
     });
 
@@ -84,7 +109,6 @@ class MediaGroup extends React.Component<MediaGroupProps> {
     });
 
     const items = tempItems.concat(existingItems);
-    console.log('items are ', items);
 
     return (
       <Filmstrip items={items} context={this.mediaPluginState.mediaContext} />
