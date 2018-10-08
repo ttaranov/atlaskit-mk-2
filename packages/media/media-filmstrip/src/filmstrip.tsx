@@ -83,8 +83,9 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
           if (currentKey) {
             return currentKey;
           }
-
-          const newKey = `${this.lastKey++}`;
+          // We want to increment the key before using it
+          this.lastKey++;
+          const newKey = `${this.lastKey}`;
           this.identifiersMap.set(identifier.id, newKey);
           return newKey;
         }
