@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
@@ -354,17 +354,20 @@ describe('<UploadView />', () => {
   });
 
   describe('pagination', () => {
+    const simulateScrollEndReached = (component: ReactWrapper<any, any>) =>
+      (component.instance() as any)['onThresholdReachedListener']();
+
     it('should load next collection page when threshold is reached', () => {
       const { component, context } = createConnectedComponent(state);
 
-      (component.instance() as any)['onThresholdReachedListener']();
+      simulateScrollEndReached(component);
 
       expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
       expect(context.collection.loadNextPage).toBeCalledWith('recents');
     });
 
     it('should render loading next page state if next page is being loaded', async () => {
-      const nextItems = new Promise(resolve => setTimeout(resolve, 10));
+      const nextItems = new Promise(resolve => setImmediate(resolve));
       const loadNextPage = jest.fn().mockReturnValue(nextItems);
       const context = {
         ...fakeContext(),
@@ -377,7 +380,7 @@ describe('<UploadView />', () => {
       );
 
       expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
-      (component.instance() as any)['onThresholdReachedListener']();
+      simulateScrollEndReached(component);
       root.update();
       expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(1);
       await nextItems;

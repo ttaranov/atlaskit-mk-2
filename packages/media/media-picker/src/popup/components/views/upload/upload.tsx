@@ -136,7 +136,6 @@ export class StatelessUploadView extends Component<
 
   private onThresholdReachedListener = () => {
     const { isLoadingNextPage } = this.state;
-    const { context } = this.props;
 
     if (isLoadingNextPage) {
       return;
@@ -144,6 +143,7 @@ export class StatelessUploadView extends Component<
 
     this.setState({ isLoadingNextPage: true }, async () => {
       try {
+        const { context } = this.props;
         await context.collection.loadNextPage(RECENTS_COLLECTION);
         this.setState({ isLoadingNextPage: false });
       } catch (e) {
