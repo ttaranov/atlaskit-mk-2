@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter/prism-async';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism-async-light';
 import { withTheme, ThemeProvider } from 'styled-components';
 import {
   normalizeLanguage,
