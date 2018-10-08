@@ -2,17 +2,20 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { publishReplay } from 'rxjs/operators/publishReplay';
+import * as Dataloader from 'dataloader';
 import {
   MediaStore,
   UploadableFile,
   UploadController,
   uploadFile,
+  MediaCollectionItemFullDetails,
 } from '@atlaskit/media-store';
 import {
   FilePreview,
   FileState,
   GetFileOptions,
   mapMediaFileToFileState,
+  ProcessedFileState,
 } from '../fileState';
 import { fileStreamsCache } from '../context/fileStreamCache';
 import FileStreamCache from '../context/fileStreamCache';
@@ -20,8 +23,26 @@ import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploada
 
 const POLLING_INTERVAL = 1000;
 
+interface DataloaderKey {
+  id: string;
+  collection?: string;
+}
 export class FileFetcher {
-  constructor(private readonly mediaStore: MediaStore) {}
+  dataloader: Dataloader<DataloaderKey, MediaCollectionItemFullDetails>;
+  constructor(private readonly mediaStore: MediaStore) {
+    // TODO: not found file
+    // TODO: caching function
+    // TODO: mapping to input files to response files
+    // TODO: set max batch size to 100
+    this.dataloader = new Dataloader<
+      DataloaderKey,
+      MediaCollectionItemFullDetails
+    >(async keys => {
+      const response = await this.mediaStore.getItems(keys);
+
+      return response.data.items.map(item => item.details);
+    });
+  }
 
   getFileState(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
@@ -47,8 +68,19 @@ export class FileFetcher {
 
       const fetchFile = async () => {
         try {
-          const response = await this.mediaStore.getFile(id, { collection });
-          const fileState = mapMediaFileToFileState(response);
+          const response = await this.dataloader.load({ id, collection });
+          // TODO: handle all cases
+          const fileState: ProcessedFileState = {
+            id,
+            binaryUrl: '',
+            mediaType: response.mediaType,
+            mimeType: response.mimeType,
+            artifacts: {} as any,
+            name: response.name,
+            size: response.size,
+            status: 'processed',
+          };
+          // const fileState = mapMediaFileToFileState(response);
 
           observer.next(fileState);
 
