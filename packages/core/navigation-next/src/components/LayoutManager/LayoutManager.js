@@ -278,7 +278,10 @@ export default class LayoutManager extends Component<
     return (
       <NavigationAnalyticsContext
         data={{
-          attributes: { isExpanded: !isCollapsed },
+          attributes: {
+            isExpanded: !isCollapsed,
+            flyoutOnHoverEnabled: experimental_flyoutOnHover,
+          },
           componentName: 'navigation',
           packageName,
           packageVersion,
