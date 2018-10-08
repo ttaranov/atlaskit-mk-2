@@ -355,7 +355,6 @@ export class StatelessUploadView extends Component<
             selected={selected}
             onClick={onClick}
             actions={actions}
-            // isLazy={false} // TODO: check if perf affects
           />
         ),
       };
