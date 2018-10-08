@@ -19,7 +19,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/editor-common": "^18.0.0",
-    "prosemirror-markdown": "1.1.0",
+    "prosemirror-markdown": "^1.2.0",
     "prosemirror-model": "^1.6.1"
   },
   "peerDependencies": {
