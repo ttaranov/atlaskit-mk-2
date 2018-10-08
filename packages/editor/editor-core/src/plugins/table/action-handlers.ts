@@ -1,4 +1,4 @@
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { findTable, findParentNodeOfType } from 'prosemirror-utils';
 import { DecorationSet, Decoration } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
@@ -6,17 +6,18 @@ import { Dispatch } from '../../event-dispatcher';
 import { pluginKey, defaultTableSelection } from './pm-plugins/main';
 import { TablePluginState, TableCssClassName as ClassName } from './types';
 import { closestElement } from '../../utils';
-import { findHoverDecoration } from './utils';
+import { findControlsHoverDecoration, findInsertLineDecoration } from './utils';
 
-const processHoverDecoration = (
+const processDecorations = (
   state: EditorState,
-  hoverDecoration: Decoration[],
   decorationSet: DecorationSet,
+  newDecorations: Decoration[],
+  find: (decorationSet: DecorationSet) => Decoration[],
 ): DecorationSet => {
-  if (hoverDecoration.length) {
-    return decorationSet.add(state.doc, hoverDecoration);
+  if (newDecorations.length) {
+    return decorationSet.add(state.doc, newDecorations);
   } else {
-    return decorationSet.remove(findHoverDecoration(decorationSet));
+    return decorationSet.remove(find(decorationSet));
   }
 };
 
@@ -87,7 +88,9 @@ export const handleClearSelection = (
   const nextPluginState = {
     ...pluginState,
     ...defaultTableSelection,
-    decorationSet: decorationSet.remove(findHoverDecoration(decorationSet)),
+    decorationSet: decorationSet.remove(
+      findControlsHoverDecoration(decorationSet),
+    ),
   };
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;
@@ -103,10 +106,11 @@ export const handleHoverColumns = (
 
   const nextPluginState = {
     ...pluginState,
-    decorationSet: processHoverDecoration(
+    decorationSet: processDecorations(
       state,
-      hoverDecoration,
       pluginState.decorationSet,
+      hoverDecoration,
+      findControlsHoverDecoration,
     ),
     dangerColumns,
     isTableInDanger: map.width === dangerColumns.length ? true : false,
@@ -125,10 +129,11 @@ export const handleHoverRows = (
 
   const nextPluginState = {
     ...pluginState,
-    decorationSet: processHoverDecoration(
+    decorationSet: processDecorations(
       state,
-      hoverDecoration,
       pluginState.decorationSet,
+      hoverDecoration,
+      findControlsHoverDecoration,
     ),
     dangerRows,
     isTableInDanger: map.height === dangerRows.length ? true : false,
@@ -144,10 +149,11 @@ export const handleHoverTable = (
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const nextPluginState = {
     ...pluginState,
-    decorationSet: processHoverDecoration(
+    decorationSet: processDecorations(
       state,
-      hoverDecoration,
       pluginState.decorationSet,
+      hoverDecoration,
+      findControlsHoverDecoration,
     ),
     isTableInDanger,
     isTableHovered: true,
@@ -156,23 +162,35 @@ export const handleHoverTable = (
   return nextPluginState;
 };
 
-export const handleDocChanged = (state: EditorState) => (
+export const handleDocChanged = (tr: Transaction) => (
   pluginState: TablePluginState,
   dispatch: Dispatch,
 ): TablePluginState => {
-  const table = findTable(state.selection);
+  const table = findTable(tr.selection);
   const tableNode = table ? table.node : undefined;
-  const { decorationSet } = pluginState;
-  const hoverDecoration = findHoverDecoration(decorationSet);
-  if (pluginState.tableNode !== tableNode || hoverDecoration.length) {
+  const { decorationSet, insertLineIndex } = pluginState;
+  const hoverDecoration = findControlsHoverDecoration(decorationSet);
+  const insertLineDecoration = findInsertLineDecoration(decorationSet);
+  if (
+    pluginState.tableNode !== tableNode ||
+    hoverDecoration.length ||
+    insertLineDecoration.length
+  ) {
     const { decorationSet } = pluginState;
     const nextPluginState = {
       ...pluginState,
+      ...defaultTableSelection,
       // @see: https://product-fabric.atlassian.net/browse/ED-3796
       decorationSet: decorationSet.remove(hoverDecoration),
-      ...defaultTableSelection,
       tableNode,
     };
+    // remap insert decoration when inserting a column or row so that it doesn't blink when recreated
+    if (insertLineIndex) {
+      nextPluginState.decorationSet = nextPluginState.decorationSet.map(
+        tr.mapping,
+        tr.doc,
+      );
+    }
     dispatch(pluginKey, nextPluginState);
     return nextPluginState;
   }
@@ -206,6 +224,44 @@ export const handleToggleContextualMenu = (isContextualMenuOpen: boolean) => (
   const nextPluginState = {
     ...pluginState,
     isContextualMenuOpen,
+  };
+  dispatch(pluginKey, nextPluginState);
+  return nextPluginState;
+};
+
+export const handleShowInsertLine = (
+  decorations: Decoration[],
+  insertLineIndex: number,
+) => (
+  state: EditorState,
+  pluginState: TablePluginState,
+  dispatch: Dispatch,
+): TablePluginState => {
+  const nextPluginState = {
+    ...pluginState,
+    insertLineIndex,
+    decorationSet: processDecorations(
+      state,
+      pluginState.decorationSet,
+      decorations,
+      findInsertLineDecoration,
+    ),
+  };
+  dispatch(pluginKey, nextPluginState);
+  return nextPluginState;
+};
+
+export const handleHideInsertLine = (
+  pluginState: TablePluginState,
+  dispatch: Dispatch,
+): TablePluginState => {
+  const { decorationSet } = pluginState;
+  const nextPluginState = {
+    ...pluginState,
+    decorationSet: decorationSet.remove(
+      findInsertLineDecoration(decorationSet),
+    ),
+    insertLineIndex: undefined,
   };
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;
