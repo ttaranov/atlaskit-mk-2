@@ -2,24 +2,23 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { Actions } from '../context/context';
 import { Consumer } from '../consumers/consumer';
-
-export type Mode = 'view' | 'edit';
+import { Document as DocumentModel } from '../model';
 
 export interface Props {
   render(actions: DocumentActions);
 }
 
 export interface DocumentActions {
-  createDocument(value: any);
+  createDocument(value: any): Promise<DocumentModel>;
   editDocument();
   cancelEdit();
-  updateDocument(value: any);
+  updateDocument(value: any): Promise<DocumentModel>;
 }
 
 export default class WithDocumentActions extends PureComponent<Props> {
   private actionsMapper = (actions: Actions): DocumentActions => ({
     async createDocument(value: any) {
-      actions.createDocument(value);
+      return actions.createDocument(value);
     },
 
     async editDocument() {
@@ -27,7 +26,7 @@ export default class WithDocumentActions extends PureComponent<Props> {
     },
 
     async updateDocument(value: any) {
-      actions.updateDocument(value);
+      return actions.updateDocument(value);
     },
 
     async cancelEdit() {

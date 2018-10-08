@@ -21,6 +21,7 @@ export default class ServiceProvider implements Provider {
       });
       return document;
     } catch (err) {
+      // tslint:disable-next-line:no-console
       console.warn(`Failed to get document: ${JSON.stringify(err)}`);
       return null;
     }
@@ -49,6 +50,7 @@ export default class ServiceProvider implements Provider {
       });
       return document;
     } catch (err) {
+      // tslint:disable-next-line:no-console
       console.warn(`Failed to update document: ${JSON.stringify(err)}`);
       return null;
     }
@@ -76,6 +78,7 @@ export default class ServiceProvider implements Provider {
       });
       return document;
     } catch (err) {
+      // tslint:disable-next-line:no-console
       console.warn(`Failed to update document: ${JSON.stringify(err)}`);
       return null;
     }

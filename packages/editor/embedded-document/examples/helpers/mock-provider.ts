@@ -1,4 +1,3 @@
-import * as uuid from 'uuid/v4';
 import { Provider, Document } from '../../src';
 
 const demoDoc: Document = {
@@ -59,7 +58,7 @@ export default class MockServiceProvider implements Provider {
   ): Promise<Document | null> {
     const document: Document = {
       id: documentId,
-      body: JSON.stringify(body),
+      body,
       objectId,
       createdBy: {},
       title,
@@ -76,10 +75,10 @@ export default class MockServiceProvider implements Provider {
     title?: string,
     language?: string,
   ): Promise<Document | null> {
-    const documentId = uuid();
+    const documentId = new Date().getTime().toString();
     const document: Document = {
       id: documentId,
-      body: JSON.stringify(body),
+      body,
       objectId,
       createdBy: {},
       title,

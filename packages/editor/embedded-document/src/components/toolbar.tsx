@@ -27,9 +27,11 @@ export default (props: { mode: Mode; editorActions?: any }) => {
                   appearance="primary"
                   onClick={async () => {
                     const value = await editorActions!.getValue();
-                    mode === 'create'
-                      ? actions.createDocument(value)
-                      : actions.updateDocument(value);
+                    try {
+                      await (mode === 'create'
+                        ? actions.createDocument(value)
+                        : actions.updateDocument(value));
+                    } catch (err) {}
                   }}
                 >
                   Publish

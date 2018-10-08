@@ -106,7 +106,6 @@
     "@types/prop-types": "^15.5.1",
     "@types/react-intl": "^2.3.8",
     "@types/react-syntax-highlighter": "^0.0.3",
-    "@types/uuid": "^3.4.4",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^20.0.3",

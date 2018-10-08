@@ -45,10 +45,10 @@ const renderToolbar = (mode: DocumentMode, editorActions?: any) => (
                   Edit
                 </Button>
                 <Button
-                  appearance="subtle"
-                  onClick={() => actions.editDocument()}
+                  appearance="link"
+                  onClick={() => (location.href = 'https://www.atlassian.com')}
                 >
-                  Help!
+                  www.atlassian.com
                 </Button>
               </ButtonGroup>
             </Toolbar>

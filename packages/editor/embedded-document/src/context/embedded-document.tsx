@@ -24,7 +24,7 @@ const Content = styled.div`
 `;
 
 export interface Props extends ProviderProps {
-  /* The mode of the embedded document. View or edit. */
+  /* The ARI for the resource that points or refers to this document e.g. a page in Confluence */
   objectId: string;
 
   /* The ID of the embedded document. */
@@ -124,11 +124,14 @@ export default class EmbeddedDocument extends Component<Props, State> {
         doc,
         mode: 'view',
       });
+      return doc;
     } else {
       this.setState({
         hasError: true,
         mode: 'view',
       });
+
+      throw new Error('Failed to update document');
     }
   };
 
@@ -147,11 +150,15 @@ export default class EmbeddedDocument extends Component<Props, State> {
         doc,
         mode: 'view',
       });
+
+      return doc;
     } else {
       this.setState({
         hasError: true,
         mode: 'view',
       });
+
+      throw new Error('Failed to create document');
     }
   };
 

@@ -19,8 +19,16 @@ export type Mode = 'view' | 'edit' | 'create';
 export interface Actions {
   getDocument(documentId: string, language?: string): void;
   setDocumentMode(mode: Mode): void;
-  updateDocument(body: string, title?: string, language?: string): void;
-  createDocument(body: string, title?: string, language?: string): void;
+  updateDocument(
+    body: string,
+    title?: string,
+    language?: string,
+  ): Promise<Document>;
+  createDocument(
+    body: string,
+    title?: string,
+    language?: string,
+  ): Promise<Document>;
 }
 
 const noop = () => {};
@@ -30,8 +38,12 @@ export const Context = createContext<ContextType>({
   actions: {
     getDocument: noop,
     setDocumentMode: noop,
-    updateDocument: noop,
-    createDocument: noop,
+    updateDocument: async () => {
+      throw new Error('Not implemented.');
+    },
+    createDocument: async () => {
+      throw new Error('Not implemented.');
+    },
   },
   renderProps: {},
 });

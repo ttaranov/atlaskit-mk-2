@@ -18,6 +18,8 @@ export interface Props extends BaseProps {
   mode: Mode;
 }
 
+const emptyDoc = '{ "type": "doc", "version": 1, "content": [] }';
+
 export default class Document extends Component<Props> {
   private renderToolbar() {
     const { mode, renderToolbar } = this.props;
@@ -39,7 +41,7 @@ export default class Document extends Component<Props> {
 
   private renderEditor() {
     const { doc } = this.props;
-    const { body = undefined } = doc || {};
+    const { body = emptyDoc } = doc || {};
 
     return (
       <EditorContext>
@@ -71,7 +73,7 @@ export default class Document extends Component<Props> {
         return this.renderEditor();
 
       default:
-        const { body = '' } = doc || {};
+        const { body = emptyDoc } = doc || {};
         return <ReactRenderer document={JSON.parse(body)} />;
     }
   }
