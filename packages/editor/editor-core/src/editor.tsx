@@ -20,6 +20,11 @@ import { nextMajorVersion } from './version';
 
 export * from './types';
 
+type Context = {
+  editorActions?: EditorActions;
+  intl: IntlShape;
+};
+
 export default class Editor extends React.Component<EditorProps, {}> {
   static defaultProps: EditorProps = {
     appearance: 'message',
@@ -32,15 +37,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
     intl: intlShape,
   };
 
-  context: {
-    editorActions?: EditorActions;
-    intl: IntlShape;
-  };
-
   private providerFactory: ProviderFactory;
   private editorActions: EditorActions;
 
-  constructor(props: EditorProps, context) {
+  constructor(props: EditorProps, context: Context) {
     super(props);
     this.providerFactory = new ProviderFactory();
     this.deprecationWarnings(props);
@@ -254,7 +254,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
     // to work around the PM editable being out of sync with
     // the document, force a DOM sync before calling onSave
     // if we've already started typing
+    // @ts-ignore
     if (view['inDOMChange']) {
+      // @ts-ignore
       view['inDOMChange'].finish(true);
     }
 

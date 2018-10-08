@@ -334,6 +334,8 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         'Editor Version': this.props.packageVersion,
         'Editor Core Version': coreVersion,
       },
+      priority: '1',
+      components: '15306', // Fix here
     };
 
     this.loadJiraIssueCollectorScript();
