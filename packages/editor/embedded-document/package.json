@@ -29,7 +29,10 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "react": "^16.4.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "fetch-mock": "^6.5.2",
+    "react": "^16.4.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "atlaskit": {
     "internal": true

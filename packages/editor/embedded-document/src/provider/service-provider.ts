@@ -21,7 +21,7 @@ export default class ServiceProvider implements Provider {
       });
       return document;
     } catch (err) {
-      console.warn(`Failed to get document: ${err}`);
+      console.warn(`Failed to get document: ${JSON.stringify(err)}`);
       return null;
     }
   }
@@ -49,7 +49,7 @@ export default class ServiceProvider implements Provider {
       });
       return document;
     } catch (err) {
-      console.warn(`Failed to update document: ${err}`);
+      console.warn(`Failed to update document: ${JSON.stringify(err)}`);
       return null;
     }
   }
@@ -76,7 +76,7 @@ export default class ServiceProvider implements Provider {
       });
       return document;
     } catch (err) {
-      console.warn(`Failed to update document: ${err}`);
+      console.warn(`Failed to update document: ${JSON.stringify(err)}`);
       return null;
     }
   }
