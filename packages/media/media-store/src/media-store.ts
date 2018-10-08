@@ -4,6 +4,7 @@ import {
   MediaCollectionItems,
   MediaUpload,
   MediaChunksProbe,
+  MediaCollectionItemFullDetails,
 } from './models/media';
 import {
   AsapBasedAuth,
@@ -38,6 +39,10 @@ const extendImageParams = (
 ): MediaStoreGetFileImageParams => {
   return { ...defaultImageOptions, ...params };
 };
+const jsonHeaders = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
 
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
@@ -49,10 +54,7 @@ export class MediaStore {
       method: 'POST',
       body: JSON.stringify({ name: collectionName }),
       authContext: { collectionName },
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
+      headers: jsonHeaders,
     }).then(mapResponseToJson);
   }
 
@@ -110,10 +112,7 @@ export class MediaStore {
       body: JSON.stringify({
         chunks,
       }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: jsonHeaders,
     }).then(mapResponseToJson);
   }
 
@@ -126,10 +125,7 @@ export class MediaStore {
       authContext: { collectionName: params.collection },
       params,
       body: JSON.stringify(body),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: jsonHeaders,
     }).then(mapResponseToJson);
   }
 
@@ -194,22 +190,19 @@ export class MediaStore {
     }).then(mapResponseToBlob);
   };
 
-  getItems = async (
-    items: Item[],
+  getItems = (
+    body: GetItemsRequestBody[],
   ): Promise<MediaStoreResponse<ItemsPayload>> => {
-    const descriptors = items.map(({ id, collection }) => ({
+    const descriptors = body.map(({ id, collection }) => ({
       type: 'file',
       id,
       collection,
     }));
-    const body = JSON.stringify({ descriptors });
+
     return this.request('/items', {
       method: 'POST',
-      body,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      body: JSON.stringify({ descriptors }),
+      headers: jsonHeaders,
     }).then(mapResponseToJson);
   };
 
@@ -220,10 +213,7 @@ export class MediaStore {
     return this.request(`/upload/${uploadId}/chunks`, {
       method: 'PUT',
       body: JSON.stringify(body),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: jsonHeaders,
     }).then(mapResponseToVoid);
   }
 
@@ -235,10 +225,7 @@ export class MediaStore {
       method: 'POST',
       authContext: { collectionName: params.collection }, // Contains collection name to write to
       body: JSON.stringify(body), // Contains collection name to read from
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: jsonHeaders,
       params, // Contains collection name to write to
     }).then(mapResponseToJson);
   }
@@ -265,10 +252,15 @@ export class MediaStore {
 }
 
 export interface ItemsPayload {
-  items: any[];
+  items: {
+    id: string;
+    type: 'file';
+    details: MediaCollectionItemFullDetails;
+    collection?: string;
+  }[];
 }
 
-export interface Item {
+export interface GetItemsRequestBody {
   id: string;
   collection?: string;
 }

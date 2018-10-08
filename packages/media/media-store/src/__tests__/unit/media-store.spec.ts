@@ -10,7 +10,12 @@ import {
   MediaCollection,
   MediaCollectionItems,
 } from '../../models/media';
-import { MediaStoreGetFileParams, EmptyFile } from '../../media-store';
+import {
+  MediaStoreGetFileParams,
+  EmptyFile,
+  GetItemsRequestBody,
+  ItemsPayload,
+} from '../../media-store';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -462,6 +467,73 @@ describe('MediaStore', () => {
         expect(fetchMock.lastUrl()).toEqual(
           `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
         );
+      });
+    });
+
+    describe('getItems', () => {
+      it('should POST to /items endpoint with correct options', () => {
+        const items: GetItemsRequestBody[] = [
+          {
+            id: '1',
+            collection: 'collection-1',
+          },
+          {
+            id: '2',
+          },
+        ];
+        const data: ItemsPayload[] = [
+          {
+            items: [
+              {
+                id: '1',
+                collection: 'collection-1',
+                type: 'file',
+                details: {
+                  artifacts: {} as any,
+                  mediaType: 'image',
+                  mimeType: 'png',
+                  name: 'file-1',
+                  processingStatus: 'succeeded',
+                  size: 1,
+                },
+              },
+            ],
+          },
+        ];
+
+        fetchMock.mock(`begin:${baseUrl}/items`, {
+          body: {
+            data,
+          },
+          status: 200,
+        });
+
+        return mediaStore.getItems(items).then(response => {
+          expect(response).toEqual({ data });
+          expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/items`);
+          expect(fetchMock.lastOptions()).toEqual({
+            method: 'POST',
+            headers: {
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              descriptors: [
+                {
+                  type: 'file',
+                  id: '1',
+                  collection: 'collection-1',
+                },
+                {
+                  type: 'file',
+                  id: '2',
+                },
+              ],
+            }),
+          });
+        });
       });
     });
   });

@@ -25,7 +25,9 @@ class Example extends Component {
       },
     ]);
 
-    console.log(response.data.items);
+    response.data.items.forEach(item => {
+      console.log(item.id, item.details);
+    });
   }
   render() {
     return <div>hi</div>;
