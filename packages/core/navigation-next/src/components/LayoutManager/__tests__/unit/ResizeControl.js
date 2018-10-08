@@ -90,4 +90,32 @@ describe('ResizeControlBase', () => {
   });
 });
 
-describe('ResizeControl', () => {});
+describe('ResizeControl', () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+  it('should wrap ResizeControlBase with withAnalyticsEvents HOC', () => {
+    const WrappedComp = () => null;
+    const mockReturn = jest.fn(() => WrappedComp);
+    const mockWithAnalyticsEvents = jest.fn(() => mockReturn);
+    jest.doMock('@atlaskit/analytics-next', () => ({
+      createAndFireEvent: jest.fn(() => jest.fn()),
+      withAnalyticsEvents: mockWithAnalyticsEvents,
+      withAnalyticsContext: jest.fn(() => () => null),
+    }));
+
+    expect(mockWithAnalyticsEvents).toHaveBeenCalledTimes(0);
+    const {
+      default: ResizeControl,
+      ResizeControlBase: RequiredResizeControlBase,
+    } = require('../../ResizeControl');
+
+    // withAnalyticsEvent map should not be called with anything
+    expect(mockWithAnalyticsEvents).toHaveBeenLastCalledWith();
+    // The return of the call above should be called with ResizeControlBase
+    expect(mockReturn).toHaveBeenLastCalledWith(RequiredResizeControlBase);
+    // The return of the call above should be the default export
+    expect(ResizeControl).toBe(WrappedComp);
+  });
+});
