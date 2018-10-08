@@ -1,8 +1,9 @@
-import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { inputRules } from 'prosemirror-inputrules';
-import { Schema, Node } from 'prosemirror-model';
+import { Node } from 'prosemirror-model';
 import { EditorState, Transaction, Plugin, PluginKey } from 'prosemirror-state';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
+
 import {
   createInputRule,
   leafNodeReplacementCharacter,
@@ -12,10 +13,9 @@ import { isMarkTypeAllowedInCurrentSelection } from '../../../utils';
 let matcher: AsciiEmojiMatcher;
 
 export function inputRulePlugin(
-  schema: Schema,
   providerFactory?: ProviderFactory,
 ): Plugin | undefined {
-  if (schema.nodes.emoji && providerFactory) {
+  if (providerFactory) {
     initMatcher(providerFactory);
     const asciiEmojiRule = createInputRule(
       AsciiEmojiMatcher.REGEX,
@@ -266,8 +266,8 @@ class AsciiEmojiTransactionCreator {
 
 export const stateKey = new PluginKey('asciiEmojiPlugin');
 
-const plugins = (schema: Schema, providerFactory?: ProviderFactory) => {
-  return [inputRulePlugin(schema, providerFactory)].filter(
+const plugins = (providerFactory?: ProviderFactory) => {
+  return [inputRulePlugin(providerFactory)].filter(
     plugin => !!plugin,
   ) as Plugin[];
 };

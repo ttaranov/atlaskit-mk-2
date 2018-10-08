@@ -78,7 +78,7 @@ export function TypeAheadItemsList({
           (item, index) =>
             item.render ? (
               <div
-                key={item.title}
+                key={item.key ? item.key : item.title}
                 ref={
                   index === currentIndex
                     ? ref => ref && scrollIntoViewIfNeeded(ref)

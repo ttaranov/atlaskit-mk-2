@@ -152,7 +152,7 @@ export interface Props {
   linkSupported?: boolean;
   linkDisabled?: boolean;
   emojiDisabled?: boolean;
-  insertEmoji?: (emojiId: EmojiId) => void;
+  insertEmoji?: (emojiId: EmojiId) => Command;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
@@ -604,20 +604,23 @@ class ToolbarInsertBlock extends React.PureComponent<
 
   @analyticsDecorator('atlassian.editor.format.horizontalrule.button')
   private insertHorizontalRule = (): boolean => {
-    const { editorView } = this.props;
-    editorView.dispatch(
-      createHorizontalRule(
-        editorView.state,
-        editorView.state.selection.from,
-        editorView.state.selection.to,
-      ),
+    const {
+      editorView: { state, dispatch },
+    } = this.props;
+    dispatch(
+      createHorizontalRule(state, state.selection.from, state.selection.to),
     );
     return true;
   };
 
   @analyticsDecorator('atlassian.editor.emoji.button')
   private handleSelectedEmoji = (emojiId: EmojiId): boolean => {
-    this.props.insertEmoji!(emojiId);
+    if (this.props.insertEmoji) {
+      const {
+        editorView: { state, dispatch },
+      } = this.props;
+      this.props.insertEmoji(emojiId)(state, dispatch);
+    }
     this.toggleEmojiPicker();
     return true;
   };

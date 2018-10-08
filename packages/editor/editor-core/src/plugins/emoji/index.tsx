@@ -1,23 +1,24 @@
 import * as React from 'react';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { emoji, emojiQuery, WithProviders } from '@atlaskit/editor-common';
+import { emoji, WithProviders } from '@atlaskit/editor-common';
+import {
+  defaultListLimit,
+  EmojiTypeAheadItem,
+  SearchSort,
+  SearchOptions,
+} from '@atlaskit/emoji';
 
-import { EditorPlugin } from '../../types';
+import { analyticsService } from '../../analytics';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
-import { createPlugin, emojiPluginKey } from './pm-plugins/main';
-import inputRulePlugin from './pm-plugins/input-rules';
-import keymap from './pm-plugins/keymap';
+import { EditorPlugin } from '../../types';
+
+import { createPlugin, pluginKey, getPluginState } from './pm-plugins/main';
 import { inputRulePlugin as asciiInputRulePlugin } from './pm-plugins/ascii-input-rules';
 import ToolbarEmojiPicker from './ui/ToolbarEmojiPicker';
-import EmojiTypeAhead from './ui/EmojiTypeAhead';
 
 const emojiPlugin: EditorPlugin = {
   nodes() {
     return [{ name: 'emoji', node: emoji }];
-  },
-
-  marks() {
-    return [{ name: 'emojiQuery', mark: emojiQuery }];
   },
 
   pmPlugins() {
@@ -28,90 +29,76 @@ const emojiPlugin: EditorPlugin = {
           createPlugin(portalProviderAPI, providerFactory),
       },
       {
-        name: 'emojiInputRule',
-        plugin: ({ schema }) => inputRulePlugin(schema),
-      },
-      { name: 'emojiKeymap', plugin: ({ schema }) => keymap(schema) },
-      {
         name: 'emojiAsciiInputRule',
-        plugin: ({ schema, providerFactory }) =>
-          asciiInputRulePlugin(schema, providerFactory),
+        plugin: ({ providerFactory }) => asciiInputRulePlugin(providerFactory),
       },
     ];
   },
 
-  contentComponent({
-    editorView,
-    providerFactory,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    popupsScrollableElement,
-  }) {
-    const renderNode = providers => {
-      return (
-        <EmojiTypeAhead
-          editorView={editorView}
-          pluginKey={emojiPluginKey}
-          emojiProvider={providers.emojiProvider}
-          popupsMountPoint={popupsMountPoint}
-          popupsBoundariesElement={popupsBoundariesElement}
-        />
-      );
-    };
-
-    return (
-      <WithProviders
-        providerFactory={providerFactory}
-        providers={['emojiProvider']}
-        renderNode={renderNode}
-      />
-    );
-  },
-
-  secondaryToolbarComponent({
-    editorView,
-    eventDispatcher,
-    providerFactory,
-    appearance,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    popupsScrollableElement,
-    disabled,
-  }) {
-    const renderNode = providers => {
-      // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
-      return (
-        <ToolbarEmojiPicker
-          editorView={editorView}
-          pluginKey={emojiPluginKey}
-          emojiProvider={providers.emojiProvider}
-          numFollowingButtons={4}
-          isReducedSpacing={true}
-          isDisabled={disabled}
-          popupsMountPoint={popupsMountPoint}
-          popupsBoundariesElement={popupsBoundariesElement}
-          popupsScrollableElement={popupsScrollableElement}
-        />
-      );
-    };
-
-    return (
-      <WithProviders
-        providerFactory={providerFactory}
-        providers={['emojiProvider']}
-        renderNode={renderNode}
-      />
-    );
-  },
-
   pluginsOptions: {
+    typeAhead: {
+      trigger: ':',
+      getItems(query, state, intl, { prevActive, queryChanged }) {
+        if (!prevActive && queryChanged) {
+          analyticsService.trackEvent(
+            'atlassian.fabric.emoji.picker.trigger.shortcut',
+          );
+        }
+
+        const pluginState = getPluginState(state);
+        const emojis =
+          !prevActive && queryChanged ? [] : pluginState.emojis || [];
+
+        if (queryChanged && pluginState.provider) {
+          const options: SearchOptions = {
+            limit: defaultListLimit,
+            skinTone: pluginState.provider.getSelectedTone(),
+            sort: query ? SearchSort.Default : SearchSort.UsageFrequency,
+          };
+          pluginState.provider.filter(query || '', options);
+        }
+
+        return emojis.map(emoji => ({
+          key: emoji.id || `${emoji.shortName}-${emoji.type}`,
+          title: emoji.shortName,
+          keywords: [emoji.fallback || ''],
+          render: ({ isSelected, onClick, onMouseMove }) => (
+            <EmojiTypeAheadItem
+              emoji={emoji}
+              selected={isSelected}
+              onMouseMove={onMouseMove}
+              onSelection={onClick}
+            />
+          ),
+          emoji,
+        }));
+      },
+      selectItem(state, item, insert) {
+        const { id = '', type = '', fallback, shortName } = item.emoji;
+        const text = fallback || shortName;
+
+        analyticsService.trackEvent('atlassian.fabric.emoji.picker.insert', {
+          emojiId: id,
+          type,
+          // queryLength
+        });
+
+        return insert(
+          state.schema.nodes.emoji.createChecked({
+            shortName,
+            id,
+            text,
+          }),
+        );
+      },
+    },
     quickInsert: ({ formatMessage }) => [
       {
         title: formatMessage(messages.emoji),
         priority: 500,
         icon: () => <EmojiIcon label={formatMessage(messages.emoji)} />,
         action(insert, state) {
-          const mark = state.schema.mark('emojiQuery');
+          const mark = state.schema.mark('typeAheadQuery', { trigger: ':' });
           const emojiText = state.schema.text(':', [mark]);
           return insert(emojiText);
         },
