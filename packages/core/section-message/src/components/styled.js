@@ -28,7 +28,7 @@ export const Description = styled.div`
 
 export const Actions = styled.ul`
   display: block;
-  padding-left: 0px;
+  padding-left: 0;
   * + & {
     margin-top: 8px;
   }
