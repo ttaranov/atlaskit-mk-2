@@ -14,7 +14,11 @@ import { setNodeSelection } from '../../../../utils';
 import imageUpload from '../../../../plugins/image-upload';
 import codeBlockPlugin from '../../../../plugins/code-block';
 import mediaPlugin from '../../../../plugins/media';
-import { insertExternalImage } from '../../../../plugins/image-upload/pm-plugins/commands';
+import {
+  insertExternalImage,
+  startImageUpload,
+} from '../../../../plugins/image-upload/pm-plugins/commands';
+import { ImageUploadHandler } from '../../../../plugins/image-upload/types';
 
 describe('image-upload', () => {
   const testImgSrc =
@@ -120,5 +124,37 @@ describe('image-upload', () => {
     expect(imageUploadHandler.mock.calls[0][0].dataTransfer.types).toContain(
       'Files',
     );
+  });
+
+  it('should call the provider correctly with startImageUpload command', async () => {
+    const imageUploadHandler: ImageUploadHandler = jest.fn();
+    const imageUploadProvider = Promise.resolve(imageUploadHandler);
+    const { editorView } = editor(doc(p('{<>}')), imageUploadProvider);
+
+    await imageUploadProvider;
+
+    const event = createEvent('custom');
+
+    const started = startImageUpload(event)(
+      editorView.state,
+      editorView.dispatch,
+    );
+    expect(started).toBeTruthy();
+    expect(imageUploadHandler).toHaveBeenCalledTimes(1);
+  });
+
+  it('should insert the external image via command with provider', async () => {
+    const imageUploadHandler: ImageUploadHandler = jest.fn((e, cb) => {
+      cb({
+        src: testImgSrc,
+      });
+    });
+    const imageUploadProvider = Promise.resolve(imageUploadHandler);
+    const { editorView } = editor(doc(p('{<>}')), imageUploadProvider);
+
+    await imageUploadProvider;
+
+    startImageUpload()(editorView.state, editorView.dispatch);
+    expect(editorView.state.doc).toEqualDocument(doc(testImg()));
   });
 });
