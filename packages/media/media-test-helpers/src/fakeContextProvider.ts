@@ -38,8 +38,11 @@ export const fakeContext = (
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
-  const collection = jest.fn() as any;
-  const getImage = {} as any;
+  const getImage = jest.fn() as any;
+  const collection = {} as any;
+  const file = {
+    getFileState: getFile,
+  } as any;
   const defaultContext: Context = {
     getImage,
     getFile,
@@ -56,12 +59,29 @@ export const fakeContext = (
     uploadFile,
     config,
     collection,
+    file,
   };
 
   const wrappedStubbedContext: any = {};
   Object.keys(stubbedContext).forEach(methodName => {
     wrappedStubbedContext[methodName] = returns(stubbedContext[methodName]);
   });
+
+  if (stubbedContext.file) {
+    Object.keys(stubbedContext.file).forEach(methodName => {
+      wrappedStubbedContext.file[methodName] = returns(
+        stubbedContext.file[methodName],
+      );
+    });
+  }
+
+  if (stubbedContext.context) {
+    Object.keys(stubbedContext.context).forEach(methodName => {
+      wrappedStubbedContext.context[methodName] = returns(
+        stubbedContext.context[methodName],
+      );
+    });
+  }
 
   return {
     ...defaultContext,

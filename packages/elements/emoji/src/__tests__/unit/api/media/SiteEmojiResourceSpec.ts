@@ -100,7 +100,7 @@ describe('SiteEmojiResource', () => {
 
       (ContextFactory as any).create = () => {
         return {
-          uploadFile,
+          file: { upload: uploadFile },
         };
       };
 
@@ -176,7 +176,7 @@ describe('SiteEmojiResource', () => {
         }),
       );
 
-      (ContextFactory as any).create = () => ({ uploadFile });
+      (ContextFactory as any).create = () => ({ file: { upload: uploadFile } });
 
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
@@ -269,7 +269,7 @@ describe('SiteEmojiResource', () => {
         }),
       );
 
-      (ContextFactory as any).create = () => ({ uploadFile });
+      (ContextFactory as any).create = () => ({ file: { upload: uploadFile } });
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
 

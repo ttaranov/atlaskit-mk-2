@@ -139,7 +139,7 @@ export class NewUploadServiceImpl implements UploadService {
       let observable: Observable<FileState> | undefined;
 
       if (context) {
-        observable = context.uploadFile(uploadableFile, controller);
+        observable = context.file.upload(uploadableFile, controller);
 
         const subscrition = observable.subscribe({
           next: state => {
