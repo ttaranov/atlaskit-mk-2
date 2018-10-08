@@ -84,6 +84,7 @@ class MediaGroup extends React.Component<MediaGroupProps> {
     });
 
     const items = tempItems.concat(existingItems);
+    console.log('items are ', items);
 
     return (
       <Filmstrip items={items} context={this.mediaPluginState.mediaContext} />

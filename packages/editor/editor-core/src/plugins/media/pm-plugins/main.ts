@@ -679,9 +679,9 @@ export class MediaPluginState {
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
       case 'ready':
-        this.replaceTemporaryNode(state);
-        this.stateManager.off(state.id, this.handleMediaState);
-        break;
+      // this.replaceTemporaryNode(state);
+      // this.stateManager.off(state.id, this.handleMediaState);
+      // break;
     }
   };
 
