@@ -2,7 +2,7 @@
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import type { Element, Node } from 'react';
 import AnimateHeight from 'react-animate-height';
 
@@ -45,7 +45,7 @@ export default class Panel extends PureComponent<Props, State> {
     return (
       <Expandable defaultIsExpanded={isDefaultExpanded}>
         {({ isExpanded, toggleExpanded }) => (
-          <Fragment>
+          <styles.PanelWrapper>
             <styles.PanelHeader
               onClick={() => {
                 this.togglePanel();
@@ -77,7 +77,7 @@ export default class Panel extends PureComponent<Props, State> {
             >
               {children}
             </AnimateHeight>
-          </Fragment>
+          </styles.PanelWrapper>
         )}
       </Expandable>
     );
