@@ -5,6 +5,7 @@ import { withTheme, ThemeProvider } from 'styled-components';
 import {
   normalizeLanguage,
   type ADFSupportedLanguages,
+  languageLoaders,
 } from './supportedLanguages';
 import { type Theme, type ThemeProps, applyTheme } from './themes/themeBuilder';
 
@@ -22,6 +23,18 @@ export class Code extends PureComponent<CodeProps, {}> {
     language: '',
     theme: {},
   };
+
+  componentDidMount() {
+    const language = normalizeLanguage(this.props.language);
+
+    if (SyntaxHighlighter.isRegistered(language) && languageLoaders[language]) {
+      languageLoaders[language]().then(() => {
+        // Once the language has been loaded we need to force a re-render
+        // Because react-syntax-highlighter internals are not react
+        this.forceUpdate();
+      });
+    }
+  }
 
   render() {
     const { inlineCodeStyle } = applyTheme(this.props.theme);
