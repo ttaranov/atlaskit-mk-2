@@ -43,12 +43,14 @@ function createFixture(
   item?: ProcessedFileState,
 ) {
   const context = createContext({ authPromise });
+  const onLoaded = jest.fn();
   const el = mount(
     <AudioViewer
       context={context}
       item={item || audioItem}
       collectionName={collectionName}
       previewCount={0}
+      onLoaded={onLoaded}
     />,
   );
   return { context, el };
@@ -166,12 +168,14 @@ describe('Audio viewer', () => {
       async function createAutoPlayFixture(previewCount: number) {
         const authPromise = Promise.resolve({ token, clientId, baseUrl });
         const context = createContext({ authPromise });
+        const onLoaded = jest.fn();
         const el = mount(
           <AudioViewer
             context={context}
             item={audioItem}
             collectionName="collectionName"
             previewCount={previewCount}
+            onLoaded={onLoaded}
           />,
         );
         const instance: any = el.instance();

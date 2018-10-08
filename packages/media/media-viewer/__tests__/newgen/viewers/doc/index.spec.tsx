@@ -17,8 +17,14 @@ function createFixture(
 ) {
   const context = createContext(undefined as any);
   const onClose = jest.fn(() => fetchPromise);
+  const onLoaded = jest.fn();
   const el = mount(
-    <DocViewer item={item} context={context} collectionName={collectionName} />,
+    <DocViewer
+      item={item}
+      context={context}
+      onLoaded={onLoaded}
+      collectionName={collectionName}
+    />,
   );
   (el as any).instance()['fetch'] = jest.fn();
   return { context, el, onClose };

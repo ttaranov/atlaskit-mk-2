@@ -48,12 +48,14 @@ function createFixture(
   item?: ProcessedFileState,
 ) {
   const context = createContext({ authPromise });
+  const onLoaded = jest.fn();
   const el = mount(
     <VideoViewer
       context={context}
       item={item || videoItem}
       {...props}
       previewCount={0}
+      onLoaded={onLoaded}
     />,
   );
   return { context, el };
@@ -168,12 +170,14 @@ describe('Video viewer', () => {
     ) {
       const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const context = createContext({ authPromise });
+      const onLoaded = jest.fn();
       const el = mount(
         <VideoViewer
           context={context}
           previewCount={previewCount}
           item={videoItem}
           featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
+          onLoaded={onLoaded}
         />,
       );
       await (el as any).instance()['init']();

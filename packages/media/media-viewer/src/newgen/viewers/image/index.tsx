@@ -6,6 +6,7 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { InteractiveImg } from './interactive-img';
+import { Viewer } from '../viewer';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -34,10 +35,7 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   };
 }
 
-export class ImageViewer extends React.Component<
-  ImageViewerProps,
-  ImageViewerState
-> {
+export class ImageViewer extends Viewer<ImageViewerProps, ImageViewerState> {
   state: ImageViewerState = initialState;
 
   componentDidMount() {
@@ -86,6 +84,7 @@ export class ImageViewer extends React.Component<
   }
 
   private async init(file: ProcessedFileState, context: Context) {
+    const startTime = Date.now();
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
@@ -99,14 +98,14 @@ export class ImageViewer extends React.Component<
         });
         this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
         const objectUrl = URL.createObjectURL(await response);
-        this.setState({
+        this.onLoaded({
           objectUrl: Outcome.successful(objectUrl),
         });
       } catch (err) {
         if (err.message === REQUEST_CANCELLED) {
           this.preventRaceCondition();
         } else {
-          this.setState({
+          this.onFailed({
             objectUrl: Outcome.failed(createError('previewFailed', err, file)),
           });
         }

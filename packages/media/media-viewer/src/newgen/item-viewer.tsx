@@ -15,6 +15,10 @@ import {
   ErrorName,
 } from './error';
 import { renderDownloadButton } from './domain/download';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import { channel, onViewerLoadPayload } from './analytics';
+import { GasPayload } from '@atlaskit/analytics-gas-types';
 
 export type Props = Readonly<{
   identifier: Identifier;
@@ -27,10 +31,17 @@ export type Props = Readonly<{
 
 export type State = {
   item: Outcome<FileState, MediaViewerError>;
+  loadStarted: number;
 };
 
-const initialState: State = { item: Outcome.pending() };
-export class ItemViewer extends React.Component<Props, State> {
+const initialState: State = {
+  item: Outcome.pending(),
+  loadStarted: Date.now(),
+};
+export class ItemViewerBase extends React.Component<
+  Props & WithAnalyticsEventProps,
+  State
+> {
   state: State = initialState;
 
   private subscription?: Subscription;
@@ -49,6 +60,30 @@ export class ItemViewer extends React.Component<Props, State> {
   componentDidMount() {
     this.init(this.props);
   }
+
+  private onViewerLoaded = (viewerPayload: onViewerLoadPayload) => {
+    console.log('viewerPayload', viewerPayload);
+
+    const { loadStarted } = this.state;
+    const { id } = this.props.identifier;
+    const endTime = Date.now();
+    const loadDurationMsec = endTime - loadStarted;
+    const viewerDurationMsec = viewerPayload.duration;
+    const metadataDurationMsec = loadDurationMsec - viewerDurationMsec;
+    const ev: GasPayload = {
+      actionSubject: 'viewed',
+      eventType: 'ui',
+      attributes: {
+        status: 'success',
+        fileId: id,
+        viewerDurationMsec,
+        loadDurationMsec,
+        metadataDurationMsec,
+      },
+      source: 'unknown',
+    };
+    this.fireAnalytics(ev);
+  };
 
   private renderProcessedFile(item: ProcessedFileState) {
     const {
@@ -69,19 +104,20 @@ export class ItemViewer extends React.Component<Props, State> {
     };
     switch (item.mediaType) {
       case 'image':
-        return <ImageViewer {...viewerProps} />;
+        return <ImageViewer onLoaded={this.onViewerLoaded} {...viewerProps} />;
       case 'audio':
-        return <AudioViewer {...viewerProps} />;
+        return <AudioViewer onLoaded={this.onViewerLoaded} {...viewerProps} />;
       case 'video':
         return (
           <VideoViewer
+            onLoaded={this.onViewerLoaded}
             showControls={showControls}
             featureFlags={featureFlags}
             {...viewerProps}
           />
         );
       case 'doc':
-        return <DocViewer {...viewerProps} />;
+        return <DocViewer onLoaded={this.onViewerLoaded} {...viewerProps} />;
       default:
         return this.renderError('unsupported', item);
     }
@@ -123,7 +159,12 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
-    this.setState(initialState, () => {
+    const startTime = Date.now();
+    const state = {
+      ...initialState,
+      loadStarted: startTime,
+    };
+    this.setState(state, () => {
       // Loading the file after rendering the inital state prevent the following bugs:
       // MS-803
       // MS-823
@@ -142,10 +183,32 @@ export class ItemViewer extends React.Component<Props, State> {
             this.setState({
               item: Outcome.failed(createError('metadataFailed', err)),
             });
+            this.fireAnalyticsError('Metadata fetching failed');
           },
         });
     });
   }
+
+  private fireAnalyticsError = (failReason: string) => {
+    const errorPayload: GasPayload = {
+      actionSubject: 'viewed',
+      eventType: 'ui',
+      attributes: {
+        status: 'fail',
+        fileId: this.props.identifier.id,
+        failReason,
+      },
+      source: 'unknown',
+    };
+    this.fireAnalytics(errorPayload);
+  };
+
+  private fireAnalytics = (payload: GasPayload) => {
+    if (this.props.createAnalyticsEvent) {
+      const ev = this.props.createAnalyticsEvent(payload);
+      ev.fire(channel);
+    }
+  };
 
   // It's possible that a different identifier or context was passed.
   // We therefore need to reset Media Viewer.
@@ -156,9 +219,11 @@ export class ItemViewer extends React.Component<Props, State> {
     );
   }
 
-  release() {
+  private release() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 }
+
+export const ItemViewer = withAnalyticsEvents()(ItemViewerBase);

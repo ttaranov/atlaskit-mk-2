@@ -110,7 +110,7 @@ describe('Navigation', () => {
       .find(ArrowLeftCircleIcon)
       .first()
       .simulate('click');
-    expect(onChange).toBeCalledWith(identifier);
+    expect(onChange).toBeCalledWith(identifier, expect.anything());
   });
 
   it('should call onChange callback when right arrow is clicked', () => {
@@ -126,7 +126,7 @@ describe('Navigation', () => {
       .find(ArrowRightCircleIcon)
       .first()
       .simulate('click');
-    expect(onChange).toBeCalledWith(identifier2);
+    expect(onChange).toBeCalledWith(identifier2, expect.anything());
   });
 
   it('should not show any arrows if selectedItem is not found', () => {
@@ -158,7 +158,7 @@ describe('Navigation', () => {
         keyCode: 37,
       });
       document.dispatchEvent(e);
-      expect(onChange).toBeCalledWith(identifier);
+      expect(onChange).toBeCalledWith(identifier, expect.anything());
     });
 
     it('should call onChange callback when right ARROW key is pressed', () => {
@@ -176,7 +176,7 @@ describe('Navigation', () => {
         keyCode: 39,
       });
       document.dispatchEvent(e);
-      expect(onChange).toBeCalledWith(identifier2);
+      expect(onChange).toBeCalledWith(identifier2, expect.anything());
     });
   });
 });
