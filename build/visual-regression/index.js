@@ -3,6 +3,8 @@
 const child = require('child_process');
 const isReachable = require('is-reachable');
 const webpack = require('../../build/webdriver-runner/utils/webpack');
+const fs = require('fs-extra');
+const glob = require('glob');
 
 /*
 * function main() to
@@ -12,6 +14,17 @@ const webpack = require('../../build/webdriver-runner/utils/webpack');
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 const isLocalRun = process.env.RUN_LOCAL_ONLY === 'true';
 const watch = process.env.WATCH ? '--watch' : '';
+
+// move logic to remove all production snapshots before test starts
+function removeSnapshotDir() {
+  return glob
+    .sync('**/packages/**/__image_snapshots__/', {
+      ignore: '**/node_modules/**',
+    })
+    .map(dir => {
+      fs.removeSync(dir);
+    });
+}
 
 // function to generate snapshot from production website
 function getProdSnapshots() {
@@ -51,6 +64,7 @@ async function main() {
     code: 0,
     signal: '',
   };
+  removeSnapshotDir();
 
   if (!serverAlreadyRunning) {
     // Overriding the env variable to start the correct packages
@@ -73,7 +87,9 @@ async function main() {
   if (!serverAlreadyRunning) {
     webpack.stopDevServer();
   }
-  process.exit(code && prodTestStatus.code);
+
+  if (prodTestStatus.code !== 0) process.exit(prodTestStatus.code);
+  process.exit(code);
 }
 
 if (

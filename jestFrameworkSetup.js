@@ -344,7 +344,7 @@ if (process.env.VISUAL_REGRESSION) {
     await global.browser.close();
   });
 
-  // TO-DO tweak failureThreshold to provide best results
+  // TODO tweak failureThreshold to provide best results
   const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
     customDiffConfig: { threshold: 0.2 },
     failureThreshold: '5',

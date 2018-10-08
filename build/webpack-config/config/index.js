@@ -166,9 +166,6 @@ module.exports = function createWebpackConfig(
         'node_modules',
       ],
     },
-    watchOptions: {
-      ignored: ['__snapshots__', '__image_snapshots__'],
-    },
     plugins: getPlugins({ websiteDir, isProduction, websiteEnv, report }),
     optimization: getOptimizations({
       isProduction,

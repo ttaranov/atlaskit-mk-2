@@ -1,7 +1,4 @@
-import {
-  removeOldProdSnapshots,
-  getExampleUrl,
-} from '@atlaskit/visual-regression/helper';
+import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 import {
   imageSnapshotFolder,
   initEditor,
@@ -13,10 +10,6 @@ import {
 } from '../_utils';
 
 describe('Snapshot Test: Floating toolbar', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   let page;
   beforeAll(async () => {
     // @ts-ignore
@@ -83,10 +76,6 @@ describe('Snapshot Test: Floating toolbar', () => {
 });
 
 describe('Floating toolbar: Toolbar resolution', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   let page;
   beforeAll(async () => {
     // @ts-ignore

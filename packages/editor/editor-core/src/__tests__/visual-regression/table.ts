@@ -1,4 +1,3 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import { TableSharedCssClassName as SharedClassName } from '@atlaskit/editor-common';
 import {
   imageSnapshotFolder,
@@ -89,10 +88,6 @@ const getSelectorForCell = ({
 
 // TO-DO renable after splitting and fix flaky tests
 describe.skip('Snapshot Test: table', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   ['full-page', 'comment'].forEach(appearance => {
     let page;
 

@@ -1,5 +1,3 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
   imageSnapshotFolder,
   initEditor,
@@ -33,10 +31,6 @@ const mentionButton = `span[aria-label="${
 const mentionPicker = 'span[data-mention-query="true"]';
 
 describe('Snapshot Test: z-indexes', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   ['full-page', 'comment'].forEach(appearance => {
     let page;
 

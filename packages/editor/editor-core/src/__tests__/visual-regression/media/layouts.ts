@@ -1,5 +1,3 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
   imageSnapshotFolder,
   initEditor,
@@ -18,10 +16,6 @@ const mediaSingleLayouts = {
 };
 
 describe('Snapshot Test: Media', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   let page;
   beforeAll(async () => {
     // @ts-ignore

@@ -1,5 +1,3 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
   imageSnapshotFolder,
   initEditor,
@@ -11,7 +9,6 @@ describe('Snapshot Test: Gap cursor', () => {
   let page;
 
   beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
     // @ts-ignore
     page = global.page;
     await initEditor(page, 'full-page');
@@ -23,11 +20,11 @@ describe('Snapshot Test: Gap cursor', () => {
 
   [
     'table',
-    'codeblock',
+    // 'code block',
     'panel',
     'action',
     'decision',
-    'block extension',
+    // 'block extension',
     'columns',
   ].forEach(node => {
     ['Left', 'Right'].forEach(side => {

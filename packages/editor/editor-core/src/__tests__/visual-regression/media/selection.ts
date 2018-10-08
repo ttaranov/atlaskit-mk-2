@@ -1,5 +1,3 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
   imageSnapshotFolder,
   initEditor,
@@ -10,11 +8,7 @@ import {
 } from '../_utils';
 
 describe('Snapshot Test: Media', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
-  // TO-DO fix this for fullpage editor mode
+  // TODO fix this for fullpage editor mode
   describe.skip('full page editor', () => {
     let page;
     beforeAll(async () => {

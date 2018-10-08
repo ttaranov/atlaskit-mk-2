@@ -1,4 +1,3 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import {
   imageSnapshotFolder,
   initEditor,
@@ -9,7 +8,6 @@ import {
 describe('Snapshot Test: Extensions', () => {
   let page;
   beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
     // @ts-ignore
     page = global.page;
     await initEditor(page, 'full-page');
