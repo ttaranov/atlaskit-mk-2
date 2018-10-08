@@ -31,10 +31,13 @@ export function keymapPlugin(): Plugin | undefined {
       const previousPos = tr.doc.resolve(
         Math.max(0, $from.before($from.depth) - 1),
       );
+      // const previousNodeType =
+      //   previousPos.pos > 0 && previousPos.node(1) && previousPos.node(1).type;
+      // const parentNodeType = $from.node(1).type;
 
       const previousNodeType =
-        previousPos.pos > 0 && previousPos.node(1) && previousPos.node(1).type;
-      const parentNodeType = $from.node(1).type;
+        previousPos.pos > 0 && previousPos.parent && previousPos.parent.type;
+      const parentNodeType = $from.parent.type;
       const isPreviousNodeAPanel = previousNodeType === panel;
       const isParentNodeAPanel = parentNodeType === panel;
 
