@@ -12,10 +12,7 @@ import { messages as BlockMessages } from '../../../plugins/insert-block/ui/Tool
 import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists';
 
 /* This is used to identify test case in Browserstack */
-process.env.TEST_FILE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
+process.env.TEST_FILE = __filename.split('/').reverse()[0];
 
 [
   ListMessages.unorderedList.defaultMessage,

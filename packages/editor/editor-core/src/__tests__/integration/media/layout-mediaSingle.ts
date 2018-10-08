@@ -10,10 +10,7 @@ import {
 import commonMessages from '../../../messages';
 
 /* This is used to identify test case in Browserstack */
-process.env.TEST_FILE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
+process.env.TEST_FILE = __filename.split('/').reverse()[0];
 
 BrowserTestCase(
   'Can change media single to full-width layout on fullpage',

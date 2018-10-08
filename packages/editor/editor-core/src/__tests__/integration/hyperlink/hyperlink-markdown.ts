@@ -3,10 +3,7 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
 
 /* This is used to identify test case in Browserstack */
-process.env.TEST_FILE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
+process.env.TEST_FILE = __filename.split('/').reverse()[0];
 
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(

@@ -49,7 +49,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const testname = args.shift();
   const testFn = args.pop();
   const testName /*:any */ = process.env.TEST_FILE
-    ? `${process.env.TEST_FILE.toUpperCase()}`
+    ? `${process.env.TEST_FILE.toLowerCase()}`
     : testname;
   const skipForBrowser = args.length > 0 ? args.shift() : { skip: [] };
 
@@ -68,20 +68,20 @@ function BrowserTestCase(...args /*:Array<any> */) {
       }
 
       testsToRun.push(async (fn, ...args) => {
-        client.driver.desiredCapabilities.name = testname;
+        client.driver.desiredCapabilities.name = testName;
         await launchClient(client);
         try {
           await fn(client.driver, ...args);
         } catch (err) {
           console.error(
-            `[Browser: ${browserName}]\n[Test: ${testName}]\n${err.message}`,
+            `[Browser: ${browserName}]\n[Test: ${testname}]\n${err.message}`,
           );
           throw err;
         }
       });
     }
 
-    testRun(testName, async (...args) => {
+    testRun(testname, async (...args) => {
       await Promise.all(testsToRun.map(f => f(testFn, ...args)));
     });
   });

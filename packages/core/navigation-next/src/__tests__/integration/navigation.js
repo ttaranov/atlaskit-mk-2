@@ -6,6 +6,9 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename.split('/').reverse()[0];
+
 /* Url to test the example */
 const exampleURL = getExampleUrl(
   'core',
