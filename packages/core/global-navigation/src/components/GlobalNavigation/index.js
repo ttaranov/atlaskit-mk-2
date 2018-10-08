@@ -57,6 +57,10 @@ type GlobalNavigationState = {
   isNotificationDrawerOpen: boolean,
   isStarredDrawerOpen: boolean,
   notificationBadgeCount: number,
+  isCreateDrawerOpen: boolean,
+  isSearchDrawerOpen: boolean,
+  isNotificationDrawerOpen: boolean,
+  isStarredDrawerOpen: boolean,
 };
 
 interface Global {
@@ -81,6 +85,7 @@ export default class GlobalNavigation
       isSearchDrawerOpen: false,
       isNotificationDrawerOpen: false,
       isStarredDrawerOpen: false,
+      notificationBadgeCount: 0,
     };
 
     this.drawers.forEach((drawer: DrawerName) => {
@@ -169,8 +174,11 @@ export default class GlobalNavigation
     }
   }
 
-  onNotificationBadgeCountUpdating = (param = {}) => {
-    if (!this.state.count || param.visibilityChangesSinceTimer <= 1) {
+  onNotificationBadgeCountUpdating = (
+    param: { visibilityChangesSinceTimer?: number | void } = {},
+  ) => {
+    const { visibilityChangesSinceTimer = 0 } = param;
+    if (!this.state.count || visibilityChangesSinceTimer <= 1) {
       // fetch the count
       return {};
     }
@@ -178,38 +186,39 @@ export default class GlobalNavigation
     // skip fetch, refresh from local storage if newer
     const cachedCount = this.getLocalStorageCount();
     const result = {};
-    if (cachedCount && cachedCount != this.state.notificationBadgeCount) {
-      result.countOverride = parseInt(cachedCount);
+    if (cachedCount && cachedCount !== this.state.notificationBadgeCount) {
+      result.countOverride = parseInt(cachedCount, 10);
     } else {
       result.skip = true;
     }
     return result;
   };
 
-  onNotificationBadgeCountUpdated = (param = {}) => {
+  onNotificationBadgeCountUpdated = (param: { newCount?: number } = {}) => {
     console.log('Changed state count');
-    this.updateLocalStorageCount(param.newCount);
+    const { newCount = 0 } = param;
+    this.updateLocalStorageCount(newCount);
     this.setState({
-      notificationBadgeCount: param.newCount,
+      notificationBadgeCount: newCount,
     });
   };
 
-  getLocalStorageCount() {
+  getLocalStorageCount = () => {
     try {
       return localStorage.getItem('notificationBadgeCountCache');
     } catch (e) {
       console.error(e);
     }
     return null;
-  }
+  };
 
-  updateLocalStorageCount(newCount) {
+  updateLocalStorageCount = (newCount: number) => {
     try {
       localStorage.setItem('notificationBadgeCountCache', newCount);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   updateDrawerControlledStatus = (
     drawer: DrawerName,
