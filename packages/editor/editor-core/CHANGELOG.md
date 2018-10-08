@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.5.5
+- [patch] ED-5454: only render insert row/column buttons when needed [16d17e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16d17e3)
+
 ## 82.5.4
 - [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
 
