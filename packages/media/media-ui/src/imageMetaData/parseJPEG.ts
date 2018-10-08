@@ -11,7 +11,8 @@ export function readJPEGExifMetaData(file: File): Promise<ImageMetaDataTags> {
 
     loadImage.parseMetaData(file, (data: any) => {
       try {
-        const tags: ImageMetaDataTags = data.exif ? data.exif.getAll() : {};
+        const tags: ImageMetaDataTags =
+          data && data.exif ? data.exif.getAll() : {};
         Object.keys(tags).forEach(key => {
           const value = tags[key];
           if (
