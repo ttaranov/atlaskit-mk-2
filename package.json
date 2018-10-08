@@ -464,6 +464,7 @@
     "unstated": "^1.2.0",
     "urijs": "^1.19.1",
     "url": "^0.11.0",
+    "url-parse": "^1.4.3",
     "url-search-params": "^0.10.0",
     "uuid": "^3.1.0",
     "video-snapshot": "^1.0.1",
