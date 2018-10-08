@@ -34,9 +34,9 @@ export const createExternalMediaNode = (
     return null;
   }
 
-  const mediaNode = media.create({
+  const mediaNode = media.createChecked({
     type: 'external',
     url,
   });
-  return mediaSingle.create({}, mediaNode);
+  return mediaSingle.createChecked({}, mediaNode);
 };

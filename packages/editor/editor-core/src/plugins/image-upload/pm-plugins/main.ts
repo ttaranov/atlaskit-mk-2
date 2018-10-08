@@ -1,14 +1,15 @@
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 
 import { isPastedFile } from '../../../utils/clipboard';
 import { isDroppedFile } from '../../../utils/drag-drop';
 import { analyticsService } from '../../../analytics';
 
+import { canInsertMedia, isMediaSelected } from '../utils';
 import {
-  canInsertMedia,
-  isMediaSelected,
-} from '../utils';
-import { ImageUploadHandler, ImageUploadPluginState } from '../types';
+  ImageUploadHandler,
+  ImageUploadPluginState,
+  ImageUploadPluginAction,
+} from '../types';
 import { EditorView } from 'prosemirror-view';
 import { startImageUpload, insertExternalImage } from './commands';
 
@@ -33,6 +34,20 @@ const createDOMHandler = (pred: DOMHandlerPredicate, eventName: string) => (
 
 export const stateKey = new PluginKey('imageUploadPlugin');
 
+const getNewActiveUpload = (
+  tr: Transaction,
+  pluginState: ImageUploadPluginState,
+) => {
+  const meta: ImageUploadPluginAction | undefined = tr.getMeta(stateKey);
+  if (meta && meta.name === 'START_UPLOAD') {
+    return {
+      event: meta.event,
+    };
+  }
+
+  return pluginState.activeUpload;
+};
+
 export const createPlugin = ({ dispatch, providerFactory }) => {
   let uploadHandler: ImageUploadHandler | undefined;
 
@@ -48,28 +63,19 @@ export const createPlugin = ({ dispatch, providerFactory }) => {
       apply(tr, pluginState: ImageUploadPluginState, oldState, newState) {
         const newActive = isMediaSelected(newState);
         const newEnabled = canInsertMedia(newState);
-
-        const meta = tr.getMeta(stateKey);
-        const haveActiveUpload =
-          meta && meta.name && meta.name === 'START_UPLOAD';
-        const currentActiveUpload = pluginState.activeUpload;
+        const newActiveUpload = getNewActiveUpload(tr, pluginState);
 
         if (
           newActive !== pluginState.active ||
           newEnabled !== pluginState.enabled ||
-          haveActiveUpload !== currentActiveUpload
+          newActiveUpload !== pluginState.activeUpload
         ) {
           const newPluginState = {
             ...pluginState,
             active: newActive,
             enabled: newEnabled,
+            activeUpload: newActiveUpload,
           };
-
-          if (haveActiveUpload) {
-            newPluginState.activeUpload = {
-              event: meta.event,
-            };
-          }
 
           dispatch(newPluginState);
           return newPluginState;
