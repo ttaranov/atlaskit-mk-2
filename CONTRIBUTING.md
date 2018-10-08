@@ -96,7 +96,7 @@ This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
 Now you can start the development server for a specific component you are working on using
-`bolt start <package-name>`, for example: 
+`bolt start <pkg-name>`, for example:
 
 ```sh
 bolt start navigation-next
