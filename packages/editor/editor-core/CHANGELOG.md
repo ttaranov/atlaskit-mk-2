@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.5.6
+- [patch] ED-5291 Quick insert search now only matches from the start of words [ea8237d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8237d)
+
 ## 82.5.5
 - [patch] ED-5454: only render insert row/column buttons when needed [16d17e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16d17e3)
 
