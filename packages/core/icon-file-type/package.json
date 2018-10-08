@@ -10,6 +10,7 @@
     "dist",
     "glyph",
     "svgs",
+    "utils",
     "es5"
   ],
   "author": "Atlassian Pty Ltd",
