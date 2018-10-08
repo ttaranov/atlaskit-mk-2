@@ -5,8 +5,7 @@ import * as debounce from 'lodash.debounce';
 export type ThresholdReachedEventHandler = () => void;
 
 export interface InfiniteScrollProps {
-  readonly height?: number;
-
+  readonly height?: number | string;
   readonly width?: string;
   readonly delay?: number;
   readonly threshold?: number;
@@ -38,11 +37,12 @@ export class InfiniteScroll extends Component<
   private scrollHeight: number = 0;
 
   render(): JSX.Element {
+    const { width, height, children } = this.props;
     return (
       <div
         style={{
-          width: this.props.width,
-          height: this.props.height,
+          width,
+          height,
           overflowX: 'hidden',
           overflowY: 'auto',
           msOverflowStyle: 'scrollbar',
@@ -50,7 +50,7 @@ export class InfiniteScroll extends Component<
         }}
         onScroll={this.checkThreshold}
       >
-        {this.props.children}
+        {children}
       </div>
     );
   }
@@ -68,6 +68,7 @@ export class InfiniteScroll extends Component<
     const thresholdReached =
       position > this.scrollHeight &&
       position > target.scrollHeight - adjustedThreshold;
+
     if (thresholdReached) {
       this.scrollHeight = target.scrollHeight;
 

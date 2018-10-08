@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
@@ -7,6 +7,7 @@ import { Card } from '@atlaskit/media-card';
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { fakeContext } from '@atlaskit/media-test-helpers';
+import { Context } from '@atlaskit/media-core';
 import { State, SelectedItem, LocalUpload } from '../../../../../domain';
 import {
   mockStore,
@@ -21,6 +22,7 @@ import {
   StatelessUploadView,
   default as ConnectedUploadView,
 } from '../../upload';
+import { LoadingNextPageWrapper } from '../../styled';
 import { fileClick } from '../../../../../actions/fileClick';
 import { editorShowImage } from '../../../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../../../actions/editRemoteImage';
@@ -35,8 +37,11 @@ const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
 
-const createConnectedComponent = (state: State, reactContext: {} = {}) => {
-  const context = fakeContext();
+const createConnectedComponent = (
+  state: State,
+  reactContext: {} = {},
+  context: Context = fakeContext(),
+) => {
   const store = mockStore(state);
   const dispatch = store.dispatch;
   const root = mount(
@@ -55,7 +60,7 @@ const createConnectedComponent = (state: State, reactContext: {} = {}) => {
     },
   );
   const component = root.find(StatelessUploadView);
-  return { component, dispatch, root };
+  return { component, dispatch, root, context };
 };
 
 describe('<StatelessUploadView />', () => {
@@ -346,5 +351,49 @@ describe('<UploadView />', () => {
 
     component.find(LocalBrowserButton).simulate('click');
     expect(aHandler).toBeCalled();
+  });
+
+  describe('pagination', () => {
+    const simulateScrollEndReached = (component: ReactWrapper<any, any>) =>
+      (component.instance() as any)['onThresholdReachedListener']();
+
+    it('should load next collection page when threshold is reached', () => {
+      const { component, context } = createConnectedComponent(state);
+
+      simulateScrollEndReached(component);
+
+      expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
+      expect(context.collection.loadNextPage).toBeCalledWith('recents');
+    });
+
+    it('should render loading next page state if next page is being loaded', async () => {
+      const nextItems = new Promise(resolve => setImmediate(resolve));
+      const loadNextPage = jest.fn().mockReturnValue(nextItems);
+      const context = fakeContext({
+        collection: { loadNextPage },
+      });
+      const { component, root } = createConnectedComponent(
+        state,
+        undefined,
+        context,
+      );
+
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
+      simulateScrollEndReached(component);
+      root.update();
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(1);
+      await nextItems;
+      root.update();
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
+    });
+
+    it('should not load next collection page if its already being loaded', () => {
+      const { component, context } = createConnectedComponent(state);
+
+      simulateScrollEndReached(component);
+      simulateScrollEndReached(component);
+
+      expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
+    });
   });
 });
