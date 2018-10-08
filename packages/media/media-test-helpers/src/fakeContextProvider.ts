@@ -67,15 +67,21 @@ export const fakeContext = (
     wrappedStubbedContext[methodName] = returns(stubbedContext[methodName]);
   });
 
-  ['file', 'context'].forEach(subTreeKey => {
-    if (stubbedContext[subTreeKey]) {
-      Object.keys(stubbedContext[subTreeKey]).forEach(methodName => {
-        wrappedStubbedContext[subTreeKey][methodName] = returns(
-          stubbedContext[subTreeKey][methodName],
-        );
-      });
-    }
-  });
+  if (stubbedContext.file) {
+    Object.keys(stubbedContext.file).forEach(methodName => {
+      wrappedStubbedContext.file[methodName] = returns(
+        stubbedContext.file[methodName],
+      );
+    });
+  }
+
+  if (stubbedContext.context) {
+    Object.keys(stubbedContext.context).forEach(methodName => {
+      wrappedStubbedContext.context[methodName] = returns(
+        stubbedContext.context[methodName],
+      );
+    });
+  }
 
   return {
     ...defaultContext,
