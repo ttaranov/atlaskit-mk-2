@@ -56,6 +56,7 @@ const blockType: EditorPlugin = {
     disabled,
     isToolbarReducedSpacing,
     eventDispatcher,
+    focused,
   }) {
     const isSmall = toolbarSize < ToolbarSize.XL;
     const boundSetBlockType = name =>
@@ -79,6 +80,7 @@ const blockType: EditorPlugin = {
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}
+              focused={focused}
             />
           );
         }}

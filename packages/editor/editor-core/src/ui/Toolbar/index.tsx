@@ -53,10 +53,7 @@ export interface ToolbarProps {
 }
 
 interface ToolbarInnerState {
-  registeredButtons: any[];
-  selectedButtonIndex: number;
-  selectedButton?: any;
-  arrowKeyPushed: boolean;
+  selectedItemIdx?: number;
 }
 
 export interface ToolbarInnerProps extends ToolbarProps {
@@ -70,18 +67,18 @@ export class ToolbarInner extends React.Component<
 > {
   constructor(props: ToolbarInnerProps) {
     super(props);
-    this.state = {
-      selectedButtonIndex: 1,
-      registeredButtons: [],
-      selectedButton: undefined,
-      arrowKeyPushed: false,
-    };
+
+    if (props.items) {
+      this.state = {
+        selectedItemIdx: 0,
+      };
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.disabled === true && nextProps.disabled === false) {
-      this.updateSelectedButton();
-    }
+    // if (this.props.disabled === true && nextProps.disabled === false) {
+    //   this.updateSelectedButton();
+    // }
 
     return (
       nextProps.toolbarSize !== this.props.toolbarSize ||
@@ -94,88 +91,84 @@ export class ToolbarInner extends React.Component<
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
   }
-  shouldFocus = () => {
-    const pushed: boolean = this.state.arrowKeyPushed;
-    if (pushed) {
-      this.setState({
-        arrowKeyPushed: false,
-      });
-    }
-    return pushed;
-  };
+  // shouldFocus = () => {
+  //   const pushed: boolean = this.state.arrowKeyPushed;
+  //   if (pushed) {
+  //     this.setState({
+  //       arrowKeyPushed: false,
+  //     });
+  //   }
+  //   return pushed;
+  // };
 
-  equalsButton = (b1: React.ReactNode) => (b2: React.ReactNode) => {
-    const title1 = b1.props.title;
-    const title2 = b2.props.title;
+  // registerButton = button => {
+  //   this.setState(prevState => {
+  //     const prevRegisteredButtons = prevState.registeredButtons;
 
-    if (title1 === title2) {
-      console.log('Matched button via string');
-      console.log('b1 is ', b1);
-      console.log('b2 is ', b2);
-      return true;
-    } else {
-      return false;
-    }
-  };
+  //     if (prevRegisteredButtons.find(this.equalsButton(button))) {
+  //       console.log('Button ' + button.props.title + ' already exists.');
+  //       // Our button already exists
+  //       return { ...prevState };
+  //     } else {
+  //       console.log('Button ' + button.props.title + ' DOESNT exist.');
+  //     }
 
-  registerButton = button => {
-    this.setState(prevState => {
-      const prevRegisteredButtons = prevState.registeredButtons;
+  //     const newRegisteredButtons = [...prevRegisteredButtons, button];
+  //     // Ensure selectedButton if defined if there are any buttons registered
+  //     let selectedButton =
+  //       newRegisteredButtons.length > 0
+  //         ? newRegisteredButtons[prevState.selectedButtonIndex]
+  //         : prevState.selectedButton;
+  //     return {
+  //       registeredButtons: newRegisteredButtons,
+  //       selectedButton: selectedButton,
+  //     };
+  //   });
+  //   return null;
+  // };
 
-      if (prevRegisteredButtons.find(this.equalsButton(button))) {
-        console.log('Button ' + button.props.title + ' already exists.');
-        // Our button already exists
-        return { ...prevState };
-      } else {
-        console.log('Button ' + button.props.title + ' DOESNT exist.');
-      }
+  // private changeSelectedButton(delta: number) {
+  //   this.setState(prevState => {
+  //     const newIndex = prevState.selectedButtonIndex + delta;
+  //     const buttons = prevState.registeredButtons;
 
-      const newRegisteredButtons = [...prevRegisteredButtons, button];
-      // Ensure selectedButton if defined if there are any buttons registered
-      let selectedButton =
-        newRegisteredButtons.length > 0
-          ? newRegisteredButtons[prevState.selectedButtonIndex]
-          : prevState.selectedButton;
-      return {
-        registeredButtons: newRegisteredButtons,
-        selectedButton: selectedButton,
-      };
-    });
-    return null;
-  };
+  //     // Stay in the toolbar boundaries
+  //     if (newIndex < 0 || newIndex >= buttons.length) {
+  //       return { ...prevState };
+  //     }
+  //     // console.log("Selected button is now ", buttons[newIndex])
+  //     console.log('Selected button is now ', buttons[newIndex].props.title);
 
-  private updateSelectedButton() {
-    this.setState(prevState => ({
-      selectedButton:
-        prevState.registeredButtons[prevState.selectedButtonIndex],
-    }));
-  }
-
-  private changeSelectedButton(delta: number) {
-    this.setState(prevState => {
-      const newIndex = prevState.selectedButtonIndex + delta;
-      const buttons = prevState.registeredButtons;
-
-      // Stay in the toolbar boundaries
-      if (newIndex < 0 || newIndex >= buttons.length) {
-        return { ...prevState };
-      }
-      // console.log("Selected button is now ", buttons[newIndex])
-      console.log('Selected button is now ', buttons[newIndex].props.title);
-
-      return {
-        selectedButtonIndex: newIndex,
-        selectedButton: buttons[newIndex],
-        arrowKeyPushed: true,
-      };
-    });
-  }
+  //     return {
+  //       selectedButtonIndex: newIndex,
+  //       selectedButton: buttons[newIndex],
+  //       arrowKeyPushed: true,
+  //     };
+  //   });
+  // }
 
   private handleKeydown = e => {
+    if (
+      typeof this.state.selectedItemIdx === 'undefined' ||
+      !this.props.items
+    ) {
+      return;
+    }
+
     if (e.key === 'ArrowLeft') {
-      this.changeSelectedButton(-1);
+      this.setState({
+        selectedItemIdx:
+          this.state.selectedItemIdx === 0
+            ? this.props.items.length - 1
+            : this.state.selectedItemIdx - 1,
+      });
     } else if (e.key === 'ArrowRight') {
-      this.changeSelectedButton(1);
+      this.setState({
+        selectedItemIdx:
+          this.state.selectedItemIdx === this.props.items.length - 1
+            ? 0
+            : this.state.selectedItemIdx + 1,
+      });
     }
   };
 
@@ -199,40 +192,31 @@ export class ToolbarInner extends React.Component<
       return null;
     }
 
-    console.log('items:', items);
-
     return (
-      <ToolbarContext.Provider
-        value={{
-          registerButton: this.registerButton,
-          selectedButton: this.state.selectedButton,
-          selectedButtonIndex: this.state.selectedButtonIndex,
-          shouldFocus: this.shouldFocus,
-        }}
-      >
-        <div onKeyDown={this.handleKeydown}>
-          <ToolbarComponentsWrapper>
-            {items.map((component, key) => {
-              const props: any = { key };
-              const element = component({
-                editorView,
-                editorActions: editorActions as EditorActions,
-                eventDispatcher,
-                providerFactory,
-                appearance,
-                popupsMountPoint,
-                popupsBoundariesElement,
-                popupsScrollableElement,
-                disabled,
-                toolbarSize,
-                isToolbarReducedSpacing,
-                containerElement: undefined,
-              });
-              return element && React.cloneElement(element, props);
-            })}
-          </ToolbarComponentsWrapper>
-        </div>
-      </ToolbarContext.Provider>
+      <div onKeyDown={this.handleKeydown}>
+        <ToolbarComponentsWrapper>
+          {items.map((component, key) => {
+            const props = { key, focused: this.state.selectedItemIdx === key };
+            const element = component({
+              editorView,
+              editorActions: editorActions as EditorActions,
+              eventDispatcher,
+              providerFactory,
+              appearance,
+              popupsMountPoint,
+              popupsBoundariesElement,
+              popupsScrollableElement,
+              disabled,
+              toolbarSize,
+              isToolbarReducedSpacing,
+              containerElement: undefined,
+              focused: this.state.selectedItemIdx === key,
+            });
+
+            return element && React.cloneElement(element, props);
+          })}
+        </ToolbarComponentsWrapper>
+      </div>
     );
   }
 }

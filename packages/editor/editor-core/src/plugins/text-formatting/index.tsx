@@ -8,7 +8,7 @@ import {
   code,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import ButtonGroup from '../../ui/ButtonGroup';
+import { ButtonGroup } from '../../ui/styles';
 import {
   plugin as textFormattingPlugin,
   pluginKey as textFormattingPluginKey,

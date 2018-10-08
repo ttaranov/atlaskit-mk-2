@@ -16,6 +16,7 @@ export interface Props {
   boundariesElement?: HTMLElement;
   scrollableElement?: HTMLElement;
   isOpen?: boolean;
+  focused?: boolean;
   onOpenChange?: (attrs) => void;
   onItemActivated?: (attrs) => void;
   onMouseEnter?: (attrs) => void;

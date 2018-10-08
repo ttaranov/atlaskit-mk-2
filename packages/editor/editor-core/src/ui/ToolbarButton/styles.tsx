@@ -1,3 +1,4 @@
+import * as React from 'react';
 import styled from 'styled-components';
 import AkButtonDefault from '@atlaskit/button';
 
@@ -5,8 +6,14 @@ interface ButtonProps {
   spacing: string;
 }
 
+const WrappedButton = props => (
+  <AkButtonDefault {...props} innerRef={props._innerRef}>
+    {props.children}
+  </AkButtonDefault>
+);
+
 // tslint:disable-next-line:variable-name
-export const AkButton: any = styled(AkButtonDefault)`
+export const AkButton: any = styled(WrappedButton)`
   line-height: 0;
   justify-content: center;
 

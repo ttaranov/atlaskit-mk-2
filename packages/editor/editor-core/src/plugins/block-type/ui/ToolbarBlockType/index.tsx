@@ -40,6 +40,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   setBlockType: (string) => void;
+  focused?: boolean;
 }
 
 export interface State {
@@ -95,6 +96,7 @@ class ToolbarBlockType extends React.PureComponent<
           disabled={disabled}
           onClick={this.handleTriggerClick}
           title={labelTextStyles}
+          focused={this.props.focused}
           iconAfter={
             <Wrapper isSmall={isSmall}>
               {isSmall && <TextStyleIcon label={labelTextStyles} />}
@@ -127,6 +129,7 @@ class ToolbarBlockType extends React.PureComponent<
             scrollableElement={popupsScrollableElement}
             fitHeight={360}
             fitWidth={106}
+            focused={this.props.focused}
           >
             {toolbarButtonFactory(false)}
           </DropdownMenu>
