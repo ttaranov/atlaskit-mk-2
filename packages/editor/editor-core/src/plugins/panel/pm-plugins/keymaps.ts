@@ -1,15 +1,7 @@
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos } from 'prosemirror-model';
-import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
-
-// tries to find a valid cursor position
-const setTextSelection = (pos: number) => (tr: Transaction) => {
-  const newSelection = Selection.findFrom(tr.doc.resolve(pos), -1, true);
-  if (newSelection) {
-    tr.setSelection(newSelection);
-  }
-  return tr;
-};
+import { EditorState, Transaction, Plugin } from 'prosemirror-state';
+import { setTextSelection } from 'prosemirror-utils';
 
 export function keymapPlugin(): Plugin | undefined {
   const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction) => {
