@@ -8,7 +8,7 @@ describe('Traverse#reduce', () => {
         emojisDoc,
         (acc, node) =>
           node.type === 'emoji'
-            ? (acc += `| ${node.attrs.text}: ${node.attrs.shortName}`)
+            ? (acc += `| ${node.attrs!.text}: ${node.attrs!.shortName}`)
             : acc,
         '',
       ),
@@ -24,7 +24,7 @@ describe('Traverse#reduce', () => {
         (acc, node) =>
           (acc +=
             node.type === 'emoji'
-              ? `| ${node.attrs.text}: ${node.attrs.shortName}`
+              ? `| ${node.attrs!.text}: ${node.attrs!.shortName}`
               : `| ${node.type}`),
         '',
       ),

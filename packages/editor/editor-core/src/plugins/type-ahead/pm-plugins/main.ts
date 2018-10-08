@@ -14,7 +14,7 @@ export const pluginKey = new PluginKey('typeAheadPlugin');
 export type PluginState = {
   active: boolean;
   prevActiveState: boolean;
-  query: string;
+  query: string | null;
   trigger: string | null;
   typeAheadHandler: TypeAheadHandler | null;
   items: Array<TypeAheadItem>;
@@ -34,7 +34,7 @@ export function createInitialPluginState(prevActiveState = false): PluginState {
   return {
     active: false,
     prevActiveState,
-    query: '',
+    query: null,
     trigger: null,
     typeAheadHandler: null,
     currentIndex: 0,
@@ -222,7 +222,10 @@ export function defaultActionHandler({
 
   try {
     const { intl } = reactContext();
-    typeAheadItems = typeAheadHandler.getItems(query, state, intl);
+    typeAheadItems = typeAheadHandler.getItems(query, state, intl, {
+      prevActive: pluginState.prevActiveState,
+      queryChanged: query !== pluginState.query,
+    });
 
     if (pluginState.itemsLoader) {
       pluginState.itemsLoader.cancel();

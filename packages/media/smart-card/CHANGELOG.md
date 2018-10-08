@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.3.0
+- [minor] Refactored the rxjs set up for smart cards [026c96e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026c96e)
+
 ## 8.2.4
 - [patch] Removes usages of rxjs/Rx  [d098f25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d098f25)
 

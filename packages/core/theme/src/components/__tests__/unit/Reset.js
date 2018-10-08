@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Reset from '../Reset';
-import Theme from '../Theme';
+import Reset from '../../Reset';
+import Theme from '../../Theme';
 
 test('reset', () => {
   expect(mount(<Reset />)).toMatchSnapshot();

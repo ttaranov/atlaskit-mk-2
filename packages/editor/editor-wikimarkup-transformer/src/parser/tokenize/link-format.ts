@@ -21,6 +21,7 @@ export function linkFormat(
     TokenType.DOUBLE_DASH_SYMBOL,
     TokenType.TRIPLE_DASH_SYMBOL,
     TokenType.QUADRUPLE_DASH_SYMBOL,
+    TokenType.LINK_TEXT,
   ];
 
   const match = input.match(LINK_FORMAT_REGEXP);

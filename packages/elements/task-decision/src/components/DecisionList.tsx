@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, ReactNode } from 'react';
 import ListWrapper from '../styled/ListWrapper';
 
 export interface Props {
-  children?: Array<JSX.Element> | JSX.Element;
+  children?: ReactNode;
 }
 
 export default class DecisionList extends PureComponent<Props, {}> {

@@ -61,12 +61,14 @@ export default class FormSection extends Component<Props, State> {
   };
 
   render() {
+    const { title, description } = this.props;
+
     return (
       <FormSectionWrapper>
-        <FormSectionTitle>{this.props.title}</FormSectionTitle>
-        <FormSectionDescription>
-          {this.props.description}
-        </FormSectionDescription>
+        {title && <FormSectionTitle>{title}</FormSectionTitle>}
+        {description && (
+          <FormSectionDescription>{description}</FormSectionDescription>
+        )}
         <FormSectionContent>{this.renderContentChildren()}</FormSectionContent>
       </FormSectionWrapper>
     );

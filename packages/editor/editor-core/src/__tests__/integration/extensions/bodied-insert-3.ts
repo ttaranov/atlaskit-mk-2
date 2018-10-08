@@ -13,7 +13,7 @@ BrowserTestCase(
   `Bodied Extension: Insert Media`,
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const page = await new Page(client);
+    const page = new Page(client);
     await page.goto(fullpage.path);
 
     await setupMediaMocksProviders(page);

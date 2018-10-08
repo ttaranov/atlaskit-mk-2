@@ -43,9 +43,9 @@ function sanitize(nodes: PMNode[], schema: Schema) {
          * - h1. Bold, Uppercase
          * - h2. Bold, Italic
          * - h3. Bold
-         * - h4. Bold, Grey
-         * - h5. Grey, Italic
-         * - h6. Grey
+         * - h4. Bold, Gray
+         * - h5. Gray, Italic
+         * - h6. Gray
          */
         contentBuffer.push(transformHeading(n, schema));
         break;
@@ -77,7 +77,7 @@ function transformHeading(heading: PMNode, schema: Schema): PMNode {
   heading.content.forEach(n => {
     const strong = schema.marks.strong.create();
     const italic = schema.marks.em.create();
-    const grey = schema.marks.textColor.create({ color: '#97a0af' });
+    const gray = schema.marks.textColor.create({ color: '#97a0af' });
 
     if (n.type.name === 'text') {
       if (n.text && heading.attrs.level === 1) {
@@ -93,7 +93,7 @@ function transformHeading(heading: PMNode, schema: Schema): PMNode {
         n = n.mark([...n.marks, italic]);
       }
       if (heading.attrs.level > 3 && !hasAnyOfMarks(n, ['textColor', 'code'])) {
-        n = n.mark([...n.marks, grey]);
+        n = n.mark([...n.marks, gray]);
       }
     }
     contentBuffer.push(n);

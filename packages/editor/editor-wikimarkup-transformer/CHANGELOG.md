@@ -1,5 +1,11 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.5
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 2.1.4
+- [patch] Ignore link text in link format [dc46cae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc46cae)
+
 ## 2.1.3
 - [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
   - @atlaskit/editor-json-transformer@4.0.13

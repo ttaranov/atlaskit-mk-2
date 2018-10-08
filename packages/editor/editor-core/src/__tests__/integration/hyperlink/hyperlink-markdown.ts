@@ -9,7 +9,7 @@ import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },
     async client => {
-      let browser = await new Page(client);
+      let browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

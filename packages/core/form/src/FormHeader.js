@@ -25,10 +25,14 @@ export default class FormHeader extends Component<Props, void> {
   };
 
   render() {
+    const { title, description } = this.props;
+
     return (
       <FormHeaderWrapper fixed={this.props.fixed}>
-        <FormHeaderTitle>{this.props.title}</FormHeaderTitle>
-        <FormHeaderDescription>{this.props.description}</FormHeaderDescription>
+        {title && <FormHeaderTitle>{title}</FormHeaderTitle>}
+        {description && (
+          <FormHeaderDescription>{description}</FormHeaderDescription>
+        )}
         <FormHeaderContent>{this.props.children}</FormHeaderContent>
       </FormHeaderWrapper>
     );
