@@ -15,7 +15,23 @@ describe('Quick Insert Search', () => {
   ];
 
   it('should find exact match', () => {
-    expect(find('Date', items)[0].title).toBe('Date');
+    const results = find('Date', items);
+    expect(results[0].title).toBe('Date');
+  });
+
+  it('should not match substring of a word which excludes first letter', () => {
+    expect(find('zon', items).length).toEqual(0);
+  });
+
+  it('should match substring of a word which includes first letter', () => {
+    const result = find('hor', items);
+    expect(result[0].title).toEqual('Horizontal rule');
+    expect(result.length).toEqual(1);
+  });
+
+  it('should match substring of a sentence which includes first letter of last word', () => {
+    const result = find('rul', items);
+    expect(result[0].title).toEqual('Horizontal rule');
   });
 
   it('should find an item approximately matching a query', () => {
@@ -23,12 +39,7 @@ describe('Quick Insert Search', () => {
   });
 
   it('should find items that approximately match a query', () => {
-    expect(find('te', items).map(getTitles)).toEqual([
-      'Table',
-      'Date',
-      'Block quote',
-      'Horizontal rule',
-    ]);
+    expect(find('te', items).map(getTitles)).toEqual(['Table']);
   });
 
   it('should respect item priority', () => {
@@ -51,10 +62,6 @@ describe('Quick Insert Search', () => {
         getTitles,
       ),
     ).toEqual(['Code block', 'Code inline']);
-  });
-
-  it('should take into account order of characters', () => {
-    expect(find('ble', items).map(getTitles)).toEqual(['Table', 'Block quote']);
   });
 
   it('should not match string when character repeats more times than in original string', () => {
