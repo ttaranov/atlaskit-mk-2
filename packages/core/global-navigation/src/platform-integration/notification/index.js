@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 
-import NotificationIndicator from '@atlaskit/notification-indicator';
-import NotificationLogClient from '@atlaskit/notification-log-client';
+import { NotificationIndicator } from '@atlaskit/notification-indicator';
+import { NotificationLogClient } from '@atlaskit/notification-log-client';
 
 import NotificationDrawerContents from './components/NotificationDrawerContents';
 
