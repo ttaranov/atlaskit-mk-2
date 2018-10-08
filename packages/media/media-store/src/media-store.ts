@@ -194,6 +194,25 @@ export class MediaStore {
     }).then(mapResponseToBlob);
   };
 
+  getItems = async (
+    items: Item[],
+  ): Promise<MediaStoreResponse<ItemsPayload>> => {
+    const descriptors = items.map(({ id, collection }) => ({
+      type: 'file',
+      id,
+      collection,
+    }));
+    const body = JSON.stringify({ descriptors });
+    return this.request('/items', {
+      method: 'POST',
+      body,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then(mapResponseToJson);
+  };
+
   appendChunksToUpload(
     uploadId: string,
     body: AppendChunksToUploadRequestBody,
@@ -245,6 +264,14 @@ export class MediaStore {
   }
 }
 
+export interface ItemsPayload {
+  items: any[];
+}
+
+export interface Item {
+  id: string;
+  collection?: string;
+}
 export interface MediaStoreResponse<Data> {
   readonly data: Data;
 }
