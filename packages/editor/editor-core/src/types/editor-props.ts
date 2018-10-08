@@ -9,7 +9,6 @@ import {
   ExtensionHandlers,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
-import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
@@ -73,9 +72,6 @@ export interface EditorProps {
 
   // Legacy analytics support handler, which will be removed soon. **Do not use**.
   analyticsHandler?: AnalyticsHandler;
-
-  // For `@atlaskit/analytics` support
-  delegateAnalyticsEvent?: DelegateAnalyticsEvent;
 
   contentComponents?: ReactComponents;
   primaryToolbarComponents?: ReactComponents;
