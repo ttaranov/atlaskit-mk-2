@@ -47,7 +47,11 @@ function runCommand(cmd, resolve, reject) {
 
 async function main() {
   const serverAlreadyRunning = await isReachable('http://localhost:9000');
-  let prodTestStatus;
+  let prodTestStatus /*: {code: number, signal: any}*/ = {
+    code: 0,
+    signal: '',
+  };
+
   if (!serverAlreadyRunning) {
     // Overriding the env variable to start the correct packages
     process.env.VISUAL_REGRESSION = 'true';
@@ -60,7 +64,7 @@ async function main() {
   const { code, signal } = await runTests();
 
   console.log(
-    `Exiting tests with exit code: ${prodTestStatus.code} and signale: ${
+    `Exiting tests with exit code: ${prodTestStatus.code} and signal: ${
       prodTestStatus.signal
     }`,
   );
