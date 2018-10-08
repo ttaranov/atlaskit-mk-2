@@ -37,7 +37,9 @@ const config = {
     '/__tests__\\/visual-regression/',
   ],
   modulePathIgnorePatterns: ['./node_modules'],
-  transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
+  transformIgnorePatterns: [
+    '\\/node_modules\\/(?!@atlaskit|react-syntax-highlighter)',
+  ],
   resolver: `${__dirname}/resolver.js`,
   transform: {
     '^.+\\.tsx?$': 'ts-jest/preprocessor',
