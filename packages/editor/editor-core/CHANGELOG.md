@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 84.1.0
+- [minor] ED-3889 use color and error-reporter from @atlaskit/editor-core [f924735](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f924735)
+
 ## 84.0.1
 - [patch] Upgrade markdown-it to reduce duplicate dependencies [a27ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a27ace1)
 
