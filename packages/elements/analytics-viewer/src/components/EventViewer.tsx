@@ -44,7 +44,7 @@ export class EventViewer extends React.PureComponent<
         <PropertyViewer object={this.props} property="channel" />
         <PropertyViewer object={event.payload} property="action" />
         <PropertyViewer object={event.payload} property="actionSubject" />
-        <PropertyViewer object={event.payload} property="actionSubjectID" />
+        <PropertyViewer object={event.payload} property="actionSubjectId" />
         <PropertyViewer object={event.payload} property="type" />
         {this.state.showMore &&
           Object.keys(event.payload.attributes).map(attribute => (

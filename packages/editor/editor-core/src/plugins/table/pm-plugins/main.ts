@@ -1,30 +1,14 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { TableMap } from 'prosemirror-tables';
-import {
-  findTable,
-  findParentDomRefOfType,
-  findDomRefAtPos,
-} from 'prosemirror-utils';
+import { findParentDomRefOfType, findDomRefAtPos } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
-import { browser } from '@atlaskit/editor-common';
 import { PluginConfig, TablePluginState } from '../types';
-import {
-  isElementInTableCell,
-  setNodeSelection,
-  isLastItemMediaGroup,
-  closestElement,
-} from '../../../utils/';
+
 import { Dispatch } from '../../../event-dispatcher';
 import TableNodeView from '../nodeviews/table';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import {
-  setEditorFocus,
-  setTargetCell,
-  setTableRef,
-  clearHoverSelection,
-} from '../actions';
+import { setTargetCell, setTableRef, clearHoverSelection } from '../actions';
 import {
   handleSetFocus,
   handleSetTableRef,
@@ -37,9 +21,17 @@ import {
   handleDocChanged,
   handleSelectionChanged,
   handleToggleContextualMenu,
+  handleShowInsertLine,
+  handleHideInsertLine,
 } from '../action-handlers';
-import { findHoverDecoration } from '../utils';
-
+import {
+  handleMouseOver,
+  handleMouseLeave,
+  handleBlur,
+  handleFocus,
+  handleClick,
+} from '../event-handlers';
+import { findControlsHoverDecoration } from '../utils';
 import { getColResizePluginKey } from '../index';
 
 export const pluginKey = new PluginKey('tablePlugin');
@@ -51,8 +43,6 @@ export const defaultTableSelection = {
   isTableHovered: false,
 };
 
-const isIE11 = browser.ie_version === 11;
-
 export enum ACTIONS {
   SET_EDITOR_FOCUS,
   SET_TABLE_REF,
@@ -63,6 +53,9 @@ export enum ACTIONS {
   HOVER_ROWS,
   HOVER_TABLE,
   TOGGLE_CONTEXTUAL_MENU,
+  SHOW_COLUMN_INSERT_LINE,
+  SHOW_ROW_INSERT_LINE,
+  HIDE_INSERT_LINE,
 }
 
 export const createPlugin = (
@@ -82,7 +75,7 @@ export const createPlugin = (
       },
       apply(
         tr: Transaction,
-        pluginState: TablePluginState,
+        _pluginState: TablePluginState,
         _,
         state: EditorState,
       ) {
@@ -98,15 +91,17 @@ export const createPlugin = (
           dangerRows,
           isTableInDanger,
           isContextualMenuOpen,
+          insertLineDecoration,
+          insertLineIndex,
         } = data;
 
-        let remappedState = pluginState;
+        let pluginState = { ..._pluginState };
 
         if (tr.docChanged && pluginState.targetCellPosition) {
           const { pos, deleted } = tr.mapping.mapResult(
             pluginState.targetCellPosition,
           );
-          remappedState = {
+          pluginState = {
             ...pluginState,
             targetCellPosition: deleted ? undefined : pos,
           };
@@ -114,61 +109,69 @@ export const createPlugin = (
 
         switch (meta.action) {
           case ACTIONS.SET_EDITOR_FOCUS:
-            return handleSetFocus(editorHasFocus)(remappedState, dispatch);
+            return handleSetFocus(editorHasFocus)(pluginState, dispatch);
 
           case ACTIONS.SET_TABLE_REF:
-            return handleSetTableRef(state, tableRef)(remappedState, dispatch);
+            return handleSetTableRef(state, tableRef)(pluginState, dispatch);
 
           case ACTIONS.SET_TARGET_CELL_REF:
-            return handleSetTargetCellRef(targetCellRef)(
-              remappedState,
-              dispatch,
-            );
+            return handleSetTargetCellRef(targetCellRef)(pluginState, dispatch);
 
           case ACTIONS.SET_TARGET_CELL_POSITION:
             return handleSetTargetCellPosition(targetCellPosition)(
-              remappedState,
+              pluginState,
               dispatch,
             );
 
           case ACTIONS.CLEAR_HOVER_SELECTION:
-            return handleClearSelection(remappedState, dispatch);
+            return handleClearSelection(pluginState, dispatch);
 
           case ACTIONS.HOVER_COLUMNS:
             return handleHoverColumns(state, hoverDecoration, dangerColumns)(
-              remappedState,
+              pluginState,
               dispatch,
             );
 
           case ACTIONS.HOVER_ROWS:
             return handleHoverRows(state, hoverDecoration, dangerRows)(
-              remappedState,
+              pluginState,
               dispatch,
             );
 
           case ACTIONS.HOVER_TABLE:
             return handleHoverTable(state, hoverDecoration, isTableInDanger)(
-              remappedState,
+              pluginState,
               dispatch,
             );
 
           case ACTIONS.TOGGLE_CONTEXTUAL_MENU:
             return handleToggleContextualMenu(isContextualMenuOpen)(
-              remappedState,
+              pluginState,
               dispatch,
             );
+
+          case ACTIONS.SHOW_COLUMN_INSERT_LINE:
+          case ACTIONS.SHOW_ROW_INSERT_LINE:
+            return handleShowInsertLine(insertLineDecoration, insertLineIndex)(
+              state,
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.HIDE_INSERT_LINE:
+            return handleHideInsertLine(pluginState, dispatch);
 
           default:
             break;
         }
 
         if (tr.docChanged) {
-          return handleDocChanged(state)(remappedState, dispatch);
+          return handleDocChanged(tr)(pluginState, dispatch);
         } else if (tr.selectionSet) {
-          return handleSelectionChanged(state)(remappedState, dispatch);
+          return handleSelectionChanged(state)(pluginState, dispatch);
         }
 
-        return remappedState;
+        return pluginState;
       },
     },
     key: pluginKey,
@@ -214,7 +217,7 @@ export const createPlugin = (
 
       handleClick: ({ state, dispatch }) => {
         const { decorationSet } = getPluginState(state);
-        if (findHoverDecoration(decorationSet).length) {
+        if (findControlsHoverDecoration(decorationSet).length) {
           clearHoverSelection(state, dispatch);
         }
         return false;
@@ -240,70 +243,11 @@ export const createPlugin = (
         },
       },
       handleDOMEvents: {
-        blur(view: EditorView, event) {
-          const { state, dispatch } = view;
-          // fix for issue ED-4665
-          if (!isIE11) {
-            setEditorFocus(false)(state, dispatch);
-          }
-          event.preventDefault();
-          return false;
-        },
-        focus(view: EditorView, event) {
-          const { state, dispatch } = view;
-          setEditorFocus(true)(state, dispatch);
-          event.preventDefault();
-          return false;
-        },
-        click(view: EditorView, event) {
-          const element = event.target as HTMLElement;
-          const table = findTable(view.state.selection)!;
-
-          /**
-           * Check if the table cell with an image is clicked
-           * and its not the image itself
-           */
-          const matches = element.matches ? 'matches' : 'msMatchesSelector';
-          if (
-            !table ||
-            !isElementInTableCell(element) ||
-            element[matches]('table .image, table p, table .image div')
-          ) {
-            return false;
-          }
-          const map = TableMap.get(table.node);
-
-          /** Getting the offset of current item clicked */
-          const colElement = (closestElement(element, 'td') ||
-            closestElement(element, 'th')) as HTMLTableDataCellElement;
-          const colIndex = colElement && colElement.cellIndex;
-          const rowElement = closestElement(
-            element,
-            'tr',
-          ) as HTMLTableRowElement;
-          const rowIndex = rowElement && rowElement.rowIndex;
-          const cellIndex = map.width * rowIndex + colIndex;
-          const posInTable = map.map[cellIndex + 1];
-
-          const {
-            dispatch,
-            state: {
-              tr,
-              schema: {
-                nodes: { paragraph },
-              },
-            },
-          } = view;
-          const editorElement = table.node.nodeAt(map.map[cellIndex]) as PmNode;
-
-          /** Only if the last item is media group, insert a paragraph */
-          if (isLastItemMediaGroup(editorElement)) {
-            tr.insert(posInTable + table.pos, paragraph.create());
-            dispatch(tr);
-            setNodeSelection(view, posInTable + table.pos);
-          }
-          return true;
-        },
+        blur: handleBlur,
+        focus: handleFocus,
+        mouseover: handleMouseOver,
+        mouseleave: handleMouseLeave,
+        click: handleClick,
       },
     },
   });

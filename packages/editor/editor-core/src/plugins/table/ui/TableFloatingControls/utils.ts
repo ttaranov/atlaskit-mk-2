@@ -1,4 +1,3 @@
-import { tableToolbarSize } from '../styles';
 import { EditorState, Selection } from 'prosemirror-state';
 import {
   isRowSelected,
@@ -6,29 +5,6 @@ import {
   isCellSelection,
 } from 'prosemirror-utils';
 import { checkIfNumberColumnEnabled } from '../../utils';
-
-const TABLE_PADDING = 10;
-
-export const getLineMarkerWidth = (
-  tableRef: HTMLElement,
-  scroll: number,
-): number => {
-  const { parentElement, offsetWidth } = tableRef;
-  const diff = offsetWidth - parentElement!.offsetWidth;
-  const scrollDiff = scroll - diff > 0 ? scroll - diff : 0;
-
-  const wrapper = parentElement!.parentElement!;
-  const paddingString = getComputedStyle(wrapper).paddingLeft;
-  const wrapperPadding =
-    paddingString !== null
-      ? Number(paddingString.substr(0, paddingString.length - 2))
-      : 0;
-
-  return Math.min(
-    offsetWidth + tableToolbarSize + wrapperPadding,
-    parentElement!.offsetWidth + TABLE_PADDING + wrapperPadding - scrollDiff,
-  );
-};
 
 export type TableSelection = {
   startIdx: number | null;

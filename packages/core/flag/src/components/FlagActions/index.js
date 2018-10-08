@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
-import Container, { Action, Button } from './styledFlagActions';
+import Container, { Action, StyledButton } from './styledFlagActions';
 import type { ActionsType, AppearanceTypes } from '../../types';
 import { DEFAULT_APPEARANCE } from '../Flag';
 
@@ -37,9 +37,9 @@ export default class FlagActions extends Component<Props, {}> {
         hasDivider={!!index}
         useMidDot={!isBold}
       >
-        <Button onClick={action.onClick} appearance={appearance}>
+        <StyledButton onClick={action.onClick} appearance={appearance}>
           {action.content}
-        </Button>
+        </StyledButton>
       </Action>
     ));
 

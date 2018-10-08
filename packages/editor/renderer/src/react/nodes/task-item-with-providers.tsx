@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, ReactElement } from 'react';
+import { Component, ReactNode } from 'react';
 import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import {
   ContentRef,
@@ -15,7 +15,7 @@ export interface Props {
   contentRef?: ContentRef;
   onChange?: (taskId: string, isChecked: boolean) => void;
   showPlaceholder?: boolean;
-  children?: ReactElement<any>;
+  children?: ReactNode;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
   contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
 }

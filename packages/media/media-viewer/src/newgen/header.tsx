@@ -64,8 +64,10 @@ export default class Header extends React.Component<Props, State> {
   private init(props: Props) {
     this.setState(initialState, () => {
       const { context, identifier } = props;
-      this.subscription = context
-        .getFile(identifier.id, { collectionName: identifier.collectionName })
+      this.subscription = context.file
+        .getFileState(identifier.id, {
+          collectionName: identifier.collectionName,
+        })
         .subscribe({
           next: file => {
             this.setState({

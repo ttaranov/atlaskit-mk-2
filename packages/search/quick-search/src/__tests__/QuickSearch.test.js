@@ -183,6 +183,7 @@ describe('<QuickSearch />', () => {
         expect(kbCtrlsUsedEventsFired).toHaveLength(3);
       });
     });
+
     describe('query-entered event', () => {
       it('should fire when search term is entered', () => {
         wrapper.setProps({ value: 'hello' });

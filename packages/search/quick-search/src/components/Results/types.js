@@ -35,6 +35,8 @@ type CommonResultProps = {
 export type Context = {
   /** Register itself as keyboard navigation target */
   registerResult: (result: any) => void,
+  /** Unregister itself as keyboard navigation target */
+  unregisterResult: (result: any) => void,
   /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
   onMouseEnter: (resultData: ResultData) => void,
   /** Standard onMouseLeave event. */

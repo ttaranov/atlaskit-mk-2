@@ -4,7 +4,7 @@ import { DecorationSet } from 'prosemirror-view';
 import { TableLayout, TableSharedCssClassName } from '@atlaskit/editor-common';
 
 export type PermittedLayoutsDescriptor = TableLayout[] | 'all';
-export type Cell = { pos: number; node: PmNode };
+export type Cell = { pos: number; start: number; node: PmNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
 
 export interface PluginConfig {
@@ -39,6 +39,7 @@ export interface TablePluginState {
   isContextualMenuOpen?: boolean;
   isTableHovered?: boolean;
   isTableInDanger?: boolean;
+  insertLineIndex?: number;
 }
 
 export interface CellRect {
@@ -54,9 +55,11 @@ export interface ColumnResizingPlugin {
   lastColumnResizable?: boolean;
 }
 
-export const enum TableDecorations {
-  CONTROLS_HOVER,
-}
+export const TableDecorations = {
+  CONTROLS_HOVER: 'CONTROLS_HOVER',
+  COLUMN_INSERT_LINE: 'COLUMN_INSERT_LINE',
+  ROW_INSERT_LINE: 'ROW_INSERT_LINE',
+};
 const clPrefix = 'pm-table-';
 
 export const TableCssClassName = {
@@ -66,11 +69,14 @@ export const TableCssClassName = {
   COLUMN_CONTROLS: `${clPrefix}column-controls`,
   COLUMN_CONTROLS_INNER: `${clPrefix}column-controls__inner`,
   COLUMN_CONTROLS_BUTTON_WRAP: `${clPrefix}column-controls__button-wrap`,
+  COLUMN_INSERT_LINE: `${clPrefix}column__insert-line`,
 
   ROW_CONTROLS_WRAPPER: `${clPrefix}row-controls-wrapper`,
   ROW_CONTROLS: `${clPrefix}row-controls`,
   ROW_CONTROLS_INNER: `${clPrefix}row-controls__inner`,
   ROW_CONTROLS_BUTTON_WRAP: `${clPrefix}row-controls__button-wrap`,
+  ROW_INSERT_LINE: `${clPrefix}row__insert-line`,
+  ROW_INSERT_LINE_OVERLAY: `${clPrefix}row__insert-line-overlay`,
 
   CONTROLS_BUTTON: `${clPrefix}controls__button`,
   CONTROLS_BUTTON_ICON: `${clPrefix}controls__button-icon`,
@@ -78,7 +84,7 @@ export const TableCssClassName = {
   CONTROLS_INSERT_BUTTON: `${clPrefix}controls__insert-button`,
   CONTROLS_INSERT_BUTTON_INNER: `${clPrefix}controls__insert-button-inner`,
   CONTROLS_INSERT_BUTTON_WRAP: `${clPrefix}controls__insert-button-wrap`,
-  CONTROLS_INSERT_LINE: `${clPrefix}controls__insert-line`,
+
   CONTROLS_INSERT_MARKER: `${clPrefix}controls__insert-marker`,
   CONTROLS_INSERT_COLUMN: `${clPrefix}controls__insert-column`,
   CONTROLS_INSERT_ROW: `${clPrefix}controls__insert-row`,

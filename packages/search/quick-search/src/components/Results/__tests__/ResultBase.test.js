@@ -9,6 +9,7 @@ describe('Result Base', () => {
   beforeEach(() => {
     const context: Context = {
       registerResult: () => {},
+      unregisterResult: () => {},
       onMouseEnter: () => {},
       onMouseLeave: () => {},
       sendAnalytics: () => {},
@@ -46,5 +47,34 @@ describe('Result Base', () => {
     });
     resultWrapper.simulate('mouseenter');
     expect(spy).toBeCalledWith({ resultId: 'testResult', type: 'base' });
+  });
+
+  it('should unregister itself on unmount event', () => {
+    const unregisterResult = jest.fn();
+    resultWrapper.setProps({
+      context: {
+        unregisterResult,
+        registerResult: () => {},
+      },
+    });
+
+    resultWrapper.unmount();
+
+    expect(unregisterResult).toHaveBeenCalledTimes(1);
+    expect(unregisterResult.mock.calls[0][0].constructor.name).toBe(
+      'ResultBase',
+    );
+  });
+
+  it('should register itself on mount event', () => {
+    const registerResult = jest.fn();
+    resultWrapper.setProps({
+      context: {
+        registerResult,
+        unregisterResult: () => {},
+      },
+    });
+    expect(registerResult).toHaveBeenCalledTimes(1);
+    expect(registerResult.mock.calls[0][0].constructor.name).toBe('ResultBase');
   });
 });
