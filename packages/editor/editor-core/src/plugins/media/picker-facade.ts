@@ -200,6 +200,7 @@ export default class PickerFacade {
   }
 
   private handleUploadEnd = async (event: UploadEndEventPayload) => {
+    console.log('upload ended ', event);
     this.stateManager.updateState(event.file.id, {
       status: 'ready',
     });
@@ -208,22 +209,29 @@ export default class PickerFacade {
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
   ) => {
+    // console.log('upload preview called ', event)
     const { file, preview } = event;
+    // const isMobile = !file.upfrontId;
+    // const mobileObj = isMobile ? {
+    //   id: file.id,
+    //   publicId: file.id,
+    // } : {};
     const states = this.stateManager.newState(file.id, {
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,
       fileId: file.upfrontId,
-      dimensions: preview.dimensions,
+      dimensions: preview && preview.dimensions,
       status: 'ready',
     });
 
-    file.upfrontId.then(data => {
-      this.stateManager.updateState(file.id, {
-        status: 'ready',
-        publicId: data,
+    file.upfrontId &&
+      file.upfrontId.then(data => {
+        this.stateManager.updateState(file.id, {
+          status: 'ready',
+          publicId: data,
+        });
       });
-    });
 
     this.onStartListeners.forEach(cb => cb.call(cb, [states]));
   };

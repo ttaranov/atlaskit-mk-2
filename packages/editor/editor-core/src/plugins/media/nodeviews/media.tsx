@@ -102,7 +102,6 @@ class MediaNode extends Component<MediaNodeProps, {}> {
 
     const getState = this.pluginState.getMediaNodeState(__key);
     let fileId;
-
     if (getState && getState.fileId) {
       fileId = getState!.fileId;
     }
@@ -119,6 +118,8 @@ class MediaNode extends Component<MediaNodeProps, {}> {
             mediaItemType: 'file',
             collectionName: collection!,
           };
+
+    console.log('identifier ', identifier, ' context ', this.state.viewContext);
 
     return !this.state.viewContext ? (
       <CardView status="loading" dimensions={cardDimensions} />
