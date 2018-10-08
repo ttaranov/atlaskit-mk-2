@@ -1,5 +1,6 @@
 import * as React from 'react';
 import InlineMessage from '@atlaskit/inline-message';
+import Button from '@atlaskit/button';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import 'brace';
 import 'brace/mode/json';
@@ -8,7 +9,7 @@ import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
 import { Provider, Card } from '../src';
 
-import { AsanaTask as jsonLD } from './_mocks/atlassian.task';
+import * as mockedExamples from './_jsonLDExamples';
 
 export interface ExampleProps {}
 
@@ -20,8 +21,8 @@ export interface ExampleState {
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
-    text: JSON.stringify(jsonLD, null, 2),
-    json: jsonLD,
+    text: JSON.stringify(mockedExamples.AsanaTask, null, 2),
+    json: mockedExamples.AsanaTask,
   };
 
   handleChange = (text: string) => {
@@ -40,6 +41,22 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     }
   };
 
+  handleSetExample(exampleId: keyof typeof mockedExamples) {
+    this.setState({
+      text: JSON.stringify(mockedExamples[exampleId], null, 2),
+      json: mockedExamples[exampleId],
+      error: undefined,
+    });
+  }
+
+  renderExamplesSwitcher = (examples: Array<keyof typeof mockedExamples>) => {
+    return examples.map(exampleId => (
+      <Button key={exampleId} onClick={() => this.handleSetExample(exampleId)}>
+        {exampleId}
+      </Button>
+    ));
+  };
+
   render() {
     const { text, json, error } = this.state;
     return (
@@ -47,6 +64,10 @@ class Example extends React.Component<ExampleProps, ExampleState> {
         <Page>
           <Grid>
             <GridColumn>
+              {this.renderExamplesSwitcher(Object.keys(mockedExamples) as Array<
+                keyof typeof mockedExamples
+              >)}
+              <hr />
               <h6>
                 <code>appearance="block"</code>
               </h6>
