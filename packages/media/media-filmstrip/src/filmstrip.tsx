@@ -9,10 +9,10 @@ import {
   CardEvent,
   OnSelectChangeFunc,
   OnLoadingChangeFunc,
-  isUrlPreviewIdentifier,
 } from '@atlaskit/media-card';
 import { Context } from '@atlaskit/media-core';
 import { FilmstripView } from './filmstripView';
+import { getIdentifierKey } from './utils/getIdentifierKey';
 
 export interface FilmstripItem {
   readonly identifier: Identifier;
@@ -36,19 +36,10 @@ export interface FilmstripState {
 }
 
 export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
-  identifiersMap: Map<Promise<string>, string>;
-  lastKey: number;
-
-  constructor(props: FilmstripProps) {
-    super(props);
-
-    this.identifiersMap = new Map();
-    this.lastKey = 1;
-    this.state = {
-      animate: false,
-      offset: 0,
-    };
-  }
+  state: FilmstripState = {
+    animate: false,
+    offset: 0,
+  };
 
   private handleSize = ({ offset }) => this.setState({ offset });
   private handleScroll = ({ animate, offset }) =>
@@ -56,41 +47,14 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
 
   private renderCards() {
     const { items, context } = this.props;
-    const cards = items.map((item, index) => {
-      const key = this.getIdentifierKey(item.identifier);
+    const cards = items.map(item => {
+      const key = getIdentifierKey(item.identifier);
 
       return <Card key={key} context={context} {...item} />;
     });
 
     return cards;
   }
-
-  getIdentifierKey = (identifier: Identifier): string => {
-    switch (identifier.mediaItemType) {
-      case 'external-image':
-        return identifier.dataURI;
-      case 'link':
-        if (isUrlPreviewIdentifier(identifier)) {
-          return identifier.url;
-        } else {
-          return identifier.id;
-        }
-      case 'file':
-        if (typeof identifier.id === 'string') {
-          return identifier.id;
-        } else {
-          const currentKey = this.identifiersMap.get(identifier.id);
-          if (currentKey) {
-            return currentKey;
-          }
-          // We want to increment the key before using it
-          this.lastKey++;
-          const newKey = `${this.lastKey}`;
-          this.identifiersMap.set(identifier.id, newKey);
-          return newKey;
-        }
-    }
-  };
 
   render() {
     const { animate, offset } = this.state;
