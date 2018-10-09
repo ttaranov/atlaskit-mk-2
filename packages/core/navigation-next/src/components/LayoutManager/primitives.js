@@ -14,9 +14,9 @@ export const LayoutContainer = (props: {}) => (
   />
 );
 
-export const NavigationContainer = React.forwardRef((props: *, ref) => (
+export const NavigationContainer = ({ innerRef, ...props }: *) => (
   <div
-    ref={ref}
+    ref={innerRef}
     css={{
       bottom: 0,
       display: 'flex',
@@ -28,7 +28,7 @@ export const NavigationContainer = React.forwardRef((props: *, ref) => (
     }}
     {...props}
   />
-));
+);
 
 // Resizable Elements can be disabled
 
@@ -62,9 +62,8 @@ export const ContentNavigationWrapper = ({
     {...props}
   />
 );
-export const ContainerNavigationMask = React.forwardRef((props: *, ref) => (
+export const ContainerNavigationMask = (props: *) => (
   <div
-    ref={ref}
     css={{
       display: 'flex',
       flexDirection: 'row',
@@ -73,7 +72,7 @@ export const ContainerNavigationMask = React.forwardRef((props: *, ref) => (
     }}
     {...props}
   />
-));
+);
 
 // Page
 

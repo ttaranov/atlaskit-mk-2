@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
-import Drawer from '@atlaskit/drawer';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
@@ -40,7 +39,7 @@ export const GlobalLink = ({ className, to, onClick, children }: any) => {
   );
 };
 
-export const globalNavPrimaryItems = ({ onSearchClick }) => [
+export const globalNavPrimaryItems = ({ onSearchClick }: *) => [
   {
     id: 'jira',
     icon: ({ label }: { label: string }) => (

@@ -6,7 +6,7 @@ import React, {
   PureComponent,
   type ElementRef,
   type Ref,
-  type Node,
+  type Node as ReactNode,
 } from 'react';
 import throttle from 'raf-schd';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
@@ -57,7 +57,7 @@ function defaultTooltipContent(isCollapsed: boolean) {
 }
 
 type PageProps = {
-  children: Node,
+  children: ReactNode,
   flyoutIsOpen: boolean,
   innerRef: Ref<'div'>,
   isResizing: boolean,
@@ -66,7 +66,7 @@ type PageProps = {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-class PageInner extends PureComponent<{ children: Node }> {
+class PageInner extends PureComponent<{ children: ReactNode }> {
   render() {
     return this.props.children;
   }
@@ -117,7 +117,7 @@ export default class LayoutManager extends Component<
   state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
-  containerRef = React.createRef();
+  containerRef: HTMLElement;
 
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
@@ -151,6 +151,9 @@ export default class LayoutManager extends Component<
     }
   }
 
+  getContainerRef = (ref: ElementRef<*>) => {
+    this.containerRef = ref;
+  };
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
@@ -161,13 +164,11 @@ export default class LayoutManager extends Component<
   openFlyout = () => {
     if (this.state.flyoutIsOpen) return;
     this.setState({ flyoutIsOpen: true }, () => {
-      console.log('✅ tracker ATTACHED');
       window.addEventListener('mousemove', this.mouseTracker);
     });
   };
   closeFlyout = () => {
     this.setState({ flyoutIsOpen: false }, () => {
-      console.log('🚫 tracker DETTACHED');
       window.removeEventListener('mousemove', this.mouseTracker);
     });
   };
@@ -179,7 +180,7 @@ export default class LayoutManager extends Component<
     }
 
     // close once the user mouses-out of the nav area
-    if (!this.containerRef.current.contains(target)) {
+    if (!this.containerRef.contains(target)) {
       this.closeFlyout();
     }
   });
@@ -323,7 +324,7 @@ export default class LayoutManager extends Component<
           {({ transitionStyle, transitionState }) => {
             return (
               <NavigationContainer
-                ref={this.containerRef}
+                innerRef={this.getContainerRef}
                 onMouseEnter={this.mouseEnter}
                 onMouseLeave={this.mouseLeave}
               >

@@ -37,8 +37,8 @@ export class DefaultGlobalNavigation extends PureComponent<*, *> {
     );
   }
 }
-export const SearchDrawer = ({ children, isOpen, onClose, width }: *) => (
-  <Drawer onClose={onClose} isOpen={isOpen} width={width}>
+export const SearchDrawer = ({ children, isOpen, onClose }: *) => (
+  <Drawer onClose={onClose} isOpen={isOpen}>
     {children}
   </Drawer>
 );
