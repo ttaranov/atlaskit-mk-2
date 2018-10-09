@@ -3,8 +3,8 @@ import Item from '@atlaskit/item';
 import Lozenge from '@atlaskit/lozenge';
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { HighlightText } from '../../components/HighlightText';
-import UserPickerItem, { Props } from '../../components/UserPickerItem';
+import { HighlightText } from '../../../components/HighlightText';
+import UserPickerItem, { Props } from '../../../components/UserPickerItem';
 
 describe('UserPickerItem', () => {
   const user = {
