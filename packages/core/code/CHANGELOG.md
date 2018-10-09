@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 8.0.6
+- [patch] Async load highlighter languages [9102fa2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9102fa2)
+
 ## 8.0.5
 - [patch] Upgrade react-syntax-highlighter again and use async loaded prism [260d66a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/260d66a)
 

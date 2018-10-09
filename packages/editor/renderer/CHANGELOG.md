@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 27.0.1
+- [patch] Async load highlighter languages [9102fa2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9102fa2)
+
 ## 27.0.0
 - [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/editor-common@19.0.0
