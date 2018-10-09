@@ -8,7 +8,6 @@ import React, {
   type Ref,
   type Node,
 } from 'react';
-import throttle from 'raf-schd';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { colors } from '@atlaskit/theme';
 
@@ -161,11 +160,11 @@ export default class LayoutManager extends Component<
     this.pageRef = ref;
   };
 
-  mouseOutFlyoutArea = ({ currentTarget, relatedTarget }) => {
+  mouseOutFlyoutArea = ({ currentTarget, relatedTarget }: *) => {
     if (currentTarget.contains(relatedTarget)) return;
     this.setState({ flyoutIsOpen: false });
   };
-  mouseOverFlyoutArea = ({ currentTarget, target }) => {
+  mouseOverFlyoutArea = ({ currentTarget, target }: *) => {
     if (!currentTarget.contains(target)) return;
     this.setState({ flyoutIsOpen: true });
   };

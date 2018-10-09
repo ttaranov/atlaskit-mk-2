@@ -23,7 +23,7 @@ export class DefaultGlobalNavigation extends PureComponent<*, *> {
   componentWillUnmount = () => {
     window.removeEventListener('keydown', this.handleKeyDown);
   };
-  handleKeyDown = ({ key }) => {
+  handleKeyDown = ({ key }: *) => {
     if (key === '/' && !this.state.isOpen) {
       this.toggleSearch();
     }
