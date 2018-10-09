@@ -23,22 +23,18 @@ export interface Props {
 
 export interface State {
   selectedItemIdx: number | undefined;
+  focused?: 0 | 1 | 2;
 }
 
 export default class ButtonGroup extends PureComponent<Props, State> {
   state = {
-    selectedItemIdx: 0, // TODO
+    selectedItemIdx: 0, // Need to fic this - assuming navigation always starts from
+    focused: this.props.focused,
   };
 
   private isValidChild = (child: React.ReactChild) => {
-    // const result: boolean = true //(child instanceof ToolbarButton) || (child instanceof ButtonGroup) || (child instanceof ToolbarTextFormatting) //|| (child instanceof ToolbarAdvancedTextFormatting);
     //@ts-ignore
-    const result: boolean = child.type.name != 'StyledComponent';
-
-    if (!result) {
-      console.log('Child is not valid, it is:', child);
-    }
-    return result;
+    return child.type.name != 'StyledComponent';
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<{}>): boolean => {
@@ -50,7 +46,7 @@ export default class ButtonGroup extends PureComponent<Props, State> {
     }
 
     const { selectedItemIdx } = this.state;
-    const { focused } = this.props;
+    const { focused } = this.state;
     const defaultIdx =
       focused === 1 ? 0 : focused === 2 ? childCount - 1 : -999; // Maybe change this?
 
@@ -69,7 +65,10 @@ export default class ButtonGroup extends PureComponent<Props, State> {
         typeof selectedItemIdx === 'undefined'
           ? defaultIdx
           : selectedItemIdx + 1;
-      this.setState({ selectedItemIdx: newSelectedItemIdx });
+      this.setState({
+        selectedItemIdx: newSelectedItemIdx,
+        focused: focused == 1 ? 2 : focused,
+      });
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -84,7 +83,11 @@ export default class ButtonGroup extends PureComponent<Props, State> {
         typeof selectedItemIdx === 'undefined'
           ? defaultIdx
           : selectedItemIdx - 1;
-      this.setState({ selectedItemIdx: newSelectedItemIdx });
+
+      this.setState({
+        selectedItemIdx: newSelectedItemIdx,
+        focused: focused === 2 ? 1 : focused,
+      });
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -93,11 +96,19 @@ export default class ButtonGroup extends PureComponent<Props, State> {
   };
 
   render() {
-    const { width, children, focused } = this.props;
-    const { selectedItemIdx } = this.state;
+    const { width, children } = this.props;
+    const { selectedItemIdx, focused } = this.state;
     const childCount = React.Children.toArray(this.props.children).filter(
       this.isValidChild,
     ).length;
+
+    const defaultIdx =
+      focused === 2 ? 0 : focused === 1 ? childCount - 1 : -999; // Maybe change this?
+
+    // If index is undefined and we focus this object, the keyboard method won't fire - this is a bad fix
+    const newSelectedItemIdx =
+      typeof selectedItemIdx === 'undefined' ? defaultIdx : selectedItemIdx;
+
     console.log(
       `BUTTON GROUP / (${
         React.Children.toArray(this.props.children).length
@@ -105,15 +116,11 @@ export default class ButtonGroup extends PureComponent<Props, State> {
       this.props.children,
       'selectedIndex:',
       selectedItemIdx,
-      'focused boolean:',
+      'focused:',
       focused,
+      'newSelectedItemIdx:',
+      newSelectedItemIdx,
     );
-
-    const defaultIdx =
-      focused === 2 ? 0 : focused === 1 ? childCount - 1 : -999; // Maybe change this?
-
-    const newSelectedItemIdx =
-      typeof selectedItemIdx === 'undefined' ? defaultIdx : selectedItemIdx;
 
     let validChildCount = -1;
     return (
