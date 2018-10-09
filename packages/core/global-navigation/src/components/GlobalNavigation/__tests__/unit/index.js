@@ -27,8 +27,7 @@ describe('GlobalNavigation', () => {
     jest.clearAllMocks();
     jest.resetModules();
 
-    // $FlowFixMe Silence warnings from global-navigation for imporoper props
-    console.warn = jest.fn();
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   describe('Product logo', () => {
