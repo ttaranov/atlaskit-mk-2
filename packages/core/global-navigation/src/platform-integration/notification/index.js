@@ -2,12 +2,11 @@
 import React from 'react';
 
 import { NotificationIndicator } from '@atlaskit/notification-indicator';
-import { NotificationLogClient } from '@atlaskit/notification-log-client';
 
 import NotificationDrawerContents from './components/NotificationDrawerContents';
 
-export const CONTENT_URL =
-  'http://localhost:3000/notificationsDrawer/iframe.html';
+// TODO: this should be dynamic updated from outside
+export const CONTENT_URL = '/examples/core/global-navigation/iframe';
 
 const notificationIntegration = (
   fabricNotificationLogUrl?: string,
@@ -23,9 +22,11 @@ const notificationIntegration = (
 
     return (
       <NotificationIndicator
-        notificationLogProvider={
-          new NotificationLogClient(fabricNotificationLogUrl, cloudId)
-        }
+        // notificationLogProvider={
+        //   new NotificationLogClient(fabricNotificationLogUrl, cloudId)
+        // }
+        fabricNotificationLogUrl={fabricNotificationLogUrl}
+        cloudId={cloudId}
         refreshRate={refreshRate}
         onCountUpdated={onCountUpdated}
         onCountUpdating={onCountUpdating}

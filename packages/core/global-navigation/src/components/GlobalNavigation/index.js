@@ -150,6 +150,13 @@ export default class GlobalNavigation
 
     const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
+    console.log(
+      prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl,
+      prevProps.cloudId !== cloudId,
+      prevProps.locale !== locale,
+      prevProps.product !== product,
+      !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount,
+    );
     if (
       prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl ||
       prevProps.cloudId !== cloudId ||
