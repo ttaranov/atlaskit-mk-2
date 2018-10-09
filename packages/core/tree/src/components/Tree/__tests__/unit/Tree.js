@@ -2,10 +2,11 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import type {
-  DropResult,
-  DragUpdate,
-  DragStart,
+import {
+  type DropResult,
+  type DragUpdate,
+  type DragStart,
+  Droppable,
 } from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
@@ -56,6 +57,16 @@ describe('@atlaskit/tree - Tree', () => {
   });
 
   describe('#render', () => {
+    it('renders Droppable with the correct props', () => {
+      const tree = mount(
+        <Tree tree={treeWithThreeLeaves} renderItem={mockRender} />,
+      );
+      const droppable = tree.find(Droppable);
+      expect(droppable.prop('droppableId')).toBe('tree');
+      expect(droppable.prop('isCombineEnabled')).toBe(false);
+      expect(droppable.prop('ignoreContainerClipping')).toBe(true);
+    });
+
     it('renders a flat list using renderItem', () => {
       mount(<Tree tree={treeWithThreeLeaves} renderItem={mockRender} />);
       expect(mockRender).toHaveBeenCalledTimes(3);

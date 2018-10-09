@@ -249,7 +249,11 @@ export default class Tree extends Component<Props, State> {
         onDragEnd={this.onDragEnd}
         onDragUpdate={this.onDragUpdate}
       >
-        <Droppable droppableId="list" isCombineEnabled={isNestingEnabled}>
+        <Droppable
+          droppableId="tree"
+          isCombineEnabled={isNestingEnabled}
+          ignoreContainerClipping
+        >
           {(provided: DroppableProvided) => {
             const finalProvided: DroppableProvided = this.patchDroppableProvided(
               provided,
