@@ -186,7 +186,7 @@ export default class Editor extends React.Component<
           <ClickAreaBlock editorView={editorView}>
             <ContentArea
               innerRef={ref => (this.containerElement = ref)}
-              className="ak-editor-content-area editor-popup-ignore-scroll-parent"
+              className="ak-editor-content-area"
             >
               {customContentComponents}
               <PluginSlot

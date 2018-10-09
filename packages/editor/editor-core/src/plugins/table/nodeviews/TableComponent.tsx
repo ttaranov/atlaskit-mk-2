@@ -191,9 +191,7 @@ class TableComponent extends React.Component<ComponentProps> {
       >
         {allowControls && rowControls}
         <div
-          className={`${
-            ClassName.TABLE_NODE_WRAPPER
-          } editor-popup-ignore-scroll-parent`}
+          className={ClassName.TABLE_NODE_WRAPPER}
           ref={elem => {
             this.wrapper = elem;
             this.props.contentDOM(elem ? elem : undefined);
