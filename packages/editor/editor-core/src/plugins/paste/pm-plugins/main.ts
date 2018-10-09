@@ -3,7 +3,6 @@ import * as MarkdownIt from 'markdown-it';
 import { handlePaste as handlePasteTable } from 'prosemirror-tables';
 import { Schema, Slice, Node, Fragment } from 'prosemirror-model';
 import { Plugin, PluginKey, TextSelection, Selection } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import { closeHistory } from 'prosemirror-history';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';

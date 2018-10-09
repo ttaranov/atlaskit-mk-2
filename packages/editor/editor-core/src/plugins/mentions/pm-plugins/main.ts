@@ -266,7 +266,10 @@ export class MentionsState {
 
     // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
     if (isChromeWithSelectionBug) {
-      document.getSelection().empty();
+      const selection = document.getSelection();
+      if (selection) {
+        selection.empty();
+      }
     }
 
     view.dispatch(tr);
@@ -328,7 +331,7 @@ export class MentionsState {
     }
   }
 
-  handleProvider = (name: string, provider: Promise<any>): void => {
+  handleProvider = (name: string, provider?: Promise<any>): void => {
     switch (name) {
       case 'mentionProvider':
         this.setMentionProvider(provider);
@@ -425,7 +428,7 @@ export class MentionsState {
     return mentionInserted;
   }
 
-  onMentionResult = (mentions: MentionDescription[], query: string) => {
+  onMentionResult = (mentions: MentionDescription[], query?: string) => {
     if (!query) {
       return;
     }

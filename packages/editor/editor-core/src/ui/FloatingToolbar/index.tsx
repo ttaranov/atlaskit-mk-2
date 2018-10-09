@@ -4,10 +4,10 @@ import { Popup } from '@atlaskit/editor-common';
 import { Container } from './styles';
 
 export type Coordinates = {
-  left: number;
-  right: number;
-  top: number;
-  bottom: number;
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
 };
 
 export interface Props {

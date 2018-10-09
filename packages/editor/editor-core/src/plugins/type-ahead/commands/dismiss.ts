@@ -18,8 +18,9 @@ export const dismissCommand = (): Command => (state, dispatch) => {
 
   analyticsService.trackEvent('atlassian.editor.typeahead.dismiss');
 
-  dispatch(
-    state.tr.removeMark(start, end, markType).removeStoredMark(markType),
-  );
+  dispatch &&
+    dispatch(
+      state.tr.removeMark(start, end, markType).removeStoredMark(markType),
+    );
   return true;
 };

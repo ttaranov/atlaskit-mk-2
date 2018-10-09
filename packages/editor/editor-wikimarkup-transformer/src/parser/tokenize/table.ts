@@ -12,7 +12,7 @@ const NEWLINE = /\r?\n/;
 export function table(
   input: string,
   schema: Schema,
-  tokenErrCallback: TokenErrCallback,
+  tokenErrCallback?: TokenErrCallback,
 ): Token {
   let index = 0;
   const output: PMNode[] = [];

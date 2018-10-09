@@ -5,7 +5,7 @@ type PosAtDOM = (node: Node) => number | null;
 
 export default new Plugin({
   props: {
-    handleClick(view: EditorView & { posAtDOM: PosAtDOM }, clickPos, event) {
+    handleClick(view: EditorView, clickPos, event) {
       // Don't apply in Edge as per ED-4546
       if (navigator && /Edge\/\d/.test(navigator.userAgent)) {
         return false;
@@ -25,10 +25,11 @@ export default new Plugin({
           ($click.nodeAfter && code.isInSet($click.nodeAfter.marks)));
 
       // Find the starting position of the clicked dom-element
+      // TODO: Remove calls to private API
       const clickedDOMElementPosition =
         event.target &&
         event.target instanceof Node &&
-        view.posAtDOM(event.target);
+        (view as EditorView & { posAtDOM: PosAtDOM }).posAtDOM(event.target);
 
       if (
         clickWasAtEdgeOfATextNode &&

@@ -12,12 +12,10 @@ import { ButtonGroup } from '../../ui/styles';
 import {
   plugin as textFormattingPlugin,
   pluginKey as textFormattingPluginKey,
-  TextFormattingState,
 } from './pm-plugins/main';
 import {
   plugin as clearFormattingPlugin,
   pluginKey as clearFormattingPluginKey,
-  ClearFormattingState,
 } from './pm-plugins/clear-formatting';
 import textFormattingCursorPlugin from './pm-plugins/cursor';
 import textFormattingInputRulePlugin from './pm-plugins/input-rule';
@@ -102,13 +100,7 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
           textFormattingState: textFormattingPluginKey,
           clearFormattingState: clearFormattingPluginKey,
         }}
-        render={({
-          textFormattingState,
-          clearFormattingState,
-        }: {
-          textFormattingState: TextFormattingState;
-          clearFormattingState: ClearFormattingState;
-        }): any => {
+        render={({ textFormattingState, clearFormattingState }): any => {
           return (
             <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
               <ToolbarTextFormatting

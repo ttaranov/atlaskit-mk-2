@@ -1,9 +1,4 @@
-import {
-  EditorState,
-  Transaction,
-  TextSelection,
-  Selection,
-} from 'prosemirror-state';
+import { Transaction, TextSelection, Selection } from 'prosemirror-state';
 import {
   goToNextCell as baseGotoNextCell,
   selectionCell,
@@ -52,19 +47,17 @@ import { outdentList } from '../lists/commands';
 import { mapSlice } from '../../utils/slice';
 import { Cell } from './types';
 
-export const clearHoverSelection: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  dispatch(
-    state.tr.setMeta(pluginKey, { action: ACTIONS.CLEAR_HOVER_SELECTION }),
-  );
+export const clearHoverSelection: Command = (state, dispatch): boolean => {
+  dispatch &&
+    dispatch(
+      state.tr.setMeta(pluginKey, { action: ACTIONS.CLEAR_HOVER_SELECTION }),
+    );
   return true;
 };
 
 export const hoverColumns = (columns: number[], danger?: boolean): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
@@ -72,25 +65,26 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
       const colCells = getCellsInColumn(colIdx)(state.selection);
       return colCells ? acc.concat(colCells) : acc;
     }, []);
-    dispatch(
-      state.tr
-        .setMeta(pluginKey, {
-          action: ACTIONS.HOVER_COLUMNS,
-          data: {
-            hoverDecoration: createControlsHoverDecoration(cells, danger),
-            dangerColumns: danger ? columns : [],
-          },
-        })
-        .setMeta('addToHistory', false),
-    );
+    dispatch &&
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.HOVER_COLUMNS,
+            data: {
+              hoverDecoration: createControlsHoverDecoration(cells, danger),
+              dangerColumns: danger ? columns : [],
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
     return true;
   }
   return false;
 };
 
 export const hoverRows = (rows: number[], danger?: boolean): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
@@ -98,62 +92,59 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
       const rowCells = getCellsInRow(rowIdx)(state.selection);
       return rowCells ? acc.concat(rowCells) : acc;
     }, []);
-    dispatch(
-      state.tr
-        .setMeta(pluginKey, {
-          action: ACTIONS.HOVER_ROWS,
-          data: {
-            hoverDecoration: createControlsHoverDecoration(cells, danger),
-            dangerRows: danger ? rows : [],
-          },
-        })
-        .setMeta('addToHistory', false),
-    );
+    dispatch &&
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.HOVER_ROWS,
+            data: {
+              hoverDecoration: createControlsHoverDecoration(cells, danger),
+              dangerRows: danger ? rows : [],
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
     return true;
   }
   return false;
 };
 
 export const hoverTable = (danger?: boolean): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
     const cells = getCellsInTable(state.selection)!;
-    dispatch(
-      state.tr
-        .setMeta(pluginKey, {
-          action: ACTIONS.HOVER_TABLE,
-          data: {
-            hoverDecoration: createControlsHoverDecoration(cells, danger),
-            isTableInDanger: danger,
-          },
-        })
-        .setMeta('addToHistory', false),
-    );
+    dispatch &&
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.HOVER_TABLE,
+            data: {
+              hoverDecoration: createControlsHoverDecoration(cells, danger),
+              isTableInDanger: danger,
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
 
     return true;
   }
   return false;
 };
 
-export const clearSelection: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  dispatch(
-    state.tr
-      .setSelection(Selection.near(state.selection.$from))
-      .setMeta('addToHistory', false),
-  );
+export const clearSelection: Command = (state, dispatch): boolean => {
+  dispatch &&
+    dispatch(
+      state.tr
+        .setSelection(Selection.near(state.selection.$from))
+        .setMeta('addToHistory', false),
+    );
   return true;
 };
 
-export const toggleHeaderRow: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const toggleHeaderRow: Command = (state, dispatch): boolean => {
   const table = findTable(state.selection);
   if (!table) {
     return false;
@@ -175,14 +166,11 @@ export const toggleHeaderRow: Command = (
 
     tr.setNodeMarkup(from, type, cell.attrs);
   }
-  dispatch(tr);
+  dispatch && dispatch(tr);
   return true;
 };
 
-export const toggleHeaderColumn: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const toggleHeaderColumn: Command = (state, dispatch): boolean => {
   const table = findTable(state.selection);
   if (!table) {
     return false;
@@ -203,14 +191,11 @@ export const toggleHeaderColumn: Command = (
       cell.attrs,
     );
   }
-  dispatch(tr);
+  dispatch && dispatch(tr);
   return true;
 };
 
-export const toggleNumberColumn: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const toggleNumberColumn: Command = (state, dispatch): boolean => {
   const { tr } = state;
   const { node, pos } = findTable(state.selection)!;
 
@@ -218,13 +203,13 @@ export const toggleNumberColumn: Command = (
     ...node.attrs,
     isNumberColumnEnabled: !node.attrs.isNumberColumnEnabled,
   });
-  dispatch(tr);
+  dispatch && dispatch(tr);
   return true;
 };
 
 export const setCellAttr = (name: string, value: any): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const { tr } = state;
   const cellSelection = getCellSelection(state);
@@ -237,18 +222,19 @@ export const setCellAttr = (name: string, value: any): Command => (
       }
     });
     if (updated) {
-      dispatch(tr);
+      dispatch && dispatch(tr);
       return true;
     }
   } else {
     const cell: any = selectionCell(state);
     if (cell) {
-      dispatch(
-        tr.setNodeMarkup(cell.pos, cell.nodeAfter.type, {
-          ...cell.nodeAfter.attrs,
-          [name]: value,
-        }),
-      );
+      dispatch &&
+        dispatch(
+          tr.setNodeMarkup(cell.pos, cell.nodeAfter.type, {
+            ...cell.nodeAfter.attrs,
+            [name]: value,
+          }),
+        );
       return true;
     }
   }
@@ -256,21 +242,24 @@ export const setCellAttr = (name: string, value: any): Command => (
 };
 
 export const insertColumn = (column: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const tr = addColumnAt(column)(state.tr);
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created column
   const pos = TableMap.get(table.node).positionAt(0, column, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
+  dispatch &&
+    dispatch(
+      tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))),
+    );
   analyticsService.trackEvent('atlassian.editor.format.table.column.button');
   return true;
 };
 
 export const insertRow = (row: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   clearHoverSelection(state, dispatch);
 
@@ -284,7 +273,10 @@ export const insertRow = (row: number): Command => (
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
+  dispatch &&
+    dispatch(
+      tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))),
+    );
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
   return true;
 };
@@ -321,11 +313,8 @@ export function transformSliceToAddTableHeaders(
   });
 }
 
-export const deleteTable: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  dispatch(removeTable(state.tr));
+export const deleteTable: Command = (state, dispatch): boolean => {
+  dispatch && dispatch(removeTable(state.tr));
   analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
   return true;
 };
@@ -346,10 +335,7 @@ export const convertFirstRowToHeader = (schema: Schema) => (
   return tr;
 };
 
-export const deleteSelectedColumns: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const deleteSelectedColumns: Command = (state, dispatch): boolean => {
   if (!isCellSelection(state.selection)) {
     return false;
   }
@@ -368,17 +354,17 @@ export const deleteSelectedColumns: Command = (
     : map.width - 1;
   const pos = map.positionAt(0, columnIndex < 0 ? 0 : columnIndex, table.node);
   // move cursor to the column to the left of the deleted column
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
+  dispatch &&
+    dispatch(
+      tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))),
+    );
   analyticsService.trackEvent(
     'atlassian.editor.format.table.delete_column.button',
   );
   return true;
 };
 
-export const deleteSelectedRows: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const deleteSelectedRows: Command = (state, dispatch): boolean => {
   if (!isCellSelection(state.selection)) {
     return false;
   }
@@ -412,7 +398,7 @@ export const deleteSelectedRows: Command = (
   if (isHeaderRowRequired && isHeaderRowSelected(state)) {
     tr = convertFirstRowToHeader(state.schema)(tr);
   }
-  dispatch(tr);
+  dispatch && dispatch(tr);
   const headerRow = hasParentNodeOfType(tableHeader)(tr.selection)
     ? 'header_'
     : '';
@@ -423,41 +409,39 @@ export const deleteSelectedRows: Command = (
 };
 
 export const setTableLayout = (layout: TableLayout): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const table = findTable(state.selection);
   if (!table) {
     return false;
   }
   const { schema, tr } = state;
-  dispatch(
-    tr.setNodeMarkup(table.pos, schema.nodes.table, {
-      ...table.node.attrs,
-      layout,
-    }),
-  );
+  dispatch &&
+    dispatch(
+      tr.setNodeMarkup(table.pos, schema.nodes.table, {
+        ...table.node.attrs,
+        layout,
+      }),
+    );
   return true;
 };
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
 
-export const createTable: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const createTable: Command = (state, dispatch): boolean => {
   if (!pluginKey.get(state)) {
     return false;
   }
   const table = createTableNode(state.schema);
-  dispatch(safeInsert(table)(state.tr).scrollIntoView());
+  dispatch && dispatch(safeInsert(table)(state.tr).scrollIntoView());
   return true;
 };
 
 export const goToNextCell = (direction: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const table = findTable(state.selection);
   if (!table) {
@@ -488,10 +472,7 @@ export const goToNextCell = (direction: number): Command => (
   return baseGotoNextCell(direction)(state, dispatch);
 };
 
-export const moveCursorBackward: Command = (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+export const moveCursorBackward: Command = (state, dispatch): boolean => {
   const pluginState = getPluginState(state);
   const { $cursor } = state.selection as TextSelection;
   // if cursor is in the middle of a text node, do nothing
@@ -550,44 +531,45 @@ export const moveCursorBackward: Command = (
   // move cursor to the last cell
   // it doesn't join node before (last cell) with node after (content after the cursor)
   // due to ridiculous amount of PM code that would have been required to overwrite
-  dispatch(tr.setSelection(new TextSelection(state.doc.resolve(pos))));
+  dispatch &&
+    dispatch(tr.setSelection(new TextSelection(state.doc.resolve(pos))));
 
   return true;
 };
 
 export const deleteColumns = (indexes: number[]): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   let { tr } = state;
   for (let i = indexes.length; i >= 0; i--) {
     tr = removeColumnAt(indexes[i])(tr);
   }
   if (tr.docChanged) {
-    dispatch(setTextSelection(tr.selection.$from.pos)(tr));
+    dispatch && dispatch(setTextSelection(tr.selection.$from.pos)(tr));
     return true;
   }
   return false;
 };
 
 export const deleteRows = (indexes: number[]): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   let { tr } = state;
   for (let i = indexes.length; i >= 0; i--) {
     tr = removeRowAt(indexes[i])(tr);
   }
   if (tr.docChanged) {
-    dispatch(setTextSelection(tr.selection.$from.pos)(tr));
+    dispatch && dispatch(setTextSelection(tr.selection.$from.pos)(tr));
     return true;
   }
   return false;
 };
 
 export const emptyMultipleCells = (targetCellPosition?: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   let cursorPos;
   let { tr } = state;
@@ -610,7 +592,7 @@ export const emptyMultipleCells = (targetCellPosition?: number): Command => (
     if (textSelection) {
       tr.setSelection(textSelection);
     }
-    dispatch(tr);
+    dispatch && dispatch(tr);
     return true;
   }
   return false;
@@ -619,10 +601,7 @@ export const emptyMultipleCells = (targetCellPosition?: number): Command => (
 export const setMultipleCellAttrs = (
   attrs: Object,
   targetCellPosition?: number,
-): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
+): Command => (state, dispatch): boolean => {
   let cursorPos;
   let { tr } = state;
 
@@ -640,7 +619,7 @@ export const setMultipleCellAttrs = (
   }
   if (tr.docChanged) {
     const $pos = tr.doc.resolve(tr.mapping.map(cursorPos));
-    dispatch(tr.setSelection(Selection.near($pos)));
+    dispatch && dispatch(tr.setSelection(Selection.near($pos)));
     return true;
   }
   return false;
@@ -648,97 +627,100 @@ export const setMultipleCellAttrs = (
 
 export const toggleContextualMenu = (
   isContextualMenuOpen: boolean,
-): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  dispatch(
-    state.tr
-      .setMeta(pluginKey, {
-        action: ACTIONS.TOGGLE_CONTEXTUAL_MENU,
-        data: { isContextualMenuOpen },
-      })
-      .setMeta('addToHistory', false),
-  );
+): Command => (state, dispatch): boolean => {
+  dispatch &&
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.TOGGLE_CONTEXTUAL_MENU,
+          data: { isContextualMenuOpen },
+        })
+        .setMeta('addToHistory', false),
+    );
   return true;
 };
 
 export const setEditorFocus = (editorHasFocus: boolean): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
-  dispatch(
-    state.tr.setMeta(pluginKey, {
-      action: ACTIONS.SET_EDITOR_FOCUS,
-      data: { editorHasFocus },
-    }),
-  );
+  dispatch &&
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        action: ACTIONS.SET_EDITOR_FOCUS,
+        data: { editorHasFocus },
+      }),
+    );
   return true;
 };
 
 export const setTableRef = (tableRef?: HTMLElement): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
-  dispatch(
-    state.tr
-      .setMeta(pluginKey, {
-        action: ACTIONS.SET_TABLE_REF,
-        data: { tableRef },
-      })
-      .setMeta('addToHistory', false),
-  );
+  dispatch &&
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SET_TABLE_REF,
+          data: { tableRef },
+        })
+        .setMeta('addToHistory', false),
+    );
   return true;
 };
 
 export const setTargetCell = (targetCellRef?: HTMLElement): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
-  dispatch(
-    state.tr
-      .setMeta(pluginKey, {
-        action: ACTIONS.SET_TARGET_CELL_REF,
-        data: { targetCellRef },
-      })
-      .setMeta('addToHistory', false),
-  );
+  dispatch &&
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SET_TARGET_CELL_REF,
+          data: { targetCellRef },
+        })
+        .setMeta('addToHistory', false),
+    );
   return true;
 };
 
 export const selectColumn = (column: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const tr = selectColumnTransform(column)(state.tr);
   const firstCell = getCellsInColumn(column)(tr.selection)![0];
   // update contextual menu target cell position on column selection
-  dispatch(
-    tr
-      .setMeta(pluginKey, {
-        action: ACTIONS.SET_TARGET_CELL_POSITION,
-        data: { targetCellPosition: firstCell.pos },
-      })
-      .setMeta('addToHistory', false),
-  );
+  dispatch &&
+    dispatch(
+      tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SET_TARGET_CELL_POSITION,
+          data: { targetCellPosition: firstCell.pos },
+        })
+        .setMeta('addToHistory', false),
+    );
   return true;
 };
 
 export const selectRow = (row: number): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
+  state,
+  dispatch,
 ): boolean => {
   const tr = selectRowTransform(row)(state.tr);
   const firstCell = getCellsInRow(row)(tr.selection)![0];
   // update contextual menu target cell position on row selection
-  dispatch(
-    tr
-      .setMeta(pluginKey, {
-        action: ACTIONS.SET_TARGET_CELL_POSITION,
-        data: { targetCellPosition: firstCell.pos },
-      })
-      .setMeta('addToHistory', false),
-  );
+  dispatch &&
+    dispatch(
+      tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SET_TARGET_CELL_POSITION,
+          data: { targetCellPosition: firstCell.pos },
+        })
+        .setMeta('addToHistory', false),
+    );
   return true;
 };
 
@@ -748,16 +730,17 @@ export const showInsertColumnButton = (columnIndex: number): Command => (
 ) => {
   const { insertColumnButtonIndex } = getPluginState(state);
   if (typeof insertColumnButtonIndex !== 'number') {
-    dispatch(
-      state.tr
-        .setMeta(pluginKey, {
-          action: ACTIONS.SHOW_INSERT_COLUMN_BUTTON,
-          data: {
-            insertColumnButtonIndex: columnIndex,
-          },
-        })
-        .setMeta('addToHistory', false),
-    );
+    dispatch &&
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.SHOW_INSERT_COLUMN_BUTTON,
+            data: {
+              insertColumnButtonIndex: columnIndex,
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
     return true;
   }
   return false;
@@ -769,26 +752,23 @@ export const showInsertRowButton = (rowIndex: number): Command => (
 ) => {
   const { insertRowButtonIndex } = getPluginState(state);
   if (typeof insertRowButtonIndex !== 'number') {
-    dispatch(
-      state.tr
-        .setMeta(pluginKey, {
-          action: ACTIONS.SHOW_INSERT_ROW_BUTTON,
-          data: {
-            insertRowButtonIndex: rowIndex,
-          },
-        })
-        .setMeta('addToHistory', false),
-    );
+    dispatch &&
+      dispatch(
+        state.tr
+          .setMeta(pluginKey, {
+            action: ACTIONS.SHOW_INSERT_ROW_BUTTON,
+            data: {
+              insertRowButtonIndex: rowIndex,
+            },
+          })
+          .setMeta('addToHistory', false),
+      );
     return true;
   }
   return false;
 };
 
-export const handleCut = (
-  oldTr: Transaction,
-  oldState: EditorState,
-  newState: EditorState,
-): Transaction => {
+export const handleCut = (oldTr, oldState, newState): Transaction => {
   const oldSelection = oldState.tr.selection;
   let { tr } = newState;
   if (oldSelection instanceof CellSelection) {

@@ -12,7 +12,6 @@ function filterMdToPmSchemaMapping(schema: Schema, map: any) {
     const mark = value.mark;
 
     if ((block && schema.nodes[block]) || (mark && schema.marks[mark])) {
-      // @ts-ignore
       newMap[key] = value;
     }
     return newMap;
@@ -117,10 +116,9 @@ export class MarkdownTransformer implements Transformer<Markdown> {
   private markdownParser: MarkdownParser;
   constructor(schema: Schema = defaultSchema, tokenizer: MarkdownIt = md) {
     // Enable markdown plugins based on schema
-    ['nodes', 'marks'].forEach((key: 'nodes' | 'marks') => {
+    ['nodes', 'marks'].forEach(key => {
       for (const idx in pmSchemaToMdMapping[key]) {
         if (schema[key][idx]) {
-          // @ts-ignore
           tokenizer.enable(pmSchemaToMdMapping[key][idx]);
         }
       }

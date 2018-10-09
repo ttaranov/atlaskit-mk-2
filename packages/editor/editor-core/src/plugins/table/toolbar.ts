@@ -63,7 +63,7 @@ const withAnalytics = (
   command: Command,
   eventName: string,
   properties?: AnalyticsProperties,
-) => (state: EditorState, dispatch: (tr: Transaction) => void) => {
+) => (state: EditorState, dispatch?: (tr: Transaction) => void) => {
   analytics.trackEvent(eventName, properties);
   return command(state, dispatch);
 };

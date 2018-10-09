@@ -1,4 +1,3 @@
-import { EditorState, Transaction } from 'prosemirror-state';
 import { liftTarget } from 'prosemirror-transform';
 import { Command } from '../../../commands';
 
@@ -19,10 +18,7 @@ export const FORMATTING_MARK_TYPES = [
 ];
 
 export function clearFormatting(): Command {
-  return function(
-    state: EditorState,
-    dispatch: (tr: Transaction) => void,
-  ): boolean {
+  return function(state, dispatch): boolean {
     const { tr } = state;
 
     FORMATTING_MARK_TYPES.forEach(mark => {
@@ -57,7 +53,7 @@ export function clearFormatting(): Command {
     });
 
     tr.setStoredMarks([]);
-    dispatch(tr);
+    dispatch && dispatch(tr);
     return true;
   };
 }

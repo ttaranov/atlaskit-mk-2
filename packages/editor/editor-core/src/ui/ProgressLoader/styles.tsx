@@ -39,22 +39,14 @@ export const LoaderStyle: ComponentClass<
   border: transparent;
   border-radius: ${borderRadius()}px;
 
-  /** 
-   * This value was found to be ideal 
+  /**
+   * This value was found to be ideal
    * http://cubic-bezier.com/#.52,.27,0,1.03
    **/
   transition: 1s all cubic-bezier(0.52, 0.27, 0, 1.03);
 
-  ${({
-    progress,
-    maxWidth,
-    showCancel,
-  }: {
-    progress: number;
-    maxWidth: number;
-    showCancel: boolean;
-  }) =>
+  ${({ progress, maxWidth }: { progress: number; maxWidth?: number }) =>
     css`
-      width: ${progress * maxWidth}px;
+      width: ${progress * (maxWidth || 1)}px;
     `};
 `;

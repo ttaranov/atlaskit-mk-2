@@ -97,7 +97,7 @@ export const handleClick = (view: EditorView, event): boolean => {
 
 export const handleMouseOver = (
   view: EditorView,
-  mouseEvent: MouseEvent,
+  mouseEvent: Event,
 ): boolean => {
   const { state, dispatch } = view;
   const target = mouseEvent.target as HTMLElement;

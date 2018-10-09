@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import { editorFontSize, paragraphSharedStyles } from '@atlaskit/editor-common';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
@@ -21,7 +19,9 @@ import { placeholderTextStyles } from '../../plugins/placeholder-text/styles';
 import { tasksAndDecisionsStyles } from '../../plugins/tasks-and-decisions/ui/styles';
 import { gridStyles } from '../../plugins/grid/styles';
 
-const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
+const ContentStyles: ComponentClass<
+  HTMLAttributes<{}> & { theme: any }
+> = styled.div`
   /* Hack for ie11 that is being used in code block.
    * https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
    */

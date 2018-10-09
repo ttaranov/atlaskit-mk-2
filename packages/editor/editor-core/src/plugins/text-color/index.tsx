@@ -6,7 +6,6 @@ import {
   pluginKey,
   createPlugin,
   TextColorPluginConfig,
-  TextColorPluginState,
 } from './pm-plugins/main';
 import ToolbarTextColor from './ui/ToolbarTextColor';
 import { changeColor } from './commands/change-color';
@@ -51,7 +50,7 @@ const textColorPlugin: EditorPlugin = {
         plugins={{
           textColor: pluginKey,
         }}
-        render={({ textColor }: { textColor: TextColorPluginState }) => (
+        render={({ textColor }) => (
           <ToolbarTextColor
             pluginState={textColor}
             isReducedSpacing={isToolbarReducedSpacing}
