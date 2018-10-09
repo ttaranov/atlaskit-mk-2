@@ -4,7 +4,7 @@ import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { analyticsService } from '../../../../../analytics';
 import mentionsPlugin from '../../../../../plugins/mentions';
-import { mentionPluginKey } from '../../../../../plugins/mentions/pm-plugins/main';
+import { mentionPluginKey } from '../../../../../plugins/mentions';
 import ToolbarMention from '../../../../../plugins/mentions/ui/ToolbarMention';
 
 describe('ToolbarMention', () => {
@@ -15,16 +15,16 @@ describe('ToolbarMention', () => {
       editorProps: { analyticsHandler },
     });
 
-  it('should create a mentionQuery by clicking on the ToolbarMention icon', () => {
+  it('should create a typeAheadQuery by clicking on the ToolbarMention icon', () => {
     const { editorView } = editor(doc(p('{<>}')));
     const toolbarMention = mount(
       <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} />,
     );
     toolbarMention.find(MentionIcon).simulate('click');
     const { state } = editorView;
-    expect(state.doc.rangeHasMark(0, 2, state.schema.marks.mentionQuery)).toBe(
-      true,
-    );
+    expect(
+      state.doc.rangeHasMark(0, 2, state.schema.marks.typeAheadQuery),
+    ).toBe(true);
     toolbarMention.unmount();
   });
 

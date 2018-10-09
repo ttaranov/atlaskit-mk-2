@@ -19,7 +19,6 @@ import {
   emoji,
   emojiQuery,
   mention,
-  mentionQuery,
   code,
   ol,
   p,
@@ -29,6 +28,7 @@ import {
   defaultSchema,
   media,
   mediaSingle,
+  typeAheadQuery,
   table,
   td,
   th,
@@ -748,10 +748,10 @@ describe('BitbucketTransformer: serializer', () => {
   });
 
   describe('marks -', () => {
-    it('should ignore mentionQuery mark', () => {
+    it('should ignore typeAheadQuery mark', () => {
       expect(
         markdownSerializer.serialize(
-          doc(p(mentionQuery()('@oscar')))(defaultSchema),
+          doc(p(typeAheadQuery({ trigger: '@' })('@oscar')))(defaultSchema),
         ),
       ).toEqual('@oscar');
     });

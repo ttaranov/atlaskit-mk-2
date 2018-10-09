@@ -130,7 +130,6 @@ export default {
     'subsup',
     'underline',
     'code',
-    'mentionQuery',
     'typeAheadQuery',
     'emojiQuery',
     'textColor',

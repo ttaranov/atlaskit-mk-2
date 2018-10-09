@@ -52,11 +52,11 @@ describe('@atlaskit/editore-core/utils', () => {
       describe('and a stored mark is present', () => {
         it('returns true if given mark type is not excluded', () => {
           const { editorView } = editor(doc(p('{<>}')));
-          const { mentionQuery, strong } = editorView.state.schema.marks;
+          const { typeAheadQuery, strong } = editorView.state.schema.marks;
           toggleMark(strong)(editorView.state, editorView.dispatch);
 
           let result = isMarkTypeAllowedInCurrentSelection(
-            mentionQuery,
+            typeAheadQuery,
             editorView.state,
           );
           expect(result).toBe(true);
@@ -64,11 +64,11 @@ describe('@atlaskit/editore-core/utils', () => {
 
         it('returns false if given mark type is excluded', () => {
           const { editorView } = editor(doc(p('{<>}')));
-          const { mentionQuery, code } = editorView.state.schema.marks;
+          const { typeAheadQuery, code } = editorView.state.schema.marks;
           toggleMark(code)(editorView.state, editorView.dispatch);
 
           let result = isMarkTypeAllowedInCurrentSelection(
-            mentionQuery,
+            typeAheadQuery,
             editorView.state,
           );
           expect(result).toBe(false);
@@ -79,10 +79,10 @@ describe('@atlaskit/editore-core/utils', () => {
         describe('and the selection is empty', () => {
           it('returns true if given mark type not excluded', () => {
             const { editorView } = editor(doc(p(strong('te{<>}xt'))));
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(true);
@@ -90,10 +90,10 @@ describe('@atlaskit/editore-core/utils', () => {
 
           it('returns false if given mark type is excluded', () => {
             const { editorView } = editor(doc(p(code('te{<>}xt'))));
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(false);
@@ -105,10 +105,10 @@ describe('@atlaskit/editore-core/utils', () => {
             const { editorView } = editor(
               doc(p(strong('t{<}e'), code('xt{>}'))),
             );
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(false);
@@ -118,10 +118,10 @@ describe('@atlaskit/editore-core/utils', () => {
             const { editorView } = editor(
               doc(p(code('te{<}'), strong('xt{>}'))),
             );
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(true);
@@ -131,10 +131,10 @@ describe('@atlaskit/editore-core/utils', () => {
             const { editorView } = editor(
               doc(p(code('t{<}e'), strong('xt{>}'))),
             );
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(false);
@@ -144,10 +144,10 @@ describe('@atlaskit/editore-core/utils', () => {
             const { editorView } = editor(
               doc(p(strong('{<}te'), code('{>}xt'))),
             );
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(true);
@@ -157,10 +157,10 @@ describe('@atlaskit/editore-core/utils', () => {
             const { editorView } = editor(
               doc(p(strong('{<}text'), code('text'), strong('text{>}'))),
             );
-            const { mentionQuery } = editorView.state.schema.marks;
+            const { typeAheadQuery } = editorView.state.schema.marks;
 
             let result = isMarkTypeAllowedInCurrentSelection(
-              mentionQuery,
+              typeAheadQuery,
               editorView.state,
             );
             expect(result).toBe(false);
@@ -172,10 +172,10 @@ describe('@atlaskit/editore-core/utils', () => {
     describe('when the current node does not support the given mark type', () => {
       it('returns false', () => {
         const { editorView } = editor(doc(code_block()('te{<>}xt')));
-        const { mentionQuery } = editorView.state.schema.marks;
+        const { typeAheadQuery } = editorView.state.schema.marks;
 
         let result = isMarkTypeAllowedInCurrentSelection(
-          mentionQuery,
+          typeAheadQuery,
           editorView.state,
         );
         expect(result).toBe(false);

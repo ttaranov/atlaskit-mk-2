@@ -59,7 +59,7 @@ export function TypeAhead({
       fitWidth={340}
       offset={[0, 8]}
     >
-      <TypeAheadContent>
+      <TypeAheadContent className="fabric-editor-typeahead">
         {Array.isArray(items) ? (
           <TypeAheadItemsList
             insertByIndex={index =>

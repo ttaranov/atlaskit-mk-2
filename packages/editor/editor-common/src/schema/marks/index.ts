@@ -10,7 +10,6 @@ export {
   toJSON as linkToJSON,
 } from './link';
 export { emojiQuery } from './emoji-query';
-export { mentionQuery } from './mention-query';
 export { typeAheadQuery } from './type-ahead-query';
 export { subsup, SubSupDefinition, SubSupAttributes } from './subsup';
 export {

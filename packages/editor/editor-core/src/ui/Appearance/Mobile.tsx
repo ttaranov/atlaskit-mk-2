@@ -5,7 +5,7 @@ import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
-import { mentionPluginKey } from '../../plugins/mentions/pm-plugins/main';
+import { mentionPluginKey } from '../../plugins/mentions';
 import WithFlash from '../WithFlash';
 
 export interface MobileEditorProps {

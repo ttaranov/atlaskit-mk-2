@@ -31,8 +31,7 @@ export {
 
 // Used in mobile bridge
 export { stateKey as mediaPluginKey } from './plugins/media/pm-plugins/main';
-export { mentionPluginKey } from './plugins/mentions/pm-plugins/main';
-export { MentionsState } from './plugins/mentions/pm-plugins/main';
+export { mentionPluginKey, MentionPluginState } from './plugins/mentions';
 export {
   TextFormattingState,
   pluginKey as textFormattingStateKey,

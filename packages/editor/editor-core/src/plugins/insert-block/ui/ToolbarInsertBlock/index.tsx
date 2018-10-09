@@ -58,6 +58,7 @@ import { insertLayoutColumns } from '../../../layout/actions';
 import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
 import { Command } from '../../../../commands';
 import { showLinkToolbar } from '../../../hyperlink/commands';
+import { insertMentionQuery } from '../../../mentions/commands/insert-mention-query';
 
 export const messages = defineMessages({
   action: {
@@ -137,6 +138,7 @@ export interface Props {
   buttons: number;
   isReducedSpacing: boolean;
   isDisabled?: boolean;
+  isTypeAheadAllowed?: boolean;
   editorView: EditorView;
   editorActions?: EditorActions;
   tableSupported?: boolean;
@@ -377,12 +379,12 @@ class ToolbarInsertBlock extends React.PureComponent<
 
   private createItems = () => {
     const {
+      isTypeAheadAllowed,
       tableSupported,
       mediaUploadsEnabled,
       mediaSupported,
       imageUploadSupported,
       imageUploadEnabled,
-      mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
       actionSupported,
@@ -446,7 +448,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       items.push({
         content: labelMention,
         value: { name: 'mention' },
-        isDisabled: !mentionsEnabled,
+        isDisabled: !isTypeAheadAllowed,
         elemBefore: <MentionIcon label={labelMention} />,
         elemAfter: <Shortcut>@</Shortcut>,
         shortcut: '@',
@@ -567,8 +569,8 @@ class ToolbarInsertBlock extends React.PureComponent<
 
   @analyticsDecorator('atlassian.fabric.mention.picker.trigger.button')
   private insertMention = (): boolean => {
-    const { insertMentionQuery } = this.props;
-    insertMentionQuery!();
+    const { editorView } = this.props;
+    insertMentionQuery()(editorView.state, editorView.dispatch);
     return true;
   };
 

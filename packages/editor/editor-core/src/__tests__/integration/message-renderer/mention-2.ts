@@ -25,9 +25,8 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
-    expect(await browser.isExisting('[data-mention-query="true"]')).toBe(true);
-    expect(await browser.isExisting(mentionPicker)).toBe(true);
+    await browser.waitForSelector(picker);
+    expect(await browser.isExisting(picker)).toBe(true);
   },
 );
 

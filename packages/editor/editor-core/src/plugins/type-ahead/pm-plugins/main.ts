@@ -1,5 +1,6 @@
 import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 import { Dispatch } from '../../../event-dispatcher';
+import { isMarkTypeAllowedInCurrentSelection } from '../../../utils';
 import {
   TypeAheadHandler,
   TypeAheadItem,
@@ -13,6 +14,7 @@ import { findTypeAheadQuery } from '../utils/find-query-mark';
 export const pluginKey = new PluginKey('typeAheadPlugin');
 
 export type PluginState = {
+  isAllowed: boolean;
   active: boolean;
   prevActiveState: boolean;
   query: string | null;
@@ -32,8 +34,12 @@ export const ACTIONS = {
   ITEMS_LIST_UPDATED: 'ITEMS_LIST_UPDATED',
 };
 
-export function createInitialPluginState(prevActiveState = false): PluginState {
+export function createInitialPluginState(
+  prevActiveState = false,
+  isAllowed = true,
+): PluginState {
   return {
+    isAllowed,
     active: false,
     prevActiveState,
     query: null,
@@ -81,7 +87,19 @@ export function createPlugin(
             return itemsListUpdatedActionHandler({ dispatch, pluginState, tr });
 
           case ACTIONS.SELECT_CURRENT:
-            return selectCurrentActionHandler({ dispatch, pluginState, tr });
+            const { from, to } = tr.selection;
+            const { typeAheadQuery } = state.schema.marks;
+
+            // If inserted content has typeAheadQuery mark should fallback to default action handler
+            return tr.doc.rangeHasMark(from - 1, to, typeAheadQuery)
+              ? defaultActionHandler({
+                  dispatch,
+                  reactContext,
+                  typeAhead,
+                  state,
+                  pluginState,
+                })
+              : selectCurrentActionHandler({ dispatch, pluginState, tr });
 
           default:
             return defaultActionHandler({
@@ -125,11 +143,13 @@ export function createPlugin(
           }
 
           // Optimization to not call dismissCommand if plugin is in an inactive state.
-          if (!pluginState.active && pluginState.prevActiveState) {
-            if (!doc.rangeHasMark(from - 1, to, typeAheadQuery)) {
-              dismissCommand()(state, dispatch);
-              return;
-            }
+          if (
+            !pluginState.active &&
+            pluginState.prevActiveState &&
+            !doc.rangeHasMark(from - 1, to, typeAheadQuery)
+          ) {
+            dismissCommand()(state, dispatch);
+            return;
           }
 
           // Fetch type ahead items if handler returned a promise.
@@ -192,15 +212,25 @@ export function defaultActionHandler({
   const { typeAheadQuery } = state.schema.marks;
   const { doc, selection } = state;
   const { from, to } = selection;
-
   const isActive = isQueryActive(typeAheadQuery, doc, from - 1, to);
+  const isAllowed = isMarkTypeAllowedInCurrentSelection(typeAheadQuery, state);
+
+  if (!isAllowed && !isActive) {
+    const newPluginState = createInitialPluginState(
+      pluginState.active,
+      isAllowed,
+    );
+    dispatch(pluginKey, newPluginState);
+    return newPluginState;
+  }
+
   const { nodeBefore } = selection.$from;
 
   if (!isActive || !nodeBefore || !pluginState) {
     const newPluginState = createInitialPluginState(
       pluginState ? pluginState.active : false,
     );
-    if (!pluginState || pluginState.active) {
+    if (!pluginState || pluginState.active || !pluginState.isAllowed) {
       dispatch(pluginKey, newPluginState);
     }
     return newPluginState;
@@ -245,6 +275,7 @@ export function defaultActionHandler({
   const queryMark = findTypeAheadQuery(state);
 
   const newPluginState = {
+    isAllowed,
     query,
     trigger,
     typeAheadHandler,
@@ -328,7 +359,7 @@ export function selectCurrentActionHandler({
   dispatch,
   pluginState,
 }: ActionHandlerParams): PluginState {
-  const newPluginState = createInitialPluginState(pluginState.active);
+  const newPluginState = createInitialPluginState(false);
   dispatch(pluginKey, newPluginState);
   return newPluginState;
 }
