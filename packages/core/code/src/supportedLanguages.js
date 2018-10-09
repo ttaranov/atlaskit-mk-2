@@ -90,6 +90,9 @@ export const languageLoaders = {
   typescript: createAsyncLanguageLoader('typescript', () =>
     import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_typescript" */ 'react-syntax-highlighter/languages/prism/typescript'),
   ),
+  yaml: createAsyncLanguageLoader('yaml', () =>
+    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_yaml" */ 'react-syntax-highlighter/languages/prism/yaml'),
+  ),
 };
 
 /*
@@ -166,7 +169,8 @@ export type ADFSupportedLanguages =
   | 'verilog'
   | 'vhdl'
   | 'xml'
-  | 'xquery';
+  | 'xquery'
+  | 'yaml';
 
 export const SUPPORTED_LANGUAGES = Object.freeze([
   {
@@ -525,6 +529,11 @@ export const SUPPORTED_LANGUAGES = Object.freeze([
     name: 'PlainText',
     alias: ['text', 'plaintext'],
     value: 'text',
+  },
+  {
+    name: 'Yaml',
+    alias: ['yaml', 'yml'],
+    value: 'yaml',
   },
 ]);
 
