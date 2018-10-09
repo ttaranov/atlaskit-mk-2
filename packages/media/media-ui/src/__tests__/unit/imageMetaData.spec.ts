@@ -104,6 +104,16 @@ describe('Image Meta Data', () => {
       const file = new File([], 'filename@x2.png');
       expect(getScaleFactorFromFile(file)).toBe(null);
     });
+
+    it('should find floating values from one decimal', () => {
+      const file = new File([], 'filename@2.3x.png');
+      expect(getScaleFactorFromFile(file)).toBe(2.3);
+    });
+
+    it('should find reasonable floating values from multiple decimals', () => {
+      const file = new File([], 'filename@2.3.4x.png');
+      expect(getScaleFactorFromFile(file)).toBe(2.3);
+    });
   });
 
   describe('readImageMetaData()', () => {

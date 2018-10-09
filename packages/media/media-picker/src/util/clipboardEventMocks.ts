@@ -42,19 +42,13 @@ export class MockFileList extends Array<File> {
 // this isn't implemented by JSDOM so we've implemented it to make Typescript happy
 // see https://github.com/tmpvar/jsdom/issues/1568
 export class MockDataTransfer implements DataTransfer {
-  dropEffect: string;
-  effectAllowed: string;
-  readonly files: FileList;
-  readonly items: DataTransferItemList;
-  readonly types: string[];
-
-  constructor(files?: FileList) {
-    this.files = files as any;
-    this.dropEffect = '';
-    this.effectAllowed = '';
-    this.items = [] as any;
-    this.types = [];
-  }
+  constructor(
+    readonly files: FileList,
+    readonly types: string[] = [],
+    readonly items: DataTransferItemList = [] as any,
+    readonly dropEffect: string = '',
+    readonly effectAllowed: string = '',
+  ) {}
 
   clearData(): boolean {
     return false;
@@ -73,9 +67,12 @@ export class MockDataTransfer implements DataTransfer {
 // see https://github.com/tmpvar/jsdom/issues/1568
 export class MockClipboardEvent extends Event implements ClipboardEvent {
   clipboardData: DataTransfer;
-  constructor(event: string, files: File[] = []) {
+  constructor(event: string, files: File[] = [], types: string[] = []) {
     super(event);
-    this.clipboardData = new MockDataTransfer(MockFileList.fromArray(files));
+    this.clipboardData = new MockDataTransfer(
+      MockFileList.fromArray(files),
+      types,
+    );
   }
 }
 

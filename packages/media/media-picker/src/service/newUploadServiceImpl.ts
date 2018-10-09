@@ -23,20 +23,23 @@ import { MediaFile, PublicMediaFile } from '../domain/file';
 
 import { RECENTS_COLLECTION } from '../popup/config';
 import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
-import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
+import { getPreviewFromImage } from '../util/getPreviewFromImage';
 import { UploadParams } from '..';
 import { SmartMediaProgress } from '../domain/progress';
 import { MediaErrorName } from '../domain/error';
 import {
+  MAX_FILE_SIZE_FOR_PREVIEW,
   UploadService,
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './types';
 import { Observable } from 'rxjs/Observable';
+import { LocalFileSource, LocalFileWithSource } from '../service/types';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
   file: File;
+  source: LocalFileSource;
   cancel?: () => void;
 }
 
@@ -115,85 +118,93 @@ export class NewUploadServiceImpl implements UploadService {
   };
 
   addFiles(files: File[]): void {
+    this.addFilesWithSource(
+      files.map((file: File) => ({
+        file,
+        source: LocalFileSource.LocalUpload,
+      })),
+    );
+  }
+
+  addFilesWithSource(files: LocalFileWithSource[]): void {
     if (files.length === 0) {
       return;
     }
 
     const creationDate = Date.now();
-    const cancellableFileUploads: CancellableFileUpload[] = files.map(file => {
-      const id = uuid.v4();
-      const { userContext, tenantContext, shouldCopyFileToRecents } = this;
-      const uploadableFile: UploadableFile = {
-        collection: shouldCopyFileToRecents
-          ? this.tenantUploadParams.collection
-          : RECENTS_COLLECTION,
-        content: file,
-        name: file.name,
-        mimeType: file.type,
-      };
-      const context = shouldCopyFileToRecents ? tenantContext : userContext;
+    const cancellableFileUploads: CancellableFileUpload[] = files.map(
+      fileWithSource => {
+        const { file, source } = fileWithSource;
+        const id = uuid.v4();
+        const { userContext, tenantContext, shouldCopyFileToRecents } = this;
+        const uploadableFile: UploadableFile = {
+          collection: shouldCopyFileToRecents
+            ? this.tenantUploadParams.collection
+            : RECENTS_COLLECTION,
+          content: file,
+          name: file.name,
+          mimeType: file.type,
+        };
+        const context = shouldCopyFileToRecents ? tenantContext : userContext;
 
-      const controller = this.createUploadController();
-      let observable: Observable<FileState> | undefined;
+        const controller = this.createUploadController();
+        let observable: Observable<FileState> | undefined;
 
-      if (context) {
-        observable = context.file.upload(uploadableFile, controller);
+        if (context) {
+          observable = context.file.upload(uploadableFile, controller);
 
-        const subscrition = observable.subscribe({
-          next: state => {
-            if (state.status === 'uploading') {
-              this.onFileProgress(cancellableFileUpload, state.progress);
-            }
+          const subscrition = observable.subscribe({
+            next: state => {
+              if (state.status === 'uploading') {
+                this.onFileProgress(cancellableFileUpload, state.progress);
+              }
 
-            if (state.status === 'processing') {
-              subscrition.unsubscribe();
+              if (state.status === 'processing') {
+                subscrition.unsubscribe();
 
-              this.onFileSuccess(cancellableFileUpload, state.id);
-            }
+                this.onFileSuccess(cancellableFileUpload, state.id);
+              }
+            },
+            error: error => {
+              this.onFileError(mediaFile, 'upload_fail', error);
+            },
+          });
+        }
+
+        const occurrenceKey = uuid.v4();
+        const upfrontId = this.getUpfrontId(observable, occurrenceKey);
+        const mediaFile: MediaFile = {
+          id,
+          upfrontId,
+          name: file.name,
+          size: file.size,
+          creationDate,
+          type: file.type,
+          occurrenceKey,
+        };
+        const cancellableFileUpload: CancellableFileUpload = {
+          mediaFile,
+          file,
+          source,
+          cancel: () => {
+            // we can't do "cancellableFileUpload.cancel = controller.abort" because will change the "this" context
+            controller.abort();
           },
-          error: error => {
-            this.onFileError(mediaFile, 'upload_fail', error);
-          },
+        };
+
+        this.cancellableFilesUploads[id] = cancellableFileUpload;
+        // Save observable in the cache
+        upfrontId.then(id => {
+          if (context && observable) {
+            const key = FileStreamCache.createKey(id);
+            fileStreamsCache.set(key, observable);
+          }
         });
       }
 
-      const occurrenceKey = uuid.v4();
-      const upfrontId = this.getUpfrontId(observable, occurrenceKey);
-      const mediaFile: MediaFile = {
-        id,
-        upfrontId,
-        name: file.name,
-        size: file.size,
-        creationDate,
-        type: file.type,
-        occurrenceKey,
-      };
-      const cancellableFileUpload: CancellableFileUpload = {
-        mediaFile,
-        file,
-        cancel: () => {
-          // we can't do "cancellableFileUpload.cancel = controller.abort" because will change the "this" context
-          controller.abort();
-        },
-      };
-
-      this.cancellableFilesUploads[id] = cancellableFileUpload;
-      // Save observable in the cache
-      upfrontId.then(id => {
-        if (context && observable) {
-          const key = FileStreamCache.createKey(id);
-          const keyWithCollection = FileStreamCache.createKey(id, {
-            collectionName: this.tenantUploadParams.collection,
-          });
-
-          // We want to save the observable without collection too, due consumers using cards without collection.
-          fileStreamsCache.set(key, observable);
-          fileStreamsCache.set(keyWithCollection, observable);
-        }
-      });
-
-      return cancellableFileUpload;
-    });
+        return cancellableFileUpload;
+      },
+    );
 
     const mediaFiles = cancellableFileUploads.map(
       cancellableFileUpload => cancellableFileUpload.mediaFile,
@@ -242,13 +253,19 @@ export class NewUploadServiceImpl implements UploadService {
 
   private emitPreviews(cancellableFileUploads: CancellableFileUpload[]) {
     cancellableFileUploads.forEach(cancellableFileUpload => {
-      const { file, mediaFile } = cancellableFileUpload;
+      const { file, mediaFile, source } = cancellableFileUpload;
       const mediaType = this.getMediaTypeFromFile(file);
-
-      getPreviewFromBlob(file, mediaType).then(preview => {
-        this.emit('file-preview-update', {
-          file: mediaFile,
-          preview,
+      if (mediaType === 'image') {
+        getPreviewFromImage(
+          file,
+          source === LocalFileSource.PastedScreenshot
+            ? window.devicePixelRatio
+            : undefined,
+        ).then(preview => {
+          this.emit('file-preview-update', {
+            file: mediaFile,
+            preview,
+          });
         });
       });
     });

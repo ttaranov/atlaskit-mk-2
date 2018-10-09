@@ -97,11 +97,15 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
 
     clipboard.on('upload-end', data => {
       console.log('upload finished');
-      console.log(data);
+      console.log('upload-end:', data);
     });
 
     clipboard.on('upload-error', mpError => {
-      console.log('Error', mpError);
+      console.log('upload-error:', mpError);
+    });
+
+    clipboard.on('upload-preview-update', data => {
+      console.log('upload-preview-update:', data);
     });
 
     isActive ? clipboard.activate() : clipboard.deactivate();
