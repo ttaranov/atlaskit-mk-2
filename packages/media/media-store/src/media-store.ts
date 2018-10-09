@@ -72,6 +72,7 @@ export class MediaStore {
     params?: MediaStoreGetCollectionItemsParams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     const response = await this.request(`/collection/${collectionName}/items`, {
+      method: 'GET',
       authContext: { collectionName },
       params: {
         ...defaultGetCollectionItems,
