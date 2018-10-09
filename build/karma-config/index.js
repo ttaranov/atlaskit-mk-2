@@ -16,12 +16,20 @@ const webpackConfig = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: 'ts-loader?transpileOnly=true',
+        loader: require.resolve('ts-loader'),
+        options: {
+          transpileOnly: true,
+        },
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: require.resolve('babel-loader'),
+        options: {
+          babelrc: true,
+          rootMode: 'upward',
+          envName: 'production:cjs',
+        },
       },
     ],
   },
