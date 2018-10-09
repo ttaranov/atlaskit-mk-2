@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 19.1.1
+- [patch] Fix popups are placed incorrectly in modals [2dde31d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dde31d)
+
 ## 19.1.0
 - [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
 
