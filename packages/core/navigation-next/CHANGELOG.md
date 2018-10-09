@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.17.1
+- [patch] Fix nav flyout getting stuck in an opened state after global nav drawers are opened [ed585c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed585c6)
+
 ## 3.17.0
 - [minor] Add expand analytics for flyout hover state [45f9a92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45f9a92)
 
