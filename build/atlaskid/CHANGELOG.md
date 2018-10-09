@@ -4,6 +4,10 @@ This changelog is manually curated.
 
 We don't publish this package, so we'll be doing versions based on the docker image
 
+## v25 (2018-10-08)
+
+* [Adding home team](https://trello.com/c/mPYXBp0G/)
+
 ## v25 (2018-09-10)
 
 * [Just adding more users](https://trello.com/c/vuRjKTd4/)
