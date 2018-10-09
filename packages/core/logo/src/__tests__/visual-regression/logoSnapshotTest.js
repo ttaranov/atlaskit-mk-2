@@ -7,7 +7,6 @@ import {
 
 const path = require('path');
 
-const imageSnapshotFolder = path.resolve(__dirname, `__image_snapshots__`);
 const examples = getExamplesFor('logo');
 
 describe('Snapshot Test', () => {

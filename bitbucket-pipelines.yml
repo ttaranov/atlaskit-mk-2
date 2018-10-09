@@ -108,7 +108,7 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - yarn add puppeteer
-              - node build/ci-scripts/run.tool.if.changed.js vr -- yarn test:vr:changed 
+              - OVERRIDE_TEST_IGNORE='(editor)' node build/ci-scripts/run.tool.if.changed.js vr -- yarn test:vr:changed 
             caches:
               - node          
         - step:
