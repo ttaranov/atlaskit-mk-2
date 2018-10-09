@@ -1,7 +1,7 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
-import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
+import { browser } from '@atlaskit/editor-common';
 import { calcTableWidth } from '@atlaskit/editor-common';
 
 import TableFloatingControls from '../ui/TableFloatingControls';
@@ -14,7 +14,6 @@ import { TablePluginState, TableCssClassName as ClassName } from '../types';
 import { getCellMinWidth } from '../';
 
 const isIE11 = browser.ie_version === 11;
-const SHADOW_MAX_WIDTH = 8;
 
 import { Props } from './table';
 import {
@@ -43,10 +42,7 @@ class TableComponent extends React.Component<ComponentProps> {
 
   private wrapper: HTMLDivElement | null;
   private table: HTMLTableElement | null;
-
-  private leftShadow: HTMLDivElement | null;
   private rightShadow: HTMLDivElement | null;
-
   private columnControls: React.Component | null;
 
   constructor(props) {
@@ -101,7 +97,7 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidUpdate(prevProps) {
-    this.updateShadows();
+    updateRightShadow(this.wrapper, this.table, this.rightShadow);
 
     if (this.props.allowColumnResizing && this.table) {
       if (this.props.UNSAFE_allowFlexiColumnResizing) {
@@ -118,34 +114,10 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   render() {
-    const {
-      view,
-      node,
-      allowColumnResizing,
-      pluginState,
-      containerWidth,
-    } = this.props;
+    const { view, node, pluginState, containerWidth } = this.props;
     const {
       pluginConfig: { allowControls = true },
     } = pluginState;
-    const columnShadows = allowColumnResizing
-      ? [
-          <div
-            key="left"
-            className={`${ClassName.TABLE_SHADOW} -left`}
-            ref={elem => {
-              this.leftShadow = elem;
-            }}
-          />,
-          <div
-            key="right"
-            className={`${ClassName.TABLE_SHADOW} -right`}
-            ref={elem => {
-              this.rightShadow = elem;
-            }}
-          />,
-        ]
-      : [];
 
     // doesn't work well with WithPluginState
     const {
@@ -164,7 +136,7 @@ class TableComponent extends React.Component<ComponentProps> {
       <div
         key={0}
         className={`${ClassName.ROW_CONTROLS_WRAPPER} ${
-          scroll > 0 ? 'scrolling' : ''
+          scroll > 0 ? ClassName.TABLE_LEFT_SHADOW : ''
         }`}
       >
         <TableFloatingControls
@@ -229,7 +201,12 @@ class TableComponent extends React.Component<ComponentProps> {
         >
           {allowControls && columnControls}
         </div>
-        {columnShadows}
+        <div
+          ref={elem => {
+            this.rightShadow = elem;
+          }}
+          className={ClassName.TABLE_RIGHT_SHADOW}
+        />
       </div>
     );
   }
@@ -241,20 +218,6 @@ class TableComponent extends React.Component<ComponentProps> {
 
     this.setState({ scroll: this.wrapper.scrollLeft });
   };
-
-  private updateShadows() {
-    if (!this.wrapper || !this.table || !this.leftShadow || !this.rightShadow) {
-      return;
-    }
-
-    updateShadows(
-      this.wrapper,
-      this.table,
-      this.leftShadow,
-      this.rightShadow,
-      !!getPluginState(this.props.view.state).tableRef,
-    );
-  }
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
 
@@ -304,46 +267,17 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 }
 
-export const updateShadows = (
-  wrapper,
-  table,
-  leftShadow,
-  rightShadow,
-  tableActive: boolean,
+export const updateRightShadow = (
+  wrapper: HTMLElement | null,
+  table: HTMLElement | null,
+  rightShadow: HTMLElement | null,
 ) => {
-  const { scrollLeft, offsetWidth } = wrapper as HTMLElement;
-  const tableOffsetWidth = table.offsetWidth;
-
-  const diff = tableOffsetWidth - offsetWidth;
-  const scrollDiff = scrollLeft - diff > 0 ? scrollLeft - diff : 0;
-  const width = diff
-    ? Math.min(SHADOW_MAX_WIDTH, SHADOW_MAX_WIDTH - scrollDiff + 2)
-    : 0;
-
-  const paddingLeft = getComputedStyle(wrapper.parentElement!).paddingLeft;
-  const paddingLeftPx = paddingLeft
-    ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
-    : 0;
-
-  leftShadow.style.left = `${paddingLeftPx + 1}px`;
-  leftShadow.style.width = `${Math.min(scrollLeft, SHADOW_MAX_WIDTH)}px`;
-
-  rightShadow.style.left = `${offsetWidth -
-    (diff ? width : SHADOW_MAX_WIDTH) -
-    scrollDiff +
-    paddingLeftPx}px`;
-
-  const rightDiff =
-    diff - scrollLeft - 1 + (tableActive ? akEditorTableToolbarSize : 0);
-  const rightWidth = rightDiff > 0 ? Math.min(rightDiff, SHADOW_MAX_WIDTH) : 0;
-  rightShadow.style.width = `${rightWidth}px`;
-
-  // fix shadow height
-  const height =
-    table.offsetHeight + (tableActive ? akEditorTableToolbarSize : 0) - 1;
-
-  leftShadow.style.height = `${height}px`;
-  rightShadow.style.height = `${height}px`;
+  if (table && wrapper && rightShadow) {
+    const diff = table.offsetWidth - wrapper.offsetWidth;
+    rightShadow.style.display =
+      diff > 0 && diff > wrapper.scrollLeft ? 'block' : 'none';
+  }
+  return;
 };
 
 export default TableComponent;
