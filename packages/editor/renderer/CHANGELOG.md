@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 27.1.1
+- [patch] Move render document export into seperate file [e976cd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e976cd8)
+
 ## 27.1.0
 - [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
 
