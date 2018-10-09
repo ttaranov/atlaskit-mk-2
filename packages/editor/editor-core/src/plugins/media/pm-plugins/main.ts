@@ -444,6 +444,7 @@ export class MediaPluginState {
     const {
       selection: { from },
       tr,
+      schema,
     } = this.view.state;
 
     const mediaSingleNode = this.view.state.doc.nodeAt(from - 1)!;

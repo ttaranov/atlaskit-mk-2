@@ -3,13 +3,16 @@ import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { MediaSingle, WithProviders } from '@atlaskit/editor-common';
+import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import MediaItem from './media';
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
-import { setNodeSelection } from '../../../utils';
 import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
+import { setNodeSelection } from '../../../utils';
+import ResizableMediaSingle from '../ui/ResizableMediaSingle';
+import { displayGrid } from '../../../plugins/grid';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -33,6 +36,11 @@ export default class MediaSingleNode extends Component<
 > {
   private child: PMNode;
   private mediaPluginState: MediaPluginState;
+
+  state = {
+    height: undefined,
+    width: undefined,
+  };
 
   constructor(props) {
     super(props);
@@ -66,10 +74,37 @@ export default class MediaSingleNode extends Component<
     setNodeSelection(this.props.view, this.props.getPos() + 1);
   };
 
+  updateSize = (width: number | null, layout: MediaSingleLayout) => {
+    const { state, dispatch } = this.props.view;
+    const pos = this.props.getPos();
+    if (typeof pos === 'undefined') {
+      return;
+    }
+    console.log('new width is ', width);
+    return dispatch(
+      state.tr.setNodeMarkup(pos, undefined, {
+        ...this.props.node.attrs,
+        layout,
+        width,
+      }),
+    );
+  };
+
+  boundDisplayGrid = (show, gridType) => {
+    displayGrid(show, gridType)(
+      this.props.view.state,
+      this.props.view.dispatch,
+    );
+  };
+
   render() {
     const { layout } = this.props.node.attrs;
 
-    const { selected } = this.props;
+    const {
+      selected,
+      getPos,
+      view: { state },
+    } = this.props;
 
     let { width, height, type } = this.child.attrs;
 
@@ -89,12 +124,65 @@ export default class MediaSingleNode extends Component<
       this.child.attrs.__key,
     );
 
+    const isLoading = mediaState ? !this.mediaReady(mediaState) : false;
+    let canResize = !!this.mediaPluginState.options.allowResizing && !isLoading;
+
+    const pos = getPos();
+    if (pos) {
+      const $pos = state.doc.resolve(pos);
+      const { table, layoutSection } = state.schema.nodes;
+      const disabledNode = !!findParentNodeOfTypeClosestToPos($pos, [
+        table,
+        layoutSection,
+      ]);
+      canResize = canResize && !disabledNode;
+    }
+
     if (width === null && this.mediaReady(mediaState)) {
       width = DEFAULT_WIDTH;
       height = DEFAULT_HEIGHT;
     }
-
-    return (
+    console.log('width is ', width);
+    return 1 ? (
+      <ResizableMediaSingle
+        layout={layout}
+        width={width}
+        height={height}
+        containerWidth={this.props.width}
+        isLoading={!width}
+        lineLength={this.props.lineLength}
+        getPos={getPos}
+        updateSize={this.updateSize}
+        displayGrid={this.boundDisplayGrid}
+        node={this.child}
+        gridSize={12}
+        state={this.props.view.state}
+        appearance={this.mediaPluginState.options.appearance}
+      >
+        <WithProviders
+          providers={['mediaProvider']}
+          providerFactory={this.mediaPluginState.options.providerFactory}
+          renderNode={({ mediaProvider }) => {
+            return (
+              <MediaItem
+                node={this.child}
+                view={this.props.view}
+                width={width}
+                getPos={this.props.getPos}
+                cardDimensions={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                mediaProvider={mediaProvider}
+                selected={selected}
+                onClick={this.selectMediaSingle}
+                onExternalImageLoaded={this.onExternalImageLoaded}
+              />
+            );
+          }}
+        />
+      </ResizableMediaSingle>
+    ) : (
       <MediaSingle
         layout={layout}
         width={width}
@@ -138,11 +226,11 @@ class MediaSingleNodeView extends ReactNodeView {
           width: widthPluginKey,
           reactNodeViewState: reactNodeViewStateKey,
         }}
-        render={({width, lineLength}) => {
+        render={({ width, lineLength }) => {
           return (
             <MediaSingleNode
               width={width.width}
-              lineLength={lineLength}
+              lineLength={width.lineLength}
               node={this.node}
               getPos={this.getPos}
               view={this.view}
