@@ -6,7 +6,7 @@ import React, {
   PureComponent,
   type ElementRef,
   type Ref,
-  type Node as ReactNode,
+  type Node,
 } from 'react';
 import throttle from 'raf-schd';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
@@ -57,7 +57,7 @@ function defaultTooltipContent(isCollapsed: boolean) {
 }
 
 type PageProps = {
-  children: ReactNode,
+  children: Node,
   flyoutIsOpen: boolean,
   innerRef: Ref<'div'>,
   isResizing: boolean,
@@ -66,7 +66,7 @@ type PageProps = {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-class PageInner extends PureComponent<{ children: ReactNode }> {
+class PageInner extends PureComponent<{ children: Node }> {
   render() {
     return this.props.children;
   }
