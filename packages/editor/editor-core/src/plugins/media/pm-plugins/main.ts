@@ -23,7 +23,7 @@ import { isImage } from '../../../utils';
 import { Dispatch } from '../../../event-dispatcher';
 import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { EditorAppearance } from '../../../types/editor-props';
-import DropPlaceholder from '../ui/Media/DropPlaceholder';
+import DropPlaceholder, { PlaceholderType } from '../ui/Media/DropPlaceholder';
 import { MediaPluginOptions } from '../media-plugin-options';
 import { insertMediaGroupNode, isNonImagesBanned } from '../utils/media-files';
 import { removeMediaNode, splitMediaGroup } from '../utils/media-common';
@@ -107,7 +107,7 @@ export class MediaPluginState {
     this.stateManager = new DefaultMediaStateManager();
     options.providerFactory.subscribe(
       'mediaProvider',
-      (name, provider: Promise<MediaProvider>) =>
+      (name, provider?: Promise<MediaProvider>) =>
         this.setMediaProvider(provider),
     );
 
@@ -365,7 +365,7 @@ export class MediaPluginState {
    * NOTE: The promise will resolve even if some of the media have failed to process.
    */
   waitForPendingTasks = (
-    timeout?: Number,
+    timeout?: number,
     lastTask?: Promise<MediaState | null>,
   ) => {
     if (lastTask && this.pendingTask === lastTask) {
@@ -782,7 +782,9 @@ const createDropPlaceholder = (editorAppearance?: EditorAppearance) => {
   const dropPlaceholder = document.createElement('div');
   if (editorAppearance === 'full-page') {
     ReactDOM.render(
-      React.createElement(DropPlaceholder, { type: 'single' }),
+      React.createElement(DropPlaceholder, { type: 'single' } as {
+        type: PlaceholderType;
+      }),
       dropPlaceholder,
     );
   } else {

@@ -57,7 +57,9 @@ export function createPlugin(
     key: stateKey,
     props: {
       handleDOMEvents: {
-        paste(view: EditorView, event: ClipboardEvent) {
+        paste(view, rawEvent) {
+          const event = rawEvent as ClipboardEvent;
+
           // @see https://product-fabric.atlassian.net/browse/ED-5366
           if (clipboard.isPastedFile(event)) {
             const html = event.clipboardData.getData('text/html');
@@ -72,7 +74,9 @@ export function createPlugin(
           return false;
         },
       },
-      handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
+      handlePaste(view, rawEvent, slice) {
+        const event = rawEvent as ClipboardEvent;
+
         if (!event.clipboardData) {
           return false;
         }

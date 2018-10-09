@@ -18,9 +18,10 @@ export const insertExternalImage: (
     return false;
   }
 
-  dispatch(
-    safeInsert(mediaNode, state.selection.$to.pos)(state.tr).scrollIntoView(),
-  );
+  dispatch &&
+    dispatch(
+      safeInsert(mediaNode, state.selection.$to.pos)(state.tr).scrollIntoView(),
+    );
   return true;
 };
 
@@ -33,6 +34,6 @@ export const startImageUpload: (event?: Event) => Command = event => (
     return false;
   }
 
-  dispatch(startUpload(event)(state.tr));
+  dispatch && dispatch(startUpload(event)(state.tr));
   return true;
 };

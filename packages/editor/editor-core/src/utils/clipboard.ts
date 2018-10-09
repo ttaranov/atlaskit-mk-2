@@ -1,11 +1,15 @@
 export function checkClipboardTypes(
-  type: DOMStringList | Array<string>,
+  type: DOMStringList | ReadonlyArray<string>,
   item: string,
 ) {
   const isDOMStringList = (t): t is DOMStringList => !t.indexOf && !!t.contains;
   return isDOMStringList(type) ? type.contains(item) : type.indexOf(item) > -1;
 }
 
-export function isPastedFile(e: ClipboardEvent) {
-  return checkClipboardTypes(e.clipboardData.types, 'Files');
+export function isPastedFile(rawEvent: Event) {
+  const { clipboardData } = rawEvent as ClipboardEvent;
+  if (!clipboardData) {
+    return false;
+  }
+  return checkClipboardTypes(clipboardData.types, 'Files');
 }

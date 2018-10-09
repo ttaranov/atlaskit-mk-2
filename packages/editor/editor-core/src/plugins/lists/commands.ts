@@ -443,17 +443,21 @@ export const toggleList = (
   }
 };
 
-export function toggleListCommand(listType: 'bulletList' | 'orderedList') {
-  return function(
-    state: EditorState,
-    dispatch: (tr: Transaction) => void,
-    view: EditorView,
-  ): boolean {
-    dispatch(
-      state.tr.setSelection(
-        adjustSelectionInList(state.doc, state.selection as TextSelection),
-      ),
-    );
+export function toggleListCommand(
+  listType: 'bulletList' | 'orderedList',
+): Command {
+  return function(state, dispatch, view): boolean {
+    dispatch &&
+      dispatch(
+        state.tr.setSelection(
+          adjustSelectionInList(state.doc, state.selection as TextSelection),
+        ),
+      );
+
+    if (!view) {
+      return false;
+    }
+
     state = view.state;
 
     const { $from, $to } = state.selection;
