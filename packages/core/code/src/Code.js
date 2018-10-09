@@ -16,34 +16,74 @@ type CodeProps = {
   language?: ADFSupportedLanguages | string,
   /** A custom theme to be applied, implements the Theme interface */
   theme?: Theme | ThemeProps,
+  codeStyle?: object,
+  showLineNumbers?: boolean,
+  lineNumberContainerStyle?: object,
+  codeTagProps?: object,
 };
 
-export class Code extends PureComponent<CodeProps, {}> {
+type CodeState = {
+  language: string,
+};
+
+export class Code extends PureComponent<CodeProps, CodeState> {
   static defaultProps = {
     language: '',
     theme: {},
+    showLineNumbers: false,
+    lineNumberContainerStyle: null,
+    codeTagProps: {},
   };
+
+  state = {
+    language: normalizeLanguage(''),
+  };
+
+  async registerLanguage(language) {
+    if (!SyntaxHighlighter.astGenerator) {
+      await SyntaxHighlighter.astGeneratorPromise;
+    }
+
+    if (SyntaxHighlighter.astGenerator.registered(language)) {
+      return this.setState({ language });
+    }
+
+    if (!languageLoaders[language]) {
+      return undefined;
+    }
+
+    await languageLoaders[language]();
+
+    // Once the language has been loaded we need to force a re-render
+    // Because react-syntax-highlighter internals are not react
+    return this.setState({ language });
+  }
 
   componentDidMount() {
     const language = normalizeLanguage(this.props.language);
+    this.registerLanguage(language);
+  }
 
-    if (SyntaxHighlighter.isRegistered(language) && languageLoaders[language]) {
-      languageLoaders[language]().then(() => {
-        // Once the language has been loaded we need to force a re-render
-        // Because react-syntax-highlighter internals are not react
-        this.forceUpdate();
-      });
+  componentDidUpdate({ language: prevLanguage }) {
+    const language = normalizeLanguage(this.props.language);
+
+    if (prevLanguage !== language) {
+      this.registerLanguage(language);
     }
   }
 
   render() {
     const { inlineCodeStyle } = applyTheme(this.props.theme);
+
     const props = {
-      language: normalizeLanguage(this.props.language),
+      language: this.state.language,
       PreTag: 'span',
-      style: inlineCodeStyle,
-      showLineNumbers: false,
+      style: this.props.codeStyle || inlineCodeStyle,
+      showLineNumbers: this.props.showLineNumbers,
+      lineNumberContainerStyle: this.props.lineNumberContainerStyle,
+      codeTagProps: this.props.codeTagProps,
     };
+
     return <SyntaxHighlighter {...props}>{this.props.text}</SyntaxHighlighter>;
   }
 }
