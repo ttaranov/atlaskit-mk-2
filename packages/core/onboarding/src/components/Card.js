@@ -46,7 +46,6 @@ const Card = ({
   <Theme values={defaultTheme}>
     <Theme values={theme}>
       {({ container }) => {
-        console.log(container());
         return (
           <Container theme={container} innerRef={innerRef}>
             {Image && <Image />}

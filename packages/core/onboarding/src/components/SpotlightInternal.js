@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { Popper } from '@atlaskit/popper';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -28,7 +29,7 @@ import SpotlightCard from './SpotlightCard';
 
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import Actions from './SpotlightActions';
-import { withSpotlightState } from './SpotlightManager';
+import { SpotlightConsumer } from './SpotlightManager';
 import { compose, withScrollMeasurements } from '../hoc';
 import { type Props as SpotlightProps } from './Spotlight';
 
@@ -115,6 +116,8 @@ class Spotlight extends Component<Props> {
       image,
       isOpen,
       scrollY,
+      target,
+      targetNode,
     } = this.props;
 
     // warn consumers when they provide conflicting props
@@ -125,44 +128,40 @@ class Spotlight extends Component<Props> {
       console.warn('Please provide "footer" OR "actions", not both.'); // eslint-disable-line no-console
     }
 
-    // build the dialog before passing it to Layer
-    const dialog = (
-      <FocusLock enabled={isOpen} returnFocus={false}>
-        <SpotlightCard
-          actions={actions}
-          actionsBeforeElement={actionsBeforeElement}
-          image={image && <Image alt={heading} src={image} />}
-          components={{
-            Header: header,
-            Footer: footer,
-          }}
-          width={dialogWidth}
-          heading={heading}
-        >
-          {children}
-        </SpotlightCard>
-      </FocusLock>
-    );
-
     return (
-      <FillScreen scrollDistance={scrollY} style={animationStyles}>
-        <Layer
-          boundariesElement="scrollParent"
-          content={dialog}
-          offset="0 8"
-          position={dialogPlacement}
-          zIndex={layers.spotlight()}
-        >
-          {this.renderTargetClone()}
-        </Layer>
-      </FillScreen>
+      <SpotlightConsumer>
+        {getTargetElement => (
+          <Popper referenceElement={targetNode || getTargetElement(target)}>
+            {({ ref, style, placement, outOfBoundaries }) => (
+              <FocusLock enabled={isOpen} returnFocus={false}>
+                <SpotlightCard
+                  innerRef={ref}
+                  styles={style}
+                  actions={actions}
+                  actionsBeforeElement={actionsBeforeElement}
+                  image={image && <Image alt={heading} src={image} />}
+                  components={{
+                    Header: header,
+                    Footer: footer,
+                  }}
+                  width={dialogWidth}
+                  heading={heading}
+                  data-placement={placement}
+                >
+                  {children}
+                </SpotlightCard>
+              </FocusLock>
+            )}
+          </Popper>
+        )}
+      </SpotlightConsumer>
     );
   }
 }
 
-const enhance = compose(withSpotlightState, withScrollMeasurements);
-
-export const SpotlightWithoutAnalytics = enhance(Spotlight);
+// const enhance = compose(withSpotlightState, withScrollMeasurements);
+//
+// export const SpotlightWithoutAnalytics = enhance(Spotlight);
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
@@ -181,5 +180,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-  })(SpotlightWithoutAnalytics),
+  })(Spotlight),
 );

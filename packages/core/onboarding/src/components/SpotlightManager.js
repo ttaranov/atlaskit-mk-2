@@ -1,5 +1,11 @@
 // @flow
-import React, { PureComponent, type ElementType, type Node } from 'react';
+import React, {
+  PureComponent,
+  createContext,
+  type ElementType,
+  type Node,
+} from 'react';
+import { Manager } from '@atlaskit/popper';
 import { Provider, Subscribe } from 'unstated';
 import ScrollLock from 'react-scrolllock';
 
@@ -20,37 +26,42 @@ type Props = {
 // re-rendered by its parent tree
 const registry = new SpotlightRegistry();
 
+const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext();
+const {
+  Consumer: SpotlightConsumer,
+  Provider: SpotlightProvider,
+} = createContext();
+
+export { TargetConsumer };
+export { SpotlightConsumer };
+
 export default class SpotlightManager extends PureComponent<Props> {
+  spotlights = {};
   static defaultProps = {
     blanketIsTinted: true,
     component: 'div',
   };
 
+  targetRef = (name: string) => (element: HTMLElement | void) => {
+    if (element) {
+      this.spotlights = {
+        ...this.spotlights,
+        [name]: element,
+      };
+    } else {
+      delete this.spotlights[name];
+    }
+  };
+
+  getTargetElement = (name: string) => this.spotlights[name];
+
   render() {
     const { blanketIsTinted, children, component: Tag } = this.props;
 
     return (
-      <Provider inject={[registry]}>
-        <Subscribe to={[SpotlightRegistry]}>
-          {spotlightRegistry => {
-            const dialogIsVisible = spotlightRegistry.hasMounted();
-            return (
-              <Tag>
-                {children}
-                <Fade in={dialogIsVisible}>
-                  {animationStyles => (
-                    <Blanket
-                      style={animationStyles}
-                      isTinted={blanketIsTinted}
-                    />
-                  )}
-                </Fade>
-                {dialogIsVisible && <ScrollLock />}
-              </Tag>
-            );
-          }}
-        </Subscribe>
-      </Provider>
+      <SpotlightProvider value={this.getTargetElement}>
+        <TargetProvider value={this.targetRef}>{children}</TargetProvider>
+      </SpotlightProvider>
     );
   }
 }

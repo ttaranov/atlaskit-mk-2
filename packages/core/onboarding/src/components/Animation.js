@@ -22,7 +22,6 @@ export const Fade = ({ in: hasEntered, children, onExited }: Props) => (
       const base = {
         transition: `opacity ${duration}ms`,
         opacity: 0,
-        zIndex: layers.spotlight(),
       };
       const anim = {
         entered: { opacity: 1 },

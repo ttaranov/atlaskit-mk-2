@@ -97,8 +97,8 @@ const SpotlightCard = ({
               elevation > 0
                 ? `0 4px 8px -2px ${colors.N50A}, 0 0 1px ${colors.N60A}`
                 : undefined,
-            ...styles,
             ...container(),
+            ...styles,
           }),
         })}
       >

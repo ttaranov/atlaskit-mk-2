@@ -2,7 +2,7 @@
 import React, { Component, type ElementType } from 'react';
 import NodeResolver from 'react-node-resolver';
 
-import { withSpotlightState } from './SpotlightManager';
+import { TargetConsumer } from './SpotlightManager';
 import { type RegistryType } from './SpotlightRegistry';
 
 type Props = {
@@ -14,36 +14,17 @@ type Props = {
   spotlightRegistry: RegistryType,
 };
 
-const errorMessage =
-  '`SpotlightTarget` requires `SpotlightManager` as an ancestor.';
-
 class SpotlightTarget extends Component<Props> {
-  node: HTMLElement;
-  componentDidMount() {
-    const { name, spotlightRegistry } = this.props;
-
-    if (!spotlightRegistry) {
-      throw new Error(errorMessage);
-    } else {
-      spotlightRegistry.add(name, this.node);
-    }
-  }
-  componentWillUnmount() {
-    const { name, spotlightRegistry } = this.props;
-
-    if (!spotlightRegistry) {
-      throw new Error(errorMessage);
-    } else {
-      spotlightRegistry.remove(name);
-    }
-  }
-  getNode = (ref: HTMLElement) => {
-    this.node = ref;
-  };
   render() {
     return (
-      <NodeResolver innerRef={this.getNode}>{this.props.children}</NodeResolver>
+      <TargetConsumer>
+        {targetRef => (
+          <NodeResolver innerRef={targetRef(this.props.name)}>
+            {this.props.children}
+          </NodeResolver>
+        )}
+      </TargetConsumer>
     );
   }
 }
-export default withSpotlightState(SpotlightTarget);
+export default SpotlightTarget;

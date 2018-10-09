@@ -11,6 +11,7 @@ import { Fade } from './Animation';
 import Spotlight from './SpotlightInternal';
 import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import type { ActionsType } from '../types';
+import Blanket from '../styled/Blanket';
 
 export type Props = {
   /** Buttons to render in the footer */
@@ -70,15 +71,23 @@ class SpotlightWrapper extends React.Component<Props> {
       <SpotlightTransitionConsumer>
         {({ isOpen, onExited }) => (
           <Fade in={isOpen} onExited={onExited}>
-            {animationStyles => (
-              <Portal zIndex={layers.spotlight()}>
-                <Spotlight
-                  {...this.props}
-                  isOpen={isOpen}
-                  animationStyles={animationStyles}
-                />
-              </Portal>
-            )}
+            {animationStyles =>
+              console.log('isOpen', isOpen) || (
+                <React.Fragment>
+                  <Blanket
+                    isTinted
+                    style={{ opacity: animationStyles.opacity }}
+                  />
+                  <Portal zIndex={layers.spotlight()}>
+                    <Spotlight
+                      {...this.props}
+                      isOpen={isOpen}
+                      animationStyles={animationStyles}
+                    />
+                  </Portal>
+                </React.Fragment>
+              )
+            }
           </Fade>
         )}
       </SpotlightTransitionConsumer>
