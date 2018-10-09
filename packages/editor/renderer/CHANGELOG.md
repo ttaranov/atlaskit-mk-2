@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 27.2.0
+- [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
+
 ## 27.1.1
 - [patch] Move render document export into seperate file [e976cd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e976cd8)
 
