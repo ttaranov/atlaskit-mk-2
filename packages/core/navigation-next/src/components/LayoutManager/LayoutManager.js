@@ -161,29 +161,14 @@ export default class LayoutManager extends Component<
     this.pageRef = ref;
   };
 
-  openFlyout = () => {
-    if (this.state.flyoutIsOpen) return;
-    this.setState({ flyoutIsOpen: true }, () => {
-      window.addEventListener('mousemove', this.mouseTracker);
-    });
+  mouseOutFlyoutArea = ({ currentTarget, relatedTarget }) => {
+    if (currentTarget.contains(relatedTarget)) return;
+    this.setState({ flyoutIsOpen: false });
   };
-  closeFlyout = () => {
-    this.setState({ flyoutIsOpen: false }, () => {
-      window.removeEventListener('mousemove', this.mouseTracker);
-    });
+  mouseOverFlyoutArea = ({ currentTarget, target }) => {
+    if (!currentTarget.contains(target)) return;
+    this.setState({ flyoutIsOpen: true });
   };
-
-  mouseTracker = throttle(({ target }) => {
-    // bail early if expand is committed
-    if (!this.props.navigationUIController.state.isCollapsed) {
-      this.closeFlyout();
-    }
-
-    // close once the user mouses-out of the nav area
-    if (!this.containerRef.contains(target)) {
-      this.closeFlyout();
-    }
-  });
 
   mouseEnter = () => {
     this.setState({ mouseIsOverNavigation: true });
@@ -326,6 +311,7 @@ export default class LayoutManager extends Component<
               <NavigationContainer
                 innerRef={this.getContainerRef}
                 onMouseEnter={this.mouseEnter}
+                onMouseOut={this.mouseOutFlyoutArea}
                 onMouseLeave={this.mouseLeave}
               >
                 <ResizeControl
@@ -347,12 +333,12 @@ export default class LayoutManager extends Component<
                   navigation={navigationUIController}
                 >
                   {({ isDragging, width }) => {
-                    const onMouseEnter =
+                    const onMouseOver =
                       isCollapsed && experimental_flyoutOnHover
-                        ? this.openFlyout
+                        ? this.mouseOverFlyoutArea
                         : null;
                     return (
-                      <ContainerNavigationMask onMouseEnter={onMouseEnter}>
+                      <ContainerNavigationMask onMouseOver={onMouseOver}>
                         {this.renderGlobalNavigation()}
                         {this.renderContentNavigation({
                           isDragging,
