@@ -169,8 +169,7 @@ export type ADFSupportedLanguages =
   | 'verilog'
   | 'vhdl'
   | 'xml'
-  | 'xquery'
-  | 'yaml';
+  | 'xquery';
 
 export const SUPPORTED_LANGUAGES = Object.freeze([
   {
