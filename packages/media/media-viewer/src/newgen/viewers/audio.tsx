@@ -14,13 +14,15 @@ import {
 import { ErrorMessage, createError, MediaViewerError } from '../error';
 import { renderDownloadButton } from '../domain/download';
 import { getArtifactUrl } from '@atlaskit/media-store';
+import { AnalyticViewerProps } from '../analytics';
 
-export type Props = Readonly<{
-  item: ProcessedFileState;
-  context: Context;
-  collectionName?: string;
-  previewCount: number;
-}>;
+export type Props = AnalyticViewerProps &
+  Readonly<{
+    item: ProcessedFileState;
+    context: Context;
+    collectionName?: string;
+    previewCount: number;
+  }>;
 
 export type State = {
   src: Outcome<string, MediaViewerError>;
@@ -116,10 +118,12 @@ export class AudioViewer extends React.Component<Props, State> {
   };
 
   private async init() {
-    const { context, item, collectionName } = this.props;
+    const startTime = Date.now();
+    const { context, item, collectionName, onLoaded } = this.props;
     const audioUrl = getArtifactUrl(item.artifacts, 'audio.mp3');
     try {
       if (!audioUrl) {
+        onLoaded({ status: 'error', duration: Date.now() - startTime });
         throw new Error('No audio artifacts found');
       }
       this.setCoverUrl();
@@ -128,10 +132,12 @@ export class AudioViewer extends React.Component<Props, State> {
           await constructAuthTokenUrl(audioUrl, context, collectionName),
         ),
       });
+      onLoaded({ status: 'success', duration: Date.now() - startTime });
     } catch (err) {
       this.setState({
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
+      onLoaded({ status: 'error', duration: Date.now() - startTime });
     }
   }
 

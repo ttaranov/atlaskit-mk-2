@@ -33,12 +33,14 @@ function createFixture(
   });
   const context = createContext({ blobService });
   const onClose = jest.fn();
+  const onLoaded = jest.fn();
   const el = mount(
     <ImageViewer
       context={context}
       item={imageItem}
       collectionName={collectionName}
       onClose={onClose}
+      onLoaded={onLoaded}
     />,
   );
   return { blobService, context, el, onClose };

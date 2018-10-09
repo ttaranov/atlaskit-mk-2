@@ -20,6 +20,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-gas-types": "^3.2.1",
+    "@atlaskit/analytics-next": "^3.0.4",
+    "@atlaskit/analytics-next-types": "^3.0.1",
     "@atlaskit/button": "^9.0.13",
     "@atlaskit/field-range": "^5.0.4",
     "@atlaskit/icon": "^14.0.0",
