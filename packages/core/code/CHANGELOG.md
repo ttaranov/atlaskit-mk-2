@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 8.0.7
+- [patch] Added yaml to supported languages for code and added styling for the key token. [95f9236](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95f9236)
+
 ## 8.0.6
 - [patch] Async load highlighter languages [9102fa2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9102fa2)
 
