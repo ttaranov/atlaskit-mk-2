@@ -1,10 +1,10 @@
 import Droplist from '@atlaskit/droplist';
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { Props, UserPicker } from '../../components/UserPicker';
-import { PickerStyle } from '../../components/UserPicker/styles';
-import UserPickerItem from '../../components/UserPickerItem';
-import { User } from '../../types';
+import { Props, UserPicker } from '../../../components/UserPicker';
+import { PickerStyle } from '../../../components/UserPicker/styles';
+import UserPickerItem from '../../../components/UserPickerItem';
+import { User } from '../../../types';
 
 const Trigger = () => <div>Hey I'm a trigger</div>;
 
