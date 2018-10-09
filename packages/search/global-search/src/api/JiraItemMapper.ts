@@ -11,27 +11,29 @@ import {
   JiraItemV1,
   JiraItemV2,
   JiraItemAttributes,
-  JiraResultQueyParams,
+  JiraResultQueryParams,
 } from './types';
 
 export const mapJiraItemToResult = (
   item: JiraItem,
   searchSessionId: string,
+  addSessoinIdToJiraResults?: boolean,
 ): JiraResult =>
   (<JiraItemV2>item).attributes && (<JiraItemV2>item).attributes['@type']
-    ? mapJiraItemToResultV2(item as JiraItemV2, searchSessionId)
-    : mapJiraItemToResultV1(item as JiraItemV1, searchSessionId);
+    ? mapJiraItemToResultV2(
+        item as JiraItemV2,
+        searchSessionId,
+        addSessoinIdToJiraResults,
+      )
+    : mapJiraItemToResultV1(item as JiraItemV1);
 
 /**
  * add search session id, object id, container id and result type to query params
  */
 export const addJiraResultQueryParams = (
   url: string,
-  queryParams?: JiraResultQueyParams,
+  queryParams: JiraResultQueryParams,
 ) => {
-  if (!queryParams) {
-    return url;
-  }
   const href = new URI(url);
   Object.keys(queryParams)
     .filter(key => !!queryParams[key])
@@ -84,6 +86,7 @@ const JIRA_TYPE_TO_CONTENT_TYPE = {
 const mapJiraItemToResultV2 = (
   item: JiraItemV2,
   searchSessionId: string,
+  addSessoinIdToJiraResults?: boolean,
 ): JiraResult => {
   const { id, name, url, attributes } = item;
   const contentType = JIRA_TYPE_TO_CONTENT_TYPE[attributes['@type']];
@@ -94,7 +97,9 @@ const mapJiraItemToResultV2 = (
     searchContentType: contentType,
   };
 
-  const href = addJiraResultQueryParams(url, queryParams);
+  const href = addSessoinIdToJiraResults
+    ? addJiraResultQueryParams(url, queryParams)
+    : url;
 
   return {
     resultId: id,
@@ -109,10 +114,7 @@ const mapJiraItemToResultV2 = (
   };
 };
 
-const mapJiraItemToResultV1 = (
-  item: JiraItemV1,
-  searchSessionId: string,
-): JiraResult => {
+const mapJiraItemToResultV1 = (item: JiraItemV1): JiraResult => {
   return {
     resultId: item.key,
     avatarUrl: item.fields.issuetype.iconUrl,

@@ -154,10 +154,16 @@ describe('mapJiraItemToResult', () => {
       );
     });
 
-    it('should support missing query params object', () => {
-      const url = 'https://product-fabric.atlassian.net/browse/ETH-671';
-      const href = addJiraResultQueryParams(url);
-      expect(href).toBe('https://product-fabric.atlassian.net/browse/ETH-671');
+    it('should not affect existing query params', () => {
+      const url =
+        'https://product-fabric.atlassian.net/browse/ETH-671?q=existing';
+      const href = addJiraResultQueryParams(url, {
+        searchSessionId: sessionId,
+        searchContainerId: 'container',
+      });
+      expect(href).toBe(
+        'https://product-fabric.atlassian.net/browse/ETH-671?q=existing&searchSessionId=sessionId&searchContainerId=container',
+      );
     });
   });
 });

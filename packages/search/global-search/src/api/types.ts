@@ -83,7 +83,7 @@ export interface PersonItem {
   primaryPhoto: string;
 }
 
-export interface JiraResultQueyParams {
+export interface JiraResultQueryParams {
   searchSessionId: string;
   searchContainerId?: string;
   searchObjectId?: string;
