@@ -1,20 +1,14 @@
 import * as React from 'react';
 import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
-import {
-  Context,
-  ImageResizeMode,
-  MediaItemDetails,
-  FileDetails,
-} from '@atlaskit/media-core';
+import { Context, FileDetails } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs/Subscription';
 import {
-  SharedCardProps,
-  CardEventProps,
   CardAnalyticsContext,
-  CardStatus,
   CardDimensions,
+  CardProps,
+  CardState,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
@@ -28,26 +22,7 @@ import {
   isExternalImageIdentifier,
 } from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
-import { isLoadingImage } from '../../utils/isLoadingImage';
-
-export interface CardProps extends SharedCardProps, CardEventProps {
-  readonly context: Context;
-  readonly identifier: Identifier;
-  readonly isLazy?: boolean;
-  readonly resizeMode?: ImageResizeMode;
-
-  // only relevant to file card with image appearance
-  readonly disableOverlay?: boolean;
-}
-
-export interface CardState {
-  status: CardStatus;
-  isCardVisible: boolean;
-  metadata?: MediaItemDetails;
-  dataURI?: string;
-  progress?: number;
-  readonly error?: Error;
-}
+import { getCardStatus } from './getCardStatus';
 
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
@@ -185,6 +160,7 @@ export class Card extends Component<CardProps, CardState> {
           switch (state.status) {
             case 'uploading':
               const { progress } = state;
+              console.log({ progress });
               this.notifyStateChange({
                 status: 'uploading',
                 progress,
@@ -271,41 +247,6 @@ export class Card extends Component<CardProps, CardState> {
     return getBaseAnalyticsContext('Card', id);
   }
 
-  // we don't want to show complete status for empty files, ideally there should no such file on the media api,
-  // but there are some edge cases when using id upfront that can result on that.
-  // TODO: move into utility
-  get status(): CardStatus {
-    const { status, metadata, dataURI } = this.state;
-    const { identifier, disableOverlay } = this.props;
-
-    if (identifier.mediaItemType !== 'file') {
-      return status;
-    }
-
-    if (metadata) {
-      const { size, mediaType, name } = metadata as FileDetails;
-
-      // If is an image with preview we show it
-      if (mediaType === 'image' && dataURI) {
-        return 'complete';
-      }
-
-      if (
-        (status === 'complete' && !size) ||
-        isLoadingImage(mediaType, dataURI)
-      ) {
-        return 'processing';
-      }
-
-      // If we have enough metadata for non images, we show them
-      if (mediaType !== 'image' && name && size && !disableOverlay) {
-        return 'complete';
-      }
-    }
-
-    return status;
-  }
-
   render() {
     const {
       isLazy,
@@ -322,11 +263,11 @@ export class Card extends Component<CardProps, CardState> {
       identifier,
     } = this.props;
     const { progress, metadata, dataURI } = this.state;
-    const { analyticsContext, onRetry, status } = this;
+    const { analyticsContext, onRetry } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
-          status={status}
+          status={getCardStatus(this.state, this.props)}
           metadata={metadata}
           dataURI={dataURI}
           mediaItemType={identifier.mediaItemType}
