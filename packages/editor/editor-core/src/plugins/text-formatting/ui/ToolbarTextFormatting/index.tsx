@@ -30,7 +30,7 @@ export interface Props {
   textFormattingState: TextFormattingState;
   disabled?: boolean;
   isReducedSpacing?: boolean;
-  focused?: boolean;
+  focused?: 0 | 1 | 2;
 }
 
 class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {

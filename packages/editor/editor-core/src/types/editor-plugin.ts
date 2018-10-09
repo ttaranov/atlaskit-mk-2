@@ -38,7 +38,7 @@ export type UiComponentFactoryParams = {
   popupsScrollableElement?: HTMLElement;
   containerElement: HTMLElement | undefined;
   disabled: boolean;
-  focused?: boolean;
+  focused?: 0 | 1 | 2;
 };
 
 export type ToolbarUiComponentFactoryParams = UiComponentFactoryParams & {

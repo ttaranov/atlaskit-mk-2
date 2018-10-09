@@ -52,7 +52,8 @@ export interface ToolbarProps {
 }
 
 interface ToolbarInnerState {
-  selectedItemIdx?: number;
+  selectedItemIdx: number;
+  navigationDirection: 1 | 2;
 }
 
 export interface ToolbarInnerProps extends ToolbarProps {
@@ -70,6 +71,7 @@ export class ToolbarInner extends React.Component<
     if (props.items) {
       this.state = {
         selectedItemIdx: 0,
+        navigationDirection: 1,
       };
     }
   }
@@ -101,14 +103,21 @@ export class ToolbarInner extends React.Component<
           ? this.props.items.length - 1
           : this.state.selectedItemIdx - 1;
       console.log('TOOLBAR: New selected index:', newSelectedItemIdx);
-      this.setState({ selectedItemIdx: newSelectedItemIdx });
+      this.setState({
+        selectedItemIdx: newSelectedItemIdx,
+        navigationDirection: 1,
+      });
     } else if (e.key === 'ArrowRight') {
       const newSelectedItemIdx =
         this.state.selectedItemIdx === this.props.items.length - 1
           ? 0
           : this.state.selectedItemIdx + 1;
       console.log('TOOLBAR: New selected index:', newSelectedItemIdx);
-      this.setState({ selectedItemIdx: newSelectedItemIdx });
+      this.setState({
+        selectedItemIdx: newSelectedItemIdx,
+        navigationDirection: 2,
+      });
+      return true;
     }
   };
 
@@ -136,7 +145,11 @@ export class ToolbarInner extends React.Component<
       <div onKeyDown={this.handleKeyDown}>
         <ToolbarComponentsWrapper>
           {items.map((component, key) => {
-            const props = { key, focused: this.state.selectedItemIdx === key };
+            const focused =
+              this.state.selectedItemIdx === key
+                ? this.state.navigationDirection
+                : undefined;
+            const props = { key, focused };
             const element = component({
               editorView,
               editorActions: editorActions as EditorActions,
@@ -150,7 +163,7 @@ export class ToolbarInner extends React.Component<
               toolbarSize,
               isToolbarReducedSpacing,
               containerElement: undefined,
-              focused: this.state.selectedItemIdx === key,
+              focused,
             });
 
             return element && React.cloneElement(element, props);

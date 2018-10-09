@@ -6,7 +6,7 @@ import { AkButton } from './styles';
 export interface Props {
   className?: string;
   disabled?: boolean;
-  focused?: boolean;
+  focused?: 0 | 1 | 2;
   hideTooltip?: boolean;
   href?: string;
   iconAfter?: ReactElement<any>;
@@ -66,7 +66,12 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.focused && !prevProps.focused && this.button) {
+    if (
+      this.props.focused &&
+      this.props.focused > 0 &&
+      !(prevProps.focused && prevProps.focused > 0) &&
+      this.button
+    ) {
       console.log('focusing', this.button);
       this.button.focus();
     }

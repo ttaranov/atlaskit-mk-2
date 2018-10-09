@@ -55,7 +55,7 @@ export interface Props {
   orderedListDisabled?: boolean;
   allowTasks?: boolean;
   disabled?: boolean;
-  focused?: boolean;
+  focused?: 0 | 1 | 2;
   isSmall?: boolean;
   isSeparator?: boolean;
   isReducedSpacing?: boolean;

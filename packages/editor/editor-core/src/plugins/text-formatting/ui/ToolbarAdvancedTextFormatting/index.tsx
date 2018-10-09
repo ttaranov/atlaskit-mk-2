@@ -33,7 +33,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   isReducedSpacing?: boolean;
-  focused?: boolean;
+  focused?: 0 | 1 | 2;
 }
 
 export const messages = defineMessages({

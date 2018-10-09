@@ -18,20 +18,21 @@ const Wrapper: ComponentClass<
 
 export interface Props {
   width?: 'small' | 'large';
-  focused?: boolean;
+  focused?: 0 | 1 | 2;
 }
 
 export interface State {
-  selectedItemIdx: number;
+  selectedItemIdx: number | undefined;
 }
 
 export default class ButtonGroup extends PureComponent<Props, State> {
   state = {
-    selectedItemIdx: 0,
+    selectedItemIdx: 0, // TODO
   };
 
   private isValidChild = (child: React.ReactChild) => {
     // const result: boolean = true //(child instanceof ToolbarButton) || (child instanceof ButtonGroup) || (child instanceof ToolbarTextFormatting) //|| (child instanceof ToolbarAdvancedTextFormatting);
+    //@ts-ignore
     const result: boolean = child.type.name != 'StyledComponent';
 
     if (!result) {
@@ -49,55 +50,51 @@ export default class ButtonGroup extends PureComponent<Props, State> {
     }
 
     const { selectedItemIdx } = this.state;
+    const { focused } = this.props;
+    const defaultIdx =
+      focused === 1 ? 0 : focused === 2 ? childCount - 1 : -999; // Maybe change this?
 
     if (e.key === 'ArrowRight') {
-      if (selectedItemIdx >= childCount - 1) {
+      console.log('ArrowRight in ButtonGroup!');
+      if (
+        typeof selectedItemIdx !== 'undefined' &&
+        selectedItemIdx >= childCount - 1
+      ) {
         // we've hit the end
+        this.setState({ selectedItemIdx: undefined });
         return true;
       }
-      const newSelectedItemIdx = selectedItemIdx + 1;
+
+      const newSelectedItemIdx =
+        typeof selectedItemIdx === 'undefined'
+          ? defaultIdx
+          : selectedItemIdx + 1;
       this.setState({ selectedItemIdx: newSelectedItemIdx });
       e.preventDefault();
       e.stopPropagation();
       return false;
     } else if (e.key === 'ArrowLeft') {
-      if (selectedItemIdx <= 0) {
+      console.log('ArrowLeft in ButtonGroup!');
+      if (typeof selectedItemIdx !== 'undefined' && selectedItemIdx <= 0) {
         // we've hit the end
+        this.setState({ selectedItemIdx: undefined });
         return true;
       }
-      const newSelectedItemIdx = selectedItemIdx - 1;
+      const newSelectedItemIdx =
+        typeof selectedItemIdx === 'undefined'
+          ? defaultIdx
+          : selectedItemIdx - 1;
       this.setState({ selectedItemIdx: newSelectedItemIdx });
       e.preventDefault();
       e.stopPropagation();
       return false;
     }
     return true;
-
-    // if (e.key === 'ArrowLeft') {
-    //   const newSelectedItemIdx = Math.max(selectedItemIdx - 1, 0)
-    //   // console.log(`BUTTONGROUP (${childCount} children): New selected index:`, newSelectedItemIdx)
-    //   this.setState({ selectedItemIdx: newSelectedItemIdx});
-    // } else if (e.key === 'ArrowRight') {
-    //   const newSelectedItemIdx = Math.min(selectedItemIdx + 1, childCount - 1)
-    //   // console.log(`BUTTONGROUP (${childCount} children): New selected index:`, newSelectedItemIdx)
-    //   this.setState({ selectedItemIdx: newSelectedItemIdx});
-    // }
-
-    // e.preventDefault();
-
-    // if (
-    //   (e.key === 'ArrowLeft' && selectedItemIdx <= 0) ||
-    //   (e.key === 'ArrowRight' && selectedItemIdx >= childCount - 1)
-    // ) {
-    //   return true;
-    // } else {
-    //   e.stopPropagation();
-    //   return false;
-    // }
   };
 
   render() {
-    const { width, children } = this.props;
+    const { width, children, focused } = this.props;
+    const { selectedItemIdx } = this.state;
     const childCount = React.Children.toArray(this.props.children).filter(
       this.isValidChild,
     ).length;
@@ -107,10 +104,16 @@ export default class ButtonGroup extends PureComponent<Props, State> {
       } children) children:`,
       this.props.children,
       'selectedIndex:',
-      this.state.selectedItemIdx,
+      selectedItemIdx,
       'focused boolean:',
-      this.props.focused,
+      focused,
     );
+
+    const defaultIdx =
+      focused === 2 ? 0 : focused === 1 ? childCount - 1 : -999; // Maybe change this?
+
+    const newSelectedItemIdx =
+      typeof selectedItemIdx === 'undefined' ? defaultIdx : selectedItemIdx;
 
     let validChildCount = -1;
     return (
@@ -119,8 +122,7 @@ export default class ButtonGroup extends PureComponent<Props, State> {
           if (this.isValidChild(child)) {
             validChildCount += 1;
             if (
-              this.props.focused &&
-              this.state.selectedItemIdx === validChildCount
+              newSelectedItemIdx === validChildCount ? this.props.focused : 0
             ) {
               console.log(
                 `Focusing child from buttonGroup ${childCount}:`,
@@ -131,8 +133,9 @@ export default class ButtonGroup extends PureComponent<Props, State> {
               child as React.ReactElement<any>,
               {
                 focused:
-                  this.props.focused &&
-                  this.state.selectedItemIdx === validChildCount, //idx,
+                  newSelectedItemIdx === validChildCount
+                    ? this.props.focused
+                    : 0, //idx,
               } as ToolbarButtonProps,
             );
           } else {
