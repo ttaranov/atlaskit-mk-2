@@ -20,13 +20,7 @@ describe('MediaImage', () => {
 
   it('Implicitly disables cropping the image when dimensions are supplied', () => {
     const mediaImg = mount(
-      <MediaImage
-        dataURI={validURI}
-        transparentFallback={false}
-        crop
-        width={'50px'}
-        height={'25px'}
-      />,
+      <MediaImage dataURI={validURI} crop width={'50px'} height={'25px'} />,
     );
 
     expect(
@@ -35,18 +29,5 @@ describe('MediaImage', () => {
         .at(0)
         .prop('className'),
     ).not.toContain('crop');
-  });
-
-  it('Only adds the image to the background when transparentFallback is disabled', () => {
-    const mediaImg = mount(
-      <MediaImage dataURI={validURI} transparentFallback={false} />,
-    ) as any;
-
-    expect(
-      mediaImg
-        .find('.media-card')
-        .at(0)
-        .prop('style').backgroundImage,
-    ).toBe(`url(${validURI})`);
   });
 });

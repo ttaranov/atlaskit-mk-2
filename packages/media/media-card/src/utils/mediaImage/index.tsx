@@ -5,13 +5,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Component, CSSProperties } from 'react';
 
-import { ImageViewWrapper, transparentFallbackBackground } from './styled';
+import { ImageViewWrapper } from './styled';
 
 export interface MediaImageProps {
   dataURI: string;
   fadeIn?: boolean;
   crop?: boolean;
-  transparentFallback?: boolean;
   width?: string;
   height?: string;
   className?: string;
@@ -29,7 +28,6 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   static defaultProps = {
     fadeIn: true,
     crop: true,
-    transparentFallback: false,
     width: '100%',
     height: '100%',
     className: '',
@@ -88,20 +86,10 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   render() {
-    const {
-      transparentFallback,
-      crop,
-      dataURI,
-      fadeIn,
-      className,
-    } = this.props;
-    const { implicitNoCrop, backgroundSize } = this;
-    const transparentBg = transparentFallback
-      ? `, ${transparentFallbackBackground}`
-      : '';
+    const { crop, dataURI, fadeIn, className } = this.props;
+    const { implicitNoCrop, imageSize } = this;
     const style: CSSProperties = {
-      backgroundSize,
-      backgroundImage: `url(${dataURI})${transparentBg}`,
+      ...imageSize,
     };
     const isCropped = crop && !implicitNoCrop;
     const classNames = `media-card ${className}`;
@@ -109,6 +97,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     return (
       <ImageViewWrapper
         fadeIn={fadeIn}
+        src={dataURI}
         isCropped={isCropped}
         className={classNames}
         style={style}
@@ -127,14 +116,22 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     return this.props.width !== '100%' || this.props.height !== '100%';
   }
 
-  private get backgroundSize() {
+  private get imageSize() {
     const { width, height } = this.props;
     const { imgWidth, imgHeight } = this.state;
 
-    return this.implicitNoCrop
-      ? `${width} ${height}, auto`
-      : this.isSmallerThanWrapper
-        ? `${imgWidth}px ${imgHeight}px, auto`
-        : undefined;
+    if (this.implicitNoCrop) {
+      return {
+        width,
+        height,
+      };
+    } else if (this.isSmallerThanWrapper) {
+      return {
+        width: imgWidth,
+        height: imgHeight,
+      };
+    } else {
+      return {};
+    }
   }
 }
