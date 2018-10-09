@@ -142,7 +142,7 @@ export interface Props {
   mediaSupported?: boolean;
   imageUploadSupported?: boolean;
   imageUploadEnabled?: boolean;
-  handleImageUpload?: (editorView: EditorView) => {};
+  handleImageUpload?: (event?: Event) => Command;
   dateEnabled?: boolean;
   horizontalRuleEnabled?: boolean;
   placeholderTextEnabled?: boolean;
@@ -641,7 +641,8 @@ class ToolbarInsertBlock extends React.PureComponent<
         break;
       case 'image upload':
         if (handleImageUpload) {
-          handleImageUpload(editorView);
+          const { state, dispatch } = editorView;
+          handleImageUpload()(state, dispatch);
         }
         break;
       case 'media':

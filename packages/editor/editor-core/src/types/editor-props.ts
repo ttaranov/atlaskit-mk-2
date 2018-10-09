@@ -19,7 +19,7 @@ import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/types';
 import { AnalyticsHandler } from '../analytics/handler';
 
-import { ImageUploadHandler } from '../plugins/image-upload/pm-plugins/main';
+import { ImageUploadHandler } from '../plugins/image-upload/types';
 import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit/provider';
 import { MacroProvider } from '../plugins/macro/types';
