@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { smallImage, tallImage } from '@atlaskit/media-test-helpers';
+import { smallImage } from '@atlaskit/media-test-helpers';
 import { MediaImage } from '../../mediaImage';
 import {
   CoverHorizontalImageComponent,
