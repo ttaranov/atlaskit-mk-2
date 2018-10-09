@@ -8,6 +8,7 @@ import React, {
   type Ref,
   type Node,
 } from 'react';
+import throttle from 'raf-schd';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { colors } from '@atlaskit/theme';
 
@@ -116,6 +117,7 @@ export default class LayoutManager extends Component<
   state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
+  containerRef = React.createRef();
 
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
@@ -157,18 +159,36 @@ export default class LayoutManager extends Component<
   };
 
   openFlyout = () => {
+    if (this.state.flyoutIsOpen) return;
+    this.setState({ flyoutIsOpen: true }, () => {
+      console.log('✅ tracker ATTACHED');
+      window.addEventListener('mousemove', this.mouseTracker);
+    });
+  };
+  closeFlyout = () => {
+    this.setState({ flyoutIsOpen: false }, () => {
+      console.log('🚫 tracker DETTACHED');
+      window.removeEventListener('mousemove', this.mouseTracker);
+    });
+  };
+
+  mouseTracker = throttle(({ target }) => {
+    // bail early if expand is committed
     if (!this.props.navigationUIController.state.isCollapsed) {
-      return;
+      this.closeFlyout();
     }
 
-    this.setState({ flyoutIsOpen: true });
-  };
+    // close once the user mouses-out of the nav area
+    if (!this.containerRef.current.contains(target)) {
+      this.closeFlyout();
+    }
+  });
 
   mouseEnter = () => {
     this.setState({ mouseIsOverNavigation: true });
   };
   mouseLeave = () => {
-    this.setState({ flyoutIsOpen: false, mouseIsOverNavigation: false });
+    this.setState({ mouseIsOverNavigation: false });
   };
 
   renderGlobalNavigation = () => {
@@ -303,6 +323,7 @@ export default class LayoutManager extends Component<
           {({ transitionStyle, transitionState }) => {
             return (
               <NavigationContainer
+                ref={this.containerRef}
                 onMouseEnter={this.mouseEnter}
                 onMouseLeave={this.mouseLeave}
               >
@@ -325,9 +346,10 @@ export default class LayoutManager extends Component<
                   navigation={navigationUIController}
                 >
                   {({ isDragging, width }) => {
-                    const onMouseEnter = experimental_flyoutOnHover
-                      ? this.openFlyout
-                      : null;
+                    const onMouseEnter =
+                      isCollapsed && experimental_flyoutOnHover
+                        ? this.openFlyout
+                        : null;
                     return (
                       <ContainerNavigationMask onMouseEnter={onMouseEnter}>
                         {this.renderGlobalNavigation()}

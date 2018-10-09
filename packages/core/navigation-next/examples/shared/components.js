@@ -1,8 +1,9 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
+import Drawer from '@atlaskit/drawer';
 import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
 import { GlobalNav, ItemAvatar } from '../../src';
@@ -11,11 +12,35 @@ import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 // ==============================
 // Simple global navigation
 // ==============================
-export const DefaultGlobalNavigation = () => (
-  <GlobalNav
-    primaryItems={globalNavPrimaryItems}
-    secondaryItems={globalNavSecondaryItems}
-  />
+
+export class DefaultGlobalNavigation extends PureComponent<*, *> {
+  state = {
+    isOpen: false,
+  };
+  toggleSearch = () => {
+    this.setState(state => ({ isOpen: !state.isOpen }));
+  };
+  render() {
+    const { isOpen } = this.state;
+    return (
+      <Fragment>
+        <GlobalNav
+          primaryItems={globalNavPrimaryItems({
+            onSearchClick: this.toggleSearch,
+          })}
+          secondaryItems={globalNavSecondaryItems}
+        />
+        <SearchDrawer onClose={this.toggleSearch} isOpen={isOpen}>
+          <h2>Test Drawer</h2>
+        </SearchDrawer>
+      </Fragment>
+    );
+  }
+}
+export const SearchDrawer = ({ children, isOpen, onClose, width }: *) => (
+  <Drawer onClose={onClose} isOpen={isOpen} width={width}>
+    {children}
+  </Drawer>
 );
 
 // ==============================
