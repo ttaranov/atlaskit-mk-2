@@ -307,7 +307,7 @@ export default class LayoutManager extends Component<
         >
           {({ transitionStyle, transitionState }) => {
             const onMouseOut =
-              isCollapsed && experimental_flyoutOnHover
+              isCollapsed && experimental_flyoutOnHover && flyoutIsOpen
                 ? this.mouseOutFlyoutArea
                 : null;
             return (
@@ -337,7 +337,7 @@ export default class LayoutManager extends Component<
                 >
                   {({ isDragging, width }) => {
                     const onMouseOver =
-                      isCollapsed && experimental_flyoutOnHover
+                      isCollapsed && experimental_flyoutOnHover && !flyoutIsOpen
                         ? this.mouseOverFlyoutArea
                         : null;
                     return (

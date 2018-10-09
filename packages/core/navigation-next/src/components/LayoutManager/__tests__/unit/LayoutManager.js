@@ -45,14 +45,14 @@ describe('LayoutManager', () => {
     });
 
     describe('when experimental_flyoutOnHover is set and navigation is collapsed', () => {
-      it('should open NavigationContainer when mousing over ContainerNavigationMask', () => {
+      it('should open when mousing over ContainerNavigationMask', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
         expect(wrapper.state('flyoutIsOpen')).toBe(true);
       });
 
-      it('should close NavigationContainer when mousing out of it', () => {
+      it('should close when mousing out of NavigationContainer', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
@@ -60,15 +60,7 @@ describe('LayoutManager', () => {
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
 
-      it('should display ContentNavigation when state.flyoutIsOpen is false', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
-        wrapper.setState({ flyoutIsOpen: false });
-        wrapper.update();
-        expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(false);
-      });
-
-      it('should display ContentNavigation when state.flyoutIsOpen is true', () => {
+      it('should display ContentNavigation when flyout is open', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
         wrapper.setState({ flyoutIsOpen: true });
@@ -76,7 +68,15 @@ describe('LayoutManager', () => {
         expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(true);
       });
 
-      it('should not display resize hint bar', () => {
+      it('should NOT display ContentNavigation flyout is closed', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.setState({ flyoutIsOpen: false });
+        wrapper.update();
+        expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(false);
+      });
+
+      it('should NOT display resize hint bar', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
         const resizeBar = wrapper.find(
@@ -85,7 +85,7 @@ describe('LayoutManager', () => {
         expect(resizeBar).toHaveLength(0);
       });
 
-      it('should not be open when nav is permanently expanded', () => {
+      it('should NOT be open when nav is permanently expanded', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
@@ -93,6 +93,25 @@ describe('LayoutManager', () => {
         wrapper.setProps(defaultProps);
 
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+
+      it('should NOT listen to mouseOvers over ContainerNavigationMask if flyout is already open', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(
+          wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
+        ).toEqual(expect.any(Function));
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        expect(
+          wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
+        ).toBeNull();
+      });
+
+      it('should NOT listen to mouseOuts of NavigationContainer if flyout is already closed', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.setState({ flyoutIsOpen: false });
+        wrapper.update();
+        expect(wrapper.find(NavigationContainer).prop('onMouseOut')).toBeNull();
       });
     });
 
