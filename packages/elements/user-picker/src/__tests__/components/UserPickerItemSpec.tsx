@@ -65,15 +65,15 @@ describe('UserPickerItem', () => {
     });
   });
 
-  describe('lozenge', () => {
-    it('should not render lozenge for basic user', () => {
+  describe('badge', () => {
+    it('should not render badge for basic user', () => {
       const component = shallowUserPickerItem();
 
       const item = component.find(Item);
       expect(item.find(Lozenge)).toHaveLength(0);
     });
 
-    it('should render tag if lozenge prop passed in', () => {
+    it('should render tag if badge prop passed in', () => {
       const component = shallowUserPickerItem({
         user: { ...user, badge: 'app' },
       });
@@ -82,7 +82,7 @@ describe('UserPickerItem', () => {
       expect(item.prop('elemAfter')).toEqual(<Lozenge>app</Lozenge>);
     });
 
-    it('should not render lozenge if empty string', () => {
+    it('should not render badge if empty string', () => {
       const component = shallowUserPickerItem({
         user: { ...user, badge: '' },
       });

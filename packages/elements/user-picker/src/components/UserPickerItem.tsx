@@ -27,7 +27,7 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     );
   };
 
-  private renderLozenge = () => {
+  private renderBadge = () => {
     const {
       user: { badge },
     } = this.props;
@@ -66,7 +66,7 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     const { primaryText, secondaryText } = this.generateAvatarText();
 
     return (
-      <Item elemAfter={this.renderLozenge()} onClick={this.onItemSelection}>
+      <Item elemAfter={this.renderBadge()} onClick={this.onItemSelection}>
         <AvatarItem
           backgroundColor="transparent"
           avatar={this.renderAvatar()}
