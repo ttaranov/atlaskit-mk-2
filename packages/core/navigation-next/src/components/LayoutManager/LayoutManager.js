@@ -306,11 +306,15 @@ export default class LayoutManager extends Component<
           onCollapseEnd={onCollapseEnd}
         >
           {({ transitionStyle, transitionState }) => {
+            const onMouseOut =
+              isCollapsed && experimental_flyoutOnHover
+                ? this.mouseOutFlyoutArea
+                : null;
             return (
               <NavigationContainer
                 innerRef={this.getContainerRef}
                 onMouseEnter={this.mouseEnter}
-                onMouseOut={this.mouseOutFlyoutArea}
+                onMouseOut={onMouseOut}
                 onMouseLeave={this.mouseLeave}
               >
                 <ResizeControl

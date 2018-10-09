@@ -1,10 +1,12 @@
 // @flow
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
+import ContentNavigation from '../../../ContentNavigation';
 import LayoutManager from '../../LayoutManager';
+import { ContainerNavigationMask, NavigationContainer } from '../../primitives';
 import type { LayoutManagerProps } from '../../types';
 
 const GlobalNavigation = () => null;
@@ -34,6 +36,105 @@ describe('LayoutManager', () => {
   it.skip('should render correctly', () => {
     const wrapper = shallow(<LayoutManager {...defaultProps} />);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  describe('Flyout', () => {
+    beforeEach(() => {
+      defaultProps.experimental_flyoutOnHover = true;
+      defaultProps.navigationUIController.state.isCollapsed = true;
+    });
+
+    describe('when experimental_flyoutOnHover is set and navigation is collapsed', () => {
+      it('should open NavigationContainer when mousing over ContainerNavigationMask', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        expect(wrapper.state('flyoutIsOpen')).toBe(true);
+      });
+
+      it('should close NavigationContainer when mousing out of it', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        wrapper.find(NavigationContainer).simulate('mouseout');
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+
+      it('should display ContentNavigation when state.flyoutIsOpen is false', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.setState({ flyoutIsOpen: false });
+        wrapper.update();
+        expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(false);
+      });
+
+      it('should display ContentNavigation when state.flyoutIsOpen is true', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.setState({ flyoutIsOpen: true });
+        wrapper.update();
+        expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(true);
+      });
+
+      it('should not display resize hint bar', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        const resizeBar = wrapper.find(
+          'div[aria-label="Click to expand the navigation"]',
+        );
+        expect(resizeBar).toHaveLength(0);
+      });
+
+      it('should not be open when nav is permanently expanded', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        defaultProps.navigationUIController.state.isCollapsed = false;
+        wrapper.setProps(defaultProps);
+
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+    });
+
+    describe('when experimental_flyoutOnHover is not set', () => {
+      beforeEach(() => {
+        defaultProps.experimental_flyoutOnHover = false;
+      });
+
+      it('should NOT open NavigationContainer when mousing over ContainerNavigationMask', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+
+      it('should NOT cause a re-render when mousing out of NavigationContainer', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(NavigationContainer).simulate('mouseover');
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+    });
+
+    describe('when navigation is permanently expanded', () => {
+      beforeEach(() => {
+        defaultProps.navigationUIController.state.isCollapsed = false;
+      });
+
+      it('should NOT cause a re-render when mousing over ContainerNavigationMask', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+
+      it('should NOT cause a re-render when mousing out of NavigationContainer', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(NavigationContainer).simulate('mouseover');
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+    });
   });
 
   describe('analytics', () => {
