@@ -2,6 +2,8 @@ import * as React from 'react';
 import { HTMLAttributes, ComponentClass, PureComponent } from 'react';
 import styled from 'styled-components';
 import ToolbarButton, { Props as ToolbarButtonProps } from '../ToolbarButton';
+import ToolbarTextFormatting from 'src/plugins/text-formatting/ui/ToolbarTextFormatting';
+// import ToolbarAdvancedTextFormatting from 'src/plugins/text-formatting/ui/ToolbarAdvancedTextFormatting';
 
 const Wrapper: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
@@ -28,9 +30,19 @@ export default class ButtonGroup extends PureComponent<Props, State> {
     selectedItemIdx: 0,
   };
 
+  private isValidChild = (child: React.ReactChild) => {
+    // const result: boolean = true //(child instanceof ToolbarButton) || (child instanceof ButtonGroup) || (child instanceof ToolbarTextFormatting) //|| (child instanceof ToolbarAdvancedTextFormatting);
+    const result: boolean = child.type.name != 'StyledComponent';
+
+    if (!result) {
+      console.log('Child is not valid, it is:', child);
+    }
+    return result;
+  };
+
   private handleKeyDown = (e: React.KeyboardEvent<{}>): boolean => {
     const childCount = React.Children.toArray(this.props.children).filter(
-      child => child instanceof ToolbarButton,
+      this.isValidChild,
     ).length;
     if (!childCount) {
       return false;
@@ -38,47 +50,79 @@ export default class ButtonGroup extends PureComponent<Props, State> {
 
     const { selectedItemIdx } = this.state;
 
-    if (e.key === 'ArrowLeft') {
-      this.setState({ selectedItemIdx: Math.max(selectedItemIdx - 1, 0) });
-    } else if (e.key === 'ArrowRight') {
-      this.setState({
-        selectedItemIdx: Math.min(selectedItemIdx + 1, childCount - 1),
-      });
-    }
-
-    e.preventDefault();
-
-    if (
-      (e.key === 'ArrowLeft' && selectedItemIdx <= 0) ||
-      (e.key === 'ArrowRight' && selectedItemIdx >= childCount - 1)
-    ) {
-      return true;
-    } else {
+    if (e.key === 'ArrowRight') {
+      if (selectedItemIdx >= childCount - 1) {
+        // we've hit the end
+        return true;
+      }
+      const newSelectedItemIdx = selectedItemIdx + 1;
+      this.setState({ selectedItemIdx: newSelectedItemIdx });
+      e.preventDefault();
       e.stopPropagation();
       return false;
     }
+    return true;
+
+    // if (e.key === 'ArrowLeft') {
+    //   const newSelectedItemIdx = Math.max(selectedItemIdx - 1, 0)
+    //   // console.log(`BUTTONGROUP (${childCount} children): New selected index:`, newSelectedItemIdx)
+    //   this.setState({ selectedItemIdx: newSelectedItemIdx});
+    // } else if (e.key === 'ArrowRight') {
+    //   const newSelectedItemIdx = Math.min(selectedItemIdx + 1, childCount - 1)
+    //   // console.log(`BUTTONGROUP (${childCount} children): New selected index:`, newSelectedItemIdx)
+    //   this.setState({ selectedItemIdx: newSelectedItemIdx});
+    // }
+
+    // e.preventDefault();
+
+    // if (
+    //   (e.key === 'ArrowLeft' && selectedItemIdx <= 0) ||
+    //   (e.key === 'ArrowRight' && selectedItemIdx >= childCount - 1)
+    // ) {
+    //   return true;
+    // } else {
+    //   e.stopPropagation();
+    //   return false;
+    // }
   };
 
   render() {
     const { width, children } = this.props;
+    const childCount = React.Children.toArray(this.props.children).filter(
+      this.isValidChild,
+    ).length;
     console.log(
-      'button group has children:',
+      `BUTTON GROUP / (${
+        React.Children.toArray(this.props.children).length
+      } children) children:`,
       this.props.children,
-      'selected',
+      'selectedIndex:',
       this.state.selectedItemIdx,
-      'group focused',
+      'focused boolean:',
       this.props.focused,
     );
 
+    let validChildCount = -1;
     return (
       <Wrapper onKeyDown={this.handleKeyDown} width={width}>
         {React.Children.map(children, (child, idx) => {
-          if (child instanceof ToolbarButton) {
+          if (this.isValidChild(child)) {
+            validChildCount += 1;
+            if (
+              this.props.focused &&
+              this.state.selectedItemIdx === validChildCount
+            ) {
+              console.log(
+                `Focusing child from buttonGroup ${childCount}:`,
+                child,
+              );
+            }
             return React.cloneElement(
               child as React.ReactElement<any>,
               {
                 focused:
-                  this.props.focused && this.state.selectedItemIdx === idx,
+                  this.props.focused &&
+                  this.state.selectedItemIdx === validChildCount, //idx,
               } as ToolbarButtonProps,
             );
           } else {

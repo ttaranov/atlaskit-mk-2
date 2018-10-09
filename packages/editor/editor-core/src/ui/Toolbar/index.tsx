@@ -6,7 +6,6 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
-import { ToolbarContext } from './ToolbarContext';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -76,10 +75,6 @@ export class ToolbarInner extends React.Component<
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // if (this.props.disabled === true && nextProps.disabled === false) {
-    //   this.updateSelectedButton();
-    // }
-
     return (
       nextProps.toolbarSize !== this.props.toolbarSize ||
       nextProps.disabled !== this.props.disabled ||
@@ -91,61 +86,6 @@ export class ToolbarInner extends React.Component<
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
   }
-  // shouldFocus = () => {
-  //   const pushed: boolean = this.state.arrowKeyPushed;
-  //   if (pushed) {
-  //     this.setState({
-  //       arrowKeyPushed: false,
-  //     });
-  //   }
-  //   return pushed;
-  // };
-
-  // registerButton = button => {
-  //   this.setState(prevState => {
-  //     const prevRegisteredButtons = prevState.registeredButtons;
-
-  //     if (prevRegisteredButtons.find(this.equalsButton(button))) {
-  //       console.log('Button ' + button.props.title + ' already exists.');
-  //       // Our button already exists
-  //       return { ...prevState };
-  //     } else {
-  //       console.log('Button ' + button.props.title + ' DOESNT exist.');
-  //     }
-
-  //     const newRegisteredButtons = [...prevRegisteredButtons, button];
-  //     // Ensure selectedButton if defined if there are any buttons registered
-  //     let selectedButton =
-  //       newRegisteredButtons.length > 0
-  //         ? newRegisteredButtons[prevState.selectedButtonIndex]
-  //         : prevState.selectedButton;
-  //     return {
-  //       registeredButtons: newRegisteredButtons,
-  //       selectedButton: selectedButton,
-  //     };
-  //   });
-  //   return null;
-  // };
-
-  // private changeSelectedButton(delta: number) {
-  //   this.setState(prevState => {
-  //     const newIndex = prevState.selectedButtonIndex + delta;
-  //     const buttons = prevState.registeredButtons;
-
-  //     // Stay in the toolbar boundaries
-  //     if (newIndex < 0 || newIndex >= buttons.length) {
-  //       return { ...prevState };
-  //     }
-  //     // console.log("Selected button is now ", buttons[newIndex])
-  //     console.log('Selected button is now ', buttons[newIndex].props.title);
-
-  //     return {
-  //       selectedButtonIndex: newIndex,
-  //       selectedButton: buttons[newIndex],
-  //       arrowKeyPushed: true,
-  //     };
-  //   });
-  // }
 
   private handleKeyDown = e => {
     if (
@@ -155,27 +95,20 @@ export class ToolbarInner extends React.Component<
       return;
     }
 
-    console.log(
-      'keydown',
-      e.key,
-      'currently selected',
-      this.state.selectedItemIdx,
-    );
-
     if (e.key === 'ArrowLeft') {
-      this.setState({
-        selectedItemIdx:
-          this.state.selectedItemIdx === 0
-            ? this.props.items.length - 1
-            : this.state.selectedItemIdx - 1,
-      });
+      const newSelectedItemIdx =
+        this.state.selectedItemIdx === 0
+          ? this.props.items.length - 1
+          : this.state.selectedItemIdx - 1;
+      console.log('TOOLBAR: New selected index:', newSelectedItemIdx);
+      this.setState({ selectedItemIdx: newSelectedItemIdx });
     } else if (e.key === 'ArrowRight') {
-      this.setState({
-        selectedItemIdx:
-          this.state.selectedItemIdx === this.props.items.length - 1
-            ? 0
-            : this.state.selectedItemIdx + 1,
-      });
+      const newSelectedItemIdx =
+        this.state.selectedItemIdx === this.props.items.length - 1
+          ? 0
+          : this.state.selectedItemIdx + 1;
+      console.log('TOOLBAR: New selected index:', newSelectedItemIdx);
+      this.setState({ selectedItemIdx: newSelectedItemIdx });
     }
   };
 

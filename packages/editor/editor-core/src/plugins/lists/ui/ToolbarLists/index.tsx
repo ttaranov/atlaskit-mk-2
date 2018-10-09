@@ -139,7 +139,7 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
       intl: { formatMessage },
     } = this.props;
     const { isDropdownOpen } = this.state;
-    console.log('list focused', focused);
+    console.log('ToolbarList focused', focused);
     if (!isSmall) {
       const labelUnorderedList = formatMessage(messages.unorderedList);
       const labelOrderedList = formatMessage(messages.orderedList);

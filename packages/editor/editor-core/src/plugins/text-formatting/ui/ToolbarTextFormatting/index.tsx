@@ -40,6 +40,7 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
       isReducedSpacing,
       textFormattingState,
       intl: { formatMessage },
+      focused,
     } = this.props;
     const {
       strongHidden,
@@ -55,7 +56,7 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
     return (
       <ButtonGroup
         width={isReducedSpacing ? 'small' : 'large'}
-        focused={this.props.focused}
+        focused={focused}
       >
         {strongHidden ? null : (
           <ToolbarButton
