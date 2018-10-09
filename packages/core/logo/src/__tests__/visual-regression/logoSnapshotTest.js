@@ -5,8 +5,6 @@ import {
   takeScreenShot,
 } from '@atlaskit/visual-regression/helper';
 
-const path = require('path');
-
 const examples = getExamplesFor('logo');
 
 describe('Snapshot Test', () => {

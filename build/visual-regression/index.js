@@ -17,7 +17,7 @@ const watch = process.env.WATCH ? '--watch' : '';
 
 // move logic to remove all production snapshots before test starts
 function removeSnapshotDir() {
-  return glob
+  const filteredList = glob
     .sync('**/packages/**/__image_snapshots__/', {
       ignore: '**/node_modules/**',
     })
