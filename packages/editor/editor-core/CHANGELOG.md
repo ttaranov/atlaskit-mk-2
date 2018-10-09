@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.2.3
+- [patch] ED-2644 Fixes panels merging incorrectly when deleting empty paragraph [967edcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/967edcc)
+
 ## 85.2.2
 - [patch] ED-5468: simplify floating toolbar config resolution [1c795f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c795f2)
 
