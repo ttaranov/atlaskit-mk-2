@@ -48,6 +48,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
+const externalContentUrl = '/examples/core/global-navigation/iframe';
 
 const localStorage = typeof window === 'object' ? window.localStorage : {};
 
@@ -117,6 +118,7 @@ export default class GlobalNavigation
       60000,
       this.onNotificationBadgeCountUpdated,
       this.onNotificationBadgeCountUpdating,
+      externalContentUrl,
     );
   }
 
@@ -175,6 +177,7 @@ export default class GlobalNavigation
         refreshRate,
         this.onNotificationBadgeCountUpdated,
         this.onNotificationBadgeCountUpdating,
+        externalContentUrl,
       );
     }
   }

@@ -6,7 +6,7 @@ import { NotificationIndicator } from '@atlaskit/notification-indicator';
 import NotificationDrawerContents from './components/NotificationDrawerContents';
 
 // TODO: this should be dynamic updated from outside
-export const CONTENT_URL = '/examples/core/global-navigation/iframe';
+export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 
 const notificationIntegration = (
   fabricNotificationLogUrl?: string,
@@ -16,6 +16,7 @@ const notificationIntegration = (
   refreshRate?: number,
   onCountUpdated: Function,
   onCountUpdating: Function,
+  externalContentUrl?: string,
 ) => ({
   badge: () => {
     console.log('Incoming refresh rate: ', refreshRate);
@@ -35,7 +36,7 @@ const notificationIntegration = (
   },
   notificationDrawerContents: () => (
     <NotificationDrawerContents
-      externalContentUrl={CONTENT_URL}
+      externalContentUrl={externalContentUrl || CONTENT_URL}
       locale={locale}
       product={product}
     />
