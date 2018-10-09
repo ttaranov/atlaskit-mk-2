@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { akColorB300, akColorB400 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
 const StyledAnchor = styled.a`
-  color: ${akColorB400};
+  color: ${colors.B400};
 
   &:hover {
-    color: ${akColorB300};
+    color: ${colors.B300};
     text-decoration: underline;
   }
 `;

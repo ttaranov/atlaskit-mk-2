@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN80 } from '@atlaskit/util-shared-styles';
+import { colors, borderRadius } from '@atlaskit/theme';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -20,7 +20,6 @@ import {
   akEditorCodeFontFamily,
 } from '../src/styles';
 
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
@@ -34,7 +33,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN80};
+    color: ${colors.N80};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -50,7 +49,7 @@ export const Content: any = styled.div`
       font-family: ${akEditorCodeFontFamily};
       background: ${akEditorCodeBackground};
       padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
+      border-radius: ${borderRadius()}px;
     }
   }
 `;

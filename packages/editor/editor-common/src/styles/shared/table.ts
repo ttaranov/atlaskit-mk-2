@@ -38,7 +38,7 @@ const tableSharedStyle = css`
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px 0;
     border: 1px solid ${akEditorTableBorder};
-    font-size: ${fontSize}px;
+    font-size: ${fontSize()}px;
     width: 100%;
 
     &[data-autosize='true'] {

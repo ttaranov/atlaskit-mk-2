@@ -1,11 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import {
-  akColorN40,
-  akBorderRadius,
-  akGridSize,
-} from '@atlaskit/util-shared-styles';
+import { colors, borderRadius, gridSize } from '@atlaskit/theme';
 import Toolbar from '../Toolbar';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
@@ -39,9 +35,9 @@ const CommentEditor: any = styled.div`
     props.maxHeight
       ? 'max-height: ' + props.maxHeight + 'px;'
       : ''} background-color: white;
-  border: 1px solid ${akColorN40};
+  border: 1px solid ${colors.N40};
   box-sizing: border-box;
-  border-radius: ${akBorderRadius};
+  border-radius: ${borderRadius()}px;
 
   max-width: inherit;
   word-wrap: break-word;
@@ -55,7 +51,7 @@ const CommentEditorMargin = 20;
 const MainToolbar = styled.div`
   position: relative;
   align-items: center;
-  padding: ${akGridSize} ${akGridSize} 0;
+  padding: ${gridSize()}px ${gridSize()}px 0;
   display: flex;
   height: auto;
   z-index: ${akEditorMenuZIndex};

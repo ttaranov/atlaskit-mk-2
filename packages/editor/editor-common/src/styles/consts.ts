@@ -1,62 +1,66 @@
 import {
-  akCodeFontFamily,
-  akColorB100,
-  akColorB300,
-  akColorB400,
-  akColorB50,
-  akColorB75,
-  akColorN0,
-  akColorN20,
-  akColorN40,
-  akColorN50,
-  akColorN100,
-  akColorN500,
-  akColorN700,
-  akColorN900,
-  akZIndexLayer,
-  akZIndexBlanket,
-  akColorR300,
-  akColorR50,
-  akColorR75,
-} from '@atlaskit/util-shared-styles';
-import { fontSize as defaultFontSize } from '@atlaskit/theme';
+  codeFontFamily,
+  layers,
+  colors,
+  fontSize as defaultFontSize,
+} from '@atlaskit/theme';
 
-export const akEditorCodeFontFamily = akCodeFontFamily;
-export const akEditorInactiveForeground = akColorN500;
-export const akEditorFocus = akColorB100;
-export const akEditorSubtleAccent = akColorN40;
-export const akEditorActiveBackground = akColorN500;
-export const akEditorActiveForeground = akColorN0;
-export const akEditorBlockquoteBorderColor = akColorN40;
-export const akEditorDropdownActiveBackground = akColorN900;
-export const akEditorPopupBackground = akColorN700;
-export const akEditorPopupText = akColorB50;
-export const akEditorPrimaryButton = akColorB400;
-export const akEditorCodeBackground = akColorN20;
+const {
+  B100,
+  B300,
+  B400,
+  B50,
+  B75,
+  N0,
+  N20,
+  N40,
+  N50,
+  N100,
+  N500,
+  N700,
+  N900,
+  R300,
+  R50,
+  R75,
+} = colors;
+
+export const akEditorCodeFontFamily = codeFontFamily();
+export const akEditorInactiveForeground = N500;
+export const akEditorFocus = B100;
+export const akEditorSubtleAccent = N40;
+export const akEditorActiveBackground = N500;
+export const akEditorActiveForeground = N0;
+export const akEditorBlockquoteBorderColor = N40;
+export const akEditorDropdownActiveBackground = N900;
+export const akEditorPopupBackground = N700;
+export const akEditorPopupText = B50;
+export const akEditorPrimaryButton = B400;
+export const akEditorCodeBackground = N20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
 export const akEditorUnitZIndex = 1;
 export const akEditorSmallZIndex = 2;
 // z-index for main menu bar -
 // this is highest as it should be above anything else in editor below.
-export const akEditorMenuZIndex = akZIndexBlanket;
-// z-index used for pickers (date, emoji, mentions) and type-aheads, hyperlinks
-export const akEditorFloatingDialogZIndex = akZIndexLayer + 10;
-// z-index used for floating toolbars table cell menu which are above block toolbars
-export const akEditorFloatingOverlapPanelZIndex = akZIndexLayer + 5;
+export const akEditorMenuZIndex = layers.blanket();
 // z-index used for floating toolbars like code block, table etc
-export const akEditorFloatingPanelZIndex = akZIndexLayer;
-export const akEditorMentionSelected = akColorN100;
+export const akEditorFloatingPanelZIndex = layers.layer();
+// z-index used for pickers (date, emoji, mentions) and type-aheads, hyperlinks
+export const akEditorFloatingDialogZIndex = akEditorFloatingPanelZIndex + 10;
+// z-index used for floating toolbars table cell menu which are above block toolbars
+export const akEditorFloatingOverlapPanelZIndex =
+  akEditorFloatingPanelZIndex + 5;
+export const akEditorMentionSelected = N100;
 export const akEditorTableToolbarSize = 11;
-export const akEditorTableBorder = akColorN50;
-export const akEditorTableToolbar = akColorN20;
-export const akEditorTableFloatingControls = akColorN20;
-export const akEditorTableCellSelected = akColorB75;
-export const akEditorTableToolbarSelected = akColorB100;
-export const akEditorTableBorderSelected = akColorB300;
-export const akEditorTableCellDelete = akColorR50;
-export const akEditorTableBorderDelete = akColorR300;
-export const akEditorTableToolbarDelete = akColorR75;
+export const akEditorTableBorder = N50;
+export const akEditorTableToolbar = N20;
+export const akEditorTableFloatingControls = N20;
+export const akEditorTableCellSelected = B75;
+export const akEditorTableToolbarSelected = B100;
+export const akEditorTableBorderSelected = B300;
+export const akEditorTableCellDelete = R50;
+export const akEditorTableBorderDelete = R300;
+export const akEditorTableToolbarDelete = R75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;

@@ -30,6 +30,7 @@
     "@atlaskit/editor-core": "^85.0.0",
     "@atlaskit/editor-json-transformer": "^4.0.17",
     "@atlaskit/editor-test-helpers": "^6.2.6",
+    "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-data-test": "^10.0.14",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"
