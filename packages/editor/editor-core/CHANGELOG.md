@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.1.0
+- [minor] ED-5370 refactor legacy image-upload plugin [fb10ad4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb10ad4)
+
 ## 85.0.1
 - [patch] ED-5453: implement table scroll shadow in CSS [4f21dac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f21dac)
 
