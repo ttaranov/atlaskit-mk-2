@@ -17,7 +17,7 @@ import {
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
-import { PluginConfig } from './types';
+import { PluginConfig, PermittedLayoutsDescriptor } from './types';
 import { createPlugin, pluginKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
@@ -32,8 +32,25 @@ export const CELL_MIN_WIDTH = 128;
 export const getCellMinWidth = newResizing =>
   newResizing ? 48 : CELL_MIN_WIDTH;
 
-const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
-  !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
+export const pluginConfig = (tablesConfig?: PluginConfig | boolean) => {
+  const config =
+    !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
+  return config.advanced
+    ? {
+        allowBackgroundColor: true,
+        allowColumnResizing: true,
+        allowHeaderColumn: true,
+        allowHeaderRow: true,
+        allowMergeCells: true,
+        allowNumberColumn: true,
+        isHeaderRowRequired: true,
+        stickToolbarToBottom: true,
+        permittedLayouts: 'all' as PermittedLayoutsDescriptor,
+        allowControls: true,
+        ...config,
+      }
+    : config;
+};
 
 const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
   nodes() {
@@ -88,6 +105,7 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
     const config = pluginConfig(options);
+
     if (!config.allowMergeCells && !config.allowBackgroundColor) {
       return null;
     }

@@ -5,7 +5,7 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
-import { mention } from '@atlaskit/util-data-test';
+import { mention, taskDecision } from '@atlaskit/util-data-test';
 
 import { WikiMarkupTransformer } from '../src';
 
@@ -66,7 +66,6 @@ class TransformerPanels extends React.PureComponent<Props, State> {
         <div id="editor">
           <Editor
             appearance="comment"
-            allowTasksAndDecisions={true}
             allowCodeBlocks={true}
             allowTextColor={true}
             allowLists={true}
@@ -87,6 +86,9 @@ class TransformerPanels extends React.PureComponent<Props, State> {
             allowDate={true}
             mentionProvider={Promise.resolve(
               mention.storyData.resourceProvider,
+            )}
+            taskDecisionProvider={Promise.resolve(
+              taskDecision.getMockTaskDecisionResource(),
             )}
             onChange={this.handleChangeInTheEditor}
           />

@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { Editor, EditorContext, CollapsedEditor } from '@atlaskit/editor-core';
+import { taskDecision } from '@atlaskit/util-data-test';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
@@ -67,7 +68,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
-                    allowTasksAndDecisions={true}
                     allowCodeBlocks={true}
                     allowTextColor={true}
                     allowLists={true}
@@ -86,6 +86,9 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     media={{ provider: mediaProvider, allowMediaSingle: true }}
                     disabled={disabled}
                     mentionProvider={mentionProvider}
+                    taskDecisionProvider={Promise.resolve(
+                      taskDecision.getMockTaskDecisionResource(),
+                    )}
                     onChange={onChange}
                     onSave={SAVE_ACTION}
                     onCancel={CANCEL_ACTION}

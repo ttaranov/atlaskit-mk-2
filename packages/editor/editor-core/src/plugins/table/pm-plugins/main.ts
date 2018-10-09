@@ -32,7 +32,10 @@ import {
   handleClick,
 } from '../event-handlers';
 import { findControlsHoverDecoration } from '../utils';
-import { getColResizePluginKey } from '../index';
+import {
+  getColResizePluginKey,
+  pluginConfig as getPluginConfig,
+} from '../index';
 
 export const pluginKey = new PluginKey('tablePlugin');
 
@@ -225,12 +228,11 @@ export const createPlugin = (
 
       nodeViews: {
         table: (node: PmNode, view: EditorView, getPos: () => number) => {
+          const { pluginConfig } = getPluginState(view.state);
           const {
-            pluginConfig: {
-              allowColumnResizing,
-              UNSAFE_allowFlexiColumnResizing,
-            },
-          } = getPluginState(view.state);
+            allowColumnResizing,
+            UNSAFE_allowFlexiColumnResizing,
+          } = getPluginConfig(pluginConfig);
           return new TableNodeView({
             node,
             view,

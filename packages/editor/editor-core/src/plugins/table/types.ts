@@ -8,6 +8,7 @@ export type Cell = { pos: number; start: number; node: PmNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
 
 export interface PluginConfig {
+  advanced?: boolean;
   allowBackgroundColor?: boolean;
   allowColumnResizing?: boolean;
   allowHeaderColumn?: boolean;

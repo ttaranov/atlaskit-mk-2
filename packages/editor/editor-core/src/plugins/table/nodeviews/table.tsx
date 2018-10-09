@@ -19,7 +19,7 @@ import { pluginKey } from '../pm-plugins/main';
 export interface Props {
   node: PmNode;
   view: EditorView;
-  allowColumnResizing: boolean;
+  allowColumnResizing?: boolean;
   cellMinWidth?: number;
   portalProviderAPI: PortalProviderAPI;
   eventDispatcher?: EventDispatcher;
