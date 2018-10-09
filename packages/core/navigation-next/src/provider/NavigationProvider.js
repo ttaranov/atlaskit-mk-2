@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { UIController, ViewController } from '..';
+import { UIController, ViewController } from '../index';
 import { CONTENT_NAV_WIDTH } from '../common/constants';
 import type { UIControllerCacheShape } from '../ui-controller/types';
 import type { NavigationProviderProps } from './types';

@@ -5,6 +5,7 @@ import {
   AnalyticsType,
   ConfluenceObjectResult,
   ContentType,
+  PersonResult,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -18,19 +19,15 @@ const RECENT_PAGES_PATH: string = 'rest/recentlyviewed/1.0/recent';
 const RECENT_SPACE_PATH: string = 'rest/recentlyviewed/1.0/recent/spaces';
 const QUICK_NAV_PATH: string = 'rest/quicknav/1/search';
 
-const QUICKNAV_CLASSNAME_ATTACHMENT_PREFIX = 'content-type-attachment';
-const QUICKNAV_CLASSNAME_PAGE = 'content-type-page';
-const QUICKNAV_CLASSNAME_BLOGPOST = 'content-type-blogpost';
-
-type ValidQuickNavResultClassName =
-  | 'content-type-attachment'
-  | 'content-type-page'
-  | 'content-type-blogpost';
+const QUICKNAV_CLASSNAME_PERSON = 'content-type-userinfo';
 
 export interface ConfluenceClient {
   getRecentItems(searchSessionId: string): Promise<Result[]>;
   getRecentSpaces(searchSessionId: string): Promise<Result[]>;
-  searchQuickNav(query: string, searchSessionId: string): Promise<Result[]>;
+  searchPeopleInQuickNav(
+    query: string,
+    searchSessionId: string,
+  ): Promise<Result[]>;
 }
 
 export type ConfluenceContentType = 'blogpost' | 'page';
@@ -63,9 +60,8 @@ export interface QuickNavResult {
   className: string;
   href: string;
   name: string;
-  id?: string; // null for spaces
-  spaceName?: string; // null for spaces,
-  spaceKey?: string; // null for spaces
+  id: string;
+  icon: string;
 }
 
 export default class ConfluenceClientImpl implements ConfluenceClient {
@@ -79,7 +75,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
     this.cloudId = cloudId;
   }
 
-  public async searchQuickNav(
+  public async searchPeopleInQuickNav(
     query: string,
     searchSessionId: string,
   ): Promise<Result[]> {
@@ -175,47 +171,29 @@ function recentSpaceToResult(
     avatarUrl: recentSpace.icon,
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
   } as ContainerResult;
 }
 
 function quickNavResultToObjectResult(
   quickNavResult: QuickNavResult,
-  contentType: ContentType,
   searchSessionId: string,
-): ConfluenceObjectResult {
+): PersonResult {
   // add searchSessionId
   const href = new URI(quickNavResult.href);
   href.addQuery('search_id', searchSessionId);
 
   return {
+    resultId: quickNavResult.id,
     name: unescapeHtml(quickNavResult.name),
     href: href.toString(),
-    resultId: quickNavResult.id!, // never null for pages, blogs & attachments
-    contentType: contentType,
-    containerName: unescapeHtml(quickNavResult.spaceName!), // never null for pages, blogs & attachments
-    analyticsType: AnalyticsType.ResultConfluence,
-    resultType: ResultType.ConfluenceObjectResult,
-    containerId: quickNavResult.spaceKey!,
-    iconClass: quickNavResult.className,
+    avatarUrl: quickNavResult.icon,
+    resultType: ResultType.PersonResult,
+    contentType: ContentType.Person,
+    analyticsType: AnalyticsType.ResultPerson,
+    mentionName: quickNavResult.name,
+    presenceMessage: '',
   };
-}
-
-function isQuickNavResultContent(result: QuickNavResult): boolean {
-  return (
-    result.className.startsWith(QUICKNAV_CLASSNAME_ATTACHMENT_PREFIX) ||
-    result.className === QUICKNAV_CLASSNAME_BLOGPOST ||
-    result.className === QUICKNAV_CLASSNAME_PAGE
-  );
-}
-
-function getContentType(className: ValidQuickNavResultClassName): ContentType {
-  if (className.startsWith(QUICKNAV_CLASSNAME_ATTACHMENT_PREFIX)) {
-    return ContentType.ConfluenceAttachment;
-  } else if (className === QUICKNAV_CLASSNAME_BLOGPOST) {
-    return ContentType.ConfluenceBlogpost;
-  } else {
-    return ContentType.ConfluencePage;
-  }
 }
 
 function quickNavResultsToResults(
@@ -227,19 +205,15 @@ function quickNavResultsToResults(
     ...quickNavResultGroups,
   );
 
-  // filter out anything that's not a page, blog or attachment
-  const filteredResults = flattenedResults.filter(isQuickNavResultContent);
+  // filter out people results
+  const isPeopleResult = result =>
+    result.className.startsWith(QUICKNAV_CLASSNAME_PERSON);
+  const peopleResults = flattenedResults.filter(isPeopleResult);
 
   // map the results to our representation of a result
-  const results: ConfluenceObjectResult[] = filteredResults.map(result =>
-    quickNavResultToObjectResult(
-      result,
-      getContentType(result.className as ValidQuickNavResultClassName),
-      searchSessionId,
-    ),
+  const results = peopleResults.map(result =>
+    quickNavResultToObjectResult(result, searchSessionId),
   );
 
-  // NB: it appears that the QuickNav endpoint only returns 6 blogs/pages and 2 attachments
-  // which is convenient.
   return results;
 }

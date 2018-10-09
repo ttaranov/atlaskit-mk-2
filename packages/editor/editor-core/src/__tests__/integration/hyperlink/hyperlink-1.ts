@@ -1,6 +1,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 const linkText1 = 'http://hello.com ';
 const linkText2 = 'FAB-983';
@@ -15,14 +16,14 @@ const linkToolbar = '[placeholder="Paste link or search recently viewed"]';
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },
     async client => {
-      let browser = await new Page(client);
+      let browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);
       await browser.waitForSelector(editable);
 
       // this usecase is broken on fullpage editor
-      await browser.click('[aria-label="Add link"]');
+      await browser.click(`[aria-label="${messages.link.defaultMessage}"]`);
       await browser.waitForSelector(linkToolbar);
       await browser.type(linkToolbar, [linkText2, 'Return']);
       await browser.waitForSelector('a');

@@ -1,5 +1,4 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
-import { AnalyticsDelegateProps } from '@atlaskit/analytics';
 import { uuid, ProviderFactory } from '@atlaskit/editor-common';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { decisionItemNodeView } from '../nodeviews/decisionItem';
@@ -9,17 +8,12 @@ export const stateKey = new PluginKey('tasksAndDecisionsPlugin');
 
 export function createPlugin(
   portalProviderAPI: PortalProviderAPI,
-  analyticDelegateProps: AnalyticsDelegateProps,
   providerFactory: ProviderFactory,
 ) {
   return new Plugin({
     props: {
       nodeViews: {
-        taskItem: taskItemNodeViewFactory(
-          portalProviderAPI,
-          analyticDelegateProps,
-          providerFactory,
-        ),
+        taskItem: taskItemNodeViewFactory(portalProviderAPI, providerFactory),
         decisionItem: decisionItemNodeView(portalProviderAPI),
       },
     },

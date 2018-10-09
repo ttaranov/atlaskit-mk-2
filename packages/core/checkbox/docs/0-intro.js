@@ -14,7 +14,7 @@ import {
 } from '@atlaskit/checkbox';
 `}
 
-  The Checkbox export provides for controlled & uncontrolled usuage and includes the label, input & icon.
+  The Checkbox export provides for controlled & uncontrolled usage and includes the label, input & icon.
   
   ${(
     <Example
@@ -34,9 +34,17 @@ import {
 
   ${(
     <Example
-      Component={require('../examples/02-indeterminate').default}
+      Component={require('../examples/02-uncontrolled').default}
+      title="Uncontrolled"
+      source={require('!!raw-loader!../examples/02-uncontrolled')}
+    />
+  )}
+
+  ${(
+    <Example
+      Component={require('../examples/03-indeterminate').default}
       title="Indeterminate"
-      source={require('!!raw-loader!../examples/02-indeterminate')}
+      source={require('!!raw-loader!../examples/03-indeterminate')}
     />
   )}
 

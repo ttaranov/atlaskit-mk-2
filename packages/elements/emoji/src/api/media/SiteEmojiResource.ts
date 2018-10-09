@@ -106,8 +106,8 @@ export default class SiteEmojiResource {
               baseUrl: url,
             }),
         });
-        const subscription = context
-          .uploadFile({
+        const subscription = context.file
+          .upload({
             content: upload.dataURL,
             name: upload.filename,
             collection: collectionName,

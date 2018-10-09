@@ -1,5 +1,47 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.10
+- [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/editor-core@84.0.0
+  - @atlaskit/renderer@26.0.0
+  - @atlaskit/editor-json-transformer@4.0.16
+  - @atlaskit/editor-test-helpers@6.2.5
+  - @atlaskit/media-core@24.1.0
+
+## 4.0.9
+- [patch] Updated dependencies [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+  - @atlaskit/editor-json-transformer@4.0.15
+  - @atlaskit/editor-test-helpers@6.2.4
+  - @atlaskit/editor-core@83.0.0
+  - @atlaskit/renderer@25.0.0
+
+## 4.0.8
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 4.0.7
+- [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
+
+## 4.0.6
+- [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+  - @atlaskit/editor-json-transformer@4.0.13
+  - @atlaskit/editor-common@17.0.1
+  - @atlaskit/editor-core@82.0.0
+  - @atlaskit/editor-test-helpers@6.1.3
+
+## 4.0.5
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/editor-core@81.0.0
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/renderer@24.0.0
+  - @atlaskit/editor-json-transformer@4.0.12
+  - @atlaskit/media-core@24.0.0
+
+## 4.0.4
+- [patch] Remove mention calls from the bridge [3b04be7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b04be7)
+
 ## 4.0.3
 - [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
 

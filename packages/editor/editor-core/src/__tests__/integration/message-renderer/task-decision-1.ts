@@ -22,7 +22,7 @@ BrowserTestCase(
   'task-decision: can paste rich text into a decision',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(clipboardHelper);
     await browser.isVisible(clipboardInput);
     await browser.type(
@@ -45,7 +45,7 @@ BrowserTestCase(
   'task-decision: can paste plain text into a decision',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(clipboardHelper);
     await browser.isVisible(clipboardInput);
     await browser.type(
@@ -63,13 +63,13 @@ BrowserTestCase(
   },
 );
 
-// Safari highlights entire text on clic
+// Safari highlights entire text on click
 // IE is generally flaky
 BrowserTestCase(
   'task-decision: can edit a decision',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadDecisionButton);
     await browser.waitForSelector('ol');

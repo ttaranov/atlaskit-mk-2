@@ -1,5 +1,24 @@
 # @atlaskit/tree
 
+## 4.1.0
+- [minor] Expanded parent item is collapsed while dragged. [192b3e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/192b3e2)
+
+## 4.0.0
+- [major] Implementing nesting and expanding parents while dragging [2bdbf04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2bdbf04)
+
+## 3.0.4
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/navigation@33.1.11
+  - @atlaskit/section-message@1.0.8
+  - @atlaskit/icon@14.0.0
+
+## 3.0.3
+- [patch] Collapsing parent automatically when last child moved out [f4992db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4992db)
+
+## 3.0.2
+- [patch] Fixing issue of not calling onDragStart when drag&drop starts [d7be874](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7be874)
+
 ## 3.0.1
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

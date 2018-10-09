@@ -101,18 +101,22 @@ export default class ConfluenceHome extends Component<*, *> {
           text="Activity"
           icon={<DiscoverIcon label="Activity icon" size="medium" />}
           isSelected
+          key="activity"
         />,
         <AkNavigationItem
           text="Your work"
           icon={<TrayIcon label="Your work icon" size="medium" />}
+          key="your-work"
         />,
         <AkNavigationItem
           text="Spaces"
           icon={<FolderIcon label="Spaces icon" size="medium" />}
+          key="spaces"
         />,
         <AkNavigationItem
           text="People"
           icon={<PeopleIcon label="People icon" size="medium" />}
+          key="people"
         />,
         <AkNavigationItem
           action={
@@ -125,15 +129,18 @@ export default class ConfluenceHome extends Component<*, *> {
           text="Add-ons"
           onClick={() => this.addOnsNestedNav()}
           icon={<AddonIcon label="Add-ons icon" size="medium" />}
+          key="add-ons"
         />,
         <AkNavigationItem
           text="Settings"
           icon={<SettingsIcon label="Settings icon" size="medium" />}
+          key="settings"
         />,
-        <AkNavigationItemGroup title="New Confluence Experience">
+        <AkNavigationItemGroup title="New Confluence Experience" key="new-exp">
           <AkNavigationItem
             icon={<EditorFeedbackIcon label="Feedback icon" size="medium" />}
             text="Give feedback"
+            key="feedback"
           />
           <AkNavigationItem
             icon={
@@ -146,16 +153,19 @@ export default class ConfluenceHome extends Component<*, *> {
               />
             }
             text="Opt out for now"
+            key="opt-out"
           />
         </AkNavigationItemGroup>,
-        <AkNavigationItemGroup title="My Spaces">
+        <AkNavigationItemGroup title="My Spaces" key="my-spaces">
           <AkNavigationItem
             icon={<ConfluenceIcon label="Confluence icon" size="medium" />}
             text="Confluence ADG 3"
+            key="adg3"
           />
           <AkNavigationItem
             icon={<WorldIcon label="World icon" size="medium" />}
             text="Atlaskit"
+            key="atlaskit"
           />
         </AkNavigationItemGroup>,
       ],

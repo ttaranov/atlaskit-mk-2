@@ -1,5 +1,42 @@
 # @atlaskit/editor-jira-transformer
 
+## 5.0.11
+- [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/editor-core@84.0.0
+  - @atlaskit/editor-json-transformer@4.0.16
+  - @atlaskit/editor-test-helpers@6.2.5
+  - @atlaskit/util-data-test@10.0.12
+
+## 5.0.10
+- [patch] Updated dependencies [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+  - @atlaskit/editor-json-transformer@4.0.15
+  - @atlaskit/editor-test-helpers@6.2.4
+  - @atlaskit/util-data-test@10.0.11
+  - @atlaskit/editor-core@83.0.0
+
+## 5.0.9
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 5.0.8
+- [patch] ED-5299: added mediaSingle to jira transformer [d73f846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d73f846)
+
+## 5.0.7
+- [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+  - @atlaskit/editor-json-transformer@4.0.13
+  - @atlaskit/editor-common@17.0.1
+  - @atlaskit/editor-core@82.0.0
+  - @atlaskit/editor-test-helpers@6.1.3
+
+## 5.0.6
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/editor-core@81.0.0
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/editor-json-transformer@4.0.12
+
 ## 5.0.5
 - [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/editor-common@16.0.0

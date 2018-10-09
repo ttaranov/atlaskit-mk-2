@@ -55,6 +55,19 @@ describe('GlobalQuickSearch', () => {
     expect(searchMock).toHaveBeenCalledWith('foo');
   });
 
+  it('should trim the search input', () => {
+    const searchMock = jest.fn();
+    const wrapper = render({ onSearch: searchMock });
+
+    const onSearchInput: Function = wrapper
+      .children()
+      .first()
+      .prop('onSearchInput');
+    onSearchInput({ target: { value: '  pattio   ' } });
+
+    expect(searchMock).toHaveBeenCalledWith('pattio');
+  });
+
   describe('Search result events', () => {
     const searchSessionId = 'random-session-id';
     let fireHighlightEventSpy;

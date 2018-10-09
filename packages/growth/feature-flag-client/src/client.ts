@@ -1,9 +1,15 @@
-import { FeatureFlag, Flags, ExposureEvent, DarkFeature } from './types';
+import {
+  FlagWithEvaluationDetails,
+  SimpleFlag,
+  Flags,
+  ExposureEvent,
+} from './types';
 import {
   isObject,
   enforceAttributes,
-  isFeatureFlag,
-  isDarkFeature,
+  isFlagWithEvaluationDetails,
+  isSimpleFlag,
+  validateFlags,
 } from './lib';
 
 import TrackedFlag from './tracked-flag';
@@ -31,6 +37,11 @@ export default class FeatureFlagClient {
       return;
     }
 
+    // @ts-ignore
+    if (process.env !== 'production') {
+      validateFlags(flags);
+    }
+
     this.flags = {
       ...this.flags,
       ...flags,
@@ -44,12 +55,16 @@ export default class FeatureFlagClient {
   getFlag(flagKey: string): TrackedFlag | UntrackedFlag | null {
     const flag = this.flags[flagKey];
 
-    if (isFeatureFlag(flag)) {
-      return new TrackedFlag(flagKey, flag as FeatureFlag, this.trackExposure);
+    if (isFlagWithEvaluationDetails(flag)) {
+      return new TrackedFlag(
+        flagKey,
+        flag as FlagWithEvaluationDetails,
+        this.trackExposure,
+      );
     }
 
-    if (isDarkFeature(flag)) {
-      return new UntrackedFlag(flagKey, flag as DarkFeature);
+    if (isSimpleFlag(flag)) {
+      return new UntrackedFlag(flagKey, flag as SimpleFlag);
     }
 
     return null;
@@ -117,7 +132,7 @@ export default class FeatureFlagClient {
     return flag.getJSONValue();
   }
 
-  trackExposure = (flagKey: string, flag: FeatureFlag) => {
+  trackExposure = (flagKey: string, flag: FlagWithEvaluationDetails) => {
     if (this.trackedFlags[flagKey] || !flag || !this.analyticsHandler) {
       return;
     }

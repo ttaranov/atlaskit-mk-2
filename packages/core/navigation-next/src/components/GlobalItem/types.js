@@ -18,9 +18,10 @@ export type GlobalItemPresentationProps = {
   size: Size,
 };
 
-export type GlobalItemRenderComponentProps = {
-  children: Node,
-  className: string,
+export type GlobalItemStyles = {
+  itemBase: { [key: string]: any },
+  badgeWrapper: { [key: string]: any },
+  itemWrapper: { [key: string]: any },
 };
 
 type GlobalItemIconProps = {
@@ -29,14 +30,14 @@ type GlobalItemIconProps = {
   size: 'large' | null,
 };
 
-export type GlobalItemProps = {
+export type HOCProvidedProps = {
+  /** An internal prop provided by our theme HOC. Should not be provided externally */
+  theme: GlobalTheme,
+};
+
+type BaseItemProps = HOCProvidedProps & {
   /** A component to render over the GlobalItem in the the badge position. */
   badge?: ComponentType<GlobalItemPresentationProps>,
-  /** A custom component to render instead of the default wrapper component.
-   * Could used to render a router Link, for example. The component will be
-   * provided with a className and children, which should be passed on to the
-   * element you render. */
-  component?: ComponentType<GlobalItemRenderComponentProps>,
   /** An href which this Item links to. If this prop is provided the Item will
    * render as an <a>. */
   href?: string,
@@ -46,10 +47,11 @@ export type GlobalItemProps = {
   icon: ?ComponentType<GlobalItemIconProps>,
   /* The id of the item to be used in analytics and react keying */
   id?: string,
-  /** The zero-based index for the position of the item within the global sidebar section.
-   *  Used for analytics purposes.
-   */
+  /** The zero-based index for the position of the item within the global
+   *  sidebar section. Used for analytics purposes. */
   index?: number,
+  /** Whether this GlobalItem should display as being selected. */
+  isSelected?: boolean,
   /** A label to pass to the `icon` component. */
   label?: string,
   /** A handler which will be called when the GlobalItem is clicked. */
@@ -67,5 +69,22 @@ export type GlobalItemProps = {
   tooltip?: Node,
 };
 
-export type GlobalItemPrimitiveProps = GlobalItemProps &
-  InteractionState & { theme: GlobalTheme };
+export type GlobalItemRenderComponentProps = BaseItemProps & {
+  children: Node,
+  className: string,
+};
+
+export type GlobalItemProps = BaseItemProps & {
+  /** A custom component to render instead of the default wrapper component.
+   * Could be used to render a router Link, for example. The component will be
+   * provided with the standard globalItem props. It will also be provided
+   * className, children and onClick props which should be passed on to the
+   * element you render. */
+  component?: ComponentType<GlobalItemRenderComponentProps>,
+};
+
+// TODO: Type withTheme HOC instead and have consumers of GlobalItemProps reference
+// the type of the GlobalItem component instead
+export type ExternalGlobalItemProps = $Diff<GlobalItemProps, HOCProvidedProps>;
+
+export type GlobalItemPrimitiveProps = GlobalItemProps & InteractionState;

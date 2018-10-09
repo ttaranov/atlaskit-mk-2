@@ -843,7 +843,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Macros should transform h4 to Bold and Grey under blockquote 1`] = `
+exports[`JIRA wiki markup - Macros should transform h4 to Bold and Gray under blockquote 1`] = `
 Object {
   "content": Array [
     Object {
@@ -857,7 +857,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "color": "#97A0AF",
+                    "color": "#97a0af",
                   },
                   "type": "textColor",
                 },
@@ -876,7 +876,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Macros should transform h5 to Italic and Grey under blockquote 1`] = `
+exports[`JIRA wiki markup - Macros should transform h5 to Italic and Gray under blockquote 1`] = `
 Object {
   "content": Array [
     Object {
@@ -890,7 +890,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "color": "#97A0AF",
+                    "color": "#97a0af",
                   },
                   "type": "textColor",
                 },
@@ -909,7 +909,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Macros should transform h6 to Grey under blockquote 1`] = `
+exports[`JIRA wiki markup - Macros should transform h6 to Gray under blockquote 1`] = `
 Object {
   "content": Array [
     Object {
@@ -920,7 +920,7 @@ Object {
               "marks": Array [
                 Object {
                   "attrs": Object {
-                    "color": "#97A0AF",
+                    "color": "#97a0af",
                   },
                   "type": "textColor",
                 },

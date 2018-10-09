@@ -1,5 +1,8 @@
 # @atlaskit/analytics-listeners
 
+## 4.0.4
+- [patch] FS-3057 pick fields from context [187d175](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/187d175)
+
 ## 4.0.3
 - [patch] Introduce media analytics listener [e7d7ab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d7ab1)
 

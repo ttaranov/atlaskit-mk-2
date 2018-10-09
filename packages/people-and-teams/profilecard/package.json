@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "config": {
     "access": "public"
   },
@@ -12,9 +12,9 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^14.0.8",
-    "@atlaskit/button": "^9.0.6",
-    "@atlaskit/icon": "^13.2.5",
+    "@atlaskit/avatar": "^14.0.11",
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/icon": "^14.0.0",
     "@atlaskit/layer": "^5.0.5",
     "@atlaskit/spinner": "^9.0.6",
     "@atlaskit/theme": "^6.0.0",
@@ -28,7 +28,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/docs": "^5.0.8",
     "@atlaskit/dynamic-table": "^10.0.9",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^10.0.7",

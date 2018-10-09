@@ -1,5 +1,14 @@
 # @atlaskit/icon
 
+## 14.0.0
+- [major] Remove product logo icons from icons, recommend using @atlaskit/logo instead [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+- [patch] Updated dependencies [709b239](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/709b239)
+  - @atlaskit/icon-file-type@1.0.0
+  - @atlaskit/icon-object@1.0.0
+
+## 13.9.0
+- [minor] Add like icon [cd71c5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd71c5f)
+
 ## 13.8.1
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/tooltip@12.0.14

@@ -46,7 +46,7 @@ As we begin composing the navigation we might as well start at the bottom - the 
 
 ${code`
 import GlobalNavigation from '@atlaskit/global-navigation';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo/dist/esm/AtlassianLogo/Icon';
 
 const MyGlobalNavigation = () => (
   <GlobalNavigation

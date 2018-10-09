@@ -11,7 +11,8 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
-import ViewTracker from '../ViewTracker';
+import ItemComponent from '../ItemComponent';
+import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
@@ -19,8 +20,10 @@ import type { GlobalNavigationProps, DrawerName } from './types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
-  id,
+  dropdownItems,
   icon,
+  id,
+  itemComponent,
   label,
   onClick,
   tooltip,
@@ -29,8 +32,10 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   href,
   size,
 }) => ({
-  id,
+  dropdownItems,
   icon,
+  id,
+  itemComponent,
   label,
   onClick,
   tooltip,
@@ -72,21 +77,9 @@ export default class GlobalNavigation
     };
 
     this.drawers.forEach((drawer: DrawerName) => {
-      const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+      this.updateDrawerControlledStatus(drawer, props);
 
-      if (
-        props[
-          `on${capitalisedDrawerName.substr(
-            0,
-            capitalisedDrawerName.length - 6, // Trim the `Drawer` bit from ${drawerType}Drawer
-          )}Click`
-        ]
-      ) {
-        this[`is${capitalisedDrawerName}Controlled`] = false;
-        return;
-      }
-      // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
-      this[`is${capitalisedDrawerName}Controlled`] = true;
+      const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
 
       if (
         props[`${drawer}DrawerContents`] &&
@@ -106,6 +99,8 @@ export default class GlobalNavigation
 
   componentDidUpdate(prevProps: GlobalNavigationProps) {
     this.drawers.forEach(drawer => {
+      this.updateDrawerControlledStatus(drawer, this.props);
+
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
       // Do nothing if it's a controlled drawer
       if (this[`is${capitalisedDrawerName}Controlled`]) {
@@ -125,6 +120,27 @@ export default class GlobalNavigation
       }
     });
   }
+
+  updateDrawerControlledStatus = (
+    drawer: DrawerName,
+    props: GlobalNavigationProps,
+  ) => {
+    const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+
+    if (
+      props[
+        `on${capitalisedDrawerName.substr(
+          0,
+          capitalisedDrawerName.length - 6, // Trim the `Drawer` bit from ${drawerType}Drawer
+        )}Click`
+      ]
+    ) {
+      this[`is${capitalisedDrawerName}Controlled`] = false;
+    } else {
+      // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
+      this[`is${capitalisedDrawerName}Controlled`] = true;
+    }
+  };
 
   getCapitalisedDrawerName = (drawerName: DrawerName) => {
     return `${drawerName[0].toUpperCase()}${drawerName.slice(1)}Drawer`;
@@ -218,6 +234,7 @@ export default class GlobalNavigation
       >
         <Fragment>
           <GlobalNav
+            itemComponent={ItemComponent}
             primaryItems={primaryItems}
             secondaryItems={secondaryItems}
           />
@@ -240,7 +257,10 @@ export default class GlobalNavigation
                 shouldUnmountOnExit={shouldUnmountOnExit}
                 width="wide"
               >
-                <ViewTracker name={analyticsIdMap[drawer]} />
+                <ScreenTracker
+                  name={analyticsIdMap[drawer]}
+                  isVisible={this.state[`is${capitalisedDrawerName}Open`]}
+                />
                 <DrawerContents />
               </Drawer>
             );

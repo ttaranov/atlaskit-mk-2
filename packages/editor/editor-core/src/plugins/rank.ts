@@ -77,6 +77,7 @@ export default {
     'width',
     'maxContentSize',
     'multilineContent',
+    'grid',
   ],
   nodes: [
     'doc',

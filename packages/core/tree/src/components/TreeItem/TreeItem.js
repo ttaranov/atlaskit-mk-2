@@ -1,10 +1,9 @@
 // @flow
 import { Component } from 'react';
 import type {
-  DragHandleProps,
   DraggableProps,
   DraggableStateSnapshot,
-} from 'react-beautiful-dnd';
+} from 'react-beautiful-dnd-next';
 import { isSamePath } from '../../utils/path';
 import { sameProps } from '../../utils/react';
 import type {
@@ -21,50 +20,24 @@ export default class TreeItem extends Component<Props> {
     );
   }
 
-  patchDragHandleProps = (
-    dragHandleProps: ?DragHandleProps,
-  ): ?DragHandleProps => {
-    const { onDragAction } = this.props;
-    if (dragHandleProps) {
-      return {
-        ...dragHandleProps,
-        onMouseDown: (event: MouseEvent) => {
-          onDragAction('mouse');
-          if (dragHandleProps) {
-            dragHandleProps.onMouseDown(event);
-          }
-        },
-        onKeyDown: (event: KeyboardEvent) => {
-          onDragAction('key');
-          if (dragHandleProps) {
-            dragHandleProps.onKeyDown(event);
-          }
-        },
-        onTouchStart: (event: TouchEvent) => {
-          onDragAction('touch');
-          if (dragHandleProps) {
-            dragHandleProps.onTouchStart(event);
-          }
-        },
-      };
-    }
-    return null;
-  };
-
   patchDraggableProps = (
     draggableProps: DraggableProps,
     snapshot: DraggableStateSnapshot,
   ): TreeDraggableProps => {
     const { path, offsetPerLevel } = this.props;
 
-    let transition = '';
-    if (snapshot.isDragging) {
-      transition = 'padding-left 0.15s ease-out';
-    } else {
-      transition = draggableProps.style
-        ? draggableProps.style.transition
-        : null;
+    const transitions =
+      draggableProps.style && draggableProps.style.transition
+        ? [draggableProps.style.transition]
+        : [];
+    if (snapshot.dropAnimation) {
+      transitions.push(
+        `padding-left ${snapshot.dropAnimation.duration}s ${
+          snapshot.dropAnimation.curve
+        }`,
+      );
     }
+    const transition = transitions.join(', ');
 
     //$FlowFixMe
     return {
@@ -99,7 +72,7 @@ export default class TreeItem extends Component<Props> {
         provided.draggableProps,
         snapshot,
       ),
-      dragHandleProps: this.patchDragHandleProps(provided.dragHandleProps),
+      dragHandleProps: provided.dragHandleProps,
       innerRef,
     };
 

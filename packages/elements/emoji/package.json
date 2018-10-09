@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "41.0.1",
+  "version": "43.0.0",
   "config": {
     "access": "public"
   },
@@ -21,12 +21,12 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^4.0.4",
-    "@atlaskit/button": "^9.0.6",
-    "@atlaskit/field-base": "^11.0.5",
-    "@atlaskit/icon": "^13.2.5",
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/field-base": "^11.0.8",
+    "@atlaskit/icon": "^14.0.0",
     "@atlaskit/spinner": "^9.0.6",
     "@atlaskit/theme": "^6.0.0",
-    "@atlaskit/tooltip": "^12.0.9",
+    "@atlaskit/tooltip": "^12.1.1",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^3.0.3",
     "babel-runtime": "^6.26.0",
@@ -38,16 +38,15 @@
     "react-virtualized": "^9.8.0",
     "tslib": "^1.8.0",
     "typestyle": "^1.3.8",
-    "ua-parser-js": "^0.7.9",
     "url": "^0.11.0",
     "uuid": "^3.1.0",
     "xregexp": "^3.2.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.2.0",
+    "@atlaskit/media-core": "^24.1.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
-    "rxjs": "^5.1.0"
+    "rxjs": "^5.5.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -60,11 +59,11 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/docs": "^5.0.8",
     "@atlaskit/layer": "^5.0.4",
-    "@atlaskit/media-core": "^23.2.0",
+    "@atlaskit/media-core": "^24.1.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.9",
+    "@atlaskit/util-data-test": "^10.0.12",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
@@ -74,7 +73,7 @@
     "p-wait-for": "^1.0.0",
     "react": "^16.4.0",
     "react-addons-perf": "^15.3.2",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.0",
     "sinon": "^2.2.0",
     "whatwg-fetch": "^2.0.3"
   },

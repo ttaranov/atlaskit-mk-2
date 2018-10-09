@@ -32,31 +32,28 @@ const cssSelectorsForm = [
   createRepoBtn,
   cancelBtn,
 ];
+// LB: Skip this?
+BrowserTestCase(
+  'Create repository form should render without errors',
+  { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated
+  async client => {
+    const formTest = new Page(client);
+    await formTest.goto(urlFormCreateRepo);
+    await formTest.waitForSelector(createForm);
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('test skip', () => {
-  BrowserTestCase(
-    'Create repository form should render without errors',
-    { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated
-    async client => {
-      const formTest = await new Page(client);
-      await formTest.goto(urlFormCreateRepo);
-      await formTest.waitForSelector(createForm);
+    cssSelectorsForm.forEach(async cssSelector => {
+      const selectorIsVisible = await formTest.isVisible(cssSelector);
+      expect(selectorIsVisible).toBe(true);
+    });
 
-      cssSelectorsForm.forEach(async cssSelector => {
-        const selectorIsVisible = await formTest.isVisible(cssSelector);
-        expect(selectorIsVisible).toBe(true);
+    if (formTest.log('browser').value) {
+      formTest.log('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Console errors :${val.message} when view the form`,
+        );
       });
-
-      if (formTest.log('browser').value) {
-        formTest.log('browser').value.forEach(val => {
-          assert.notEqual(
-            val.level,
-            'SEVERE',
-            `Console errors :${val.message} when view the form`,
-          );
-        });
-      }
-    },
-  );
-});
+    }
+  },
+);

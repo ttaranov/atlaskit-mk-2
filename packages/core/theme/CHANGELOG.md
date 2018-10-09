@@ -1,5 +1,11 @@
 # @atlaskit/theme
 
+## 6.1.0
+- [minor] Adds new theming API to Avatar and AvatarItem components [79dd93f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79dd93f)
+
+## 6.0.4
+- [patch] Added assistive styles from util-shared-styles [dc563c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc563c1)
+
 ## 6.0.3
 - [patch] fixed font-size and font-weight of h100 in theme to 11px and 700 respectively [9742864](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9742864)
 

@@ -8,7 +8,7 @@ import {
   FileDetails,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import {
   SharedCardProps,
   CardEventProps,
@@ -23,7 +23,10 @@ import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
-import { isUrlPreviewIdentifier } from '../../utils/identifier';
+import {
+  isUrlPreviewIdentifier,
+  isExternalImageIdentifier,
+} from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
@@ -123,6 +126,22 @@ export class Card extends Component<CardProps, CardState> {
       return;
     }
 
+    if (identifier.mediaItemType === 'external-image') {
+      const { dataURI, name } = identifier;
+
+      this.setState({
+        status: 'complete',
+        dataURI,
+        metadata: {
+          id: dataURI,
+          name: name || dataURI,
+          mediaType: 'image',
+        },
+      });
+
+      return;
+    }
+
     if (identifier.mediaItemType !== 'file') {
       try {
         const metadata = await getLinkMetadata(identifier, context);
@@ -144,8 +163,8 @@ export class Card extends Component<CardProps, CardState> {
     const resolvedId = await id;
 
     this.unsubscribe();
-    this.subscription = context
-      .getFile(resolvedId, { collectionName })
+    this.subscription = context.file
+      .getFileState(resolvedId, { collectionName })
       .subscribe({
         next: async state => {
           const {
@@ -237,7 +256,10 @@ export class Card extends Component<CardProps, CardState> {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
-      : identifier.id;
+      : isExternalImageIdentifier(identifier)
+        ? 'external-image'
+        : identifier.id;
+
     return getBaseAnalyticsContext('Card', id);
   }
 

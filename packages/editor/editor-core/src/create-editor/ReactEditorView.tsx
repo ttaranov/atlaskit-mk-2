@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
+import { intlShape } from 'react-intl';
+
 import { EventDispatcher, createDispatch } from '../event-dispatcher';
 import { processRawValue } from '../utils';
 import createPluginList from './create-plugins-list';
@@ -58,6 +60,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
 
   static contextTypes = {
     getAtlaskitAnalyticsEventHandlers: PropTypes.func,
+    intl: intlShape,
   };
 
   constructor(props: EditorViewProps & T) {

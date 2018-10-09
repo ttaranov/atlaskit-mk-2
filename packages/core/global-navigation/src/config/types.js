@@ -47,7 +47,7 @@ export type ProductConfigShape = {
   starred: ?ItemShape,
   notification: ?ItemShape,
   appSwitcher: ?{
-    component: ComponentType<*>,
+    itemComponent: ComponentType<*>,
   },
   help: ?DropdownItem,
   profile: ?DropdownItem,
@@ -56,18 +56,25 @@ export type ProductConfigShape = {
 type Size = 'small' | 'large';
 
 export type NavItem = {
+  badge?: ComponentType<*>,
+  component?: ComponentType<*>,
+  dropdownItems?: ComponentType<{}>,
+  href?: string,
+  icon?: ComponentType<*>,
+  id?: string,
+  // Opt out of rendering a GlobalItem entirely
+  itemComponent?: ComponentType<{}>,
   label?: string,
   onClick?: () => void,
-  icon?: ComponentType<*>,
   rank: number,
   section: 'primary' | 'secondary',
-  component?: ComponentType<*>,
-  badge?: ComponentType<*>,
-  tooltip?: string,
-  href?: string,
   size?: Size,
-  id?: string,
+  tooltip?: string,
 };
 
 // The shape of the item data required by GlobalNav
-export type GlobalNavItemData = GlobalItemProps & { key?: string };
+export type GlobalNavItemData = GlobalItemProps & {
+  dropdownItems?: ComponentType<{}>,
+  itemComponent?: ComponentType<{}>,
+  key?: string,
+};

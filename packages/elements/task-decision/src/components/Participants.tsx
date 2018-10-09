@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import AvatarGroup from '@atlaskit/avatar-group';
+import AvatarGroupType from '@atlaskit/avatar-group';
+
 import { colors } from '@atlaskit/theme';
+import * as Loadable from 'react-loadable';
+
+export const AvatarGroupLoadable = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-task-decision-avatargroup" */
+    '@atlaskit/avatar-group').then(module => module.default),
+  loading: () => null,
+}) as typeof AvatarGroupType;
 
 import { Participant } from '../types';
 
@@ -20,7 +29,7 @@ export default class Partipants extends PureComponent<Props, {}> {
 
   render() {
     return (
-      <AvatarGroup
+      <AvatarGroupLoadable
         appearance="stack"
         borderColor={colors.N20}
         maxCount={4}

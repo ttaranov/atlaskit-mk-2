@@ -14,7 +14,7 @@ export class ImageIcon extends React.Component<ImageIconProps> {
   render() {
     const { alt = '', src, size = 16, title } = this.props;
     if (!src) {
-      return this.props.default;
+      return this.props.default || null;
     }
     return (
       <ImageLoader

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { NumberColumnContainer } from './styles';
 import { isRowSelected } from 'prosemirror-utils';
 import { NumberedRow } from './NumberedRow';
 import { EditorState } from 'prosemirror-state';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   state: EditorState;
@@ -63,6 +63,6 @@ export default class NumberColumn extends Component<Props, any> {
         </NumberedRow>,
       );
     }
-    return <NumberColumnContainer>{numberRows}</NumberColumnContainer>;
+    return <div className={ClassName.NUMBERED_COLUMN}>{numberRows}</div>;
   }
 }

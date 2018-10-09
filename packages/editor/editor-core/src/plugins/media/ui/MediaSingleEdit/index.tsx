@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 
 import WrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import WrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
@@ -11,18 +12,27 @@ import {
   MediaSingleLayout,
   akEditorFullPageMaxWidth,
 } from '@atlaskit/editor-common';
-import {
-  akColorN70,
-  akColorR300,
-  akColorR400,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
-import { MediaPluginState } from '../../pm-plugins/main';
+import commonMessages from '../../../../messages';
 import UiToolbarButton from '../../../../ui/ToolbarButton';
 import UiSeparator from '../../../../ui/Separator';
 import UiFloatingToolbar from '../../../../ui/FloatingToolbar';
-
 import { closestElement } from '../../../../utils';
+import { MediaPluginState } from '../../pm-plugins/main';
+
+export const messages = defineMessages({
+  wrapLeft: {
+    id: 'fabric.editor.wrapLeft',
+    defaultMessage: 'Wrap left',
+    description: 'Aligns your image to the left and wraps text around it.',
+  },
+  wrapRight: {
+    id: 'fabric.editor.wrapRight',
+    defaultMessage: 'Wrap right',
+    description: 'Aligns your image to the right and wraps text around it.',
+  },
+});
 
 export interface Props {
   pluginState: MediaPluginState;
@@ -36,26 +46,19 @@ export interface State {
 }
 
 const icons = {
-  'wrap-left': {
-    icon: WrapLeftIcon,
-    label: 'Align left',
-  },
-  center: {
-    icon: CenterIcon,
-    label: 'Align center',
-  },
-  'wrap-right': {
-    icon: WrapRightIcon,
-    label: 'Align right',
-  },
-  wide: {
-    icon: WideIcon,
-    label: 'Wide',
-  },
-  'full-width': {
-    icon: FullWidthIcon,
-    label: 'Full width',
-  },
+  'wrap-left': WrapLeftIcon,
+  center: CenterIcon,
+  'wrap-right': WrapRightIcon,
+  wide: WideIcon,
+  'full-width': FullWidthIcon,
+};
+
+const layoutToMessages = {
+  'wrap-left': messages.wrapLeft,
+  center: commonMessages.layoutFixedWidth,
+  'wrap-right': messages.wrapRight,
+  wide: commonMessages.layoutWide,
+  'full-width': commonMessages.layoutFullWidth,
 };
 
 const ToolbarButton = styled(UiToolbarButton)`
@@ -83,17 +86,20 @@ const FloatingToolbar = styled(UiFloatingToolbar)`
 
 const ToolbarButtonDestructive = styled(ToolbarButton)`
   &:hover {
-    color: ${akColorR300} !important;
+    color: ${colors.R300} !important;
   }
   &:active {
-    color: ${akColorR400} !important;
+    color: ${colors.R400} !important;
   }
   &[disabled]:hover {
-    color: ${akColorN70} !important;
+    color: ${colors.N70} !important;
   }
 `;
 
-export default class MediaSingleEdit extends React.Component<Props, State> {
+class MediaSingleEdit extends React.Component<
+  Props & InjectedIntlProps,
+  State
+> {
   state: State = { layout: 'center', allowBreakout: true, allowLayout: true };
 
   componentDidMount() {
@@ -105,6 +111,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
       target,
       layout: selectedLayout,
@@ -116,15 +123,21 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
       !closestElement(target, 'li') &&
       !closestElement(target, 'table')
     ) {
+      const labelRemove = formatMessage(commonMessages.remove);
       return (
-        <FloatingToolbar target={target} offset={[0, 12]} fitHeight={32}>
+        <FloatingToolbar
+          target={target}
+          offset={[0, 12]}
+          fitHeight={32}
+          alignX="center"
+        >
           {Object.keys(icons).map((layout, index) => {
             // Don't render Wide and Full width button for image smaller than editor content width
             if (index > 2 && !allowBreakout) {
               return;
             }
-            const Icon = icons[layout].icon;
-            const label = icons[layout].label;
+            const Icon = icons[layout];
+            const label = formatMessage(layoutToMessages[layout]);
             return (
               <ToolbarButton
                 spacing="compact"
@@ -133,7 +146,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
                 selected={layout === selectedLayout}
                 onClick={this.handleChangeLayout.bind(this, layout)}
                 title={label}
-                iconBefore={<Icon label={`Change layout to ${label}`} />}
+                iconBefore={<Icon label={label} />}
               />
             );
           })}
@@ -141,8 +154,8 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
           <ToolbarButtonDestructive
             spacing="compact"
             onClick={this.handleRemove}
-            title="Remove image"
-            iconBefore={<RemoveIcon label="Remove image" />}
+            title={labelRemove}
+            iconBefore={<RemoveIcon label={labelRemove} />}
           />
         </FloatingToolbar>
       );
@@ -172,3 +185,5 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
     this.setState({ target, layout, allowBreakout, allowLayout });
   };
 }
+
+export default injectIntl(MediaSingleEdit);

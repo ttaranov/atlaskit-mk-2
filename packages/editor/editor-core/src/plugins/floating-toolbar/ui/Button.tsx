@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { ReactElement, MouseEvent } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import UiButton, { themeNamespace } from '@atlaskit/button';
+
 import Tooltip from '@atlaskit/tooltip';
+import UiButton, { themeNamespace } from '@atlaskit/button';
 import { colors, themed } from '@atlaskit/theme';
+
+import styled, { ThemeProvider } from 'styled-components';
 import { hexToRgba } from '../../../utils/color';
 
 const editorButtonTheme = {

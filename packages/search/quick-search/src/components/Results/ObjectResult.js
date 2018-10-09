@@ -41,11 +41,11 @@ export default class ObjectResult extends PureComponent<Props> {
   getSubtext() {
     const { objectKey, containerName } = this.props;
 
-    if (objectKey) {
+    if (objectKey && containerName) {
       return `${objectKey} · ${containerName}`;
     }
 
-    return containerName;
+    return containerName || objectKey;
   }
 
   render() {

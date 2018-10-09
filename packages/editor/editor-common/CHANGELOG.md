@@ -1,5 +1,62 @@
 # @atlaskit/editor-common
 
+## 18.0.0
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/emoji@43.0.0
+  - @atlaskit/media-card@38.0.0
+  - @atlaskit/editor-json-transformer@4.0.16
+  - @atlaskit/editor-test-helpers@6.2.5
+  - @atlaskit/media-core@24.1.0
+
+## 17.1.1
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 17.1.0
+- [minor] Allow empty content under doc [47d50ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47d50ad)
+
+## 17.0.9
+- [patch] ED-5457: moving table css classnames to a const [2e1f627](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1f627)
+
+## 17.0.8
+- [patch] ED-5246 support image resizing [111d02f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111d02f)
+
+## 17.0.7
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/emoji@42.0.1
+  - @atlaskit/mention@15.0.10
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/profilecard@4.0.10
+  - @atlaskit/icon@14.0.0
+
+## 17.0.6
+- [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
+
+## 17.0.5
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-card@37.0.0
+
+## 17.0.4
+- [patch] ED-5313 add width to mediaSingle [3f8c0ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f8c0ee)
+
+## 17.0.3
+- [patch] Numbered column in table should be able to fit number > 100 [7a43676](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a43676)
+
+## 17.0.2
+- [patch] ED-5299: added mediaSingle to jira transformer [d73f846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d73f846)
+
+## 17.0.1
+- [patch] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+
+## 17.0.0
+- [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/emoji@42.0.0
+  - @atlaskit/media-card@36.0.0
+  - @atlaskit/editor-json-transformer@4.0.12
+  - @atlaskit/media-core@24.0.0
+
 ## 16.2.3
 - [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
 

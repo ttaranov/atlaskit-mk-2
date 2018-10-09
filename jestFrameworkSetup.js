@@ -1,8 +1,10 @@
 /* eslint-disable */
-require('jest-styled-components');
-const snakeCase = require('snake-case');
-const { toMatchSnapshot } = require('jest-snapshot');
-const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
+import 'jest-styled-components';
+import snakeCase from 'snake-case';
+import { toMatchSnapshot } from 'jest-snapshot';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
+import * as emotion from 'emotion';
+import { createSerializer } from 'jest-emotion';
 
 let consoleError;
 let consoleWarn;
@@ -315,6 +317,8 @@ if (process.env.CI) {
     console.log = consoleLog;
   });
 }
+
+expect.addSnapshotSerializer(createSerializer(emotion));
 
 // set up for visual regression
 if (process.env.VISUAL_REGRESSION) {

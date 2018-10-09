@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { IntlProvider } from 'react-intl';
 import {
   EditorProps,
   EditorInstance,
@@ -62,19 +63,21 @@ export default function createEditorForTests<T = any>({
       render={(portalProvider: any) => {
         portalProviderAPI = portalProvider;
         return (
-          <>
-            <TestReactEditorView
-              editorProps={editorProps}
-              portalProviderAPI={portalProvider}
-              providerFactory={
-                providerFactory ? providerFactory : new ProviderFactory()
-              }
-              onEditorCreated={() => {}}
-              onEditorDestroyed={() => {}}
-              plugins={plugins}
-            />
-            <PortalRenderer portalProviderAPI={portalProviderAPI} />
-          </>
+          <IntlProvider locale="en">
+            <>
+              <TestReactEditorView
+                editorProps={editorProps}
+                portalProviderAPI={portalProvider}
+                providerFactory={
+                  providerFactory ? providerFactory : new ProviderFactory()
+                }
+                onEditorCreated={() => {}}
+                onEditorDestroyed={() => {}}
+                plugins={plugins}
+              />
+              <PortalRenderer portalProviderAPI={portalProviderAPI} />
+            </>
+          </IntlProvider>
         );
       }}
     />,

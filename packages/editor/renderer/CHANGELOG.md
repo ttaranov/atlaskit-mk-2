@@ -1,5 +1,78 @@
 # @atlaskit/renderer
 
+## 26.0.0
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/media-card@38.0.0
+  - @atlaskit/media-filmstrip@15.0.0
+  - @atlaskit/editor-json-transformer@4.0.16
+  - @atlaskit/editor-test-helpers@6.2.5
+  - @atlaskit/task-decision@10.0.1
+  - @atlaskit/util-data-test@10.0.12
+  - @atlaskit/media-core@24.1.0
+  - @atlaskit/media-test-helpers@18.2.3
+
+## 25.0.0
+- [major] Upgrade task and decisions and editor to use @atlaskit/analytics-next. Remove usage of @atlaskit/analytics. [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+
+## 24.3.2
+- [patch] Upgraded react-syntax-highlighter to 8.0.2 [7cc7000](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cc7000)
+
+## 24.3.1
+- [patch] ED-5457: moving table css classnames to a const [2e1f627](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1f627)
+
+## 24.3.0
+- [minor] ED-5246 support image resizing [111d02f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111d02f)
+
+## 24.2.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/editor-common@17.0.7
+  - @atlaskit/mention@15.0.10
+  - @atlaskit/status@0.2.1
+  - @atlaskit/task-decision@9.0.1
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/media-filmstrip@14.0.3
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/profilecard@4.0.10
+  - @atlaskit/icon@14.0.0
+
+## 24.2.0
+- [minor] ED-5203 Added support for truncating the renderer with a fade out [bf07ac4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf07ac4)
+
+## 24.1.2
+- [patch] Added code splits to the node types of the Renderer [8dd6e52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dd6e52)
+
+## 24.1.1
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/editor-common@17.0.5
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-filmstrip@14.0.2
+  - @atlaskit/smart-card@8.2.2
+  - @atlaskit/media-card@37.0.0
+  - @atlaskit/media-test-helpers@18.2.0
+
+## 24.1.0
+- [minor] FS-2963 When inserting a status, I can pick a colour from a predefined colour picker [a633d77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a633d77)
+- [patch] Updated dependencies [547b3d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/547b3d9)
+  - @atlaskit/status@0.2.0
+
+## 24.0.1
+- [patch] Numbered column in table should be able to fit number > 100 [7a43676](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a43676)
+
+## 24.0.0
+- [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/media-card@36.0.0
+  - @atlaskit/media-filmstrip@14.0.0
+  - @atlaskit/editor-json-transformer@4.0.12
+  - @atlaskit/media-core@24.0.0
+  - @atlaskit/media-test-helpers@18.0.0
+  - @atlaskit/task-decision@9.0.0
+
 ## 23.0.1
 - [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
   - @atlaskit/editor-common@16.2.1

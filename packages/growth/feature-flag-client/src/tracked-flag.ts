@@ -1,16 +1,16 @@
-import { FeatureFlag, Flag } from './types';
-import { isBoolean, isObject, isOneOf } from './lib';
+import { FlagWithEvaluationDetails, Flag } from './types';
+import { isBoolean, isObject, isOneOf, isString } from './lib';
 
 export default class TrackedFlag implements Flag {
   flagKey: string;
-  flag: FeatureFlag;
+  flag: FlagWithEvaluationDetails;
   value: string | boolean | object;
-  trackExposure: (flagKey: string, flag: FeatureFlag) => void;
+  trackExposure: (flagKey: string, flag: FlagWithEvaluationDetails) => void;
 
   constructor(
     flagKey: string,
-    flag: FeatureFlag,
-    trackExposure: (flagKey: string, flag: FeatureFlag) => void,
+    flag: FlagWithEvaluationDetails,
+    trackExposure: (flagKey: string, flag: FlagWithEvaluationDetails) => void,
   ) {
     this.flagKey = flagKey;
     this.value = flag.value;
@@ -38,7 +38,10 @@ export default class TrackedFlag implements Flag {
     oneOf: string[];
     shouldTrackExposureEvent?: boolean;
   }): string {
-    if (!isOneOf(this.value as string, options.oneOf)) {
+    if (
+      !isString(this.value) ||
+      !isOneOf(this.value as string, options.oneOf)
+    ) {
       return options.default;
     }
     if (options.shouldTrackExposureEvent) {

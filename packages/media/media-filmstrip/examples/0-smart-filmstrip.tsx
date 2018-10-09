@@ -6,6 +6,7 @@ import {
   audioFileId,
   errorFileId,
   gifFileId,
+  externalImageIdentifier,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { CardEvent, FileIdentifier, CardAction } from '@atlaskit/media-card';
@@ -91,6 +92,10 @@ class Example extends Component<{}, ExampleState> {
         ...this.cardProps,
       },
       {
+        identifier: externalImageIdentifier,
+        ...this.cardProps,
+      },
+      {
         identifier: audioFileId,
         ...this.cardProps,
       },
@@ -144,8 +149,8 @@ class Example extends Component<{}, ExampleState> {
       collection: defaultCollectionName,
     };
 
-    context
-      .uploadFile(uplodableFile)
+    context.file
+      .upload(uplodableFile)
       .first()
       .subscribe({
         next: state => {

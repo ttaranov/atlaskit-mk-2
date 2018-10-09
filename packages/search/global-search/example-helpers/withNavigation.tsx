@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Props } from '../src';
 import BasicNavigation from './BasicNavigation';
 import LocaleIntlProvider from './LocaleIntlProvider';
+import { DEVELOPMENT_LOGGER } from './logger';
 
 const RadioGroup = styled.div`
   position: relative;
@@ -142,6 +143,7 @@ export default function withNavigation(
                     currentContentId: '123',
                     searchReferrerId: '123',
                   }}
+                  logger={DEVELOPMENT_LOGGER}
                   {...this.props}
                 />
               </LocaleIntlProvider>

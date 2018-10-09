@@ -9,14 +9,12 @@ import { InsertType } from '../../../analytics/fabric-analytics-helper';
 export const buildAnalyticsPayload = (
   actionSubject: string,
   action: string,
-  actionSubjectId: string,
   eventType: EventType,
   sessionId: string,
   otherAttributes = {},
 ): GasPayload => ({
   action,
   actionSubject,
-  actionSubjectId,
   eventType,
   attributes: {
     packageName,
@@ -57,9 +55,8 @@ export const buildTypeAheadCancelPayload = (
 ): GasPayload => {
   const { queryLength, spaceInQuery } = extractAttributesFromQuery(query);
   return buildAnalyticsPayload(
-    'typeahead',
-    'cancelled',
     'mentionTypeahead',
+    'cancelled',
     'ui',
     sessionId,
     {
@@ -100,9 +97,8 @@ export const buildTypeAheadInsertedPayload = (
 ): GasPayload => {
   const { queryLength, spaceInQuery } = extractAttributesFromQuery(query);
   return buildAnalyticsPayload(
-    'typeahead',
-    isClicked(insertType) ? 'clicked' : 'pressed',
     'mentionTypeahead',
+    isClicked(insertType) ? 'clicked' : 'pressed',
     'ui',
     sessionId,
     {

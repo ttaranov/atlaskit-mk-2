@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyledNumberedRow } from './styles';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface NumberedRowProps {
   row: number;
@@ -30,7 +30,7 @@ export class NumberedRow extends React.Component<NumberedRowProps> {
     const { row, rowElements, isRowActive, isRowDanger } = this.props;
 
     return (
-      <StyledNumberedRow
+      <div
         style={{
           height: (rowElements[row] as HTMLElement).offsetHeight + 1,
         }}
@@ -38,13 +38,13 @@ export class NumberedRow extends React.Component<NumberedRowProps> {
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         className={[
-          'numbered-row',
+          ClassName.NUMBERED_COLUMN_BUTTON,
           isRowActive ? 'active' : '',
           isRowDanger ? 'danger' : '',
         ].join(' ')}
       >
         {this.props.children}
-      </StyledNumberedRow>
+      </div>
     );
   }
 }

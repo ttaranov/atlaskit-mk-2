@@ -6,7 +6,9 @@ import {
   messageEditor,
   editable,
   picker,
+  lozenge as mentionId,
 } from './_mention-helpers';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 /*
  * Safari does not understand webdriver keyboard actions so a
@@ -19,9 +21,8 @@ BrowserTestCase(
   'Mention: user can click ToolbarMentionPicker and see mention',
   { skip: ['ie'] },
   async client => {
-    const mentionButton = '[aria-label="Add mention"]';
-    const mentionId = '[data-mention-id="0"]';
-    const browser = await new Page(client);
+    const mentionButton = `[aria-label="${messages.mention.defaultMessage}"]`;
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.waitForSelector(mentionButton);
@@ -38,7 +39,7 @@ BrowserTestCase(
   'Mention: should not insert on space if multiple exact nickname match',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -57,12 +58,19 @@ BrowserTestCase(
   'Mention: inserted if space on single match',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
     await browser.waitForSelector(picker);
-    await browser.type(editable, 'Caro');
+    await browser.type(editable, 'Carolyn');
+    // Wait until there is only one mention left in picker.
+    await browser.browser.waitUntil(async () => {
+      const mentionsInPicker = await browser.$$(
+        `${picker} [data-mention-name]`,
+      );
+      return mentionsInPicker.value.length === 1;
+    });
     await browser.type(editable, ' text ');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
@@ -74,7 +82,7 @@ BrowserTestCase(
   // TODO: Fix unknown character on BS
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '`this is inline code ');
@@ -90,7 +98,7 @@ BrowserTestCase(
   // TODO: Fix unknown character on BS
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '```');
@@ -106,7 +114,7 @@ BrowserTestCase(
   'Mention: users with same first name should not be selected if space',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');

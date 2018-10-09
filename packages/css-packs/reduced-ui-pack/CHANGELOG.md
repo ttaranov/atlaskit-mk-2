@@ -1,5 +1,20 @@
 # @atlaskit/reduced-ui-pack
 
+## 10.0.0
+- [major] Icons that do not exist in the main icons package have been removed [6dd05b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dd05b2)
+
+## 9.6.2
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/section-message@1.0.8
+  - @atlaskit/icon@14.0.0
+
+## 9.6.1
+- [patch] Moved to @atlaskit/theme for all the values from util-shared-styles [6d35164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d35164)
+
+## 9.6.0
+- [minor] Add like icon [cd71c5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd71c5f)
+
 ## 9.5.0
 - [minor] Add the questions icon [ad96a89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad96a89)
 

@@ -15,7 +15,6 @@ const items: Array<QuickInsertItem> = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },
@@ -32,6 +31,29 @@ const items: Array<QuickInsertItem> = [
     title: 'Block extension',
     action(insert) {
       return insert({
+        type: 'extension',
+        attrs: {
+          extensionType: 'com.atlassian.confluence.macro.core',
+          extensionKey: 'block-eh',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
+      });
+    },
+  },
+  {
+    title: 'Bodied extension',
+    action(insert) {
+      return insert({
         type: 'bodiedExtension',
         attrs: {
           extensionType: 'com.atlassian.confluence.macro.core',
@@ -39,7 +61,6 @@ const items: Array<QuickInsertItem> = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },

@@ -18,6 +18,9 @@ import {
   ContainerNavigationTheme,
 } from '../ContentNavigation/primitives';
 
+/* NOTE: experimental props use an underscore */
+/* eslint-disable camelcase */
+
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
   LayoutManagerWithViewControllerState,
@@ -141,6 +144,7 @@ class LayoutManagerWithViewControllerBase extends Component<
   render() {
     const {
       children,
+      experimental_flyoutOnHover,
       navigationViewController: {
         state: { activeView },
       },
@@ -172,6 +176,7 @@ class LayoutManagerWithViewControllerBase extends Component<
               ? this.renderContainerNavigation
               : null
           }
+          experimental_flyoutOnHover={experimental_flyoutOnHover}
           productNavigation={this.renderProductNavigation}
           onExpandStart={onExpandStart}
           onExpandEnd={onExpandEnd}

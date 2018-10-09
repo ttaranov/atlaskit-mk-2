@@ -78,7 +78,7 @@ export class PopupSimplePage {
 export async function gotoPopupSimplePage(
   client: any,
 ): Promise<PopupSimplePage> {
-  const page = await new Page(client);
+  const page = new Page(client);
   const url = getExampleUrl('media', 'media-picker', 'popup-simple');
   await page.goto(url);
   return new PopupSimplePage(page);

@@ -8,11 +8,10 @@ describe('InteractionStateManager', () => {
   it('should use the default values by default', () => {
     const wrapper = mount(
       <InteractionStateManager>
-        {({ isActive, isHover, isSelected }) => (
+        {({ isActive, isHover }) => (
           <div className="children">
             {isActive && <span className="active" />}
             {isHover && <span className="hover" />}
-            {isSelected && <span className="clicked" />}
           </div>
         )}
       </InteractionStateManager>,
@@ -24,11 +23,10 @@ describe('InteractionStateManager', () => {
   it('should change hover state when mouse is over the element', () => {
     const wrapper = mount(
       <InteractionStateManager>
-        {({ isActive, isHover, isSelected }) => (
+        {({ isActive, isHover }) => (
           <div className="children">
             {isActive && <span className="active" />}
             {isHover && <span className="hover" />}
-            {isSelected && <span className="clicked" />}
           </div>
         )}
       </InteractionStateManager>,
@@ -39,18 +37,16 @@ describe('InteractionStateManager', () => {
     expect(wrapper.state()).toEqual({
       isHover: true,
       isActive: false,
-      isSelected: false,
     });
   });
 
   it('should change hover and active states when mouse is over and user starts click event on the element', () => {
     const wrapper = mount(
       <InteractionStateManager>
-        {({ isActive, isHover, isSelected }) => (
+        {({ isActive, isHover }) => (
           <div className="children">
             {isActive && <span className="active" />}
             {isHover && <span className="hover" />}
-            {isSelected && <span className="clicked" />}
           </div>
         )}
       </InteractionStateManager>,
@@ -62,18 +58,16 @@ describe('InteractionStateManager', () => {
     expect(wrapper.state()).toEqual({
       isHover: true,
       isActive: true,
-      isSelected: false,
     });
   });
 
-  it('should NOT change hover state if element was clicked', () => {
+  it('should return to hover state after the element is clicked', () => {
     const wrapper = mount(
       <InteractionStateManager>
-        {({ isActive, isHover, isSelected }) => (
+        {({ isActive, isHover }) => (
           <div className="children">
             {isActive && <span className="active" />}
             {isHover && <span className="hover" />}
-            {isSelected && <span className="clicked" />}
           </div>
         )}
       </InteractionStateManager>,
@@ -83,12 +77,10 @@ describe('InteractionStateManager', () => {
     wrapper.simulate('mouseover');
     wrapper.simulate('mousedown', { preventDefault });
     wrapper.simulate('mouseup', { preventDefault });
-    wrapper.simulate('mouseover');
 
     expect(wrapper.state()).toEqual({
-      isHover: false,
+      isHover: true,
       isActive: false,
-      isSelected: true,
     });
   });
 });

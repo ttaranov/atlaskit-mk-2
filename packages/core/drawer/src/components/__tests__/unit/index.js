@@ -2,7 +2,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import EmojiIcon from '@atlaskit/icon/glyph/emoji';
 
 import Drawer from '../../index';
 
@@ -151,7 +151,7 @@ describe('Drawer Transitions', () => {
   it('should call onClose when custom back button is clicked', () => {
     const onClose = jest.fn();
     const wrapper = mount(
-      <Drawer isOpen icon={AtlassianIcon} onClose={onClose} width="wide">
+      <Drawer isOpen icon={EmojiIcon} onClose={onClose} width="wide">
         <code>Drawer contents</code>
       </Drawer>,
     );

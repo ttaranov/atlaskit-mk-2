@@ -13,12 +13,20 @@ import {
   ConfluenceObjectResult,
 } from '../model/Result';
 import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
+import { getDefaultAvatar } from '../util/jira-avatar-util';
 
 export interface Props {
   results: Result[];
   sectionIndex: number;
   analyticsData?: {};
 }
+
+const extractAvatarData = (jiraResult: JiraResult) =>
+  jiraResult.avatarUrl
+    ? { avatarUrl: jiraResult.avatarUrl }
+    : {
+        avatar: getDefaultAvatar(jiraResult.contentType),
+      };
 
 export default class ResultList extends React.Component<Props> {
   render() {
@@ -32,15 +40,17 @@ export default class ResultList extends React.Component<Props> {
         containerId: result.containerId,
         experimentId: result.experimentId,
         ...this.props.analyticsData,
+        contentType: result.contentType,
       };
-
+      const resultKey = `${result.contentType || 'result'}-${
+        result.resultId
+      }-${index + 1}`;
       switch (resultType) {
         case ResultType.ConfluenceObjectResult: {
           const confluenceResult = result as ConfluenceObjectResult;
-
           return (
             <ObjectResultComponent
-              key={confluenceResult.resultId}
+              key={resultKey}
               resultId={confluenceResult.resultId}
               name={confluenceResult.name}
               href={confluenceResult.href}
@@ -48,26 +58,24 @@ export default class ResultList extends React.Component<Props> {
               contentType={confluenceResult.contentType}
               containerName={confluenceResult.containerName}
               avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
-              analyticsData={{
-                ...analyticsData,
-                contentType: confluenceResult.contentType,
-              }}
+              analyticsData={analyticsData}
             />
           );
         }
         case ResultType.JiraObjectResult: {
           const jiraResult = result as JiraResult;
-
+          const avatarData = extractAvatarData(jiraResult);
           return (
             <ObjectResultComponent
-              key={jiraResult.resultId}
+              key={resultKey}
               resultId={jiraResult.resultId}
               name={jiraResult.name}
               href={jiraResult.href}
               type={jiraResult.analyticsType}
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
-              avatarUrl={jiraResult.avatarUrl}
+              {...avatarData}
+              contentType={jiraResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -77,12 +85,13 @@ export default class ResultList extends React.Component<Props> {
 
           return (
             <ContainerResultComponent
-              key={containerResult.resultId}
+              key={resultKey}
               resultId={containerResult.resultId}
               name={containerResult.name}
               href={containerResult.href}
               type={containerResult.analyticsType}
               avatarUrl={containerResult.avatarUrl}
+              contentType={containerResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -92,7 +101,7 @@ export default class ResultList extends React.Component<Props> {
 
           return (
             <PersonResultComponent
-              key={personResult.resultId}
+              key={resultKey}
               resultId={personResult.resultId}
               name={personResult.name}
               href={personResult.href}

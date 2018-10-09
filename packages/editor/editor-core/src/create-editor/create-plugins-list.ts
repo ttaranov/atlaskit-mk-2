@@ -42,6 +42,7 @@ import {
   cardPlugin,
   floatingToolbarPlugin,
   statusPlugin,
+  gridPlugin,
 } from '../plugins';
 
 /**
@@ -201,6 +202,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     }),
   );
 
+  plugins.push(gridPlugin);
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
   plugins.push(floatingToolbarPlugin);

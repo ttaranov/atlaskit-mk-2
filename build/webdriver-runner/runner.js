@@ -16,86 +16,70 @@ const setBrowserStackClients = require('./utils/setupClients')
   .setBrowserStackClients;
 const setLocalClients = require('./utils/setupClients').setLocalClients;
 let clients /*: Array<?Object>*/ = [];
-let skipForBrowser /*:?Object */ = {};
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
 
-afterAll(function() {
-  clients.forEach(async client => {
-    if (client && client.isReady) {
-      client.isReady = false;
-      await client.driver.end();
-    }
-  });
+const launchClient = async client => {
+  if (
+    client &&
+    (client.isReady ||
+      (client.driver.requestHandler && client.driver.requestHandler.sessionID))
+  ) {
+    return;
+  }
+
+  client.isReady = true;
+  return await client.driver.init();
+};
+
+const endSession = async client => {
+  if (client && client.isReady) {
+    client.isReady = false;
+    await client.driver.end();
+  }
+};
+
+afterAll(async function() {
+  await Promise.all(clients.map(endSession));
 });
 
 function BrowserTestCase(...args /*:Array<any> */) {
-  const testcase = args.shift();
-  const tester = args.pop();
-  const skipForBrowser = args.length > 0 ? args.shift() : null;
-  const testCase = process.env.TEST_CASE ? process.env.TEST_CASE : testcase;
-  describe(testcase, () => {
-    const unskippedTests = [];
+  const testName = args.shift();
+  const testFn = args.pop();
+  const skipForBrowser = args.length > 0 ? args.shift() : { skip: [] };
+
+  describe(testName, () => {
+    let testsToRun = [];
 
     for (const client of clients) {
-      let started;
-      // set up client
-      const launchClient = async () => {
-        if (client) {
-          const browserName /*: string */ =
-            client.driver.desiredCapabilities.browserName;
-
-          if (skipForBrowser && skipForBrowser[browserName]) {
-            if (client.isReady) {
-              client.isReady = false;
-              return client.driver.end();
-            }
-          }
-          if (client.isReady) return;
-          client.isReady = true;
-          await client.driver.init();
-        }
-      };
-
-      const clientLauncher = {
-        get start() {
-          if (!started) {
-            started = launchClient();
-          }
-          return started;
-        },
-      };
-
-      if (client) {
-        let skipBrowser;
-        const browserName = client.driver.desiredCapabilities.browserName;
-        if (skipForBrowser) {
-          skipForBrowser.skip.forEach(browser => {
-            if (browser.match(browserName)) {
-              skipBrowser = true;
-            }
-          });
-        }
-
-        // add tests into only if the test is not skipped for the current browser
-        if (!skipBrowser) {
-          unskippedTests.push(async (fn, ...args) => {
-            client.driver.desiredCapabilities.name = testcase;
-            await clientLauncher.start;
-            try {
-              await fn(client.driver);
-            } catch (err) {
-              throw err;
-            }
-          });
-        }
+      if (!client) {
+        continue;
       }
+
+      const browserName = client.driver.desiredCapabilities.browserName.toLowerCase();
+
+      if (skipForBrowser.skip.includes(browserName)) {
+        continue;
+      }
+
+      testsToRun.push(async (fn, ...args) => {
+        client.driver.desiredCapabilities.name = testName;
+        await launchClient(client);
+        try {
+          await fn(client.driver, ...args);
+        } catch (err) {
+          console.error(
+            `[Browser: ${browserName}]\n[Test: ${testName}]\n${err.message}`,
+          );
+          throw err;
+        }
+      });
     }
 
-    testRun(testcase, async (...args) => {
-      await Promise.all(unskippedTests.map(f => f(tester, ...args)));
+    testRun(testName, async (...args) => {
+      await Promise.all(testsToRun.map(f => f(testFn, ...args)));
     });
   });
 }

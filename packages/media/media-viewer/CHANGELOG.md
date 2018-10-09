@@ -1,5 +1,45 @@
 # @atlaskit/media-viewer
 
+## 22.0.0
+- [patch] Deprecate context.uploadFile & context.getFile. Instead context.file.upload & context.file.getFileState should be used; media-store's uploadFile function now takes MediaStore as a second argument, not MediaApiConfig [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Deprecate context.uploadFile & context.getFile. Instead context.file.upload & context.file.getFileState should be used; media-store's uploadFile function now takes MediaStore as a second argument, not MediaApiConfig [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/media-card@38.0.0
+  - @atlaskit/media-core@24.1.0
+  - @atlaskit/media-store@8.0.0
+  - @atlaskit/media-test-helpers@18.2.3
+
+## 21.0.5
+- [patch] Bumping dependency on media-store [f28fb3e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28fb3e)
+
+## 21.0.4
+- [patch] Use context.getFile in MediaViewer NG [0056ef8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0056ef8)
+
+## 21.0.3
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/media-ui@6.0.1
+  - @atlaskit/icon@14.0.0
+
+## 21.0.2
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-test-helpers@18.2.0
+  - @atlaskit/media-ui@6.0.0
+
+## 21.0.1
+- [patch] Fix rxjs imports to only import what's needed [2e0ce2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0ce2b)
+
+## 21.0.0
+- [major] Update RXJS dependency to ^5.5.0 [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+- [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/media-core@24.0.0
+  - @atlaskit/media-test-helpers@18.0.0
+
 ## 20.0.0
 - [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/media-core@23.2.0

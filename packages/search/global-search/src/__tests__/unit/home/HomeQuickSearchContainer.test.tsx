@@ -180,6 +180,7 @@ describe('HomeQuickSearchContainer', () => {
     }
 
     const mockSearchClient = {
+      getAbTestData: jest.fn(),
       search: jest.fn(searchCrossProduct),
     };
 
@@ -236,6 +237,7 @@ describe('HomeQuickSearchContainer', () => {
       .mockImplementationOnce(searchCurrent);
 
     const mockSearchClient = {
+      getAbTestData: jest.fn(),
       search: searchMock,
     };
 
@@ -303,6 +305,7 @@ describe('HomeQuickSearchContainer', () => {
         );
 
       const mockSearchClient = {
+        getAbTestData: jest.fn(),
         search: searchMock,
       };
 

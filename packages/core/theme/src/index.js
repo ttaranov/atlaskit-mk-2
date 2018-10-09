@@ -1,5 +1,5 @@
 // @flow
-
+import { css } from 'styled-components';
 import * as colors from './colors';
 import * as elevation from './elevation';
 import * as typography from './typography';
@@ -47,7 +47,19 @@ export const layers = {
   tooltip: () => 800,
 };
 
+export const assistive = () => css`
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+`;
+
 // New API
 export { Consumer, Provider } from './components/Context';
 export { default as Reset } from './components/Reset';
 export { default as Theme } from './components/Theme';
+export { withTheme } from './hoc';

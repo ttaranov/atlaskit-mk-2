@@ -7,12 +7,9 @@ export default md`
   React component which allows selection of multiple items from a dropdown list. Substitute for the native multiple select element
 
   ${(
-    <SectionMessage appearance="warning">
+    <SectionMessage appearance="error">
       <p>
-        <strong>
-          Note: @atlaskit/multi-select will be deprecated by the 13th of June
-          2018
-        </strong>
+        <strong>Note: @atlaskit/multi-select is now deprecated.</strong>
       </p>
       <p>
         Please upgrade to @atlaskit/select, for any upgrade concerns please ping

@@ -28,8 +28,11 @@ import {
   akEditorTableToolbar,
   akEditorTableBorder,
   akEditorTableNumberColumnWidth,
+  TableSharedCssClassName,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
+
+export const FullPagePadding = 32;
 
 export interface Props {
   appearance?: RendererAppearance;
@@ -50,7 +53,7 @@ const fullPageStyles = ({ theme, appearance }) => {
       theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
     };
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 ${FullPagePadding}px;
   `;
 };
 
@@ -209,7 +212,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-right: 0;
   }
 
-  ${tableSharedStyle} & .table-container {
+  ${tableSharedStyle} & .${TableSharedCssClassName.TABLE_CONTAINER} {
     transition: all 0.1s linear;
     overflow-x: auto;
     table {
@@ -253,7 +256,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
         border-right: 1px solid ${akEditorTableBorder};
         width: ${akEditorTableNumberColumnWidth}px;
         height: 100%;
-        padding: 10px;
+        padding: 10px 2px;
         position: absolute;
         top: 0;
         left: 0;

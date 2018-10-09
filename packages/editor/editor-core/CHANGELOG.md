@@ -1,5 +1,171 @@
 # @atlaskit/editor-core
 
+## 84.0.0
+- [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/renderer@26.0.0
+  - @atlaskit/emoji@43.0.0
+  - @atlaskit/media-card@38.0.0
+  - @atlaskit/media-filmstrip@15.0.0
+  - @atlaskit/media-picker@18.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.14
+  - @atlaskit/editor-json-transformer@4.0.16
+  - @atlaskit/editor-markdown-transformer@2.0.14
+  - @atlaskit/editor-test-helpers@6.2.5
+  - @atlaskit/task-decision@10.0.1
+  - @atlaskit/util-data-test@10.0.12
+  - @atlaskit/media-core@24.1.0
+  - @atlaskit/media-test-helpers@18.2.3
+
+## 83.0.0
+- [major] Upgrade task and decisions and editor to use @atlaskit/analytics-next. Remove usage of @atlaskit/analytics. [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+
+## 82.5.6
+- [patch] ED-5291 Quick insert search now only matches from the start of words [ea8237d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8237d)
+
+## 82.5.5
+- [patch] ED-5454: only render insert row/column buttons when needed [16d17e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16d17e3)
+
+## 82.5.4
+- [patch] change grey to gray to keep consistent across editor pkgs [1b2a0b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b2a0b3)
+
+## 82.5.3
+- [patch] Support custom rendering for typeahead items [8e0925d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e0925d)
+
+## 82.5.2
+- [patch] center media toolbar; be more selective when resize is enabled [98ca1de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ca1de)
+
+## 82.5.1
+- [patch] ED-5471 Fix show media single without height or width [a352169](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a352169)
+
+## 82.5.0
+- [minor] Allow empty content under doc [47d50ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47d50ad)
+
+## 82.4.2
+- [patch] ED-5457: moving table css classnames to a const [2e1f627](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1f627)
+
+## 82.4.1
+- [patch] ED-5452: Dynamically add/remove decorations in tables [04b0fde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b0fde)
+
+## 82.4.0
+- [minor] ED-5246 support image resizing [111d02f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111d02f)
+
+## 82.3.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/avatar-group@2.1.3
+  - @atlaskit/button@9.0.13
+  - @atlaskit/calendar@7.0.9
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/droplist@7.0.10
+  - @atlaskit/item@8.0.8
+  - @atlaskit/layer-manager@5.0.13
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/select@6.0.2
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/editor-common@17.0.7
+  - @atlaskit/renderer@24.2.1
+  - @atlaskit/emoji@42.0.1
+  - @atlaskit/mention@15.0.10
+  - @atlaskit/status@0.2.1
+  - @atlaskit/task-decision@9.0.1
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/media-filmstrip@14.0.3
+  - @atlaskit/media-picker@17.0.2
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/icon@14.0.0
+
+## 82.3.0
+- [minor] ED-5060 Code blocks now use new floating toolbar [756184e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/756184e)
+
+## 82.2.12
+- [patch] ED-5331 Fixed code-block gap cursor bug and editor crashing after several quick blurs [203eb2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/203eb2c)
+
+## 82.2.11
+- [patch] Update i18n example to not load all locales [0c66f75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c66f75)
+
+## 82.2.10
+- [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
+
+## 82.2.9
+- [patch] Better positioning of hyperlink edit popups [f247b16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f247b16)
+
+## 82.2.8
+- [patch] New translations [e4730b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4730b0)
+
+## 82.2.7
+- [patch] Updated copy in Butbucket feedback prompt [533e624](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533e624)
+
+## 82.2.6
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/editor-common@17.0.5
+  - @atlaskit/renderer@24.1.1
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-filmstrip@14.0.2
+  - @atlaskit/media-picker@17.0.1
+  - @atlaskit/smart-card@8.2.2
+  - @atlaskit/media-card@37.0.0
+  - @atlaskit/media-test-helpers@18.2.0
+
+## 82.2.5
+- [patch] Fix image markdown tip in help dialog [79465ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79465ec)
+
+## 82.2.4
+- [patch] Add translations for help-dialog and colors [42a2916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a2916)
+
+## 82.2.3
+- [patch] Add translation for quick insert [d6c438c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6c438c)
+
+## 82.2.2
+- [patch] ED-5421: avoid adding PM history record for simple table interactions [c6cb409](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6cb409)
+
+## 82.2.1
+- [patch] ED-5357: getting rid of ak components in table controls [83ca3e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83ca3e9)
+
+## 82.2.0
+- [minor] FS-2963 When inserting a status, I can pick a colour from a predefined colour picker [a633d77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a633d77)
+- [minor] FS-2963 Change status color [547b3d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/547b3d9)
+
+## 82.1.2
+- [patch] Numbered column in table should be able to fit number > 100 [7a43676](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a43676)
+
+## 82.1.1
+- [patch] ED-5151 Editor i18n: Floating toolbars [403b547](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/403b547)
+
+## 82.1.0
+- [minor] FS-2893 - Creation use cases for full page actions and decisions [c8aa5f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8aa5f5)
+
+## 82.0.3
+- [patch] ED-5243 add grid plugin [4e5ef5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e5ef5c)
+
+## 82.0.2
+- [patch] ED-5356: getting rid of styled-components in tables [5bc39da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bc39da)
+
+## 82.0.1
+- [patch] updated 'actionSubject' of mention typeahead's analytics events to be 'mentionTypeahead' [3147456](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3147456)
+
+## 82.0.0
+- [major] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+
+## 81.0.0
+- [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/renderer@24.0.0
+  - @atlaskit/emoji@42.0.0
+  - @atlaskit/media-card@36.0.0
+  - @atlaskit/media-filmstrip@14.0.0
+  - @atlaskit/media-picker@17.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.11
+  - @atlaskit/editor-json-transformer@4.0.12
+  - @atlaskit/editor-markdown-transformer@2.0.10
+  - @atlaskit/media-core@24.0.0
+  - @atlaskit/media-test-helpers@18.0.0
+  - @atlaskit/task-decision@9.0.0
+
 ## 80.5.3
 - [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
 

@@ -1,5 +1,8 @@
 # @atlaskit/popper
 
+## 0.2.4
+- [patch] Fixed popper placement offset to not fire deprecation warning. [4fcff1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fcff1c)
+
 ## 0.2.3
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

@@ -35,6 +35,8 @@ type CommonResultProps = {
 export type Context = {
   /** Register itself as keyboard navigation target */
   registerResult: (result: any) => void,
+  /** Unregister itself as keyboard navigation target */
+  unregisterResult: (result: any) => void,
   /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
   onMouseEnter: (resultData: ResultData) => void,
   /** Standard onMouseLeave event. */
@@ -85,7 +87,7 @@ export type ObjectResultType = CommonResultProps & {
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** Name of the container to which the object belongs. Displayed alongside the name */
-  containerName: string,
+  containerName?: string,
   /** Set whether to display a lock on the result's icon */
   isPrivate?: boolean,
   /** Name of the object. Provides the main text to be displayed as the item.. */
