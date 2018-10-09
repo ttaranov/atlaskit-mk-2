@@ -166,4 +166,37 @@ describe('mapJiraItemToResult', () => {
       );
     });
   });
+
+  describe('mapJiraItemToResult with addSessionIdToJiraResult param', () => {
+    let issue;
+    beforeEach(() => {
+      issue = {
+        id: 'issue-id',
+        name: 'issue-name',
+        url: 'https://exmaple.jira.com/ISSUE-576',
+        attributes: {
+          '@type': 'issue',
+          containerId: 'container-id',
+          key: 'ISSUE-576',
+          issueTypeName: 'story',
+          issueTypeId: '10002',
+          avatar: {
+            url:
+              'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
+          },
+        },
+      } as JiraItemV2;
+    });
+    it('should add query params when addSessionIdToJiraResult is true', () => {
+      const result = mapJiraItemToResult(issue, sessionId, true);
+      expect(result.href).toBe(
+        'https://exmaple.jira.com/ISSUE-576?searchSessionId=sessionId&searchContainerId=container-id&searchObjectId=issue-id&searchContentType=jira-issue',
+      );
+    });
+
+    it('should not add query params when addSessionIdToJiraResult is false', () => {
+      const result = mapJiraItemToResult(issue, sessionId, false);
+      expect(result.href).toBe('https://exmaple.jira.com/ISSUE-576');
+    });
+  });
 });

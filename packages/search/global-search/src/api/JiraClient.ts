@@ -94,10 +94,16 @@ type JiraRecentItem = {
 export default class JiraClientImpl implements JiraClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
+  private addSessionIdToJiraResult;
 
-  constructor(url: string, cloudId: string) {
+  constructor(
+    url: string,
+    cloudId: string,
+    addSessionIdToJiraResult?: boolean,
+  ) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
+    this.addSessionIdToJiraResult = addSessionIdToJiraResult;
   }
 
   // Unused, just to mute ts lint
@@ -148,12 +154,14 @@ export default class JiraClientImpl implements JiraClient {
     const containerId = this.getContainerId(item, jiraGroup);
     const contentType = JiraResponseGroupToContentType[jiraGroup];
     const resultId = '' + item.id;
-    const href = addJiraResultQueryParams(item.url, {
-      searchSessionId,
-      searchContainerId: containerId,
-      searchContentType: contentType,
-      searchObjectId: resultId,
-    });
+    const href = this.addSessionIdToJiraResult
+      ? addJiraResultQueryParams(item.url, {
+          searchSessionId,
+          searchContainerId: containerId,
+          searchContentType: contentType,
+          searchObjectId: resultId,
+        })
+      : item.url;
 
     return {
       resultType: ResultType.JiraObjectResult,

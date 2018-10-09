@@ -63,13 +63,19 @@ export default class CrossProductSearchClientImpl
   implements CrossProductSearchClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
+  private addSessionIdToJiraResult;
 
   // result limit per scope
   private readonly RESULT_LIMIT = 10;
 
-  constructor(url: string, cloudId: string) {
+  constructor(
+    url: string,
+    cloudId: string,
+    addSessionIdToJiraResult?: boolean,
+  ) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
+    this.addSessionIdToJiraResult = addSessionIdToJiraResult;
   }
 
   public async search(
@@ -151,6 +157,7 @@ export default class CrossProductSearchClientImpl
               result,
               searchSessionId,
               scopeResult.abTest && scopeResult.abTest!.experimentId,
+              this.addSessionIdToJiraResult,
             ),
           ),
         );
@@ -185,6 +192,7 @@ function mapItemToResult(
   item: SearchItem,
   searchSessionId: string,
   experimentId?: string,
+  addSessionIdToJiraResult?: boolean,
 ): Result {
   if (scope.startsWith('confluence')) {
     return mapConfluenceItemToResult(
@@ -195,7 +203,11 @@ function mapItemToResult(
     );
   }
   if (scope.startsWith('jira')) {
-    return mapJiraItemToResult(item as JiraItem, searchSessionId);
+    return mapJiraItemToResult(
+      item as JiraItem,
+      searchSessionId,
+      addSessionIdToJiraResult,
+    );
   }
 
   if (scope === Scope.People) {
