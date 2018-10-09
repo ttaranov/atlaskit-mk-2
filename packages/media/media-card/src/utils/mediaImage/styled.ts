@@ -1,35 +1,21 @@
-/* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { ImgHTMLAttributes, ComponentClass } from 'react';
-import { size, fadeIn } from '@atlaskit/media-ui';
 
-export interface ImageViewWrapperProps {
-  fadeIn?: boolean;
-  isCropped?: boolean;
-}
+const ImageComponent = styled.img`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
 
-export const ImageViewWrapper: ComponentClass<
-  ImgHTMLAttributes<{}> & ImageViewWrapperProps
-> = styled.img`
-  ${size()} ${(props: ImageViewWrapperProps) => {
-    let styles = '';
+export const FitImageComponent = styled(ImageComponent)`
+  max-height: 100%;
+  max-width: 100%;
+`;
 
-    if (props.isCropped) {
-      styles += `
-        object-fit: cover;
-      `;
-    } else {
-      styles += `
-        object-fit: contain;
-      `;
-    }
+export const CoverVerticalImageComponent = styled(ImageComponent)`
+  max-width: 100%;
+`;
 
-    if (props.fadeIn) {
-      styles += `
-        ${fadeIn}
-      `;
-    }
-
-    return styles;
-  }};
+export const CoverHorizontalImageComponent = styled(ImageComponent)`
+  max-height: 100%;
 `;

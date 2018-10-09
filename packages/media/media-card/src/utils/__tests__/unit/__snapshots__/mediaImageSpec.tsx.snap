@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaImage should use fit wrapper when "crop" is false 1`] = `
+.c1 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+.c0 {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+<MediaImage
+  className=""
+  crop={false}
+  dataURI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  height="100%"
+  width="100%"
+>
+  <Styled(styled.img)
+    innerRef={
+      Object {
+        "current": <img
+          class="c0 c1"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      />,
+      }
+    }
+    onLoad={[Function]}
+    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  >
+    <styled.img
+      className="c0"
+      innerRef={
+        Object {
+          "current": <img
+            class="c0 c1"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+        />,
+        }
+      }
+      onLoad={[Function]}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+    >
+      <img
+        className="c0 c1"
+        onLoad={[Function]}
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      />
+    </styled.img>
+  </Styled(styled.img)>
+</MediaImage>
+`;
+
+exports[`MediaImage should use horizontal cover wrapper when crop is true and image w/h ratio bigger then container's 1`] = `
+.c1 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+.c0 {
+  max-height: 100%;
+}
+
+<MediaImage
+  className=""
+  crop={true}
+  dataURI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  height="100%"
+  width="100%"
+>
+  <Styled(styled.img)
+    innerRef={
+      Object {
+        "current": <img
+          class="c0 c1"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      />,
+      }
+    }
+    onLoad={[Function]}
+    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  >
+    <styled.img
+      className="c0"
+      innerRef={
+        Object {
+          "current": <img
+            class="c0 c1"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+        />,
+        }
+      }
+      onLoad={[Function]}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+    >
+      <img
+        className="c0 c1"
+        onLoad={[Function]}
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      />
+    </styled.img>
+  </Styled(styled.img)>
+</MediaImage>
+`;
+
+exports[`MediaImage should use vertical cover wrapper when crop is true and image w/h ratio less then container's 1`] = `
+.c1 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+.c0 {
+  max-width: 100%;
+}
+
+<MediaImage
+  className=""
+  crop={true}
+  dataURI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  height="100%"
+  width="100%"
+>
+  <Styled(styled.img)
+    innerRef={
+      Object {
+        "current": <img
+          class="c0 c1"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      />,
+      }
+    }
+    onLoad={[Function]}
+    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  >
+    <styled.img
+      className="c0"
+      innerRef={
+        Object {
+          "current": <img
+            class="c0 c1"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+        />,
+        }
+      }
+      onLoad={[Function]}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+    >
+      <img
+        className="c0 c1"
+        onLoad={[Function]}
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      />
+    </styled.img>
+  </Styled(styled.img)>
+</MediaImage>
+`;
