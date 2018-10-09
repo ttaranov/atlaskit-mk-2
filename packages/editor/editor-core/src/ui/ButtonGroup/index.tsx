@@ -60,6 +60,16 @@ export default class ButtonGroup extends PureComponent<Props, State> {
       e.preventDefault();
       e.stopPropagation();
       return false;
+    } else if (e.key === 'ArrowLeft') {
+      if (selectedItemIdx <= 0) {
+        // we've hit the end
+        return true;
+      }
+      const newSelectedItemIdx = selectedItemIdx - 1;
+      this.setState({ selectedItemIdx: newSelectedItemIdx });
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
     }
     return true;
 
