@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.0.1
+- [patch] ED-5453: implement table scroll shadow in CSS [4f21dac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f21dac)
+
 ## 85.0.0
 - [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/editor-common@19.0.0
