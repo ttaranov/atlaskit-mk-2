@@ -1,5 +1,8 @@
 # @atlaskit/section-message
 
+## 1.0.9
+- [patch] Update how actions wrap [5a791f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a791f2)
+
 ## 1.0.8
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 14.0.1
+- [patch] Change devDependency on sectionMessage to caret dependency [91a3ced](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91a3ced)
+
 ## 14.0.0
 - [major] Remove product logo icons from icons, recommend using @atlaskit/logo instead [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
 - [patch] Updated dependencies [709b239](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/709b239)
