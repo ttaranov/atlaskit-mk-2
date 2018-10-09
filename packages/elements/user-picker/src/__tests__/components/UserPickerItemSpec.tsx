@@ -75,7 +75,7 @@ describe('UserPickerItem', () => {
 
     it('should render tag if lozenge prop passed in', () => {
       const component = shallowUserPickerItem({
-        user: { ...user, lozenge: 'app' },
+        user: { ...user, badge: 'app' },
       });
 
       const item = component.find(Item);
@@ -84,7 +84,7 @@ describe('UserPickerItem', () => {
 
     it('should not render lozenge if empty string', () => {
       const component = shallowUserPickerItem({
-        user: { ...user, lozenge: '' },
+        user: { ...user, badge: '' },
       });
 
       const item = component.find(Item);

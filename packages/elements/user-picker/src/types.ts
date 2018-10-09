@@ -14,7 +14,7 @@ export interface User {
   name?: string;
   nickname: string;
   highlight?: Highlight;
-  lozenge?: string;
+  badge?: string;
 }
 
 export interface OnUserEvent {

@@ -29,10 +29,10 @@ export default class UserPickerItem extends React.PureComponent<Props> {
 
   private renderLozenge = () => {
     const {
-      user: { lozenge },
+      user: { badge },
     } = this.props;
-    if (lozenge) {
-      return <Lozenge>{lozenge}</Lozenge>;
+    if (badge) {
+      return <Lozenge>{badge}</Lozenge>;
     }
     return undefined;
   };
