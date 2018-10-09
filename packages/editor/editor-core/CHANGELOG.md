@@ -1,5 +1,22 @@
 # @atlaskit/editor-core
 
+## 85.0.0
+- [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/editor-common@19.0.0
+  - @atlaskit/renderer@27.0.0
+  - @atlaskit/emoji@44.0.0
+  - @atlaskit/media-card@39.0.0
+  - @atlaskit/media-filmstrip@16.0.0
+  - @atlaskit/media-picker@19.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.15
+  - @atlaskit/editor-json-transformer@4.0.17
+  - @atlaskit/editor-markdown-transformer@2.0.16
+  - @atlaskit/editor-test-helpers@6.2.6
+  - @atlaskit/task-decision@10.0.2
+  - @atlaskit/util-data-test@10.0.14
+  - @atlaskit/media-test-helpers@18.2.5
+  - @atlaskit/media-core@24.2.0
+
 ## 84.1.0
 - [minor] ED-3889 use color and error-reporter from @atlaskit/editor-core [f924735](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f924735)
 

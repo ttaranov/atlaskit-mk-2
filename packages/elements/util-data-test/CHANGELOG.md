@@ -1,5 +1,10 @@
 # @atlaskit/util-data-test
 
+## 10.0.14
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/emoji@44.0.0
+  - @atlaskit/task-decision@10.0.2
+
 ## 10.0.13
 - [patch] FS-3009 added user picker examples and data [74b88a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74b88a3)
 
