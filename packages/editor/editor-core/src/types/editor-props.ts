@@ -52,6 +52,11 @@ export type InsertMenuCustomItem = {
   onClick?: (editorActions: EditorActionsOptions) => void;
 };
 
+export type AllowedBlockTypes =
+  | 'heading'
+  | 'blockquote'
+  | 'hardBreak'
+  | 'codeBlock';
 export interface ExtensionConfig {
   stickToolbarToBottom?: boolean;
   allowBreakout?: boolean;
@@ -78,8 +83,8 @@ export interface EditorProps {
   secondaryToolbarComponents?: ReactComponents;
   addonToolbarComponents?: ReactComponents;
 
-  // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote` and `hardBreak`.
-  allowBlockType?: { exclude?: Array<string> };
+  // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote`, `hardBreak` and `codeBlock`.
+  allowBlockType?: { exclude?: Array<AllowedBlockTypes> };
 
   // Whether or not you want to allow Action and Decision elements in the editor. You can currently only enable both or disable both.
   // To enable, you need to also provide a `taskDecisionProvider`. You will most likely need backend ADF storage for this feature.
