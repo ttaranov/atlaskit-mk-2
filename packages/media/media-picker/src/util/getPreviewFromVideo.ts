@@ -12,7 +12,7 @@ export const getPreviewFromVideo = (file: File): Promise<ImagePreview> =>
     img.onload = () => {
       const dimensions = { width: img.width, height: img.height };
       snapshoter.end();
-      resolve({ src, dimensions });
+      resolve({ src, dimensions, scaleFactor: 1 });
     };
 
     img.onerror = reject;

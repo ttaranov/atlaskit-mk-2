@@ -113,6 +113,7 @@ describe('importFiles middleware', () => {
               height: 10,
             },
             src: 'blob',
+            scaleFactor: 1,
           },
         },
       };

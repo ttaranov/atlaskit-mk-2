@@ -1,27 +1,26 @@
 import { MediaType } from '@atlaskit/media-core';
 import { Preview } from '../domain/preview';
 import { fileToBase64 } from '../popup/tools/fileToBase64';
+import { loadImage } from '@atlaskit/media-ui';
 import { ImagePreview } from '../index';
 
 export const getPreviewFromBlob = (
-  file: Blob,
+  blob: Blob,
   mediaType: MediaType,
 ): Promise<Preview> =>
   new Promise((resolve, reject) => {
-    fileToBase64(file)
-      .then(src => {
+    fileToBase64(blob)
+      .then(async src => {
         if (mediaType === 'image') {
-          const img = new Image();
-          img.src = src;
-
-          img.onload = () => {
-            const { src } = img;
-            const dimensions = { width: img.width, height: img.height };
-
-            resolve({ src, dimensions } as ImagePreview);
+          const {
+            naturalWidth: width,
+            naturalHeight: height,
+          } = await loadImage(src);
+          const dimensions = {
+            width,
+            height,
           };
-
-          img.onerror = reject;
+          resolve({ src, dimensions } as ImagePreview);
         } else {
           resolve({ src });
         }

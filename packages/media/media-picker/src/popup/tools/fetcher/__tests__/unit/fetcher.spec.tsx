@@ -78,6 +78,7 @@ describe('Fetcher', () => {
           width: 100,
           height: 100,
         },
+        scaleFactor: 1,
       });
       fetcher['query'] = querySpy;
       fetcher.pollFile = jest.fn().mockReturnValue(Promise.resolve(imageFile));
@@ -91,6 +92,8 @@ describe('Fetcher', () => {
           width: 100,
           height: 100,
         });
+
+        expect(preview.scaleFactor).toEqual(1);
       });
     });
   });

@@ -6,7 +6,7 @@ import {
   MockFile,
 } from '../../../util/clipboardEventMocks';
 import { Clipboard } from '../../clipboard';
-import { UploadService } from '../../../service/types';
+import { UploadService, LocalFileSource } from '../../../service/types';
 
 describe('Clipboard', () => {
   let clipboard: Clipboard;
@@ -45,7 +45,7 @@ describe('Clipboard', () => {
     const files = [new MockFile(), new MockFile()];
     document.dispatchEvent(new MockClipboardEvent('paste', files));
     expect(addFiles).toHaveBeenCalledTimes(1);
-    expect(addFiles).toHaveBeenCalledWith(files);
+    expect(addFiles).toHaveBeenCalledWith(files, LocalFileSource.PastedFile);
   });
 
   it('should not call this.uploadService.addFiles() when deactivated and a paste event is dispatched a single file', () => {
@@ -59,5 +59,25 @@ describe('Clipboard', () => {
     delete event.clipboardData;
     document.dispatchEvent(event);
     expect(addFiles).toHaveBeenCalledTimes(0);
+  });
+
+  it('should detect pasted screenshots from clipboard event data', () => {
+    const mockFile = new MockFile();
+    document.dispatchEvent(
+      new MockClipboardEvent('paste', [mockFile], ['some-type']),
+    );
+    expect(addFiles).toHaveBeenCalledWith(
+      [mockFile],
+      LocalFileSource.PastedScreenshot,
+    );
+  });
+
+  it('should detect pasted local files from clipboard event data', () => {
+    const mockFile = new MockFile();
+    document.dispatchEvent(new MockClipboardEvent('paste', [mockFile], []));
+    expect(addFiles).toHaveBeenCalledWith(
+      [mockFile],
+      LocalFileSource.PastedFile,
+    );
   });
 });

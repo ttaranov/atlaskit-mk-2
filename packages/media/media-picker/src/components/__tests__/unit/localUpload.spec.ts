@@ -70,6 +70,7 @@ describe('MediaLocalUpload', () => {
           height: 200,
         },
         src: imagePreviewSrc,
+        scaleFactor: 1,
       },
     });
 
@@ -81,6 +82,7 @@ describe('MediaLocalUpload', () => {
           width: 100,
           height: 200,
         },
+        scaleFactor: 1,
       },
     });
   });

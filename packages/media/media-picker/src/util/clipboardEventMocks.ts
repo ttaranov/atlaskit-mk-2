@@ -48,12 +48,12 @@ export class MockDataTransfer implements DataTransfer {
   readonly items: DataTransferItemList;
   readonly types: string[];
 
-  constructor(files?: FileList) {
+  constructor(files?: FileList, types?: string[]) {
     this.files = files as any;
     this.dropEffect = '';
     this.effectAllowed = '';
     this.items = [] as any;
-    this.types = [];
+    this.types = types || [];
   }
 
   clearData(): boolean {
@@ -73,9 +73,12 @@ export class MockDataTransfer implements DataTransfer {
 // see https://github.com/tmpvar/jsdom/issues/1568
 export class MockClipboardEvent extends Event implements ClipboardEvent {
   clipboardData: DataTransfer;
-  constructor(event: string, files: File[] = []) {
+  constructor(event: string, files: File[] = [], types: string[] = []) {
     super(event);
-    this.clipboardData = new MockDataTransfer(MockFileList.fromArray(files));
+    this.clipboardData = new MockDataTransfer(
+      MockFileList.fromArray(files),
+      types,
+    );
   }
 }
 
