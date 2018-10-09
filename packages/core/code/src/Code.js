@@ -16,10 +16,10 @@ type CodeProps = {
   language?: ADFSupportedLanguages | string,
   /** A custom theme to be applied, implements the Theme interface */
   theme?: Theme | ThemeProps,
-  codeStyle?: object,
+  codeStyle?: {},
   showLineNumbers?: boolean,
-  lineNumberContainerStyle?: object,
-  codeTagProps?: object,
+  lineNumberContainerStyle?: {},
+  codeTagProps?: {},
 };
 
 type CodeState = {
@@ -39,7 +39,7 @@ export class Code extends PureComponent<CodeProps, CodeState> {
     language: normalizeLanguage(''),
   };
 
-  async registerLanguage(language) {
+  async registerLanguage(language: string) {
     if (!SyntaxHighlighter.astGenerator) {
       await SyntaxHighlighter.astGeneratorPromise;
     }
@@ -64,7 +64,7 @@ export class Code extends PureComponent<CodeProps, CodeState> {
     this.registerLanguage(language);
   }
 
-  componentDidUpdate({ language: prevLanguage }) {
+  componentDidUpdate({ language: prevLanguage }: CodeProps) {
     const language = normalizeLanguage(this.props.language);
 
     if (prevLanguage !== language) {
