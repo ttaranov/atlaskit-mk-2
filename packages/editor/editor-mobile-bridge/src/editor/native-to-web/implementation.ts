@@ -117,6 +117,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
       switch (eventName) {
         case 'upload-preview-update': {
+          console.log('got preview update.. ', payload);
           const uploadPromise = new Promise(resolve => {
             this.mediaMap.set(payload.file.id, resolve);
           });

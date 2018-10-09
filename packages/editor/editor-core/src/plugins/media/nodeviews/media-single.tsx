@@ -119,9 +119,6 @@ export default class MediaSingleNode extends Component<
 
   render() {
     const { layout, width: mediaSingleWidth } = this.props.node.attrs;
-    const { progress } = this.state;
-    let hideProgress = false;
-
     let { width, height, type } = this.child.props.node.attrs;
 
     if (type === 'external') {
@@ -145,7 +142,6 @@ export default class MediaSingleNode extends Component<
     if ((!width || !height) && !isLoading) {
       width = DEFAULT_WIDTH;
       height = DEFAULT_HEIGHT;
-      hideProgress = true;
     }
 
     const children = React.cloneElement(
@@ -155,9 +151,7 @@ export default class MediaSingleNode extends Component<
           width: '100%',
           height: '100%',
         },
-        hideProgress,
         isMediaSingle: true,
-        progress,
         onExternalImageLoaded: this.onExternalImageLoaded,
       } as MediaNodeProps,
     );

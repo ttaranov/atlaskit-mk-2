@@ -42,11 +42,7 @@ export const plugin = new Plugin({
     return {
       update: (view: EditorView, prevState: EditorState) => {
         const { $anchor, $head } = view.state.selection;
-        pluginState.notifyNewSelection(
-          $anchor.pos,
-          $head.pos,
-          view.state.selection,
-        );
+        pluginState.notifyNewSelection($anchor.pos, $head.pos);
       },
     };
   },

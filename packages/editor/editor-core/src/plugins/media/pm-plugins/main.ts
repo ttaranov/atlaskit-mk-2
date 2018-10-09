@@ -212,7 +212,7 @@ export class MediaPluginState {
     if (this.selectedMediaNode() && this.isMediaSingle()) {
       newElement = this.getDomElement(this.view.domAtPos.bind(this.view));
     }
-
+    console.log('new element is ', newElement);
     if (this.element !== newElement) {
       this.element = newElement;
       this.notifyPluginStateSubscribers();

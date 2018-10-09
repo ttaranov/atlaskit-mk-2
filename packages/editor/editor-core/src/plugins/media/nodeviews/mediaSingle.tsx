@@ -21,7 +21,7 @@ export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
   width: number;
-  selected: boolean;
+  selected: Function;
   getPos: () => number;
 }
 
@@ -50,9 +50,20 @@ export default class MediaSingleNode extends Component<
     ) as MediaPluginState;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      this.props.node.attrs.width !== nextProps.node.attrs.width ||
+      this.props.selected() !== nextProps.selected() ||
+      this.props.node.attrs.layout !== nextProps.node.attrs.layout
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   componentDidUpdate() {
     const { layout } = this.props.node.attrs;
-    this.mediaPluginState.updateLayout(layout);
+    if (this.props.selected()) this.mediaPluginState.updateLayout(layout);
   }
 
   private onExternalImageLoaded = ({ width, height }) => {
@@ -80,7 +91,6 @@ export default class MediaSingleNode extends Component<
     if (typeof pos === 'undefined') {
       return;
     }
-    console.log('new width is ', width);
     return dispatch(
       state.tr.setNodeMarkup(pos, undefined, {
         ...this.props.node.attrs,
@@ -98,7 +108,7 @@ export default class MediaSingleNode extends Component<
   };
 
   render() {
-    const { layout } = this.props.node.attrs;
+    const { layout, width: mediaSingleWidth } = this.props.node.attrs;
 
     const {
       selected,
@@ -142,19 +152,24 @@ export default class MediaSingleNode extends Component<
       width = DEFAULT_WIDTH;
       height = DEFAULT_HEIGHT;
     }
-    console.log('width is ', width);
+
+    const props = {
+      layout,
+      width,
+      height,
+      isLoading,
+
+      containerWidth: this.props.width,
+      lineLength: this.props.lineLength,
+      pctWidth: mediaSingleWidth,
+    };
+
     return 1 ? (
       <ResizableMediaSingle
-        layout={layout}
-        width={width}
-        height={height}
-        containerWidth={this.props.width}
-        isLoading={!width}
-        lineLength={this.props.lineLength}
+        {...props}
         getPos={getPos}
         updateSize={this.updateSize}
         displayGrid={this.boundDisplayGrid}
-        node={this.child}
         gridSize={12}
         state={this.props.view.state}
         appearance={this.mediaPluginState.options.appearance}
@@ -174,7 +189,7 @@ export default class MediaSingleNode extends Component<
                   height: '100%',
                 }}
                 mediaProvider={mediaProvider}
-                selected={selected}
+                selected={selected()}
                 onClick={this.selectMediaSingle}
                 onExternalImageLoaded={this.onExternalImageLoaded}
               />
@@ -226,7 +241,7 @@ class MediaSingleNodeView extends ReactNodeView {
           width: widthPluginKey,
           reactNodeViewState: reactNodeViewStateKey,
         }}
-        render={({ width, lineLength }) => {
+        render={({ width, reactNodeViewState }) => {
           return (
             <MediaSingleNode
               width={width.width}
@@ -234,7 +249,7 @@ class MediaSingleNodeView extends ReactNodeView {
               node={this.node}
               getPos={this.getPos}
               view={this.view}
-              selected={this.getPos() + 1 === width.reactNodeViewState}
+              selected={() => this.getPos() + 1 === reactNodeViewState}
             />
           );
         }}
