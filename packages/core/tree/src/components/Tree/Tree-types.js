@@ -42,6 +42,8 @@ export type Props = {|
 export type State = {|
   /** The flattened tree data structure transformed from props.tree */
   flattenedTree: FlattenedTree,
+  // Id of the currently dragged item
+  draggedItemId: ItemId,
 |};
 
 export type Combine = {|
@@ -50,8 +52,6 @@ export type Combine = {|
 |};
 
 export type DragState = {|
-  // Id of the currently dragged item
-  draggedItemId: ItemId,
   // Source location
   source: DraggableLocation,
   // Dragging mode

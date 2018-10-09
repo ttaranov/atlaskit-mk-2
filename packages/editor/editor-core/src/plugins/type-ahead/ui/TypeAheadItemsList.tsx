@@ -53,7 +53,7 @@ export function scrollIntoViewIfNeeded(element: HTMLElement) {
         ? -1
         : 0;
 
-  if (direction !== 0) {
+  if (direction !== 0 && offsetParent) {
     offsetParent.scrollTop =
       direction === 1
         ? offsetTop + offsetHeight - offsetParentHeight
@@ -74,22 +74,40 @@ export function TypeAheadItemsList({
   return (
     <ThemeProvider theme={itemTheme}>
       <ItemGroup>
-        {items.map((item, index) => (
-          <Item
-            key={item.title}
-            onClick={() => insertByIndex(index)}
-            onMouseMove={() => setCurrentIndex(index)}
-            elemBefore={item.icon ? item.icon() : null}
-            isSelected={index === currentIndex}
-            ref={
-              index === currentIndex
-                ? ref => ref && scrollIntoViewIfNeeded(ref.ref)
-                : null
-            }
-          >
-            {item.title}
-          </Item>
-        ))}
+        {items.map(
+          (item, index) =>
+            item.render ? (
+              <div
+                key={item.title}
+                ref={
+                  index === currentIndex
+                    ? ref => ref && scrollIntoViewIfNeeded(ref)
+                    : () => null
+                }
+              >
+                {item.render({
+                  onClick: () => insertByIndex(index),
+                  onMouseMove: () => setCurrentIndex(index),
+                  isSelected: index === currentIndex,
+                })}
+              </div>
+            ) : (
+              <Item
+                key={item.title}
+                onClick={() => insertByIndex(index)}
+                onMouseMove={() => setCurrentIndex(index)}
+                elemBefore={item.icon ? item.icon() : null}
+                isSelected={index === currentIndex}
+                ref={
+                  index === currentIndex
+                    ? ref => ref && scrollIntoViewIfNeeded(ref.ref)
+                    : null
+                }
+              >
+                {item.title}
+              </Item>
+            ),
+        )}
       </ItemGroup>
     </ThemeProvider>
   );

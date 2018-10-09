@@ -24,7 +24,7 @@ import {
 } from './styled';
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
-import { downloadItem } from './domain/download';
+import { createItemDownloader } from './domain/download';
 import { MediaViewerError, createError } from './error';
 
 export type Props = {
@@ -64,8 +64,10 @@ export default class Header extends React.Component<Props, State> {
   private init(props: Props) {
     this.setState(initialState, () => {
       const { context, identifier } = props;
-      this.subscription = context
-        .getFile(identifier.id, { collectionName: identifier.collectionName })
+      this.subscription = context.file
+        .getFileState(identifier.id, {
+          collectionName: identifier.collectionName,
+        })
         .subscribe({
           next: file => {
             this.setState({
@@ -102,7 +104,11 @@ export default class Header extends React.Component<Props, State> {
         <Button
           label="Download"
           appearance="toolbar"
-          onClick={downloadItem(item, context, identifier.collectionName)}
+          onClick={createItemDownloader(
+            item,
+            context,
+            identifier.collectionName,
+          )}
           iconBefore={icon}
         />
       ),

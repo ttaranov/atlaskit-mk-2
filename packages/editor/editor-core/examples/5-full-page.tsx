@@ -133,20 +133,11 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-            delegateAnalyticsEvent={(...args) => console.log(args)}
-            allowTasksAndDecisions={true}
             allowCodeBlocks={{ enableKeybindingsForIDE: true }}
             allowLists={true}
             allowTextColor={true}
             allowTables={{
-              allowColumnResizing: true,
-              allowMergeCells: true,
-              allowNumberColumn: true,
-              allowBackgroundColor: true,
-              allowHeaderRow: true,
-              allowHeaderColumn: true,
-              permittedLayouts: 'all',
-              stickToolbarToBottom: true,
+              advanced: true,
             }}
             allowJiraIssue={true}
             allowUnsupportedContent={true}

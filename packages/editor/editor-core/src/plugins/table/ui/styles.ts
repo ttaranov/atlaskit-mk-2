@@ -156,16 +156,6 @@ const DeleteButton = (css?: string) => `
   }
 `;
 
-const InsertLine = (css?: string) => `
-  .${ClassName.CONTROLS_INSERT_LINE} {
-    background: ${tableBorderSelectedColor};
-    display: none;
-    position: absolute;
-    z-index: ${akEditorUnitZIndex};
-    ${css}
-  }
-`;
-
 const InsertMarker = (css?: string) => `
   .${ClassName.CONTROLS_INSERT_MARKER} {
     background-color: ${tableBorderColor};
@@ -173,6 +163,7 @@ const InsertMarker = (css?: string) => `
     height: 4px;
     width: 4px;
     border-radius: 50%;
+    pointer-events: none;
     ${css}
   }
 `;
@@ -238,11 +229,6 @@ export const tableStyles = css`
     .${ClassName.COLUMN_CONTROLS},
     .${ClassName.CONTROLS_INSERT_COLUMN} {
       ${InsertButton('top: 5px;')}
-      ${InsertLine(`
-        width: 2px;
-        left: 8px;
-        top: ${tableInsertColumnButtonSize}px;
-      `)}
       ${InsertMarker(`
         bottom: 3px;
         left: 7px;
@@ -251,11 +237,6 @@ export const tableStyles = css`
     .${ClassName.ROW_CONTROLS},
     .${ClassName.CONTROLS_INSERT_ROW} {
       ${InsertButton('left: 5px;')}
-      ${InsertLine(`
-        height: 2px;
-        top: 8px;
-        left: ${tableInsertColumnButtonSize}px;
-      `)}
       ${InsertMarker(`
         top: 7px;
         right: 3px;
@@ -408,6 +389,36 @@ export const tableStyles = css`
           z-index: ${akEditorUnitZIndex};
         }
       }
+      /* scroll shadows */
+      .${ClassName.TABLE_RIGHT_SHADOW},
+      .${ClassName.TABLE_LEFT_SHADOW}::after {
+        display: block;
+        position: absolute;
+        pointer-events: none;
+        z-index: ${akEditorSmallZIndex};
+        width: 8px;
+      }
+      .${ClassName.TABLE_LEFT_SHADOW}::after {
+        background: linear-gradient(
+          to left,
+          rgba(99, 114, 130, 0) 0,
+          ${akColorN40A} 100%
+        );
+        content: '';
+        height: 100%;
+        right: -8px;
+        bottom: 0;
+      }
+      .${ClassName.TABLE_RIGHT_SHADOW} {
+        background: linear-gradient(
+          to right,
+          rgba(99, 114, 130, 0) 0,
+          ${akColorN40A} 100%
+        );
+        height: calc(100% - ${tableMarginTop - 1}px);
+        left: calc(100% + 2px);
+        top: ${tableMarginTop - tableToolbarSize + 1}px;
+      }
     }
 
     /* Table */
@@ -450,7 +461,7 @@ export const tableStyles = css`
       position: absolute;
       top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
     }
-    .${ClassName.ROW_CONTROLS_WRAPPER}.scrolling {
+    .${ClassName.ROW_CONTROLS_WRAPPER}.${ClassName.TABLE_LEFT_SHADOW} {
       z-index: ${akEditorUnitZIndex};
     }
     .${ClassName.COLUMN_CONTROLS_WRAPPER} {
@@ -468,40 +479,64 @@ export const tableStyles = css`
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
     }
+    .${ClassName.COLUMN_INSERT_LINE},
+    .${ClassName.ROW_INSERT_LINE},
+    .${ClassName.ROW_INSERT_LINE_OVERLAY} {
+      background-color: ${tableBorderSelectedColor};
+      position: absolute;
+      pointer-events: none;
+      z-index: ${akEditorUnitZIndex};
+    }
+    .${ClassName.COLUMN_RESIZE_HANDLE} {
+      bottom: 0;
+      top: -1px;
+      right: -2px;
+      width: 2px;
+      height: calc(100% + 2px);
+    }
+    .${ClassName.COLUMN_INSERT_LINE} {
+      bottom: 0;
+      right: -2px;
+      width: 2px;
+      top: -${tableToolbarSize}px;
+      height: calc(100% + ${tableToolbarSize}px);
+    }
+    .${ClassName.COLUMN_INSERT_LINE}.left {
+      right: auto;
+      left: -1px;
+    }
+    .${ClassName.ROW_INSERT_LINE} {
+      bottom: -1px;
+      height: 2px;
+      left: -${tableToolbarSize}px;
+      width: calc(100% + ${tableToolbarSize}px);
+    }
+    .${ClassName.ROW_INSERT_LINE}.top {
+      bottom: auto;
+      top: -2px;
+    }
+    .${ClassName.ROW_INSERT_LINE_OVERLAY} {
+      bottom: 10px;
+      height: 2px;
+      right: -${tableToolbarSize + 1}px;
+      width: ${tableToolbarSize + 1}px;
+      display: none;
+    }
+    .${ClassName.CONTROLS_INSERT_ROW}:hover .${
+  ClassName.ROW_INSERT_LINE_OVERLAY
+} {
+      display: block;
+    }
+    [data-number-column='true'] {
+      .${ClassName.ROW_INSERT_LINE_OVERLAY} {
+        width: ${tableToolbarSize + akEditorTableNumberColumnWidth + 1}px;
+        right: -${tableToolbarSize + akEditorTableNumberColumnWidth + 1}px;
+      }
+    }
   }
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.${ClassName.RESIZING} {
-    .${ClassName.TABLE_SHADOW} {
-      pointer-events: none;
-      display: none;
-      position: absolute;
-      width: 0;
-
-      top: ${tableMarginTop}px;
-    }
-    .${ClassName.WITH_CONTROLS} .${ClassName.TABLE_SHADOW} {
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
-    }
-    .${ClassName.TABLE_SHADOW} {
-      display: ${isIE11 ? 'none' : 'block'};
-      z-index: ${akEditorSmallZIndex};
-    }
-    .${ClassName.TABLE_SHADOW}.-left {
-      left: 0;
-      background: linear-gradient(
-        to left,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
-    .${ClassName.TABLE_SHADOW}.-right {
-      background: linear-gradient(
-        to right,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
     .${ClassName.TABLE_NODE_WRAPPER} {
       overflow-x: ${isIE11 ? 'none' : 'auto'};
       ${!isIE11 ? scrollbarStyles : ''};

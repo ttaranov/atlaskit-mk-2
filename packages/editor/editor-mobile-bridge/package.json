@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-mobile-bridge",
-  "version": "4.0.7",
+  "version": "4.0.11",
   "description": "Mobile destribution of the Editor",
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
@@ -23,12 +23,13 @@
   "license": "Apache-2.0",
   "homepage": "https://bitbucket.org/atlaskit/atlaskit-mk-2#readme",
   "dependencies": {
-    "@atlaskit/editor-common": "^17.0.6",
-    "@atlaskit/editor-core": "^82.2.10",
-    "@atlaskit/editor-json-transformer": "^4.0.13",
-    "@atlaskit/media-core": "^24.0.0",
+    "@atlaskit/editor-common": "^19.0.0",
+    "@atlaskit/editor-core": "^85.0.0",
+    "@atlaskit/editor-json-transformer": "^4.0.17",
+    "@atlaskit/media-core": "^24.2.0",
     "@atlaskit/mention": "^15.0.6",
-    "@atlaskit/renderer": "^24.0.0",
+    "@atlaskit/task-decision": "^10.0.1",
+    "@atlaskit/renderer": "^27.0.0",
     "@types/prosemirror-view": "^1.0.0",
     "babel-polyfill": "^6.26.0",
     "prosemirror-view": "^1.6.0"
@@ -38,7 +39,7 @@
     "react-dom": "^16.4.2"
   },
   "devDependencies": {
-    "@atlaskit/editor-test-helpers": "^6.2.2",
+    "@atlaskit/editor-test-helpers": "^6.2.6",
     "ajv": "^4.11.3",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",

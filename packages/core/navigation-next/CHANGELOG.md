@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.17.0
+- [minor] Add expand analytics for flyout hover state [45f9a92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45f9a92)
+
 ## 3.16.0
 - [minor] introduce flyout on hover, with feature-flag property [5c00034](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5c00034)
 

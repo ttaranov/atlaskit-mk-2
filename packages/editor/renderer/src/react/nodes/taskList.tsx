@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { PureComponent, Children } from 'react';
+import { PureComponent, Children, ReactNode } from 'react';
 
 import { TaskList as AkTaskList } from '@atlaskit/task-decision';
 
 export interface Props {
-  children?: JSX.Element | JSX.Element[];
+  localId?: string;
+  children?: ReactNode;
 }
 
 export default class TaskList extends PureComponent<Props, {}> {
   render() {
-    const { children } = this.props;
+    const { children, localId } = this.props;
 
     if (Children.count(children) === 0) {
       return null;
@@ -17,7 +18,7 @@ export default class TaskList extends PureComponent<Props, {}> {
 
     return (
       <div className="akTaskList">
-        <AkTaskList>{children}</AkTaskList>
+        <AkTaskList listId={localId}>{children}</AkTaskList>
       </div>
     );
   }

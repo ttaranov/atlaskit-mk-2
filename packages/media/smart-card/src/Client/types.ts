@@ -1,11 +1,4 @@
-export type Command =
-  | {
-      type: 'init';
-    }
-  | {
-      type: 'reload';
-      provider: string;
-    };
+export type Command = { type: 'init' } | { type: 'reload'; provider: string };
 
 export type ObjectStatus =
   | 'resolving'
@@ -23,7 +16,7 @@ export interface AuthService {
 
 export interface ObjectState {
   status: ObjectStatus;
-  provider?: string;
+  definitionId?: string;
   services: AuthService[];
   data?: { [name: string]: any };
 }

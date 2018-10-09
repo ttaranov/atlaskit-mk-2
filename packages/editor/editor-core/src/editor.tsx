@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { withAnalytics } from '@atlaskit/analytics';
 import { EditorView } from 'prosemirror-view';
 import { intlShape, IntlShape, IntlProvider } from 'react-intl';
 
@@ -17,6 +16,7 @@ import { ReactEditorView } from './create-editor';
 import { EventDispatcher } from './event-dispatcher';
 import EditorContext from './ui/EditorContext';
 import { PortalProvider, PortalRenderer } from './ui/PortalProvider';
+import { nextMajorVersion } from './version';
 
 export * from './types';
 
@@ -82,10 +82,70 @@ export default class Editor extends React.Component<EditorProps, {}> {
   }
 
   private deprecationWarnings(props) {
-    if (props.hasOwnProperty('mediaProvider')) {
+    const nextVersion = nextMajorVersion();
+    const deprecatedProperties = {
+      mediaProvider: {
+        message:
+          'To pass media provider use media property – <Editor media={{ provider }} />',
+        type: 'removed',
+      },
+      allowTasksAndDecisions: {
+        message:
+          'To allow tasks and decisions use taskDecisionProvider – <Editor taskDecisionProvider={{ provider }} />',
+        type: 'removed',
+      },
+      allowPlaceholderCursor: {
+        type: 'removed',
+      },
+      allowInlineAction: {
+        type: 'removed',
+      },
+      allowConfluenceInlineComment: {
+        type: 'removed',
+      },
+      addonToolbarComponents: {
+        type: 'removed',
+      },
+      cardProvider: {
+        type: 'removed',
+      },
+      allowCodeBlocks: {
+        message:
+          'To disable codeBlocks use - <Editor allowBlockTypes={{ exclude: ["codeBlocks"] }} />',
+      },
+      allowLists: {},
+      allowHelpDialog: {},
+      allowGapCursor: {},
+    };
+
+    Object.keys(deprecatedProperties).forEach(property => {
+      if (props.hasOwnProperty(property)) {
+        const meta = deprecatedProperties[property];
+        const type = meta.type || 'enabled by default';
+
+        // tslint:disable-next-line:no-console
+        console.warn(
+          `${property} property is deprecated. ${meta.message ||
+            ''} [Will be ${type} in editor-core@${nextVersion}]`,
+        );
+      }
+    });
+
+    if (!props.hasOwnProperty('appearance')) {
       // tslint:disable-next-line:no-console
       console.warn(
-        'mediaProvider property is deprecated. To pass media provider use media property – <Editor media={{ provider }} /> [Will be removed in editor-core@77.0.0]',
+        `The default appearence is changing from "message" to "comment", to main current behaviour use <Editor appearance="message" />. [Will be changed in editor-core@${nextVersion}]`,
+      );
+    }
+
+    if (
+      props.hasOwnProperty('allowTables') &&
+      typeof props.allowTables !== 'boolean' &&
+      !props.allowTables.advanced
+    ) {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        `Advanced table options are deprecated (except isHeaderRowRequired) to continue using advanced table features use - <Editor allowTables={{ advanced: true }} /> [Will be changed in editor-core@${nextVersion}]`,
       );
     }
   }
@@ -267,10 +327,3 @@ export default class Editor extends React.Component<EditorProps, {}> {
     );
   }
 }
-
-export const EditorWithAnalytics = withAnalytics<typeof Editor>(
-  Editor,
-  {},
-  {},
-  true,
-);

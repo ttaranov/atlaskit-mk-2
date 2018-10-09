@@ -15,8 +15,8 @@ import { getBox } from 'css-box-model';
 import { calculateFinalDropPositions } from './Tree-utils';
 import type { Props, State, DragState } from './Tree-types';
 import { noop } from '../../utils/handy';
-import { flattenTree } from '../../utils/tree';
-import type { FlattenedItem, ItemId, Path } from '../../types';
+import { flattenTree, mutateTree } from '../../utils/tree';
+import type { FlattenedItem, ItemId, Path, TreeData } from '../../types';
 import TreeItem from '../TreeItem';
 import {
   getDestinationPath,
@@ -40,6 +40,7 @@ export default class Tree extends Component<Props, State> {
 
   state = {
     flattenedTree: [],
+    draggedItemId: null,
   };
 
   // State of dragging. Null when resting
@@ -52,20 +53,38 @@ export default class Tree extends Component<Props, State> {
   expandTimer = new DelayedFunction(500);
 
   static getDerivedStateFromProps(props: Props, state: State) {
+    const { draggedItemId } = state;
+    const { tree } = props;
+
+    const finalTree: TreeData = Tree.closeParentIfNeeded(tree, draggedItemId);
+    const flattenedTree = flattenTree(finalTree);
+
     return {
       ...state,
-      flattenedTree: flattenTree(props.tree),
+      flattenedTree,
     };
+  }
+
+  static closeParentIfNeeded(tree: TreeData, draggedItemId: ItemId): TreeData {
+    if (draggedItemId !== null) {
+      // Closing parent internally during dragging, because visually we can only move one item not a subtree
+      return mutateTree(tree, draggedItemId, {
+        isExpanded: false,
+      });
+    }
+    return tree;
   }
 
   onDragStart = (result: DragStart) => {
     const { onDragStart } = this.props;
     this.dragState = {
-      draggedItemId: result.draggableId,
       source: result.source,
       destination: result.source,
       mode: result.mode,
     };
+    this.setState({
+      draggedItemId: result.draggableId,
+    });
     if (onDragStart) {
       onDragStart(result.draggableId);
     }
@@ -103,6 +122,9 @@ export default class Tree extends Component<Props, State> {
       destination: result.destination,
       combine: result.combine,
     };
+    this.setState({
+      draggedItemId: null,
+    });
     const { sourcePosition, destinationPosition } = calculateFinalDropPositions(
       tree,
       flattenedTree,
@@ -125,11 +147,11 @@ export default class Tree extends Component<Props, State> {
     flatItem: FlattenedItem,
     snapshot: DraggableStateSnapshot,
   ): Path => {
-    const { flattenedTree } = this.state;
+    const { flattenedTree, draggedItemId } = this.state;
 
     if (
       this.dragState &&
-      this.dragState.draggedItemId === flatItem.item.id &&
+      draggedItemId === flatItem.item.id &&
       (this.dragState.destination || this.dragState.combine)
     ) {
       const {
@@ -164,20 +186,17 @@ export default class Tree extends Component<Props, State> {
     return flatItem.path;
   };
 
-  isDraggable = (item: FlattenedItem): boolean =>
-    this.props.isDragEnabled && !item.item.isExpanded;
-
   isExpandable = (item: FlattenedItem): boolean =>
     !!item.item.hasChildren && !item.item.isExpanded;
 
   getDroppedLevel = (): ?number => {
     const { offsetPerLevel } = this.props;
+    const { draggedItemId } = this.state;
 
     if (!this.dragState || !this.containerElement) {
       return undefined;
     }
 
-    const { draggedItemId } = this.dragState;
     const containerLeft = getBox(this.containerElement).contentBox.left;
     const itemElement = this.itemsElement[draggedItemId];
     if (itemElement) {
@@ -205,7 +224,13 @@ export default class Tree extends Component<Props, State> {
   };
 
   renderItems = (): Array<Node> => {
-    const { renderItem, onExpand, onCollapse, offsetPerLevel } = this.props;
+    const {
+      renderItem,
+      onExpand,
+      onCollapse,
+      offsetPerLevel,
+      isDragEnabled,
+    } = this.props;
     const { flattenedTree } = this.state;
 
     return flattenedTree.map((flatItem: FlattenedItem, index: number) => (
@@ -213,7 +238,7 @@ export default class Tree extends Component<Props, State> {
         draggableId={flatItem.item.id}
         index={index}
         key={flatItem.item.id}
-        isDragDisabled={!this.isDraggable(flatItem)}
+        isDragDisabled={!isDragEnabled}
       >
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
           const currentPath: Path = this.calculateEffectivePath(

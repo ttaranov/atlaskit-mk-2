@@ -1,5 +1,20 @@
 # @atlaskit/global-search
 
+## 5.9.8
+- [patch] add session id, object id, container id and content type as query params to jira results [e4c4eff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4c4eff)
+
+## 5.9.7
+- [patch] remove extra comma in no results screen [ceb1fbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceb1fbb)
+
+## 5.9.6
+- [patch] Update icon-file-type [a3b51ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3b51ef)
+- [patch] Updated dependencies [272208b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272208b)
+  - @atlaskit/icon-file-type@1.0.2
+  - @atlaskit/icon-object@1.0.2
+
+## 5.9.5
+- [patch] fix higlight problem due to duplicate react keys [beeba8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/beeba8a)
+
 ## 5.9.4
 - [patch] icon-file-type and icon-object publish glyphs, svgs, and es5 instead of just dist [0823d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0823d35)
 
