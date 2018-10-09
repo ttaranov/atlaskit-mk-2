@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.9.7
+- [patch] remove extra comma in no results screen [ceb1fbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceb1fbb)
+
 ## 5.9.6
 - [patch] Update icon-file-type [a3b51ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3b51ef)
 - [patch] Updated dependencies [272208b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272208b)

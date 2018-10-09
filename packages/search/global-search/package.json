@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "5.9.6",
+  "version": "5.9.7",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
