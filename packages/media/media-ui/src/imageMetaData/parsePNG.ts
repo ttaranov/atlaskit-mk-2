@@ -5,7 +5,8 @@ let utf8ByteArrayToString: any;
 
 export async function readPNGXMPMetaData(file: File): Promise<string> {
   // load 3rd party libs async on demand
-  pngChunksExtract = pngChunksExtract || (await import('png-chunks-extract'));
+  pngChunksExtract =
+    pngChunksExtract || (await import('png-chunks-extract')).default;
   utf8ByteArrayToString =
     utf8ByteArrayToString ||
     (await import('utf8-string-bytes')).utf8ByteArrayToString;
