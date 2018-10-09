@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.2.0
+- [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
+
 ## 85.1.0
 - [minor] ED-5370 refactor legacy image-upload plugin [fb10ad4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb10ad4)
 
