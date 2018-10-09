@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Editor } from '@atlaskit/editor-core';
+import { taskDecision } from '@atlaskit/util-data-test';
 import { JSONTransformer } from '../src';
 
 const Container = styled.div`
@@ -44,12 +45,14 @@ export default class Example extends React.PureComponent<
       <Container>
         <Editor
           appearance="comment"
-          allowTasksAndDecisions={true}
           allowCodeBlocks={true}
           allowLists={true}
           allowRule={true}
           allowTables={true}
           onChange={this.handleChangeInTheEditor}
+          taskDecisionProvider={Promise.resolve(
+            taskDecision.getMockTaskDecisionResource(),
+          )}
         />
         <div
           id="output"

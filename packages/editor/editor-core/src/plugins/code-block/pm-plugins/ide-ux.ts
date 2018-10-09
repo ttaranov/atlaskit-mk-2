@@ -6,6 +6,7 @@ import { filter } from '../../../utils/commands';
 import {
   getAutoClosingBracketInfo,
   isCursorBeforeClosingBracket,
+  isClosingBracket,
 } from '../ide-ux/bracket-handling';
 import {
   getEndOfCurrentLine,
@@ -29,16 +30,14 @@ export default new Plugin({
         const beforeText = getStartOfCurrentLine(state).text;
         const afterText = getEndOfCurrentLine(state).text;
 
-        // Ignore right bracket when user types it and it already exists
-        if (isCursorBeforeClosingBracket(afterText)) {
-          const { hasTrailingMatchingBracket } = getAutoClosingBracketInfo(
-            beforeText,
-            text,
-          );
-          if (hasTrailingMatchingBracket) {
-            view.dispatch(setTextSelection(to + text.length)(state.tr));
-            return true;
-          }
+        // If text is a closing bracket and we've already inserted it, move the selection after.
+        if (
+          isCursorBeforeClosingBracket(afterText) &&
+          isClosingBracket(text) &&
+          afterText.startsWith(text)
+        ) {
+          dispatch(setTextSelection(to + text.length)(state.tr));
+          return true;
         }
 
         // Automatically add right-hand side bracket when user types the left bracket

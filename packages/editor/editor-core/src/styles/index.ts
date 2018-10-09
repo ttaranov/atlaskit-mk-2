@@ -1,33 +1,22 @@
-import {
-  akCodeFontFamily,
-  akColorB100,
-  akColorB400,
-  akColorB50,
-  akColorN0,
-  akColorN20,
-  akColorN30,
-  akColorN40,
-  akColorN100,
-  akColorN500,
-  akColorN700,
-  akColorN900,
-} from '@atlaskit/util-shared-styles';
+import { codeFontFamily, colors } from '@atlaskit/theme';
 
-export const akEditorCodeFontFamily = akCodeFontFamily;
-export const akEditorInactiveForeground = akColorN500;
-export const akEditorFocus = akColorB100;
-export const akEditorSubtleAccent = akColorN40;
-export const akEditorActiveBackground = akColorN500;
-export const akEditorActiveForeground = akColorN0;
-export const akEditorBlockquoteBorderColor = akColorN40;
-export const akEditorDropdownActiveBackground = akColorN900;
-export const akEditorPopupBackground = akColorN700;
-export const akEditorPopupText = akColorB50;
-export const akEditorPrimaryButton = akColorB400;
-export const akEditorCodeBackground = akColorN20;
+const { B100, B400, B50, N0, N20, N30, N40, N100, N500, N700, N900 } = colors;
+
+export const akEditorCodeFontFamily = codeFontFamily();
+export const akEditorInactiveForeground = N500;
+export const akEditorFocus = B100;
+export const akEditorSubtleAccent = N40;
+export const akEditorActiveBackground = N500;
+export const akEditorActiveForeground = N0;
+export const akEditorBlockquoteBorderColor = N40;
+export const akEditorDropdownActiveBackground = N900;
+export const akEditorPopupBackground = N700;
+export const akEditorPopupText = B50;
+export const akEditorPrimaryButton = B400;
+export const akEditorCodeBackground = N20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
-export const akEditorMentionSelected = akColorN100;
-export const akEditorRuleBackground = akColorN30;
+export const akEditorMentionSelected = N100;
+export const akEditorRuleBackground = N30;
 export const akEditorRuleBorderRadius = '1px';
 export const akEditorToolbarKeylineHeight = 2;

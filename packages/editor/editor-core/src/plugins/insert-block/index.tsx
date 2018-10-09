@@ -20,6 +20,7 @@ import WithPluginState from '../../ui/WithPluginState';
 import { ToolbarSize } from '../../ui/Toolbar';
 import ToolbarInsertBlock from './ui/ToolbarInsertBlock';
 import { insertBlockType } from '../block-type/commands';
+import { startImageUpload } from '../image-upload/pm-plugins/commands';
 
 const toolbarSizeToButtons = toolbarSize => {
   switch (toolbarSize) {
@@ -108,9 +109,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               mediaSupported={!!mediaState}
               imageUploadSupported={!!imageUpload}
               imageUploadEnabled={imageUpload && imageUpload.enabled}
-              handleImageUpload={
-                imageUpload && imageUpload.handleImageUpload.bind(imageUpload)
-              }
+              handleImageUpload={startImageUpload}
               availableWrapperBlockTypes={
                 blockTypeState.availableWrapperBlockTypes
               }

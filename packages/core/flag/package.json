@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "9.0.12",
+  "version": "9.0.13",
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,6 +20,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
+    "@atlaskit/button": "^9.0.13",
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/portal": "^0.0.10",
     "@atlaskit/theme": "^6.0.2",
@@ -33,7 +34,6 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/button": "^9.0.13",
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/field-radio-group": "^4.0.8",
     "@atlaskit/spinner": "^9.0.8",

@@ -1,6 +1,6 @@
 // Used in products integration code
 export { name, version } from './version';
-export { default as Editor, EditorWithAnalytics } from './editor';
+export { default as Editor } from './editor';
 export { default as getPropsPreset } from './create-editor/get-props-preset';
 export { default as EditorContext } from './ui/EditorContext';
 export { default as WithEditorActions } from './ui/WithEditorActions';

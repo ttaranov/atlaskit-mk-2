@@ -36,6 +36,10 @@ type Props = {
   tertiaryAction?: Element<any>,
   /** Shows spinner next to the action buttons. Primary and secondary action buttons are disabled when this prop is set to true. */
   isLoading?: boolean,
+  /** Width of the image that is rendered in EmptyState component. It is useful when you want image to be of exact width to stop it bouncing around when loading in. Only set `height` if you want the image to resize down on smaller devices. */
+  imageWidth?: number,
+  /** Height of the image that is rendered in EmptyState component. It is useful when you want image to be of exact height to stop it bouncing around when loading in. Only set `height` if you want the image to resize down on smaller devices. */
+  imageHeight?: number,
 };
 
 export default class EmptyState extends React.Component<Props> {
@@ -51,6 +55,8 @@ export default class EmptyState extends React.Component<Props> {
       description,
       size,
       imageUrl,
+      imageWidth,
+      imageHeight,
       maxImageWidth,
       maxImageHeight,
       primaryAction,
@@ -77,6 +83,8 @@ export default class EmptyState extends React.Component<Props> {
             src={imageUrl}
             maxWidth={maxImageWidth}
             maxHeight={maxImageHeight}
+            width={imageWidth}
+            height={imageHeight}
           />
         )}
         <Header>{header}</Header>

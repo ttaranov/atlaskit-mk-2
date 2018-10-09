@@ -1,13 +1,6 @@
 import { ComponentClass } from 'react';
 import styled from 'styled-components';
-import {
-  akBorderRadius,
-  akColorN400,
-  akColorN0,
-  akColorN20,
-  akColorN30,
-  akColorN300,
-} from '@atlaskit/util-shared-styles';
+import { borderRadius, colors } from '@atlaskit/theme';
 import { akEditorUnitZIndex } from '@atlaskit/editor-common';
 
 export const Header: any = styled.div`
@@ -19,30 +12,30 @@ export const Header: any = styled.div`
   justify-content: space-between;
   align-items: center;
   box-shadow: ${(props: any) =>
-    props.showKeyline ? `0 2px 0 ${akColorN30}` : 'none'};
-  color: ${akColorN400};
-  background-color: ${akColorN0};
-  border-radius: ${akBorderRadius};
+    props.showKeyline ? `0 2px 0 ${colors.N30}` : 'none'};
+  color: ${colors.N400};
+  background-color: ${colors.N0};
+  border-radius: ${borderRadius()}px;
 `;
 
 export const Footer: any = styled.div`
   z-index: ${akEditorUnitZIndex};
   font-size: 14px;
   line-height: 20px;
-  color: ${akColorN300};
+  color: ${colors.N300};
   padding: 24px;
   text-align: right;
   box-shadow: ${(props: any) =>
-    props.showKeyline ? `0 -2px 0 ${akColorN30}` : 'none'};
+    props.showKeyline ? `0 -2px 0 ${colors.N30}` : 'none'};
 `;
 
 export const ContentWrapper: ComponentClass = styled.div`
   padding: 18px 20px;
-  border-bottom-right-radius: ${akBorderRadius};
+  border-bottom-right-radius: ${borderRadius()}px;
   overflow: auto;
   position: relative;
-  color: ${akColorN400};
-  background-color: ${akColorN0};
+  color: ${colors.N400};
+  background-color: ${colors.N0};
 `;
 
 export const Line: ComponentClass = styled.div`
@@ -86,8 +79,8 @@ export const Title: ComponentClass = styled.div`
 `;
 
 export const CodeSm: ComponentClass = styled.span`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  background-color: ${colors.N20};
+  border-radius: ${borderRadius()}px;
   width: 24px;
   display: inline-block;
   height: 24px;
@@ -96,8 +89,8 @@ export const CodeSm: ComponentClass = styled.span`
 `;
 
 export const CodeMd: ComponentClass = styled.span`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  background-color: ${colors.N20};
+  border-radius: ${borderRadius()}px;
   display: inline-block;
   height: 24px;
   line-height: 24px;
@@ -106,8 +99,8 @@ export const CodeMd: ComponentClass = styled.span`
 `;
 
 export const CodeLg: ComponentClass = styled.span`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  background-color: ${colors.N20};
+  border-radius: ${borderRadius()}px;
   display: inline-block;
   height: 24px;
   line-height: 24px;

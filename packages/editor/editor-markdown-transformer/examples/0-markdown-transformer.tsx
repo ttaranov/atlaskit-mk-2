@@ -5,6 +5,7 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
+import { taskDecision } from '@atlaskit/util-data-test';
 import { MarkdownTransformer } from '../src';
 import exampleMarkdown from '../example-helpers/exampleMarkdown';
 
@@ -60,7 +61,6 @@ class Example extends React.PureComponent<Props, State> {
         </div>
         <Editor
           appearance="comment"
-          allowTasksAndDecisions={true}
           allowCodeBlocks={true}
           allowLists={true}
           allowRule={true}
@@ -69,6 +69,9 @@ class Example extends React.PureComponent<Props, State> {
             allowMediaSingle: true,
           }}
           contentTransformerProvider={schema => new MarkdownTransformer(schema)}
+          taskDecisionProvider={Promise.resolve(
+            taskDecision.getMockTaskDecisionResource(),
+          )}
         />
       </Container>
     );

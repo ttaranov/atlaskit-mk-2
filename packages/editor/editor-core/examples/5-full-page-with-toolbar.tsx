@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN90 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -24,7 +24,7 @@ export const TitleInput: any = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN90};
+    color: ${colors.N90};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -84,8 +84,6 @@ export class ExampleEditor extends React.Component<Props> {
                 appearance="full-page"
                 analyticsHandler={analyticsHandler}
                 quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-                delegateAnalyticsEvent={(...args) => console.log(args)}
-                allowTasksAndDecisions={true}
                 allowCodeBlocks={{ enableKeybindingsForIDE: true }}
                 allowLists={true}
                 allowTextColor={true}

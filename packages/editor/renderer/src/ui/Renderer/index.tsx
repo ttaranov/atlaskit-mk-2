@@ -12,7 +12,7 @@ import {
   WidthProvider,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
-import { RenderOutputStat } from '../../';
+import { RenderOutputStat } from '../../render-document';
 import { Wrapper } from './style';
 import { TruncatedWrapper } from './truncated-wrapper';
 

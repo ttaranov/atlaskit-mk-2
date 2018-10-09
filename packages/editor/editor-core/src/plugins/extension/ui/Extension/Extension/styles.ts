@@ -2,7 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { akColorN30, akBorderRadius } from '@atlaskit/util-shared-styles';
+import { colors, borderRadius } from '@atlaskit/theme';
 import { blockNodesVerticalMargin } from '@atlaskit/editor-common';
 import { Wrapper as WrapperDefault, padding } from '../styles';
 
@@ -35,8 +35,8 @@ export const Content: ComponentClass<
 > = styled.div`
   padding: ${padding}px;
   background: white;
-  border: 1px solid ${akColorN30};
-  border-radius: ${akBorderRadius};
+  border: 1px solid ${colors.N30};
+  border-radius: ${borderRadius()}px;
 `;
 
 export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`

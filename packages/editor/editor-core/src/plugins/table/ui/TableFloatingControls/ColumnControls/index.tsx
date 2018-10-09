@@ -4,7 +4,6 @@ import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
 import { isTableSelected } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
-import { tableToolbarSize } from '../../styles';
 import { tableDeleteButtonSize } from '../../styles';
 import InsertButton from '../InsertButton';
 import DeleteButton from '../DeleteButton';
@@ -30,6 +29,7 @@ export interface Props {
   isTableInDanger?: boolean;
   numberOfColumns?: number;
   dangerColumns?: number[];
+  showInsertButton?: boolean;
 }
 
 export default class ColumnControls extends Component<Props, any> {
@@ -44,6 +44,7 @@ export default class ColumnControls extends Component<Props, any> {
       isTableInDanger,
       selection,
       numberOfColumns,
+      showInsertButton,
     } = this.props;
 
     if (nextProps.tableRef) {
@@ -59,6 +60,7 @@ export default class ColumnControls extends Component<Props, any> {
 
     return (
       tableRef !== nextProps.tableRef ||
+      showInsertButton !== nextProps.showInsertButton ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
       numberOfColumns !== nextProps.numberOfColumns ||
@@ -137,6 +139,7 @@ export default class ColumnControls extends Component<Props, any> {
     const {
       editorView: { state },
       tableRef,
+      showInsertButton,
     } = this.props;
     if (!tableRef) {
       return null;
@@ -148,7 +151,6 @@ export default class ColumnControls extends Component<Props, any> {
 
     const cols = tr.children;
     const nodes: any = [];
-    const tableHeight = tableRef.offsetHeight;
 
     let prevColWidths = 0;
 
@@ -181,10 +183,9 @@ export default class ColumnControls extends Component<Props, any> {
           ) ? (
             <InsertButton
               type="column"
-              onClick={() => this.insertColumn(i + 1)}
-              insertLineStyle={{
-                height: tableHeight + tableToolbarSize,
-              }}
+              index={i + 1}
+              showInsertButton={showInsertButton}
+              onMouseDown={() => this.insertColumn(i + 1)}
             />
           ) : null}
         </div>,

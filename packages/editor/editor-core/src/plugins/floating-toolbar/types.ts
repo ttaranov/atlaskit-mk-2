@@ -56,7 +56,17 @@ export type FloatingToolbarItem<T> =
 
 export interface FloatingToolbarConfig {
   title: string;
-  getDomRef: (view: EditorView) => HTMLElement | undefined;
+
+  /**
+   * Override the DOM reference used to apply as the target for the
+   * floating toolbar, if the config matches.
+   *
+   * By default, it will find the DOM reference of the node from the
+   * head of the current selection.
+   */
+  getDomRef?: (view: EditorView) => HTMLElement | undefined;
+
+  visible?: boolean;
   nodeType: NodeType | NodeType[];
   items: Array<FloatingToolbarItem<Command>>;
 }

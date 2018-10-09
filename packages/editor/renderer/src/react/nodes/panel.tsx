@@ -1,17 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import {
-  akColorG50,
-  akColorG400,
-  akColorP50,
-  akColorP400,
-  akColorB400,
-  akColorY50,
-  akColorB50,
-  akColorY400,
-  akColorR50,
-  akColorR400,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
 import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
@@ -24,36 +13,38 @@ export interface Props {
   panelType: PanelType;
 }
 
+const { G50, G400, P50, P400, B400, Y50, B50, Y400, R50, R400 } = colors;
+
 const config = {
   info: {
     icon: InfoIcon,
-    background: akColorB50,
-    iconColor: akColorB400,
+    background: B50,
+    iconColor: B400,
   },
   note: {
     icon: NoteIcon,
-    background: akColorP50,
-    iconColor: akColorP400,
+    background: P50,
+    iconColor: P400,
   },
   tip: {
     icon: TipIcon,
-    background: akColorG50,
-    iconColor: akColorG400,
+    background: G50,
+    iconColor: G400,
   },
   success: {
     icon: SuccessIcon,
-    background: akColorG50,
-    iconColor: akColorG400,
+    background: G50,
+    iconColor: G400,
   },
   warning: {
     icon: WarningIcon,
-    background: akColorY50,
-    iconColor: akColorY400,
+    background: Y50,
+    iconColor: Y400,
   },
   error: {
     icon: ErrorIcon,
-    background: akColorR50,
-    iconColor: akColorR400,
+    background: R50,
+    iconColor: R400,
   },
 };
 

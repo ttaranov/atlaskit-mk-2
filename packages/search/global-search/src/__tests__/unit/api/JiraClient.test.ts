@@ -17,7 +17,7 @@ describe('JiraClient', () => {
 
   beforeEach(() => {
     requestSpy = jest.spyOn(utils, 'requestService');
-    jiraClient = new JiraClientImpl(url, cloudId);
+    jiraClient = new JiraClientImpl(url, cloudId, true);
   });
 
   afterEach(() => {
@@ -152,5 +152,34 @@ describe('JiraClient', () => {
         .map(({ objectKey }) => objectKey);
       boardObjectKeys.forEach(key => expect(key).toBeUndefined());
     });
+  });
+
+  it('should not modify urls when addSessionIdToJiraResult is false', async () => {
+    const client = new JiraClientImpl(url, cloudId, false);
+    const response = [
+      {
+        id: 'quick-search-issues',
+        name: 'Recent Issues',
+        viewAllTitle: 'View all issues',
+        items: [
+          {
+            id: 67391,
+            title: 'Jira recent endpoint is missing some fields',
+            subtitle: 'QS-136',
+            metadata: 'QS-136',
+            avatarUrl:
+              'https://product-fabric.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype',
+            url: 'https://product-fabric.atlassian.net/browse/QS-136',
+            favourite: false,
+          },
+        ],
+      },
+    ];
+    requestSpy.mockReturnValue(Promise.resolve(response));
+    const result = await client.getRecentItems('session');
+    expect(result.length).toBe(1);
+    expect(result[0].href).toBe(
+      'https://product-fabric.atlassian.net/browse/QS-136',
+    );
   });
 });

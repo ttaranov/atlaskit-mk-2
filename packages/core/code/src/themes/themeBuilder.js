@@ -71,6 +71,10 @@ const lineNumberContainerStyle = (theme: Theme) => ({
 });
 
 const sharedCodeStyle = (theme: Theme) => ({
+  key: {
+    color: theme.keywordColor,
+    fontWeight: 'bolder',
+  },
   keyword: {
     color: theme.keywordColor,
     fontWeight: 'bolder',

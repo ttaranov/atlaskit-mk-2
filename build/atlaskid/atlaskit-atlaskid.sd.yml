@@ -11,7 +11,7 @@ loadBalancer:
 links:
   binary:
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v25
+    tag: v26
     type: docker
   healthcheck:
     uri: /

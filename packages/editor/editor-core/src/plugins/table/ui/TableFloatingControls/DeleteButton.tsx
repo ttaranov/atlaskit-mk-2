@@ -1,5 +1,8 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import { TableCssClassName as ClassName } from '../../types';
+import tableMessages from '../messages';
 
 export interface ButtonProps {
   style?: object;
@@ -13,7 +16,8 @@ const DeleteButton = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
-}: ButtonProps) => (
+  intl: { formatMessage },
+}: ButtonProps & InjectedIntlProps) => (
   <div
     className={ClassName.CONTROLS_DELETE_BUTTON_WRAP}
     style={style}
@@ -26,21 +30,13 @@ const DeleteButton = ({
       onClick={onClick}
     >
       <span className={ClassName.CONTROLS_BUTTON_ICON}>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          focusable="false"
-          role="presentation"
-        >
-          <path
-            d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z"
-            fill="currentColor"
-          />
-        </svg>
+        <CrossIcon
+          size="small"
+          label={formatMessage(tableMessages.removeColumns, { 0: 1 })}
+        />
       </span>
     </button>
   </div>
 );
 
-export default DeleteButton;
+export default injectIntl(DeleteButton);
