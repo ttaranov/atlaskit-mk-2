@@ -23,7 +23,7 @@ export type GlobalNavDrawerProps = {
   /** The contents of the create drawer. This is ignored if onCreateClick is
    * passed. */
   createDrawerContents?: ComponentType<*>,
-  /** A callback function which will be fired when the create drawer is opened. It not called if onCreateClick is passed
+  /** A callback function which will be fired when the create drawer is opened.
    * */
   onCreateDrawerOpen?: () => void,
   /** A callback function which will be fired when the create drawer is closed.
@@ -39,7 +39,7 @@ export type GlobalNavDrawerProps = {
   /** The contents of the search drawer. This is ignored if onSearchClick is
    * passed. */
   searchDrawerContents?: ComponentType<*>,
-  /** A callback function which will be called when the search drawer is opened. It not called if onSearchClick is passed
+  /** A callback function which will be called when the search drawer is opened.
    * */
   onSearchDrawerOpen?: () => void,
   /** A callback function which will be called when the search drawer is closed.
@@ -55,7 +55,7 @@ export type GlobalNavDrawerProps = {
   /** The contents of the notifications drawer. */
   notificationDrawerContents?: ComponentType<*>,
   /** A callback function which will be called when the notifications drawer is
-   * opened. It not called if onNotificationClick is passed*/
+   * opened. */
   onNotificationDrawerOpen?: () => void,
   /** A callback function which will be called when the notifications drawer is
    * closed. */
@@ -73,7 +73,7 @@ export type GlobalNavDrawerProps = {
    * opened. */
   onStarredDrawerOpen?: () => void,
   /** A callback function which will be called when the starred drawer is
-   * closed. It not called if onStarredClick is passed*/
+   * closed. */
   onStarredDrawerClose?: () => void,
   /** A prop to decide if the contents of the drawer should unmount on drawer
    * close. It is true by default. */

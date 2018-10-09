@@ -134,9 +134,9 @@ describe('GlobalNavigation', () => {
       wrapper.setProps({
         isSearchDrawerOpen: false,
       });
-      console.log(wrapper.props());
+      console.log(wrapper.find().debug());
       escKeyDown();
-      wrapper.update();
+      wrapper.render(DrawerContents);
       expect(mockDrawerCloseCb).toHaveBeenCalled();
     });
 
@@ -173,6 +173,8 @@ describe('GlobalNavigation', () => {
   });
 
   it('should have a test for every prop');
+
+  it('should verify default config');
 
   describe('Analytics', () => {
     it('should call fireDrawerDismissedEvents when drawer is closed', () => {
