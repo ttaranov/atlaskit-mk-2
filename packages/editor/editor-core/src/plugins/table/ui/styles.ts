@@ -389,6 +389,36 @@ export const tableStyles = css`
           z-index: ${akEditorUnitZIndex};
         }
       }
+      /* scroll shadows */
+      .${ClassName.TABLE_RIGHT_SHADOW},
+      .${ClassName.TABLE_LEFT_SHADOW}::after {
+        display: block;
+        position: absolute;
+        pointer-events: none;
+        z-index: ${akEditorSmallZIndex};
+        width: 8px;
+      }
+      .${ClassName.TABLE_LEFT_SHADOW}::after {
+        background: linear-gradient(
+          to left,
+          rgba(99, 114, 130, 0) 0,
+          ${akColorN40A} 100%
+        );
+        content: '';
+        height: 100%;
+        right: -8px;
+        bottom: 0;
+      }
+      .${ClassName.TABLE_RIGHT_SHADOW} {
+        background: linear-gradient(
+          to right,
+          rgba(99, 114, 130, 0) 0,
+          ${akColorN40A} 100%
+        );
+        height: calc(100% - ${tableMarginTop - 1}px);
+        left: calc(100% + 2px);
+        top: ${tableMarginTop - tableToolbarSize + 1}px;
+      }
     }
 
     /* Table */
@@ -431,7 +461,7 @@ export const tableStyles = css`
       position: absolute;
       top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
     }
-    .${ClassName.ROW_CONTROLS_WRAPPER}.scrolling {
+    .${ClassName.ROW_CONTROLS_WRAPPER}.${ClassName.TABLE_LEFT_SHADOW} {
       z-index: ${akEditorUnitZIndex};
     }
     .${ClassName.COLUMN_CONTROLS_WRAPPER} {
@@ -507,36 +537,6 @@ export const tableStyles = css`
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.${ClassName.RESIZING} {
-    .${ClassName.TABLE_SHADOW} {
-      pointer-events: none;
-      display: none;
-      position: absolute;
-      width: 0;
-
-      top: ${tableMarginTop}px;
-    }
-    .${ClassName.WITH_CONTROLS} .${ClassName.TABLE_SHADOW} {
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
-    }
-    .${ClassName.TABLE_SHADOW} {
-      display: ${isIE11 ? 'none' : 'block'};
-      z-index: ${akEditorSmallZIndex};
-    }
-    .${ClassName.TABLE_SHADOW}.-left {
-      left: 0;
-      background: linear-gradient(
-        to left,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
-    .${ClassName.TABLE_SHADOW}.-right {
-      background: linear-gradient(
-        to right,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
     .${ClassName.TABLE_NODE_WRAPPER} {
       overflow-x: ${isIE11 ? 'none' : 'auto'};
       ${!isIE11 ? scrollbarStyles : ''};
