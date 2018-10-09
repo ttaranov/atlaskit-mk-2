@@ -1,4 +1,4 @@
-import { imageSnapshotFolder, initEditor, snapshot } from './_utils';
+import { initEditor, snapshot } from './_utils';
 
 // TO-DO enable this after fixing flakiness
 describe('Snapshot Test: Dynamic Text Sizing', () => {

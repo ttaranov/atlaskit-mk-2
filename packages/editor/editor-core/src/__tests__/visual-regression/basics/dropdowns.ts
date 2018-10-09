@@ -1,6 +1,4 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import {
-  imageSnapshotFolder,
   setTests,
   testsByAppearance,
   initEditor,
@@ -11,10 +9,6 @@ import {
 
 // add some comments to run test
 describe('Snapshot Test: ProseMirror nodes and marks', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   setTests('dropdown');
   Object.keys(testsByAppearance).forEach(appearance => {
     const tests = testsByAppearance[appearance];

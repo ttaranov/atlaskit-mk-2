@@ -1,9 +1,4 @@
-import {
-  imageSnapshotFolder,
-  initEditor,
-  insertMenuSelector,
-  snapshot,
-} from '../_utils';
+import { initEditor, insertMenuSelector, snapshot } from '../_utils';
 
 describe('Snapshot Test: Extensions', () => {
   let page;

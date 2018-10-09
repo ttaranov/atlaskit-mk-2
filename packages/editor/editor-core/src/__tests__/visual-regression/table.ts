@@ -1,6 +1,5 @@
 import { TableSharedCssClassName as SharedClassName } from '@atlaskit/editor-common';
 import {
-  imageSnapshotFolder,
   initEditor,
   clearEditor,
   selectByTextAndClick,

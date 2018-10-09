@@ -1,9 +1,4 @@
-import {
-  imageSnapshotFolder,
-  initEditor,
-  clearEditor,
-  snapshot,
-} from './_utils';
+import { initEditor, clearEditor, snapshot } from './_utils';
 
 describe('Snapshot Test: Gap cursor', () => {
   let page;

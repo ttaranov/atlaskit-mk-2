@@ -1,6 +1,5 @@
 import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 import {
-  imageSnapshotFolder,
   initEditor,
   insertTable,
   getSelectorForTableCell,

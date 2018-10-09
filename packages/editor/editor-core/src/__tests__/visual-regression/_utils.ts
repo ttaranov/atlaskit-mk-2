@@ -332,8 +332,6 @@ export const setTests = forInput => {
   });
 };
 
-export const imageSnapshotFolder = `./__image_snapshots__`;
-
 export const snapshot = async page => {
   const editor = await page.$('.akEditor');
 

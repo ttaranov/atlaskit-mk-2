@@ -1,9 +1,4 @@
-import {
-  imageSnapshotFolder,
-  initEditor,
-  clearEditor,
-  snapshot,
-} from './_utils';
+import { initEditor, clearEditor, snapshot } from './_utils';
 import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
 import { messages as blockTypeMessages } from '../../plugins/block-type/ui/ToolbarBlockType';
 

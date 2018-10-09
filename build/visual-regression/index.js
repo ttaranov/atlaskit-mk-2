@@ -30,7 +30,7 @@ function removeSnapshotDir() {
 function getProdSnapshots() {
   return new Promise((resolve, reject) => {
     let cmd = `VISUAL_REGRESSION=true PROD=true jest -u`;
-    if (process.env.WATCH === 'true') {
+    if (watch) {
       cmd = `${cmd} --watch`;
     }
     runCommand(cmd, resolve, reject);

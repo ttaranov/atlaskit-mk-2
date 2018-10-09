@@ -1,5 +1,4 @@
 import {
-  imageSnapshotFolder,
   initEditor,
   snapshot,
   insertMedia,
