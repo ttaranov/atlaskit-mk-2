@@ -3,52 +3,92 @@ import { CardState, CardProps } from '../../..';
 
 describe('getCardStatus()', () => {
   describe('image files', () => {
-    it.skip('should keep existing status', () => {
+    it('should keep existing status', () => {
       const state = {
         metadata: {
-          size: 1,
           mediaType: 'image',
-          name: '',
         },
+        status: 'uploading',
       } as CardState;
       const props = {
         identifier: {
-          id: '1',
           mediaItemType: 'file',
         },
       } as CardProps;
 
-      expect(getCardStatus(state, props)).toEqual('');
+      expect(getCardStatus(state, props)).toEqual('uploading');
     });
 
-    it.only('should override status to complete if preview is available', () => {
+    it('should override status to complete if preview is available', () => {
       const state = {
         metadata: {
-          size: 1,
           mediaType: 'image',
-          name: '',
         },
+        status: 'processing',
+        dataURI: 'some-preview',
       } as CardState;
       const props = {
         identifier: {
-          id: '1',
           mediaItemType: 'file',
         },
       } as CardProps;
 
-      expect(getCardStatus(state, props)).toEqual('');
+      expect(getCardStatus(state, props)).toEqual('complete');
+    });
+
+    it('should fallback to processing if its complete and no preview is available', () => {
+      const state = {
+        metadata: {
+          mediaType: 'image',
+        },
+        status: 'complete',
+      } as CardState;
+      const props = {
+        identifier: {
+          mediaItemType: 'file',
+        },
+      } as CardProps;
+
+      expect(getCardStatus(state, props)).toEqual('processing');
     });
   });
 
   describe('non image files', () => {
-    it('should return complete status if enough metadata is already available', () => {});
+    it('should return complete status if enough metadata is already available', () => {
+      const state = {
+        metadata: {
+          name: 'file',
+          size: 1,
+          mediaType: 'doc',
+        },
+        status: 'processing',
+      } as CardState;
+      const props = {
+        identifier: {
+          mediaItemType: 'file',
+        },
+      } as CardProps;
 
-    it('should return right status for non image files', () => {
-      // TODO
+      expect(getCardStatus(state, props)).toEqual('complete');
     });
 
     it('should keep current status if identifier is not a file', () => {
-      // TODO
+      const state = {
+        metadata: {
+          name: 'file',
+          size: 1,
+          mediaType: 'doc',
+        },
+        status: 'processing',
+      } as CardState;
+      const props = {
+        identifier: {
+          mediaItemType: 'external-image',
+          dataURI: 'some-image',
+        },
+      } as CardProps;
+
+      expect(getCardStatus(state, props)).toEqual('processing');
     });
   });
 });
