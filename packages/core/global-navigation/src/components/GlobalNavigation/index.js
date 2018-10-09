@@ -178,14 +178,11 @@ export default class GlobalNavigation
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
 
-    console.log('<<<close>>>');
-    console.log(onCloseCallback);
     fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
     if (this[`is${capitalisedDrawerName}Controlled`]) {
-      console.log('if');
       this.setState(
         {
           [`is${capitalisedDrawerName}Open`]: false,
@@ -193,7 +190,6 @@ export default class GlobalNavigation
         onCloseCallback,
       );
     } else {
-      console.log('else');
       // invoke callback in both cases
       onCloseCallback();
     }
