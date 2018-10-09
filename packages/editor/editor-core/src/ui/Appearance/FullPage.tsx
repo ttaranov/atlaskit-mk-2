@@ -225,7 +225,10 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ScrollContainer innerRef={this.scrollContainerRef}>
+        <ScrollContainer
+          innerRef={this.scrollContainerRef}
+          className="fabric-editor-popup-scroll-parent"
+        >
           <ClickAreaBlock editorView={editorView}>
             <ContentArea>
               <div
