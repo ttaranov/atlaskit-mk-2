@@ -61,7 +61,7 @@ export class Card extends Component<CardProps, CardState> {
       !deepEqual(currentIdentifier, nextIdenfifier) ||
       this.shouldRefetchImage(currentDimensions, nextDimensions)
     ) {
-      this.subscribe(nextIdentifier, nextContext);
+      this.subscribe(nextIdenfifier, nextContext);
     }
   }
 
