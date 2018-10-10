@@ -26,6 +26,8 @@ export const getCardStatus = (
     } else if (name && size && !disableOverlay && status === 'processing') {
       // If we have enough metadata for non images, we show it
       return 'complete';
+    } else if (status === 'complete' && !size) {
+      return 'processing';
     }
   }
 

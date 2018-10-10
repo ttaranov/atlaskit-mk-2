@@ -90,5 +90,23 @@ describe('getCardStatus()', () => {
 
       expect(getCardStatus(state, props)).toEqual('processing');
     });
+
+    it('should return processing status if file has no size', () => {
+      const state = {
+        metadata: {
+          name: 'file',
+          size: 0,
+          mediaType: 'unknown',
+        },
+        status: 'complete',
+      } as CardState;
+      const props = {
+        identifier: {
+          mediaItemType: 'file',
+        },
+      } as CardProps;
+
+      expect(getCardStatus(state, props)).toEqual('processing');
+    });
   });
 });
