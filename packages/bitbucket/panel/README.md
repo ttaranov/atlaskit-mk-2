@@ -5,7 +5,7 @@ This is a React component that renders a collapsible panel
 ## Installation
 
 ```sh
-yarn add @atlaskit/panel
+yarn add @atlassian-bitkit/panel
 ```
 
 ## Usage

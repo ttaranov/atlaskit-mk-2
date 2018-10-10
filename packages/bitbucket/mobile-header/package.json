@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/mobile-header",
+  "name": "@atlassian-bitkit/mobile-header",
   "version": "1.0.1",
   "description": "A React component rendering a mobile header",
   "license": "Apache-2.0",

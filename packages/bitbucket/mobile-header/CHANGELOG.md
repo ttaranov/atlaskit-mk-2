@@ -1,4 +1,4 @@
-# @atlaskit/mobile-header
+# @atlassian-bitkit/mobile-header
 
 ## 1.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)

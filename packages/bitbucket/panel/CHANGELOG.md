@@ -1,4 +1,4 @@
-# @atlaskit/panel
+# @atlassian-bitkit/panel
 
 ## 0.0.3
 - [patch] Update README title and description [43b712e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43b712e)
