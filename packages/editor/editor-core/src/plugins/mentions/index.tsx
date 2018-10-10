@@ -51,18 +51,13 @@ const mentionsPlugin: EditorPlugin = {
           typeAheadState: typeAheadPluginKey,
           mentionState: mentionPluginKey,
         }}
-        render={(
-          {
-            typeAheadState,
-            mentionState,
-          }: {
-            typeAheadState: TypeAheadPluginState;
-            mentionState: MentionPluginState;
-          } = {
-            typeAheadState: createInitialPluginState(),
-            mentionState: {},
-          },
-        ) =>
+        render={({
+          typeAheadState = createInitialPluginState(),
+          mentionState = {},
+        }: {
+          typeAheadState: TypeAheadPluginState;
+          mentionState: MentionPluginState;
+        }) =>
           !mentionState.provider ? null : (
             <ToolbarMention
               editorView={editorView}
