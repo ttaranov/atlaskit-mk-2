@@ -7,6 +7,17 @@ module.exports = {
     '@babel/syntax-dynamic-import',
   ],
   presets: ['@babel/react', '@babel/flow'],
+  overrides: [
+    {
+      test: [
+        './packages/core/navigation-next',
+        './packages/core/drawer',
+        './packages/core/global-navigation',
+        './packages/core/select',
+      ],
+      plugins: [['emotion', { hoist: true }]],
+    },
+  ],
   env: {
     'production:cjs': {
       plugins: [
