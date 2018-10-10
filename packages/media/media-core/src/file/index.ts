@@ -157,6 +157,9 @@ export class FileFetcher {
     name: string = 'download',
     collectionName?: string,
   ) {
+    const isIE11 =
+      !!(window as any).MSInputMethodContext &&
+      !!(document as any).documentMode;
     const iframeName = 'media-download-iframe';
     const link = document.createElement('a');
     let iframe = document.getElementById(iframeName) as HTMLIFrameElement;
@@ -169,7 +172,7 @@ export class FileFetcher {
     }
     link.href = await this.mediaStore.getFileBinaryURL(id, collectionName);
     link.download = name;
-    link.target = iframeName;
+    link.target = isIE11 ? '_blank' : iframeName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
