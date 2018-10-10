@@ -54,6 +54,7 @@ class MediaGroup extends React.Component<MediaGroupProps> {
     const tempIds = [] as any;
     const existingMedia = [] as any;
     this.mediaPluginState.mediaNodes = [];
+
     node.forEach((item, childOffset) => {
       this.mediaPluginState.mediaGroupNodes[item.attrs.__key] = {
         node: item,

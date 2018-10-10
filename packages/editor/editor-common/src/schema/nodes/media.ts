@@ -40,6 +40,9 @@ export interface MediaBaseAttributes {
   __fileMimeType?: string | null;
   // For JIRA
   __displayType?: DisplayType | null;
+
+  // Need this until there is actual "upfront" media ID
+  __key?: string | null;
 }
 
 export interface MediaAttributes extends MediaBaseAttributes {

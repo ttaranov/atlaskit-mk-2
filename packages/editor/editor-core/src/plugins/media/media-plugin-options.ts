@@ -19,4 +19,5 @@ export type MediaPluginOptions = {
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
   appearance: EditorAppearance;
+  allowResizing: boolean;
 };

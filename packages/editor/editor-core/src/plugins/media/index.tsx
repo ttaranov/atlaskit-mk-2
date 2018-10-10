@@ -92,7 +92,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
               appearance: props.appearance,
-              resizing: props.allowResizing,
+              allowResizing: !!(options && options.allowResizing),
             },
             reactContext,
             dispatch,

@@ -59,7 +59,8 @@ export default class MediaSingleNode extends Component<
     if (
       this.props.node.attrs.width !== nextProps.node.attrs.width ||
       this.props.selected() !== nextProps.selected() ||
-      this.props.node.attrs.layout !== nextProps.node.attrs.layout
+      this.props.node.attrs.layout !== nextProps.node.attrs.layout ||
+      this.props.width !== nextProps.width
     ) {
       return true;
     }
@@ -82,6 +83,7 @@ export default class MediaSingleNode extends Component<
       },
     );
   };
+
   mediaReady(mediaState) {
     return mediaState && mediaState.status === 'ready' && mediaState!.preview;
   }
@@ -187,7 +189,6 @@ export default class MediaSingleNode extends Component<
               <MediaItem
                 node={this.child}
                 view={this.props.view}
-                width={width}
                 getPos={this.props.getPos}
                 cardDimensions={{
                   width: '100%',
@@ -212,14 +213,13 @@ export default class MediaSingleNode extends Component<
               <MediaItem
                 node={this.child}
                 view={this.props.view}
-                width={width}
                 getPos={this.props.getPos}
                 cardDimensions={{
                   width: '100%',
                   height: '100%',
                 }}
                 mediaProvider={mediaProvider}
-                selected={selected}
+                selected={selected()}
                 onClick={this.selectMediaSingle}
                 onExternalImageLoaded={this.onExternalImageLoaded}
               />

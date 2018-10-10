@@ -2,14 +2,13 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import { ProviderFactory, ImageLoaderProps } from '@atlaskit/editor-common';
 import { ProsemirrorGetPosHandler, ReactNodeProps } from '../../../nodeviews';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
 import { Context, ImageResizeMode } from '@atlaskit/media-core';
-
 import { MediaProvider } from '../pm-plugins/main';
 import {
   Card,
@@ -40,6 +39,7 @@ export interface MediaNodeProps extends ReactNodeProps {
   providerFactory?: ProviderFactory;
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
+  mediaProvider?: Promise<MediaProvider>;
   onClick?: () => void;
   onExternalImageLoaded?: (
     dimensions: { width: number; height: number },
@@ -61,7 +61,14 @@ export interface Props extends Partial<MediaBaseAttributes> {
   disableOverlay?: boolean;
 }
 
-class MediaNode extends Component<MediaNodeProps, {}> {
+export interface MediaNodeState {
+  viewContext?: Context;
+}
+
+class MediaNode extends Component<
+  MediaNodeProps & ImageLoaderProps,
+  MediaNodeState
+> {
   private pluginState: MediaPluginState;
   private mediaProvider;
 
@@ -141,14 +148,17 @@ class MediaNode extends Component<MediaNodeProps, {}> {
         selected={selected}
         disableOverlay={true}
         onClick={onClick}
+        onExternalImageLoaded={this.props.onExternalImageLoaded}
       />
     );
   }
 
   private handleNewNode = (props: MediaNodeProps) => {
     const { node } = props;
+
+    // +1 indicates the media node inside the mediaSingle nodeview
     this.pluginState.handleMediaNodeMount(node, () => this.props.getPos() + 1);
   };
 }
 
-export default withImageLoader(MediaNode);
+export default withImageLoader<MediaNodeProps>(MediaNode);
