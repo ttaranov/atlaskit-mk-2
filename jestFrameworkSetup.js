@@ -326,6 +326,7 @@ if (process.env.VISUAL_REGRESSION) {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
   beforeAll(async () => {
+    // show browser when watch is enabled
     const isWatch = process.env.WATCH === 'true';
     let headless = true;
     if (isWatch) {

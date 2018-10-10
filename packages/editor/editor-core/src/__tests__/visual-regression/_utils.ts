@@ -215,7 +215,7 @@ export const toolBarItemsTests = [
       nodeSelector: `h${level}`,
       tagName: `h${level}`,
       content: 'text',
-      appearance: ['full-page'], // TO-DO add comment mode back
+      appearance: ['full-page'], // TODO add comment mode back
       // removing comment since throwing error Node is detached from document
     };
   }),
@@ -244,7 +244,7 @@ export const baseTests = [
       content: 'text',
       appearance: ['full-page', 'comment'],
     })),
-  // TO-DO run this after the fix for 'Light grey' on master
+  // TODO run this after the fix for 'Light grey' on master
   // Array.from(colorPalette.values()).map(key => {
   //   return {
   //     name: `Text color: ${key}`,

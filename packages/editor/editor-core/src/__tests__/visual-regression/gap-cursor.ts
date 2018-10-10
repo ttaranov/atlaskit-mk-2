@@ -15,11 +15,11 @@ describe('Snapshot Test: Gap cursor', () => {
 
   [
     'table',
-    // 'code block',
+    // 'code block', //TODO :enable test after bug is fixed
     'panel',
     'action',
     'decision',
-    // 'block extension',
+    // 'block extension', //TODO :enable test after bug is fixed
     'columns',
   ].forEach(node => {
     ['Left', 'Right'].forEach(side => {

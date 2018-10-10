@@ -85,7 +85,7 @@ const getSelectorForCell = ({
   return `${rowSelector} > ${cellType}:nth-child(${cell})`;
 };
 
-// TO-DO renable after splitting and fix flaky tests
+// TODO renable after splitting and fix flaky tests
 describe.skip('Snapshot Test: table', () => {
   ['full-page', 'comment'].forEach(appearance => {
     let page;

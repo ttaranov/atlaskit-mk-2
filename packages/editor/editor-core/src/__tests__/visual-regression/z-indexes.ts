@@ -40,7 +40,7 @@ describe('Snapshot Test: z-indexes', () => {
         await clearEditor(page);
       });
 
-      // TO-DO enable after fixing selctors on tables
+      // TODO enable after fixing selctors on tables
       it.skip('should always position table trash icon below dropdowns from main menu', async () => {
         await insertTable(page);
         await page.waitForSelector(removeTablePopup);
