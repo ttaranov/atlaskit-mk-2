@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GlobalItem GlobalItemBase should render an InteractionStateManager 1`] = `
+.emotion-0 {
+  margin-top: 10px;
+}
+
 <div
-  css={
-    Object {
-      "marginTop": 10,
-    }
-  }
+  className="emotion-0"
 >
   <InteractionStateManager>
     <unknown />
@@ -15,12 +15,12 @@ exports[`GlobalItem GlobalItemBase should render an InteractionStateManager 1`] 
 `;
 
 exports[`GlobalItem GlobalItemBase should render an item wrapper with the globalItem.itemWrapper theme styles when size is large: largeItem 1`] = `
+.emotion-0 {
+  margin-top: 10px;
+}
+
 <div
-  css={
-    Object {
-      "marginTop": 10,
-    }
-  }
+  className="emotion-0"
 >
   <InteractionStateManager>
     <unknown />
@@ -29,12 +29,12 @@ exports[`GlobalItem GlobalItemBase should render an item wrapper with the global
 `;
 
 exports[`GlobalItem GlobalItemBase should render an item wrapper with the globalItem.itemWrapper theme styles when size is small: smallItem 1`] = `
+.emotion-0 {
+  margin-top: 0;
+}
+
 <div
-  css={
-    Object {
-      "marginTop": 0,
-    }
-  }
+  className="emotion-0"
 >
   <InteractionStateManager>
     <unknown />
