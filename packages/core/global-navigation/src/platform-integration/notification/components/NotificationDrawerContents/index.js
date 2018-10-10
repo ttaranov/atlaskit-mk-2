@@ -14,13 +14,6 @@ const ExternalContent = styled.iframe`
   flex: 1 1 auto;
 `;
 
-const SpinnerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  position: relative;
-  top: 11.25rem;
-`;
-
 type Props = {|
   externalContentUrl: string,
   locale?: string,
@@ -78,9 +71,18 @@ class NotificationDrawer extends Component<Props, State> {
     return (
       <Fragment>
         {!this.state.hasIframeLoaded && (
-          <SpinnerWrapper>
-            <Spinner size="large" isCompleting={this.state.hasIframeLoaded} />
-          </SpinnerWrapper>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+            }}
+          >
+            <Spinner size="large" isCompleting={false} />
+          </div>
         )}
         <ExternalContent
           ref={this.storeIFrame}

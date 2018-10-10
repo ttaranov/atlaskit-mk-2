@@ -48,7 +48,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
-const externalContentUrl = '/examples/core/global-navigation/iframe';
+const externalContentUrl = '//www.atlassian.com';
 
 const localStorage = typeof window === 'object' ? window.localStorage : {};
 
@@ -191,6 +191,7 @@ export default class GlobalNavigation
       return {};
     }
 
+    debugger; // eslint-disable-line
     // skip fetch, refresh from local storage if newer
     const cachedCount = this.getLocalStorageCount();
     const result = {};

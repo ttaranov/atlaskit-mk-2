@@ -6,13 +6,16 @@ import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src';
 
+const fabricNotificationLogUrl = '/gateway/api/notification-log/';
+const cloudId = 'DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b';
+
 // TODO: make onClicks targets show up on page instead of console.logs
 const Global = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
     productHref="#"
-    fabricNotificationLogUrl="https://product-fabric.atlassian.net/gateway/api/notification-log/"
-    cloudId="DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b"
+    fabricNotificationLogUrl={fabricNotificationLogUrl}
+    cloudId={cloudId}
   />
 );
 
@@ -23,7 +26,7 @@ export default () => (
       productNavigation={() => null}
       containerNavigation={() => null}
     >
-      Page content
+      <div css={{ padding: '32px 40px' }}>Page content</div>
     </LayoutManager>
   </NavigationProvider>
 );

@@ -23,9 +23,6 @@ const notificationIntegration = (
 
     return (
       <NotificationIndicator
-        // notificationLogProvider={
-        //   new NotificationLogClient(fabricNotificationLogUrl, cloudId)
-        // }
         fabricNotificationLogUrl={fabricNotificationLogUrl}
         cloudId={cloudId}
         refreshRate={refreshRate}
