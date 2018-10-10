@@ -76,14 +76,15 @@ export class ReactionConsumer<
   }
 
   render() {
-    if (this.state.store) {
-      const props = Object.assign(
+    if (!this.state.store) {
+      return null;
+    }
+    return this.props.children(
+      Object.assign(
         {},
         this.getPropsFromState(this.state.store.getState()),
         this.getPropsFromActions(this.state.store),
-      );
-      return this.props.children(props);
-    }
-    return null;
+      ),
+    );
   }
 }
