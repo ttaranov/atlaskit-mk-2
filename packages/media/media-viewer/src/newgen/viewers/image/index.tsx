@@ -88,7 +88,6 @@ export class ImageViewer extends React.Component<
 
   private async init(file: ProcessedFileState, context: Context) {
     const { onLoaded } = this.props;
-    const startTime = Date.now();
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
@@ -105,7 +104,7 @@ export class ImageViewer extends React.Component<
         this.setState({
           objectUrl: Outcome.successful(objectUrl),
         });
-        onLoaded({ status: 'success', duration: Date.now() - startTime });
+        onLoaded({ status: 'success' });
       } catch (err) {
         if (err.message === REQUEST_CANCELLED) {
           this.preventRaceCondition();
@@ -113,7 +112,7 @@ export class ImageViewer extends React.Component<
           this.setState({
             objectUrl: Outcome.failed(createError('previewFailed', err, file)),
           });
-          onLoaded({ status: 'error', duration: Date.now() - startTime });
+          onLoaded({ status: 'error' });
         }
       }
     });

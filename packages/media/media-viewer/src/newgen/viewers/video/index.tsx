@@ -73,13 +73,12 @@ export class VideoViewer extends React.Component<Props, State> {
   }
 
   private async init(isHDActive?: boolean) {
-    const startTime = Date.now();
     const { context, item, collectionName, onLoaded } = this.props;
     const preferHd = isHDActive && isHDAvailable(item);
     const videoUrl = getVideoArtifactUrl(item, preferHd);
     try {
       if (!videoUrl) {
-        onLoaded({ status: 'error', duration: Date.now() - startTime });
+        onLoaded({ status: 'error' });
         throw new Error('No video artifacts found');
       }
       this.setState({
@@ -87,12 +86,12 @@ export class VideoViewer extends React.Component<Props, State> {
           await constructAuthTokenUrl(videoUrl, context, collectionName),
         ),
       });
-      onLoaded({ status: 'success', duration: Date.now() - startTime });
+      onLoaded({ status: 'success' });
     } catch (err) {
       this.setState({
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
-      onLoaded({ status: 'error', duration: Date.now() - startTime });
+      onLoaded({ status: 'error' });
     }
   }
 

@@ -42,7 +42,6 @@ export class DocViewer extends React.Component<Props, State> {
 
   private async init() {
     const { onLoaded } = this.props;
-    const startTime = Date.now();
     if (!DocViewer.PDFComponent) {
       await this.loadDocViewer();
     }
@@ -55,7 +54,7 @@ export class DocViewer extends React.Component<Props, State> {
           createError('noPDFArtifactsFound', undefined, item),
         ),
       });
-      onLoaded({ status: 'error', duration: Date.now() - startTime });
+      onLoaded({ status: 'error' });
       return;
     }
     try {
@@ -67,12 +66,12 @@ export class DocViewer extends React.Component<Props, State> {
       this.setState({
         src: Outcome.successful(src),
       });
-      onLoaded({ status: 'success', duration: Date.now() - startTime });
+      onLoaded({ status: 'success' });
     } catch (err) {
       this.setState({
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
-      onLoaded({ status: 'error', duration: Date.now() - startTime });
+      onLoaded({ status: 'error' });
     }
   }
 

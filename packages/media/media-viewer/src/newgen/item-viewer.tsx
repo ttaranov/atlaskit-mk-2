@@ -17,7 +17,7 @@ import {
 import { renderDownloadButton } from './domain/download';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
-import { channel, onViewerLoadPayload } from './analytics';
+import { channel, ViewerLoadPayload } from './analytics';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 
 export type Props = Readonly<{
@@ -31,12 +31,10 @@ export type Props = Readonly<{
 
 export type State = {
   item: Outcome<FileState, MediaViewerError>;
-  loadStarted: number;
 };
 
 const initialState: State = {
   item: Outcome.pending(),
-  loadStarted: Date.now(),
 };
 export class ItemViewerBase extends React.Component<
   Props & WithAnalyticsEventProps,
@@ -61,23 +59,15 @@ export class ItemViewerBase extends React.Component<
     this.init(this.props);
   }
 
-  private onViewerLoaded = (viewerPayload: onViewerLoadPayload) => {
-    const { loadStarted } = this.state;
+  private onViewerLoaded = (viewerPayload: ViewerLoadPayload) => {
     const { id } = this.props.identifier;
-    const loadDurationMs = Date.now() - loadStarted;
-    const viewerDurationMs = viewerPayload.duration;
-    const metadataDurationMs = loadDurationMs - viewerDurationMs;
     const ev: GasPayload = {
       actionSubject: 'viewed',
       eventType: 'ui',
       attributes: {
         status: 'success',
         fileId: id,
-        viewerDurationMs,
-        loadDurationMs,
-        metadataDurationMs,
       },
-      source: 'unknown',
     };
     this.fireAnalytics(ev);
   };
@@ -98,16 +88,16 @@ export class ItemViewerBase extends React.Component<
       collectionName: identifier.collectionName,
       onClose,
       previewCount,
+      onLoaded: this.onViewerLoaded,
     };
     switch (item.mediaType) {
       case 'image':
-        return <ImageViewer onLoaded={this.onViewerLoaded} {...viewerProps} />;
+        return <ImageViewer {...viewerProps} />;
       case 'audio':
-        return <AudioViewer onLoaded={this.onViewerLoaded} {...viewerProps} />;
+        return <AudioViewer {...viewerProps} />;
       case 'video':
         return (
           <VideoViewer
-            onLoaded={this.onViewerLoaded}
             showControls={showControls}
             featureFlags={featureFlags}
             {...viewerProps}

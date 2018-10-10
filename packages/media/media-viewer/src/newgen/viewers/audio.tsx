@@ -118,12 +118,11 @@ export class AudioViewer extends React.Component<Props, State> {
   };
 
   private async init() {
-    const startTime = Date.now();
     const { context, item, collectionName, onLoaded } = this.props;
     const audioUrl = getArtifactUrl(item.artifacts, 'audio.mp3');
     try {
       if (!audioUrl) {
-        onLoaded({ status: 'error', duration: Date.now() - startTime });
+        onLoaded({ status: 'error' });
         throw new Error('No audio artifacts found');
       }
       this.setCoverUrl();
@@ -132,12 +131,12 @@ export class AudioViewer extends React.Component<Props, State> {
           await constructAuthTokenUrl(audioUrl, context, collectionName),
         ),
       });
-      onLoaded({ status: 'success', duration: Date.now() - startTime });
+      onLoaded({ status: 'success' });
     } catch (err) {
       this.setState({
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
-      onLoaded({ status: 'error', duration: Date.now() - startTime });
+      onLoaded({ status: 'error' });
     }
   }
 
