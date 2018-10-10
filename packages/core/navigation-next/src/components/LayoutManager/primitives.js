@@ -14,8 +14,9 @@ export const LayoutContainer = (props: {}) => (
   />
 );
 
-export const NavigationContainer = (props: {}) => (
+export const NavigationContainer = ({ innerRef, ...props }: *) => (
   <div
+    ref={innerRef}
     css={{
       bottom: 0,
       display: 'flex',
@@ -61,7 +62,7 @@ export const ContentNavigationWrapper = ({
     {...props}
   />
 );
-export const ContainerNavigationMask = (props: any) => (
+export const ContainerNavigationMask = (props: *) => (
   <div
     css={{
       display: 'flex',

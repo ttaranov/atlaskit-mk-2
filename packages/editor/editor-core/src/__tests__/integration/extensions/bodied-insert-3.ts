@@ -17,7 +17,6 @@ BrowserTestCase(
     await page.goto(fullpage.path);
 
     await setupMediaMocksProviders(page);
-
     await page.waitForSelector(fullpage.placeholder);
     await page.click(fullpage.placeholder);
 

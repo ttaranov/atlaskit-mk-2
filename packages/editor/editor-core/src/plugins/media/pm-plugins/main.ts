@@ -12,10 +12,14 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
+import {
+  MediaType,
+  MediaSingleLayout,
+  ErrorReporter,
+} from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
-import { ErrorReporter, isImage } from '../../../utils';
+import { isImage } from '../../../utils';
 import { Dispatch } from '../../../event-dispatcher';
 import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { EditorAppearance } from '../../../types/editor-props';

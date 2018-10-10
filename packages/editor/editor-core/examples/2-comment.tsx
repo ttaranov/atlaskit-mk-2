@@ -121,7 +121,6 @@ export class CommentEditorWithFeedback extends React.Component<Props, State> {
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
                     quickInsert={true}
-                    allowTasksAndDecisions={true}
                     allowCodeBlocks={true}
                     allowTextColor={true}
                     allowLists={true}

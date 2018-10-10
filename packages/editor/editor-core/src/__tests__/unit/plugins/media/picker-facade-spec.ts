@@ -29,7 +29,7 @@ import PickerFacade, {
   PickerType,
   PickerFacadeConfig,
 } from '../../../../plugins/media/picker-facade';
-import { ErrorReportingHandler } from '../../../../utils';
+import { ErrorReportingHandler } from '@atlaskit/editor-common';
 
 describe('Media PickerFacade', () => {
   const errorReporter: ErrorReportingHandler = {

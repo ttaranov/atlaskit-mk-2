@@ -357,9 +357,7 @@ describe(name, () => {
         expect(onSetPage).toHaveBeenCalledTimes(1);
       });
 
-      // TODO: @thejameskyle - Fails unexpectedly, fix test after sinon is removed from codebase.
-      it.skip('onSetPage', () => {
-        // eslint-disable-line jest/no-disabled-tests
+      it('onSetPage', () => {
         wrapper
           .find(Pagination)
           .find('button')

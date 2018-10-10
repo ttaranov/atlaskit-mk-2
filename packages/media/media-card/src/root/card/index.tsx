@@ -3,9 +3,11 @@ import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
 import { Context, FileDetails } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs/Subscription';
 import {
   CardAnalyticsContext,
+  CardAction,
   CardDimensions,
   CardProps,
   CardState,
@@ -18,6 +20,7 @@ import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import {
+  isFileIdentifier,
   isUrlPreviewIdentifier,
   isExternalImageIdentifier,
 } from '../../utils/identifier';
@@ -160,7 +163,7 @@ export class Card extends Component<CardProps, CardState> {
           switch (state.status) {
             case 'uploading':
               const { progress } = state;
-              console.log({ progress });
+
               this.notifyStateChange({
                 status: 'uploading',
                 progress,
@@ -209,6 +212,9 @@ export class Card extends Component<CardProps, CardState> {
               }
               this.notifyStateChange({ status: 'complete', metadata });
               break;
+            case 'failed-processing':
+              this.notifyStateChange({ status: 'failed-processing', metadata });
+              break;
             case 'error':
               this.notifyStateChange({ status: 'error' });
           }
@@ -247,13 +253,30 @@ export class Card extends Component<CardProps, CardState> {
     return getBaseAnalyticsContext('Card', id);
   }
 
+  get actions(): CardAction[] {
+    const { actions = [], identifier } = this.props;
+    const { status } = this.state;
+    if (isFileIdentifier(identifier) && status === 'failed-processing') {
+      actions.unshift({
+        label: 'Download',
+        icon: <DownloadIcon label="Download" />,
+        handler: async () =>
+          this.props.context.file.downloadBinary(
+            await identifier.id,
+            identifier.collectionName,
+          ),
+      });
+    }
+
+    return actions;
+  }
+
   render() {
     const {
       isLazy,
       appearance,
       resizeMode,
       dimensions,
-      actions,
       selectable,
       selected,
       onClick,
@@ -263,7 +286,7 @@ export class Card extends Component<CardProps, CardState> {
       identifier,
     } = this.props;
     const { progress, metadata, dataURI } = this.state;
-    const { analyticsContext, onRetry } = this;
+    const { analyticsContext, onRetry, actions } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView

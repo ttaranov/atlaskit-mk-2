@@ -2,7 +2,7 @@
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
 import { mediaSingleSharedStyle } from '@atlaskit/editor-common';
-import { akColorB200, akColorN60 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 export const mediaStyles = css`
   .ProseMirror {
@@ -72,14 +72,14 @@ export const mediaStyles = css`
   .mediaSingle-selected .mediaSingle-resize-handle-left::after,
   .media-single:hover .mediaSingle-resize-handle-left::after,
   .media-single:hover .mediaSingle-resize-handle-right::after {
-    background: ${akColorN60};
+    background: ${colors.N60};
   }
 
   .media-single .mediaSingle-resize-handle-right:hover::after,
   .media-single .mediaSingle-resize-handle-left:hover::after,
   .media-single.is-resizing .mediaSingle-resize-handle-right::after,
   .media-single.is-resizing .mediaSingle-resize-handle-left::after {
-    background: ${akColorB200};
+    background: ${colors.B200};
   }
 
   .__resizable_base__ {

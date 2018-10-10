@@ -38,6 +38,7 @@ export interface CardOverlayProps {
   persistent: boolean;
 
   error?: ReactNode;
+  noHover?: boolean;
   onRetry?: () => void;
 
   actions?: Array<CardAction>;
@@ -63,7 +64,14 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   private get wrapperClassNames() {
-    const { error, selectable, selected, mediaType, persistent } = this.props;
+    const {
+      error,
+      noHover,
+      selectable,
+      selected,
+      mediaType,
+      persistent,
+    } = this.props;
     const { isMenuExpanded } = this.state;
 
     return error
@@ -72,17 +80,23 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
           active: isMenuExpanded,
           selectable,
           selected,
+          // Yes, you right. We put "persistent" class when it is NOT persistent. 🤦
           persistent: !persistent,
+          noHover,
         });
   }
 
   render() {
-    const { error, mediaName, persistent, actions } = this.props;
+    const { error, noHover, mediaName, persistent, actions } = this.props;
     const titleText = error || !mediaName ? '' : mediaName;
     const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
-      <Overlay hasError={!!error} className={this.wrapperClassNames}>
+      <Overlay
+        hasError={!!error}
+        noHover={noHover}
+        className={this.wrapperClassNames}
+      >
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>

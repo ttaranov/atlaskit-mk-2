@@ -553,6 +553,26 @@ describe('MediaStore', () => {
         expect(image).toEqual(data);
       });
     });
+
+    describe('getFileBinaryURL', () => {
+      let url = '';
+
+      beforeEach(async () => {
+        url = await mediaStore.getFileBinaryURL('1234', 'some-collection-name');
+      });
+
+      it('should return file url', () => {
+        expect(url).toEqual(
+          `${baseUrl}/file/1234/binary?client=some-client-id&dl=true&token=some-token`,
+        );
+      });
+
+      it('should call authProvider with given collection name', async () => {
+        expect(authProvider).toHaveBeenCalledWith({
+          collectionName: 'some-collection-name',
+        });
+      });
+    });
   });
 
   describe('given auth provider rejects', () => {

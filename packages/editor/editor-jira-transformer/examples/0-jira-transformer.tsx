@@ -6,7 +6,7 @@ import {
   EditorContext,
   WithEditorActions,
 } from '@atlaskit/editor-core';
-import { mention, emoji } from '@atlaskit/util-data-test';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { JIRATransformer } from '../src';
 
 const Container = styled.div`
@@ -70,7 +70,6 @@ class TransformerPanels extends React.PureComponent<Props, State> {
         <div id="editor">
           <Editor
             appearance="comment"
-            allowTasksAndDecisions={true}
             allowCodeBlocks={true}
             allowLists={true}
             allowRule={true}
@@ -81,6 +80,9 @@ class TransformerPanels extends React.PureComponent<Props, State> {
               new JIRATransformer(schema, { mention: mentionEncoder })
             }
             onChange={this.handleChangeInTheEditor}
+            taskDecisionProvider={Promise.resolve(
+              taskDecision.getMockTaskDecisionResource(),
+            )}
           />
         </div>
         <div

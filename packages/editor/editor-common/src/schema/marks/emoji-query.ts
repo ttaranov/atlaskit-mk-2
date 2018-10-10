@@ -1,4 +1,4 @@
-import { akColorB400 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { MarkSpec } from 'prosemirror-model';
 import { SEARCH_QUERY } from '../groups';
 
@@ -11,7 +11,7 @@ export const emojiQuery: MarkSpec = {
       'span',
       {
         'data-emoji-query': 'true',
-        style: `color: ${akColorB400}`,
+        style: `color: ${colors.B400}`,
       },
     ];
   },

@@ -3,7 +3,7 @@ import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { createInputRule } from '../../../utils/input-rules';
-import { createMediaNode } from './main';
+import { createExternalMediaNode } from '../utils';
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (!schema.nodes.media || !schema.nodes.mediaSingle) {
@@ -20,7 +20,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
         alt: match[1],
       };
 
-      const node = createMediaNode(attrs.src, schema);
+      const node = createExternalMediaNode(attrs.src, schema);
       if (node) {
         analyticsService.trackEvent('atlassian.editor.image.autoformatting');
         return state.tr.replaceWith(start, end, node);

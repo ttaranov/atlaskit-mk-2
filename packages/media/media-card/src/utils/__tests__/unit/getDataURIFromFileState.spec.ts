@@ -66,7 +66,6 @@ describe('getDataURIFromFileState()', () => {
         blob: new File([], 'filename', { type: 'video/mov' }),
       },
       artifacts: {},
-      binaryUrl: '',
     });
 
     expect(dataURI).toEqual('video-preview');

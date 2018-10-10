@@ -23,7 +23,6 @@ const audioItem: ProcessedFileState = {
   size: 11222,
   mediaType: 'audio',
   mimeType: 'mp3',
-  binaryUrl: '',
   artifacts: {
     'audio.mp3': {
       url: '/audio',

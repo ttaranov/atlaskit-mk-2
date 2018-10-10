@@ -53,6 +53,9 @@
       "./typings/scrollparent.d.ts",
       "./typings/react-dom.d.ts",
       "./typings/url.d.ts",
-      "./typings/postis.d.ts"
+      "./typings/postis.d.ts",
+      "./typings/blueimp-load-image.d.ts",
+      "./typings/png-chunks-extract.d.ts",
+      "./typings/utf8-string-bytes.d.ts",
     ]
   }
