@@ -71,9 +71,10 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
   render() {
     const { crop, dataURI } = this.props;
+    const { parentWidth, parentHeight, imgWidth, imgHeight } = this.state;
 
-    const parentRatio = this.state.parentWidth / this.state.parentHeight;
-    const imgRatio = this.state.imgWidth / this.state.imgHeight;
+    const parentRatio = parentWidth / parentHeight;
+    const imgRatio = imgWidth / imgHeight;
 
     const StyledComponent = crop
       ? parentRatio > imgRatio

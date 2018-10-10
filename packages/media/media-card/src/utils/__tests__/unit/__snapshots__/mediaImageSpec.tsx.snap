@@ -18,7 +18,7 @@ exports[`MediaImage should use fit wrapper when "crop" is false 1`] = `
 <MediaImage
   className=""
   crop={false}
-  dataURI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  dataURI="data:image/png;base64,"
   height="100%"
   width="100%"
 >
@@ -27,12 +27,12 @@ exports[`MediaImage should use fit wrapper when "crop" is false 1`] = `
       Object {
         "current": <img
           class="c0 c1"
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+          src="data:image/png;base64,"
       />,
       }
     }
     onLoad={[Function]}
-    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+    src="data:image/png;base64,"
   >
     <styled.img
       className="c0"
@@ -40,17 +40,17 @@ exports[`MediaImage should use fit wrapper when "crop" is false 1`] = `
         Object {
           "current": <img
             class="c0 c1"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+            src="data:image/png;base64,"
         />,
         }
       }
       onLoad={[Function]}
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      src="data:image/png;base64,"
     >
       <img
         className="c0 c1"
         onLoad={[Function]}
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+        src="data:image/png;base64,"
       />
     </styled.img>
   </Styled(styled.img)>
@@ -74,7 +74,7 @@ exports[`MediaImage should use horizontal cover wrapper when crop is true and im
 <MediaImage
   className=""
   crop={true}
-  dataURI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  dataURI="data:image/png;base64,"
   height="100%"
   width="100%"
 >
@@ -83,12 +83,12 @@ exports[`MediaImage should use horizontal cover wrapper when crop is true and im
       Object {
         "current": <img
           class="c0 c1"
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+          src="data:image/png;base64,"
       />,
       }
     }
     onLoad={[Function]}
-    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+    src="data:image/png;base64,"
   >
     <styled.img
       className="c0"
@@ -96,17 +96,17 @@ exports[`MediaImage should use horizontal cover wrapper when crop is true and im
         Object {
           "current": <img
             class="c0 c1"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+            src="data:image/png;base64,"
         />,
         }
       }
       onLoad={[Function]}
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      src="data:image/png;base64,"
     >
       <img
         className="c0 c1"
         onLoad={[Function]}
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+        src="data:image/png;base64,"
       />
     </styled.img>
   </Styled(styled.img)>
@@ -130,7 +130,7 @@ exports[`MediaImage should use vertical cover wrapper when crop is true and imag
 <MediaImage
   className=""
   crop={true}
-  dataURI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+  dataURI="data:image/png;base64,"
   height="100%"
   width="100%"
 >
@@ -139,12 +139,12 @@ exports[`MediaImage should use vertical cover wrapper when crop is true and imag
       Object {
         "current": <img
           class="c0 c1"
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+          src="data:image/png;base64,"
       />,
       }
     }
     onLoad={[Function]}
-    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+    src="data:image/png;base64,"
   >
     <styled.img
       className="c0"
@@ -152,17 +152,17 @@ exports[`MediaImage should use vertical cover wrapper when crop is true and imag
         Object {
           "current": <img
             class="c0 c1"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+            src="data:image/png;base64,"
         />,
         }
       }
       onLoad={[Function]}
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+      src="data:image/png;base64,"
     >
       <img
         className="c0 c1"
         onLoad={[Function]}
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAMAAAAbzM5ZAAAACVBMVEWs3t4AVFpMkZTmA5phAAAAUElEQVQokWNgxAIYGBkwAPUEGRkxBcG2oglC3YIiCHchkiCSu+GCKL4hYOYAC+IIJTRBsE4mIAKxmBB+hyIkmpAgDu0MyIIQi8hxJxZBLAAAEuQA45SJc9sAAAAASUVORK5CYII="
+        src="data:image/png;base64,"
       />
     </styled.img>
   </Styled(styled.img)>

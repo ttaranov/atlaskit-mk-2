@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { smallImage } from '@atlaskit/media-test-helpers';
 import { MediaImage } from '../../mediaImage';
 import {
   CoverHorizontalImageComponent,
@@ -21,7 +20,9 @@ describe('MediaImage', () => {
     imageDimensions: Dimensions = { width: 100, height: 100 },
   ) => {
     Element.prototype.getBoundingClientRect = () => parentDimensions as any;
-    const component = mount(<MediaImage dataURI={smallImage} crop={crop} />);
+    const component = mount(
+      <MediaImage dataURI="data:image/png;base64," crop={crop} />,
+    );
     const img = component.find('img');
     const imgInstance = img.instance();
     Object.defineProperty(imgInstance, 'naturalHeight', {
@@ -39,7 +40,9 @@ describe('MediaImage', () => {
   });
 
   it('should use fit wrapper when "crop" is false', () => {
-    const component = mount(<MediaImage dataURI={smallImage} crop={false} />);
+    const component = mount(
+      <MediaImage dataURI="data:image/png;base64," crop={false} />,
+    );
     expect(component.find(FitImageComponent)).toHaveLength(1);
     expect(component).toMatchSnapshot();
   });
