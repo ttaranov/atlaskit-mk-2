@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 8.0.8
+- [patch] Add some padding to the code without line numbers [67cd63d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67cd63d)
+
 ## 8.0.7
 - [patch] Added yaml to supported languages for code and added styling for the key token. [95f9236](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95f9236)
 
