@@ -9,6 +9,8 @@ import {
   code_block,
   decisionList,
   decisionItem,
+  taskList,
+  taskItem,
   mountWithIntl,
 } from '@atlaskit/editor-test-helpers';
 import { taskDecision } from '@atlaskit/util-data-test';
@@ -315,6 +317,36 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       'atlassian.editor.format.blockquote.button',
     );
     toolbarOption.unmount();
+  });
+
+  it('should insert action when action option is clicked', () => {
+    uuid.setStatic('local-highlight');
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mountWithIntl(
+      <ToolbarInsertBlock
+        actionSupported={true}
+        editorView={editorView}
+        buttons={0}
+        isReducedSpacing={false}
+      />,
+    );
+    toolbarOption.find('button').simulate('click');
+    const actionButton = toolbarOption
+      .find(Item)
+      .filterWhere(n => n.text().indexOf(messages.action.defaultMessage) > -1);
+    actionButton.simulate('click');
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        taskList({ localId: 'local-highlight' })(
+          taskItem({ localId: 'local-highlight', state: 'TODO' })('text'),
+        ),
+      ),
+    );
+    expect(trackEvent).toHaveBeenCalledWith(
+      'atlassian.fabric.action.trigger.button',
+    );
+    toolbarOption.unmount();
+    uuid.setStatic(false);
   });
 
   it('should insert decision when decision option is clicked', () => {

@@ -15,9 +15,7 @@ import {
 } from '../../../../../plugins/lists/pm-plugins/main';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
-import ToolbarLists, {
-  messages,
-} from '../../../../../plugins/lists/ui/ToolbarLists';
+import ToolbarLists from '../../../../../plugins/lists/ui/ToolbarLists';
 
 describe('ToolbarLists', () => {
   const editor = (doc: any) =>
@@ -53,9 +51,7 @@ describe('ToolbarLists', () => {
     let toolbarOption;
     beforeEach(() => {
       const { editorView } = editor(doc(p('text{<>}')));
-      toolbarOption = mountWithIntl(
-        <ToolbarLists editorView={editorView} allowTasks={true} />,
-      );
+      toolbarOption = mountWithIntl(<ToolbarLists editorView={editorView} />);
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
@@ -81,18 +77,6 @@ describe('ToolbarLists', () => {
         .simulate('click');
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.list.numbered.button',
-      );
-    });
-
-    it('should trigger analyticsService.trackEvent when task list button is clicked', () => {
-      toolbarOption
-        .find(AkButton)
-        .filterWhere(
-          node => node.html().indexOf(messages.action.defaultMessage) > -1,
-        )
-        .simulate('click');
-      expect(trackEvent).toHaveBeenCalledWith(
-        'atlassian.fabric.action.trigger.button',
       );
     });
   });
