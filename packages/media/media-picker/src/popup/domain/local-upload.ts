@@ -13,7 +13,7 @@ export interface LocalUploadFileMetadata {
 export interface LocalUploadFile {
   readonly metadata: LocalUploadFileMetadata;
 
-  dataURI: string; // TODO: Remove
+  file?: Blob;
 }
 
 export interface LocalUpload {

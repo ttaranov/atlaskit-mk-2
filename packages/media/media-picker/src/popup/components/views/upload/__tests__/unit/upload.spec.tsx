@@ -212,7 +212,6 @@ describe('<UploadView />', () => {
               mimeType: 'image/png',
               upfrontId,
             },
-            dataURI: 'some-data-uri',
           },
           index: 0,
           events: [],

@@ -220,7 +220,7 @@ export class StatelessUploadView extends Component<
   }
 
   private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
-    const { uploads, onFileClick, onEditorShowImage, context } = this.props;
+    const { uploads, onFileClick, context } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
       return uploads[b].index - uploads[a].index;
@@ -233,7 +233,6 @@ export class StatelessUploadView extends Component<
     return itemsKeys.map(key => {
       const item = this.props.uploads[key];
       const { file } = item;
-      const { dataURI } = file;
       const mediaType = getMediaTypeFromMimeType(file.metadata.mimeType);
       const fileMetadata: LocalUploadFileMetadata = {
         ...file.metadata,
@@ -243,16 +242,6 @@ export class StatelessUploadView extends Component<
       const selected = selectedUploadIds.indexOf(id) > -1;
       const onClick = () => onFileClick(fileMetadata, 'upload');
       const actions: CardAction[] = [];
-
-      if (mediaType === 'image' && dataURI) {
-        actions.push(
-          createEditCardAction(
-            this.onAnnotateActionClick(() =>
-              onEditorShowImage(fileMetadata, dataURI),
-            ),
-          ),
-        );
-      }
       const { upfrontId } = file.metadata;
       const identifier: FileIdentifier = {
         id: upfrontId,

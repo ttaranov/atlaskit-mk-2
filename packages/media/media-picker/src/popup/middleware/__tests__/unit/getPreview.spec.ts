@@ -22,7 +22,6 @@ describe('getPreviewMiddleware', () => {
   const collection = 'some-collection';
   const uploadId = 'some-upload-id';
   const preview: Preview = {
-    src: 'some-preview-src',
     dimensions: {
       width: 10,
       height: 10,

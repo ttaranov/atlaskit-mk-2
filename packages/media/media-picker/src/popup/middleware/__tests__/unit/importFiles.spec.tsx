@@ -112,7 +112,6 @@ describe('importFiles middleware', () => {
               width: 10,
               height: 10,
             },
-            src: 'blob',
           },
         },
       };
@@ -135,7 +134,6 @@ describe('importFiles middleware', () => {
           metadata: {
             ...makeFileData(index),
           },
-          dataURI: '',
         },
         events: [
           // uploads-event won't be part of events list. See fileUploadsAdd.tsx

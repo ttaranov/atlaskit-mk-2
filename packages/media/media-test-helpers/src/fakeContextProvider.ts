@@ -42,6 +42,7 @@ export const fakeContext = (
     loadNextPage: jest.fn(),
   } as any;
   const getImage = jest.fn() as any;
+  const getImageMetadata = jest.fn();
   const file = {
     getFileState: getFile,
   } as any;

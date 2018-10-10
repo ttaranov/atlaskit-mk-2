@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { CardLoading } from '../../utils/cardLoading';
-import { Card as CardType, CardProps } from './index';
+import { Card as CardType } from './index';
+import { CardProps } from '../..';
 
 interface AsyncCardProps {
   Card?: typeof CardType;
