@@ -194,4 +194,23 @@ describe('Audio viewer', () => {
       });
     });
   });
+
+  describe('Analytics', () => {
+    it('should call onLoaded with success', async () => {
+      const authPromise = Promise.resolve({ token, clientId, baseUrl });
+      const { el } = createFixture(authPromise);
+      await (el as any).instance()['init']();
+
+      expect(el.prop('onLoaded')).toHaveBeenCalledWith({ status: 'success' });
+    });
+
+    it('should call onLoaded with error', async () => {
+      const authPromise = Promise.reject(new Error('test error'));
+      const { el } = createFixture(authPromise);
+      await awaitError(authPromise, 'test error');
+      el.update();
+
+      expect(el.prop('onLoaded')).toHaveBeenCalledWith({ status: 'error' });
+    });
+
 });
