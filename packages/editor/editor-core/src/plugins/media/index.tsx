@@ -18,6 +18,7 @@ import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
 import { CustomMediaPicker, MediaProvider } from './types';
 import WithPluginState from '../../ui/WithPluginState';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 
 export {
   MediaState,
@@ -91,6 +92,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
               appearance: props.appearance,
+              resizing: props.allowResizing,
             },
             reactContext,
             dispatch,

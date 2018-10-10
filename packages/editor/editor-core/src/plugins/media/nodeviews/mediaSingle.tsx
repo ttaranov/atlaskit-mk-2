@@ -2,7 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
-import { MediaSingle, WithProviders } from '@atlaskit/editor-common';
+import {
+  MediaSingle,
+  WithProviders,
+  MediaSingleLayout,
+} from '@atlaskit/editor-common';
 import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
@@ -23,6 +27,7 @@ export interface MediaSingleNodeProps {
   width: number;
   selected: Function;
   getPos: () => number;
+  lineLength: number;
 }
 
 export interface MediaSingleNodeState {
@@ -198,13 +203,7 @@ export default class MediaSingleNode extends Component<
         />
       </ResizableMediaSingle>
     ) : (
-      <MediaSingle
-        layout={layout}
-        width={width}
-        height={height}
-        containerWidth={this.props.width}
-        isLoading={!width}
-      >
+      <MediaSingle {...props}>
         <WithProviders
           providers={['mediaProvider']}
           providerFactory={this.mediaPluginState.options.providerFactory}

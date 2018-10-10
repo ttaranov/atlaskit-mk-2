@@ -1,6 +1,5 @@
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { ImagePreview } from '@atlaskit/media-picker';
 
 import { isImage } from '../../../utils';
 import {

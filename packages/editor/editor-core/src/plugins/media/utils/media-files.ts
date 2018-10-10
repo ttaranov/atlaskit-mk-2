@@ -89,12 +89,7 @@ export const insertMediaGroupNode = (
         .deleteRange(deleteRange.start, deleteRange.end);
     }
     dispatch(tr);
-    const mediaPos = setSelectionAfterMediaInsertion(view, mediaInsertPos);
-    return {
-      mediaNodes,
-      resolvedInsertPos: parent.resolve(0).pos + 1,
-      mediaPos,
-    };
+    setSelectionAfterMediaInsertion(view, mediaInsertPos);
   }
 
   const content =
@@ -192,7 +187,6 @@ const setSelectionAfterMediaInsertion = (
   } else {
     setTextSelection(view, endOfMediaGroup + 1);
   }
-  return endOfMediaGroup;
 };
 
 export const isNonImagesBanned = (node?: PMNode) => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 
 import WrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import WrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
@@ -8,9 +8,7 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import {
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaSingleLayout } from '@atlaskit/editor-common';
 import { colors } from '@atlaskit/theme';
 
 import commonMessages from '../../../../messages';
@@ -92,7 +90,7 @@ const ToolbarButtonDestructive = styled(ToolbarButton)`
   }
 `;
 
-class MediaSingleEdit extends React.Component<Props, {}> {
+class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
   render() {
     const { formatMessage } = this.props.intl;
     const {

@@ -12,7 +12,7 @@ export interface Props {
   containerWidth?: number;
   isLoading?: boolean;
   className?: string;
-  lineLength: number;
+  lineLength?: number;
   pctWidth?: number;
 }
 

@@ -38,7 +38,7 @@ import {
 import DefaultMediaStateManager from '../default-state-manager';
 import { insertMediaSingleNode } from '../utils/media-single';
 
-import { hasParentNodeOfType, findParentNodeOfType } from 'prosemirror-utils';
+import { hasParentNodeOfType } from 'prosemirror-utils';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -216,7 +216,6 @@ export class MediaPluginState {
     if (this.selectedMediaNode() && this.isMediaSingle()) {
       newElement = this.getDomElement(this.view.domAtPos.bind(this.view));
     }
-    console.log('new element is ', newElement);
     if (this.element !== newElement) {
       this.element = newElement;
       this.notifyPluginStateSubscribers();
@@ -268,7 +267,6 @@ export class MediaPluginState {
   insertFiles = (mediaStates: MediaState[]): void => {
     const { stateManager } = this;
     const { mediaSingle } = this.view.state.schema.nodes;
-    let files;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
@@ -294,12 +292,12 @@ export class MediaPluginState {
     );
 
     if (this.editorAppearance !== 'message' && mediaSingle) {
-      files = insertMediaGroupNode(this.view, nonImageAttachments, collection);
+      insertMediaGroupNode(this.view, nonImageAttachments, collection);
       imageAttachments.forEach(mediaState => {
         insertMediaSingleNode(this.view, mediaState, collection);
       });
     } else {
-      files = insertMediaGroupNode(this.view, mediaStates, collection);
+      insertMediaGroupNode(this.view, mediaStates, collection);
     }
 
     const isEndState = (state: MediaState) =>

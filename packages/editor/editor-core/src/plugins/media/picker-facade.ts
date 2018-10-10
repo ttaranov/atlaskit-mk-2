@@ -208,13 +208,13 @@ export default class PickerFacade {
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
   ) => {
-    const { file, preview } = event;
+    let { file, preview } = event;
     const states = this.stateManager.newState(file.id, {
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,
       fileId: file.upfrontId,
-      dimensions: preview && preview.dimensions,
+      dimensions: preview.dimensions,
       status: 'ready',
     });
 

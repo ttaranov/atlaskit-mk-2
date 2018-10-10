@@ -130,8 +130,6 @@ class MediaNode extends Component<MediaNodeProps, {}> {
             collectionName: collection!,
           };
 
-    console.log(' id ', identifier.id);
-
     return !this.state.viewContext ? (
       <CardView status="loading" dimensions={cardDimensions} />
     ) : (
