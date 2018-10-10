@@ -15,12 +15,20 @@ export interface Props {
 }
 
 class BlockCardNode extends React.PureComponent<Props, {}> {
+  onClick = () => {};
+
   render() {
     const { node, selected } = this.props;
     const { url, data } = node.attrs;
 
     return (
-      <Card url={url} data={data} appearance="block" isSelected={selected} />
+      <Card
+        url={url}
+        data={data}
+        appearance="block"
+        isSelected={selected}
+        onClick={this.onClick}
+      />
     );
   }
 }
