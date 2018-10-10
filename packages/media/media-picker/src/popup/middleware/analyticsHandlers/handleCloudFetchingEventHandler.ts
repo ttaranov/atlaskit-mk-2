@@ -6,7 +6,7 @@ import { Action, MiddlewareAPI } from 'redux';
 import { State } from '../../domain';
 import { isHandleCloudFetchingEventAction } from '../../actions/handleCloudFetchingEvent';
 import { MediaFile } from '../../../domain/file';
-import { source, HandlerResult } from '.';
+import { HandlerResult } from '.';
 
 const commonPayload = {
   actionSubject: 'mediaUpload',
@@ -35,7 +35,6 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             fileAttributes: fileAttributes(file),
           },
           eventType: OPERATIONAL_EVENT_TYPE,
-          source,
         },
       ];
     } else if (event === 'RemoteUploadEnd') {
@@ -49,7 +48,6 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             uploadDurationMsec,
           },
           eventType: TRACK_EVENT_TYPE,
-          source,
         },
       ];
     } else if (event === 'RemoteUploadFail') {
@@ -63,7 +61,6 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             uploadDurationMsec,
           },
           eventType: TRACK_EVENT_TYPE,
-          source,
         },
       ];
     } else {
