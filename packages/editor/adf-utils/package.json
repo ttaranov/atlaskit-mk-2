@@ -18,10 +18,10 @@
     "traverse.es.d.ts",
     "traverse.js",
     "traverse.d.ts",
-    "validate.es.js",
-    "validate.es.d.ts",
-    "validate.js",
-    "validate.d.ts"
+    "validator.es.js",
+    "validator.es.d.ts",
+    "validator.js",
+    "validator.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
