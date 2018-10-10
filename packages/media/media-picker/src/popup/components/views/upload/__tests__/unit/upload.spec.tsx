@@ -304,22 +304,6 @@ describe('<UploadView />', () => {
     expect(isWebGLAvailable).toHaveBeenCalled();
   });
 
-  it('should render annotate card action with annotate icon', async () => {
-    const { component } = createConnectedComponent(state);
-    expect(
-      component
-        .find(Card)
-        .first()
-        .props().actions,
-    ).toContainEqual({
-      label: 'Annotate',
-      icon: expect.objectContaining({
-        type: AnnotateIcon,
-      }),
-      handler: expect.any(Function),
-    });
-  });
-
   it('should set deferred upfront id when clicking on a card', () => {
     const { component, dispatch } = createConnectedComponent(state);
 

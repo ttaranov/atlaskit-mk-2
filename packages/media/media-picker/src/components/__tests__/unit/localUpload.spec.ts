@@ -75,7 +75,6 @@ describe('MediaLocalUpload', () => {
     expect(emitter.emit).toBeCalledWith('upload-preview-update', {
       file: expect.objectContaining(imageFile),
       preview: {
-        src: imagePreviewSrc,
         dimensions: {
           width: 100,
           height: 200,

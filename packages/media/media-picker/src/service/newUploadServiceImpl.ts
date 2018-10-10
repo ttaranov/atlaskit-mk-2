@@ -186,7 +186,7 @@ export class NewUploadServiceImpl implements UploadService {
             collectionName: this.tenantUploadParams.collection,
           });
 
-          // TODO: fileStreamsCache.set "id+recents"?
+          // We want to save the observable without collection too, due consumers using cards without collection.
           fileStreamsCache.set(key, observable);
           fileStreamsCache.set(keyWithCollection, observable);
         }

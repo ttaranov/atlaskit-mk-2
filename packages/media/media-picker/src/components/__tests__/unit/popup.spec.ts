@@ -85,13 +85,6 @@ describe('MediaPickerPopup', () => {
     });
   });
 
-  describe('cancel', () => {
-    it('should blow up with empty argument', () => {
-      const mediaPicker = new Popup(context, popupConfig);
-      expect(() => mediaPicker.cancel()).toThrow();
-    });
-  });
-
   describe('render', () => {
     it('should render <App /> with the right properties', () => {
       const mediaPicker = new Popup(context, popupConfig) as any;
