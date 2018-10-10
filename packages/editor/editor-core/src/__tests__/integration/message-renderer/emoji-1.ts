@@ -11,7 +11,7 @@ import {
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 BrowserTestCase(
-  'Emoji: should be able to see emoji if typed the name in full',
+  'emoji-1.ts: should be able to see emoji if typed the name in full',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -40,7 +40,7 @@ BrowserTestCase(
 
 // ie complains it cannot either type :) or types :0
 BrowserTestCase(
-  'Emoji: should convert :) to emoji',
+  'emoji-1.ts: should convert :) to emoji',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -73,7 +73,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: should close emoji picker on Escape',
+  'emoji-1.ts: should close emoji picker on Escape',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -95,7 +95,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: should be able to click on the emoji button and select emoji',
+  'emoji-1.ts: should be able to click on the emoji button and select emoji',
   { skip: ['ie'] },
   async client => {
     const emojiButton = `[aria-label="${messages.emoji.defaultMessage}"]`;
@@ -117,7 +117,7 @@ BrowserTestCase(
 // unable to navigate between emojis on IE - file issue
 // Edge: ED-4908
 BrowserTestCase(
-  'Emoji: should be able to navigate between emojis',
+  'emoji-1.ts: should be able to navigate between emojis',
   { skip: ['firefox', 'safari', 'ie', 'edge'] },
   async client => {
     const browser = new Page(client);

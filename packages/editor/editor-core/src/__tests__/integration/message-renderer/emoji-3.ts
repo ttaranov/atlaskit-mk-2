@@ -11,7 +11,7 @@ import {
 
 // safari failure on browserstack
 BrowserTestCase(
-  'Emoji: user can navigate typeahead using keyboard',
+  'emoji-3.ts: user can navigate typeahead using keyboard',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -30,7 +30,7 @@ BrowserTestCase(
 
 // issue with safari on browserstack works on local
 BrowserTestCase(
-  'Emoji: should select emoji on return',
+  'emoji-3.ts: should select emoji on return',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -47,7 +47,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: should render emoji inside codeblock',
+  'emoji-3.ts: should render emoji inside codeblock',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -63,7 +63,7 @@ BrowserTestCase(
 
 // BUG on IE
 BrowserTestCase(
-  'Emoji: should render emoji inside action',
+  'emoji-3.ts: should render emoji inside action',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -78,7 +78,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: should not show typeahead with text: ',
+  'emoji-3.ts: should not show typeahead with text: ',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -90,7 +90,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: ":<space>" does not show the picker',
+  'emoji-3.ts: ":<space>" does not show the picker',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);

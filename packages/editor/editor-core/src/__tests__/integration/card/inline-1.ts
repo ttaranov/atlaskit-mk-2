@@ -11,7 +11,7 @@ import {
 
 [fullpage].forEach(editor => {
   BrowserTestCase(
-    `pasting an link converts to inline card`,
+    `inline-1.ts: pasting an link converts to inline card`,
     {
       skip: ['chrome', 'ie', 'safari'],
     },
