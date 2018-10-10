@@ -6,6 +6,7 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { InteractiveImg } from './interactive-img';
+import { BaseViewer } from '../base-viewer';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -34,26 +35,11 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   };
 }
 
-export class ImageViewer extends React.Component<
+export class ImageViewer extends BaseViewer<
   ImageViewerProps,
   ImageViewerState
 > {
   state: ImageViewerState = initialState;
-
-  componentDidMount() {
-    this.init(this.props);
-  }
-
-  componentWillUnmount() {
-    this.release();
-  }
-
-  componentWillUpdate(nextProps: ImageViewerProps) {
-    if (this.needsReset(this.props, nextProps)) {
-      this.release();
-      this.init(nextProps);
-    }
-  }
 
   render() {
     const { onClose } = this.props;
@@ -85,7 +71,7 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
-  private async init(props: ImageViewerProps) {
+  protected async init(props: ImageViewerProps) {
     const { item: file, context } = props;
     this.setState(initialState, async () => {
       try {
@@ -115,7 +101,7 @@ export class ImageViewer extends React.Component<
     });
   }
 
-  private release() {
+  protected release() {
     if (this.cancelImageFetch) {
       this.cancelImageFetch();
     }
@@ -125,7 +111,7 @@ export class ImageViewer extends React.Component<
     });
   }
 
-  private needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
+  protected needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
     return (
       !deepEqual(propsA.item, propsB.item) || propsA.context !== propsB.context
     );
