@@ -14,8 +14,11 @@ import logoIcons from '../utils/logoIcons';
 
 const getKeywords = logoMap =>
   Object.values(logoMap).reduce(
-    // $FlowFixMe
-    (existingKeywords, { keywords }) => [...existingKeywords, ...keywords],
+    (existingKeywords, { keywords } /*:any*/) => [
+      ...existingKeywords,
+      ...keywords,
+    ],
+    [],
   );
 
 const allIcons = {
