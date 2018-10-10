@@ -51,7 +51,7 @@ export class ImageViewer extends React.Component<
   componentWillUpdate(nextProps: ImageViewerProps) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.init(nextProps.item, this.props.context);
+      this.init(nextProps.item, nextProps.context);
     }
   }
 
