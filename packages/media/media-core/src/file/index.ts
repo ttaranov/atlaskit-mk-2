@@ -159,12 +159,12 @@ export class FileFetcher {
   ) {
     const iframeName = 'media-download-iframe';
     const link = document.createElement('a');
-    let iframe = document.getElementById(iframeName);
+    let iframe = document.getElementById(iframeName) as HTMLIFrameElement;
     if (!iframe) {
       iframe = document.createElement('iframe');
       iframe.style.display = 'none';
       iframe.id = iframeName;
-      iframe.setAttribute('name', iframeName);
+      iframe.name = iframeName;
       document.body.appendChild(iframe);
     }
     link.href = await this.mediaStore.getFileBinaryURL(id, collectionName);
