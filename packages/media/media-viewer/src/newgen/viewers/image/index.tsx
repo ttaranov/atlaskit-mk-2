@@ -41,7 +41,7 @@ export class ImageViewer extends React.Component<
   state: ImageViewerState = initialState;
 
   componentDidMount() {
-    this.init(this.props.item, this.props.context);
+    this.init(this.props);
   }
 
   componentWillUnmount() {
@@ -51,7 +51,7 @@ export class ImageViewer extends React.Component<
   componentWillUpdate(nextProps: ImageViewerProps) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.init(nextProps.item, nextProps.context);
+      this.init(nextProps);
     }
   }
 
@@ -85,7 +85,8 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
-  private async init(file: ProcessedFileState, context: Context) {
+  private async init(props: ImageViewerProps) {
+    const { item: file, context } = props;
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
