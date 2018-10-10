@@ -46,7 +46,6 @@ export const DummyComponentWithAnalytics = withAnalyticsEvents({
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
-      source: 'unknown',
     })
 })(DummyComponent);
 

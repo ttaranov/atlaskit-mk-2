@@ -47,7 +47,6 @@ describe('<FabricElementsAnalyticsContext />', () => {
             packageVersion: '1.0.0',
           },
           eventType: 'ui',
-          source: 'unknown',
         },
       }),
       FabricChannel.elements,
