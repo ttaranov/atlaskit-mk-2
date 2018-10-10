@@ -8,7 +8,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "                               run-p build:pkg build:babel build:flowtypes && run-p build:typescript build:editor-common:json-schema --print-label --continue-on-error && yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:icon && yarn build:layer && yarn build:navigation-next",
+    "build": "                               run-p build:pkg build:babel build:flowtypes && run-p build:typescript build:editor-common:json-schema --print-label --continue-on-error && yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:icon && yarn build:layer",
     "build:pkg": "                           bolt workspaces exec --only-fs 'packages/**' -- copy-pkg package.json dist/package.json --only name,version,sideEffects",
     "build:babel": "                         run-p build:babel:cjs build:babel:esm",
     "build:babel:cjs": "                     NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/cjs --root-mode upward",
@@ -74,9 +74,6 @@
     "build:media-editor:copy-binaries": "    cd packages/media/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core",
     "build:icon": "                          cd packages/core/icon && yarn build",
     "build:layer": "                         cd packages/core/layer && yarn build",
-    "build:navigation-next": "               rm -rf packages/core/navigation-next/dist/{cjs,esm} && run-p build:navigation-next:cjs build:navigation-next:esm",
-    "build:navigation-next:cjs": "           NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/cjs",
-    "build:navigation-next:esm": "           NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/esm",
     "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis",
     "build:css-reset": "                     BABEL_ENV=production:cjs bolt w @atlaskit/css-reset run build",
     "build:reduced-ui-pack": "               BABEL_ENV=production:cjs bolt w @atlaskit/reduced-ui-pack run build"

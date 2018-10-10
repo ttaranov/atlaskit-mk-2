@@ -1,5 +1,5 @@
 //@flow
-console.log('loaded root config');
+
 module.exports = {
   plugins: [
     '@babel/plugin-proposal-class-properties',
