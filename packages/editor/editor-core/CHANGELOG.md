@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 85.3.1
+- [patch] Updated dependencies [17afe04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17afe04)
+  - @atlaskit/media-picker@20.0.0
+
 ## 85.3.0
 - [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
 
