@@ -1,9 +1,5 @@
 // @flow
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
-import {
-  startDevServer,
-  stopDevServer,
-} from '@atlaskit/webdriver-runner/utils/webpack';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
