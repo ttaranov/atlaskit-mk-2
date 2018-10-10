@@ -25,6 +25,7 @@
     "delete:build": "                        rm -rf packages/*/*/dist website/dist",
     "precommit": "                           lint-staged",
     "test": "                                yarn jest",
+    "test:website": "                        yarn jest website/src/__tests__/puppeteer/website.js", 
     "test:changed": "                        CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn jest",
     "test:browser": "                        projector ./projector testBrowser",
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
