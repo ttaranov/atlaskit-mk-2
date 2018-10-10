@@ -34,11 +34,11 @@ export const floatingToolbar = (
   state: EditorState,
   intl: InjectedIntl,
 ): FloatingToolbarConfig | undefined => {
-  const { inlineCard } = state.schema.nodes;
+  const { inlineCard, blockCard } = state.schema.nodes;
 
   return {
     title: 'Card floating controls',
-    nodeType: inlineCard,
+    nodeType: [inlineCard, blockCard],
     items: [
       {
         type: 'button',
