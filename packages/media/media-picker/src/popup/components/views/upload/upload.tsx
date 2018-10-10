@@ -241,7 +241,7 @@ export class StatelessUploadView extends Component<
       const { id } = fileMetadata;
       const selected = selectedUploadIds.indexOf(id) > -1;
       const onClick = () => onFileClick(fileMetadata, 'upload');
-      const actions: CardAction[] = [];
+      const actions: CardAction[] = []; // TODO [MS-1017]: allow file annotation for uploading files
       const { upfrontId } = file.metadata;
       const identifier: FileIdentifier = {
         id: upfrontId,
