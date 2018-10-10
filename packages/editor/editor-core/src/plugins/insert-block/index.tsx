@@ -28,7 +28,7 @@ const toolbarSizeToButtons = toolbarSize => {
     case ToolbarSize.XL:
     case ToolbarSize.L:
     case ToolbarSize.M:
-      return 5;
+      return 6;
 
     case ToolbarSize.S:
       return 2;
