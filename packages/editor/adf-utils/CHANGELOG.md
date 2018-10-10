@@ -1,5 +1,8 @@
 # @atlaskit/adf-utils
 
+## 3.0.0
+- [major] New validator API [db2d466](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db2d466)
+
 ## 2.2.6
 - [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/editor-common@19.0.0
