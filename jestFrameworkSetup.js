@@ -340,6 +340,7 @@ if (process.env.VISUAL_REGRESSION) {
   });
 
   const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
+    customSnapshotsDir: `/__image_snapshots__`,
     customDiffConfig: { threshold: 0.2 },
     noColors: true,
   });

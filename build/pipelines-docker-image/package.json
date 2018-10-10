@@ -6,7 +6,10 @@
   "scripts": {
     "get-image-name": "node -e 'console.log(\"atlassianlabs/atlaskit-mk-2:\" + require(\"./package.json\").version)'",
     "build-image": "docker build -t $(yarn -s get-image-name) .",
-    "push-image": "docker push $(yarn -s get-image-name)"
+    "push-image": "docker push $(yarn -s get-image-name)",
+    "get-vr-image-name": "node -e 'console.log(\"atlassianlabs/atlaskit-mk-2-vr:\" + require(\"./package.json\").version)'",
+    "build-vr-image": "docker build -t $(yarn -s get-vr-image-name) .",
+    "push-vr-image": "docker push $(yarn -s push-vr-image)"
   },
   "author": "Luke Batchelor",
   "license": "Apache-2.0"
