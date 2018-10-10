@@ -20,10 +20,6 @@ export type ImageViewerState = {
   resource: Outcome<ObjectUrl, MediaViewerError>;
 };
 
-const initialState: ImageViewerState = {
-  resource: Outcome.pending(),
-};
-
 function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   return {
     type: 'file',
@@ -38,25 +34,20 @@ export class ImageViewer extends BaseViewer<
   ImageViewerProps,
   ImageViewerState
 > {
-  state: ImageViewerState = initialState;
+  protected get initialState(): ImageViewerState {
+    return {
+      resource: Outcome.pending(),
+    };
+  }
 
   renderSuccessful(objectUrl: ObjectUrl) {
     const { onClose } = this.props;
     return <InteractiveImg src={objectUrl} onClose={onClose} />;
   }
 
-  private cancelImageFetch?: () => void;
-
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public preventRaceCondition() {
-    // Calling setState might introduce a race condition, because the app has
-    // already transitioned to a different state. To avoid this we're not doing
-    // anything.
-  }
-
   protected async init(props: ImageViewerProps) {
     const { item: file, context } = props;
-    this.setState(initialState, async () => {
+    this.setState(this.initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
         // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
@@ -92,6 +83,15 @@ export class ImageViewer extends BaseViewer<
     this.state.resource.whenSuccessful(objectUrl => {
       this.revokeObjectUrl(objectUrl);
     });
+  }
+
+  private cancelImageFetch?: () => void;
+
+  // This method is spied on by some test cases, so don't rename or remove it.
+  public preventRaceCondition() {
+    // Calling setState might introduce a race condition, because the app has
+    // already transitioned to a different state. To avoid this we're not doing
+    // anything.
   }
 
   protected needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {

@@ -21,6 +21,8 @@ export abstract class BaseViewer<
   Props extends MinimalProps,
   State extends MinimalState<T>
 > extends React.Component<Props, State> {
+  state: State = this.initialState;
+
   componentDidMount() {
     this.init(this.props);
   }
@@ -56,6 +58,7 @@ export abstract class BaseViewer<
 
   protected abstract renderSuccessful(resource: T): React.ReactNode;
 
+  protected abstract get initialState(): State;
   protected abstract init(props: Props): void;
   protected abstract release(): void;
   protected abstract needsReset(currentProps: Props, nextProps: Props): boolean;
