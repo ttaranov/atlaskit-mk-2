@@ -47,32 +47,30 @@ export class ImageViewer extends BaseViewer<
 
   protected async init(props: ImageViewerProps) {
     const { item: file, context } = props;
-    this.setState(this.initialState, async () => {
-      try {
-        const service = context.getBlobService(this.props.collectionName);
-        // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
-        const item = processedFileStateToMediaItem(file);
-        const { response, cancel } = service.fetchImageBlobCancelable(item, {
-          width: 1920,
-          height: 1080,
-          mode: 'fit',
-          allowAnimated: true,
-        });
-        this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
-        const objectUrl = URL.createObjectURL(await response);
+    try {
+      const service = context.getBlobService(this.props.collectionName);
+      // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
+      const item = processedFileStateToMediaItem(file);
+      const { response, cancel } = service.fetchImageBlobCancelable(item, {
+        width: 1920,
+        height: 1080,
+        mode: 'fit',
+        allowAnimated: true,
+      });
+      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
+      const objectUrl = URL.createObjectURL(await response);
+      this.setState({
+        resource: Outcome.successful(objectUrl),
+      });
+    } catch (err) {
+      if (err.message === REQUEST_CANCELLED) {
+        this.preventRaceCondition();
+      } else {
         this.setState({
-          resource: Outcome.successful(objectUrl),
+          resource: Outcome.failed(createError('previewFailed', err, file)),
         });
-      } catch (err) {
-        if (err.message === REQUEST_CANCELLED) {
-          this.preventRaceCondition();
-        } else {
-          this.setState({
-            resource: Outcome.failed(createError('previewFailed', err, file)),
-          });
-        }
       }
-    });
+    }
   }
 
   protected release() {

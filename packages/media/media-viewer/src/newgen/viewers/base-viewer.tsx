@@ -24,7 +24,7 @@ export abstract class BaseViewer<
   state: State = this.initialState;
 
   componentDidMount() {
-    this.init(this.props);
+    this.resetAndInit(this.props);
   }
 
   componentWillUnmount() {
@@ -34,7 +34,7 @@ export abstract class BaseViewer<
   componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.init(nextProps);
+      this.resetAndInit(nextProps);
     }
   }
 
@@ -48,6 +48,12 @@ export abstract class BaseViewer<
           {this.renderDownloadButton()}
         </ErrorMessage>
       ),
+    });
+  }
+
+  private resetAndInit(props: Props) {
+    this.setState(this.initialState, () => {
+      this.init(props);
     });
   }
 
