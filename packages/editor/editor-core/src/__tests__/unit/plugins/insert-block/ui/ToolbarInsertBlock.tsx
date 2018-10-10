@@ -375,7 +375,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       ),
     );
     expect(trackEvent).toHaveBeenCalledWith(
-      'atlassian.editor.format.decision.button',
+      'atlassian.fabric.decision.trigger.button',
     );
     toolbarOption.unmount();
     uuid.setStatic(false);

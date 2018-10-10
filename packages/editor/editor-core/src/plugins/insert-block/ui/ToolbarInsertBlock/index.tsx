@@ -621,7 +621,7 @@ class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
-  @analyticsDecorator('atlassian.editor.format.decision.button')
+  @analyticsDecorator('atlassian.fabric.decision.trigger.button')
   private insertDecision = (): boolean => {
     const { editorView } = this.props;
     if (!editorView) {
