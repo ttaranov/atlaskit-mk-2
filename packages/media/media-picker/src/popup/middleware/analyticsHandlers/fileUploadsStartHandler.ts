@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 import { OPERATIONAL_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import { isFileUploadsStartAction } from '../../actions/fileUploadsStart';
-import { HandlerResult, Payload, source } from '.';
+import { HandlerResult, Payload } from '.';
 import { MediaFile } from '../../../domain/file';
 
 export default (action: Action): HandlerResult => {
@@ -20,7 +20,6 @@ export default (action: Action): HandlerResult => {
             },
           },
           eventType: OPERATIONAL_EVENT_TYPE,
-          source,
         },
     );
   }
