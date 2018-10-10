@@ -1,7 +1,9 @@
 import { CardProvider } from '@atlaskit/editor-core';
 
-const inlineCard = {
-  type: 'inlineCard',
+type CardAppearance = 'inline' | 'block';
+
+const mockCardData = (type: CardAppearance) => ({
+  type: type === 'inline' ? 'inlineCard' : 'blockCard',
   attrs: {
     data: {
       '@context': 'https://www.w3.org/ns/activitystreams',
@@ -10,28 +12,53 @@ const inlineCard = {
       url: 'http://www.atlassian.com',
     },
   },
+});
+
+export class CardMockProvider implements CardProvider {
+  resolve(url: string, appearance: CardAppearance): Promise<any> {
+    return new Promise(resolve => resolve(mockCardData(appearance)));
+  }
+}
+
+export type ORSCheckResponse = {
+  isSupported: boolean;
 };
 
-export class DelayedCardMockProvider implements CardProvider {
-  public config = {};
+const ORS_CHECK_URL =
+  'https://api-private.stg.atlassian.com/object-resolver/check';
 
-  resolve(url: string): Promise<any> {
-    if (url.match(/https?:\/\/\w+\.atlassian\.com\/?/)) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(inlineCard);
-        }, 1000);
-      });
+export class EditorCardProvider implements CardProvider {
+  async resolve(url: string, appearance: CardAppearance): Promise<any> {
+    try {
+      const result: ORSCheckResponse = await (await fetch(ORS_CHECK_URL, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ resourceUrl: url }),
+      })).json();
+
+      if (result && result.isSupported) {
+        return {
+          type: appearance === 'inline' ? 'inlineCard' : 'blockCard',
+          attrs: {
+            url,
+          },
+        };
+      }
+    } catch (e) {
+      console.warn(
+        `Error when trying to check Smart Card url "${url} - ${
+          e.prototype.name
+        } ${e.message}`,
+        e,
+      );
     }
 
     return Promise.reject(undefined);
   }
 }
 
-export class CardMockProvider implements CardProvider {
-  resolve(url: string): Promise<any> {
-    return new Promise(resolve => resolve(inlineCard));
-  }
-}
-
-export const cardProvider = new DelayedCardMockProvider();
+export const cardProvider = new EditorCardProvider();
