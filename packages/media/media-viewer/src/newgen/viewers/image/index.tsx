@@ -19,11 +19,11 @@ export type ImageViewerProps = {
 };
 
 export type ImageViewerState = {
-  objectUrl: Outcome<ObjectUrl, MediaViewerError>;
+  resource: Outcome<ObjectUrl, MediaViewerError>;
 };
 
 const initialState: ImageViewerState = {
-  objectUrl: Outcome.pending(),
+  resource: Outcome.pending(),
 };
 
 function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
@@ -43,7 +43,7 @@ export class ImageViewer extends BaseViewer<
 
   render() {
     const { onClose } = this.props;
-    return this.state.objectUrl.match({
+    return this.state.resource.match({
       pending: () => <Spinner />,
       successful: objectUrl => (
         <InteractiveImg src={objectUrl} onClose={onClose} />
@@ -87,14 +87,14 @@ export class ImageViewer extends BaseViewer<
         this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
         const objectUrl = URL.createObjectURL(await response);
         this.setState({
-          objectUrl: Outcome.successful(objectUrl),
+          resource: Outcome.successful(objectUrl),
         });
       } catch (err) {
         if (err.message === REQUEST_CANCELLED) {
           this.preventRaceCondition();
         } else {
           this.setState({
-            objectUrl: Outcome.failed(createError('previewFailed', err, file)),
+            resource: Outcome.failed(createError('previewFailed', err, file)),
           });
         }
       }
@@ -106,7 +106,7 @@ export class ImageViewer extends BaseViewer<
       this.cancelImageFetch();
     }
 
-    this.state.objectUrl.whenSuccessful(objectUrl => {
+    this.state.resource.whenSuccessful(objectUrl => {
       this.revokeObjectUrl(objectUrl);
     });
   }
