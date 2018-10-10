@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/embedded-document",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Embedded Document component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
