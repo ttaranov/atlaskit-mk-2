@@ -43,11 +43,11 @@ const fileIds = [
   videoFileId.id,
   gifFileId.id,
   videoProcessingFailedId.id,
+  errorFileId.id,
   docFileId.id,
   largePdfFileId.id,
   archiveFileId.id,
   unknownFileId.id,
-  errorFileId.id,
   noMetadataFileId.id,
 ];
 class Example extends Component<ComponentProps, ComponentState> {
@@ -66,7 +66,6 @@ class Example extends Component<ComponentProps, ComponentState> {
         mediaItemType: 'file',
         collectionName: defaultCollectionName,
       };
-
       return (
         <CardWrapper key={id}>
           <div>

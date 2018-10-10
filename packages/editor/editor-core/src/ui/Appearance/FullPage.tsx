@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { akEditorMenuZIndex } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
@@ -85,7 +85,7 @@ const MainToolbar: React.ComponentClass<
   align-items: center;
   box-shadow: ${(props: MainToolbarProps) =>
     props.showKeyline
-      ? `0 ${akEditorToolbarKeylineHeight}px 0 0 ${akColorN30}`
+      ? `0 ${akEditorToolbarKeylineHeight}px 0 0 ${colors.N30}`
       : 'none'};
   transition: box-shadow 200ms;
   z-index: ${akEditorMenuZIndex};
@@ -225,7 +225,10 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ScrollContainer innerRef={this.scrollContainerRef}>
+        <ScrollContainer
+          innerRef={this.scrollContainerRef}
+          className="fabric-editor-popup-scroll-parent"
+        >
           <ClickAreaBlock editorView={editorView}>
             <ContentArea>
               <div

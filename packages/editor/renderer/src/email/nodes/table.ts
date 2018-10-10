@@ -1,9 +1,9 @@
-import { akColorN50 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { createTag, serializeStyle } from '../util';
 import { NodeSerializerOpts } from '../interfaces';
 
 const css = serializeStyle({
-  border: `1px solid ${akColorN50}`,
+  border: `1px solid ${colors.N50}`,
   'border-collapse': 'collapse',
   margin: '20px 8px',
   width: 'auto',

@@ -31,7 +31,6 @@ const item: ProcessedFileState = {
   size: 11222,
   mediaType: 'video',
   mimeType: 'mp4',
-  binaryUrl: '',
   artifacts: {
     'document.pdf': {
       url: '/pdf',

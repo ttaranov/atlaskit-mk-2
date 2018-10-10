@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/panel",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A React component rendering a collapsible panel",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/page": "^8.0.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

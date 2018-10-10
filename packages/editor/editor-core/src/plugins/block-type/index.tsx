@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EditorQuoteIcon from '@atlaskit/icon/glyph/editor/quote';
 import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
-import { EditorPlugin } from '../../types';
+import { EditorPlugin, AllowedBlockTypes } from '../../types';
 import { ToolbarSize } from '../../ui/Toolbar';
 import { createPlugin, pluginKey } from './pm-plugins/main';
 import keymapPlugin from './pm-plugins/keymap';
@@ -10,10 +10,16 @@ import ToolbarBlockType from './ui/ToolbarBlockType';
 import WithPluginState from '../../ui/WithPluginState';
 import { setBlockType } from './commands';
 import { messages } from './types';
+import { NodeSpec } from 'prosemirror-model';
+
+interface BlockTypeNode {
+  name: AllowedBlockTypes;
+  node: NodeSpec;
+}
 
 const blockType: EditorPlugin = {
   nodes({ allowBlockType }) {
-    const nodes = [
+    const nodes: BlockTypeNode[] = [
       { name: 'heading', node: heading },
       { name: 'blockquote', node: blockquote },
       { name: 'hardBreak', node: hardBreak },

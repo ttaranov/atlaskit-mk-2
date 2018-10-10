@@ -220,7 +220,8 @@ class ResizeControl extends PureComponent<Props, State> {
   }
 
   onResizerChevronClick = () => {
-    this.toggleCollapse('chevron');
+    const trigger = this.props.flyoutIsOpen ? 'chevronHover' : 'chevron';
+    this.toggleCollapse(trigger);
   };
 
   mouseEnterGrabArea = () => {
@@ -230,7 +231,7 @@ class ResizeControl extends PureComponent<Props, State> {
     this.setState({ mouseIsOverGrabArea: false });
   };
 
-  toggleCollapse = trigger => {
+  toggleCollapse = (trigger: string) => {
     const { navigation, createAnalyticsEvent } = this.props;
     const newCollapsedState = !navigation.state.isCollapsed;
     navigation.toggleCollapse();
@@ -459,5 +460,7 @@ class ResizeControl extends PureComponent<Props, State> {
     );
   }
 }
+
+export { ResizeControl as ResizeControlBase };
 
 export default withAnalyticsEvents()(ResizeControl);
