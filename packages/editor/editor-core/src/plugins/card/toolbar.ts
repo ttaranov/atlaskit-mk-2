@@ -1,6 +1,6 @@
 import { InjectedIntl } from 'react-intl';
 import { EditorState, NodeSelection } from 'prosemirror-state';
-import { findDomRefAtPos, removeSelectedNode } from 'prosemirror-utils';
+import { removeSelectedNode } from 'prosemirror-utils';
 
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import OpenIcon from '@atlaskit/icon/glyph/open';
@@ -35,21 +35,9 @@ export const floatingToolbar = (
   intl: InjectedIntl,
 ): FloatingToolbarConfig | undefined => {
   const { inlineCard } = state.schema.nodes;
-  const cardNodes = [inlineCard];
 
   return {
     title: 'Card floating controls',
-    getDomRef: view => {
-      const domAtPos = view.domAtPos.bind(view);
-      const { selection } = view.state;
-
-      if (
-        selection instanceof NodeSelection &&
-        cardNodes.indexOf(selection.node.type) > -1
-      ) {
-        return findDomRefAtPos(selection.from, domAtPos) as HTMLElement;
-      }
-    },
     nodeType: inlineCard,
     items: [
       {
