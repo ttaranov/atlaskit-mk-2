@@ -211,7 +211,7 @@ function mentionPluginFactory(
     key: mentionPluginKey,
     state: {
       init() {
-        return {} as MentionPluginState;
+        return {};
       },
       apply(tr, pluginState) {
         const { action, params } = tr.getMeta(mentionPluginKey) || {
