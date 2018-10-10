@@ -2,9 +2,7 @@ import * as React from 'react';
 import { Context, ProcessedFileState, MediaItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { Outcome } from '../../domain';
-import { Spinner } from '../../loading';
-import { ErrorMessage, createError, MediaViewerError } from '../../error';
-import { renderDownloadButton } from '../../domain/download';
+import { createError, MediaViewerError } from '../../error';
 import { InteractiveImg } from './interactive-img';
 import { BaseViewer } from '../base-viewer';
 
@@ -42,25 +40,9 @@ export class ImageViewer extends BaseViewer<
 > {
   state: ImageViewerState = initialState;
 
-  render() {
+  renderSuccessful(objectUrl: ObjectUrl) {
     const { onClose } = this.props;
-    return this.state.resource.match({
-      pending: () => <Spinner />,
-      successful: objectUrl => (
-        <InteractiveImg src={objectUrl} onClose={onClose} />
-      ),
-      failed: err => (
-        <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton()}
-        </ErrorMessage>
-      ),
-    });
-  }
-
-  private renderDownloadButton() {
-    const { item, context, collectionName } = this.props;
-    return renderDownloadButton(item, context, collectionName);
+    return <InteractiveImg src={objectUrl} onClose={onClose} />;
   }
 
   private cancelImageFetch?: () => void;
