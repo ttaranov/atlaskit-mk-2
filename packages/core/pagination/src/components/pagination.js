@@ -5,12 +5,12 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import Link from '../link';
-import { LeftNavigator, RightNavigator } from '../navigators';
+import Page from './page';
+import { LeftNavigator, RightNavigator } from './navigators';
 import {
   name as packageName,
   version as packageVersion,
-} from '../../../package.json';
+} from '../../package.json';
 
 type Props = {
   children: Function,
@@ -19,7 +19,7 @@ type Props = {
 class Pagination extends Component<Props> {
   render() {
     const { children } = this.props;
-    return children ? children(LeftNavigator, Link, RightNavigator) : null;
+    return children ? children(LeftNavigator, Page, RightNavigator) : null;
   }
 }
 

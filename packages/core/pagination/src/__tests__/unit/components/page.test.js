@@ -2,39 +2,39 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import Link from '../../../components/link';
+import Page from '../../../components/page';
 import { name } from '../../../../package.json';
 
-describe(`${name} - Link component`, () => {
+describe(`${name} - Page component`, () => {
   it('renders child props', () => {
-    const wrapper = shallow(<Link isSelected>1</Link>);
+    const wrapper = shallow(<Page isSelected>1</Page>);
     expect(wrapper.text()).toBe('1');
   });
   it('passes in isSelected props to button', () => {
-    const wrapper = mount(<Link isSelected>1</Link>);
+    const wrapper = mount(<Page isSelected>1</Page>);
     const button = wrapper.find(Button);
     expect(button.prop('isSelected')).toBe(true);
   });
   it('calls onClick on click', () => {
     const onClickSpy = jest.fn();
     const wrapper = mount(
-      <Link isSelected={false} onClick={onClickSpy}>
+      <Page isSelected={false} onClick={onClickSpy}>
         1
-      </Link>,
+      </Page>,
     );
     wrapper.simulate('click');
     expect(onClickSpy).toHaveBeenCalled();
   });
   it('renders subbtle button', () => {
-    const wrapper = mount(<Link isSelected>1</Link>);
+    const wrapper = mount(<Page isSelected>1</Page>);
     const button = wrapper.find(Button);
     expect(button.prop('appearance')).toBe('subtle');
   });
   it('passes in selected props to button', () => {
     const wrapper = mount(
-      <Link href="#href" isSelected>
+      <Page href="#href" isSelected>
         1
-      </Link>,
+      </Page>,
     );
     const button = wrapper.find(Button);
     expect(button.prop('href')).toBe('#href');

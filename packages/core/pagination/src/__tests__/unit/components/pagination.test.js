@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
 import { mount } from 'enzyme';
-import Link from '../../../components/link';
+import Page from '../../../components/page';
 import { name } from '../../../../package.json';
 import Pagination from '../../../components/pagination';
 import { LeftNavigator, RightNavigator } from '../../../components/navigators';
@@ -17,7 +17,7 @@ describe(`${name} - pagination`, () => {
     mount(<Pagination>{childPropSpy}</Pagination>);
     expect(childPropSpy).toHaveBeenCalledWith(
       LeftNavigator,
-      Link,
+      Page,
       RightNavigator,
     );
   });
