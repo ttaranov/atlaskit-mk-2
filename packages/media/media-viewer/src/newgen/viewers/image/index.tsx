@@ -36,6 +36,7 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
 }
 
 export class ImageViewer extends BaseViewer<
+  ObjectUrl,
   ImageViewerProps,
   ImageViewerState
 > {

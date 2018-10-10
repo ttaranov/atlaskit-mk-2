@@ -1,9 +1,16 @@
 import * as React from 'react';
+import { MediaViewerError } from '../error';
+import { Outcome } from '../domain';
 
-export abstract class BaseViewer<Props, State> extends React.Component<
+export type MinimalState<T> = {
+  resource: Outcome<T, MediaViewerError>;
+};
+
+export abstract class BaseViewer<
+  T,
   Props,
-  State
-> {
+  State extends MinimalState<T>
+> extends React.Component<Props, State> {
   componentDidMount() {
     this.init(this.props);
   }
