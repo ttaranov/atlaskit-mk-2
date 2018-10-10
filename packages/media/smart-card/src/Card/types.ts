@@ -5,7 +5,7 @@ type BaseCardProps = {
   appearance: CardAppearance;
   isSelected?: boolean;
   onClick?: () => void;
-}
+};
 
 export type CardWithData = BaseCardProps & {
   data?: any;
