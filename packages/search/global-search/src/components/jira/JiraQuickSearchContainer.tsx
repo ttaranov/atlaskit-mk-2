@@ -5,7 +5,7 @@ import {
   FormattedHTMLMessage,
 } from 'react-intl';
 import styled from 'styled-components';
-import { gridSize, math } from '@atlaskit/theme';
+import { gridSize } from '@atlaskit/theme';
 import { withAnalytics } from '@atlaskit/analytics';
 import StickyFooter from '../common/StickyFooter';
 import { CreateAnalyticsEventFn } from '../analytics/types';
@@ -133,9 +133,7 @@ export class JiraQuickSearchContainer extends React.Component<
           </>
         )}
         renderAdvancedSearchGroup={(analyticsData?) => (
-          <StickyFooter
-            style={{ marginTop: `${math.multiply(gridSize, 2)}px` }}
-          >
+          <StickyFooter style={{ marginTop: `${2 * gridSize()}px` }}>
             <JiraAdvancedSearch
               analyticsData={analyticsData}
               query={query}
