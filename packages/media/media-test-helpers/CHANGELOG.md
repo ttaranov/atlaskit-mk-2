@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 18.2.6
+- [patch] Fix bug with download binary [71ebe0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71ebe0b)
+
 ## 18.2.5
 - [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/media-card@39.0.0
