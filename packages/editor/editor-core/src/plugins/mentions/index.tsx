@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey, StateField } from 'prosemirror-state';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import {
   MentionProvider,
@@ -18,7 +18,11 @@ import { EditorPlugin, Command } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
 import { PortalProviderAPI } from '../../ui/PortalProvider';
 import WithPluginState from '../../ui/WithPluginState';
-import { pluginKey as typeAheadPluginKey } from '../type-ahead/pm-plugins/main';
+import {
+  pluginKey as typeAheadPluginKey,
+  PluginState as TypeAheadPluginState,
+  createInitialPluginState,
+} from '../type-ahead/pm-plugins/main';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { ReactNodeView } from '../../nodeviews';
 import ToolbarMention from './ui/ToolbarMention';
@@ -48,15 +52,20 @@ const mentionsPlugin: EditorPlugin = {
           mentionState: mentionPluginKey,
         }}
         render={(
-          { typeAheadState, mentionState } = {
-            typeAheadState: {},
+          {
+            typeAheadState,
+            mentionState,
+          }: {
+            typeAheadState: TypeAheadPluginState;
+            mentionState: MentionPluginState;
+          } = {
+            typeAheadState: createInitialPluginState(),
             mentionState: {},
           },
         ) =>
           !mentionState.provider ? null : (
             <ToolbarMention
               editorView={editorView}
-              pluginKey={mentionPluginKey}
               isDisabled={disabled || !typeAheadState.isAllowed}
             />
           )
@@ -224,7 +233,7 @@ function mentionPluginFactory(
               provider: params.provider,
             };
             dispatch(mentionPluginKey, newPluginState);
-            return newPluginState as MentionPluginState;
+            return newPluginState;
 
           case ACTIONS.SET_RESULTS:
             newPluginState = {
@@ -232,7 +241,7 @@ function mentionPluginFactory(
               mentions: params.results,
             };
             dispatch(mentionPluginKey, newPluginState);
-            return newPluginState as MentionPluginState;
+            return newPluginState;
 
           case ACTIONS.SET_CONTEXT:
             newPluginState = {
@@ -240,12 +249,12 @@ function mentionPluginFactory(
               contextIdentifier: params.context,
             };
             dispatch(mentionPluginKey, newPluginState);
-            return newPluginState as MentionPluginState;
+            return newPluginState;
         }
 
         return newPluginState;
       },
-    },
+    } as StateField<MentionPluginState>,
     props: {
       nodeViews: {
         mention: ReactNodeView.fromComponent(

@@ -18,7 +18,7 @@ export interface Props {
   eventDispatcher?: EventDispatcher;
   editorView?: EditorView;
   plugins: PluginsConfig;
-  render: (pluginsState: State) => React.ReactElement<any> | null;
+  render: (pluginsState: any) => React.ReactElement<any> | null;
 }
 
 /**

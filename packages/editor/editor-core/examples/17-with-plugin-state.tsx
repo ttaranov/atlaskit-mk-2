@@ -2,15 +2,10 @@
 
 import * as React from 'react';
 import Lozenge from '@atlaskit/lozenge';
-import {
-  Editor,
-  EditorContext,
-  getPropsPreset,
-  mediaPluginKey,
-  mentionPluginKey,
-} from '../src';
-import WithPluginState from '../src/ui/WithPluginState';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { Editor, EditorContext, getPropsPreset, mediaPluginKey } from '../src';
+import WithPluginState from '../src/ui/WithPluginState';
+import { pluginKey as typeAheadPluginKey } from '../src/plugins/type-ahead/pm-plugins/main';
 
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -22,9 +17,9 @@ export default function Example() {
         <WithPluginState
           plugins={{
             media: mediaPluginKey,
-            mentions: mentionPluginKey,
+            typeAhead: typeAheadPluginKey,
           }}
-          render={({ media, mentions }) => (
+          render={({ media, typeAhead }) => (
             <div
               style={{
                 background: 'rgb(235, 236, 240)',
@@ -44,8 +39,8 @@ export default function Example() {
               </div>
               <div>
                 Mention query:{' '}
-                {mentions && mentions.query ? (
-                  <Lozenge appearance="inprogress">{mentions.query}</Lozenge>
+                {typeAhead && typeAhead.query ? (
+                  <Lozenge appearance="inprogress">{typeAhead.query}</Lozenge>
                 ) : (
                   <Lozenge appearance="default">Not in progress</Lozenge>
                 )}

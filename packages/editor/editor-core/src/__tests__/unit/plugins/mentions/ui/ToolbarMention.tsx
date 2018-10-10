@@ -4,7 +4,6 @@ import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { analyticsService } from '../../../../../analytics';
 import mentionsPlugin from '../../../../../plugins/mentions';
-import { mentionPluginKey } from '../../../../../plugins/mentions';
 import ToolbarMention from '../../../../../plugins/mentions/ui/ToolbarMention';
 
 describe('ToolbarMention', () => {
@@ -17,9 +16,7 @@ describe('ToolbarMention', () => {
 
   it('should create a typeAheadQuery by clicking on the ToolbarMention icon', () => {
     const { editorView } = editor(doc(p('{<>}')));
-    const toolbarMention = mount(
-      <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} />,
-    );
+    const toolbarMention = mount(<ToolbarMention editorView={editorView} />);
     toolbarMention.find(MentionIcon).simulate('click');
     const { state } = editorView;
     expect(
@@ -33,9 +30,7 @@ describe('ToolbarMention', () => {
       const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('')), trackEvent);
-      const toolbarOption = mount(
-        <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} />,
-      );
+      const toolbarOption = mount(<ToolbarMention editorView={editorView} />);
       toolbarOption.find(MentionIcon).simulate('click');
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.fabric.mention.picker.trigger.button',

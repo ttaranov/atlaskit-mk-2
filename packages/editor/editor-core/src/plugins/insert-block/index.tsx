@@ -4,7 +4,7 @@ import { WithProviders } from '@atlaskit/editor-common';
 import { pluginKey as blockTypeStateKey } from '../block-type/pm-plugins/main';
 import { stateKey as mediaStateKey } from '../media/pm-plugins/main';
 import { stateKey as hyperlinkPluginKey } from '../hyperlink/pm-plugins/main';
-import { mentionPluginKey as mentionStateKey } from '../mentions';
+import { mentionPluginKey } from '../mentions';
 import { pluginKey as tablesStateKey } from '../table/pm-plugins/main';
 import { stateKey as imageUploadStateKey } from '../image-upload/pm-plugins/main';
 import { pluginKey as placeholderTextStateKey } from '../placeholder-text';
@@ -66,7 +66,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
             typeAheadState: typeAheadPluginKey,
             blockTypeState: blockTypeStateKey,
             mediaState: mediaStateKey,
-            mentionState: mentionStateKey,
+            mentionState: mentionPluginKey,
             tablesState: tablesStateKey,
             macroState: macroStateKey,
             hyperlinkState: hyperlinkPluginKey,
