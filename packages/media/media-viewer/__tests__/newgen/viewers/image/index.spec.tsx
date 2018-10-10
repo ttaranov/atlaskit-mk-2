@@ -160,4 +160,21 @@ describe('ImageViewer', () => {
 
     expect(onClose).toHaveBeenCalled();
   });
+
+  describe('Analytics', () => {
+    it('should call onLoaded with success', async () => {
+      const response = Promise.resolve(new Blob());
+      const { el } = createFixture(response);
+
+      await response;
+      expect(el.prop('onLoaded')).toHaveBeenCalledWith({ status: 'success' });
+    });
+
+    it('should call onLoaded with error', async () => {
+      const response = Promise.reject(new Error('test_error'));
+      const { el } = createFixture(response);
+
+      await awaitError(response, 'test_error');
+      expect(el.prop('onLoaded')).toHaveBeenCalledWith({ status: 'error' });
+    });
 });
