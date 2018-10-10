@@ -103,4 +103,20 @@ describe('DocViewer', () => {
     await (el as any).instance()['init']();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
+
+  describe('Analytics', () => {
+    it('should call onLoaded with success', async () => {
+      const fetchPromise = Promise.resolve();
+      const { el } = createFixture(fetchPromise, item);
+      await (el as any).instance()['init']();
+      expect(el.prop('onLoaded')).toHaveBeenCalledWith({ status: 'success' });
+    });
+
+    it('should call onLoaded with error', async () => {
+      const fetchPromise = Promise.reject('error');
+      const { el } = createFixture(fetchPromise, item);
+      await (el as any).instance()['init']();
+      expect(el.prop('onLoaded')).toHaveBeenCalledWith({ status: 'error' });
+    });
+  });
 });
