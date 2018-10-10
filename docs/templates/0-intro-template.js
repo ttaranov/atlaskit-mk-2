@@ -13,18 +13,22 @@ import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
 
-  TODO: Description of the component
+  TODO: Summary of what the component is/is for
 
   ## Usage
 
-  TODO: Code usage of component.
+  ${/* This code snippet should show all the exports of a component */ ''}
+  ${code`
+    import Component, { SubComponent } from '@atlaskit/component';
+  `}
 
-${code`
-  import Component from '@atlaskit/component';
+  TODO: Provide the base information that someone needs to render the component
 
-  <Component>
-`}
-
+  ${
+    /* You should use as many examples as your explanation needs. There
+  should be at least one base example present, unless your component cannot
+  be rendered inline */ ''
+  }
   ${(
     <Example
       Component={require('pathToExample').default}
