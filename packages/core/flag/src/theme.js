@@ -1,6 +1,7 @@
 // @flow
 
 import { colors, themed } from '@atlaskit/theme';
+import { themeNamespace as buttonThemeNamespace } from '@atlaskit/button';
 
 const lightButtonBackground = 'rgba(255, 255, 255, 0.08)';
 
@@ -41,18 +42,66 @@ export const flagFocusRingColor = themed('appearance', {
   warning: { light: colors.N200, dark: colors.N200 },
 });
 
-export const buttonBackgroundColor = themed('appearance', {
-  error: { light: lightButtonBackground, dark: colors.N30A },
-  info: { light: lightButtonBackground, dark: lightButtonBackground },
-  normal: { light: 'none', dark: 'none' },
-  success: { light: lightButtonBackground, dark: colors.N30A },
-  warning: { light: colors.N30A, dark: colors.N30A },
-});
-// $FlowFixMe - theme is not found in props
-export const buttonTextColor = themed('appearance', {
-  error: { light: colors.N0, dark: colors.DN40 },
-  info: { light: colors.N0, dark: colors.DN600 },
-  normal: { light: colors.link, dark: colors.link },
-  success: { light: colors.N0, dark: colors.DN40 },
-  warning: { light: colors.N700, dark: colors.DN40 },
+type Theme = { [string]: any };
+
+const shared = {
+  textDecoration: {
+    hover: 'underline',
+    active: 'underline',
+  },
+};
+
+export const getFlagTheme = (theme: Theme): Theme => ({
+  ...theme,
+  [buttonThemeNamespace]: {
+    ...(theme && theme[buttonThemeNamespace]),
+    success: {
+      ...shared,
+      color: {
+        default: themed({ light: colors.N0, dark: colors.DN40 }),
+        hover: themed({ light: colors.N0, dark: colors.DN40 }),
+        active: themed({ light: colors.N0, dark: colors.DN40 }),
+      },
+      background: {
+        default: themed({ light: lightButtonBackground, dark: colors.N30A }),
+      },
+    },
+    info: {
+      ...shared,
+      color: {
+        default: themed({ light: colors.N0, dark: colors.DN600 }),
+        hover: themed({ light: colors.N0, dark: colors.DN600 }),
+        active: themed({ light: colors.N0, dark: colors.DN600 }),
+      },
+      background: {
+        default: themed({
+          light: lightButtonBackground,
+          dark: lightButtonBackground,
+        }),
+      },
+    },
+    error: {
+      ...shared,
+      color: {
+        default: themed({ light: colors.N0, dark: colors.DN600 }),
+        hover: themed({ light: colors.N0, dark: colors.DN600 }),
+        active: themed({ light: colors.N0, dark: colors.DN600 }),
+      },
+      background: {
+        default: themed({ light: lightButtonBackground, dark: colors.N30A }),
+      },
+    },
+    warning: {
+      ...shared,
+      color: {
+        default: themed({ light: colors.N700, dark: colors.DN40 }),
+        hover: themed({ light: colors.N700, dark: colors.DN40 }),
+        active: themed({ light: colors.N700, dark: colors.DN40 }),
+      },
+      background: {
+        default: themed({ light: colors.N30A, dark: colors.N30A }),
+      },
+    },
+    normal: {},
+  },
 });
