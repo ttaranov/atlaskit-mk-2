@@ -32,6 +32,7 @@ export const fakeContext = (
     observable: returns(of('nothing')),
   });
   const getFile = jest.fn().mockReturnValue(of({}));
+  const downloadBinary = jest.fn();
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
@@ -44,6 +45,7 @@ export const fakeContext = (
   const getImage = jest.fn() as any;
   const file = {
     getFileState: getFile,
+    downloadBinary,
   } as any;
   const defaultContext: Context = {
     getImage,
