@@ -3,12 +3,6 @@ import { Component, ReactNode } from 'react';
 import { Context } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 
-export type MediaApiConfig = {
-  clientId: string;
-  token: string;
-  baseUrl: string;
-};
-
 export interface MediaImageProps {
   readonly id: string;
   readonly context: Context;
