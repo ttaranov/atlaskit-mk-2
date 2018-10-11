@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.4.0
+- [minor] FS-2901 - Move action toolbar icon to insert group [57502ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57502ac)
+
 ## 85.3.1
 - [patch] Updated dependencies [17afe04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17afe04)
   - @atlaskit/media-picker@20.0.0
