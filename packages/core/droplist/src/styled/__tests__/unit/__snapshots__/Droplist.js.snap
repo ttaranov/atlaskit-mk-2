@@ -47,3 +47,19 @@ exports[`Content renders correctly when maxHeight is 350 1`] = `
   className="c0"
 />
 `;
+
+exports[`Dropbox content renders correctly with default style 1`] = `
+.c0 {
+  background: #FFFFFF;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px -2px rgba(9,30,66,0.25), 0 0 1px rgba(9,30,66,0.31);
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 4px 0;
+  max-height: 317.5px;
+}
+
+<div
+  className="c0"
+/>
+`;

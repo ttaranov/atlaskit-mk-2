@@ -3,19 +3,29 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Content } from '../../Droplist';
 
-describe('Content', () => {
-  it('renders correctly when isTall is true', () => {
-    const tree = shallow(<Content isTall />);
-    expect(tree).toMatchSnapshot();
+describe('Dropbox content', () => {
+  it('renders correctly with default styles', () => {
+    expect(shallow(<Content />)).toMatchSnapshot();
   });
 
-  it('renders correctly when isTall is false', () => {
-    const tree = shallow(<Content isTall={false} />);
-    expect(tree).toMatchSnapshot();
+  it('renders max-height "90vh" when isTall is true', () => {
+    // $FlowFixMe - https://github.com/facebook/flow/issues/396
+    expect(shallow(<Content isTall />)).toHaveStyleRule('max-height', '90vh');
   });
 
-  it('renders correctly when maxHeight is 350', () => {
-    const tree = shallow(<Content maxHeight={350} />);
-    expect(tree).toMatchSnapshot();
+  it('renders max-height "317.5px" when isTall is false', () => {
+    // $FlowFixMe - https://github.com/facebook/flow/issues/396
+    expect(shallow(<Content isTall={false} />)).toHaveStyleRule(
+      'max-height',
+      '317.5px',
+    );
+  });
+
+  it('renders max-height "350px" when maxHeight is 350', () => {
+    // $FlowFixMe - https://github.com/facebook/flow/issues/396
+    expect(shallow(<Content maxHeight={350} />)).toHaveStyleRule(
+      'max-height',
+      '350px',
+    );
   });
 });
