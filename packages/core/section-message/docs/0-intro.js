@@ -1,20 +1,8 @@
 // @flow
 import React from 'react';
 import { md, Example, Props, code } from '@atlaskit/docs';
-import SectionMessage from '../src';
 
 export default md`
-  ${(
-    <SectionMessage
-      appearance="warning"
-      title="Note: @atlaskit/section-message is currently a developer preview."
-    >
-      Please experiment with and test this package, but be aware that the API
-      may change at any time. Use at your own risk, preferrably not in
-      production.
-    </SectionMessage>
-  )}
-
   ${code`import SectionMessage from '@atlaskit/section-message';`}
 
   Section messages are part of the content of a user interface, and are used to
