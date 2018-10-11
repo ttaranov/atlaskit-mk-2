@@ -3,13 +3,14 @@ import { Observable } from 'rxjs';
 import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
-import { MediaItemType } from '@atlaskit/media-core';
-import { ItemViewer } from '../../src/newgen/item-viewer';
+import { MediaItemType, Context } from '@atlaskit/media-core';
+import { ItemViewer, ItemViewerBase } from '../../src/newgen/item-viewer';
 import { ErrorMessage } from '../../src/newgen/error';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
 import { AudioViewer } from '../../src/newgen/viewers/audio';
 import { DocViewer } from '../../src/newgen/viewers/doc';
+import { Identifier } from '../../src/newgen/domain';
 
 const identifier = {
   id: 'some-id',
@@ -25,12 +26,31 @@ const makeFakeContext = (observable: Observable<any>) =>
     },
   } as any);
 
+function mountComponent(context: Context, identifier: Identifier) {
+  const el = mount(
+    <ItemViewer previewCount={0} context={context} identifier={identifier} />,
+  );
+  const itemViewerBase = el.find(ItemViewerBase);
+  const instance = el.find(ItemViewerBase).instance() as any;
+  return { el, itemViewerBase, instance };
+}
+
+function mountBaseComponent(context: Context, identifier: Identifier) {
+  const el = mount(
+    <ItemViewerBase
+      createAnalyticsEvent={jest.fn()}
+      previewCount={0}
+      context={context}
+      identifier={identifier}
+    />,
+  );
+  return { el };
+}
+
 describe('<ItemViewer />', () => {
   it('shows an indicator while loading', () => {
     const context = makeFakeContext(Observable.empty());
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
@@ -38,9 +58,7 @@ describe('<ItemViewer />', () => {
     const context = makeFakeContext(
       Observable.throw('something bad happened!'),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -56,9 +74,7 @@ describe('<ItemViewer />', () => {
         status: 'processed',
       }),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     expect(el.find(ImageViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -69,9 +85,7 @@ describe('<ItemViewer />', () => {
 
   it('should should error and download button if processing Status failed', () => {
     const context = makeFakeContext(Observable.of({ status: 'error' }));
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -159,9 +173,7 @@ describe('<ItemViewer />', () => {
         status: 'processed',
       }),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     expect(el.find(VideoViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -178,9 +190,7 @@ describe('<ItemViewer />', () => {
         status: 'processed',
       }),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     expect(el.find(AudioViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -197,9 +207,7 @@ describe('<ItemViewer />', () => {
         status: 'processed',
       }),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     expect(el.find(DocViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -216,9 +224,7 @@ describe('<ItemViewer />', () => {
         status: 'processed',
       }),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -236,9 +242,7 @@ describe('<ItemViewer />', () => {
         status: 'processed',
       }),
     );
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
+    const { el } = mountComponent(context, identifier);
     el.update();
     expect(context.file.getFileState).toHaveBeenCalledWith('some-id', {
       collectionName: 'some-collection',
@@ -255,15 +259,7 @@ describe('<ItemViewer />', () => {
           status: 'processed',
         }),
       );
-
-      const el = mount(
-        <ItemViewer
-          previewCount={0}
-          context={context}
-          identifier={identifier}
-        />,
-      );
-      const instance = el.instance() as ItemViewer;
+      const { el, instance } = mountComponent(context, identifier);
       instance.release = release;
       expect(instance.release).toHaveBeenCalledTimes(0);
       el.unmount();
@@ -279,14 +275,7 @@ describe('<ItemViewer />', () => {
           status: 'processed',
         }),
       );
-      const el = mount(
-        <ItemViewer
-          previewCount={0}
-          context={context}
-          identifier={identifier}
-        />,
-      );
-
+      const { el } = mountComponent(context, identifier);
       expect(context.file.getFileState).toHaveBeenCalledTimes(1);
 
       // if the values stay the same, we will not resubscribe
@@ -323,15 +312,8 @@ describe('<ItemViewer />', () => {
           status: 'processed',
         }),
       );
-      const el = mount(
-        <ItemViewer
-          previewCount={0}
-          context={context}
-          identifier={identifier}
-        />,
-      );
-
-      expect(el.state().item.status).toEqual('SUCCESSFUL');
+      const { el } = mountBaseComponent(context, identifier);
+      expect(el.instance().state.item.status).toEqual('SUCCESSFUL');
 
       const identifier2 = {
         ...identifier,
@@ -342,11 +324,10 @@ describe('<ItemViewer />', () => {
       // let's prevent the second call to getFile from immediately resolving and
       // updating the state to SUCCESSFUL before we run the assertion.
       context.file.getFileState = () => Observable.never();
-
       el.setProps({ context, identifier: identifier2 });
       el.update();
 
-      expect(el.state().item.status).toEqual('PENDING');
+      expect(el.instance().state.item.status).toEqual('PENDING');
     });
   });
 });

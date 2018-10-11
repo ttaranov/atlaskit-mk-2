@@ -6,11 +6,12 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { InteractiveImg } from './interactive-img';
+import { AnalyticViewerProps } from '../../analytics';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
 
-export type ImageViewerProps = {
+export type ImageViewerProps = AnalyticViewerProps & {
   context: Context;
   item: ProcessedFileState;
   collectionName?: string;
@@ -86,6 +87,7 @@ export class ImageViewer extends React.Component<
   }
 
   private async init(file: ProcessedFileState, context: Context) {
+    const { onLoad } = this.props;
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
@@ -102,6 +104,7 @@ export class ImageViewer extends React.Component<
         this.setState({
           objectUrl: Outcome.successful(objectUrl),
         });
+        onLoad({ status: 'success' });
       } catch (err) {
         if (err.message === REQUEST_CANCELLED) {
           this.preventRaceCondition();
@@ -109,6 +112,7 @@ export class ImageViewer extends React.Component<
           this.setState({
             objectUrl: Outcome.failed(createError('previewFailed', err, file)),
           });
+          onLoad({ status: 'error' });
         }
       }
     });
