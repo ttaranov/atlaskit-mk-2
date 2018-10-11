@@ -14,12 +14,20 @@ import {
 } from '../model/Result';
 import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
 import { getDefaultAvatar } from '../util/jira-avatar-util';
+import WithSelectedIcon from './common/WithSelectedIcon';
+import Return from '../assets/Return';
+import { ResultBase } from './types/ResultBase';
 
 export interface Props {
   results: Result[];
   sectionIndex: number;
   analyticsData?: {};
 }
+
+const withReturnIconWhenSelected = WithSelectedIcon<ResultBase>(<Return />);
+const ObjectResultWithSelectedState = withReturnIconWhenSelected(
+  ObjectResultComponent,
+);
 
 const extractAvatarData = (jiraResult: JiraResult) =>
   jiraResult.avatarUrl
@@ -49,7 +57,7 @@ export default class ResultList extends React.Component<Props> {
         case ResultType.ConfluenceObjectResult: {
           const confluenceResult = result as ConfluenceObjectResult;
           return (
-            <ObjectResultComponent
+            <ObjectResultWithSelectedState
               key={resultKey}
               resultId={confluenceResult.resultId}
               name={confluenceResult.name}
