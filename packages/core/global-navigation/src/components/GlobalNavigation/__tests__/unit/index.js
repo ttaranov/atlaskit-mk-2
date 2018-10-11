@@ -361,105 +361,76 @@ describe('GlobalNavigation', () => {
         onSearchClick={() => console.log('search clicked')}
         onStarredClick={() => console.log('your work clicked')}
         onNotificationClick={() => console.log('notification clicked')}
-        appSwitcherComponent={AppSwitcher}
         loginHref="#login"
         helpItems={() => <div>items</div>}
       />,
     );
     const navItems = [
       {
-        icon: EmojiAtlassianIcon,
+        id: 'productLogo',
         name: 'product',
         section: 'primary',
         rank: 1,
       },
       {
-        icon: StarLargeIcon,
+        id: 'starDrawer',
         name: 'starred',
         section: 'primary',
         rank: 2,
       },
       {
-        icon: SearchIcon,
+        id: 'quickSearch',
         name: 'search',
         section: 'primary',
         rank: 3,
       },
       {
-        icon: CreateIcon,
+        id: 'create',
         name: 'create',
         section: 'primary',
         rank: 4,
       },
       {
-        icon: NotificationIcon,
+        id: 'notifications',
         name: 'notification',
         section: 'secondary',
         rank: 1,
       },
       {
-        icon: AppSwitcher,
-        name: 'appSwitcher',
+        id: 'profile',
+        name: 'profile',
+        section: 'secondary',
+        rank: 3,
+      },
+      {
+        id: 'help',
+        name: 'help',
         section: 'secondary',
         rank: 2,
       },
-      {
-        icon: SignInIcon,
-        name: 'profile',
-        section: 'secondary',
-        rank: 4,
-      },
-      {
-        icon: QuestionIcon,
-        name: 'help',
-        section: 'secondary',
-        rank: 5,
-      },
     ];
-    navItems.forEach(({ icon, section, rank, name }) => {
-      it(`should pick up section for "${name}" from defaultConfig`, () => {
-        if (section === 'secondary') {
-          expect(
-            wrapper
-              .find(icon)
-              .parents()
-              .exists('SecondaryItemsList'),
-          ).toBeTruthy();
-          return;
-        }
 
-        if (section === 'primary') {
-          expect(
-            wrapper
-              .find(icon)
-              .parents()
-              .exists('PrimaryItemsList'),
-          ).toBeTruthy();
-        }
+    navItems.forEach(({ id, section, rank, name }) => {
+      const globalSection =
+        section === 'primary' ? 'PrimaryItemsList' : 'SecondaryItemsList';
+      it(`should pick up section for "${name}" from defaultConfig`, () => {
+        expect(
+          wrapper
+            .find(`[id="${id}"]`)
+            .filter('GlobalItemBase')
+            .parents()
+            .exists(globalSection),
+        ).toBeTruthy();
       });
 
-      xit(`should pick up rank for "${name}" from defaultConfig`, () => {
-        if (section === 'primary') {
-          expect(
-            wrapper
-              .find('PrimaryItemsList')
-              .find('GlobalItemBase')
-              .at(rank)
-              .children()
-              .exists(icon),
-          ).toBeTruthy();
-          return;
-        }
-        if (section === 'secondary') {
-          expect(
-            wrapper
-              .find('SecondaryItemsList')
-              .find('GlobalItemBase')
-              .at(rank)
-              .children()
-              .exists(icon),
-          ).toBeTruthy();
-        }
+      it(`should pick up rank for "${name}" from defaultConfig`, () => {
+        expect(
+          wrapper
+            .find(globalSection)
+            .find('GlobalItemBase')
+            .at(rank - 1) // arrays start at 0
+            .is(`[id="${id}"]`),
+        ).toBeTruthy();
       });
     });
   });
@@ -505,16 +476,52 @@ describe('GlobalNavigation', () => {
       expect(wrapper.find('[id="appSwitcher"]').exists()).toBeFalsy();
     });
 
+    const AppSwitcher = () => <div />;
+    AppSwitcher.displayName = 'AppSwitcher';
+    const defaultWrapper = mount(
+      <GlobalNavigation
+        productIcon={EmojiAtlassianIcon}
+        productHref="#"
+        onProductClick={() => console.log('product clicked')}
+        onCreateClick={() => console.log('create clicked')}
+        onSearchClick={() => console.log('search clicked')}
+        onStarredClick={() => console.log('your work clicked')}
+        onNotificationClick={() => console.log('notification clicked')}
+        appSwitcherComponent={AppSwitcher}
+        appSwitcherTooltip="appSwitcher tooltip"
+        loginHref="#login"
+        helpItems={() => <div>items</div>}
+      />,
+    );
     it('should render the AppSwitcher component', () => {
-      const AppSwitcher = () => <div />;
-      AppSwitcher.displayName = 'AppSwitcher';
-      const wrapper = mount(
-        <GlobalNavigation
-          appSwitcherComponent={AppSwitcher}
-          appSwitcherTooltip="appSwitcher tooltip"
-        />,
+      expect(defaultWrapper.children().exists(AppSwitcher)).toBeTruthy();
+    });
+
+    it('should render the correct tooltip', () => {
+      // AppSwitcher doesn't have a default tooltip in global navigation as it's handled by the base app switcher component
+      expect(defaultWrapper.find(AppSwitcher).props().label).toBe(
+        'appSwitcher tooltip',
       );
-      expect(wrapper.children().exists(AppSwitcher)).toBeTruthy();
+    });
+    it('should render in SecondaryItemsList by default', () => {
+      expect(
+        defaultWrapper
+          .find(AppSwitcher)
+          .parents()
+          .exists('SecondaryItemsList'),
+      ).toBeTruthy();
+    });
+
+    it('should render at 2nd position in the SecondaryItemsList by default', () => {
+      const appSwitcherRank = 2;
+      expect(
+        defaultWrapper
+          .find('SecondaryItemsList')
+          .find('AnalyticsContext')
+          .children()
+          .at(appSwitcherRank - 1) // arrays start at 0
+          .is('[id="appSwitcher"]'),
+      ).toBeTruthy();
     });
   });
 
