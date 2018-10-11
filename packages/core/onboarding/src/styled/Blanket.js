@@ -16,4 +16,5 @@ export default styled.div`
   right: 0;
   top: 0;
   transition: opacity 220ms;
+  z-index: ${layers.spotlight};
 `;

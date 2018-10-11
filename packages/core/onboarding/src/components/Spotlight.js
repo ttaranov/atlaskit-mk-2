@@ -8,10 +8,10 @@ import React, {
 import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
 import { Fade } from './Animation';
-import Spotlight from './SpotlightInternal';
+import SpotlightDialog from './SpotlightDialog';
 import { SpotlightTransitionConsumer } from './SpotlightTransition';
+import { SpotlightConsumer } from './SpotlightManager';
 import type { ActionsType } from '../types';
-import Blanket from '../styled/Blanket';
 
 export type Props = {
   /** Buttons to render in the footer */
@@ -67,30 +67,28 @@ class SpotlightWrapper extends React.Component<Props> {
   };
 
   render() {
+    const { target, targetNode } = this.props;
     return (
-      <SpotlightTransitionConsumer>
-        {({ isOpen, onExited }) => (
-          <Fade in={isOpen} onExited={onExited}>
-            {animationStyles =>
-              console.log('isOpen', isOpen) || (
-                <React.Fragment>
-                  <Blanket
-                    isTinted
-                    style={{ opacity: animationStyles.opacity }}
-                  />
+      <SpotlightConsumer>
+        {getTargetElement => (
+          <SpotlightTransitionConsumer>
+            {({ isOpen, onExited }) => (
+              <Fade in={isOpen} onExited={onExited}>
+                {animationStyles => (
                   <Portal zIndex={layers.spotlight()}>
-                    <Spotlight
+                    <SpotlightDialog
                       {...this.props}
                       isOpen={isOpen}
                       animationStyles={animationStyles}
+                      targetNode={targetNode || getTargetElement(target)}
                     />
                   </Portal>
-                </React.Fragment>
-              )
-            }
-          </Fade>
+                )}
+              </Fade>
+            )}
+          </SpotlightTransitionConsumer>
         )}
-      </SpotlightTransitionConsumer>
+      </SpotlightConsumer>
     );
   }
 }

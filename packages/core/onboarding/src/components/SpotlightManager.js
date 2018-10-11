@@ -5,13 +5,52 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
-import { Manager } from '@atlaskit/popper';
+import Portal from '@atlaskit/portal';
 import { Provider, Subscribe } from 'unstated';
 import ScrollLock from 'react-scrolllock';
 
 import SpotlightRegistry from './SpotlightRegistry';
 import { Fade } from './Animation';
 import Blanket from '../styled/Blanket';
+
+// NOTE: Instantiate a global registry, as this component will likely be
+// re-rendered by its parent tree
+const registry = new SpotlightRegistry();
+
+const noop = () => {};
+
+const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext();
+const {
+  Consumer: SpotlightStateConsumer,
+  Provider: SpotlightStateProvider,
+} = createContext({ opened: noop, closed: noop, getTargetElement: noop });
+
+export { TargetConsumer };
+
+export class SpotlightConsumer extends React.Component<{
+  name: string,
+  children: ((string) => HTMLElement) => Node,
+}> {
+  opened;
+  closed;
+  componentDidMount() {
+    this.opened(this.props.name);
+  }
+  componentWillUnmount() {
+    this.closed(this.props.name);
+  }
+  render() {
+    return (
+      <SpotlightStateConsumer>
+        {({ opened, closed, getTargetElement }) => {
+          this.opened = opened;
+          this.closed = closed;
+          return this.props.children(getTargetElement);
+        }}
+      </SpotlightStateConsumer>
+    );
+  }
+}
 
 type Props = {
   /** Boolean prop for toggling blanket transparency  */
@@ -22,46 +61,67 @@ type Props = {
   component: ElementType,
 };
 
-// NOTE: Instantiate a global registry, as this component will likely be
-// re-rendered by its parent tree
-const registry = new SpotlightRegistry();
-
-const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext();
-const {
-  Consumer: SpotlightConsumer,
-  Provider: SpotlightProvider,
-} = createContext();
-
-export { TargetConsumer };
-export { SpotlightConsumer };
-
-export default class SpotlightManager extends PureComponent<Props> {
-  spotlights = {};
+/* eslint-disable react/no-multi-comp */
+export default class SpotlightManager extends PureComponent<
+  Props,
+  { spotlightCount: number },
+> {
   static defaultProps = {
     blanketIsTinted: true,
     component: 'div',
   };
 
+  state = {
+    spotlightCount: 0,
+  };
+
+  targets: { [string]: HTMLElement } = {};
+
   targetRef = (name: string) => (element: HTMLElement | void) => {
     if (element) {
-      this.spotlights = {
-        ...this.spotlights,
+      this.targets = {
+        ...this.targets,
         [name]: element,
       };
     } else {
-      delete this.spotlights[name];
+      delete this.targets[name];
     }
   };
 
-  getTargetElement = (name: string) => this.spotlights[name];
+  spotlightOpen = (name: string) => {
+    this.setState({ spotlightCount: this.state.spotlightCount + 1 });
+  };
+
+  spotlightClose = (name: string) => {
+    this.setState({ spotlightCount: this.state.spotlightCount - 1 });
+  };
+
+  getTargetElement = (name: string) => this.targets[name];
 
   render() {
     const { blanketIsTinted, children, component: Tag } = this.props;
 
     return (
-      <SpotlightProvider value={this.getTargetElement}>
-        <TargetProvider value={this.targetRef}>{children}</TargetProvider>
-      </SpotlightProvider>
+      <SpotlightStateProvider
+        value={{
+          opened: this.spotlightOpen,
+          closed: this.spotlightClose,
+          getTargetElement: this.getTargetElement,
+        }}
+      >
+        <TargetProvider value={this.targetRef}>
+          <React.Fragment>
+            <Fade in={this.state.spotlightCount > 0}>
+              {animationStyles => (
+                <Portal zIndex={600}>
+                  <Blanket style={animationStyles} isTinted={blanketIsTinted} />
+                </Portal>
+              )}
+            </Fade>
+            {children}
+          </React.Fragment>
+        </TargetProvider>
+      </SpotlightStateProvider>
     );
   }
 }
