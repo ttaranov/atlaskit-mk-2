@@ -12,7 +12,9 @@ let browser;
 const app = '#app';
 const title = 'h1';
 
-// It looks like the issue is coming when we do randowm navigation
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+
+// It looks like the issue is coming when we do randomn navigation
 let shuffled = coreUrls
   .map(a => ({ sort: Math.random(), value: a }))
   .sort((a, b) => a.sort - b.sort)
@@ -31,10 +33,10 @@ describe('AK-5479 - Script', () => {
   afterAll(async () => {
     await browser.close();
   });
-  shuffled.forEach(componentUrl => {
-    it(`${
-      componentUrl.split('/').reverse()[0]
-    } > The page does not display error logs'`, async () => {
+
+  it('The page does not display error logs', async () => {
+    for (const componentUrl of shuffled) {
+      console.log(`Navigate to ${componentUrl}`);
       page.on('console', msg => {
         for (let i = 0; i < msg.args().length; ++i)
           console.log(`${i}: ${msg.args()[i]}`);
@@ -47,6 +49,6 @@ describe('AK-5479 - Script', () => {
         element,
       );
       expect(pageTitle).not.toBe('Oops!');
-    });
+    }
   });
 });
