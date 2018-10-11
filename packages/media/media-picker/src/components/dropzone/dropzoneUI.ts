@@ -1,9 +1,9 @@
 import { parseHTML } from '../../util/parseHTML';
 import { wrapperStyles } from './styled';
 import { getAssetUrl } from '../../util/getAssetUrl';
-// TODO [MSW-385]: Remove template string and use React
 
-// TODO [i18n]: can we translate non React locales?
+// TODO [MSW-385]: Remove template string and use React
+// TODO [i18n][MS-1030]: Translate non React MediaPicker locales
 export default parseHTML(
   `<div class="mediaPickerDropzone">
     <style>${wrapperStyles}</style>

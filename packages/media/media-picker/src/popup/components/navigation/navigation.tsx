@@ -151,7 +151,7 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
       </DropdownItem>,
     ];
 
-    // TODO [i18n]: title="Accounts" & title="Actions"
+    // TODO [i18n][MS-1031]
     return [
       <DropdownItemGroup key="accounts" title="Accounts">
         {dropdownAccountItems}

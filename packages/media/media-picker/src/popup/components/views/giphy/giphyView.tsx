@@ -90,7 +90,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
         <Title>GIPHY</Title>
         <FieldText
           label=""
-          placeholder="Search all the GIFs!" // TODO [i18n]
+          placeholder="Search all the GIFs!" // TODO [i18n][MS-1031]
           onChange={this.searchChangeHandler}
           shouldFitContainer={true}
           value={query}
@@ -131,7 +131,6 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     );
   };
 
-  // TODO [i18n]: WarningSuggestion text
   private renderEmptyState = () => {
     const { query } = this.state;
 
@@ -143,7 +142,10 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
           <FormattedMessage {...messages.no_gifs_found} />
         </WarningHeading>
         <WarningSuggestion>
-          We couldn't find anything for "{query}"
+          <FormattedMessage
+            {...messages.no_gifs_found_suggestion}
+            values={{ query }}
+          />
         </WarningSuggestion>
       </WarningContainer>
     );

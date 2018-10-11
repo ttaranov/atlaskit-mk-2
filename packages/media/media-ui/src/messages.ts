@@ -72,6 +72,11 @@ export const messages = defineMessages({
     description:
       'Not expected error that happens when searching for GIF images',
   },
+  no_gifs_found_suggestion: {
+    id: 'fabric.media.no_gifs_found_suggestion',
+    defaultMessage: 'We couldn\'t find anything for "{query}"',
+    description: 'There are no results for GIFs matching that query',
+  },
   load_more_gifs: {
     id: 'fabric.media.load_more_gifs',
     defaultMessage: 'Load more GIFs',
