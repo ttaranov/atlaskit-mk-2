@@ -39,7 +39,6 @@ export interface Props {
   portal?: HTMLElement;
   rendererContext?: RendererContext;
   schema?: Schema;
-  useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
   disableHeadingIDs?: boolean;
@@ -72,7 +71,6 @@ export default class Renderer extends PureComponent<Props, {}> {
       document,
       extensionHandlers,
       schema,
-      useNewApplicationCard,
       appearance,
       disableHeadingIDs,
       allowDynamicTextSizing,
@@ -88,7 +86,6 @@ export default class Renderer extends PureComponent<Props, {}> {
         schema,
         ...rendererContext,
       } as RendererContext,
-      useNewApplicationCard,
       appearance,
       disableHeadingIDs,
       allowDynamicTextSizing,
