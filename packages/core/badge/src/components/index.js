@@ -1,10 +1,16 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Theme } from '@atlaskit/theme';
+import { AtlaskitThemeConsumer } from '@atlaskit/theme';
 import { Container } from './Container';
 import { Format } from './Format';
-import { theme, type ThemeAppearance, type ThemeProps } from '../theme';
+import {
+  defaultTheme,
+  noopTheme,
+  BadgeThemeConsumer,
+  type ThemeAppearance,
+  type Styles,
+} from '../theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
@@ -25,7 +31,7 @@ type Props = {
   }) => any,
 
   /** The theme the component should use. */
-  theme: ThemeProps => ThemeProps,
+  theme: ({ appearance: ThemeAppearance }, Styles) => Styles,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
   value?: number,
@@ -38,7 +44,7 @@ export default class Badge extends Component<Props> {
     children: 0,
     max: 99,
     onValueUpdated: () => {},
-    theme,
+    theme: noopTheme,
     value: undefined,
   };
 
@@ -63,15 +69,24 @@ export default class Badge extends Component<Props> {
   }
 
   render() {
-    const { props } = this;
+    const { appearance, children, max, theme: propsTheme, value } = this.props;
     return (
-      <Theme values={props.theme}>
-        {t => (
-          <Container {...t.badge({ appearance: props.appearance })}>
-            <Format max={props.max}>{props.value || props.children}</Format>
-          </Container>
+      <AtlaskitThemeConsumer>
+        {({ mode }) => (
+          <BadgeThemeConsumer>
+            {contextTheme => (
+              <Container
+                {...[defaultTheme(mode), contextTheme, propsTheme].reduce(
+                  (styles, themeFn) => themeFn({ appearance }, styles),
+                  {},
+                )}
+              >
+                <Format max={max}>{value || children}</Format>
+              </Container>
+            )}
+          </BadgeThemeConsumer>
         )}
-      </Theme>
+      </AtlaskitThemeConsumer>
     );
   }
 }

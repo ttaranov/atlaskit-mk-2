@@ -1,5 +1,5 @@
 // @flow
-
+import { createContext } from 'react';
 import { colors } from '@atlaskit/theme';
 
 export const backgroundColors = {
@@ -32,33 +32,32 @@ export type ThemeAppearance =
   | 'removed'
   | {};
 
-export type ThemeProps = {
-  badge?: ({ appearance: ThemeAppearance }) => {
-    backgroundColor?: string,
-    textColor?: string,
-  },
-  mode?: 'light' | 'dark',
+export type Styles = {
+  backgroundColor?: string,
+  textColor?: string,
 };
 
-export function theme(props: ThemeProps): ThemeProps {
-  const mode = props.mode || 'light';
-  return {
-    badge: ({ appearance }) => ({
-      ...(typeof appearance === 'object'
-        ? {
-            ...{
-              backgroundColor: backgroundColors.default.light,
-              textColor: textColors.default.light,
-            },
-            ...appearance,
-          }
-        : {
-            backgroundColor: backgroundColors[appearance][mode],
-            textColor: textColors[appearance][mode],
-          }),
-      ...(props.badge ? props.badge({ appearance }) : null),
-    }),
-    mode,
-    ...props,
-  };
-}
+type Theme = ({ appearance: ThemeAppearance }, Styles) => Styles;
+
+export const noopTheme: Theme = (state, styles) => styles;
+
+const {
+  Consumer: BadgeThemeConsumer,
+  Provider: BadgeThemeProvider,
+} = createContext(noopTheme);
+
+export { BadgeThemeConsumer, BadgeThemeProvider };
+
+export const defaultTheme = (mode: string): Theme => state => {
+  const { appearance } = state;
+  return typeof appearance === 'object'
+    ? {
+        backgroundColor: backgroundColors.default.light,
+        textColor: textColors.default.light,
+        ...appearance,
+      }
+    : {
+        backgroundColor: backgroundColors[appearance][mode],
+        textColor: textColors[appearance][mode],
+      };
+};

@@ -8,6 +8,8 @@ import getTheme from './utils/getTheme';
 import themed from './utils/themed';
 import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
+export { AtlaskitThemeConsumer } from './components/AtlaskitThemeConsumer';
+
 export {
   colors,
   elevation,

@@ -21,7 +21,10 @@ export default function Example() {
         <p>
           appearance: {`{ backgroundColor: 'green', textColor: 'light green' }`}{' '}
           <Badge
-            appearance={{ backgroundColor: 'green', textColor: 'light green' }}
+            appearance={{
+              backgroundColor: 'green',
+              textColor: 'light green',
+            }}
           >
             {4}
           </Badge>
