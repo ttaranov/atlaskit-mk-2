@@ -31,6 +31,7 @@ const Global = () => (
     onNotificationClick={() => console.log('notification clicked')}
     appSwitcherComponent={AppSwitcherComponent}
     appSwitcherTooltip="Switch to ..."
+    helpItems={() => <div />}
     loginHref="#login"
   />
 );
