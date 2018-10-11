@@ -156,7 +156,7 @@
     "got": "^8.3.1",
     "highlight.js": "^9.6.0",
     "husky": "^0.14.3",
-    "jest": "^20.0.4",
+    "jest": "^23.6.0",
     "jest-emotion": "^9.2.7",
     "jest-image-snapshot": "^2.4.2",
     "jest-in-case": "^1.0.2",
