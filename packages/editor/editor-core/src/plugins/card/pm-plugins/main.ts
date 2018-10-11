@@ -3,10 +3,10 @@ import { CardProvider, CardPluginState, Request } from '../types';
 import reducer from './reducers';
 import { EditorView } from 'prosemirror-view';
 import { setProvider, resolveCard } from './actions';
-import { ReactNodeView } from '../../../nodeviews';
 import inlineCardNodeView from '../nodeviews/inlineCard';
 import blockCardNodeView from '../nodeviews/blockCard';
 import { replaceQueuedUrlWithCard } from './doc';
+import { CardNodeView } from '../nodeviews';
 
 export const pluginKey = new PluginKey('cardPlugin');
 
@@ -107,21 +107,19 @@ export const createPlugin = ({
 
           if (currentState && currentState.provider) {
             // find requests in this state that weren't in the old one
-            // FIXME: doesn't do what I want it to
             const newRequests = oldState
               ? currentState.requests.filter(
-                  req => oldState.requests.indexOf(req) === -1,
+                  req =>
+                    !oldState.requests.find(
+                      oldReq =>
+                        oldReq.url === req.url && oldReq.pos === req.pos,
+                    ),
                 )
               : currentState.requests;
 
             // ask the CardProvider to resolve all new requests
             const { provider } = currentState;
             newRequests.forEach(request => {
-              if (outstandingRequests[request.url]) {
-                // already have a promise outstanding for this request; don't re-request
-                return;
-              }
-
               resolveWithProvider(view, outstandingRequests, provider, request);
             });
           }
@@ -140,14 +138,14 @@ export const createPlugin = ({
 
     props: {
       nodeViews: {
-        inlineCard: ReactNodeView.fromComponent(
+        inlineCard: CardNodeView.fromComponent(
           inlineCardNodeView,
           portalProviderAPI,
           {
             providerFactory,
           },
         ),
-        blockCard: ReactNodeView.fromComponent(
+        blockCard: CardNodeView.fromComponent(
           blockCardNodeView,
           portalProviderAPI,
           {
