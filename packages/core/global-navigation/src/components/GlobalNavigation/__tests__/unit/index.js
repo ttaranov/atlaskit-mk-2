@@ -6,13 +6,13 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
 import StarLargeIcon from '@atlaskit/icon/glyph/star-large';
 import NotificationIcon from '@atlaskit/icon/glyph/notification';
-import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
 import GlobalNavigation from '../../index';
 import ScreenTracker from '../../../ScreenTracker';
 
 const DrawerContents = () => <div>drawer</div>;
+const EmojiAtlassianIcon = () => <button>EmojiAtlassianIcon</button>;
 
 const escKeyDown = () => {
   const event = document.createEvent('Events');
@@ -97,7 +97,7 @@ describe('GlobalNavigation', () => {
 
     drawerItems.forEach(({ name, akIcon, capitalisedName }) => {
       describe(`"${name}" drawer`, () => {
-        it(`should not add "${name}" icon if "on${capitalisedName}Click" and "${name}DrawerContents" are absent`, () => {
+        it(`should not add "${name}" icon if both "on${capitalisedName}Click" and "${name}DrawerContents" are absent`, () => {
           // Testing onXClick and XDrawerContents props (negative)
           const props = {
             [`${name}Tooltip`]: 'test tooltip',
@@ -107,7 +107,7 @@ describe('GlobalNavigation', () => {
           expect(icon.exists()).toBeFalsy();
         });
 
-        it(`should allow "on${capitalisedName}Click" to be passed and "${name}Drawer" should not be present`, () => {
+        it(`should not bind "${name}Drawer" when "on${capitalisedName}Click" prop is passed`, () => {
           // Testing onXClick positive
           const props = {
             [`on${capitalisedName}Click`]: jest.fn(),
@@ -121,79 +121,6 @@ describe('GlobalNavigation', () => {
 
           expect(props[`on${capitalisedName}Click`]).toHaveBeenCalled();
           expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
-        });
-
-        it(`should open "${name}" drawer when "${name}Icon" is clicked`, () => {
-          // Testing XDrawerContents positive
-          const props = {
-            [`${name}DrawerContents`]: DrawerContents,
-          };
-          const wrapper = mount(<GlobalNavigation {...props} />);
-          expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
-
-          const icon = wrapper.find(akIcon);
-          icon.simulate('click');
-
-          expect(wrapper.find(DrawerContents).exists()).toBeTruthy();
-        });
-
-        it(`should allow "${name}" drawer to be controlled when "is${capitalisedName}DrawerOpen" prop is passed`, () => {
-          // Test onXClick, onXDrawerClose, isXDrawerOpen
-          const props = {
-            [`${name}DrawerContents`]: DrawerContents,
-            [`is${capitalisedName}DrawerOpen`]: false,
-            [`on${capitalisedName}Click`]: jest.fn(),
-          };
-          const wrapper = mount(<GlobalNavigation {...props} />);
-          expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
-
-          const icon = wrapper.find(akIcon);
-          icon.simulate('click');
-          expect(props[`on${capitalisedName}Click`]).toHaveBeenCalled();
-
-          wrapper.setProps({
-            [`is${capitalisedName}DrawerOpen`]: true,
-          });
-          wrapper.update();
-          expect(wrapper.find(DrawerContents).exists()).toBeTruthy();
-          wrapper.setProps({
-            [`is${capitalisedName}DrawerOpen`]: false,
-          });
-          wrapper.update();
-          expect(wrapper.find('DrawerPrimitive').props().in).toBeFalsy();
-        });
-
-        it(`should fire drawer onClose callback for controlled "${name}" drawer`, () => {
-          // Test  onXDrawerClose
-          const props = {
-            [`is${capitalisedName}DrawerOpen`]: true,
-            [`${name}DrawerContents`]: DrawerContents,
-            [`on${capitalisedName}DrawerClose`]: jest.fn(),
-          };
-          const wrapper = mount(<GlobalNavigation {...props} />);
-
-          wrapper.setProps({
-            isSearchDrawerOpen: false,
-          });
-          wrapper.update();
-          escKeyDown();
-          expect(props[`on${capitalisedName}DrawerClose`]).toHaveBeenCalled();
-        });
-
-        it(`should fire drawer callbacks for uncontrolled "${name}" drawer`, () => {
-          // Test  onXDrawerClose, onXDrawerOpen
-          const props = {
-            [`${name}DrawerContents`]: DrawerContents,
-            [`on${capitalisedName}DrawerClose`]: jest.fn(),
-            [`on${capitalisedName}DrawerOpen`]: jest.fn(),
-          };
-          const wrapper = mount(<GlobalNavigation {...props} />);
-
-          const icon = wrapper.find(akIcon);
-          icon.simulate('click');
-          expect(props[`on${capitalisedName}DrawerOpen`]).toHaveBeenCalled();
-          escKeyDown();
-          expect(props[`on${capitalisedName}DrawerClose`]).toHaveBeenCalled();
         });
 
         it(`should honour the shouldUnmountOnExit prop for "${name}" drawer`, () => {
@@ -215,19 +142,123 @@ describe('GlobalNavigation', () => {
             [`should${capitalisedName}DrawerUnmountOnExit`]: true,
           });
           wrapper.update();
-
           expect(
             wrapper.find('DrawerBase').props().shouldUnmountOnExit,
           ).toBeTruthy();
+        });
+
+        describe('uncontrolled', () => {
+          it(`should open "${name}" drawer when "${name}" icon is clicked`, () => {
+            // Testing XDrawerContents positive
+            const props = {
+              [`${name}DrawerContents`]: DrawerContents,
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+            expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
+
+            const icon = wrapper.find(akIcon);
+            icon.simulate('click');
+
+            expect(wrapper.find(DrawerContents).exists()).toBeTruthy();
+          });
+
+          it(`should trigger drawer "on${capitalisedName}DrawerOpen" for uncontrolled "${name}" drawer`, () => {
+            // Test  onXDrawerClose, onXDrawerOpen
+            const props = {
+              [`${name}DrawerContents`]: DrawerContents,
+              [`on${capitalisedName}DrawerOpen`]: jest.fn(),
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+
+            const icon = wrapper.find(akIcon);
+            icon.simulate('click');
+            expect(props[`on${capitalisedName}DrawerOpen`]).toHaveBeenCalled();
+          });
+
+          it(`should fire drawer "on${capitalisedName}DrawerClose" for uncontrolled "${name}" drawer`, () => {
+            // Test  onXDrawerClose, onXDrawerOpen
+            const props = {
+              [`${name}DrawerContents`]: DrawerContents,
+              [`on${capitalisedName}DrawerClose`]: jest.fn(),
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+
+            const icon = wrapper.find(akIcon);
+            icon.simulate('click');
+            escKeyDown();
+
+            expect(props[`on${capitalisedName}DrawerClose`]).toHaveBeenCalled();
+          });
+        });
+
+        describe('Controlled', () => {
+          it(`should allow "${name}" drawer to be controlled by passing "is${capitalisedName}DrawerOpen"`, () => {
+            // Test onXClick, onXDrawerClose, isXDrawerOpen
+            const props = {
+              [`${name}DrawerContents`]: DrawerContents,
+              [`is${capitalisedName}DrawerOpen`]: false,
+              [`on${capitalisedName}Click`]: jest.fn(),
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+            expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
+
+            const icon = wrapper.find(akIcon);
+            icon.simulate('click');
+            expect(props[`on${capitalisedName}Click`]).toHaveBeenCalled();
+            // Assert that it should not behave as an uncontrolled drawer
+            expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
+          });
+
+          it(`should display "${name}" drawer when "is${capitalisedName}DrawerOpen" is true`, () => {
+            const props = {
+              [`${name}DrawerContents`]: DrawerContents,
+              [`is${capitalisedName}DrawerOpen`]: true,
+              [`on${capitalisedName}Click`]: jest.fn(),
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+
+            expect(wrapper.find(DrawerContents).exists()).toBeTruthy();
+          });
+
+          it(`should NOT display "${name}" drawer when "is${capitalisedName}DrawerOpen" is false`, () => {
+            const props = {
+              [`${name}DrawerContents`]: DrawerContents,
+              [`is${capitalisedName}DrawerOpen`]: false,
+              [`on${capitalisedName}Click`]: jest.fn(),
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+
+            // Cannot assert for the drawer to be absent because it is
+            // dismounted by ReactTransitionGroup on animationEnd, which is not
+            // being captured by enzyme.
+            expect(wrapper.find('DrawerPrimitive').props().in).toBeFalsy();
+          });
+
+          //  There is no onXOpen callback for controlled drawers. A consumer can
+          //  perform necessary callbacks in the onXClick method.
+
+          it(`should trigger "on${capitalisedName}DrawerClose" callback for "${name}" drawer`, () => {
+            // Test  onXDrawerClose
+            const props = {
+              [`is${capitalisedName}DrawerOpen`]: true,
+              [`${name}DrawerContents`]: DrawerContents,
+              [`on${capitalisedName}DrawerClose`]: jest.fn(),
+            };
+            const wrapper = mount(<GlobalNavigation {...props} />);
+
+            wrapper.setProps({
+              isSearchDrawerOpen: false,
+            });
+            wrapper.update();
+            escKeyDown();
+            expect(props[`on${capitalisedName}DrawerClose`]).toHaveBeenCalled();
+          });
         });
       });
     });
   });
 
   describe('Tooltips', () => {
-    const AppSwitcher = () => <div />;
-    AppSwitcher.displayName = 'AppSwitcher';
-
     const wrapper = mount(
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
@@ -242,8 +273,6 @@ describe('GlobalNavigation', () => {
         onStarredClick={() => console.log('your work clicked')}
         notificationTooltip="notification tooltip"
         onNotificationClick={() => console.log('notification clicked')}
-        appSwitcherComponent={AppSwitcher}
-        appSwitcherTooltip="appSwitcher tooltip"
         profileTooltip="profile tooltip"
         loginHref="#login"
         helpItems={() => <div>items</div>}
@@ -259,7 +288,6 @@ describe('GlobalNavigation', () => {
         onSearchClick={() => console.log('search clicked')}
         onStarredClick={() => console.log('your work clicked')}
         onNotificationClick={() => console.log('notification clicked')}
-        appSwitcherComponent={AppSwitcher}
         loginHref="#login"
         helpItems={() => <div>items</div>}
       />,
@@ -292,11 +320,6 @@ describe('GlobalNavigation', () => {
         defaultTooltip: 'Notifications',
       },
       {
-        icon: AppSwitcher,
-        name: 'appSwitcher',
-        defaultTooltip: 'Switch to ...',
-      },
-      {
         icon: SignInIcon,
         name: 'profile',
         defaultTooltip: 'Your profile and Settings',
@@ -310,12 +333,6 @@ describe('GlobalNavigation', () => {
 
     navItems.forEach(({ icon, name, defaultTooltip }) => {
       it(`should render default tooltip for "${name}" item`, () => {
-        if (name === 'appSwitcher') {
-          // AppSwitcher doesn't have a default tooltip in GlobalNavigation since it's
-          // built into the appSwitcher component
-          return;
-        }
-
         expect(
           defaultWrapper
             .find(icon)
@@ -328,16 +345,6 @@ describe('GlobalNavigation', () => {
 
     navItems.forEach(({ icon, name }) => {
       it(`should render a tooltip for "${name}" item`, () => {
-        if (name === 'appSwitcher') {
-          expect(wrapper.find(AppSwitcher).props().label).toBe(
-            'appSwitcher tooltip',
-          );
-          expect(wrapper.find(AppSwitcher).props().tooltip).toBe(
-            'appSwitcher tooltip',
-          );
-          return;
-        }
-
         expect(
           wrapper
             .find(icon)
@@ -350,8 +357,6 @@ describe('GlobalNavigation', () => {
   });
 
   describe('Section and ranking of global nav items', () => {
-    const AppSwitcher = () => <div />;
-    AppSwitcher.displayName = 'AppSwitcher';
     const wrapper = mount(
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
@@ -413,6 +418,7 @@ describe('GlobalNavigation', () => {
     navItems.forEach(({ id, section, rank, name }) => {
       const globalSection =
         section === 'primary' ? 'PrimaryItemsList' : 'SecondaryItemsList';
+
       it(`should pick up section for "${name}" from defaultConfig`, () => {
         expect(
           wrapper
@@ -500,6 +506,9 @@ describe('GlobalNavigation', () => {
     it('should render the correct tooltip', () => {
       // AppSwitcher doesn't have a default tooltip in global navigation as it's handled by the base app switcher component
       expect(defaultWrapper.find(AppSwitcher).props().label).toBe(
+        'appSwitcher tooltip',
+      );
+      expect(defaultWrapper.find(AppSwitcher).props().tooltip).toBe(
         'appSwitcher tooltip',
       );
     });
