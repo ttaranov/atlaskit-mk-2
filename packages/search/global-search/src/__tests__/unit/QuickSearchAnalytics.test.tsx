@@ -25,6 +25,7 @@ import {
   getDismissedEvent,
   getExperimentExposureEvent,
 } from './helpers/_events_payloads';
+import AdvancedSearchResult from '../../components/AdvancedSearchResult';
 
 const spyOnComponentDidUpdate = () => {
   if (QuickSearchContainer.prototype.componentDidUpdate) {
@@ -214,7 +215,7 @@ const getRecentItems = product =>
                 : {
                     indexWithinSection: index % (count - 2),
                     sectionIndex: Math.floor(index / (count - 2)),
-                    resultCount: 17, // 14 + 2 advanced
+                    resultCount: 18, // 14 + 2 advanced
                     sectionId: 'recent-jira',
                     type: index >= 7 ? 'jira-board' : 'jira-issue',
                   }),
@@ -241,8 +242,8 @@ const getRecentItems = product =>
                   type: undefined,
                 }
               : {
-                  globalIndex: 16,
-                  resultCount: 17,
+                  globalIndex: 17,
+                  resultCount: 18, // 14 + 3 advanced (1 top + 2 bottom)
                   sectionIndex: undefined, // advanced results is not a section
                   sectionId: 'advanced-search-jira',
                   type: undefined,
@@ -253,7 +254,7 @@ const getRecentItems = product =>
 
       it('should trigger advanced result selected', () => {
         const results = wrapper.find(ResultBase);
-        const expectedResultsCount = product === 'confluence' ? 16 : 17;
+        const expectedResultsCount = product === 'confluence' ? 16 : 18;
         expect(results.length).toBe(expectedResultsCount);
         const advancedSearchResult = results.last();
         advancedSearchResult.simulate('click', {
@@ -274,7 +275,7 @@ const getRecentItems = product =>
                 actionSubjectId: 'advanced_search_jira',
                 resultContentId: 'search_jira',
                 sectionId: 'advanced-search-jira',
-                globalIndex: 16,
+                globalIndex: 17,
                 resultCount: 16, // does not include advanced search links
               };
         validateEvent(event, getAdvancedSearchLinkSelectedEvent(payload));
@@ -282,7 +283,7 @@ const getRecentItems = product =>
 
       it('should trigger result selected', () => {
         const results = wrapper.find(ResultBase);
-        const expectedResultsCount = product === 'confluence' ? 16 : 17;
+        const expectedResultsCount = product === 'confluence' ? 16 : 18;
         expect(results.length).toBe(expectedResultsCount);
         const result = results.at(10);
         result.simulate('click', {
@@ -308,10 +309,10 @@ const getRecentItems = product =>
                 globalIndex: 10,
                 resultCount: 16, // does not include advanced search links
                 sectionIndex: 1,
-                indexWithinSection: 3,
+                indexWithinSection: 2,
                 trigger: 'click',
                 newTab: true,
-                type: 'jira-filter',
+                type: 'jira-board',
               };
         validateEvent(event, getResultSelectedEvent(payload));
       });
@@ -338,9 +339,9 @@ const getRecentItems = product =>
             : {
                 sectionId: 'recent-jira',
                 globalIndex: 1,
-                resultCount: 17, // include advanced search links
+                resultCount: 18, // include advanced search links
                 sectionIndex: 0,
-                indexWithinSection: 1,
+                indexWithinSection: 0,
                 trigger: 'returnKey',
                 newTab: false,
                 type: 'jira-issue',
