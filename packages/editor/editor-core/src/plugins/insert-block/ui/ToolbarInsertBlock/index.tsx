@@ -62,7 +62,7 @@ import { showLinkToolbar } from '../../../hyperlink/commands';
 export const messages = defineMessages({
   action: {
     id: 'fabric.editor.action',
-    defaultMessage: 'Action item',
+    defaultMessage: 'Action',
     description: 'Also known as a “task”, “to do item”, or a checklist',
   },
   link: {
