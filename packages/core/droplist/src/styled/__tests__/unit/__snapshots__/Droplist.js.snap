@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dropbox content renders correctly with default styles 1`] = `
+exports[`Dropbox content should render correctly with default styles 1`] = `
 .c0 {
   background: #FFFFFF;
   border-radius: 3px;
