@@ -3,20 +3,21 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import Drawer from '../src';
+import { type DrawerWidth } from '../src/components/types';
 
-type Widths = 'narrow' | 'wide' | 'full';
 type State = {
   isDrawerOpen: boolean,
-  width: Widths,
+  width: DrawerWidth,
 };
+
 export default class DrawersExample extends Component<{}, State> {
   state = {
     isDrawerOpen: false,
     width: 'narrow',
   };
-  widths = ['narrow', 'wide', 'full'];
+  widths = ['narrow', 'wide', 'very-wide', 'full'];
 
-  openDrawer = (width: Widths) => () =>
+  openDrawer = (width: DrawerWidth) => () =>
     this.setState({
       isDrawerOpen: true,
       width,
