@@ -1,5 +1,22 @@
 // Finnish
 export default {
-  'fabric.media.retry': 'Retry',
-  'fabric.media.failed_to_load': 'Failed to load',
+  'fabric.media.retry': 'Yritä uudelleen',
+  'fabric.media.failed_to_load': 'Ei voitu ladata',
+  'fabric.media.recent_uploads': 'Recent uploads',
+  'fabric.media.upload_file': 'Upload a file',
+  'fabric.media.drag_and_drop_your_files':
+    'Drag and drop your files anywhere or',
+  'fabric.media.drop_your_files': 'Drop your files to upload',
+  'fabric.media.upload': 'Upload',
+  'fabric.media.cancel': 'Cancel',
+  'fabric.media.search_all_gifs': 'Search all the GIFs!',
+  'fabric.media.cant_retrieve_gifs': 'Ouch! We could not retrieve any GIFs',
+  'fabric.media.check_your_network': 'Check your network connection',
+  'fabric.media.try_again': 'Try again',
+  'fabric.media.no_gifs_found': "Hello? Was it me you're looking for?",
+  'fabric.media.load_more_gifs': 'Load more GIFs',
+  'fabric.media.add_account': 'Add account',
+  'fabric.media.unlink_account': 'Unlink Account',
+  'fabric.media.upload_file_from': 'Upload a file from {name}',
+  'fabric.media.connect_to': 'Connect to {name}',
 };
