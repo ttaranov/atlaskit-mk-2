@@ -18,7 +18,7 @@ type State = {
 const createContainer = (zIndex: number) => {
   const container = document.createElement('div');
   container.setAttribute('class', 'atlaskit-portal');
-  container.setAttribute('style', `z-index: ${zIndex}; position: absolute`);
+  container.setAttribute('style', `z-index: ${zIndex}; position: absolute;`);
   return container;
 };
 
