@@ -70,6 +70,7 @@ export class StatelessAuth extends Component<AuthProps> {
         </ButtonWrapper>
         <TextDescription>
           We'll open a new page to help you<br /> connect your {name} account
+          {/* TODO [i18n] */}
         </TextDescription>
       </ConnectWrapper>
     );
