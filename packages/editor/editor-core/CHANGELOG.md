@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.4.1
+- [patch] ED-5289 add toolbar for inline smart card [25d7af7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d7af7)
+
 ## 85.4.0
 - [minor] FS-2901 - Move action toolbar icon to insert group [57502ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57502ac)
 
