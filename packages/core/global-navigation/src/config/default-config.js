@@ -50,7 +50,7 @@ export default function generateDefaultConfig(): DefaultConfigShape {
     },
     appSwitcher: {
       section: 'secondary',
-      rank: 3,
+      rank: 2,
       id: 'appSwitcher',
     },
     help: {
