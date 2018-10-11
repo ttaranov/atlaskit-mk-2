@@ -29,6 +29,7 @@
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/field-range": "^5.0.7",
     "@atlaskit/visual-regression": "^0.0.1",
+    "react-dom": "^16.4.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
     "react-router-dom": "^4.2.2",
