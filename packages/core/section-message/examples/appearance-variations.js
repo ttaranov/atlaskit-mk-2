@@ -10,37 +10,37 @@ const Padding = styled.div`
 const Example = () => (
   <Fragment>
     <Padding>
-      <SectionMessage apperance="authentication" title="More">
-        <p>I count the steps from one end of my island to the other</p>
-        <p>It{"'"}s a hundred steps from where I sleep to the sea</p>
+      <SectionMessage apperance="authentication">
+        <p>Some quick information about a successful action</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="warning">
-        <p>And when I say I{"'"}ve learned all there is to know</p>
-        <p>Well there{"'"}s another little island lesson</p>
-        <p>Gramma Tala shows me</p>
+        <p>
+          The page you have visited has some problems. You should be careful
+          with how you proceed
+        </p>
+        <p>
+          Assuming you have taken this warning into account, you can probably
+          move forward
+        </p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="error">
-        <p>I know where I am from the scent of the breeze</p>
-        <p>The ascent of the climb</p>
-        <p>From the tangle of the trees</p>
+        <p>There is an error in this content.</p>
+        <p> Likely you will need to redo something or make a change</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="confirmation">
-        <p>From the angle of the mountain</p>
-        <p>To the sand on our island shore</p>
-        <p>I{"'"}ve been here before</p>
+        <p>Just lettiong you know that we succeeded at what we were trying. </p>
+        <p>Hope you have a lovely day</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="change">
-        <p>From the angle of the mountain</p>
-        <p>To the sand on our island shore</p>
-        <p>I{"'"}ve been here before</p>
+        <p>Sometimes we could all do with a change</p>
       </SectionMessage>
     </Padding>
   </Fragment>

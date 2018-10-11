@@ -4,23 +4,22 @@ import SectionMessage from '../src';
 
 const Example = () => (
   <SectionMessage
-    title="The Modern Prometheus"
+    title="Some eye-catching info before you continue"
     actions={[
       {
         href: 'https://en.wikipedia.org/wiki/Mary_Shelley',
-        text: 'Mary',
+        text: 'This may help',
       },
       {
         href: 'https://en.wikipedia.org/wiki/Villa_Diodati',
-        text: 'Villa Diodatti',
+        text: 'A second exit point',
       },
     ]}
   >
     <p>
-      You will rejoice to hear that no disaster has accompanied the commencement
-      of an enterprise which you have regarded with such evil forebodings. I
-      arrived here yesterday, and my first task is to assure my dear sister of
-      my welfare and increasing confidence in the success of my undertaking.
+      We wanted to ensure that you read this information, so we have put it into
+      a section message. Once you have read it, there are a few actions you may
+      want to take, otherwise you can continue on the flow of the application.
     </p>
   </SectionMessage>
 );

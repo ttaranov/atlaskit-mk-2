@@ -1,33 +1,36 @@
 // @flow
 import React from 'react';
-import styled from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { Link, MemoryRouter } from 'react-router-dom';
 import SectionMessage from '../src';
 
-const CustomLink = styled.button`
-  background-color: ${colors.P100} !important;
-`;
+const CustomLink = ({ href, ...rest }: { href: string }) => (
+  <Link {...rest} to={href} />
+);
 
 const Example = () => (
-  <SectionMessage
-    title="The Modern Prometheus"
-    linkComponent={CustomLink}
-    actions={[
-      {
-        href: 'https://en.wikipedia.org/wiki/Mary_Shelley',
-        text: 'Mary',
-      },
-      {
-        href: 'https://en.wikipedia.org/wiki/Villa_Diodati',
-        text: 'Villa Diodatti',
-      },
-    ]}
-  >
-    <p>
-      The main use for passing a custom link component is to pass in a
-      react-router-link component.
-    </p>
-  </SectionMessage>
+  <MemoryRouter>
+    <SectionMessage
+      linkComponent={CustomLink}
+      title="Some eye-catching info before you continue"
+      actions={[
+        {
+          href: '/',
+          text: 'This may help',
+        },
+        {
+          href: '/',
+          text: 'A second exit point',
+        },
+      ]}
+    >
+      <p>
+        We wanted to ensure that you read this information, so we have put it
+        into a section message. Once you have read it, there are a few actions
+        you may want to take, otherwise you can continue on the flow of the
+        application.
+      </p>
+    </SectionMessage>
+  </MemoryRouter>
 );
 
 export default Example;
