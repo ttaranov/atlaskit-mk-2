@@ -224,7 +224,7 @@ describe('GlobalNavigation', () => {
     });
   });
 
-  describe('Tooltips and default config', () => {
+  describe('Tooltips', () => {
     const AppSwitcher = () => <div />;
     AppSwitcher.displayName = 'AppSwitcher';
 
@@ -250,7 +250,122 @@ describe('GlobalNavigation', () => {
         helpTooltip="help tooltip"
       />,
     );
+    const defaultWrapper = mount(
+      <GlobalNavigation
+        productIcon={EmojiAtlassianIcon}
+        productHref="#"
+        onProductClick={() => console.log('product clicked')}
+        onCreateClick={() => console.log('create clicked')}
+        onSearchClick={() => console.log('search clicked')}
+        onStarredClick={() => console.log('your work clicked')}
+        onNotificationClick={() => console.log('notification clicked')}
+        appSwitcherComponent={AppSwitcher}
+        loginHref="#login"
+        helpItems={() => <div>items</div>}
+      />,
+    );
 
+    const navItems = [
+      {
+        icon: EmojiAtlassianIcon,
+        name: 'product',
+        defaultTooltip: 'Atlassian',
+      },
+      {
+        icon: StarLargeIcon,
+        name: 'starred',
+        defaultTooltip: 'Starred and recent',
+      },
+      {
+        icon: SearchIcon,
+        name: 'search',
+        defaultTooltip: 'Search',
+      },
+      {
+        icon: CreateIcon,
+        name: 'create',
+        defaultTooltip: 'Create',
+      },
+      {
+        icon: NotificationIcon,
+        name: 'notification',
+        defaultTooltip: 'Notifications',
+      },
+      {
+        icon: AppSwitcher,
+        name: 'appSwitcher',
+        defaultTooltip: 'Switch to ...',
+      },
+      {
+        icon: SignInIcon,
+        name: 'profile',
+        defaultTooltip: 'Your profile and Settings',
+      },
+      {
+        icon: QuestionIcon,
+        name: 'help',
+        defaultTooltip: 'Help',
+      },
+    ];
+
+    navItems.forEach(({ icon, name, defaultTooltip }) => {
+      it(`should render default tooltip for ${name} item`, () => {
+        if (name === 'appSwitcher') {
+          // AppSwitcher doesn't have a default tooltip in GlobalNavigation since it's
+          // built into the appSwitcher component
+          return;
+        }
+
+        expect(
+          defaultWrapper
+            .find(icon)
+            .parents('Tooltip')
+            .props().content,
+        ).toBe(defaultTooltip);
+        expect(defaultWrapper.find(icon).props().label).toBe(defaultTooltip);
+      });
+    });
+
+    navItems.forEach(({ icon, name }) => {
+      it(`should render a tooltip for ${name} item`, () => {
+        if (name === 'appSwitcher') {
+          expect(wrapper.find(AppSwitcher).props().label).toBe(
+            'appSwitcher tooltip',
+          );
+          expect(wrapper.find(AppSwitcher).props().tooltip).toBe(
+            'appSwitcher tooltip',
+          );
+          return;
+        }
+
+        expect(
+          wrapper
+            .find(icon)
+            .parents('Tooltip')
+            .props().content,
+        ).toBe(`${name} tooltip`);
+        expect(wrapper.find(icon).props().label).toBe(`${name} tooltip`);
+      });
+    });
+  });
+
+  describe('Section and ranking of global nav items', () => {
+    const AppSwitcher = () => <div />;
+    AppSwitcher.displayName = 'AppSwitcher';
+    const wrapper = mount(
+      <GlobalNavigation
+        productIcon={EmojiAtlassianIcon}
+        productHref="#"
+        onProductClick={() => console.log('product clicked')}
+        onCreateClick={() => console.log('create clicked')}
+        onSearchClick={() => console.log('search clicked')}
+        onStarredClick={() => console.log('your work clicked')}
+        onNotificationClick={() => console.log('notification clicked')}
+        appSwitcherComponent={AppSwitcher}
+        loginHref="#login"
+        helpItems={() => <div>items</div>}
+      />,
+    );
     const navItems = [
       {
         icon: EmojiAtlassianIcon,
@@ -301,31 +416,8 @@ describe('GlobalNavigation', () => {
         rank: 5,
       },
     ];
-
-    navItems.forEach(({ icon, name }) => {
-      it(`should render a tooltip for ${name} item`, () => {
-        if (name === 'appSwitcher') {
-          expect(wrapper.find(AppSwitcher).props().label).toBe(
-            'appSwitcher tooltip',
-          );
-          expect(wrapper.find(AppSwitcher).props().tooltip).toBe(
-            'appSwitcher tooltip',
-          );
-          return;
-        }
-
-        expect(
-          wrapper
-            .find(icon)
-            .parents('Tooltip')
-            .props().content,
-        ).toBe(`${name} tooltip`);
-        expect(wrapper.find(icon).props().label).toBe(`${name} tooltip`);
-      });
-    });
-
     navItems.forEach(({ icon, section, rank, name }) => {
-      it(`should pick up section for ${name} from defaultConfig`, () => {
+      xit(`should pick up section for ${name} from defaultConfig`, () => {
         if (section === 'secondary') {
           expect(
             wrapper
