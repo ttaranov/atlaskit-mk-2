@@ -51,3 +51,55 @@ Object {
   "type": "doc",
 }
 `;
+
+exports[`hyperlink-markdown-paste-text.ts hyperlink-markdown-paste-text.ts: Link - link markdown with pasting link text comment 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "https://hello.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "link1",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`hyperlink-markdown-paste-text.ts hyperlink-markdown-paste-text.ts: Link - link markdown with pasting link text fullpage 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "https://hello.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "link1",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;

@@ -89,3 +89,93 @@ Object {
   "type": "doc",
 }
 `;
+
+exports[`layouts.ts layouts.ts: Extension: Center 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "extensionKey": "block-eh",
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "layout": "default",
+        "parameters": Object {
+          "macroMetadata": Object {
+            "placeholder": Array [
+              Object {
+                "data": Object {
+                  "url": "",
+                },
+                "type": "icon",
+              },
+            ],
+          },
+          "macroParams": Object {},
+        },
+        "text": null,
+      },
+      "type": "extension",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`layouts.ts layouts.ts: Extension: Full width 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "extensionKey": "block-eh",
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "layout": "full-width",
+        "parameters": Object {
+          "macroMetadata": Object {
+            "placeholder": Array [
+              Object {
+                "data": Object {
+                  "url": "",
+                },
+                "type": "icon",
+              },
+            ],
+          },
+          "macroParams": Object {},
+        },
+        "text": null,
+      },
+      "type": "extension",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`layouts.ts layouts.ts: Extension: Wide 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "extensionKey": "block-eh",
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "layout": "wide",
+        "parameters": Object {
+          "macroMetadata": Object {
+            "placeholder": Array [
+              Object {
+                "data": Object {
+                  "url": "",
+                },
+                "type": "icon",
+              },
+            ],
+          },
+          "macroParams": Object {},
+        },
+        "text": null,
+      },
+      "type": "extension",
+    },
+  ],
+  "type": "doc",
+}
+`;

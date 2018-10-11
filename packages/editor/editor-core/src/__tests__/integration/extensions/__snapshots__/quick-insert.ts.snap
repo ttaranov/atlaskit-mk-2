@@ -46,3 +46,50 @@ Object {
   "type": "doc",
 }
 `;
+
+exports[`quick-insert.ts quick-insert.ts: Extension: Quick 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "extensionKey": "bodied-eh",
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "layout": "default",
+        "parameters": Object {
+          "macroMetadata": Object {
+            "placeholder": Array [
+              Object {
+                "data": Object {
+                  "url": "",
+                },
+                "type": "icon",
+              },
+            ],
+          },
+          "macroParams": Object {},
+        },
+        "text": null,
+      },
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "localId": "abc-123",
+          },
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "localId": "abc-123",
+                "state": "TODO",
+              },
+              "type": "taskItem",
+            },
+          ],
+          "type": "taskList",
+        },
+      ],
+      "type": "bodiedExtension",
+    },
+  ],
+  "type": "doc",
+}
+`;
