@@ -20,7 +20,11 @@ export const getPreviewFromMetadata = (metadata: ImageMetadata): Preview => {
     !metadata.original.width ||
     !metadata.original.height
   ) {
-    return {};
+    const preview: NonImagePreview = {
+      src: '',
+    };
+
+    return preview;
   }
 
   const preview: ImagePreview = {
@@ -28,6 +32,7 @@ export const getPreviewFromMetadata = (metadata: ImageMetadata): Preview => {
       width: metadata.original.width,
       height: metadata.original.height,
     },
+    src: metadata.original.url || '',
   };
 
   return preview;
