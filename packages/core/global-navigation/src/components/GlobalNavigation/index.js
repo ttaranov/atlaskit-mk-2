@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react';
 import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
+import { NotificationIndicator } from '@atlaskit/notification-indicator';
 import Drawer from '@atlaskit/drawer';
 import {
   name as packageName,
@@ -14,11 +15,10 @@ import generateProductConfig from '../../config/product-config';
 import ItemComponent from '../ItemComponent';
 import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
-import { notificationIntegration } from '../../platform-integration';
+import NotificationDrawerContents from '../../platform-integration/notification/components/NotificationDrawerContents';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
-import type { NotificationIntegration } from '../../platform-integration/notification/types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
@@ -48,6 +48,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
+
 const externalContentUrl = '//www.atlassian.com';
 
 const localStorage = typeof window === 'object' ? window.localStorage : {};
@@ -76,7 +77,8 @@ export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
-  notificationIntegrationInstance: NotificationIntegration;
+  NotificationDrawer: any;
+  NotificationBadge: any;
 
   constructor(props: GlobalNavigationProps) {
     super(props);
@@ -108,18 +110,11 @@ export default class GlobalNavigation
       this.state[`is${capitalisedDrawerName}Open`] =
         props[`is${capitalisedDrawerName}Open`];
     });
-    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
-    this.notificationIntegrationInstance = notificationIntegration(
-      fabricNotificationLogUrl,
-      cloudId,
-      locale,
-      product,
-      60000,
-      this.onNotificationBadgeCountUpdated,
-      this.onNotificationBadgeCountUpdating,
-      externalContentUrl,
-    );
+    // TODO: Specific logic for Notification component
+    // should be revisited
+    this.NotificationDrawer = this.getNotificationDrawerContent();
+    this.NotificationBadge = this.getNotificationBadgeIndicator();
   }
 
   componentDidUpdate(
@@ -152,33 +147,17 @@ export default class GlobalNavigation
 
     const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
-    console.log(
-      prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl,
-      prevProps.cloudId !== cloudId,
-      prevProps.locale !== locale,
-      prevProps.product !== product,
-      !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount,
-    );
     if (
       prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl ||
       prevProps.cloudId !== cloudId ||
       prevProps.locale !== locale ||
       prevProps.product !== product ||
-      !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount
+      prevState.notificationBadgeCount !== this.state.notificationBadgeCount
     ) {
       console.log('Updating the notification integration');
-      const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
 
-      this.notificationIntegrationInstance = notificationIntegration(
-        fabricNotificationLogUrl,
-        cloudId,
-        locale,
-        product,
-        refreshRate,
-        this.onNotificationBadgeCountUpdated,
-        this.onNotificationBadgeCountUpdating,
-        externalContentUrl,
-      );
+      this.NotificationDrawer = this.getNotificationDrawerContent();
+      this.NotificationBadge = this.getNotificationBadgeIndicator();
     }
   }
 
@@ -191,7 +170,6 @@ export default class GlobalNavigation
       return {};
     }
 
-    debugger; // eslint-disable-line
     // skip fetch, refresh from local storage if newer
     const cachedCount = this.getLocalStorageCount();
     const result = {};
@@ -255,10 +233,11 @@ export default class GlobalNavigation
       onOpenCallback = this.props[`on${capitalisedDrawerName}Open`];
     }
 
-    if (drawerName === 'notification') {
-      onOpenCallback = this.notificationIntegrationInstance
-        .onNotificationDrawerOpen;
-    }
+    // This function was not used
+    // if (drawerName === 'notification') {
+    //   onOpenCallback = this.notificationIntegrationInstance
+    //     .onNotificationDrawerOpen;
+    // }
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -286,10 +265,11 @@ export default class GlobalNavigation
       onCloseCallback = this.props[`on${capitalisedDrawerName}Close`];
     }
 
-    if (drawerName === 'notification') {
-      onCloseCallback = this.notificationIntegrationInstance
-        .onNotificationDrawerClose;
-    }
+    // this function was not used
+    // if (drawerName === 'notification') {
+    //   onCloseCallback = this.notificationIntegrationInstance
+    //     .onNotificationDrawerClose;
+    // }
 
     fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
@@ -308,11 +288,39 @@ export default class GlobalNavigation
     }
   };
 
+  getNotificationBadgeIndicator = () => {
+    const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
+    const { fabricNotificationLogUrl, cloudId } = this.props;
+
+    const NotificationBadger = () => (
+      <NotificationIndicator
+        fabricNotificationLogUrl={fabricNotificationLogUrl}
+        cloudId={cloudId}
+        refreshRate={refreshRate}
+        onCountUpdated={this.onNotificationBadgeCountUpdated}
+        onCountUpdating={this.onNotificationBadgeCountUpdating}
+      />
+    );
+    return NotificationBadger;
+  };
+
+  getNotificationDrawerContent = () => {
+    const { locale, product } = this.props;
+
+    const NotificationDrawer = () => (
+      <NotificationDrawerContents
+        externalContentUrl={externalContentUrl}
+        locale={locale}
+        product={product}
+      />
+    );
+    return NotificationDrawer;
+  };
+
   constructNavItems = () => {
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
-    const { badge } = this.notificationIntegrationInstance;
     console.log('Getting the badge from notification integration');
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
@@ -320,7 +328,9 @@ export default class GlobalNavigation
         ? {
             ...defaultConfig[item],
             ...productConfig[item],
-            ...(item === 'notification' ? { badge } : {}),
+            ...(item === 'notification'
+              ? { badge: this.NotificationBadge }
+              : {}),
           }
         : null),
     }));
@@ -340,7 +350,6 @@ export default class GlobalNavigation
   render() {
     // TODO: Look into memoizing this to avoid memory bloat
     const { primaryItems, secondaryItems } = this.constructNavItems();
-    const { notificationDrawerContents } = this.notificationIntegrationInstance;
 
     return (
       <NavigationAnalyticsContext
@@ -360,8 +369,9 @@ export default class GlobalNavigation
             const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
             const DrawerContents =
               drawer === 'notification'
-                ? notificationDrawerContents
+                ? this.NotificationDrawer
                 : this.props[`${drawer}DrawerContents`];
+
             const shouldUnmountOnExit = this.props[
               `should${capitalisedDrawerName}UnmountOnExit`
             ];
@@ -382,7 +392,9 @@ export default class GlobalNavigation
                   name={analyticsIdMap[drawer]}
                   isVisible={this.state[`is${capitalisedDrawerName}Open`]}
                 />
-                <DrawerContents />
+                <div>
+                  <DrawerContents />
+                </div>
               </Drawer>
             );
           })}
