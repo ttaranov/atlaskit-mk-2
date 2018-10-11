@@ -102,10 +102,8 @@ export default class MediaGroup extends PureComponent<
   renderStrip() {
     const { children } = this.props;
     const { animate, offset } = this.state;
-    const surroundingItems = React.Children.map(
-      children,
-      (child: ReactElement<MediaProps>) =>
-        this.mapMediaPropsToIdentifier(child.props),
+    const surroundingItems = React.Children.map(children, child =>
+      this.mapMediaPropsToIdentifier(child.props),
     );
 
     return (
@@ -115,7 +113,7 @@ export default class MediaGroup extends PureComponent<
         onSize={this.handleSize}
         onScroll={this.handleScroll}
       >
-        {React.Children.map(children, (child: ReactElement<MediaProps>) => {
+        {React.Children.map(children, child => {
           switch (child.props.type) {
             case 'file':
               return this.cloneFileCard(child, surroundingItems);

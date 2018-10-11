@@ -2,7 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { AkCodeBlock } from '@atlaskit/code';
 
-const identity = (text: string): string => {
+// TODO: Fix any
+const identity = (text: any): any => {
   return text;
 };
 
