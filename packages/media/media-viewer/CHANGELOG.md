@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 23.0.1
+- [patch] Prevent images from being smoothed when scaled up [5f1a429](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f1a429)
+
 ## 23.0.0
 - [patch] Media-card: allow to download binary when processing failed, add failed-processing to CardStatus; Media-core: add context.file.downloadBinary, add failed-processing to FileStatus; Media-store: add getFileBinaryURL; [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
 - [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
