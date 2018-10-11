@@ -21,11 +21,8 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^14.0.10",
-    "@atlaskit/button": "^9.0.10",
-    "@atlaskit/droplist": "^7.0.9",
-    "@atlaskit/field-text": "^7.0.10",
-    "@atlaskit/item": "^8.0.7",
     "@atlaskit/lozenge": "^6.2.1",
+    "@atlaskit/select": "^6.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3"
   },
   "peerDependencies": {

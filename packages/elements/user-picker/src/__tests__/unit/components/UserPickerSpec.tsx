@@ -1,90 +1,70 @@
-import Droplist from '@atlaskit/droplist';
+import Select from '@atlaskit/select';
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { Props, UserPicker } from '../../../components/UserPicker';
-import { PickerStyle } from '../../../components/UserPicker/styles';
-import UserPickerItem from '../../../components/UserPickerItem';
 import { User } from '../../../types';
 
-const Trigger = () => <div>Hey I'm a trigger</div>;
+type Styles = {
+  [key: string]: <T extends {}>(css: T) => T;
+};
 
 describe('UserPicker', () => {
-  const shallowUserPicker = (props: Partial<Props>) =>
-    shallow(<UserPicker trigger={<Trigger />} {...props} />);
+  const shallowUserPicker = (props: Partial<Props> = {}) =>
+    shallow(<UserPicker {...props} />);
 
-  it('should render Droplist', () => {
-    const trigger = <Trigger />;
-    const component = shallowUserPicker({ trigger });
-    const droplist = component.find(Droplist);
+  const users: User[] = [
+    {
+      id: 'abc-123',
+      name: 'Jace Beleren',
+      nickname: 'jbeleren',
+    },
+    {
+      id: '123-abc',
+      name: 'Chandra Nalaar',
+      nickname: 'cnalaar',
+    },
+  ];
 
-    expect(droplist.props()).toMatchObject({
-      trigger,
-      isOpen: false,
-      isLoading: true,
-      shouldFitContainer: true,
-      boundariesElement: 'viewport',
+  it('should render Select', () => {
+    const component = shallowUserPicker({ users });
+    const select = component.find(Select);
+    expect(select.prop('options')).toEqual([
+      { value: users[0], label: 'Jace Beleren' },
+      { value: users[1], label: 'Chandra Nalaar' },
+    ]);
+    const styles: Styles = select.prop('styles');
+    expect(styles.menu({})).toMatchObject({
+      width: 350,
+    });
+
+    expect(styles.control({})).toMatchObject({
+      width: 350,
+      height: 60,
     });
   });
 
-  it('should wrap droplist with width', () => {
+  it('should set width', () => {
     const component = shallowUserPicker({ width: 500 });
 
-    const pickerStyle = component.find(PickerStyle);
-    expect(pickerStyle.prop('width')).toBe(500);
-    expect(pickerStyle.find(Droplist)).toHaveLength(1);
-  });
-
-  it('should open Droplist when the UserPicker is open', () => {
-    const component = shallowUserPicker({ open: true });
-    const droplist = component.find(Droplist);
-    expect(droplist.prop('isOpen')).toBeTruthy();
-  });
-
-  it('should call onRequestClose when open change to false', () => {
-    const onRequestClose = jest.fn();
-    const component = shallowUserPicker({ onRequestClose });
-    component.find(Droplist).simulate('openChange', { isOpen: false });
-    expect(onRequestClose).toHaveBeenCalled();
-  });
-
-  it('should show loading state if users is undefined', () => {
-    const component = shallowUserPicker({ users: undefined });
-    const droplist = component.find(Droplist);
-    expect(droplist.prop('isLoading')).toBeTruthy();
-  });
-
-  describe('with users', () => {
-    it('should render empty user list', () => {
-      const users: User[] = [];
-      const component = shallowUserPicker({ users });
-
-      const droplist = component.find(Droplist);
-      expect(droplist.prop('isOpen')).toBeFalsy();
-      expect(droplist.find(UserPickerItem)).toHaveLength(0);
+    const select = component.find(Select);
+    const styles: Styles = select.prop('styles');
+    expect(styles.menu({})).toMatchObject({
+      width: 500,
     });
 
-    it('should render some users', () => {
-      const users: User[] = [
-        {
-          id: 'abc-123',
-          name: 'Jace Beleren',
-          nickname: 'jbeleren',
-        },
-        {
-          id: '123-abc',
-          name: 'Chandra Nalaar',
-          nickname: 'cnalaar',
-        },
-      ];
-      const component = shallowUserPicker({ users });
-
-      const droplist = component.find(Droplist);
-      expect(droplist.prop('isOpen')).toBeFalsy();
-
-      const userItems = droplist.find(UserPickerItem);
-      expect(userItems).toHaveLength(2);
-      expect(userItems.at(0).prop('user')).toBe(users[0]);
-      expect(userItems.at(1).prop('user')).toBe(users[1]);
+    expect(styles.control({})).toMatchObject({
+      width: 500,
+      height: 60,
     });
+  });
+
+  it('should trigger onChange with User', () => {
+    const onChange = jest.fn();
+    const component = shallowUserPicker({ onChange });
+
+    const select = component.find(Select);
+    select.simulate('change', { value: users[0] }, { action: 'select-option' });
+
+    expect(onChange).toHaveBeenCalledWith(users[0], 'select-option');
   });
 });
