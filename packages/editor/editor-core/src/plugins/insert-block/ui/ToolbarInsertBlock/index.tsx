@@ -11,6 +11,7 @@ import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
+import TaskIcon from '@atlaskit/icon/glyph/editor/task';
 import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import QuoteIcon from '@atlaskit/icon/glyph/quote';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
@@ -59,6 +60,11 @@ import { Command } from '../../../../commands';
 import { showLinkToolbar } from '../../../hyperlink/commands';
 
 export const messages = defineMessages({
+  action: {
+    id: 'fabric.editor.action',
+    defaultMessage: 'Action item',
+    description: 'Also known as a “task”, “to do item”, or a checklist',
+  },
   link: {
     id: 'fabric.editor.link',
     defaultMessage: 'Link',
@@ -135,6 +141,7 @@ export interface Props {
   editorActions?: EditorActions;
   tableSupported?: boolean;
   mentionsEnabled?: boolean;
+  actionSupported?: boolean;
   decisionSupported?: boolean;
   mentionsSupported?: boolean;
   insertMentionQuery?: () => void;
@@ -378,6 +385,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       mentionsEnabled,
       mentionsSupported,
       availableWrapperBlockTypes,
+      actionSupported,
       decisionSupported,
       macroProvider,
       linkSupported,
@@ -392,6 +400,17 @@ class ToolbarInsertBlock extends React.PureComponent<
       intl: { formatMessage },
     } = this.props;
     let items: any[] = [];
+
+    if (actionSupported) {
+      const labelAction = formatMessage(messages.action);
+      items.push({
+        content: labelAction,
+        value: { name: 'action' },
+        elemBefore: <TaskIcon label={labelAction} />,
+        elemAfter: <Shortcut>{'[]'}</Shortcut>,
+        shortcut: '[]',
+      });
+    }
 
     if (linkSupported) {
       const labelLink = formatMessage(messages.link);
@@ -592,7 +611,17 @@ class ToolbarInsertBlock extends React.PureComponent<
     return true;
   };
 
-  @analyticsDecorator('atlassian.editor.format.decision.button')
+  @analyticsDecorator('atlassian.fabric.action.trigger.button')
+  private insertAction = (): boolean => {
+    const { editorView } = this.props;
+    if (!editorView) {
+      return false;
+    }
+    insertTaskDecision(editorView, 'taskList');
+    return true;
+  };
+
+  @analyticsDecorator('atlassian.fabric.decision.trigger.button')
   private insertDecision = (): boolean => {
     const { editorView } = this.props;
     if (!editorView) {
@@ -662,6 +691,9 @@ class ToolbarInsertBlock extends React.PureComponent<
         );
         const { state, dispatch } = editorView;
         onInsertBlockType!(item.value.name)(state, dispatch);
+        break;
+      case 'action':
+        this.insertAction();
         break;
       case 'decision':
         this.insertDecision();

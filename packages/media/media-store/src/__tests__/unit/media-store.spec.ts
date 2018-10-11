@@ -536,7 +536,7 @@ describe('MediaStore', () => {
 
       it('should return file url', () => {
         expect(url).toEqual(
-          `${baseUrl}/file/1234/binary?client=some-client-id&dl=true&token=some-token`,
+          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&token=some-token`,
         );
       });
 

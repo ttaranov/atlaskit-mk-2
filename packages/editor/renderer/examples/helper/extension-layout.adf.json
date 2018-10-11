@@ -106,6 +106,56 @@
           ]
         }
       ]
+    },
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "bodied-eh",
+        "parameters": {
+          "macroParams": {},
+          "macroMetadata": {
+            "macroId": {
+              "value": 1532948101320
+            },
+            "placeholder": {
+              "0": {
+                "data": {
+                  "url": ""
+                },
+                "type": "icon"
+              }
+            }
+          }
+        },
+        "layout": "wide"
+      },
+      "content": [
+        {
+          "type": "extension",
+          "attrs": {
+            "extensionType": "com.atlassian.confluence.macro.core",
+            "extensionKey": "ext",
+            "parameters": {
+              "macroParams": {},
+              "macroMetadata": {
+                "macroId": {
+                  "value": 1532948101320
+                },
+                "placeholder": {
+                  "0": {
+                    "data": {
+                      "url": ""
+                    },
+                    "type": "icon"
+                  }
+                }
+              }
+            },
+            "layout": "full-width"
+          }
+        }
+      ]
     }
   ]
 }

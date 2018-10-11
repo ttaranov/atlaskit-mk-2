@@ -28,7 +28,7 @@ const toolbarSizeToButtons = toolbarSize => {
     case ToolbarSize.XL:
     case ToolbarSize.L:
     case ToolbarSize.M:
-      return 5;
+      return 6;
 
     case ToolbarSize.S:
       return 2;
@@ -94,6 +94,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               editorView={editorView}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
+              actionSupported={!!editorView.state.schema.nodes.taskItem}
               decisionSupported={!!editorView.state.schema.nodes.decisionItem}
               dateEnabled={!!dateState}
               placeholderTextEnabled={

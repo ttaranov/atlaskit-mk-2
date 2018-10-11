@@ -1,5 +1,11 @@
 # @atlaskit/editor-common
 
+## 19.3.1
+- [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
+
+## 19.3.0
+- [minor] Dynamic font size for panels [ea3b522](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea3b522)
+
 ## 19.2.0
 - [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
 
