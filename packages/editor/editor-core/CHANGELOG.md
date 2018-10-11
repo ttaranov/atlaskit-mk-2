@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.5.0
+- [minor] Deprecate quickInsert prop [c595e8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c595e8d)
+
 ## 85.4.2
 - [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
 
