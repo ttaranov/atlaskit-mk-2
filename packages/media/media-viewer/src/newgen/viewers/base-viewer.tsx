@@ -18,9 +18,9 @@ export type MinimalState<T> = {
 };
 
 export abstract class BaseViewer<
-  T,
+  Resource,
   Props extends MinimalProps,
-  State extends MinimalState<T>
+  State extends MinimalState<Resource>
 > extends React.Component<Props, State> {
   state: State = this.initialState;
 
@@ -63,7 +63,7 @@ export abstract class BaseViewer<
     return renderDownloadButton(item, context, collectionName);
   }
 
-  protected abstract renderSuccessful(resource: T): React.ReactNode;
+  protected abstract renderSuccessful(resource: Resource): React.ReactNode;
 
   protected abstract get initialState(): State;
   protected abstract init(props: Props): void;
