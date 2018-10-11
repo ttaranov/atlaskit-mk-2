@@ -1,13 +1,16 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement } from '../_helpers';
 import {
+  getDocFromElement,
   insertMention,
-  messageEditor,
   editable,
-  picker,
+  mentionPicker,
+} from '../_helpers';
+
+import {
+  messageEditor,
   lozenge as mentionId,
-} from './_mention-helpers';
+} from './_message-renderer-helpers';
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 /*
@@ -43,7 +46,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(picker);
+    await browser.waitForSelector(mentionPicker);
     await browser.type(editable, 'gill');
     await browser.isVisible('[data-mention-name=pgill]');
     await browser.isVisible('[data-mention-name=jjackson]');
@@ -62,12 +65,12 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(picker);
+    await browser.waitForSelector(mentionPicker);
     await browser.type(editable, 'Carolyn');
     // Wait until there is only one mention left in picker.
     await browser.browser.waitUntil(async () => {
       const mentionsInPicker = await browser.$$(
-        `${picker} [data-mention-name]`,
+        `${mentionPicker} [data-mention-name]`,
       );
       return mentionsInPicker.value.length === 1;
     });
@@ -118,7 +121,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(picker);
+    await browser.waitForSelector(mentionPicker);
     await browser.type(editable, 'alica');
     await browser.isVisible('[data-mention-name=awoods]');
     await browser.isVisible('[data-mention-name=Fatima]');

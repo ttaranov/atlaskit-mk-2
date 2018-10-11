@@ -9,6 +9,21 @@ import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/T
 export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
 export const editable = '.ProseMirror';
 export const LONG_WAIT_FOR = 5000;
+export const mentionPicker = '.ak-mention-picker';
+
+export const insertMention = async (browser, query: string) => {
+  await browser.type(editable, '@');
+  await browser.waitForSelector(mentionPicker);
+  await browser.type(editable, query);
+  await browser.type(editable, 'Return');
+};
+
+export const insertMentionUsingClick = async (browser, mentionId: string) => {
+  await browser.type(editable, '@');
+  await browser.waitForSelector(mentionPicker);
+  await browser.isVisible(`div[data-mention-id="${mentionId}"`);
+  await browser.click(`div[data-mention-id="${mentionId}"`);
+};
 
 export const comment = {
   name: 'comment',
