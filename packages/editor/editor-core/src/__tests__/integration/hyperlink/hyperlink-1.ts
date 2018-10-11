@@ -16,7 +16,7 @@ const linkToolbar = '[placeholder="Paste link or search recently viewed"]';
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },
     async client => {
-      let browser = await new Page(client);
+      let browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

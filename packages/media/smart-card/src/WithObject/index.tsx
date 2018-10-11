@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Subscription } from 'rxjs/Subscription';
 import Context from '../Context';
 import { Client, ObjectState } from '../Client';
+import { v4 } from 'uuid';
 
 export interface WithObjectRenderProps {
   state: ObjectState;
@@ -18,45 +18,27 @@ interface InnerWithObjectState {
   prevClient?: Client;
   prevUrl?: string;
   state: ObjectState;
+  uuid: string;
 }
 
 class InnerWithObject extends React.Component<
   InnerWithObjectProps,
   InnerWithObjectState
 > {
-  private subscription?: Subscription;
-
   state: InnerWithObjectState = {
+    uuid: v4(),
     state: {
       status: 'resolving',
       services: [],
     },
   };
 
-  unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = undefined;
-    }
-  }
-
-  subscribe() {
-    const { client, url } = this.props;
-    const subscription = client.get(url).subscribe(state =>
-      this.setState({
-        state,
-      }),
-    );
-
-    this.subscription = subscription;
-  }
-
   reload = () => {
-    const { client } = this.props;
-    const { state } = this.state;
-    if (state && state.provider) {
-      client.reload(state.provider);
-    }
+    const { client, url } = this.props;
+    const {
+      state: { definitionId },
+    } = this.state;
+    client.reload(url, definitionId);
   };
 
   static getDerivedStateFromProps(
@@ -70,6 +52,7 @@ class InnerWithObject extends React.Component<
       return {
         state: {
           status: 'resolving',
+          definitionId: prevState.state.definitionId,
         },
         prevClient: nextProps.client,
         prevUrl: nextProps.url,
@@ -79,21 +62,39 @@ class InnerWithObject extends React.Component<
   }
 
   componentDidMount() {
-    this.subscribe();
+    const { client, url } = this.props;
+    const { uuid } = this.state;
+    const {
+      state: { definitionId },
+    } = this.state;
+    client.register(url, uuid, this.updateState).resolve(url, definitionId);
   }
 
+  updateState = (state: ObjectState) => {
+    this.setState({ state });
+  };
+
   componentDidUpdate(prevProps: InnerWithObjectProps) {
-    if (
-      this.props.client !== prevProps.client ||
-      this.props.url !== prevProps.url
-    ) {
-      this.unsubscribe();
-      this.subscribe();
+    const { client, url } = this.props;
+    const { uuid } = this.state;
+    if (this.props.client !== prevProps.client) {
+      prevProps.client.deregister(prevProps.url, uuid);
+      client.register(url, uuid, this.updateState).resolve(url);
     }
+    if (this.props.url !== prevProps.url) {
+      client
+        .deregister(prevProps.url, uuid)
+        .register(url, uuid, this.updateState)
+        .resolve(url);
+    }
+    return;
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    const { client, url } = this.props;
+    const { uuid } = this.state;
+
+    client.deregister(url, uuid);
   }
 
   render() {

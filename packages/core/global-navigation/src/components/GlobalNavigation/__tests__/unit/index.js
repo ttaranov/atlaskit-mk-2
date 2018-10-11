@@ -3,6 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import GlobalNavigation from '../../index';
 import ScreenTracker from '../../../ScreenTracker';
 
@@ -20,6 +21,23 @@ describe('GlobalNavigation', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
+  });
+
+  it('should pass both href and onClick for product logo', () => {
+    const mockProductClick = jest.fn();
+    const wrapper = mount(
+      <GlobalNavigation
+        productIcon={EmojiAtlassianIcon}
+        productHref="/testtest"
+        onProductClick={mockProductClick}
+      />,
+    );
+
+    const productIcon = wrapper.find(EmojiAtlassianIcon);
+    expect(productIcon).toHaveLength(1);
+    expect(wrapper.props().productHref).toEqual('/testtest');
+    productIcon.simulate('click');
+    expect(mockProductClick).toHaveBeenCalled();
   });
 
   it('should open search drawer when searchIcon is clicked', () => {
@@ -42,7 +60,6 @@ describe('GlobalNavigation', () => {
       analyticsIdMap: {},
     }));
 
-    // eslint-disable-next-line global-require
     const GlobalNavigationWithMock = require('../../index').default;
     const wrapper = mount(
       <GlobalNavigationWithMock searchDrawerContents={DrawerContents} />,

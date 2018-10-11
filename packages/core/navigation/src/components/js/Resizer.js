@@ -14,7 +14,10 @@ import { isElectronMac } from '../../theme/util';
 type Props = {
   onResizeStart: () => {},
   onResizeEnd: (resizeDelta: number) => void,
-  onResizeButton: ({ isOpen: boolean, width: number }) => void,
+  onResizeButton: (
+    { isOpen: boolean, width: number },
+    resizerClick: boolean,
+  ) => void,
   onResize: (resizeDelta: number) => void,
   navigationWidth: number,
   showResizeButton: boolean,
@@ -89,7 +92,7 @@ class Resizer extends PureComponent<Props, State> {
     const delta = screenX - this.state.startScreenX;
 
     if (delta === 0) {
-      this.resizeButtonHandler();
+      this.resizeButtonHandler(null, true);
     }
 
     // Perform one final resize before ending
@@ -137,7 +140,7 @@ class Resizer extends PureComponent<Props, State> {
   isPointingRight = () =>
     this.props.navigationWidth < standardOpenWidth(this.isElectronMac());
 
-  resizeButtonHandler = () => {
+  resizeButtonHandler = (e, resizerClick = false) => {
     const isElectron = this.isElectronMac();
     const { navigationWidth, onResizeButton } = this.props;
     const standardOpenWidthResult = standardOpenWidth(isElectron);
@@ -145,15 +148,21 @@ class Resizer extends PureComponent<Props, State> {
     const isPointingRight = this.isPointingRight();
 
     if (isPointingRight || isExpanded) {
-      onResizeButton({
-        isOpen: true,
-        width: standardOpenWidthResult,
-      });
+      onResizeButton(
+        {
+          isOpen: true,
+          width: standardOpenWidthResult,
+        },
+        resizerClick,
+      );
     } else {
-      onResizeButton({
-        isOpen: false,
-        width: globalOpenWidth(isElectron),
-      });
+      onResizeButton(
+        {
+          isOpen: false,
+          width: globalOpenWidth(isElectron),
+        },
+        resizerClick,
+      );
     }
   };
 

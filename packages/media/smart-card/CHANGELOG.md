@@ -1,5 +1,20 @@
 # @atlaskit/smart-card
 
+## 8.3.2
+- [patch] expose onClick handler for Card [3f5585c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f5585c)
+
+## 8.3.1
+- [patch] Additional test case [9b86661](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b86661)
+
+## 8.3.0
+- [minor] Refactored the rxjs set up for smart cards [026c96e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026c96e)
+
+## 8.2.4
+- [patch] Removes usages of rxjs/Rx  [d098f25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d098f25)
+
+## 8.2.3
+- [patch] Fix rxjs and date-fns import in TS components [ab15cee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab15cee)
+
 ## 8.2.2
 - [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
   - @atlaskit/media-ui@6.0.0

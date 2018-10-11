@@ -78,9 +78,9 @@ describe('TableFloatingControls', () => {
       );
       hoverTable(true)(editorView.state, editorView.dispatch);
       const {
-        hoverDecoration,
-      }: { hoverDecoration: DecorationSet } = getPluginState(editorView.state);
-      const decoration = hoverDecoration.find()[0] as any;
+        decorationSet,
+      }: { decorationSet: DecorationSet } = getPluginState(editorView.state);
+      const decoration = decorationSet.find()[0] as any;
       expect(decoration.type.attrs.class.indexOf('danger')).toBeGreaterThan(-1);
     });
   });

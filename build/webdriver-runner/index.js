@@ -1,74 +1,112 @@
 // @flow
 'use strict';
 
-const child = require('child_process');
+const path = require('path');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
 const isReachable = require('is-reachable');
+const jest = require('jest');
 
 /*
-* function main() to
-* start and stop webpack-dev-server, selenium-standalone-server, browserstack connections
-* and run and wait for webdriver tests complete
-*/
-
-const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
-/* 
+ * function main() to
+ * start and stop webpack-dev-server, selenium-standalone-server, browserstack connections
+ * and run and wait for webdriver tests complete
+ * 
  * maxWorkers set to 4 when using browserstack and 1 when running locally. 
  * By default the tests are running headlessly, set HEADLESS=false if you want to run them directly on real browsers.
- * if WATCH= true, by default, it will start chrome.
- *  */
-const maxWorkers =
-  process.env.TEST_ENV === 'browserstack' ? '--maxWorkers=4' : '--maxWorkers=1';
-const watch = process.env.WATCH ? '--watch' : '';
-function runTests() {
-  return new Promise((resolve, reject) => {
-    let cmd = `INTEGRATION_TESTS=true jest ${maxWorkers} ${watch}`;
-    const tests = child.spawn(cmd, process.argv.slice(2), {
-      stdio: 'inherit',
-      shell: true,
-    });
+ * if WATCH= true, by default, it will start chrome. 
+ */
 
-    tests.on('error', reject);
+process.env.NODE_ENV = 'test';
+process.env.INTEGRATION_TESTS = 'true';
 
-    // reject tests if theres a cmd + c
-    tests.on('SIGINT', () => {
-      console.log('received SIGINT', process.exit());
-    });
+const isBrowserStack = process.env.TEST_ENV === 'browserstack';
+const maxWorkers = isBrowserStack ? 4 : 1;
 
-    tests.on('close', (code, signal) => {
-      setTimeout(resolve, JEST_WAIT_FOR_INPUT_TIMEOUT, { code, signal });
-    });
+function getExitCode(result) {
+  return !result || result.success ? 0 : 1;
+}
+
+async function runJest(testPaths) {
+  return new Promise(resolve => {
+    jest.runCLI(
+      {
+        _: testPaths || process.argv.slice(2),
+        maxWorkers,
+        watch: !!process.env.WATCH,
+      },
+      [process.cwd()],
+      resolve,
+    );
+  });
+}
+
+function rerunFailedTests(result) {
+  return new Promise(async resolve => {
+    const failingTestPaths = result.testResults
+      .filter(testResult => testResult.numFailingTests > 0)
+      .map(testResult => testResult.testFilePath);
+
+    if (!failingTestPaths.length) {
+      resolve(getExitCode(result));
+      return;
+    }
+
+    console.log(
+      `Re-running ${
+        result.numFailedTestSuites
+      } test suites.\n${failingTestPaths.join('\n')}`,
+    );
+
+    // We don't want to clobber the original results
+    // Now we'll upload two test result files.
+    process.env.JEST_JUNIT_OUTPUT = path.join(
+      process.cwd(),
+      'test-reports/junit-rerun.xml',
+    );
+    const results = await runJest(failingTestPaths);
+    resolve(getExitCode(results));
+  });
+}
+
+function runTestsWithRetry() {
+  return new Promise(async resolve => {
+    let code = 0;
+    try {
+      const results = await runJest();
+      code = getExitCode(results);
+      if (code !== 0 && isBrowserStack) {
+        code = await rerunFailedTests(results);
+      }
+    } catch (err) {
+      console.error(err.toString());
+      resolve(1);
+      return;
+    }
+
+    resolve(code);
   });
 }
 
 async function main() {
   const serverAlreadyRunning = await isReachable('http://localhost:9000');
-  // For testing the website package, there is no need to start the webpack server
-  if (
-    !serverAlreadyRunning &&
-    process.argv.slice(2).indexOf('website') === -1
-  ) {
+  if (!serverAlreadyRunning) {
     await webpack.startDevServer();
   }
-  process.env.TEST_ENV === 'browserstack'
+
+  isBrowserStack
     ? await browserstack.startBrowserStack()
     : await selenium.startSelenium();
 
-  const { code, signal } = await runTests();
+  const code = await runTestsWithRetry();
 
-  console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
-  // For testing the website package, there is no need to stop the webpack server
-  if (
-    !serverAlreadyRunning &&
-    process.argv.slice(2).indexOf('website') === -1
-  ) {
+  console.log(`Exiting tests with exit code: ${code}`);
+  if (!serverAlreadyRunning) {
     webpack.stopDevServer();
   }
-  process.env.TEST_ENV === 'browserstack'
-    ? browserstack.stopBrowserStack()
-    : selenium.stopSelenium();
+
+  isBrowserStack ? browserstack.stopBrowserStack() : selenium.stopSelenium();
   process.exit(code);
 }
 

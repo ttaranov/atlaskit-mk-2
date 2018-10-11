@@ -59,7 +59,7 @@ describe('Quick Insert', () => {
     const providerFactory = new ProviderFactory();
     const { editorView, sel } = editor(doc(p('{<>}')), providerFactory);
     providerFactory.setProvider('quickInsertProvider', provider);
-    insertText(editorView, '/Custom item', sel);
+    insertText(editorView, '/Custom', sel);
     await sleep(50);
     sendKeyToPm(editorView, 'Enter');
     expect(editorView.state.doc).toEqualDocument(doc(p('custom item')));

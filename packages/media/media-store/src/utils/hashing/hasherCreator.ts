@@ -1,19 +1,18 @@
 import { Hasher } from './hasher';
 
-import { SimpleHasher } from './simpleHasher';
-import { WorkerHasher } from './workerHasher';
-
 let hasher: Hasher | null = null;
 
 export const destroyHasher = () => (hasher = null);
 
-export const createHasher = (): Hasher => {
+export const createHasher = async (): Promise<Hasher> => {
   const numWorkers = 3;
 
   if (!hasher) {
     try {
+      const { WorkerHasher } = await import('./workerHasher');
       hasher = new WorkerHasher(numWorkers);
     } catch (error) {
+      const { SimpleHasher } = await import('./simpleHasher');
       hasher = new SimpleHasher();
     }
   }

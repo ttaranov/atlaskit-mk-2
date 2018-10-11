@@ -13,7 +13,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import ReactEditorView from '../../../create-editor/ReactEditorView';
 import { toJSON } from '../../../utils';
-import { patchEditorViewForJSDOM } from '@atlaskit/editor-test-helpers/';
+import {
+  patchEditorViewForJSDOM,
+  mountWithIntl,
+} from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import { EventDispatcher } from '../../../event-dispatcher';
 
@@ -123,7 +126,7 @@ describe(name, () => {
 
     describe('when a transaction is dispatched', () => {
       it('should not trigger a re-render', () => {
-        const wrapper = mount(
+        const wrapper = mountWithIntl(
           <ReactEditorView
             editorProps={{}}
             providerFactory={ProviderFactory.create({})}

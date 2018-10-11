@@ -7,7 +7,6 @@ import {
   insertBlockMenuItem,
 } from '../_helpers';
 
-import { messages as ToolbarMessages } from '../../../plugins/lists/ui/ToolbarLists';
 import { messages as BlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists';
 
@@ -21,7 +20,7 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
     `Bodied Extension: Insert ${node}`,
     { skip: ['edge', 'ie'] },
     async client => {
-      const page = await new Page(client);
+      const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);
@@ -32,7 +31,7 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
         await page.click(`span[aria-label="${node}"]`);
       } else if (node === 'action') {
         await page.click(
-          `span[aria-label="${ToolbarMessages.action.defaultMessage}"]`,
+          `span[aria-label="${BlockMessages.action.defaultMessage}"]`,
         );
       } else if (node === 'table') {
         await page.click(

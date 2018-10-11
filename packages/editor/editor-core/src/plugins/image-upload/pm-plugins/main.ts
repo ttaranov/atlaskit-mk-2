@@ -1,258 +1,140 @@
-import { Schema, Node } from 'prosemirror-model';
-import {
-  EditorState,
-  NodeSelection,
-  Plugin,
-  PluginKey,
-} from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { safeInsert } from 'prosemirror-utils';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { analyticsService } from '../../../analytics';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+
 import { isPastedFile } from '../../../utils/clipboard';
+import { isDroppedFile } from '../../../utils/drag-drop';
+import { analyticsService } from '../../../analytics';
 
-export type StateChangeHandler = (state: ImageUploadState) => any;
-export interface ImageUploadPluginOptions {
-  defaultHandlersEnabled?: boolean;
-  supportedImageTypes?: string[];
-  maxFileSizeInBytes?: number;
-  providerFactory?: ProviderFactory;
-}
+import { canInsertMedia, isMediaSelected } from '../utils';
+import {
+  ImageUploadHandler,
+  ImageUploadPluginState,
+  ImageUploadPluginAction,
+} from '../types';
+import { EditorView } from 'prosemirror-view';
+import { startImageUpload, insertExternalImage } from './commands';
 
-export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
-
-const DEFAULT_OPTIONS: ImageUploadPluginOptions = {
-  maxFileSizeInBytes: 10000000,
-  supportedImageTypes: ['jpg', 'jpeg', 'png', 'gif', 'svg'],
-};
-
-function isDroppedFile(e: DragEvent): boolean {
-  return (
-    Array.prototype.slice.call(e.dataTransfer.types).indexOf('Files') !== -1
-  );
-}
-
-export const createMediaNode = (url: string, schema: Schema): Node | null => {
-  const { media, mediaSingle } = schema.nodes;
-  if (!media || !mediaSingle) {
-    return null;
-  }
-
-  const mediaNode = media.create({
-    type: 'external',
-    url,
-  });
-  return mediaSingle.create({}, mediaNode);
-};
-
-export class ImageUploadState {
-  active = false;
-  enabled = false;
-  hidden = false;
-  src?: string = undefined;
-  element?: HTMLElement = undefined;
-  changeHandlers: StateChangeHandler[] = [];
-
-  private state: EditorState;
-  // @ts-ignore: UNREAD private config variable, do I need to be deleted or made public???
-  private config: ImageUploadPluginOptions;
-  private uploadHandler?: ImageUploadHandler;
-
-  constructor(state: EditorState, options?: ImageUploadPluginOptions) {
-    this.changeHandlers = [];
-    this.state = state;
-    this.config = { ...DEFAULT_OPTIONS, ...options };
-    this.hidden = !state.schema.nodes.media || !state.schema.nodes.mediaSingle;
-    this.enabled = this.canInsertImage();
-    if (options && options.providerFactory) {
-      options.providerFactory.subscribe(
-        'imageUploadProvider',
-        this.handleProvider,
-      );
-    }
-  }
-
-  handleProvider = async (
-    name: string,
-    provider?: Promise<ImageUploadHandler>,
-  ) => {
-    if (provider) {
-      try {
-        this.uploadHandler = await provider;
-      } catch (e) {
-        this.uploadHandler = undefined;
-      }
-    } else {
-      this.uploadHandler = undefined;
-    }
-  };
-
-  subscribe(cb: StateChangeHandler) {
-    this.changeHandlers.push(cb);
-    cb(this);
-  }
-
-  unsubscribe(cb: StateChangeHandler) {
-    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  update(
-    state: EditorState,
-    domAtPos: EditorView['domAtPos'],
-    dirty = false,
-  ): void {
-    this.state = state;
-    const newActive = this.isImageSelected();
-    if (newActive !== this.active) {
-      this.active = newActive;
-      dirty = true;
-    }
-
-    const newEnabled = this.canInsertImage();
-    if (newEnabled !== this.enabled) {
-      this.enabled = newEnabled;
-      dirty = true;
-    }
-
-    const newElement = newActive
-      ? this.getActiveImageElement(domAtPos)
-      : undefined;
-    if (newElement !== this.element) {
-      this.element = newElement;
-      dirty = true;
-    }
-
-    if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
-    }
-  }
-
-  handleImageUpload(view: EditorView, event?: Event): boolean {
-    const { uploadHandler } = this;
-
-    if (!uploadHandler) {
-      return false;
-    }
-
-    uploadHandler(event, this.addImage(view));
-
-    return true;
-  }
-
-  addImage(view: EditorView): Function {
-    return (options: { src?: string; alt?: string; title?: string }): void => {
-      const { state } = this;
-      if (this.enabled && options.src) {
-        const mediaNode = createMediaNode(options.src, state.schema);
-        if (mediaNode) {
-          view.dispatch(
-            safeInsert(mediaNode, state.selection.$to.pos)(
-              state.tr,
-            ).scrollIntoView(),
-          );
-        }
-      }
-    };
-  }
-
-  private getActiveImageElement(domAtPos: EditorView['domAtPos']): HTMLElement {
-    const { $from } = this.state.selection;
-    const { node, offset } = domAtPos($from.pos);
-
-    if (node.childNodes.length === 0) {
-      return node.parentElement!;
-    }
-
-    return node.childNodes[offset] as HTMLElement;
-  }
-
-  private canInsertImage(): boolean {
-    const { state } = this;
-    const { mediaSingle } = state.schema.nodes;
-    const { $to } = state.selection;
-
-    if (mediaSingle) {
-      for (let d = $to.depth; d >= 0; d--) {
-        let index = $to.index(d);
-        if ($to.node(d).canReplaceWith(index, index, mediaSingle)) {
-          return true;
-        }
-      }
-    }
+type DOMHandlerPredicate = ((e: Event) => boolean);
+const createDOMHandler = (pred: DOMHandlerPredicate, eventName: string) => (
+  view: EditorView,
+  event: Event,
+) => {
+  if (!pred(event)) {
     return false;
   }
 
-  private isImageSelected(): boolean {
-    const { selection } = this.state;
-    return (
-      selection instanceof NodeSelection &&
-      selection.node.type === this.state.schema.nodes.media
-    );
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (startImageUpload(event)(view.state, view.dispatch)) {
+    analyticsService.trackEvent(eventName);
   }
-}
+
+  return true;
+};
 
 export const stateKey = new PluginKey('imageUploadPlugin');
 
-export const createPlugin = (
-  schema: Schema,
-  options: ImageUploadPluginOptions,
-) =>
-  new Plugin({
+const getNewActiveUpload = (
+  tr: Transaction,
+  pluginState: ImageUploadPluginState,
+) => {
+  const meta: ImageUploadPluginAction | undefined = tr.getMeta(stateKey);
+  if (meta && meta.name === 'START_UPLOAD') {
+    return {
+      event: meta.event,
+    };
+  }
+
+  return pluginState.activeUpload;
+};
+
+export const createPlugin = ({ dispatch, providerFactory }) => {
+  let uploadHandler: ImageUploadHandler | undefined;
+
+  return new Plugin({
     state: {
-      init(config, state: EditorState) {
-        return new ImageUploadState(state, options);
+      init(config, state: EditorState): ImageUploadPluginState {
+        return {
+          active: false,
+          enabled: canInsertMedia(state),
+          hidden: !state.schema.nodes.media || !state.schema.nodes.mediaSingle,
+        };
       },
-      apply(tr, pluginState: ImageUploadState, oldState, newState) {
+      apply(tr, pluginState: ImageUploadPluginState, oldState, newState) {
+        const newActive = isMediaSelected(newState);
+        const newEnabled = canInsertMedia(newState);
+        const newActiveUpload = getNewActiveUpload(tr, pluginState);
+
+        if (
+          newActive !== pluginState.active ||
+          newEnabled !== pluginState.enabled ||
+          newActiveUpload !== pluginState.activeUpload
+        ) {
+          const newPluginState = {
+            ...pluginState,
+            active: newActive,
+            enabled: newEnabled,
+            activeUpload: newActiveUpload,
+          };
+
+          dispatch(newPluginState);
+          return newPluginState;
+        }
+
         return pluginState;
       },
     },
     key: stateKey,
-    view: view => {
-      const pluginState: ImageUploadState = stateKey.getState(view.state);
-      pluginState.update(view.state, view.domAtPos.bind(view), true);
+    view: () => {
+      const handleProvider = async (
+        name: string,
+        provider?: Promise<ImageUploadHandler>,
+      ) => {
+        if (name !== 'imageUploadProvider' || !provider) {
+          return;
+        }
+
+        try {
+          uploadHandler = await provider;
+        } catch (e) {
+          uploadHandler = undefined;
+        }
+      };
+
+      providerFactory.subscribe('imageUploadProvider', handleProvider);
 
       return {
-        update: (view, prevState) => {
-          pluginState.update(view.state, view.domAtPos.bind(view));
-        },
-        destroy() {
-          if (options && options.providerFactory) {
-            options.providerFactory.unsubscribe(
-              'imageUploadProvider',
-              pluginState.handleProvider,
+        update(view, prevState) {
+          const { state: editorState } = view;
+          const currentState: ImageUploadPluginState = stateKey.getState(
+            editorState,
+          )!;
+
+          // if we've add a new upload to the state, execute the uploadHandler
+          const oldState: ImageUploadPluginState = stateKey.getState(
+            prevState,
+          )!;
+          if (
+            currentState.activeUpload !== oldState.activeUpload &&
+            currentState.activeUpload &&
+            uploadHandler
+          ) {
+            uploadHandler(currentState.activeUpload.event, options =>
+              insertExternalImage(options)(view.state, view.dispatch),
             );
           }
+        },
+
+        destroy() {
+          providerFactory.unsubscribe('imageUploadProvider', handleProvider);
         },
       };
     },
     props: {
       handleDOMEvents: {
-        drop(view: EditorView, event: DragEvent) {
-          const pluginState: ImageUploadState = stateKey.getState(view.state);
-          if (!isDroppedFile(event) || !pluginState.enabled) {
-            return false;
-          }
-          analyticsService.trackEvent('atlassian.editor.image.drop');
-
-          event.preventDefault();
-          event.stopPropagation();
-
-          pluginState.handleImageUpload(view, event);
-          return true;
-        },
-        paste(view: EditorView, event: ClipboardEvent) {
-          const pluginState: ImageUploadState = stateKey.getState(view.state);
-          if (!isPastedFile(event) || !pluginState.enabled) {
-            return false;
-          }
-          analyticsService.trackEvent('atlassian.editor.image.paste');
-
-          event.preventDefault();
-          event.stopPropagation();
-
-          pluginState.handleImageUpload(view, event);
-          return true;
-        },
+        drop: createDOMHandler(isDroppedFile, 'atlassian.editor.image.drop'),
+        paste: createDOMHandler(isPastedFile, 'atlassian.editor.image.paste'),
       },
     },
   });
+};

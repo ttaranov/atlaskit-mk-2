@@ -4,14 +4,12 @@ import { taskItemNodeViewFactory } from '../../../../../plugins/tasks-and-decisi
 describe('Task Item - NodeView', () => {
   const providerFactory = {} as any;
   const portalProviderAPI = { render() {}, remove() {} } as any;
-  const analyticsDelegateContext = {} as any;
 
   it('should render a contentDOM of `div` inside `li`', () => {
     const node = taskItem()('this is the task')(defaultSchema);
 
     const nodeView = taskItemNodeViewFactory(
       portalProviderAPI,
-      analyticsDelegateContext,
       providerFactory,
     )(node, null as any, () => -1);
 

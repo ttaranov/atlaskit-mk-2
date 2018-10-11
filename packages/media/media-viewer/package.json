@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-viewer",
-  "version": "21.0.2",
+  "version": "23.0.0",
   "description": "MediaViewer is Atlassian's powerful solution for viewing files on the web. It's both powerful and extendable yet easy-to-integrate",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -20,10 +20,11 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/button": "^9.0.13",
     "@atlaskit/field-range": "^5.0.4",
-    "@atlaskit/icon": "^13.8.1",
-    "@atlaskit/media-ui": "^6.0.0",
+    "@atlaskit/icon": "^14.0.0",
+    "@atlaskit/media-store": "^8.1.0",
+    "@atlaskit/media-ui": "^6.0.1",
     "@atlaskit/spinner": "^9.0.6",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -34,17 +35,18 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^24.0.2",
+    "@atlaskit/media-core": "^24.2.0",
     "react": "^16.4.0",
     "rxjs": "^5.5.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^9.0.6",
-    "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/media-core": "^24.0.2",
-    "@atlaskit/media-test-helpers": "^18.2.0",
-    "@atlaskit/modal-dialog": "^7.0.0",
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/media-card": "^39.0.0",
+    "@atlaskit/media-core": "^24.2.0",
+    "@atlaskit/media-test-helpers": "^18.2.5",
+    "@atlaskit/modal-dialog": "^7.0.2",
     "@types/enzyme": "^3.1.6",
     "@types/query-string": "^4.3.1",
     "@types/sinon-chai": "^2.7.27",

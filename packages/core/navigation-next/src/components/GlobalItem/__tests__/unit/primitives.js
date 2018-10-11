@@ -1,10 +1,9 @@
 // @flow
 
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
-import GlobalNavigationItemPrimitive, {
-  BaseGlobalNavigationItemPrimitive,
-} from '../../primitives';
+import Tooltip from '@atlaskit/tooltip';
+import GlobalNavigationItemPrimitive from '../../primitives';
 
 const theme = {
   mode: {
@@ -15,9 +14,30 @@ const styles = () => ({
   itemBase: {},
 });
 
+// Required to dive inside the withGlobalTheme HOC
+const shallowDive = node => shallow(node).dive();
+
 describe('GlobalNavigationItemPrimitive', () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it('should be wrapped using withGlobalTheme HOC', () => {
+    const WrappedWithGlobalTheme = () => null;
+    const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
+    jest.doMock('../../../../theme', () => ({
+      withGlobalTheme: MockWithGlobalTheme,
+      styleReducerNoOp: jest.fn(s => s),
+    }));
+
+    const { BaseGlobalNavigationItemPrimitive } = require('../../primitives');
+    expect(MockWithGlobalTheme).toHaveBeenCalledWith(
+      BaseGlobalNavigationItemPrimitive,
+    );
+  });
+
   it('should render an anchor when an href prop is passed', () => {
-    const wrapper = mount(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         styles={styles}
         theme={theme}
@@ -31,10 +51,12 @@ describe('GlobalNavigationItemPrimitive', () => {
       className: expect.any(String),
       href: 'www.example.com',
     });
+
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should render a button when an onClick prop is passed', () => {
-    const wrapper = mount(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         styles={styles}
         theme={theme}
@@ -48,6 +70,8 @@ describe('GlobalNavigationItemPrimitive', () => {
       className: expect.any(String),
       onClick: expect.any(Function),
     });
+
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should render a CustomComponent when a component prop is passed', () => {
@@ -57,8 +81,8 @@ describe('GlobalNavigationItemPrimitive', () => {
       </button>
     );
     const onClick = () => {};
-    const wrapper = mount(
-      <BaseGlobalNavigationItemPrimitive
+    const wrapper = shallowDive(
+      <GlobalNavigationItemPrimitive
         component={MyComponent}
         label="my-label"
         id="my-id"
@@ -80,10 +104,12 @@ describe('GlobalNavigationItemPrimitive', () => {
       size: 'large',
       styles,
     });
+
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should render a span if neither an href, onClick or component prop is passed', () => {
-    const wrapper = mount(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive styles={styles} theme={theme} />,
     );
     const span = wrapper.find('span');
@@ -95,21 +121,24 @@ describe('GlobalNavigationItemPrimitive', () => {
   });
 
   it('should render badge and icon when badge and icon props are passed', () => {
-    const wrapper = mount(
+    const MyBadge = () => <div id="badge" />;
+    const MyIcon = () => <div id="icon" />;
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         styles={styles}
         theme={theme}
-        badge={() => <div id="badge" />}
-        icon={() => <div id="icon" />}
+        badge={MyBadge}
+        icon={MyIcon}
         onClick={Function.prototype}
       />,
     );
-    expect(wrapper.find('#badge')).toHaveLength(1);
-    expect(wrapper.find('#icon')).toHaveLength(1);
+
+    expect(wrapper.find(MyBadge)).toHaveLength(1);
+    expect(wrapper.find(MyIcon)).toHaveLength(1);
   });
 
   it('should render a tooltip when a tooltip prop is passed', () => {
-    const wrapper = mount(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         component={({ className, children, onClick }) => (
           <button className={className} onClick={onClick} id="customComponent">
@@ -121,11 +150,11 @@ describe('GlobalNavigationItemPrimitive', () => {
         tooltip="Test tooltip"
       />,
     );
-    expect(wrapper.find('Tooltip').length).toBe(1);
+    expect(wrapper.find(Tooltip).length).toBe(1);
   });
 
   it('should render a tooltip without text if element is selected', () => {
-    const wrapper = mount(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         component={() => <button id="customComponent" />}
         styles={styles}
@@ -134,19 +163,6 @@ describe('GlobalNavigationItemPrimitive', () => {
         isSelected
       />,
     );
-    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
-  });
-
-  it('should render a tooltip without text if element is active', () => {
-    const wrapper = mount(
-      <GlobalNavigationItemPrimitive
-        component={() => <button id="customComponent" />}
-        styles={styles}
-        theme={theme}
-        tooltip="Test tooltip"
-        isActive
-      />,
-    );
-    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
+    expect(wrapper.find(Tooltip).props().content).toBe(undefined);
   });
 });

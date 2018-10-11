@@ -92,15 +92,20 @@ export interface Props {
   isSendSearchTermsEnabled?: boolean;
 
   /**
-   * Indicates whether or not the aggregator should be used for object searches.
+   * Indicates whether or not quick nav should be used for people searches.
    */
-  useAggregatorForConfluenceObjects?: boolean;
+  useQuickNavForPeopleResults?: boolean;
 
   /**
    * Indicates whether or not CPUS should be used for people searches.
    */
-
   useCPUSForPeopleResults?: boolean;
+
+  /**
+   * Indicates wheter to add sessionId to jira result query param
+   */
+  addSessionIdToJiraResult?: boolean;
+
   /**
    * logger with 3 levels error, warn and info
    */
@@ -124,6 +129,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       searchAggregatorServiceUrl,
       directoryServiceUrl,
       confluenceUrl,
+      addSessionIdToJiraResult,
     } = this.props;
 
     if (activityServiceUrl) {
@@ -141,6 +147,8 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     if (confluenceUrl) {
       config.confluenceUrl = confluenceUrl;
     }
+
+    config.addSessionIdToJiraResult = addSessionIdToJiraResult;
 
     return config;
   }
@@ -177,7 +185,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     const {
       linkComponent,
       isSendSearchTermsEnabled,
-      useAggregatorForConfluenceObjects,
+      useQuickNavForPeopleResults,
       referralContextIdentifiers,
       useCPUSForPeopleResults,
       logger,
@@ -189,7 +197,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           {...searchClients}
           linkComponent={linkComponent}
           isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-          useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
+          useQuickNavForPeopleResults={useQuickNavForPeopleResults}
           referralContextIdentifiers={referralContextIdentifiers}
           useCPUSForPeopleResults={useCPUSForPeopleResults}
           logger={logger}

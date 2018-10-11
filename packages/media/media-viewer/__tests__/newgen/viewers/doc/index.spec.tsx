@@ -3,7 +3,7 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { FileItem } from '@atlaskit/media-core';
+import { ProcessedFileState } from '@atlaskit/media-core';
 import { createContext } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
 import { DocViewer } from '../../../../src/newgen/viewers/doc/index';
@@ -12,7 +12,7 @@ import Button from '@atlaskit/button';
 
 function createFixture(
   fetchPromise: Promise<any>,
-  item: FileItem,
+  item: ProcessedFileState,
   collectionName?: string,
 ) {
   const context = createContext(undefined as any);
@@ -24,6 +24,26 @@ function createFixture(
   return { context, el, onClose };
 }
 
+const item: ProcessedFileState = {
+  id: 'some-id',
+  status: 'processed',
+  name: 'my pdf',
+  size: 11222,
+  mediaType: 'video',
+  mimeType: 'mp4',
+  artifacts: {
+    'document.pdf': {
+      url: '/pdf',
+      processingStatus: 'succeeded',
+    },
+  },
+};
+
+const itemWithNoArtifacts: ProcessedFileState = {
+  ...item,
+  artifacts: {},
+};
+
 describe('DocViewer', () => {
   afterEach(() => {
     constructAuthTokenUrlSpy.mockClear();
@@ -31,19 +51,6 @@ describe('DocViewer', () => {
 
   it('assigns a document src when successful', async () => {
     const fetchPromise = Promise.resolve();
-    const item: FileItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'doc',
-        artifacts: {
-          'document.pdf': {
-            url: '/pdf',
-          },
-        },
-      },
-    };
     const { el } = createFixture(fetchPromise, item);
     await (el as any).instance()['init']();
 
@@ -52,19 +59,6 @@ describe('DocViewer', () => {
 
   it('shows an indicator while loading', async () => {
     const fetchPromise = new Promise(() => {});
-    const item: FileItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'doc',
-        artifacts: {
-          'document.pdf': {
-            url: '/pdf',
-          },
-        },
-      },
-    };
     const { el } = createFixture(fetchPromise, item);
     await (el as any).instance()['init']();
 
@@ -73,22 +67,15 @@ describe('DocViewer', () => {
 
   it('shows an error message and download button if no artifact found', async () => {
     const fetchPromise = Promise.resolve(() => {});
-    const item: FileItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'doc',
-        artifacts: {},
-      },
-    };
-    const { el } = createFixture(fetchPromise, item);
+    const { el } = createFixture(fetchPromise, itemWithNoArtifacts);
 
     await (el as any).instance()['init']();
 
     const { src } = el.state();
     expect(src.status).toEqual('FAILED');
-    expect(src.err).toEqual(createError('noPDFArtifactsFound'));
+    expect(src.err).toEqual(
+      createError('noPDFArtifactsFound', undefined, itemWithNoArtifacts),
+    );
 
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -106,19 +93,6 @@ describe('DocViewer', () => {
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
     const collectionName = 'some-collection';
     const fetchPromise = Promise.resolve();
-    const item: FileItem = {
-      type: 'file',
-      details: {
-        id: 'some-id',
-        processingStatus: 'succeeded',
-        mediaType: 'doc',
-        artifacts: {
-          'document.pdf': {
-            url: '/pdf',
-          },
-        },
-      },
-    };
     const { el } = createFixture(fetchPromise, item, collectionName);
     await (el as any).instance()['init']();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);

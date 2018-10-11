@@ -11,7 +11,7 @@ import type { FormFields, SelectValue } from '../types';
 type Props = {|
   /** Function that will be called to initiate the exit transition. */
   onClose: () => void,
-  /** Function that will be called immediately after the feedback submit operation  */
+  /** Function that will be called immediately after the submit action  */
   onSubmit: (formValues: FormFields) => void,
 |};
 

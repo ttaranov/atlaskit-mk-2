@@ -12,11 +12,16 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
   version as packageVersion,
 } from '../../../package.json';
+import {
+  navigationExpandedCollapsed,
+  type CollapseExpandTrigger,
+} from '../../utils/analytics';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -131,7 +136,7 @@ type Props = {
   /** todo */
   // isCreateDrawerOpen: boolean,
   // isSearchDrawerOpen: boolean,
-};
+} & WithAnalyticsEventsProps;
 
 type State = {
   containerTheme: Provided,
@@ -189,7 +194,7 @@ class Navigation extends PureComponent<Props, State> {
       this.props.isOpen &&
       this.props.width === defaultWidth
     ) {
-      this.props.onResize({
+      this.onPropsResize({
         isOpen: true,
         width: globalOpenWidth(true) + containerOpenWidth,
       });
@@ -255,7 +260,18 @@ class Navigation extends PureComponent<Props, State> {
     });
   };
 
-  onResizeEnd = () => {
+  onPropsResize = (resizeState: resizeObj, trigger?: CollapseExpandTrigger) => {
+    const { createAnalyticsEvent, isOpen } = this.props;
+    if (trigger && resizeState.isOpen !== isOpen) {
+      navigationExpandedCollapsed(createAnalyticsEvent, {
+        isCollapsed: !resizeState.isOpen,
+        trigger,
+      });
+    }
+    this.props.onResize(resizeState);
+  };
+
+  onResizeEnd = (resizeDelta: number) => {
     const width = this.getRenderedWidth();
     const snappedWidth = this.getSnappedWidth(width);
 
@@ -270,7 +286,11 @@ class Navigation extends PureComponent<Props, State> {
         isResizing: false,
       },
       function callOnResizeAfterSetState() {
-        this.props.onResize(resizeState);
+        const resizerClicked = resizeDelta === 0;
+        this.onPropsResize(
+          resizeState,
+          resizerClicked ? undefined : 'resizerDrag',
+        );
       },
     );
   };
@@ -284,9 +304,13 @@ class Navigation extends PureComponent<Props, State> {
     return Math.max(minWidth, baselineWidth + this.state.resizeDelta);
   };
 
-  triggerResizeButtonHandler = (resizeState: resizeObj) => {
+  triggerResizeButtonHandler = (
+    resizeState: resizeObj,
+    resizerClick: boolean,
+  ) => {
     if (resizeState) {
-      this.props.onResize(resizeState);
+      const trigger = resizerClick ? 'resizerClick' : 'chevron';
+      this.onPropsResize(resizeState, trigger);
     }
   };
 

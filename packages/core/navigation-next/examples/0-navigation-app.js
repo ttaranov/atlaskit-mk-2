@@ -17,17 +17,27 @@ import {
   SearchIssuesView,
 } from './shared/routes';
 
-export default class App extends Component<{}, { isDebugEnabled: boolean }> {
+export default class App extends Component<
+  {},
+  {
+    isDebugEnabled: boolean,
+    isFlyoutAvailable: boolean,
+  },
+> {
   state = {
     isDebugEnabled: true,
+    isFlyoutAvailable: false,
   };
 
   onDebugToggle = () => {
-    this.setState({ isDebugEnabled: !this.state.isDebugEnabled });
+    this.setState(state => ({ isDebugEnabled: !state.isDebugEnabled }));
+  };
+  onFlyoutToggle = () => {
+    this.setState(state => ({ isFlyoutAvailable: !state.isFlyoutAvailable }));
   };
 
   render() {
-    const { isDebugEnabled } = this.state;
+    const { isDebugEnabled, isFlyoutAvailable } = this.state;
 
     return (
       <HashRouter>
@@ -37,6 +47,7 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
         >
           <LayoutManagerWithViewController
             customComponents={{ ProjectSwitcher }}
+            experimental_flyoutOnHover={isFlyoutAvailable}
             globalNavigation={DefaultGlobalNavigation}
           >
             <div style={{ padding: 40 }}>
@@ -46,6 +57,16 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
                 <Route path="/issues/search" component={SearchIssuesView} />
                 <Route path="/" component={DashboardsView} />
               </Switch>
+
+              <p>
+                The search drawer can be opened via the <kbd>/</kbd> keyboard
+                shortcut.
+              </p>
+              <Label label="Toggle flyout on hover (experimental)" />
+              <ToggleStateless
+                isChecked={isFlyoutAvailable}
+                onChange={this.onFlyoutToggle}
+              />
               <Label label="Toggle debug logger" />
               <ToggleStateless
                 isChecked={isDebugEnabled}

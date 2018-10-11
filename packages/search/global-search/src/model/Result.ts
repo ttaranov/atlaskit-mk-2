@@ -1,3 +1,5 @@
+import { ABTest } from '../api/CrossProductSearchClient';
+
 export enum ResultType {
   JiraObjectResult = 'jira-object-result',
   GenericContainerResult = 'generic-container-result',
@@ -36,12 +38,7 @@ export type ResultsWithTiming = {
   timings?: {
     [key: string]: number | string;
   };
-  experimentId?: string;
-  abTest?: {
-    abTestId?: string;
-    controlId?: string;
-    experimentId?: string;
-  };
+  abTest?: ABTest;
 };
 
 export interface ConfluenceResultsMap extends GenericResultMap {

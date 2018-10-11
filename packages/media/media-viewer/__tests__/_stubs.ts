@@ -1,6 +1,8 @@
 import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
 import {
+  Context,
   ContextConfig,
   MediaCollection,
   MediaCollectionProvider,
@@ -8,6 +10,7 @@ import {
   MediaItem,
   BlobService,
   Auth,
+  FileState,
 } from '@atlaskit/media-core';
 
 export class Stubs {
@@ -75,7 +78,8 @@ export class Stubs {
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
     blobService?: BlobService,
-  ) {
+    getFileState?: () => Observable<FileState>,
+  ): Partial<Context> {
     return {
       config,
       getMediaCollectionProvider: jest.fn(
@@ -85,6 +89,11 @@ export class Stubs {
         () => mediaItemProvider || Stubs.mediaItemProvider(),
       ),
       getBlobService: jest.fn(() => blobService || Stubs.blobService()),
+      file: {
+        downloadBinary: jest.fn(),
+        getFileState: jest.fn(getFileState || (() => Observable.empty())),
+        upload: jest.fn(),
+      } as any,
     };
   }
 }
@@ -94,10 +103,12 @@ export interface CreateContextOptions {
   provider?: MediaCollectionProvider;
   authPromise?: Promise<Auth>;
   blobService?: BlobService;
+  getFileState?: () => Observable<FileState>;
+  config?: ContextConfig;
 }
 
 export const createContext = (options?: CreateContextOptions) => {
-  const defaultOptions = {
+  const defaultOptions: CreateContextOptions = {
     subject: undefined,
     provider: undefined,
     authPromise: Promise.resolve<Auth>({
@@ -106,17 +117,20 @@ export const createContext = (options?: CreateContextOptions) => {
       baseUrl: 'some-service-host',
     }),
     blobService: undefined,
+    getFileState: undefined,
+    config: undefined,
   };
-  const { subject, provider, authPromise, blobService } =
+  const { subject, provider, authPromise, blobService, getFileState, config } =
     options || defaultOptions;
   const authProvider = jest.fn(() => authPromise);
   const contextConfig: ContextConfig = {
     authProvider,
   };
   return Stubs.context(
-    contextConfig,
+    config || contextConfig,
     provider || Stubs.mediaCollectionProvider(subject),
     Stubs.mediaItemProvider(subject),
     blobService,
+    getFileState,
   ) as any;
 };

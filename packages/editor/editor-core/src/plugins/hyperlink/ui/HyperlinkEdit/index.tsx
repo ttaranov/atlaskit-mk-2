@@ -83,10 +83,10 @@ class HyperlinkEdit extends React.Component<Props & InjectedIntlProps, State> {
     const labelUnlink = formatMessage(messages.unlink);
     return (
       <FloatingToolbar
-        alignX="left"
         target={getNearestNonTextNode(target)!}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        fitWidth={400}
         fitHeight={32}
         offset={[0, 12]}
         className="normal"

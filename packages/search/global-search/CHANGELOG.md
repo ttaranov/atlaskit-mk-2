@@ -1,5 +1,50 @@
 # @atlaskit/global-search
 
+## 5.9.9
+- [patch] Adds small amount of padding between the Jira advanced search footer and the result list [5e8fe66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e8fe66)
+
+## 5.9.8
+- [patch] add session id, object id, container id and content type as query params to jira results [e4c4eff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4c4eff)
+
+## 5.9.7
+- [patch] remove extra comma in no results screen [ceb1fbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceb1fbb)
+
+## 5.9.6
+- [patch] Update icon-file-type [a3b51ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3b51ef)
+- [patch] Updated dependencies [272208b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272208b)
+  - @atlaskit/icon-file-type@1.0.2
+  - @atlaskit/icon-object@1.0.2
+
+## 5.9.5
+- [patch] fix higlight problem due to duplicate react keys [beeba8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/beeba8a)
+
+## 5.9.4
+- [patch] icon-file-type and icon-object publish glyphs, svgs, and es5 instead of just dist [0823d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0823d35)
+
+## 5.9.3
+- [patch] Exposure event gets trigger on initial load instead when search results return [b89cda9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b89cda9)
+
+## 5.9.2
+- [patch] Trim search input [488257d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/488257d)
+
+## 5.9.1
+- [patch] Updated dependencies [709b239](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/709b239)
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/icon@14.0.0
+  - @atlaskit/icon-file-type@1.0.0
+  - @atlaskit/icon-object@1.0.0
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/button@9.0.13
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/flag@9.0.11
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/navigation@33.1.11
+  - @atlaskit/quick-search@4.2.9
+
+## 5.9.0
+- [minor] Feature to use quicknav for people search [9f1d252](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f1d252)
+
 ## 5.8.4
 - [patch] fix jira quick search analytics [1e8a048](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e8a048)
 

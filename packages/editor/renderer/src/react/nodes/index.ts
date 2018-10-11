@@ -1,35 +1,27 @@
 import * as React from 'react';
 import { Fragment, Node } from 'prosemirror-model';
 
-import ApplicationCard, { AppCardViewProps } from './applicationCard';
+import { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
 import BodiedExtension, {
   Props as BodiedExtensionProps,
 } from './bodiedExtension';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
-import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
+import { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
-import Date from './date';
-import Status from './status';
 import Doc from './doc';
-import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import Image from './image';
-import InlineCard from './inlineCard';
-import BlockCard from './blockCard';
 import InlineExtension, {
   Props as InlineExtensionProps,
 } from './inlineExtension';
 import LayoutSection from './layoutSection';
 import LayoutColumn from './layoutColumn';
 import ListItem from './listItem';
-import Media from './media';
-import MediaGroup from './mediaGroup';
 import MediaSingle from './mediaSingle';
-import Mention from './mention';
 import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
@@ -42,6 +34,77 @@ import TableCell from './tableCell';
 import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
+import * as Loadable from 'react-loadable';
+
+const ApplicationCard = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_ApplicationCard" */
+    './applicationCard').then(module => module.default),
+  loading: () => null,
+});
+
+const DecisionItem = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_DecisionItem" */
+    './decisionItem').then(module => module.default),
+  loading: () => null,
+});
+
+const Date = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Date" */
+    './date').then(module => module.default),
+  loading: () => null,
+});
+
+const Status = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Status" */
+    './status').then(module => module.default),
+  loading: () => null,
+});
+
+const Emoji = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Emoji" */
+    './emoji').then(module => module.default),
+  loading: () => null,
+});
+
+const InlineCard = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_InlineCard" */
+    './inlineCard').then(module => module.default),
+  loading: () => null,
+});
+
+const BlockCard = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_BlockCard" */
+    './blockCard').then(module => module.default),
+  loading: () => null,
+});
+
+const Media = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Media" */
+    './media').then(module => module.default),
+  loading: () => null,
+});
+
+const MediaGroup = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_MediaGroup" */
+    './mediaGroup').then(module => module.default),
+  loading: () => null,
+});
+
+const Mention = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Mention" */
+    './mention').then(module => module.default),
+  loading: () => null,
+});
 
 import { bigEmojiHeight } from '../../utils';
 

@@ -1,4 +1,4 @@
-import { akFontFamily, akFontSizeDefault } from '@atlaskit/util-shared-styles';
+import { fontFamily, fontSize } from '@atlaskit/theme';
 
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 
@@ -46,8 +46,8 @@ const traverseTree = (fragment: Fragment): string => {
 };
 
 const wrapperCSS = serializeStyle({
-  'font-family': akFontFamily,
-  'font-size': akFontSizeDefault,
+  'font-family': fontFamily(),
+  'font-size': fontSize(),
   'font-weight': 400,
   'line-height': '24px',
 });

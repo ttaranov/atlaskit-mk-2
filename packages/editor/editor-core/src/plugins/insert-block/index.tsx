@@ -20,6 +20,7 @@ import WithPluginState from '../../ui/WithPluginState';
 import { ToolbarSize } from '../../ui/Toolbar';
 import ToolbarInsertBlock from './ui/ToolbarInsertBlock';
 import { insertBlockType } from '../block-type/commands';
+import { startImageUpload } from '../image-upload/pm-plugins/commands';
 
 const toolbarSizeToButtons = toolbarSize => {
   switch (toolbarSize) {
@@ -27,7 +28,7 @@ const toolbarSizeToButtons = toolbarSize => {
     case ToolbarSize.XL:
     case ToolbarSize.L:
     case ToolbarSize.M:
-      return 5;
+      return 6;
 
     case ToolbarSize.S:
       return 2;
@@ -93,6 +94,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               editorView={editorView}
               tableSupported={!!tablesState}
               mentionsEnabled={mentionsState && mentionsState.enabled}
+              actionSupported={!!editorView.state.schema.nodes.taskItem}
               decisionSupported={!!editorView.state.schema.nodes.decisionItem}
               dateEnabled={!!dateState}
               placeholderTextEnabled={
@@ -108,9 +110,7 @@ const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
               mediaSupported={!!mediaState}
               imageUploadSupported={!!imageUpload}
               imageUploadEnabled={imageUpload && imageUpload.enabled}
-              handleImageUpload={
-                imageUpload && imageUpload.handleImageUpload.bind(imageUpload)
-              }
+              handleImageUpload={startImageUpload}
               availableWrapperBlockTypes={
                 blockTypeState.availableWrapperBlockTypes
               }

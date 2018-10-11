@@ -117,6 +117,7 @@ export class CollectionFetcher {
       })
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
+
         this.populateCache(contents, collectionName);
         collection.items = mergeItems(items.data.contents, collection.items);
 
@@ -138,7 +139,7 @@ export class CollectionFetcher {
     const collection = collectionCache[collectionName];
     const isLoading = collection ? collection.isLoadingNextPage : false;
 
-    if (!collection || isLoading) {
+    if (!collection || !collection.nextInclusiveStartKey || isLoading) {
       return;
     }
 

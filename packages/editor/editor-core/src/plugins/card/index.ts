@@ -2,6 +2,7 @@ import { PluginKey } from 'prosemirror-state';
 import { inlineCard, blockCard } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
+import { floatingToolbar } from './toolbar';
 
 export { CardProvider, CardOptions } from './types';
 
@@ -17,6 +18,10 @@ const cardPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [{ name: 'card', plugin: createPlugin }];
+  },
+
+  pluginsOptions: {
+    floatingToolbar,
   },
 };
 

@@ -1,19 +1,13 @@
 import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 
-import { fontSize } from '@atlaskit/theme';
 import {
-  akColorB300,
-  akColorB400,
-  akColorN800,
-  akColorN30A,
-  akColorR50,
-  akColorR500,
-  akGridSizeUnitless,
-  akFontFamily,
-  akFontSizeDefault,
-  akBorderRadius,
-} from '@atlaskit/util-shared-styles';
+  colors,
+  gridSize,
+  fontFamily,
+  fontSize,
+  borderRadius,
+} from '@atlaskit/theme';
 import {
   tableSharedStyle,
   columnLayoutSharedStyle,
@@ -28,8 +22,11 @@ import {
   akEditorTableToolbar,
   akEditorTableBorder,
   akEditorTableNumberColumnWidth,
+  TableSharedCssClassName,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
+
+export const FullPagePadding = 32;
 
 export interface Props {
   appearance?: RendererAppearance;
@@ -50,7 +47,7 @@ const fullPageStyles = ({ theme, appearance }) => {
       theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
     };
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 ${FullPagePadding}px;
   `;
 };
 
@@ -59,15 +56,15 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   font-size: ${editorFontSize}px;
   ${getLineHeight};
-  color: ${akColorN800};
+  color: ${colors.N800};
   word-wrap: break-word;
 
   & span.akActionMark {
-    color: ${akColorB400};
+    color: ${colors.B400};
     text-decoration: none;
 
     &:hover {
-      color: ${akColorB300};
+      color: ${colors.B300};
       text-decoration: underline;
     }
   }
@@ -83,17 +80,17 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   ${paragraphSharedStyles};
 
   & .UnknownBlock {
-    font-family: ${akFontFamily};
-    font-size: ${akFontSizeDefault};
+    font-family: ${fontFamily()};
+    font-size: ${fontSize()};
     font-weight: 400;
     white-space: pre-wrap;
     word-wrap: break-word;
   }
 
   & span.date-node {
-    background: ${akColorN30A};
-    border-radius: ${akBorderRadius};
-    color: ${akColorN800};
+    background: ${colors.N30A};
+    border-radius: ${borderRadius()};
+    color: ${colors.N800};
     padding: 2px 4px;
     margin: 0 1px;
     transition: background 0.3s;
@@ -101,8 +98,8 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   }
 
   & span.date-node-highlighted {
-    background: ${akColorR50};
-    color: ${akColorR500};
+    background: ${colors.R50};
+    color: ${colors.R500};
   }
 
   & ul {
@@ -168,13 +165,13 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & .akTaskList > ol,
   & .akDecisionList > ol {
     list-style-type: none;
-    font-size: ${fontSize}px;
+    font-size: ${fontSize()}px;
   }
 
   & .renderer-image {
     max-width: 100%;
     display: block;
-    margin: ${akGridSizeUnitless * 3}px 0;
+    margin: ${gridSize() * 3}px 0;
   }
 
   & div > .media-wrapped + .media-wrapped + *:not(.media-wrapped) {
@@ -209,7 +206,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-right: 0;
   }
 
-  ${tableSharedStyle} & .table-container {
+  ${tableSharedStyle} & .${TableSharedCssClassName.TABLE_CONTAINER} {
     transition: all 0.1s linear;
     overflow-x: auto;
     table {
@@ -303,9 +300,9 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   ${columnLayoutSharedStyle};
   & [data-layout-type] {
-    margin-top: ${akGridSizeUnitless * 2.5}px;
+    margin-top: ${gridSize() * 2.5}px;
     & > div + div {
-      margin-left: ${akGridSizeUnitless * 4}px;
+      margin-left: ${gridSize() * 4}px;
     }
   }
 `;

@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import LazilyRender from 'react-lazily-render';
 import { Observable, Subject } from 'rxjs';
 import { of } from 'rxjs/observable/of';
-
+import { InfiniteScroll } from '@atlaskit/media-ui';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import {
   MediaCollectionFileItem,
@@ -13,7 +13,6 @@ import {
 } from '@atlaskit/media-core';
 
 import { CardList, CardListProps, CardListState } from '../..';
-import { InfiniteScroll } from '../../infiniteScroll';
 import { LazyContent } from '../../../utils/lazyContent';
 import { TransitionGroup } from 'react-transition-group';
 import { default as Card } from '../../../root/card/cardLoader';

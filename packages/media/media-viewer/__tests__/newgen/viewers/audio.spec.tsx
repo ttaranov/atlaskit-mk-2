@@ -4,7 +4,7 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { createContext } from '../../_stubs';
-import { FileItem, Auth } from '@atlaskit/media-core';
+import { Auth, ProcessedFileState } from '@atlaskit/media-core';
 import { awaitError } from '@atlaskit/media-test-helpers';
 import { AudioViewer } from '../../../src/newgen/viewers/audio';
 import Spinner from '@atlaskit/spinner';
@@ -16,34 +16,30 @@ const token = 'some-token';
 const clientId = 'some-client-id';
 const baseUrl = 'some-base-url';
 
-const audioItem: FileItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'audio',
-    artifacts: {
-      'audio.mp3': {
-        url: '/audio',
-      },
+const audioItem: ProcessedFileState = {
+  id: 'some-id',
+  status: 'processed',
+  name: 'my audio',
+  size: 11222,
+  mediaType: 'audio',
+  mimeType: 'mp3',
+  artifacts: {
+    'audio.mp3': {
+      url: '/audio',
+      processingStatus: 'succeeded',
     },
   },
 };
 
-const audioItemWithNoArtifacts: FileItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'audio',
-    artifacts: {},
-  },
+const audioItemWithNoArtifacts: ProcessedFileState = {
+  ...audioItem,
+  artifacts: {},
 };
 
 function createFixture(
   authPromise: Promise<Auth>,
   collectionName?: string,
-  item?: FileItem,
+  item?: ProcessedFileState,
 ) {
   const context = createContext({ authPromise });
   const el = mount(

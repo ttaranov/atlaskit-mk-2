@@ -12,7 +12,8 @@ import Tree, {
   type TreeItem,
   type TreeData,
   type ItemId,
-  type TreePosition,
+  type TreeSourcePosition,
+  type TreeDestinationPosition,
 } from '../src';
 import { complexTree } from '../mockdata/complexTree';
 
@@ -94,12 +95,16 @@ export default class DragDropTree extends Component<void, State> {
     });
   };
 
-  onDragEnd = (source: TreePosition, destination: ?TreePosition) => {
+  onDragEnd = (
+    source: TreeSourcePosition,
+    destination: ?TreeDestinationPosition,
+  ) => {
     const { tree } = this.state;
 
     if (!destination) {
       return;
     }
+
     const newTree = moveItemOnTree(tree, source, destination);
     this.setState({
       tree: newTree,

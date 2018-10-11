@@ -19,12 +19,17 @@ interface Props {
   pluginState: ReactNodeViewState;
   providerFactory: ProviderFactory;
   view: EditorView;
+
+  onSelection?: (selected: boolean) => void;
 }
 
-const Wrapper = styled.div`
+const BlockWrapper = styled.div`
   width: 100%;
 `;
-Wrapper.displayName = 'WrapperClickArea';
+BlockWrapper.displayName = 'BlockWrapperClickArea';
+
+const InlineWrapper = styled.span``;
+InlineWrapper.displayName = 'InlineWrapperClickArea';
 
 interface State {
   selected: boolean;
@@ -33,6 +38,7 @@ interface State {
 // tslint:disable-next-line:variable-name
 export default function wrapComponentWithClickArea(
   ReactComponent: ReactComponentConstructor,
+  inline?: boolean,
 ): ReactComponentConstructor {
   return class WrapperClickArea extends PureComponent<Props, State> {
     state: State = { selected: false };
@@ -48,6 +54,7 @@ export default function wrapComponentWithClickArea(
     }
 
     render() {
+      const Wrapper = inline ? InlineWrapper : BlockWrapper;
       return (
         <Wrapper onClick={this.onClick}>
           <ReactComponent {...this.props} selected={this.state.selected} />
@@ -59,11 +66,16 @@ export default function wrapComponentWithClickArea(
       anchorPos: number,
       headPos: number,
     ) => {
-      const { getPos } = this.props;
+      const { getPos, onSelection } = this.props;
       const nodePos = getPos();
 
-      this.setState({
-        selected: nodePos >= anchorPos && nodePos < headPos,
+      const selected = nodePos >= anchorPos && nodePos < headPos;
+
+      const oldSelected = this.state.selected;
+      this.setState({ selected }, () => {
+        if (onSelection && selected !== oldSelected) {
+          onSelection(selected);
+        }
       });
     };
 

@@ -22,12 +22,11 @@ export class CardContent extends React.Component<CardContentProps> {
     return data.url;
   }
 
-  // TODO: do we need to extract values differently per view?
   get collapsedIcon() {
     const { state } = this.props;
     const data = state.data || {};
-    if (data.generator && data.generator.icon) {
-      return data.generator.icon;
+    if (data.generator && data.generator.icon && data.generator.icon.url) {
+      return data.generator.icon.url;
     } else {
       return undefined;
     }
@@ -154,10 +153,14 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineResolvingState() {
-    const { url } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ResolvingView
         url={url}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
       />
     );
@@ -176,10 +179,14 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineUnauthorisedState() {
-    const { url } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ForbiddenView
         url={url}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
         onAuthorise={this.handleAuthorise}
       />
@@ -187,10 +194,14 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineForbiddenState() {
-    const { url } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ForbiddenView
         url={url}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
         onAuthorise={this.handleAuthorise}
       />
@@ -198,10 +209,14 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineNotFoundState() {
-    const { url } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ErroredView
         url={url}
+        isSelected={isSelected}
         message="We couldn't find this link"
         onClick={this.url && this.handleFrameClick}
       />
@@ -209,10 +224,14 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineErroredState() {
-    const { url } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ErroredView
         url={url}
+        isSelected={isSelected}
         message="We couldn't load this link"
         onClick={this.url && this.handleFrameClick}
         onRetry={this.handleErrorRetry}

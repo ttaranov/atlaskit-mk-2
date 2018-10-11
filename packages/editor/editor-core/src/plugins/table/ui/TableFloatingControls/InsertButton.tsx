@@ -1,41 +1,58 @@
 import * as React from 'react';
+import { SyntheticEvent } from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { TableCssClassName as ClassName } from '../../types';
+import AddIcon from '@atlaskit/icon/glyph/editor/add';
+import tableMessages from '../messages';
 
 export interface ButtonProps {
   type: 'row' | 'column';
-  insertLineStyle?: object;
-  onClick: () => void;
+  index: number;
+  showInsertButton?: boolean;
+  onMouseDown: (event: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
-const InsertButton = ({ onClick, insertLineStyle, type }: ButtonProps) => (
+const InsertButton = ({
+  onMouseDown,
+  index,
+  showInsertButton,
+  type,
+  intl: { formatMessage },
+}: ButtonProps & InjectedIntlProps) => (
   <div
-    className={`pm-table-controls__insert-button-wrap pm-table-controls__insert-${type}`}
+    data-index={index}
+    className={`${ClassName.CONTROLS_INSERT_BUTTON_WRAP} ${
+      type === 'row'
+        ? ClassName.CONTROLS_INSERT_ROW
+        : ClassName.CONTROLS_INSERT_COLUMN
+    }`}
   >
-    <div className="pm-table-controls__insert-button-inner">
-      <button
-        type="button"
-        className="pm-table-controls__insert-button"
-        onClick={onClick}
-      >
-        <span className="pm-button-icon">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            focusable="false"
-            role="presentation"
+    {showInsertButton && (
+      <>
+        <div className={ClassName.CONTROLS_INSERT_BUTTON_INNER}>
+          <button
+            type="button"
+            className={ClassName.CONTROLS_INSERT_BUTTON}
+            onMouseDown={onMouseDown}
           >
-            <path
-              d="M13 11V7a1 1 0 0 0-2 0v4H7a1 1 0 0 0 0 2h4v4a1 1 0 0 0 2 0v-4h4a1 1 0 0 0 0-2h-4z"
-              fill="currentColor"
-              fillRule="evenodd"
-            />
-          </svg>
-        </span>
-      </button>
-    </div>
-    <div className="pm-table-controls__insert-line" style={insertLineStyle} />
-    <div className="pm-table-controls__insert-marker" />
+            <span className={ClassName.CONTROLS_BUTTON_ICON}>
+              <AddIcon
+                label={formatMessage(
+                  type === 'row'
+                    ? tableMessages.insertRow
+                    : tableMessages.insertColumn,
+                )}
+              />
+            </span>
+          </button>
+        </div>
+        {type === 'row' && (
+          <div className={ClassName.ROW_INSERT_LINE_OVERLAY} />
+        )}
+      </>
+    )}
+    <div className={ClassName.CONTROLS_INSERT_MARKER} />
   </div>
 );
 
-export default InsertButton;
+export default injectIntl(InsertButton);

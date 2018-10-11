@@ -1,5 +1,34 @@
 # @atlaskit/task-decision
 
+## 10.0.2
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/editor-common@19.0.0
+  - @atlaskit/renderer@27.0.0
+  - @atlaskit/util-data-test@10.0.14
+
+## 10.0.1
+- [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/renderer@26.0.0
+  - @atlaskit/util-data-test@10.0.12
+
+## 10.0.0
+- [major] Upgrade task and decisions and editor to use @atlaskit/analytics-next. Remove usage of @atlaskit/analytics. [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+
+## 9.0.2
+- [patch] Async load avatargroup because it also pulls in dropdown [fb13496](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb13496)
+
+## 9.0.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/avatar-group@2.1.3
+  - @atlaskit/button@9.0.13
+  - @atlaskit/editor-common@17.0.7
+  - @atlaskit/renderer@24.2.1
+  - @atlaskit/icon@14.0.0
+
 ## 9.0.0
 - [major] Update RXJS dependency to ^5.5.0 [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
 

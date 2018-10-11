@@ -151,8 +151,14 @@ const isReplaceStep = (step: Step) => step instanceof ReplaceStep;
  */
 const getValidPos = (tr: Transaction, pos: number) => {
   const resolvedPos = tr.doc.resolve(pos);
-  const validSelection = Selection.findFrom(resolvedPos, -1, true);
-  return validSelection ? validSelection.$anchor.pos : pos;
+  const backwardSelection = Selection.findFrom(resolvedPos, -1, true);
+  // if there's no correct cursor position before the `pos`, we try to find it after the `pos`
+  const forwardSelection = Selection.findFrom(resolvedPos, 1, true);
+  return backwardSelection
+    ? backwardSelection.from
+    : forwardSelection
+      ? forwardSelection.from
+      : pos;
 };
 
 export class PluginState {

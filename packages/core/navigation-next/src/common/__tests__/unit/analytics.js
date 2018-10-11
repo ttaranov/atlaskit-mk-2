@@ -1,7 +1,10 @@
 // @flow
 
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { navigationItemClicked } from '../../analytics';
+import {
+  navigationItemClicked,
+  navigationExpandedCollapsed,
+} from '../../analytics';
 
 const mockWithAnalyticsEvents: any = withAnalyticsEvents;
 
@@ -15,7 +18,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 describe('analytics', () => {
   const dummyComp = () => {};
   let fireEventSpy;
-  let createAnalyticsEventSpy;
+  let createAnalyticsEventSpy: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -52,6 +55,30 @@ describe('analytics', () => {
       );
       // Expect event to be fired on correct channel
       expect(fireEventSpy).toBeCalledWith('navigation');
+    });
+
+    it('should pass an actionSubjectId instead of an itemId attribute when useActionSubjectId arg is true', () => {
+      navigationItemClicked(dummyComp, 'comp', true);
+      const mockArgs = mockWithAnalyticsEvents.mock.calls[0][0];
+
+      mockArgs.onClick(createAnalyticsEventSpy, {
+        icon: function myIcon() {},
+        id: 'abc',
+        index: 1,
+      });
+      // Expect event to be created with correct payload
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'clicked',
+          actionSubject: 'navigationItem',
+          actionSubjectId: 'abc',
+          attributes: {
+            componentName: 'comp',
+            iconSource: 'myIcon',
+            navigationItemIndex: 1,
+          },
+        }),
+      );
     });
 
     it('should retrieve iconSource from before prop if icon prop not specified', () => {
@@ -112,6 +139,41 @@ describe('analytics', () => {
           }),
         }),
       );
+    });
+  });
+
+  describe('navigationExpandedCollapsed', () => {
+    it('should fire a productNavigation expanded event when isCollapsed is false', () => {
+      const analyticsArgs = { isCollapsed: false, trigger: 'chevron' };
+      navigationExpandedCollapsed(createAnalyticsEventSpy, analyticsArgs);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(1);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'expanded',
+        actionSubject: 'productNavigation',
+        attributes: {
+          trigger: 'chevron',
+        },
+      });
+    });
+
+    it('should fire a productNavigation collapsed event when isCollapsed is true', () => {
+      const analyticsArgs = { isCollapsed: true, trigger: 'chevron' };
+      navigationExpandedCollapsed(createAnalyticsEventSpy, analyticsArgs);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(1);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'collapsed',
+        actionSubject: 'productNavigation',
+        attributes: {
+          trigger: 'chevron',
+        },
+      });
+    });
+
+    it('should fire the event on the fabric navigation channel', () => {
+      const analyticsArgs = { isCollapsed: true, trigger: 'chevron' };
+      navigationExpandedCollapsed(createAnalyticsEventSpy, analyticsArgs);
+      expect(fireEventSpy).toHaveBeenCalledTimes(1);
+      expect(fireEventSpy).toHaveBeenCalledWith('navigation');
     });
   });
 });

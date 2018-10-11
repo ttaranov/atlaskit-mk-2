@@ -13,27 +13,32 @@ export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
 
+export const TableSharedCssClassName = {
+  TABLE_CONTAINER: 'pm-table-container',
+  TABLE_NODE_WRAPPER: 'pm-table-wrapper',
+};
+
 const tableSharedStyle = css`
-  .table-container {
+  .${TableSharedCssClassName.TABLE_CONTAINER} {
     position: relative;
     margin: 0 auto ${tableMarginBottom}px;
     box-sizing: border-box;
   }
-  .table-container[data-number-column='true'] {
+  .${TableSharedCssClassName.TABLE_CONTAINER}[data-number-column='true'] {
     padding-left: ${akEditorTableNumberColumnWidth - 1}px;
   }
-  .table-container[data-layout='full-width'],
-  .table-container[data-layout='wide'] {
+  .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='full-width'],
+  .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='wide'] {
     margin-left: 50%;
     transform: translateX(-50%);
   }
   /* avoid applying styles to nested tables (possible via extensions) */
-  .table-container > table,
-  .table-wrapper > table {
+  .${TableSharedCssClassName.TABLE_CONTAINER} > table,
+  .${TableSharedCssClassName.TABLE_NODE_WRAPPER} > table {
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px 0;
     border: 1px solid ${akEditorTableBorder};
-    font-size: ${fontSize}px;
+    font-size: ${fontSize()}px;
     width: 100%;
 
     &[data-autosize='true'] {
