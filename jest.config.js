@@ -48,7 +48,7 @@ const config = {
       tsConfigFile: './tsconfig.jest.json',
       skipBabel: true,
     },
-    __BASEURL__: 'http://localhost:9000',
+    __BASEURL__: 'http://testing.local.com:9000',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleNameMapper: {

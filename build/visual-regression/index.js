@@ -15,7 +15,7 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 function getProdSnapshots() {
   return new Promise((resolve, reject) => {
     // --runInBand to run in headless mode since parallel thread is not supported on chromeless
-    const cmd = `VISUAL_REGRESSION=true PROD=true jest -u --runInBand`;
+    const cmd = `VISUAL_REGRESSION=true PROD=true jest -u `;
     runCommand(cmd, resolve, reject);
   });
 }
@@ -23,7 +23,7 @@ function getProdSnapshots() {
 // function to run tests and compare snapshot against prod snapshot
 function runTests() {
   return new Promise((resolve, reject) => {
-    const cmd = `VISUAL_REGRESSION=true jest --runInBand`;
+    const cmd = `VISUAL_REGRESSION=true jest `;
     runCommand(cmd, resolve, reject);
   });
 }
@@ -49,7 +49,7 @@ async function main() {
     await webpack.startDevServer();
   }
 
-  const prodSnapshots = await getProdSnapshots();
+  // const prodSnapshots = await getProdSnapshots();
   const { code, signal } = await runTests();
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
