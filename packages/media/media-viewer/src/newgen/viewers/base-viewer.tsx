@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as deepEqual from 'deep-equal';
 import { ErrorMessage, MediaViewerError } from '../error';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
@@ -67,5 +68,12 @@ export abstract class BaseViewer<
   protected abstract get initialState(): State;
   protected abstract init(props: Props): void;
   protected abstract release(): void;
-  protected abstract needsReset(currentProps: Props, nextProps: Props): boolean;
+
+  protected needsReset(propsA: Props, propsB: Props): boolean {
+    return (
+      !deepEqual(propsA.item, propsB.item) ||
+      propsA.context !== propsB.context ||
+      propsA.collectionName !== propsB.collectionName
+    );
+  }
 }

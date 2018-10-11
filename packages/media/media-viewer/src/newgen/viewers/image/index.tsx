@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Context, ProcessedFileState, MediaItem } from '@atlaskit/media-core';
-import * as deepEqual from 'deep-equal';
 import { Outcome } from '../../domain';
 import { createError, MediaViewerError } from '../../error';
 import { InteractiveImg } from './interactive-img';
@@ -81,14 +80,6 @@ export class ImageViewer extends BaseViewer<
   protected renderSuccessful(objectUrl: ObjectUrl) {
     const { onClose } = this.props;
     return <InteractiveImg src={objectUrl} onClose={onClose} />;
-  }
-
-  protected needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
-    return (
-      !deepEqual(propsA.item, propsB.item) ||
-      propsA.context !== propsB.context ||
-      propsA.collectionName !== propsB.collectionName
-    );
   }
 
   private cancelImageFetch?: () => void;
