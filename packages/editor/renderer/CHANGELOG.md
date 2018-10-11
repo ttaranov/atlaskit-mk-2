@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 27.2.2
+- [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
+
 ## 27.2.1
 - [patch] Fixes not rendering whitespace for empty paragraphs. ED-5500 [b7e5935](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7e5935)
 

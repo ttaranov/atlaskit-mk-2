@@ -25,6 +25,7 @@ import {
   TableSharedCssClassName,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
+import { RendererCssClassName } from '../../consts';
 
 export const FullPagePadding = 32;
 
@@ -206,7 +207,23 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-right: 0;
   }
 
-  ${tableSharedStyle} & .${TableSharedCssClassName.TABLE_CONTAINER} {
+  /* Breakout for tables and extensions */
+  .${RendererCssClassName.DOCUMENT} > {
+    .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='full-width'],
+    .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='wide'],
+    .${RendererCssClassName.EXTENSION}[data-layout='wide'],
+    .${RendererCssClassName.EXTENSION}[data-layout='full-width']   {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    * .${TableSharedCssClassName.TABLE_CONTAINER},
+    * .${RendererCssClassName.EXTENSION} {
+      width: 100% !important;
+    }
+  }
+
+  ${tableSharedStyle}
+  .${TableSharedCssClassName.TABLE_CONTAINER} {
     transition: all 0.1s linear;
     overflow-x: auto;
     table {
@@ -290,12 +307,6 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     &:first-child {
       margin-top: 0;
     }
-  }
-
-  & .Extension-wide,
-  & .Extension-full-width {
-    margin-left: 50%;
-    transform: translateX(-50%);
   }
 
   ${columnLayoutSharedStyle};
