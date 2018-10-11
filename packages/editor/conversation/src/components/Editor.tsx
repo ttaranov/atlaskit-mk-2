@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
 import { ProviderFactory } from '@atlaskit/editor-common';
@@ -192,7 +193,7 @@ export default class Editor extends React.Component<Props, State> {
       allowLists: true,
       onSave: () => this.onSave(actions),
       onCancel: this.onCancel,
-      onChange: () => this.onChange(actions),
+      onChange: debounce(() => this.onChange(actions), 250),
       defaultValue,
       allowHelpDialog: allowFeedbackAndHelpButtons,
       primaryToolbarComponents: allowFeedbackAndHelpButtons
