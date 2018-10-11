@@ -246,7 +246,6 @@ describe('Context', () => {
             name: 'file-one',
             size: 1,
             artifacts: undefined,
-            binaryUrl: '/file/1/binary',
           });
           done();
         },

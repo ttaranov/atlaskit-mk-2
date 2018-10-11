@@ -13,7 +13,7 @@ import { addContainerLeftRightPadding } from './resizer/utils';
 import Resizer from './resizer/resizer';
 
 import { getPluginState } from '../main';
-import { updateShadows } from '../../nodeviews/TableComponent';
+import { updateRightShadow } from '../../nodeviews/TableComponent';
 
 import { hasTableBeenResized } from '../../utils';
 import { getCellMinWidth } from '../../index';
@@ -148,12 +148,10 @@ export const updateControls = (state: EditorState) => {
     }
   }
 
-  updateShadows(
+  updateRightShadow(
     wrapper,
     tableRef,
-    wrapper.parentElement.querySelector(`.${ClassName.TABLE_SHADOW}.-left`),
-    wrapper.parentElement.querySelector(`.${ClassName.TABLE_SHADOW}.-right`),
-    !!tableRef,
+    wrapper.parentElement.querySelector(`.${ClassName.TABLE_RIGHT_SHADOW}`),
   );
 };
 

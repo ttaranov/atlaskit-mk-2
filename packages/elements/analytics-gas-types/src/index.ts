@@ -5,6 +5,8 @@ export const TRACK_EVENT_TYPE = 'track';
 export const SCREEN_EVENT_TYPE = 'screen';
 export const OPERATIONAL_EVENT_TYPE = 'operational';
 
+export const DEFAULT_SOURCE = 'unknown';
+
 export type EventType = 'ui' | 'track' | 'screen' | 'operational';
 
 export type GasScreenEventPayload = {
@@ -30,7 +32,7 @@ export type GasCorePayload = {
     [key: string]: any;
   };
   tags?: Array<string>;
-  source: string;
+  source?: string;
 };
 
 export type GasPayload = AnalyticsEventPayload & GasCorePayload;

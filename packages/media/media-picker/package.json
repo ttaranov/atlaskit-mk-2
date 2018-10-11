@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "18.1.0",
+  "version": "20.0.0",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -20,7 +20,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-gas-types": "^3.2.1",
+    "@atlaskit/analytics-gas-types": "^3.2.2",
     "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/analytics-next-types": "^3.0.1",
     "@atlaskit/button": "^9.0.13",
@@ -28,9 +28,9 @@
     "@atlaskit/field-text": "^7.0.4",
     "@atlaskit/flag": "^9.0.11",
     "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/media-card": "^38.0.1",
-    "@atlaskit/media-editor": "^15.0.0",
-    "@atlaskit/media-store": "^8.0.1",
+    "@atlaskit/media-card": "^39.0.0",
+    "@atlaskit/media-editor": "^16.0.0",
+    "@atlaskit/media-store": "^8.1.0",
     "@atlaskit/media-ui": "^6.1.0",
     "@atlaskit/modal-dialog": "^7.0.2",
     "@atlaskit/spinner": "^9.0.5",
@@ -53,18 +53,18 @@
     "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^24.1.1",
+    "@atlaskit/media-core": "^24.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "rxjs": "^5.5.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/analytics-listeners": "^4.0.3",
+    "@atlaskit/analytics-listeners": "^4.0.5",
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/layer-manager": "^5.0.13",
-    "@atlaskit/media-core": "^24.1.1",
-    "@atlaskit/media-test-helpers": "^18.2.4",
+    "@atlaskit/media-core": "^24.2.0",
+    "@atlaskit/media-test-helpers": "^18.2.5",
     "@atlaskit/toggle": "^5.0.9",
     "@atlaskit/webdriver-runner": "^0.1.0",
     "@types/dateformat": "^1.0.1",

@@ -25,6 +25,7 @@ import {
   layoutColumn,
   layoutSection,
 } from '@atlaskit/editor-test-helpers';
+import { taskDecision } from '@atlaskit/util-data-test';
 import { uuid } from '@atlaskit/editor-common';
 
 describe('tasks and decisions - input rules', () => {
@@ -39,7 +40,9 @@ describe('tasks and decisions - input rules', () => {
   const editorFactory = (doc: any) =>
     createEditor({
       editorProps: {
-        allowTasksAndDecisions: true,
+        taskDecisionProvider: Promise.resolve(
+          taskDecision.getMockTaskDecisionResource(),
+        ),
         allowTables: true,
         allowExtension: true,
         allowLayouts: true,

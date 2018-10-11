@@ -1,5 +1,8 @@
 # @atlaskit/tree
 
+## 4.1.1
+- [patch] Fixing drag&drop on clipped trees [b18ecfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b18ecfe)
+
 ## 4.1.0
 - [minor] Expanded parent item is collapsed while dragged. [192b3e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/192b3e2)
 

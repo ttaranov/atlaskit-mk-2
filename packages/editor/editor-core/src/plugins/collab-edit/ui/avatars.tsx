@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import Avatar from '@atlaskit/avatar';
 import AvatarGroup from '@atlaskit/avatar-group';
-import { akGridSizeUnitless, akColorN20 } from '@atlaskit/util-shared-styles';
+import { gridSize, colors } from '@atlaskit/theme';
 import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
 import { akEditorSmallZIndex } from '@atlaskit/editor-common';
 
@@ -21,7 +21,7 @@ export interface Props {
 }
 
 const AvatarContainer = styled.div`
-  margin-right: ${akGridSizeUnitless}px;
+  margin-right: ${gridSize()}px;
   display: flex;
   align-items: center;
   div:last-child > button {
@@ -33,10 +33,10 @@ const AvatarContainer = styled.div`
 `;
 
 const InviteTeamWrapper = styled.div`
-  background: ${akColorN20};
+  background: ${colors.N20};
   border-radius: 50%;
-  min-width: ${akGridSizeUnitless * 4}px;
-  margin-left: -${akGridSizeUnitless / 2}px;
+  min-width: ${gridSize() * 4}px;
+  margin-left: -${gridSize() / 2}px;
 `;
 
 const itemAppear = keyframes`

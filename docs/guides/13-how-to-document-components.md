@@ -117,7 +117,9 @@ ${<Props
 />}
 `
 ```
+#### Documentation template
 
+A template starter is available [here](https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/docs/templates/0-intro-template.js).
 
 #### What your documentation text should cover
 

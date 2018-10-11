@@ -1,12 +1,5 @@
-// @ts-ignore: unused variable
-// prettier-ignore
-import { css, Styles, StyledComponentClass } from 'styled-components';
-import {
-  akColorN20,
-  akBorderRadius,
-  akColorN300,
-  akColorN800,
-} from '@atlaskit/util-shared-styles';
+import { css } from 'styled-components';
+import { borderRadius, colors } from '@atlaskit/theme';
 import {
   blockNodesVerticalMargin,
   akEditorElementMinWidth,
@@ -16,8 +9,8 @@ import { akEditorCodeFontFamily, akEditorCodeBlockPadding } from '../../styles';
 export const codeBlockStyles = css`
   .ProseMirror .code-block {
     font-family: ${akEditorCodeFontFamily};
-    background: ${akColorN20};
-    border-radius: ${akBorderRadius};
+    background: ${colors.N20};
+    border-radius: ${borderRadius()}px;
     font-size: 14px;
     line-height: 24px;
     margin: ${blockNodesVerticalMargin} 0 0 0;
@@ -26,12 +19,12 @@ export const codeBlockStyles = css`
     min-width: ${akEditorElementMinWidth}px;
 
     .line-number-gutter {
-      color: ${akColorN300};
+      color: ${colors.N300};
       background-color: rgba(9, 30, 66, 0.04);
       text-align: right;
       user-select: none;
       padding: ${akEditorCodeBlockPadding} 8px;
-      border-radius: ${akBorderRadius};
+      border-radius: ${borderRadius()}px;
       font-size: 12px;
       line-height: 24px;
 
@@ -48,7 +41,7 @@ export const codeBlockStyles = css`
 
     .code-content {
       padding: ${akEditorCodeBlockPadding} 16px;
-      color: ${akColorN800};
+      color: ${colors.N800};
       overflow: auto;
       display: flex;
       flex: 1;
