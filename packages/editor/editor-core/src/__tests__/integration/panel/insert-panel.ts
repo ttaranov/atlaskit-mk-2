@@ -23,7 +23,7 @@ BrowserTestCase(
     await quickInsert(browser, 'Panel');
     // type some text
 
-    await browser.type(editable, 'hello have a link ');
+    await browser.type(editable, 'this text should be in the panel');
 
     // expect(await browser.isVisible('.media-single')).toBe(true);
 
