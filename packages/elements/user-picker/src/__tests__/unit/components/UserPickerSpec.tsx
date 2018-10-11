@@ -2,6 +2,7 @@ import Select from '@atlaskit/select';
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { Props, UserPicker } from '../../../components/UserPicker';
+import UserPickerItem from '../../../components/UserPickerItem';
 import { User } from '../../../types';
 
 type Styles = {
@@ -66,5 +67,19 @@ describe('UserPicker', () => {
     select.simulate('change', { value: users[0] }, { action: 'select-option' });
 
     expect(onChange).toHaveBeenCalledWith(users[0], 'select-option');
+  });
+
+  it('should render UserPickerItem as label', () => {
+    const component = shallowUserPicker({ users });
+    const formatOptionLabel: Function = component
+      .find(Select)
+      .prop('formatOptionLabel');
+
+    expect(
+      formatOptionLabel(
+        { value: users[0], label: 'Jace Beleren' },
+        { context: 'menu' },
+      ),
+    ).toEqual(<UserPickerItem user={users[0]} context="menu" />);
   });
 });
