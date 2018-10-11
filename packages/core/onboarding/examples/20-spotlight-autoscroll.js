@@ -60,6 +60,13 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
               </span>
             </Highlight>
           </SpotlightTarget>
+        </HighlightGroup>
+
+        {[11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(i => (
+          <Paragraph key={i} position={i} />
+        ))}
+
+        <HighlightGroup>
           <SpotlightTarget name="target-two">
             <Highlight color="red">
               I&apos;m also out of view{' '}
@@ -69,10 +76,6 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
             </Highlight>
           </SpotlightTarget>
         </HighlightGroup>
-
-        {[11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(i => (
-          <Paragraph key={i} position={i} />
-        ))}
 
         <p style={{ marginBottom: '1em' }}>
           <button onClick={this.highlightTwo}>Show</button>

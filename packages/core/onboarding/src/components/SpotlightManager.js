@@ -88,12 +88,12 @@ export default class SpotlightManager extends PureComponent<
     }
   };
 
-  spotlightOpen = (name: string) => {
-    this.setState({ spotlightCount: this.state.spotlightCount + 1 });
+  spotlightOpen = () => {
+    this.setState(state => ({ spotlightCount: state.spotlightCount + 1 }));
   };
 
-  spotlightClose = (name: string) => {
-    this.setState({ spotlightCount: this.state.spotlightCount - 1 });
+  spotlightClose = () => {
+    this.setState(state => ({ spotlightCount: state.spotlightCount - 1 }));
   };
 
   getTargetElement = (name: string) => this.targets[name];
@@ -113,9 +113,7 @@ export default class SpotlightManager extends PureComponent<
           <React.Fragment>
             <Fade in={this.state.spotlightCount > 0}>
               {animationStyles => (
-                <Portal zIndex={600}>
-                  <Blanket style={animationStyles} isTinted={blanketIsTinted} />
-                </Portal>
+                <Blanket style={animationStyles} isTinted={blanketIsTinted} />
               )}
             </Fade>
             {children}

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementType } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Popper } from '@atlaskit/popper';
 import {
@@ -30,7 +30,6 @@ import SpotlightCard from './SpotlightCard';
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import Actions from './SpotlightActions';
 import { SpotlightConsumer } from './SpotlightManager';
-import { compose, withScrollMeasurements } from '../hoc';
 import { type Props as SpotlightProps } from './Spotlight';
 
 type Props = {
@@ -102,15 +101,13 @@ class SpotlightDialog extends Component<Props> {
       console.warn('Please provide "footer" OR "actions", not both.'); // eslint-disable-line no-console
     }
 
-    console.log(targetNode);
-
     return (
       <Popper referenceElement={targetNode}>
         {({ ref, style, placement, outOfBoundaries }) => (
           <FocusLock enabled={isOpen} returnFocus={false}>
             <SpotlightCard
               innerRef={ref}
-              styles={style}
+              styles={{ ...style, ...animationStyles }}
               actions={actions}
               actionsBeforeElement={actionsBeforeElement}
               image={image && <Image alt={heading} src={image} />}

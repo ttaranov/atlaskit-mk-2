@@ -7,7 +7,9 @@ import React, {
 } from 'react';
 import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
+import ScrollLock from 'react-scrolllock';
 import { Fade } from './Animation';
+import Clone from './Clone';
 import SpotlightDialog from './SpotlightDialog';
 import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import { SpotlightConsumer } from './SpotlightManager';
@@ -65,26 +67,56 @@ class SpotlightWrapper extends React.Component<Props> {
     dialogWidth: 400,
     pulse: true,
   };
+  state = {
+    showClone: false,
+  };
+  componentDidMount() {
+    window.addEventListener('scroll', e => {
+      this.setState({ showClone: true });
+    });
+  }
 
   render() {
-    const { target, targetNode } = this.props;
+    const {
+      pulse,
+      target,
+      targetNode,
+      targetBgColor,
+      targetOnClick,
+      targetRadius,
+      targetReplacement,
+    } = this.props;
+    const { showClone } = this.state;
     return (
       <SpotlightConsumer>
         {getTargetElement => (
           <SpotlightTransitionConsumer>
             {({ isOpen, onExited }) => (
-              <Fade in={isOpen} onExited={onExited}>
-                {animationStyles => (
-                  <Portal zIndex={layers.spotlight()}>
-                    <SpotlightDialog
-                      {...this.props}
-                      isOpen={isOpen}
-                      animationStyles={animationStyles}
+              <React.Fragment>
+                <Portal zIndex={layers.spotlight()}>
+                  {showClone && (
+                    <Clone
+                      pulse={pulse}
+                      target={target}
+                      targetBgColor={targetBgColor}
                       targetNode={targetNode || getTargetElement(target)}
+                      targetOnClick={targetOnClick}
+                      targetRadius={targetRadius}
+                      targetReplacement={targetReplacement}
                     />
-                  </Portal>
-                )}
-              </Fade>
+                  )}
+                  <Fade in={isOpen} onExited={onExited}>
+                    {animationStyles => (
+                      <SpotlightDialog
+                        {...this.props}
+                        isOpen={isOpen}
+                        animationStyles={animationStyles}
+                        targetNode={targetNode || getTargetElement(target)}
+                      />
+                    )}
+                  </Fade>
+                </Portal>
+              </React.Fragment>
             )}
           </SpotlightTransitionConsumer>
         )}

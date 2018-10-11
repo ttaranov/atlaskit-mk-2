@@ -56,22 +56,24 @@ const Clone = (props: Props) => {
     const targetText = target ? ` matching "${target}".` : '.';
     throw Error(`Spotlight couldn't find a target${targetText}.`);
   }
-  const rect = targetNode.getBoundingClientRect();
+  const { height, left, top, width } = targetNode.getBoundingClientRect();
+  const rect = { height, left, top, width };
+  console.log(rect);
   const clone = cloneAndOverrideStyles(targetNode);
 
   return Replacement ? (
     <Replacement {...rect} />
   ) : (
-    <TargetOuter style={rect}>
-      <TargetInner
-        pulse={pulse}
-        bgColor={targetBgColor}
-        radius={targetRadius}
-        style={rect}
-      >
-        <CloneWrapper html={clone} />
-        <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
-      </TargetInner>
-    </TargetOuter>
+    <TargetInner
+      pulse={pulse}
+      bgColor={targetBgColor}
+      radius={targetRadius}
+      style={rect}
+    >
+      <CloneWrapper html={clone.outerHTML} />
+      <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
+    </TargetInner>
   );
 };
+
+export default Clone;
