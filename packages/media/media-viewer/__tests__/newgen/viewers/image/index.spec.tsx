@@ -33,12 +33,14 @@ function createFixture(
   });
   const context = createContext({ blobService });
   const onClose = jest.fn();
+  const onLoaded = jest.fn();
   const el = mount(
     <ImageViewer
       context={context}
       item={imageItem}
       collectionName={collectionName}
       onClose={onClose}
+      onLoad={onLoaded}
     />,
   );
   return { blobService, context, el, onClose };
@@ -157,5 +159,23 @@ describe('ImageViewer', () => {
     el.simulate('click');
 
     expect(onClose).toHaveBeenCalled();
+  });
+
+  describe('Analytics', () => {
+    it('should call onLoad with success', async () => {
+      const response = Promise.resolve(new Blob());
+      const { el } = createFixture(response);
+
+      await response;
+      expect(el.prop('onLoad')).toHaveBeenCalledWith({ status: 'success' });
+    });
+
+    it('should call onLoad with error', async () => {
+      const response = Promise.reject(new Error('test_error'));
+      const { el } = createFixture(response);
+
+      await awaitError(response, 'test_error');
+      expect(el.prop('onLoad')).toHaveBeenCalledWith({ status: 'error' });
+    });
   });
 });
