@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/empty-state",
-  "version": "3.0.9",
+  "version": "3.1.0",
   "description": "A React component used for presenting various empty states (no items, empty search, broken link, welcome screen etc.)",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

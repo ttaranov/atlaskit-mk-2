@@ -2,13 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes, ComponentClass } from 'react';
-import {
-  akGridSizeUnitless,
-  akBorderRadius,
-  akColorN400,
-  akColorN60A,
-  akColorP400,
-} from '@atlaskit/util-shared-styles';
+import { gridSize, borderRadius, colors } from '@atlaskit/theme';
 
 export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
@@ -20,13 +14,13 @@ export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
   margin-right: ${({ width }: { width?: 'small' | 'large' }) =>
-    !width || width === 'large' ? 0 : akGridSizeUnitless}px;
+    !width || width === 'large' ? 0 : gridSize()}px;
 `;
 
 export const ConfirmationPopup: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: #fff;
-  border-radius: ${akBorderRadius};
-  box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+  border-radius: ${borderRadius()}px;
+  box-shadow: 0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A};
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -40,7 +34,7 @@ export const ConfirmationText: ComponentClass<HTMLAttributes<{}>> = styled.div`
   font-size: 14px;
   word-spacing: 4px;
   line-height: 22px;
-  color: ${akColorN400};
+  color: ${colors.N400};
   margin-top: 30px;
   padding: 20px;
   & > div {
@@ -57,7 +51,7 @@ export const ConfirmationText: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const ConfirmationHeader: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
-  background-color: ${akColorP400};
+  background-color: ${colors.P400};
   height: 100px;
   width: 100%;
   display: inline-block;

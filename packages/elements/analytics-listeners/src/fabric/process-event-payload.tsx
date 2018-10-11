@@ -1,4 +1,5 @@
 import {
+  DEFAULT_SOURCE,
   GasPayload,
   GasScreenEventPayload,
 } from '@atlaskit/analytics-gas-types';
@@ -35,7 +36,9 @@ const updatePayloadWithContext = (
   event: UIAnalyticsEventInterface,
 ): GasPayload | GasScreenEventPayload => {
   if (event.context.length === 0) {
-    return event.payload as GasPayload | GasScreenEventPayload;
+    return { source: DEFAULT_SOURCE, ...event.payload } as
+      | GasPayload
+      | GasScreenEventPayload;
   }
   const {
     [ELEMENTS_CONTEXT]: attributes,
@@ -48,7 +51,7 @@ const updatePayloadWithContext = (
       event.payload.attributes || {},
     );
   }
-  return { source: 'unknown', ...fields, ...event.payload } as
+  return { source: DEFAULT_SOURCE, ...fields, ...event.payload } as
     | GasPayload
     | GasScreenEventPayload;
 };

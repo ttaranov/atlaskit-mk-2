@@ -286,7 +286,7 @@ export class Card extends Component<CardProps, CardState> {
 
   get actions(): CardAction[] {
     const { actions = [], identifier } = this.props;
-    const { status } = this.state;
+    const { status, metadata } = this.state;
     if (isFileIdentifier(identifier) && status === 'failed-processing') {
       actions.unshift({
         label: 'Download',
@@ -294,6 +294,7 @@ export class Card extends Component<CardProps, CardState> {
         handler: async () =>
           this.props.context.file.downloadBinary(
             await identifier.id,
+            (metadata as FileDetails).name,
             identifier.collectionName,
           ),
       });

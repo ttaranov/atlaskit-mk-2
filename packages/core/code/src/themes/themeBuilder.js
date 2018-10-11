@@ -55,26 +55,26 @@ export type Theme = {
 const codeContainerStyle = {
   fontFamily: codeFontFamily,
   fontSize: '12px',
-  top: gridSize(),
-  left: '16px', // 2x akGridSize
-  position: 'relative',
-  paddingRight: '16px', // 2x akGridSize
+  lineHeight: 20 / 12,
+  padding: gridSize(),
 };
 
 const lineNumberContainerStyle = (theme: Theme) => ({
   fontSize: `${fontSize()}px`,
-  lineHeight: '20px',
+  lineHeight: 20 / 14,
   color: theme.lineNumberColor,
   backgroundColor: theme.lineNumberBgColor,
+  flexShrink: 0,
   padding: gridSize(),
-  float: 'left',
-  top: '0',
-  left: '0',
   textAlign: 'right',
   userSelect: 'none',
 });
 
 const sharedCodeStyle = (theme: Theme) => ({
+  key: {
+    color: theme.keywordColor,
+    fontWeight: 'bolder',
+  },
   keyword: {
     color: theme.keywordColor,
     fontWeight: 'bolder',
@@ -190,10 +190,9 @@ const codeStyle = theme => ({
   background: theme.backgroundColor,
   color: theme.textColor,
   borderRadius: borderRadius(),
-  display: 'block',
-  lineHeight: 1.6,
+  display: 'flex',
+  lineHeight: 20 / 12,
   overflowX: 'auto',
-  transform: 'translate3d(0,0,0)',
   whiteSpace: 'pre',
 });
 

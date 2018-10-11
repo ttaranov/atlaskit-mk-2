@@ -1,5 +1,30 @@
 # @atlaskit/editor-core
 
+## 85.4.1
+- [patch] ED-5289 add toolbar for inline smart card [25d7af7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d7af7)
+
+## 85.4.0
+- [minor] FS-2901 - Move action toolbar icon to insert group [57502ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57502ac)
+
+## 85.3.1
+- [patch] Updated dependencies [17afe04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17afe04)
+  - @atlaskit/media-picker@20.0.0
+
+## 85.3.0
+- [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
+
+## 85.2.3
+- [patch] ED-2644 Fixes panels merging incorrectly when deleting empty paragraph [967edcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/967edcc)
+
+## 85.2.2
+- [patch] ED-5468: simplify floating toolbar config resolution [1c795f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c795f2)
+
+## 85.2.1
+- [patch] Fix popups are placed incorrectly in modals [2dde31d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dde31d)
+
+## 85.2.0
+- [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
+
 ## 85.1.0
 - [minor] ED-5370 refactor legacy image-upload plugin [fb10ad4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb10ad4)
 

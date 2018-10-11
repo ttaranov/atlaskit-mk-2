@@ -788,4 +788,23 @@ describe('Card', () => {
     expect(actions).toHaveLength(2);
     expect(actions[0].label).toEqual('Download');
   });
+
+  it('should call item download when download Action is executed', async () => {
+    const { component, context } = setup();
+    component.setState({
+      status: 'failed-processing',
+      metadata: {
+        name: 'some-file-name',
+      },
+    });
+    component.update();
+    const actions = component.find(CardView).prop('actions')!;
+    actions[0].handler();
+    await fileIdentifier.id;
+    expect(context.file.downloadBinary).toHaveBeenCalledWith(
+      fileIdentifier.id,
+      'some-file-name',
+      fileIdentifier.collectionName,
+    );
+  });
 });

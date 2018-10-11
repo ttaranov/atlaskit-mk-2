@@ -92,7 +92,6 @@ export const createComponentWithAnalytics = (
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
-      source: 'unknown',
     }),
   })(componentChannels[channel]);
 
@@ -104,7 +103,6 @@ export const createComponentWithAttributesWithAnalytics = (
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
-      source: 'unknown',
       attributes: {
         packageName: '@atlaskit/foo',
         packageVersion: '1.0.0',
@@ -123,7 +121,6 @@ export const createTaggedComponentWithAnalytics = (
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
-      source: 'unknown',
       tags: [tag, 'foo'],
     }),
   })(componentChannels[channel]);
@@ -136,7 +133,6 @@ export const IncorrectEventType = (
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'unknown' as EventType,
-      source: 'unknown',
     }),
   })(componentChannels[channel]);
 

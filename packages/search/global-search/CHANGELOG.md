@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 5.9.9
+- [patch] Adds small amount of padding between the Jira advanced search footer and the result list [5e8fe66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e8fe66)
+
+## 5.9.8
+- [patch] add session id, object id, container id and content type as query params to jira results [e4c4eff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4c4eff)
+
 ## 5.9.7
 - [patch] remove extra comma in no results screen [ceb1fbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ceb1fbb)
 

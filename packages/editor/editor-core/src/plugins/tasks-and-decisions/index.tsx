@@ -10,7 +10,6 @@ import {
   uuid,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { messages as listMessages } from '../lists/ui/ToolbarLists';
 import { messages as insertBlockMessages } from '../insert-block/ui/ToolbarInsertBlock';
 import { createPlugin } from './pm-plugins/main';
 import inputRulePlugin from './pm-plugins/input-rules';
@@ -72,11 +71,11 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
   pluginsOptions: {
     quickInsert: ({ formatMessage }) => [
       {
-        title: formatMessage(listMessages.action),
+        title: formatMessage(insertBlockMessages.action),
         priority: 100,
         keywords: ['task'],
         icon: () => (
-          <EditorTaskIcon label={formatMessage(listMessages.action)} />
+          <EditorTaskIcon label={formatMessage(insertBlockMessages.action)} />
         ),
         action(insert, state) {
           return insert(

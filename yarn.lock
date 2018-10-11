@@ -2888,6 +2888,10 @@ bluebird@^3.3.0, bluebird@^3.5.0, bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
+blueimp-load-image@^2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.19.0.tgz#b61eeac0063f371c710fdb78aebbc4d7d34f8e2e"
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
@@ -4367,6 +4371,10 @@ cosmiconfig@^4.0.0:
     js-yaml "^3.9.0"
     parse-json "^4.0.0"
     require-from-string "^2.0.1"
+
+crc-32@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-0.3.0.tgz#6a3d3687f5baec41f7e9b99fe1953a2e5d19775e"
 
 crc32-stream@^2.0.0:
   version "2.0.0"
@@ -11587,6 +11595,12 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
+png-chunks-extract@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/png-chunks-extract/-/png-chunks-extract-1.0.0.tgz#fad4a905e66652197351c65e35b92c64311e472d"
+  dependencies:
+    crc-32 "^0.3.0"
+
 pngjs@^3.0.0, pngjs@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.3.3.tgz#85173703bde3edac8998757b96e5821d0966a21b"
@@ -12265,9 +12279,9 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.6.tgz#5da781b082a82f2dd2a99fbf808b68acc14f77fb"
+prosemirror-utils@^0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.7.tgz#2a54de0883a609442b83fe5c076073b828c58f19"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.6.0:
   version "1.6.0"
@@ -15986,6 +16000,10 @@ useragent@^2.1.12:
   dependencies:
     lru-cache "2.2.x"
     tmp "0.0.x"
+
+utf8-string-bytes@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/utf8-string-bytes/-/utf8-string-bytes-1.0.3.tgz#8923be75a543b1a1bb00e5a12c52c1b0553b65c6"
 
 util-deprecate@~1.0.1:
   version "1.0.2"

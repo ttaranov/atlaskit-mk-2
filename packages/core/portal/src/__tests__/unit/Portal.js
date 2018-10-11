@@ -60,3 +60,17 @@ test('should use DOM ordering to stack sibiling portals', () => {
   expect(zIndex(front)).toEqual(zIndex(back));
   expect(back.nextSibling).toBe(front);
 });
+
+test('should create a new stacking context', () => {
+  wrapper = mount(
+    <App>
+      <Portal>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+  const elements = document.getElementsByClassName('atlaskit-portal');
+  expect(elements).toHaveLength(1);
+  const position = elements[0].style.getPropertyValue('position');
+  expect(position).toBe('absolute');
+});

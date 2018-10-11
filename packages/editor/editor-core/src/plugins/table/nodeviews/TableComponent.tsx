@@ -60,16 +60,19 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidMount() {
-    this.props.onComponentMount();
+    const {
+      onComponentMount,
+      allowColumnResizing,
+      UNSAFE_allowFlexiColumnResizing,
+    } = this.props;
 
-    if (this.props.allowColumnResizing && this.wrapper && !isIE11) {
+    onComponentMount();
+
+    if (allowColumnResizing && this.wrapper && !isIE11) {
       this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
     }
 
-    if (
-      this.props.allowColumnResizing &&
-      this.props.UNSAFE_allowFlexiColumnResizing
-    ) {
+    if (allowColumnResizing && UNSAFE_allowFlexiColumnResizing) {
       const { node, containerWidth } = this.props;
 
       setColumnWidths(
@@ -188,9 +191,7 @@ class TableComponent extends React.Component<ComponentProps> {
       >
         {allowControls && rowControls}
         <div
-          className={`${
-            ClassName.TABLE_NODE_WRAPPER
-          } editor-popup-ignore-scroll-parent`}
+          className={ClassName.TABLE_NODE_WRAPPER}
           ref={elem => {
             this.wrapper = elem;
             this.props.contentDOM(elem ? elem : undefined);

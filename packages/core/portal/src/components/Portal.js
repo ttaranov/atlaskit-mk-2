@@ -18,7 +18,7 @@ type State = {
 const createContainer = (zIndex: number) => {
   const container = document.createElement('div');
   container.setAttribute('class', 'atlaskit-portal');
-  container.setAttribute('style', `z-index: ${zIndex}; position: absolute`);
+  container.setAttribute('style', `z-index: ${zIndex}; position: absolute;`);
   return container;
 };
 
@@ -30,6 +30,7 @@ const body = () => {
 // This is a generic component does two things:
 // 1. Portals it's children using React.createPortal
 // 2. Creates the DOM node container for the portal based on props
+// 3. Ensures DOM the container creates it's own stacking context
 
 class Portal extends React.Component<Props, State> {
   static defaultProps = {

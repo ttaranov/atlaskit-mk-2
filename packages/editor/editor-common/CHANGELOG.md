@@ -1,5 +1,17 @@
 # @atlaskit/editor-common
 
+## 19.3.0
+- [minor] Dynamic font size for panels [ea3b522](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea3b522)
+
+## 19.2.0
+- [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
+
+## 19.1.1
+- [patch] Fix popups are placed incorrectly in modals [2dde31d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dde31d)
+
+## 19.1.0
+- [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
+
 ## 19.0.0
 - [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/emoji@44.0.0
