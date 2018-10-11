@@ -288,7 +288,6 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & .ApplicationCard,
   & .MediaGroup,
   & .CodeBlock {
     margin-top: ${blockNodesVerticalMargin};
