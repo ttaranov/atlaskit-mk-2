@@ -259,7 +259,7 @@ describe('GlobalNavigation', () => {
   });
 
   describe('Tooltips', () => {
-    const wrapper = mount(
+    const customTooltipWrapper = mount(
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
@@ -344,14 +344,16 @@ describe('GlobalNavigation', () => {
     });
 
     navItems.forEach(({ icon, name }) => {
-      it(`should render a tooltip for "${name}" item`, () => {
+      it(`should render a custom tooltip for "${name}" item`, () => {
         expect(
-          wrapper
+          customTooltipWrapper
             .find(icon)
             .parents('Tooltip')
             .props().content,
         ).toBe(`${name} tooltip`);
-        expect(wrapper.find(icon).props().label).toBe(`${name} tooltip`);
+        expect(customTooltipWrapper.find(icon).props().label).toBe(
+          `${name} tooltip`,
+        );
       });
     });
   });
@@ -552,7 +554,7 @@ describe('GlobalNavigation', () => {
   });
 
   describe('Profile', () => {
-    it('should not render either of the icons if loginHref and profileItems are missing', () => {
+    it('should render neither avatar nor login icon if loginHref and profileItems are missing', () => {
       const wrapper = mount(
         <GlobalNavigation profileTooltip="profile tooltip" />,
       );
@@ -584,20 +586,21 @@ describe('GlobalNavigation', () => {
       expect(wrapper.children().exists('DropdownItem')).toBeTruthy();
     });
 
-    it('should show avatar based on profileIconUrl', () => {
+    it('should show default avatar when profileIconUrl is missing', () => {
+      const ProfileItems = () => <div />;
+      const wrapper = mount(<GlobalNavigation profileItems={ProfileItems} />);
+      expect(wrapper.find('DefaultImage').exists()).toBeTruthy();
+    });
+
+    it('should show profile photo when profileIconUrl is present', () => {
       const ProfileItems = () => <div />;
       const wrapper = mount(
         <GlobalNavigation
           profileItems={ProfileItems}
-          profileTooltip="profile tooltip"
+          profileIconUrl="//url.to.image/fancy"
         />,
       );
-      expect(wrapper.find('DefaultImage').exists()).toBeTruthy();
 
-      wrapper.setProps({
-        profileIconUrl: '//url.to.image/fancy',
-      });
-      wrapper.update();
       expect(wrapper.find('DefaultImage').exists()).toBeFalsy();
       expect(wrapper.find('Avatar').props().src).toEqual(
         '//url.to.image/fancy',
