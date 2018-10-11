@@ -2,7 +2,6 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 import {
-  minimalLinkDetailsContainingASmartCard,
   genericLinkDetails,
   emptyLinkDetails,
   spotifyLinkDetails,
