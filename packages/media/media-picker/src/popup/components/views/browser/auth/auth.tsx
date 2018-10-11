@@ -69,8 +69,10 @@ export class StatelessAuth extends Component<AuthProps> {
           </AkButton>
         </ButtonWrapper>
         <TextDescription>
-          We'll open a new page to help you<br /> connect your {name} account
-          {/* TODO [i18n] */}
+          <FormattedMessage
+            {...messages.connect_account_description}
+            values={{ name }}
+          />
         </TextDescription>
       </ConnectWrapper>
     );

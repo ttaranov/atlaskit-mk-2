@@ -98,4 +98,11 @@ export const messages = defineMessages({
     description:
       'Allows the user to connect with different types of external services',
   },
+  connect_account_description: {
+    id: 'fabric.media.connect_account_description',
+    defaultMessage:
+      "We'll open a new page to help you connect your {name} account",
+    description:
+      'Explains what will happen when the users connects to a new account',
+  },
 });
