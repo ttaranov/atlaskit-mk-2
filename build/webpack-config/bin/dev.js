@@ -13,6 +13,9 @@ DirectoryWatcher.prototype.setDirectory = function(
   initial,
   type,
 ) {
+  // Any new files created under src/ will trigger a rebuild when in watch mode
+  // If we are just adding snapshots, we can safely ignore those
+  if (directoryPath.includes('__snapshots__')) return;
   if (!directoryPath.includes('node_modules')) {
     _oldSetDirectory.call(this, directoryPath, exist, initial, type);
   }
