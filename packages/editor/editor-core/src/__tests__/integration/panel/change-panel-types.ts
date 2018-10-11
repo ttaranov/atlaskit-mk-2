@@ -8,7 +8,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Inserts a panel on fullpage',
+  'Changes the type of a panel to Error',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);
