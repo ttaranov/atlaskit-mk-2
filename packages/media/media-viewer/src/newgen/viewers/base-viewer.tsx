@@ -4,8 +4,7 @@ import { ErrorMessage, MediaViewerError } from '../error';
 import { Outcome } from '../domain';
 import { Spinner } from '../loading';
 import { renderDownloadButton } from '../domain/download';
-import { Context } from '@atlaskit/media-core/src/context/context';
-import { ProcessedFileState } from '@atlaskit/media-core/src/fileState';
+import { Context, ProcessedFileState } from '@atlaskit/media-core';
 
 export type MinimalProps = {
   context: Context;
