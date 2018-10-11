@@ -36,16 +36,6 @@ export interface Props extends SharedProps {
   conversation?: ConversationType;
   containerId: string;
   showBeforeUnloadWarning?: boolean;
-  onEditorOpen?: () => void;
-  onEditorClose?: () => void;
-  onEditorChange?: (
-    isLocal: boolean,
-    value: any,
-    conversationId: string,
-    commentId: string | undefined,
-    containerId: string,
-    meta: any,
-  ) => void;
 
   // Dispatch
   onCreateConversation?: (
@@ -285,12 +275,12 @@ export default class Conversation extends React.PureComponent<Props, State> {
     });
   };
 
-  private handleEditorChange = (value: any) => {
+  private handleEditorChange = (value: any, commentId?: string) => {
     const { id, localId, containerId, onEditorChange, meta } = this.props;
 
     if (onEditorChange) {
       const isLocal = !id;
-      onEditorChange(isLocal, value, localId!, undefined, containerId, meta);
+      onEditorChange(isLocal, value, localId!, commentId, containerId, meta);
     }
   };
 

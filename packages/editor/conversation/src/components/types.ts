@@ -37,6 +37,14 @@ export interface SharedProps {
   onHighlightComment?: (commentId: string) => void;
   onEditorOpen?: () => void;
   onEditorClose?: () => void;
+  onEditorChange?: (
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
+  ) => void;
 
   // Provider
   dataProviders?: ProviderFactory;

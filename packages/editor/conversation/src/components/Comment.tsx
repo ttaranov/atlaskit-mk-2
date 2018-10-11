@@ -26,7 +26,6 @@ import { SharedProps } from './types';
 export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
-  onEditorChange?: (value: any) => void;
 }
 
 export interface State {
@@ -227,6 +226,12 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
+  private handleCommentEditorChange = (value: any) => {
+    const { comment } = this.props;
+
+    this.dispatch('onEditorChange', value, comment.commentId);
+  };
+
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
@@ -328,7 +333,6 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
-      onEditorChange,
     } = this.props;
     const { isEditing } = this.state;
 
@@ -346,7 +350,7 @@ export default class Comment extends React.Component<Props, State> {
           onCancel={this.onCancelEdit}
           onClose={onEditorClose}
           onOpen={onEditorOpen}
-          onChange={onEditorChange}
+          onChange={this.handleCommentEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -433,7 +437,6 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
-      onEditorChange,
     } = this.props;
 
     return (
@@ -444,7 +447,7 @@ export default class Comment extends React.Component<Props, State> {
         dataProviders={dataProviders}
         onOpen={onEditorOpen}
         onClose={onEditorClose}
-        onChange={onEditorChange}
+        onChange={this.handleCommentEditorChange}
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}

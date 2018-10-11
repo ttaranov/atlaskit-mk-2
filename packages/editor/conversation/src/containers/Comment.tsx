@@ -10,7 +10,6 @@ export interface Props extends SharedProps {
   conversationId: string;
   containerId?: string;
   renderComment: (props: any) => JSX.Element;
-  onEditorChange?: (value: any) => void;
 }
 
 const mapStateToProps = (state: State, ownProps: Props) => {
