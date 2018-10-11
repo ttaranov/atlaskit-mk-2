@@ -1,5 +1,14 @@
 # @atlaskit/checkbox
 
+## 5.0.3
+- [patch] Fixed bug where checkbox would use state isChecked value when passing false to isChecked as props [eaf8d16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eaf8d16)
+
+## 5.0.2
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/icon@14.0.0
+
 ## 5.0.1
 - [patch] Checkbox now only fires onChange once [c78e59e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c78e59e)
 

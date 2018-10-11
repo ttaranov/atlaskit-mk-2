@@ -19,7 +19,7 @@ When you are creating an issue, please include as many details as possible. Fill
 ### How do I submit a (good) issue?
 
 * **Use a clear and descriptive title** for the issue to identify the problem.
-* **Describe the exact steps which reproduce the problem** in as many details as possible. Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-codepen) as starting point. When listing steps, **don't just say what you did, but explain how you did it**. For example, if you opened a inline dialog, explain if you used the mouse, or a keyboard shortcut.
+* **Describe the exact steps which reproduce the problem** in as many details as possible. Add a link to a codesanbox example using [this codesanbox](http://go.atlassian.com/ak-sandbox) as starting point. When listing steps, **don't just say what you did, but explain how you did it**. For example, if you opened a inline dialog, explain if you used the mouse, or a keyboard shortcut.
 * **If the problem wasn't triggered by a specific action**, describe what you were doing before the problem happened and share more information using the guidelines below.
 
 Include details about your configuration and environment:
@@ -36,7 +36,9 @@ Include details about your configuration and environment:
 3. With the build system and auto-deployment to npm, using Atlaskit components in your projects simplifies your development stack. Treat Atlaskit as part of your codebase and make changes in it.
 4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
 
-Please raise a new issue [here][issuetracker]. (Atlassians, please use this [internal link][atlassianbug].)
+Please raise a new issue:
+- For Atlassians staff, please use this [internal link][atlassianbug].
+- For External contributors, please use this [link][issuetracker].
 
 # Contributing
 
@@ -92,6 +94,16 @@ bolt install
 
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
+
+Now you can start the development server for a specific component you are working on using
+`bolt start <pkg-name>`, for example:
+
+```sh
+bolt start button
+```
+
+This will start the dev server with only packages matching "button"
+pattern being served on http://localhost:9000.
 
 #### Linux / Mac / Windows
 

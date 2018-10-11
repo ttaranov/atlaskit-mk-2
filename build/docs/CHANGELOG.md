@@ -1,5 +1,10 @@
 # @atlaskit/docs
 
+## 5.0.8
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/button@9.0.13
+  - @atlaskit/icon@14.0.0
+
 ## 5.0.7
 - [patch] Upgrade extract-react-types to add TypeScript support. [c742e5a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c742e5a)
 

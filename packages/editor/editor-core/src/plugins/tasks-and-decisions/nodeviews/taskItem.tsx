@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ReactNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
@@ -30,6 +30,45 @@ class Task extends ReactNodeView {
     this.view.dispatch(tr);
   };
 
+  /**
+   * Dynamically generates analytics data relating to the parent list.
+   *
+   * Required to be dynamic, as list (in prosemirror model) may have
+   * changed (e.g. item movements, or additional items in list).
+   * This node view will have not rerendered for those changes, so
+   * cannot render the position and listSize into the
+   * AnalyticsContext at initial render time.
+   */
+  private addListAnalyticsData = event => {
+    try {
+      const resolvedPos = this.view.state.doc.resolve(this.getPos());
+      const position = resolvedPos.index();
+      const listSize = resolvedPos.parent.childCount;
+      const listLocalId = resolvedPos.parent.attrs.localId;
+
+      event.update(payload => {
+        const { attributes = {}, actionSubject } = payload;
+        if (actionSubject !== 'action') {
+          // Not action related, ignore
+          return payload;
+        }
+        return {
+          ...payload,
+          attributes: {
+            ...attributes,
+            position,
+            listSize,
+            listLocalId,
+          },
+        };
+      });
+    } catch (e) {
+      // This can occur if pos is NaN (seen it in some test cases)
+      // Act defensively here, and lose some analytics data rather than
+      // cause any user facing error.
+    }
+  };
+
   createDomRef() {
     const domRef = document.createElement('li');
     domRef.style['list-style-type'] = 'none';
@@ -43,21 +82,20 @@ class Task extends ReactNodeView {
   render(props, forwardRef) {
     const { localId, state } = this.node.attrs;
 
-    const taskItem = (
-      <TaskItem
-        taskId={localId}
-        contentRef={forwardRef}
-        isDone={state === 'DONE'}
-        onChange={this.handleOnChange}
-        showPlaceholder={this.isContentEmpty()}
-        providers={props.providerFactory}
-      />
-    );
-
     return (
-      <AnalyticsDelegate {...props.analyticsDelegateContext}>
-        {taskItem}
-      </AnalyticsDelegate>
+      <AnalyticsListener
+        channel="fabric-elements"
+        onEvent={this.addListAnalyticsData}
+      >
+        <TaskItem
+          taskId={localId}
+          contentRef={forwardRef}
+          isDone={state === 'DONE'}
+          onChange={this.handleOnChange}
+          showPlaceholder={this.isContentEmpty()}
+          providers={props.providerFactory}
+        />
+      </AnalyticsListener>
     );
   }
 
@@ -68,6 +106,7 @@ class Task extends ReactNodeView {
      *
      * Returning false also when the task state has changed to force the checkbox to update. See ED-5107
      */
+
     return super.update(
       node,
       decorations,
@@ -80,12 +119,10 @@ class Task extends ReactNodeView {
 
 export function taskItemNodeViewFactory(
   portalProviderAPI: PortalProviderAPI,
-  analyticsDelegateContext: AnalyticsDelegateProps,
   providerFactory: ProviderFactory,
 ) {
   return (node: any, view: any, getPos: () => number): NodeView => {
     return new Task(node, view, getPos, portalProviderAPI, {
-      analyticsDelegateContext,
       providerFactory,
     }).init();
   };

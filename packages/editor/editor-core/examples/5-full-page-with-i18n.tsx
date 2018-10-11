@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import * as locales from '../src/i18n';
+import enMessages from '../src/i18n/en';
 import languages from '../src/i18n/languages';
 import WithEditorActions from './../src/ui/WithEditorActions';
 import {
@@ -10,19 +10,17 @@ import {
 import LanguagePicker from '../example-helpers/LanguagePicker';
 
 export type Props = {};
-export type State = { locale: string };
+export type State = { locale: string; messages: { [key: string]: string } };
 
 export default class ExampleEditor extends React.Component<Props, State> {
-  state: State = { locale: 'en' };
+  state: State = { locale: 'en', messages: enMessages };
 
   render() {
-    const { locale } = this.state;
+    const { locale, messages } = this.state;
     return (
-      <IntlProvider
-        locale={this.getLocalTag(locale)}
-        messages={locales[locale]}
-      >
+      <IntlProvider locale={this.getLocalTag(locale)} messages={messages}>
         {FullPageExample({
+          allowHelpDialog: true,
           primaryToolbarComponents: (
             <WithEditorActions
               render={actions => (
@@ -43,11 +41,12 @@ export default class ExampleEditor extends React.Component<Props, State> {
   }
 
   private loadLocale = async (locale: string) => {
-    const data = await import(`react-intl/locale-data/${this.getLocalTag(
+    const localeData = await import(`react-intl/locale-data/${this.getLocalTag(
       locale,
     )}`);
-    addLocaleData(data.default);
-    this.setState({ locale });
+    addLocaleData(localeData.default);
+    const messages = await import(`../src/i18n/${locale}`);
+    this.setState({ locale, messages: messages.default });
   };
 
   private getLocalTag = (locale: string) => locale.substring(0, 2);

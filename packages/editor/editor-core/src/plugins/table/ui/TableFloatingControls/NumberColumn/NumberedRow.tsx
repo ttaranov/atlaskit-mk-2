@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface NumberedRowProps {
   row: number;
@@ -37,8 +38,7 @@ export class NumberedRow extends React.Component<NumberedRowProps> {
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         className={[
-          'pm-table-numbered-column__button',
-          'numbered-row',
+          ClassName.NUMBERED_COLUMN_BUTTON,
           isRowActive ? 'active' : '',
           isRowDanger ? 'danger' : '',
         ].join(' ')}

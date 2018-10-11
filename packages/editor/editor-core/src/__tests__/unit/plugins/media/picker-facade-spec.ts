@@ -29,7 +29,7 @@ import PickerFacade, {
   PickerType,
   PickerFacadeConfig,
 } from '../../../../plugins/media/picker-facade';
-import { ErrorReportingHandler } from '../../../../utils';
+import { ErrorReportingHandler } from '@atlaskit/editor-common';
 
 describe('Media PickerFacade', () => {
   const errorReporter: ErrorReportingHandler = {
@@ -172,7 +172,7 @@ describe('Media PickerFacade', () => {
       beforeEach(() => {
         Object.keys(spies).forEach(k => spies[k].mockClear());
 
-        function MockPopup() {
+        function MockPopup(this: any) {
           Object.keys(spies).forEach(k => (this[k] = spies[k]));
         }
 

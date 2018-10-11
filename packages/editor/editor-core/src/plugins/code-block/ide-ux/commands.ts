@@ -1,11 +1,11 @@
 import { EditorState, TextSelection } from 'prosemirror-state';
+
 import {
   getLinesFromSelection,
   getLineInfo,
   forEachLine,
   getStartOfCurrentLine,
 } from './line-handling';
-
 import { analyticsService } from '../../../analytics';
 
 export function indent(state: EditorState, dispatch) {

@@ -5,11 +5,11 @@ import { channel } from 'emotion-theming';
 import PropTypes from 'prop-types';
 
 import { light } from './modes';
-import type { GlobalTheme, ProductTheme } from './types';
+import type { GlobalTheme, ProductTheme, Theme } from './types';
 
-type State = { theme: GlobalTheme | ProductTheme | void };
+type State = { theme: Theme };
 
-const withTheme = (defaultTheme: GlobalTheme | ProductTheme | void) => (
+const withTheme = (defaultTheme: Theme) => (
   WrappedComponent: ComponentType<*>,
 ) => {
   return class WithTheme extends Component<*, State> {

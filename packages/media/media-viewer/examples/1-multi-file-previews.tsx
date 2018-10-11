@@ -7,6 +7,7 @@ import { createStorybookContext } from '@atlaskit/media-test-helpers';
 import { ButtonList, Container, Group } from '../example-helpers/styled';
 import {
   docIdentifier,
+  largePdfIdentifier,
   imageIdentifier,
   imageIdentifier2,
   unsupportedIdentifier,
@@ -14,6 +15,8 @@ import {
   videoIdentifier,
   wideImageIdentifier,
   defaultCollectionName,
+  audioItem,
+  audioItemNoCover,
 } from '../example-helpers';
 import { MediaViewer } from '../src';
 import { videoFileId } from '@atlaskit/media-test-helpers';
@@ -75,7 +78,10 @@ export default class Example extends React.Component<{}, State> {
             videoIdentifier,
             videoHorizontalFileItem,
             wideImageIdentifier,
+            audioItem,
+            audioItemNoCover,
             docIdentifier,
+            largePdfIdentifier,
             imageIdentifier2,
             unsupportedIdentifier,
           ],

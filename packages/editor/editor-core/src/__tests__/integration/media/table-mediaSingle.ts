@@ -7,7 +7,6 @@ import {
   insertMedia,
   fullpage,
 } from '../_helpers';
-import { sleep } from '@atlaskit/editor-test-helpers';
 import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 // FIXME: not entirely sure why firefox is flakey on browserstack
@@ -15,7 +14,7 @@ BrowserTestCase(
   'Can insert media single into table',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);
@@ -33,10 +32,6 @@ BrowserTestCase(
 
     // now we can insert media as necessary
     await insertMedia(browser);
-
-    // wait for "upload" and finish doc sync
-    await sleep(400);
-    await browser.waitForSelector('.media-single');
 
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();

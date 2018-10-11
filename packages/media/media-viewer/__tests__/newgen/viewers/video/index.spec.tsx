@@ -4,7 +4,7 @@ const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 import * as React from 'react';
 import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
-import { FileItem, Auth } from '@atlaskit/media-core';
+import { Auth, ProcessedFileState } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { awaitError } from '@atlaskit/media-test-helpers';
 import { createContext } from '../../../_stubs';
@@ -17,37 +17,34 @@ const token = 'some-token';
 const clientId = 'some-client-id';
 const baseUrl = 'some-base-url';
 
-const videoItem: FileItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'video',
-    artifacts: {
-      'video_640.mp4': {
-        url: '/video',
-      },
-      'video_1280.mp4': {
-        url: '/video_hd',
-      },
+const videoItem: ProcessedFileState = {
+  id: 'some-id',
+  status: 'processed',
+  name: 'my video',
+  size: 11222,
+  mediaType: 'video',
+  mimeType: 'mp4',
+  artifacts: {
+    'video_640.mp4': {
+      url: '/video',
+      processingStatus: 'succeeded',
+    },
+    'video_1280.mp4': {
+      url: '/video_hd',
+      processingStatus: 'succeeded',
     },
   },
 };
 
-const videoItemWithNoArtifacts: FileItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'video',
-    artifacts: {},
-  },
+const videoItemWithNoArtifacts: ProcessedFileState = {
+  ...videoItem,
+  artifacts: {},
 };
 
 function createFixture(
   authPromise: Promise<Auth>,
   props?: Partial<Props>,
-  item?: FileItem,
+  item?: ProcessedFileState,
 ) {
   const context = createContext({ authPromise });
   const el = mount(

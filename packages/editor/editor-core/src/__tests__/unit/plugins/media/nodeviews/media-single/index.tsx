@@ -45,6 +45,7 @@ describe('nodeviews/mediaSingle', () => {
   });
 
   it('sets child to isMediaSingle to be true', () => {
+    const getPos = jest.fn();
     const view = {} as EditorView;
     const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
 
@@ -52,7 +53,10 @@ describe('nodeviews/mediaSingle', () => {
       <MediaSingle
         view={view}
         node={mediaSingleNode(defaultSchema)}
-        width={680}
+        containerWidth={680}
+        lineLength={680}
+        getPos={getPos}
+        appearance="full-page"
       >
         <Media node={mediaNode(defaultSchema)} />
       </MediaSingle>,
@@ -63,6 +67,7 @@ describe('nodeviews/mediaSingle', () => {
   });
 
   it('notifies plugin if node layout is updated', () => {
+    const getPos = jest.fn();
     const view = {} as EditorView;
     const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
     const updatedMediaSingleNode = mediaSingle({ layout: 'center' })(mediaNode)(
@@ -76,7 +81,10 @@ describe('nodeviews/mediaSingle', () => {
       <MediaSingle
         view={view}
         node={mediaSingleNode(defaultSchema)}
-        width={680}
+        containerWidth={680}
+        lineLength={680}
+        getPos={getPos}
+        appearance="full-page"
       >
         <Media node={mediaNode(defaultSchema)} />
       </MediaSingle>,
@@ -88,6 +96,7 @@ describe('nodeviews/mediaSingle', () => {
   });
 
   it('sets "onExternalImageLoaded" for external images', () => {
+    const getPos = jest.fn();
     const view = {} as EditorView;
     const mediaSingleNode = mediaSingle()(externalMediaNode);
 
@@ -95,7 +104,10 @@ describe('nodeviews/mediaSingle', () => {
       <MediaSingle
         view={view}
         node={mediaSingleNode(defaultSchema)}
-        width={680}
+        containerWidth={680}
+        lineLength={680}
+        getPos={getPos}
+        appearance="full-page"
       >
         <Media node={externalMediaNode(defaultSchema)} />
       </MediaSingle>,

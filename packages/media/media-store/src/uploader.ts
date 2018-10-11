@@ -2,7 +2,6 @@ import * as uuid from 'uuid';
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 
 import { MediaStore } from './media-store';
-import { MediaApiConfig } from './models/auth';
 import { createHasher } from './utils/hashing/hasherCreator';
 
 // TODO: Allow to pass multiple files
@@ -23,8 +22,10 @@ export interface UploadFileResult {
   cancel: () => void;
 }
 
-const hashingFunction = (blob: Blob): Promise<string> => {
-  return createHasher().hash(blob);
+const hashingFunction = async (blob: Blob): Promise<string> => {
+  const hasher = await createHasher();
+
+  return hasher.hash(blob);
 };
 
 const createProbingFunction = (store: MediaStore) => async (
@@ -56,12 +57,11 @@ const createProcessingFunction = (
 
 export const uploadFile = (
   file: UploadableFile,
-  config: MediaApiConfig,
+  store: MediaStore,
   callbacks?: UploadFileCallbacks,
 ): UploadFileResult => {
   const { content, collection, name, mimeType } = file;
   const occurrenceKey = uuid.v4();
-  const store = new MediaStore(config);
   const deferredUploadId = store
     .createUpload()
     .then(response => response.data[0].id);

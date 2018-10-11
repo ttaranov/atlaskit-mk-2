@@ -38,10 +38,10 @@ export default class PreQueryState extends React.Component<Props> {
             screenCounter={screenCounter}
             searchSessionId={searchSessionId}
             referralContextIdentifiers={referralContextIdentifiers}
-          />,
+          />
           <NoRecentActivity key="no-recent-activity">
             {renderNoRecentActivity()}
-          </NoRecentActivity>,
+          </NoRecentActivity>
         </>
       );
     }

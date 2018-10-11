@@ -1,66 +1,31 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Provider, Card } from '../src';
-import '../mocks';
+import { mockMultipleCards } from '../mocks';
 
-const URL_A = 'private-happy';
-const URL_B = 'private-happy-b';
-const URL_C = 'private-happy-c';
+mockMultipleCards();
 
 export default () => (
   <Provider>
     <Page>
       <Grid>
         <GridColumn>
-          <p>
-            <small>
-              These cards are all for the same URL. They should all be in the
-              same state with the same content at the exact same time.
-            </small>
-          </p>
           <br />
-          <Card url={URL_A} appearance="block" />
+          <Card url="google.com/doc/1" appearance="block" />
           <br />
-          <Card url={URL_A} appearance="block" />
+          <Card url="google.com/doc/2" appearance="block" />
           <br />
-          <Card url={URL_A} appearance="block" />
-        </GridColumn>
-      </Grid>
-      <br />
-      <br />
-      <Grid>
-        <GridColumn>
-          <p>
-            <small>
-              These cards are all for the same provider. They should maintain
-              their own states and different content, but they should refresh if
-              any one of them is authenticated.
-            </small>
-          </p>
+          <Card url="google.com/doc/3" appearance="block" />
           <br />
-          <Card url={URL_A} appearance="block" />
+          <Card url="google.com/doc/1" appearance="block" />
           <br />
-          <Card url={URL_B} appearance="block" />
+          <Card url="google.com/spreadshet/1" appearance="block" />
           <br />
-          <Card url={URL_C} appearance="block" />
-        </GridColumn>
-      </Grid>
-      <br />
-      <br />
-      <Grid>
-        <GridColumn>
-          <p>
-            <small>
-              These cards are all different URLs for different providers. They
-              should not share any state or any content.
-            </small>
-          </p>
+          <Card url="google.com/spreadshet/2" appearance="block" />
           <br />
-          <Card url="" appearance="block" />
+          <Card url="dropbox.com/file/a.doc" appearance="block" />
           <br />
-          <Card url="" appearance="block" />
-          <br />
-          <Card url="" appearance="block" />
+          <Card url="trello.com/task/a" appearance="block" />
         </GridColumn>
       </Grid>
     </Page>

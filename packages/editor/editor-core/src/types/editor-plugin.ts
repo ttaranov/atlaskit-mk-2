@@ -2,12 +2,11 @@ import * as React from 'react';
 import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import ErrorReporter from '../utils/error-reporter';
+import { ProviderFactory, ErrorReporter } from '@atlaskit/editor-common';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 import EditorActions from '../actions';
 import { ToolbarSize } from '../ui/Toolbar';
-import { QuickInsertItem } from '../plugins/quick-insert/types';
+import { QuickInsertHandler } from '../plugins/quick-insert/types';
 import { TypeAheadHandler } from '../plugins/type-ahead/types';
 import { FloatingToolbarHandler } from '../plugins/floating-toolbar/types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
@@ -55,7 +54,7 @@ export type ToolbarUIComponentFactory = (
 
 export type PluginsOptions = {
   [pluginName: string]: any;
-  quickInsert?: Array<QuickInsertItem>;
+  quickInsert?: QuickInsertHandler;
   typeAhead?: TypeAheadHandler;
   floatingToolbar?: FloatingToolbarHandler;
 };

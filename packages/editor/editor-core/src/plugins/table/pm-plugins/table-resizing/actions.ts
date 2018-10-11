@@ -7,14 +7,13 @@ import {
   TableLayout,
   akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
-
+import { TableCssClassName as ClassName } from '../../types';
 import { addContainerLeftRightPadding } from './resizer/utils';
 
 import Resizer from './resizer/resizer';
 
 import { getPluginState } from '../main';
-import { updateShadows } from '../../nodeviews/TableComponent';
-import { getLineMarkerWidth } from '../../ui/TableFloatingControls/utils';
+import { updateRightShadow } from '../../nodeviews/TableComponent';
 
 import { hasTableBeenResized } from '../../utils';
 import { getCellMinWidth } from '../../index';
@@ -125,10 +124,16 @@ export const updateControls = (state: EditorState) => {
   }
   const cols = tr.children;
   const wrapper = tableRef.parentElement;
-  const columnControls: any = wrapper.querySelectorAll('.table-column');
+  const columnControls: any = wrapper.querySelectorAll(
+    `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}`,
+  );
   const rows = tableRef.querySelectorAll('tr');
-  const rowControls: any = wrapper.parentElement.querySelectorAll('.table-row');
-  const numberedRows = wrapper.parentElement.querySelectorAll('.numbered-row');
+  const rowControls: any = wrapper.parentElement.querySelectorAll(
+    `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`,
+  );
+  const numberedRows = wrapper.parentElement.querySelectorAll(
+    ClassName.NUMBERED_COLUMN_BUTTON,
+  );
 
   // update column controls width on resize
   for (let i = 0, count = columnControls.length; i < count; i++) {
@@ -143,22 +148,10 @@ export const updateControls = (state: EditorState) => {
     }
   }
 
-  const rowMarkers: any = wrapper.parentElement.querySelectorAll(
-    '.ProseMirror-table-insert-row-marker',
-  );
-
-  // update row insert marker (blue horizontal line)
-  for (let i = 0, count = rowMarkers.length; i < count; i++) {
-    const width = getLineMarkerWidth(tableRef, wrapper.scrollLeft);
-    rowMarkers[i].style.width = `${width}px`;
-  }
-
-  updateShadows(
+  updateRightShadow(
     wrapper,
     tableRef,
-    wrapper.parentElement.querySelector('.table-shadow.-left'),
-    wrapper.parentElement.querySelector('.table-shadow.-right'),
-    !!tableRef,
+    wrapper.parentElement.querySelector(`.${ClassName.TABLE_RIGHT_SHADOW}`),
   );
 };
 

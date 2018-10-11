@@ -27,4 +27,9 @@ export const gridStyles = css`
     height: 100%;
     margin-left: -1px;
   }
+
+  .gridContainer.wrapped .gridLine:nth-child(12),
+  .gridContainer.wrapped .gridLine:nth-child(2) {
+    visibility: hidden;
+  }
 `;

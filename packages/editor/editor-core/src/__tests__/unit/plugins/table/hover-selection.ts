@@ -36,10 +36,10 @@ describe('table hover selection plugin', () => {
     });
 
   const getTableDecorations = (editorView: EditorView, cells) => {
-    const {
-      hoverDecoration,
-    }: { hoverDecoration: DecorationSet } = getPluginState(editorView.state);
-    return hoverDecoration.find(cells[0].pos, cells[cells.length - 1].pos);
+    const { decorationSet }: { decorationSet: DecorationSet } = getPluginState(
+      editorView.state,
+    );
+    return decorationSet.find(cells[0].pos, cells[cells.length - 1].pos);
   };
 
   describe('hoverColumn(number)', () => {
@@ -212,7 +212,7 @@ describe('table hover selection plugin', () => {
 
         // reset hover selection plugin to an empty DecorationSet
         clearHoverSelection(editorView.state, editorView.dispatch);
-        expect(getPluginState(editorView.state).hoverDecoration).toEqual(
+        expect(getPluginState(editorView.state).decorationSet).toEqual(
           DecorationSet.empty,
         );
       });

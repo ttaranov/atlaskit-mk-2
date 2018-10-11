@@ -7,9 +7,9 @@ import {
   Transformer,
   ContextIdentifierProvider,
   ExtensionHandlers,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
-import { DelegateAnalyticsEvent } from '@atlaskit/analytics';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
@@ -17,10 +17,9 @@ import { TaskDecisionProvider } from '@atlaskit/task-decision';
 import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
 import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/types';
-import { ErrorReportingHandler } from '../utils/error-reporter';
 import { AnalyticsHandler } from '../analytics/handler';
 
-import { ImageUploadHandler } from '../plugins/image-upload/pm-plugins/main';
+import { ImageUploadHandler } from '../plugins/image-upload/types';
 import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit/provider';
 import { MacroProvider } from '../plugins/macro/types';
@@ -74,9 +73,6 @@ export interface EditorProps {
   // Legacy analytics support handler, which will be removed soon. **Do not use**.
   analyticsHandler?: AnalyticsHandler;
 
-  // For `@atlaskit/analytics` support
-  delegateAnalyticsEvent?: DelegateAnalyticsEvent;
-
   contentComponents?: ReactComponents;
   primaryToolbarComponents?: ReactComponents;
   secondaryToolbarComponents?: ReactComponents;
@@ -113,7 +109,7 @@ export interface EditorProps {
 
   // Set this to allow unsupported content in the editor.
   // Anything it doesn’t understand it will wrap in an unsupported block or inline node.
-  // It will render a grey non editable box.
+  // It will render a gray non editable box.
   allowUnsupportedContent?: boolean;
 
   // Enable panel blocks, the thing that displays a coloured box with icons aka info, warning macros.
@@ -152,8 +148,6 @@ export interface EditorProps {
   quickInsert?: QuickInsertOptions;
 
   UNSAFE_cards?: CardOptions;
-
-  UNSAFE_mediaSingle_grid?: boolean;
 
   // Submits on the enter key. Probably useful for an inline comment editor use case.
   saveOnEnter?: boolean;

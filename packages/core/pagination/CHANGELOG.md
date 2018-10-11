@@ -1,5 +1,14 @@
 # @atlaskit/pagination
 
+## 8.0.2
+- [patch] Fix styling in IE and maintain it in other browsers [0d67e69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d67e69)
+
+## 8.0.1
+- [patch] Bump to add icon [8010540](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8010540)
+
+## 8.0.0
+- [major] updated the pagination component as per ADG spec [8276156](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8276156)
+
 ## 7.0.6
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

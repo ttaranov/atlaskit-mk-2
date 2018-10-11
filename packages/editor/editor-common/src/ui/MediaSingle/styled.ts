@@ -33,9 +33,7 @@ function calcWidth(
         ? 'calc(50% - 12px)'
         : `${width}px`;
     case 'wide':
-      return width > akEditorFullPageMaxWidth
-        ? '100%'
-        : `${Math.min(akEditorWideLayoutWidth, width)}px`;
+      return `${Math.min(akEditorWideLayoutWidth, width)}px`;
     case 'full-width':
       return `${Math.min(width, containerWidth || 0) -
         akEditorBreakoutPadding}px`;
@@ -76,27 +74,25 @@ export interface WrapperProps {
   width: number;
   height: number;
   containerWidth?: number;
+  pctWidth?: number;
+  innerRef?: (elem: HTMLElement) => void;
 }
 
 /**
  * Can't use `.attrs` to handle highly dynamic styles because we are still
  * supporting `styled-components` v1.
  */
-const MediaSingleDimensionHelper = ({
+export const MediaSingleDimensionHelper = ({
   width,
   height,
   layout,
   containerWidth = 0,
+  pctWidth,
 }: WrapperProps) => css`
+  width: ${pctWidth ? `${width}px` : calcWidth(layout, width, containerWidth)};
   max-width: ${calcMaxWidth(layout, width, containerWidth)};
-  width: ${calcWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
-  &::after {
-    content: '';
-    display: block;
-    padding-bottom: ${height / width * 100}%;
-  }
 
   tr & {
     max-width: 100%;
@@ -108,6 +104,13 @@ const Wrapper: React.ComponentClass<
 > = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: ${p => p.height / p.width * 100}%;
+  }
+
   & > div {
     position: absolute;
     height: 100%;

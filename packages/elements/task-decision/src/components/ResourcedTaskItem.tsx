@@ -8,6 +8,7 @@ import {
   TaskState,
   User,
 } from '../types';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface Props {
   taskId: string;
@@ -165,8 +166,10 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     const {
       appearance,
       children,
+      containerAri,
       contentRef,
       creator,
+      objectAri,
       participants,
       showParticipants,
       showPlaceholder,
@@ -174,20 +177,27 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     } = this.props;
 
     return (
-      <TaskItem
-        isDone={isDone}
-        taskId={taskId}
-        onChange={this.handleOnChange}
-        appearance={appearance}
-        contentRef={contentRef}
-        participants={participants}
-        showParticipants={showParticipants}
-        showPlaceholder={showPlaceholder}
-        creator={creator}
-        lastUpdater={lastUpdater}
+      <FabricElementsAnalyticsContext
+        data={{
+          containerAri,
+          objectAri,
+        }}
       >
-        {children}
-      </TaskItem>
+        <TaskItem
+          isDone={isDone}
+          taskId={taskId}
+          onChange={this.handleOnChange}
+          appearance={appearance}
+          contentRef={contentRef}
+          participants={participants}
+          showParticipants={showParticipants}
+          showPlaceholder={showPlaceholder}
+          creator={creator}
+          lastUpdater={lastUpdater}
+        >
+          {children}
+        </TaskItem>
+      </FabricElementsAnalyticsContext>
     );
   }
 }

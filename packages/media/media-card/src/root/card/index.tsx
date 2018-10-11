@@ -8,12 +8,14 @@ import {
   FileDetails,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs/Subscription';
 import {
   SharedCardProps,
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
+  CardAction,
   CardDimensions,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
@@ -24,6 +26,7 @@ import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import {
+  isFileIdentifier,
   isUrlPreviewIdentifier,
   isExternalImageIdentifier,
 } from '../../utils/identifier';
@@ -163,8 +166,8 @@ export class Card extends Component<CardProps, CardState> {
     const resolvedId = await id;
 
     this.unsubscribe();
-    this.subscription = context
-      .getFile(resolvedId, { collectionName })
+    this.subscription = context.file
+      .getFileState(resolvedId, { collectionName })
       .subscribe({
         next: async state => {
           const {
@@ -225,6 +228,9 @@ export class Card extends Component<CardProps, CardState> {
               }
               this.notifyStateChange({ status: 'complete', metadata });
               break;
+            case 'failed-processing':
+              this.notifyStateChange({ status: 'failed-processing', metadata });
+              break;
             case 'error':
               this.notifyStateChange({ status: 'error' });
           }
@@ -269,11 +275,7 @@ export class Card extends Component<CardProps, CardState> {
     const { status, metadata } = this.state;
     const { identifier } = this.props;
 
-    if (
-      status === 'complete' &&
-      identifier.mediaItemType === 'file' &&
-      metadata
-    ) {
+    if (status === 'complete' && isFileIdentifier(identifier) && metadata) {
       if (!(metadata as FileDetails).size) {
         return 'processing';
       }
@@ -282,13 +284,30 @@ export class Card extends Component<CardProps, CardState> {
     return status;
   }
 
+  get actions(): CardAction[] {
+    const { actions = [], identifier } = this.props;
+    const { status } = this.state;
+    if (isFileIdentifier(identifier) && status === 'failed-processing') {
+      actions.unshift({
+        label: 'Download',
+        icon: <DownloadIcon label="Download" />,
+        handler: async () =>
+          this.props.context.file.downloadBinary(
+            await identifier.id,
+            identifier.collectionName,
+          ),
+      });
+    }
+
+    return actions;
+  }
+
   render() {
     const {
       isLazy,
       appearance,
       resizeMode,
       dimensions,
-      actions,
       selectable,
       selected,
       onClick,
@@ -298,7 +317,7 @@ export class Card extends Component<CardProps, CardState> {
       identifier,
     } = this.props;
     const { progress, metadata, dataURI } = this.state;
-    const { analyticsContext, onRetry, status } = this;
+    const { analyticsContext, onRetry, status, actions } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView

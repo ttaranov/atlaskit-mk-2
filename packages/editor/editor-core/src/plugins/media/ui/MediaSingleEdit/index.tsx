@@ -125,7 +125,12 @@ class MediaSingleEdit extends React.Component<
     ) {
       const labelRemove = formatMessage(commonMessages.remove);
       return (
-        <FloatingToolbar target={target} offset={[0, 12]} fitHeight={32}>
+        <FloatingToolbar
+          target={target}
+          offset={[0, 12]}
+          fitHeight={32}
+          alignX="center"
+        >
           {Object.keys(icons).map((layout, index) => {
             // Don't render Wide and Full width button for image smaller than editor content width
             if (index > 2 && !allowBreakout) {

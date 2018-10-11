@@ -293,21 +293,7 @@ export function makeCrossProductSearchData(
   }
 
   for (let i = 0; i < n; i++) {
-    const issue =
-      i % 2
-        ? {
-            key: randomIssueKey(),
-            fields: {
-              summary: getMockCatchPhrase(),
-              project: {
-                name: getMockCompanyName(),
-              },
-              issuetype: {
-                iconUrl: randomJiraIconUrl(),
-              },
-            },
-          }
-        : generateRandomJiraIssue();
+    const issue = generateRandomJiraIssue();
     jiraObjects.push(issue);
   }
 
@@ -445,13 +431,13 @@ export function makePeopleSearchData(
   };
 }
 
-function generateRandomQuickNavItem(className: string) {
+function generateRandomQuickNavItem(className: string): QuickNavResult {
   return {
     className: className,
-    name: getMockCatchPhrase(),
+    name: getMockName(),
     href: getMockUrl(),
-    spaceName: getMockCompanyName(),
     id: uuid(),
+    icon: getMockAvatarUrl(),
   };
 }
 
@@ -473,7 +459,7 @@ export function makeQuickNavSearchData(n: number = 50) {
     generateRandomQuickNavItem('content-type-blogpost'),
   );
 
-  // create some people, which never get shown
+  // create some people
   const people: QuickNavResult[] = generateRandomElements(() =>
     generateRandomQuickNavItem('content-type-userinfo'),
   );

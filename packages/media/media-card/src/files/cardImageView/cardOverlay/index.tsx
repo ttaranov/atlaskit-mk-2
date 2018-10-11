@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { MouseEvent, Component } from 'react';
+import { MouseEvent, Component, ReactNode } from 'react';
+import { FormattedMessage } from 'react-intl';
 import * as cx from 'classnames';
 import { MediaType } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 import { Ellipsify } from '@atlaskit/media-ui';
+import { messages } from '@atlaskit/media-ui';
 // We dont require things directly from "utils" to avoid circular dependencies
 import { FileIcon } from '../../../utils/fileIcon';
 import { ErrorIcon } from '../../../utils/errorIcon';
@@ -35,7 +37,8 @@ export interface CardOverlayProps {
   selected?: boolean;
   persistent: boolean;
 
-  error?: string;
+  error?: ReactNode;
+  noHover?: boolean;
   onRetry?: () => void;
 
   actions?: Array<CardAction>;
@@ -61,7 +64,14 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   private get wrapperClassNames() {
-    const { error, selectable, selected, mediaType, persistent } = this.props;
+    const {
+      error,
+      noHover,
+      selectable,
+      selected,
+      mediaType,
+      persistent,
+    } = this.props;
     const { isMenuExpanded } = this.state;
 
     return error
@@ -70,17 +80,23 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
           active: isMenuExpanded,
           selectable,
           selected,
+          // Yes, you right. We put "persistent" class when it is NOT persistent. 🤦
           persistent: !persistent,
+          noHover,
         });
   }
 
   render() {
-    const { error, mediaName, persistent, actions } = this.props;
+    const { error, noHover, mediaName, persistent, actions } = this.props;
     const titleText = error || !mediaName ? '' : mediaName;
     const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
-      <Overlay hasError={!!error} className={this.wrapperClassNames}>
+      <Overlay
+        hasError={!!error}
+        noHover={noHover}
+        className={this.wrapperClassNames}
+      >
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
@@ -134,7 +150,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       return (
         <ErrorWrapper>
           <ErrorIcon />
-          <Retry onClick={onRetry}>Retry</Retry>
+          <Retry onClick={onRetry}>
+            <FormattedMessage {...messages.retry} />
+          </Retry>
         </ErrorWrapper>
       );
     } else {

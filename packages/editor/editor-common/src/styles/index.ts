@@ -6,6 +6,7 @@ export {
   tableMarginBottom,
   tableMarginSides,
   calcTableWidth,
+  TableSharedCssClassName,
 } from './shared/table';
 
 export { columnLayoutSharedStyle } from './shared/column-layout';

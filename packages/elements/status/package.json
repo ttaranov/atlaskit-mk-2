@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/status",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "config": {
     "access": "public"
   },
@@ -31,6 +31,8 @@
     "elements"
   ],
   "dependencies": {
+    "@atlaskit/field-text": "^7.0.11",
+    "@atlaskit/icon": "^14.0.0",
     "@atlaskit/lozenge": "^6.1.7",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -41,7 +43,7 @@
     "react": "^16.4.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/docs": "^5.0.8",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "react": "^16.4.0"

@@ -5,9 +5,18 @@ export const MAX_PAGES = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
 
+const EMPTY_CONFLUENCE_RESULT = {
+  people: [],
+  objects: [],
+  spaces: [],
+};
+
 export const sliceResults = (
-  resultsMap: ConfluenceResultsMap,
+  resultsMap: ConfluenceResultsMap | null,
 ): ConfluenceResultsMap => {
+  if (!resultsMap) {
+    return EMPTY_CONFLUENCE_RESULT;
+  }
   const { people, objects, spaces } = resultsMap;
   return {
     objects: take(objects, MAX_PAGES),
@@ -17,15 +26,9 @@ export const sliceResults = (
 };
 
 export const mapRecentResultsToUIGroups = (
-  recentlyViewedObjects: ConfluenceResultsMap,
+  recentlyViewedObjects: ConfluenceResultsMap | null,
 ): ResultsGroup[] => {
-  const { people, objects, spaces } = recentlyViewedObjects
-    ? sliceResults(recentlyViewedObjects)
-    : {
-        people: [],
-        objects: [],
-        spaces: [],
-      };
+  const { people, objects, spaces } = sliceResults(recentlyViewedObjects);
 
   return [
     {
@@ -47,7 +50,7 @@ export const mapRecentResultsToUIGroups = (
 };
 
 export const mapSearchResultsToUIGroups = (
-  searchResultsObjects: ConfluenceResultsMap,
+  searchResultsObjects: ConfluenceResultsMap | null,
 ): ResultsGroup[] => {
   const { people, objects, spaces } = sliceResults(searchResultsObjects);
   return [

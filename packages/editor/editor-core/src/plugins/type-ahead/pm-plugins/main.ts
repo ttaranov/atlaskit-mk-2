@@ -14,7 +14,7 @@ export const pluginKey = new PluginKey('typeAheadPlugin');
 export type PluginState = {
   active: boolean;
   prevActiveState: boolean;
-  query: string;
+  query: string | null;
   trigger: string | null;
   typeAheadHandler: TypeAheadHandler | null;
   items: Array<TypeAheadItem>;
@@ -34,7 +34,7 @@ export function createInitialPluginState(prevActiveState = false): PluginState {
   return {
     active: false,
     prevActiveState,
-    query: '',
+    query: null,
     trigger: null,
     typeAheadHandler: null,
     currentIndex: 0,
@@ -43,7 +43,11 @@ export function createInitialPluginState(prevActiveState = false): PluginState {
   };
 }
 
-export function createPlugin(dispatch: Dispatch, typeAhead): Plugin {
+export function createPlugin(
+  dispatch: Dispatch,
+  reactContext: () => { [key: string]: any },
+  typeAhead,
+): Plugin {
   return new Plugin({
     key: pluginKey,
     state: {
@@ -79,6 +83,7 @@ export function createPlugin(dispatch: Dispatch, typeAhead): Plugin {
           default:
             return defaultActionHandler({
               dispatch,
+              reactContext,
               typeAhead,
               state,
               pluginState,
@@ -170,11 +175,13 @@ export function createItemsLoader(
 
 export function defaultActionHandler({
   dispatch,
+  reactContext,
   typeAhead,
   pluginState,
   state,
 }: {
   dispatch: Dispatch;
+  reactContext: () => { [key: string]: any };
   typeAhead: Array<TypeAheadHandler>;
   pluginState: PluginState;
   state: EditorState;
@@ -214,7 +221,11 @@ export function defaultActionHandler({
   let itemsLoader: TypeAheadItemsLoader = null;
 
   try {
-    typeAheadItems = typeAheadHandler.getItems(query, state);
+    const { intl } = reactContext();
+    typeAheadItems = typeAheadHandler.getItems(query, state, intl, {
+      prevActive: pluginState.prevActiveState,
+      queryChanged: query !== pluginState.query,
+    });
 
     if (pluginState.itemsLoader) {
       pluginState.itemsLoader.cancel();

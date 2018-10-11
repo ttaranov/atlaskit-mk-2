@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tree",
-  "version": "3.0.2",
+  "version": "4.1.0",
   "description": "A React Component for displaying expandable and sortable tree hierarchies",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,17 +15,17 @@
   "dependencies": {
     "css-box-model": "^1.0.0",
     "memoize-one": "^3.0.1",
-    "react-beautiful-dnd": "^9.0.0"
+    "react-beautiful-dnd-next": "10.0.0-alpha.1"
   },
   "peerDependencies": {
     "react": "^16.4.0"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/icon": "^13.6.1",
-    "@atlaskit/navigation": "^33.1.8",
-    "@atlaskit/section-message": "^1.0.7",
+    "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/icon": "^14.0.0",
+    "@atlaskit/navigation": "^33.1.11",
+    "@atlaskit/section-message": "^1.0.8",
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/theme": "^6.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

@@ -1,5 +1,29 @@
 # @atlaskit/editor-markdown-transformer
 
+## 2.0.16
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/editor-common@19.0.0
+  - @atlaskit/editor-core@85.0.0
+  - @atlaskit/editor-test-helpers@6.2.6
+
+## 2.0.15
+- [patch] Upgrade markdown-it to reduce duplicate dependencies [a27ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a27ace1)
+
+## 2.0.14
+- [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/editor-common@18.0.0
+  - @atlaskit/editor-core@84.0.0
+  - @atlaskit/editor-test-helpers@6.2.5
+
+## 2.0.13
+- [patch] Updated dependencies [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+  - @atlaskit/editor-test-helpers@6.2.4
+  - @atlaskit/editor-core@83.0.0
+
+## 2.0.12
+- [patch] support hardbreak [39ca6cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39ca6cf)
+
 ## 2.0.11
 - [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
   - @atlaskit/editor-common@17.0.1

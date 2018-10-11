@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { AnalyticsDecorator, AnalyticsListener } from '@atlaskit/analytics';
 
-import { EditorWithAnalytics } from './../src/editor';
+import Editor from './../src/editor';
 import { EditorContext } from '../src';
 import getPropsPreset from './../src/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
@@ -28,25 +27,21 @@ export default function Example() {
             mediaProvider,
             onChange,
           }) => (
-            <AnalyticsListener onEvent={analyticsHandler}>
-              <AnalyticsDecorator data={{ editorType: 'message' }}>
-                <EditorWithAnalytics
-                  {...getPropsPreset('message')}
-                  quickInsert={true}
-                  analyticsHandler={analyticsHandler}
-                  disabled={disabled}
-                  maxHeight={305}
-                  maxContentSize={500}
-                  mentionProvider={mentionProvider}
-                  emojiProvider={emojiProvider}
-                  mediaProvider={mediaProvider}
-                  taskDecisionProvider={taskDecisionProvider}
-                  contextIdentifierProvider={contextIdentifierProvider}
-                  onChange={onChange}
-                  onSave={SAVE_ACTION}
-                />
-              </AnalyticsDecorator>
-            </AnalyticsListener>
+            <Editor
+              {...getPropsPreset('message')}
+              quickInsert={true}
+              analyticsHandler={analyticsHandler}
+              disabled={disabled}
+              maxHeight={305}
+              maxContentSize={500}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              mediaProvider={mediaProvider}
+              taskDecisionProvider={taskDecisionProvider}
+              contextIdentifierProvider={contextIdentifierProvider}
+              onChange={onChange}
+              onSave={SAVE_ACTION}
+            />
           )}
         />
         <DevTools />

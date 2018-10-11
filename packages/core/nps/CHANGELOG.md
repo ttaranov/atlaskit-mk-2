@@ -1,5 +1,13 @@
 # @atlaskit/nps
 
+## 4.0.8
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/checkbox@5.0.2
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/icon@14.0.0
+
 ## 4.0.7
 - [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
   - @atlaskit/button@9.0.9

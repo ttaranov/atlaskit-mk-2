@@ -1,6 +1,5 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { sleep } from '@atlaskit/editor-test-helpers';
 import {
   editable,
   getDocFromElement,
@@ -14,7 +13,7 @@ BrowserTestCase(
   'Can change media single to full-width layout on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);
@@ -28,10 +27,6 @@ BrowserTestCase(
 
     // now we can insert media as necessary
     await insertMedia(browser);
-
-    // wait for the nodeview to appear
-    await browser.waitForSelector('.media-single');
-    await sleep(200);
 
     // click it so the toolbar appears
     await browser.click('.media-single div div div');

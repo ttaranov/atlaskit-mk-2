@@ -5,6 +5,11 @@ import {
   CreateUIAnalyticsEventSignature,
 } from '@atlaskit/analytics-next-types';
 import {
+  UI_EVENT_TYPE,
+  OPERATIONAL_EVENT_TYPE,
+  EventType,
+} from '@atlaskit/analytics-gas-types';
+import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
@@ -32,13 +37,13 @@ export const createAndFireSafe = <
 const createPayload = (
   action: string,
   actionSubject: string,
-  eventType: string,
-  actionSubjectID?: string,
+  eventType: EventType,
+  actionSubjectId?: string,
 ) => (attributes: { [key: string]: any }) => ({
   action,
   actionSubject,
   eventType,
-  actionSubjectID,
+  actionSubjectId,
   attributes: {
     ...attributes,
     packageName,
@@ -60,22 +65,22 @@ const getPreviousState = (reaction?: ReactionSummary): PreviousState => {
 };
 
 export const createReactionsRenderedEvent = (startTime: number) =>
-  createPayload('rendered', 'reactionView', 'ops')({
+  createPayload('rendered', 'reactionView', OPERATIONAL_EVENT_TYPE)({
     duration: calculateDuration(startTime),
   });
 
 export const createPickerButtonClickedEvent = (reactionEmojiCount: number) =>
-  createPayload('clicked', 'reactionPickerButton', 'ui')({
+  createPayload('clicked', 'reactionPickerButton', UI_EVENT_TYPE)({
     reactionEmojiCount,
   });
 
 export const createPickerCancelledEvent = (startTime?: number) =>
-  createPayload('cancelled', 'reactionPicker', 'ui')({
+  createPayload('cancelled', 'reactionPicker', UI_EVENT_TYPE)({
     duration: calculateDuration(startTime),
   });
 
 export const createPickerMoreClickedEvent = (startTime?: number) =>
-  createPayload('clicked', 'reactionPicker', 'ui', 'more')({
+  createPayload('clicked', 'reactionPicker', UI_EVENT_TYPE, 'more')({
     duration: calculateDuration(startTime),
   });
 
@@ -85,7 +90,7 @@ export const createReactionSelectionEvent = (
   reaction?: ReactionSummary,
   startTime?: number,
 ) =>
-  createPayload('clicked', 'reactionPicker', 'ui', 'emoji')({
+  createPayload('clicked', 'reactionPicker', UI_EVENT_TYPE, 'emoji')({
     duration: calculateDuration(startTime),
     source,
     previousState: getPreviousState(reaction),
@@ -93,12 +98,12 @@ export const createReactionSelectionEvent = (
   });
 
 export const createReactionHoveredEvent = (startTime?: number) =>
-  createPayload('hovered', 'existingReaction', 'ui')({
+  createPayload('hovered', 'existingReaction', UI_EVENT_TYPE)({
     duration: calculateDuration(startTime),
   });
 
 export const createReactionClickedEvent = (added: boolean, emojiId: string) =>
-  createPayload('clicked', 'existingReaction', 'ui')({
+  createPayload('clicked', 'existingReaction', UI_EVENT_TYPE)({
     added,
     emojiId,
   });

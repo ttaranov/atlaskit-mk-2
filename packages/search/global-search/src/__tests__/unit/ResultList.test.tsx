@@ -5,10 +5,12 @@ import {
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
-import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
+
+import PageIcon from '@atlaskit/icon-object/glyph/page/24';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import ResultList, { Props } from '../../components/ResultList';
 import {
+  Result,
   JiraResult,
   PersonResult,
   AnalyticsType,
@@ -113,7 +115,7 @@ it('should pass the correct properties to ObjectResult for Confluence results', 
   const avatar: { type: string } = wrapper
     .find(ObjectResultComponent)
     .prop('avatar');
-  expect(avatar.type).toEqual(Objects24Object24PageIcon);
+  expect(avatar.type).toEqual(PageIcon);
 });
 
 it('should pass the correct properties to ContainerResult for Confluence spaces', () => {
@@ -137,6 +139,36 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
     name: 'name',
     analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
+});
+
+it('should avoid duplicate result keys', () => {
+  const results: Result[] = [
+    makeConfluenceContainerResult({
+      resultId: 'resultId',
+      analyticsType: AnalyticsType.ResultConfluence,
+    }),
+    makeConfluenceObjectResult({
+      resultId: 'resultId',
+      analyticsType: AnalyticsType.ResultConfluence,
+    }),
+    makePersonResult({
+      resultId: 'resultId',
+      analyticsType: AnalyticsType.ResultPerson,
+    }),
+  ];
+
+  const wrapper = render({
+    results,
+    analyticsData: DUMMY_ANALYTICS_DATA,
+  });
+
+  const containerKey = wrapper.find(ContainerResultComponent).key();
+  const objectKey = wrapper.find(ObjectResultComponent).key();
+  const personKey = wrapper.find(PersonResultComponent).key();
+
+  expect(containerKey).toBe('confluence-space-resultId-1');
+  expect(objectKey).toBe('confluence-page-resultId-2');
+  expect(personKey).toBe('result-resultId-3');
 });
 
 describe('Jira Avatar default Icons', () => {

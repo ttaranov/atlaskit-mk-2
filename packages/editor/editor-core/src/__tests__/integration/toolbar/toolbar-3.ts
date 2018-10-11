@@ -15,7 +15,7 @@ const clear = `span=${messages.clearFormatting.defaultMessage}`;
     } editor`,
     { skip: ['ie', 'safari'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

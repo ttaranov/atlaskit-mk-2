@@ -3,6 +3,7 @@ import {
   audioFileId,
   audioNoCoverFileId,
   docFileId,
+  largePdfFileId,
   imageFileId,
   largeImageFileId,
   smallImageFileId,
@@ -33,6 +34,12 @@ export const wideImageIdentifier: MediaViewerItem = {
 export const docIdentifier: MediaViewerItem = {
   type: 'file',
   id: docFileId.id,
+  occurrenceKey: 'testOccurrenceKey',
+};
+
+export const largePdfIdentifier: MediaViewerItem = {
+  type: 'file',
+  id: largePdfFileId.id,
   occurrenceKey: 'testOccurrenceKey',
 };
 

@@ -14,9 +14,11 @@ import {
   thEmpty,
   mountWithIntl,
 } from '@atlaskit/editor-test-helpers';
-import Button from '@atlaskit/button';
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../../../plugins/table/types';
+import {
+  TablePluginState,
+  TableCssClassName as ClassName,
+} from '../../../../../plugins/table/types';
 import RowControls from '../../../../../plugins/table/ui/TableFloatingControls/RowControls';
 import TableFloatingControls from '../../../../../plugins/table/ui/TableFloatingControls';
 import {
@@ -28,9 +30,9 @@ import {
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
 
-const RowControlsButtonWrap = '.pm-table-row-controls__button-wrap';
-const DeleteRowButton = '.pm-table-controls__delete-button-wrap';
-const InsertRowButton = '.pm-table-controls__insert-button-wrap';
+const RowControlsButtonWrap = `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`;
+const DeleteRowButton = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP}`;
+const InsertRowButton = `.${ClassName.CONTROLS_INSERT_BUTTON_WRAP}`;
 
 const selectRows = rowIdxs => tr => {
   const cells: { pos: number; start: number; node: Node }[] = rowIdxs.reduce(
@@ -296,7 +298,7 @@ describe('RowControls', () => {
 
     floatingControls
       .find(DeleteRowButton)
-      .find(Button)
+      .find('button')
       .simulate('click');
 
     // ensure we called remove

@@ -6,7 +6,7 @@ import {
   type DragHandleProps,
   type DraggingStyle,
   type NotDraggingStyle,
-} from 'react-beautiful-dnd';
+} from 'react-beautiful-dnd-next';
 import type { ItemId, Path, TreeItem } from '../../types';
 
 export type TreeDraggingStyle = {|
@@ -49,7 +49,6 @@ export type Props = {|
   path: Path,
   onExpand: (itemId: ItemId, path: Path) => void,
   onCollapse: (itemId: ItemId, path: Path) => void,
-  onDragAction: (actionType: DragActionType) => void,
   renderItem: RenderItemParams => React.Node,
   provided: DraggableProvided,
   snapshot: DraggableStateSnapshot,

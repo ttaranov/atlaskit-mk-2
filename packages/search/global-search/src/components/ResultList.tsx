@@ -40,15 +40,17 @@ export default class ResultList extends React.Component<Props> {
         containerId: result.containerId,
         experimentId: result.experimentId,
         ...this.props.analyticsData,
+        contentType: result.contentType,
       };
-
+      const resultKey = `${result.contentType || 'result'}-${
+        result.resultId
+      }-${index + 1}`;
       switch (resultType) {
         case ResultType.ConfluenceObjectResult: {
           const confluenceResult = result as ConfluenceObjectResult;
-
           return (
             <ObjectResultComponent
-              key={confluenceResult.resultId}
+              key={resultKey}
               resultId={confluenceResult.resultId}
               name={confluenceResult.name}
               href={confluenceResult.href}
@@ -56,10 +58,7 @@ export default class ResultList extends React.Component<Props> {
               contentType={confluenceResult.contentType}
               containerName={confluenceResult.containerName}
               avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
-              analyticsData={{
-                ...analyticsData,
-                contentType: confluenceResult.contentType,
-              }}
+              analyticsData={analyticsData}
             />
           );
         }
@@ -68,7 +67,7 @@ export default class ResultList extends React.Component<Props> {
           const avatarData = extractAvatarData(jiraResult);
           return (
             <ObjectResultComponent
-              key={jiraResult.resultId}
+              key={resultKey}
               resultId={jiraResult.resultId}
               name={jiraResult.name}
               href={jiraResult.href}
@@ -76,6 +75,7 @@ export default class ResultList extends React.Component<Props> {
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
               {...avatarData}
+              contentType={jiraResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -85,12 +85,13 @@ export default class ResultList extends React.Component<Props> {
 
           return (
             <ContainerResultComponent
-              key={containerResult.resultId}
+              key={resultKey}
               resultId={containerResult.resultId}
               name={containerResult.name}
               href={containerResult.href}
               type={containerResult.analyticsType}
               avatarUrl={containerResult.avatarUrl}
+              contentType={containerResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -100,7 +101,7 @@ export default class ResultList extends React.Component<Props> {
 
           return (
             <PersonResultComponent
-              key={personResult.resultId}
+              key={resultKey}
               resultId={personResult.resultId}
               name={personResult.name}
               href={personResult.href}
