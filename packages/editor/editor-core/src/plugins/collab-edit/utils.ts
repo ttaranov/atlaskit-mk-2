@@ -1,14 +1,6 @@
 import { EditorState, Selection } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
-import {
-  akColorR400,
-  akColorY400,
-  akColorG400,
-  akColorB400,
-  akColorT400,
-  akColorP400,
-  akColorN800,
-} from '@atlaskit/util-shared-styles';
+import { colors as themeColors } from '@atlaskit/theme';
 
 import { hexToRgba } from '@atlaskit/editor-common';
 
@@ -19,18 +11,14 @@ export interface Color {
   selection: string;
 }
 
-export const colors: Color[] = [
-  akColorR400,
-  akColorY400,
-  akColorG400,
-  akColorT400,
-  akColorB400,
-  akColorP400,
-  akColorN800,
-].map(solid => ({
-  solid,
-  selection: hexToRgba(solid, 0.2)!,
-}));
+const { R400, Y400, G400, B400, T400, P400, N800 } = themeColors;
+
+export const colors: Color[] = [R400, Y400, G400, T400, B400, P400, N800].map(
+  solid => ({
+    solid,
+    selection: hexToRgba(solid, 0.2)!,
+  }),
+);
 
 // tslint:disable:no-bitwise
 export const getAvatarColor = (str: string) => {

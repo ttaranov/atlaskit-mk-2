@@ -4,7 +4,6 @@ import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
-import TaskIcon from '@atlaskit/icon/glyph/editor/task';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import { analyticsDecorator as analytics } from '../../../../analytics';
 import {
@@ -21,7 +20,6 @@ import {
   ExpandIconWrapper,
   Shortcut,
 } from '../../../../ui/styles';
-import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
 import { toggleBulletList, toggleOrderedList } from '../../commands';
 
 export const messages = defineMessages({
@@ -34,11 +32,6 @@ export const messages = defineMessages({
     id: 'fabric.editor.orderedList',
     defaultMessage: 'Numbered list',
     description: 'A list with ordered items 1… 2… 3…',
-  },
-  action: {
-    id: 'fabric.editor.action',
-    defaultMessage: 'Action item',
-    description: 'Also known as a “task”, “to do item”, or a checklist',
   },
   lists: {
     id: 'fabric.editor.lists',
@@ -53,7 +46,6 @@ export interface Props {
   bulletListDisabled?: boolean;
   orderedListActive?: boolean;
   orderedListDisabled?: boolean;
-  allowTasks?: boolean;
   disabled?: boolean;
   isSmall?: boolean;
   isSeparator?: boolean;
@@ -92,7 +84,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.props;
     const labelUnorderedList = formatMessage(messages.unorderedList);
     const labelOrderedList = formatMessage(messages.orderedList);
-    const labelAction = formatMessage(messages.action);
 
     let items = [
       {
@@ -110,16 +101,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
         elemAfter: <Shortcut>{tooltip(toggleOrderedListKeymap)}</Shortcut>,
       },
     ];
-    if (this.props.allowTasks) {
-      items.push({
-        content: labelAction,
-        value: { name: 'action' },
-        isDisabled: false,
-        isActive: false,
-        // Action shortcut is not a keymap, it's a input rule.
-        elemAfter: <Shortcut>[]</Shortcut>,
-      });
-    }
     return [{ items }];
   };
 
@@ -129,7 +110,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
       isSmall,
       isReducedSpacing,
       isSeparator,
-      allowTasks,
       bulletListActive,
       bulletListDisabled,
       orderedListActive,
@@ -140,7 +120,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     if (!isSmall) {
       const labelUnorderedList = formatMessage(messages.unorderedList);
       const labelOrderedList = formatMessage(messages.orderedList);
-      const labelAction = formatMessage(messages.action);
       return (
         <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
           <ToolbarButton
@@ -159,15 +138,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
             title={tooltip(toggleOrderedListKeymap, labelOrderedList)}
             iconBefore={<NumberListIcon label={labelOrderedList} />}
           />
-          {allowTasks && (
-            <ToolbarButton
-              spacing={isReducedSpacing ? 'none' : 'default'}
-              onClick={this.handleCreateAction}
-              disabled={disabled}
-              title={`${labelAction} []`}
-              iconBefore={<TaskIcon label={labelAction} />}
-            />
-          )}
           {isSeparator && <Separator />}
         </ButtonGroup>
       );
@@ -231,16 +201,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     return false;
   };
 
-  @analytics('atlassian.fabric.action.trigger.button')
-  private handleCreateAction = (): boolean => {
-    const { editorView } = this.props;
-    if (!editorView) {
-      return false;
-    }
-    insertTaskDecision(editorView, 'taskList');
-    return true;
-  };
-
   private onItemActivated = ({ item }) => {
     this.setState({ isDropdownOpen: false });
     switch (item.value.name) {
@@ -249,9 +209,6 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
         break;
       case 'ordered_list':
         this.handleOrderedListClick();
-        break;
-      case 'action':
-        this.handleCreateAction();
         break;
     }
   };

@@ -39,8 +39,12 @@ const config = {
     // ignore tests under __tests__/vr (we override this if the VISUAL_REGRESSION flag is set)
     '/__tests__\\/visual-regression/',
   ],
-  modulePathIgnorePatterns: ['node_modules'],
-  transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
+  modulePathIgnorePatterns: ['./node_modules'],
+  // don't transform any files under node_modules except @atlaskit/* and react-syntax-highlighter (it
+  // uses dynamic imports which are not valid in node)
+  transformIgnorePatterns: [
+    '\\/node_modules\\/(?!@atlaskit|react-syntax-highlighter)',
+  ],
   resolver: `${__dirname}/resolver.js`,
   transform: {
     '^.+\\.tsx?$': 'ts-jest/preprocessor',

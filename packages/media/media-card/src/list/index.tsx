@@ -9,6 +9,7 @@ import {
   isError,
   isCollectionNotFoundError,
 } from '@atlaskit/media-core';
+import { InfiniteScroll } from '@atlaskit/media-ui';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import {
@@ -18,7 +19,6 @@ import {
 import { CardDimensions, CardListEvent, CardEvent } from '..';
 import { Card, FileIdentifier } from '../root';
 import { CollectionAction } from '../actions';
-import { InfiniteScroll } from './infiniteScroll';
 import { CardListItemWrapper, Spinner } from './styled';
 
 export interface CardListProps {

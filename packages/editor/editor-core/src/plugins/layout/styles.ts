@@ -1,11 +1,7 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
-import {
-  akColorB200,
-  akColorN40,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { colors, gridSize } from '@atlaskit/theme';
 import { columnLayoutSharedStyle } from '@atlaskit/editor-common';
 
 export const layoutStyles = css`
@@ -18,15 +14,15 @@ export const layoutStyles = css`
 
       /* Inner cursor located 26px from left */
       & > * {
-        padding: ${akGridSizeUnitless * 1.5}px;
-        margin-top: ${akGridSizeUnitless - 1}px;
+        padding: ${gridSize() * 1.5}px;
+        margin-top: ${gridSize() - 1}px;
         flex: 1;
         min-width: 0;
         border: 1px solid transparent;
         border-radius: 5px;
       }
       & > * + * {
-        margin-left: ${akGridSizeUnitless - 2}px;
+        margin-left: ${gridSize() - 2}px;
       }
 
       /**
@@ -34,11 +30,11 @@ export const layoutStyles = css`
         * Helps visualise when 'selectNodeBackwards' selects the node for deletion
         */
       &.ProseMirror-selectednode > * {
-        border-color: ${akColorB200};
+        border-color: ${colors.B200};
       }
       /* Shows the border when cursor is inside a layout */
       &.selected > * {
-        border-color: ${akColorN40};
+        border-color: ${colors.N40};
       }
     }
   }

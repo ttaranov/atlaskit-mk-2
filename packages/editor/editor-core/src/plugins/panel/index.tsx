@@ -7,13 +7,21 @@ import { messages } from '../block-type/types';
 import { createPlugin } from './pm-plugins/main';
 import { getToolbarConfig } from './toolbar';
 
+import keymap from './pm-plugins/keymaps';
+
 const panelPlugin: EditorPlugin = {
   nodes() {
     return [{ name: 'panel', node: panel }];
   },
 
   pmPlugins() {
-    return [{ name: 'panel', plugin: createPlugin }];
+    return [
+      { name: 'panel', plugin: createPlugin },
+      {
+        name: 'panelKeyMap',
+        plugin: () => keymap(),
+      },
+    ];
   },
 
   pluginsOptions: {

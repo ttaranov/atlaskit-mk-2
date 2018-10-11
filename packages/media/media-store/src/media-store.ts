@@ -67,11 +67,11 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
-  getCollectionItems(
+  async getCollectionItems(
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
-    return this.request(`/collection/${collectionName}/items`, {
+    const response = await this.request(`/collection/${collectionName}/items`, {
       authContext: { collectionName },
       params: {
         ...defaultGetCollectionItems,
@@ -80,7 +80,24 @@ export class MediaStore {
       headers: {
         Accept: 'application/json',
       },
-    }).then(mapResponseToJson);
+    });
+    const {
+      data: { contents, nextInclusiveStartKey },
+    }: MediaStoreResponse<MediaCollectionItems> = await mapResponseToJson(
+      response,
+    );
+    // [TODO] MS-705: remove after backend adds filter
+    // This prevents showing "ghost" files in recents
+    const contentsWithoutEmptyFiles = contents.filter(
+      item => item.details.size && item.details.size > 0,
+    );
+
+    return {
+      data: {
+        contents: contentsWithoutEmptyFiles,
+        nextInclusiveStartKey,
+      },
+    };
   }
 
   createUpload(
@@ -180,6 +197,18 @@ export class MediaStore {
 
     return createUrl(`${auth.baseUrl}/file/${id}/image`, {
       params: extendImageParams(params),
+      auth,
+    });
+  };
+
+  getFileBinaryURL = async (
+    id: string,
+    collectionName?: string,
+  ): Promise<string> => {
+    const auth = await this.config.authProvider({ collectionName });
+
+    return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
+      params: { dl: true, collection: collectionName },
       auth,
     });
   };

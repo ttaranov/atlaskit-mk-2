@@ -246,7 +246,6 @@ describe('text-formatting input rules', () => {
     notautoformats('<--');
     notautoformats('>');
     notautoformats('-!>');
-    notautoformats('- >');
 
     notautoformats('-->>');
     notautoformats('-->> ');
@@ -694,7 +693,6 @@ describe('text-formatting input rules', () => {
       notautoformats('__ __');
       notautoformats('** **');
       notautoformats('_ _');
-      notautoformats('* *');
       notautoformats('~~ ~~');
     });
 
@@ -718,7 +716,6 @@ describe('text-formatting input rules', () => {
       notautoformats('__ test__');
       notautoformats('** test**');
       notautoformats('_ test_');
-      notautoformats('* test*');
       notautoformats('~~ test~~');
     });
 

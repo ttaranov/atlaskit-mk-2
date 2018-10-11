@@ -1,5 +1,11 @@
 # @atlaskit/media-ui
 
+## 6.2.0
+- [minor] add image metadata parsing to media-ui [3c42c4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c42c4d)
+
+## 6.1.0
+- [minor] Add pagination to recents view in MediaPicker [4b3c1f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b3c1f5)
+
 ## 6.0.3
 - [patch] Refactored the rxjs set up for smart cards [026c96e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026c96e)
 

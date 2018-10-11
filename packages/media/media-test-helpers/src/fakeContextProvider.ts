@@ -32,16 +32,20 @@ export const fakeContext = (
     observable: returns(of('nothing')),
   });
   const getFile = jest.fn().mockReturnValue(of({}));
+  const downloadBinary = jest.fn();
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
+  const collection = {
+    loadNextPage: jest.fn(),
+  } as any;
   const getImage = jest.fn() as any;
-  const collection = {} as any;
   const file = {
     getFileState: getFile,
+    downloadBinary,
   } as any;
   const defaultContext: Context = {
     getImage,
@@ -71,6 +75,14 @@ export const fakeContext = (
     Object.keys(stubbedContext.file).forEach(methodName => {
       wrappedStubbedContext.file[methodName] = returns(
         stubbedContext.file[methodName],
+      );
+    });
+  }
+
+  if (stubbedContext.collection) {
+    Object.keys(stubbedContext.collection).forEach(methodName => {
+      wrappedStubbedContext.collection[methodName] = returns(
+        stubbedContext.collection[methodName],
       );
     });
   }

@@ -7,6 +7,7 @@ import {
   Transformer,
   ContextIdentifierProvider,
   ExtensionHandlers,
+  ErrorReportingHandler,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { MentionProvider } from '@atlaskit/mention';
@@ -16,10 +17,9 @@ import { TaskDecisionProvider } from '@atlaskit/task-decision';
 import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
 import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/types';
-import { ErrorReportingHandler } from '../utils/error-reporter';
 import { AnalyticsHandler } from '../analytics/handler';
 
-import { ImageUploadHandler } from '../plugins/image-upload/pm-plugins/main';
+import { ImageUploadHandler } from '../plugins/image-upload/types';
 import { TextFormattingOptions } from '../plugins/text-formatting';
 import { CollabEditProvider } from '../plugins/collab-edit/provider';
 import { MacroProvider } from '../plugins/macro/types';
@@ -52,6 +52,11 @@ export type InsertMenuCustomItem = {
   onClick?: (editorActions: EditorActionsOptions) => void;
 };
 
+export type AllowedBlockTypes =
+  | 'heading'
+  | 'blockquote'
+  | 'hardBreak'
+  | 'codeBlock';
 export interface ExtensionConfig {
   stickToolbarToBottom?: boolean;
   allowBreakout?: boolean;
@@ -78,8 +83,8 @@ export interface EditorProps {
   secondaryToolbarComponents?: ReactComponents;
   addonToolbarComponents?: ReactComponents;
 
-  // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote` and `hardBreak`.
-  allowBlockType?: { exclude?: Array<string> };
+  // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote`, `hardBreak` and `codeBlock`.
+  allowBlockType?: { exclude?: Array<AllowedBlockTypes> };
 
   // Whether or not you want to allow Action and Decision elements in the editor. You can currently only enable both or disable both.
   // To enable, you need to also provide a `taskDecisionProvider`. You will most likely need backend ADF storage for this feature.

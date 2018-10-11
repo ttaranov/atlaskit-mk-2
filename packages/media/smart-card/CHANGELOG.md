@@ -1,5 +1,11 @@
 # @atlaskit/smart-card
 
+## 8.3.2
+- [patch] expose onClick handler for Card [3f5585c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f5585c)
+
+## 8.3.1
+- [patch] Additional test case [9b86661](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b86661)
+
 ## 8.3.0
 - [minor] Refactored the rxjs set up for smart cards [026c96e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026c96e)
 

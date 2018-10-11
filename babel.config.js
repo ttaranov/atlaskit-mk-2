@@ -47,6 +47,7 @@ module.exports = {
     },
     test: {
       presets: ['@babel/env'],
+      plugins: ['@babel/transform-dynamic-import'],
     },
   },
 };

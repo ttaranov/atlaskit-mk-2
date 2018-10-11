@@ -7,7 +7,7 @@ import {
 } from '../../collection';
 import { fileStreamsCache } from '../../context/fileStreamCache';
 
-const setup = () => {
+const setup = (nextInclusiveStartKey: string | null = 'first-key') => {
   const firstItem: MediaCollectionItem = {
     id: '1',
     details: {
@@ -55,7 +55,7 @@ const setup = () => {
     Promise.resolve({
       data: {
         contents,
-        nextInclusiveStartKey: 'first-key',
+        nextInclusiveStartKey,
       },
     }),
   );
@@ -256,6 +256,19 @@ describe('CollectionFetcher', () => {
       );
 
       await collectionFetcher.loadNextPage('recents');
+    });
+
+    it('should not fetch next page items if current page nextInclusiveStartKey is null', done => {
+      const { collectionFetcher, getCollectionItems } = setup(null);
+
+      collectionFetcher.getItems('recents').subscribe({
+        async next() {
+          expect(getCollectionItems).toHaveBeenCalledTimes(1);
+          collectionFetcher.loadNextPage('recents');
+          expect(getCollectionItems).toHaveBeenCalledTimes(1);
+          done();
+        },
+      });
     });
   });
 });

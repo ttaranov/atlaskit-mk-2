@@ -69,4 +69,18 @@ describe('Empty state', () => {
     );
     expect(wrapper.find(ButtonGroup).length).toBe(1);
   });
+
+  it('should render image with fixed width and height so it doesnt jump around when the image is loading in', () => {
+    const wrapper = shallow(
+      <EmptyState
+        header="Test header"
+        imageUrl="test"
+        imageHeight={100}
+        imageWidth={200}
+      />,
+    );
+
+    expect(wrapper.find(Image).props().height).toEqual(100);
+    expect(wrapper.find(Image).props().width).toEqual(200);
+  });
 });

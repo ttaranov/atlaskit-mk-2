@@ -95,6 +95,16 @@ bolt install
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
+Now you can start the development server for a specific component you are working on using
+`bolt start <pkg-name>`, for example:
+
+```sh
+bolt start button
+```
+
+This will start the dev server with only packages matching "button"
+pattern being served on http://localhost:9000.
+
 #### Linux / Mac / Windows
 
 The main `bolt` / `bolt install` commands work on all platforms. However, custom commands may not work in a Windows environment (i.e. `bolt start`). For now, if you're running Windows, you'll have to do the following:

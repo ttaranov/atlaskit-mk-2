@@ -1,5 +1,13 @@
 # @atlaskit/reactions
 
+## 14.0.5
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/emoji@44.0.0
+  - @atlaskit/util-data-test@10.0.14
+
+## 14.0.4
+- [patch] Fix malformed operational analytics event [306cf0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/306cf0a)
+
 ## 14.0.3
 - [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
 - [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)

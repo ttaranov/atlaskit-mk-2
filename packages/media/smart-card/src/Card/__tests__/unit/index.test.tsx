@@ -10,6 +10,7 @@ import { Client, ObjectState } from '../../../Client';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { Card } from '../..';
 import { from } from 'rxjs/observable/from';
+import { CardWithUrl } from '../../types';
 
 function createClient(consequesntStates?: ObjectState[]): Client {
   const client = new Client();
@@ -296,5 +297,26 @@ describe('Card', () => {
         title: { text: 'foobar' },
       }),
     );
+  });
+
+  it('should not reload when appearance changes', () => {
+    const client = createClient();
+    const wrapper = mount<CardWithUrl>(
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+
+    expect(client.fetchData).toHaveBeenCalledTimes(1);
+
+    wrapper.setProps({ appearance: 'inline' }).update();
+
+    expect(client.fetchData).toHaveBeenCalledTimes(1);
+
+    wrapper.setProps({ appearance: 'block' }).update();
+
+    expect(client.fetchData).toHaveBeenCalledTimes(1);
   });
 });

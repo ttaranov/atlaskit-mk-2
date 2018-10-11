@@ -3,11 +3,7 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ComponentClass } from 'react';
 import { akEditorSubtleAccent } from '../../styles';
-import {
-  akBorderRadius,
-  akColorN50,
-  akColorN300,
-} from '@atlaskit/util-shared-styles';
+import { borderRadius, colors } from '@atlaskit/theme';
 
 export const Input: ComponentClass<
   InputHTMLAttributes<{}> & { innerRef?: any }
@@ -16,7 +12,7 @@ export const Input: ComponentClass<
   input& {
     background-color: white;
     border: 1px solid ${akEditorSubtleAccent};
-    border-radius: ${akBorderRadius};
+    border-radius: ${borderRadius()}px;
     box-sizing: border-box;
     height: 40px;
     padding-left: 20px;
@@ -27,10 +23,10 @@ export const Input: ComponentClass<
     font-weight: 400;
     line-height: 1.42857142857143;
     letter-spacing: -0.005em;
-    color: ${akColorN300};
+    color: ${colors.N300};
 
     &:hover {
-      border-color: ${akColorN50};
+      border-color: ${colors.N50};
       cursor: text;
     }
   }
