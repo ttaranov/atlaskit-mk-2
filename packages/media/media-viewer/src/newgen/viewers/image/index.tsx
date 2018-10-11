@@ -85,7 +85,9 @@ export class ImageViewer extends BaseViewer<
 
   protected needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
     return (
-      !deepEqual(propsA.item, propsB.item) || propsA.context !== propsB.context
+      !deepEqual(propsA.item, propsB.item) ||
+      propsA.context !== propsB.context ||
+      propsA.collectionName !== propsB.collectionName
     );
   }
 
