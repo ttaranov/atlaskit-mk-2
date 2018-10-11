@@ -96,8 +96,8 @@ describe('GlobalNavigation', () => {
     ];
 
     drawerItems.forEach(({ name, akIcon, capitalisedName }) => {
-      describe(`${name} drawer`, () => {
-        it(`should not add ${name} icon if on${capitalisedName}Click and ${name}DrawerContents are absent`, () => {
+      describe(`"${name}" drawer`, () => {
+        it(`should not add "${name}" icon if "on${capitalisedName}Click" and "${name}DrawerContents" are absent`, () => {
           // Testing onXClick and XDrawerContents props (negative)
           const props = {
             [`${name}Tooltip`]: 'test tooltip',
@@ -107,7 +107,7 @@ describe('GlobalNavigation', () => {
           expect(icon.exists()).toBeFalsy();
         });
 
-        it(`should allow on${capitalisedName}Click to be passed and ${name}Drawer should not be present`, () => {
+        it(`should allow "on${capitalisedName}Click" to be passed and "${name}Drawer" should not be present`, () => {
           // Testing onXClick positive
           const props = {
             [`on${capitalisedName}Click`]: jest.fn(),
@@ -123,7 +123,7 @@ describe('GlobalNavigation', () => {
           expect(wrapper.find(DrawerContents).exists()).toBeFalsy();
         });
 
-        it(`should open ${name} drawer when ${name}Icon is clicked`, () => {
+        it(`should open "${name}" drawer when "${name}Icon" is clicked`, () => {
           // Testing XDrawerContents positive
           const props = {
             [`${name}DrawerContents`]: DrawerContents,
@@ -137,7 +137,7 @@ describe('GlobalNavigation', () => {
           expect(wrapper.find(DrawerContents).exists()).toBeTruthy();
         });
 
-        it(`should allow ${name} drawer to be controlled when is${capitalisedName}DrawerOpen prop is passed`, () => {
+        it(`should allow "${name}" drawer to be controlled when "is${capitalisedName}DrawerOpen" prop is passed`, () => {
           // Test onXClick, onXDrawerClose, isXDrawerOpen
           const props = {
             [`${name}DrawerContents`]: DrawerContents,
@@ -163,7 +163,7 @@ describe('GlobalNavigation', () => {
           expect(wrapper.find('DrawerPrimitive').props().in).toBeFalsy();
         });
 
-        it(`should fire drawer onClose callback for controlled ${name} drawer`, () => {
+        it(`should fire drawer onClose callback for controlled "${name}" drawer`, () => {
           // Test  onXDrawerClose
           const props = {
             [`is${capitalisedName}DrawerOpen`]: true,
@@ -180,7 +180,7 @@ describe('GlobalNavigation', () => {
           expect(props[`on${capitalisedName}DrawerClose`]).toHaveBeenCalled();
         });
 
-        it(`should fire drawer callbacks for uncontrolled ${name} drawer`, () => {
+        it(`should fire drawer callbacks for uncontrolled "${name}" drawer`, () => {
           // Test  onXDrawerClose, onXDrawerOpen
           const props = {
             [`${name}DrawerContents`]: DrawerContents,
@@ -196,7 +196,7 @@ describe('GlobalNavigation', () => {
           expect(props[`on${capitalisedName}DrawerClose`]).toHaveBeenCalled();
         });
 
-        it(`should honour the shouldUnmountOnExit prop for ${name} drawer`, () => {
+        it(`should honour the shouldUnmountOnExit prop for "${name}" drawer`, () => {
           // test shouldXUnmountOnExit
           const props = {
             [`${name}DrawerContents`]: DrawerContents,
@@ -309,7 +309,7 @@ describe('GlobalNavigation', () => {
     ];
 
     navItems.forEach(({ icon, name, defaultTooltip }) => {
-      it(`should render default tooltip for ${name} item`, () => {
+      it(`should render default tooltip for "${name}" item`, () => {
         if (name === 'appSwitcher') {
           // AppSwitcher doesn't have a default tooltip in GlobalNavigation since it's
           // built into the appSwitcher component
@@ -327,7 +327,7 @@ describe('GlobalNavigation', () => {
     });
 
     navItems.forEach(({ icon, name }) => {
-      it(`should render a tooltip for ${name} item`, () => {
+      it(`should render a tooltip for "${name}" item`, () => {
         if (name === 'appSwitcher') {
           expect(wrapper.find(AppSwitcher).props().label).toBe(
             'appSwitcher tooltip',
@@ -417,7 +417,7 @@ describe('GlobalNavigation', () => {
       },
     ];
     navItems.forEach(({ icon, section, rank, name }) => {
-      xit(`should pick up section for ${name} from defaultConfig`, () => {
+      it(`should pick up section for "${name}" from defaultConfig`, () => {
         if (section === 'secondary') {
           expect(
             wrapper
@@ -438,7 +438,7 @@ describe('GlobalNavigation', () => {
         }
       });
 
-      xit(`should pick up rank for ${name} from defaultConfig`, () => {
+      xit(`should pick up rank for "${name}" from defaultConfig`, () => {
         if (section === 'primary') {
           expect(
             wrapper
@@ -641,7 +641,7 @@ describe('GlobalNavigation', () => {
         analyticsId: 'starDrawer',
       },
     ].forEach(({ drawerName, analyticsId }) => {
-      it(`should render ScreenTracker with correct props for ${drawerName} drawer when drawer is open`, () => {
+      it(`should render ScreenTracker with correct props for "${drawerName}" drawer when drawer is open`, () => {
         const capitalisedDrawerName = `${drawerName[0].toUpperCase()}${drawerName.slice(
           1,
         )}`;
