@@ -7,7 +7,7 @@ import { Popup } from '@atlaskit/editor-common';
 import WithPluginState from '../../ui/WithPluginState';
 import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
-import * as ToolbarLoader from './ui/ToolbarLoader';
+import { ToolbarLoader } from './ui/ToolbarLoader';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
 
 const getRelevantConfig = (
