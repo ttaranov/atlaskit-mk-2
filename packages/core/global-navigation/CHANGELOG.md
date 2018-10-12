@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 5.0.3
+- [patch] Fixes an erroneous for an improper prop validation. Basic code cleanup and adds tests for GlobalNavigation. [a4e9f03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4e9f03)
+
 ## 5.0.2
 - [patch] Fix scrollbars from displaying unnecessarily in global-navigation dropdown menus [28e6739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e6739)
 
