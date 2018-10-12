@@ -20,7 +20,13 @@ import {
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
-import { channel, ViewerLoadPayload } from './analytics';
+import {
+  channel,
+  ViewerLoadPayload,
+  itemViewerErrorEvent,
+  itemViewerCommencedEvent,
+  itemViewerLoadedEvent,
+} from './analytics';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import {
   name as packageName,
@@ -66,17 +72,18 @@ export class ItemViewerBase extends React.Component<
     this.init(this.props);
   }
 
-  private onViewerLoaded = (viewerPayload: ViewerLoadPayload) => {
+  private onViewerLoaded = (payload: ViewerLoadPayload) => {
     const { id } = this.props.identifier;
-    const ev: GasPayload = {
-      actionSubject: 'viewed',
-      eventType: 'ui',
-      attributes: {
-        status: viewerPayload.status,
-        fileId: id,
-      },
-    };
-    this.fireAnalytics(ev);
+    const { item } = this.state;
+    item.whenSuccessful(file => {
+      if (file.status === 'processed') {
+        if (payload.status === 'success') {
+          this.fireAnalytics(itemViewerLoadedEvent(file));
+        } else if (payload.status === 'error') {
+          this.fireAnalytics(itemViewerErrorEvent(id, 'Viewer error', file));
+        }
+      }
+    });
   };
 
   private renderProcessedFile(item: ProcessedFileState) {
@@ -159,6 +166,7 @@ export class ItemViewerBase extends React.Component<
       // MS-822
       // Once these issues have been fixed, we can make this sequence synchronous
       const { context, identifier } = props;
+      this.fireAnalytics(itemViewerCommencedEvent(identifier.id));
       this.subscription = context.file
         .getFileState(identifier.id, {
           collectionName: identifier.collectionName,
@@ -173,25 +181,13 @@ export class ItemViewerBase extends React.Component<
             this.setState({
               item: Outcome.failed(createError('metadataFailed', err)),
             });
-            this.fireAnalyticsError('Metadata fetching failed');
+            this.fireAnalytics(
+              itemViewerErrorEvent(identifier.id, 'Metadata fetching failed'),
+            );
           },
         });
     });
   }
-
-  private fireAnalyticsError = (failReason: string) => {
-    const errorPayload: GasPayload = {
-      actionSubject: 'viewed',
-      eventType: 'ui',
-      attributes: {
-        status: 'fail',
-        fileId: this.props.identifier.id,
-        failReason,
-      },
-      source: 'unknown',
-    };
-    this.fireAnalytics(errorPayload);
-  };
 
   private fireAnalytics = (payload: GasPayload) => {
     if (this.props.createAnalyticsEvent) {
