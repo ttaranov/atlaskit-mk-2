@@ -26,8 +26,12 @@ export default class CardList extends React.PureComponent<
   }
 
   render() {
-    if (!this.state.CardList && this.props.loadingComponent) {
-      return this.props.loadingComponent;
+    if (!this.state.CardList) {
+      if (this.props.loadingComponent) {
+        return this.props.loadingComponent;
+      }
+
+      return null;
     }
 
     return <this.state.CardList {...this.props} />;
