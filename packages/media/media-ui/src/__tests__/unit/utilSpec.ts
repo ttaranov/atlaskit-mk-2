@@ -18,7 +18,7 @@ import {
   fileToArrayBuffer,
   fileToDataURI,
   getFileInfo,
-  loadImage,
+  // loadImage,
 } from '../../util';
 
 describe('Image Meta Data Util', () => {
