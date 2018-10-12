@@ -36,15 +36,18 @@ function mountComponent(context: Context, identifier: Identifier) {
 }
 
 function mountBaseComponent(context: Context, identifier: Identifier) {
+  const createAnalyticsEventSpy = jest.fn();
+  createAnalyticsEventSpy.mockReturnValue({ fire: jest.fn() });
   const el = mount(
     <ItemViewerBase
-      createAnalyticsEvent={jest.fn()}
+      createAnalyticsEvent={createAnalyticsEventSpy}
       previewCount={0}
       context={context}
       identifier={identifier}
     />,
   );
-  return { el };
+  const instance = el.instance() as any;
+  return { el, instance, createAnalyticsEventSpy };
 }
 
 describe('<ItemViewer />', () => {
@@ -312,8 +315,8 @@ describe('<ItemViewer />', () => {
           status: 'processed',
         }),
       );
-      const { el } = mountBaseComponent(context, identifier);
-      expect(el.instance().state.item.status).toEqual('SUCCESSFUL');
+      const { el, instance } = mountBaseComponent(context, identifier);
+      expect(instance.state.item.status).toEqual('SUCCESSFUL');
 
       const identifier2 = {
         ...identifier,
@@ -328,6 +331,90 @@ describe('<ItemViewer />', () => {
       el.update();
 
       expect(el.instance().state.item.status).toEqual('PENDING');
+    });
+  });
+
+  describe('Analytics', () => {
+    it('should trigger analytics when the preview commences', () => {
+      const context = makeFakeContext(
+        Observable.of({
+          id: '123',
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+      );
+      const { createAnalyticsEventSpy } = mountBaseComponent(
+        context,
+        identifier,
+      );
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'commenced',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'fileId',
+        attributes: { fileId: 'some-id' },
+        eventType: 'operational',
+      });
+    });
+
+    it('should trigger analytics when metadata fetching ended with an error', () => {
+      const context = makeFakeContext(
+        Observable.throw('something bad happened!'),
+      );
+      const { createAnalyticsEventSpy } = mountBaseComponent(
+        context,
+        identifier,
+      );
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(2);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'commenced',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'fileId',
+        attributes: { fileId: 'some-id' },
+        eventType: 'operational',
+      });
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'loaded',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'fileId',
+        attributes: {
+          failReason: 'Metadata fetching failed',
+          fileId: 'some-id',
+          status: 'fail',
+        },
+        eventType: 'operational',
+      });
+    });
+
+    it('should trigger analytics when viewer returned an error', () => {
+      const context = makeFakeContext(
+        Observable.of({
+          id: '123',
+          mediaType: 'image',
+          status: 'processed',
+        }),
+      );
+      const { createAnalyticsEventSpy } = mountBaseComponent(
+        context,
+        identifier,
+      );
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'loaded',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'fileId',
+        attributes: {
+          failReason: 'Viewer error',
+          fileId: '123',
+          fileMediatype: 'image',
+          fileSize: undefined,
+          status: 'fail',
+        },
+        eventType: 'operational',
+      });
+    });
+
+    it('should trigger analytics when viewer is successful', () => {
+      // TODO.
+      // should we mock the ImageViewer component or its internals (getBlobService)?
     });
   });
 });
