@@ -25,11 +25,6 @@ export * from './list';
 export * from './actions';
 export { isUrlPreviewIdentifier } from './utils/identifier';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
-export {
-  AppCardView,
-  AppCardModel,
-  convertAppCardToSmartCard,
-} from './app_2/AppCardViewV2';
 
 export type CardStatus =
   | 'uploading'
