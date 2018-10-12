@@ -147,7 +147,9 @@ function floatingToolbarPluginFactory(options: {
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => undefined,
+      init: () => {
+        ToolbarLoader.preload();
+      },
       apply(tr, pluginState, oldState, newState) {
         const { intl } = reactContext();
         const newPluginState = floatingToolbarHandlers
