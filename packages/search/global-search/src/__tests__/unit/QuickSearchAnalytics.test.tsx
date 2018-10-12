@@ -25,7 +25,6 @@ import {
   getDismissedEvent,
   getExperimentExposureEvent,
 } from './helpers/_events_payloads';
-import AdvancedSearchResult from '../../components/AdvancedSearchResult';
 
 const spyOnComponentDidUpdate = () => {
   if (QuickSearchContainer.prototype.componentDidUpdate) {
@@ -192,37 +191,56 @@ const getRecentItems = product =>
         });
       };
 
-      it('should trigger highlight result event', () => {
-        const count = 9;
-        for (let i = 0; i < count; i++) {
-          keyPress('ArrowDown');
-        }
-        expect(onEventSpy).toHaveBeenCalledTimes(count);
-        onEventSpy.mock.calls.forEach(([event], index) => {
-          validateEvent(
-            event,
-            getHighlightEvent({
-              key: 'ArrowDown',
-              globalIndex: index,
-              ...(product === 'confluence'
-                ? {
-                    indexWithinSection: index % (count - 1),
-                    sectionIndex: Math.floor(index / (count - 1)),
-                    resultCount: 16, // 14 + 2 advanced
-                    sectionId: 'recent-confluence',
-                    type: index >= 8 ? 'confluence-space' : 'confluence-page',
-                  }
-                : {
-                    indexWithinSection: index % (count - 2),
-                    sectionIndex: Math.floor(index / (count - 2)),
-                    resultCount: 18, // 14 + 2 advanced
-                    sectionId: 'recent-jira',
-                    type: index >= 7 ? 'jira-board' : 'jira-issue',
-                  }),
-            }),
-          );
+      if (product === 'confluence') {
+        it('should trigger highlight result event', () => {
+          const count = 9;
+          for (let i = 0; i < count; i++) {
+            keyPress('ArrowDown');
+          }
+          expect(onEventSpy).toHaveBeenCalledTimes(count);
+          onEventSpy.mock.calls.forEach(([event], index) => {
+            validateEvent(
+              event,
+              getHighlightEvent({
+                key: 'ArrowDown',
+                globalIndex: index,
+                indexWithinSection: index % (count - 1),
+                sectionIndex: Math.floor(index / (count - 1)),
+                resultCount: 16, // 14 + 2 advanced
+                sectionId: 'recent-confluence',
+                type: index >= 8 ? 'confluence-space' : 'confluence-page',
+              }),
+            );
+          });
         });
-      });
+      }
+
+      if (product === 'jira') {
+        it('should trigger highlight result event', () => {
+          const count = 9;
+          for (let i = 0; i < count; i++) {
+            keyPress('ArrowDown');
+          }
+          expect(onEventSpy).toHaveBeenCalledTimes(count);
+
+          // skip the first link which is advanced issue search link
+          const callsWithoutFirstLink = onEventSpy.mock.calls.slice(1);
+          callsWithoutFirstLink.forEach(([event], index) => {
+            validateEvent(
+              event,
+              getHighlightEvent({
+                key: 'ArrowDown',
+                globalIndex: index + 1,
+                indexWithinSection: index % (count - 2),
+                sectionIndex: Math.floor(index / (count - 2)),
+                resultCount: 18,
+                sectionId: 'recent-jira',
+                type: index >= 7 ? 'jira-board' : 'jira-issue',
+              }),
+            );
+          });
+        });
+      }
 
       it('should trigger highlight result event on arrow up', () => {
         keyPress('ArrowUp');
