@@ -1,5 +1,12 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.12
+- [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+  - @atlaskit/editor-core@85.5.1
+  - @atlaskit/editor-common@19.3.2
+  - @atlaskit/media-core@24.2.2
+  - @atlaskit/renderer@28.0.0
+
 ## 4.0.11
 - [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/editor-common@19.0.0
