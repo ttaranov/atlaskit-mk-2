@@ -64,17 +64,9 @@ export default class BasicExample extends PureComponent<void, State> {
             <Item href="//atlassian.com" target="_blank">
               Sydney
             </Item>
-            <Item>Canberra</Item>
-            <Item>Adelaide</Item>
-            <Item>Hobart</Item>
             <Item isHidden>Hidden item</Item>
             <Item isDisabled>Brisbane</Item>
             <Item onActivated={this.onItemActivated}>Melbourne</Item>
-          </ItemGroup>
-          <ItemGroup title="Brazil">
-            <Item>Porto Alegre</Item>
-            <Item>São Paulo</Item>
-            <Item isDisabled>Rio de Janeiro</Item>
           </ItemGroup>
         </DropList>
       </div>
