@@ -16,7 +16,7 @@ export default function Example() {
         onClose={() => null}
         deleteAccount={() => null}
         isOpen
-        currentUserId="someoneElse"
+        currentUserId="chirons"
       />
     </IntlProvider>
   );
