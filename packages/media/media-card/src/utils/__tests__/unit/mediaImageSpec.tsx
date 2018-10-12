@@ -1,69 +1,134 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { MediaImage } from '../../mediaImage';
-import {
-  CoverHorizontalImageComponent,
-  CoverVerticalImageComponent,
-  FitImageComponent,
-} from '../../mediaImage/styled';
-
-interface Dimensions {
-  width: number;
-  height: number;
-}
+import { ImageComponent } from '../../mediaImage/styled';
 
 describe('MediaImage', () => {
   const originalGetBoundingClientRect = Element.prototype.getBoundingClientRect;
+  const dimensionsMap = {
+    isImageMoreLandscapyThanContainer: {
+      imageIsSmallerThanContainer: [[200, 100], [500, 500]],
+      imageIsBiggerThanContainer: [[2000, 1000], [500, 500]],
+    },
+    isImageMorePortraityThanContainer: {
+      imageIsSmallerThanContainer: [[100, 200], [500, 500]],
+      imageIsBiggerThanContainer: [[1000, 2000], [500, 500]],
+    },
+  };
+
   const setup = (
-    crop: boolean,
-    parentDimensions: Dimensions = { width: 100, height: 100 },
-    imageDimensions: Dimensions = { width: 100, height: 100 },
+    isCoverStrategy: boolean,
+    isImageMoreLandscapyThanContainer: boolean,
+    imageIsSmallerThanContainer: boolean,
+    loadImageImmediately: boolean = true,
   ) => {
-    Element.prototype.getBoundingClientRect = () => parentDimensions as any;
+    const [imageDimentions, containerDimentions] = dimensionsMap[
+      isImageMoreLandscapyThanContainer
+        ? 'isImageMoreLandscapyThanContainer'
+        : 'isImageMorePortraityThanContainer'
+    ][
+      imageIsSmallerThanContainer
+        ? 'imageIsSmallerThanContainer'
+        : 'imageIsBiggerThanContainer'
+    ];
+
+    Element.prototype.getBoundingClientRect = () =>
+      ({
+        width: containerDimentions[0],
+        height: containerDimentions[1],
+      } as any);
     const component = mount(
-      <MediaImage dataURI="data:image/png;base64," crop={crop} />,
+      <MediaImage dataURI="data:image/png;base64," crop={isCoverStrategy} />,
     );
     const img = component.find('img');
     const imgInstance = img.instance();
     Object.defineProperty(imgInstance, 'naturalHeight', {
-      value: imageDimensions.height,
+      value: imageDimentions[1],
     });
     Object.defineProperty(imgInstance, 'naturalWidth', {
-      value: imageDimensions.width,
+      value: imageDimentions[0],
     });
-    img.simulate('load');
-    return component;
+    if (loadImageImmediately) {
+      img.simulate('load');
+    }
+    return component.find(ImageComponent);
   };
 
   afterAll(() => {
     Element.prototype.getBoundingClientRect = originalGetBoundingClientRect;
   });
 
-  it('should use fit wrapper when "crop" is false', () => {
-    const component = mount(
-      <MediaImage dataURI="data:image/png;base64," crop={false} />,
-    );
-    expect(component.find(FitImageComponent)).toHaveLength(1);
-    expect(component).toMatchSnapshot();
+  describe("when image hasn't been loaded yet", () => {
+    it('should not show image yet with cover strategy', () => {
+      const component = setup(true, true, true, false);
+      expect(component.props().style).toEqual(
+        expect.objectContaining({
+          display: 'none',
+        }),
+      );
+    });
+    it('should show image right away with fit strategy', () => {
+      const component = setup(false, true, true, false);
+      expect(component.props().style).not.toEqual(
+        expect.objectContaining({
+          display: 'none',
+        }),
+      );
+    });
   });
 
-  it("should use vertical cover wrapper when crop is true and image w/h ratio less then container's", async () => {
-    const component = setup(
-      true,
-      { width: 100, height: 100 },
-      { width: 200, height: 400 },
-    );
-    expect(component.find(CoverVerticalImageComponent)).toHaveLength(1);
-    expect(component).toMatchSnapshot();
+  describe('when image is more landscapy than container', () => {
+    describe('when image is smaller than congtainer', () => {
+      it('should have right style for cover strategy', () => {
+        const component = setup(true, true, true);
+        expect(component.props().style).toEqual({ maxHeight: '100%' });
+      });
+      it('should have right style for fit strategy', () => {
+        const component = setup(false, true, true);
+        expect(component.props().style).toEqual({
+          maxWidth: '100%',
+          maxHeight: '100%',
+        });
+      });
+    });
+    describe('when image is bigger than congtainer', () => {
+      it('should have right style for cover strategy', () => {
+        const component = setup(true, true, false);
+        expect(component.props().style).toEqual({ height: '100%' });
+      });
+      it('should have right style for fit strategy', () => {
+        const component = setup(false, true, false);
+        expect(component.props().style).toEqual({
+          width: '100%',
+        });
+      });
+    });
   });
-
-  it("should use horizontal cover wrapper when crop is true and image w/h ratio bigger then container's", () => {
-    const component = setup(
-      true,
-      { width: 100, height: 100 },
-      { width: 400, height: 200 },
-    );
-    expect(component.find(CoverHorizontalImageComponent)).toHaveLength(1);
-    expect(component).toMatchSnapshot();
+  describe('when image is more portraity than container', () => {
+    describe('when image is smaller than congtainer', () => {
+      it('should have right style for cover strategy', () => {
+        const component = setup(true, false, true);
+        expect(component.props().style).toEqual({ maxWidth: '100%' });
+      });
+      it('should have right style for fit strategy', () => {
+        const component = setup(false, false, true);
+        expect(component.props().style).toEqual({
+          maxWidth: '100%',
+          maxHeight: '100%',
+        });
+      });
+    });
+    describe('when image is bigger than congtainer', () => {
+      it('should have right style for cover strategy', () => {
+        const component = setup(true, false, false);
+        expect(component.props().style).toEqual({ width: '100%' });
+      });
+      it('should have right style for fit strategy', () => {
+        const component = setup(false, false, false);
+        expect(component.props().style).toEqual({
+          height: '100%',
+        });
+      });
+    });
   });
 });
