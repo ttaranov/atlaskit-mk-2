@@ -54,6 +54,7 @@ const SaveButton = ({ onClick }) => (
 
   ${(
     <Example
+      packageName="@atlaskit/analytics-next"
       Component={require('../examples/40-updating-an-event').default}
       title="Updating an event's payload"
       source={require('!!raw-loader!../examples/40-updating-an-event')}
@@ -102,6 +103,7 @@ const App = () => (
 
   ${(
     <Example
+      packageName="@atlaskit/analytics-next"
       Component={require('../examples/20-adding-analytics-context').default}
       title="Adding context to an event"
       source={require('!!raw-loader!../examples/20-adding-analytics-context')}
@@ -159,6 +161,7 @@ export default withAnalyticsEvents()(Button);
 
   ${(
     <Example
+      packageName="@atlaskit/analytics-next"
       Component={require('../examples/10-basic-create-and-fire').default}
       title="Creating and firing an event"
       source={require('!!raw-loader!../examples/10-basic-create-and-fire')}
@@ -268,6 +271,7 @@ const ButtonWithAnalytics = withAnalyticsEvents({
 
   ${(
     <Example
+      packageName="@atlaskit/analytics-next"
       Component={require('../examples/30-passing-events-to-a-callback').default}
       title="Passing events through callbacks"
       source={require('!!raw-loader!../examples/30-passing-events-to-a-callback')}
@@ -325,6 +329,7 @@ const FormWithAnalytics = withAnalyticsEvents({
 
   ${(
     <Example
+      packageName="@atlaskit/analytics-next"
       Component={require('../examples/50-cloning-an-event').default}
       title="Cloning an event"
       source={require('!!raw-loader!../examples/50-cloning-an-event')}

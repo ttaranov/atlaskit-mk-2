@@ -41,6 +41,7 @@ import BookIcon from '@atlaskit/icon/glyph/book';
 
   ${(
     <Example
+      packageName="@atlaskit/icon"
       Component={require('../examples/01-icon-explorer').default}
       title="Basic"
       source={require('!!raw-loader!../examples/01-icon-explorer')}

@@ -26,6 +26,7 @@ cases(
       language: 'javascript',
       source: '<div>Mock Component</div>',
       title: 'Some title we have',
+      packageName: '@atlaskit/somewhere',
     };
 
     let combinedProps = { ...defaultProps, ...props };

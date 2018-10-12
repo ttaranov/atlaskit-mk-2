@@ -21,6 +21,7 @@ AkRadio component to render. Both stateful and stateless
 
   ${(
     <Example
+      packageName="@atlaskit/field-radio-group"
       Component={require('../examples/00-basic-usage').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic-usage')}
@@ -29,6 +30,7 @@ AkRadio component to render. Both stateful and stateless
 
   ${(
     <Example
+      packageName="@atlaskit/field-radio-group"
       Component={require('../examples/01-stateless-example').default}
       title="Stateless Checkbox"
       source={require('!!raw-loader!../examples/01-stateless-example')}
@@ -37,6 +39,7 @@ AkRadio component to render. Both stateful and stateless
 
   ${(
     <Example
+      packageName="@atlaskit/field-radio-group"
       Component={require('../examples/02-form-example').default}
       title="With a Form"
       source={require('!!raw-loader!../examples/02-form-example')}
