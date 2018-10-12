@@ -17,3 +17,4 @@ RUN apt-get update && apt-get install -yq gconf-service libasound2 libatk1.0-0 l
 RUN cd ~/ && yarn add puppeteer  
 
 # Run docker docker build -t atlaskit-vr -f Dockerfile.vr .
+# docker run --rm -v `pwd`:`pwd` -w `pwd` -i -t atlaskit-vr yarn test:vr
