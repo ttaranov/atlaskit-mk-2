@@ -4,7 +4,7 @@ import { DecisionItem } from '@atlaskit/task-decision';
 
 const messages = defineMessages({
   placeholder: {
-    id: 'fabric.editor.decision.placeholder',
+    id: 'fabric.editor.decisionPlaceholder',
     defaultMessage: 'Add a decision…',
     description: 'Placeholder description for an empty decision in the editor',
   },
