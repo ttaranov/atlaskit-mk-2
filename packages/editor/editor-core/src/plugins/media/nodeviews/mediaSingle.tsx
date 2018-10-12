@@ -162,6 +162,11 @@ export default class MediaSingleNode extends Component<
       height = DEFAULT_HEIGHT;
     }
 
+    const cardDimensions = {
+      width: `${this.props.width}px`,
+      height: '100%',
+    };
+
     const props = {
       layout,
       width,
@@ -183,10 +188,7 @@ export default class MediaSingleNode extends Component<
               node={this.child}
               view={this.props.view}
               getPos={this.props.getPos}
-              cardDimensions={{
-                width: '100%',
-                height: '100%',
-              }}
+              cardDimensions={cardDimensions}
               mediaProvider={mediaProvider}
               selected={selected()}
               onClick={this.selectMediaSingle}

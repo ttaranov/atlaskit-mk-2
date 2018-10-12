@@ -25,7 +25,7 @@ const getWrapperHeight = (dimensions?: CardDimensions) =>
 
 const getWrapperWidth = (dimensions?: CardDimensions) =>
   dimensions && dimensions.width
-    ? `width: ${getCSSUnitValue(dimensions.width)};`
+    ? `width: ${getCSSUnitValue(dimensions.width)}; max-width: 100%;`
     : '';
 
 export const Wrapper: ComponentClass<
