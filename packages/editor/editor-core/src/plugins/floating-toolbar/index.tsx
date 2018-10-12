@@ -7,7 +7,7 @@ import { Popup } from '@atlaskit/editor-common';
 import WithPluginState from '../../ui/WithPluginState';
 import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
-import Toolbar from './ui/Toolbar';
+import * as ToolbarLoader from './ui/ToolbarLoader';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
 
 const getRelevantConfig = (
@@ -108,7 +108,7 @@ const floatingToolbarPlugin: EditorPlugin = {
                   boundariesElement={popupsBoundariesElement}
                   scrollableElement={popupsScrollableElement}
                 >
-                  <Toolbar
+                  <ToolbarLoader
                     items={items}
                     dispatchCommand={fn =>
                       fn && fn(editorView.state, editorView.dispatch)
@@ -147,7 +147,9 @@ function floatingToolbarPluginFactory(options: {
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => undefined,
+      init: () => {
+        // ToolbarLoader.preload();
+      },
       apply(tr, pluginState, oldState, newState) {
         const { intl } = reactContext();
         const newPluginState = floatingToolbarHandlers
