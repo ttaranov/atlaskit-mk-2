@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 5.0.2
+- [patch] Fix scrollbars from displaying unnecessarily in global-navigation dropdown menus [28e6739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e6739)
+
 ## 5.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8
