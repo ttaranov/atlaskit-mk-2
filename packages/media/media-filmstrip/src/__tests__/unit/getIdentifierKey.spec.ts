@@ -3,15 +3,15 @@ import {
   LinkIdentifier,
   ExternalImageIdentifier,
 } from '@atlaskit/media-card';
-import { getIdentifierKey } from '../../utils/getIdentifierKey';
+import { generateIdentifierKey } from '../../utils/generateIdentifierKey';
 
-describe('getIdentifierKey()', () => {
+describe('generateIdentifierKey()', () => {
   it('should return a new key for new identifiers', () => {
-    const firstKey = getIdentifierKey({
+    const firstKey = generateIdentifierKey({
       mediaItemType: 'file',
       id: 'id-1',
     });
-    const secondKey = getIdentifierKey({
+    const secondKey = generateIdentifierKey({
       mediaItemType: 'file',
       id: 'id-2',
     });
@@ -25,8 +25,8 @@ describe('getIdentifierKey()', () => {
       mediaItemType: 'file',
       id: 'id',
     };
-    const firstKey = getIdentifierKey(fileIdentifier);
-    const secondKey = getIdentifierKey(fileIdentifier);
+    const firstKey = generateIdentifierKey(fileIdentifier);
+    const secondKey = generateIdentifierKey(fileIdentifier);
 
     expect(firstKey).toEqual('id');
     expect(firstKey).toEqual(secondKey);
@@ -39,7 +39,7 @@ describe('getIdentifierKey()', () => {
       collectionName: 'some-collection',
     };
 
-    expect(getIdentifierKey(linkIdentifier)).toEqual('id');
+    expect(generateIdentifierKey(linkIdentifier)).toEqual('id');
   });
 
   it('should work with external images', () => {
@@ -48,7 +48,7 @@ describe('getIdentifierKey()', () => {
       dataURI: 'some-external-img',
     };
 
-    expect(getIdentifierKey(linkIdentifier)).toEqual('some-external-img');
+    expect(generateIdentifierKey(linkIdentifier)).toEqual('some-external-img');
   });
 
   it('should work with promises', () => {
@@ -61,12 +61,12 @@ describe('getIdentifierKey()', () => {
       mediaItemType: 'file',
       id: Promise.resolve('id'),
     };
-    const firstKey = getIdentifierKey(firstDeferredIdentifier);
-    const secondKey = getIdentifierKey(secondDeferredIdentifier);
+    const firstKey = generateIdentifierKey(firstDeferredIdentifier);
+    const secondKey = generateIdentifierKey(secondDeferredIdentifier);
 
     expect(firstKey).not.toEqual(secondKey);
     expect(
-      getIdentifierKey({ mediaItemType: 'file', id: firstPromise }),
+      generateIdentifierKey({ mediaItemType: 'file', id: firstPromise }),
     ).toEqual(firstKey);
   });
 });

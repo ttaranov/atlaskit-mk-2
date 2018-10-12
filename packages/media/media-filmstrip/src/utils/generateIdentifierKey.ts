@@ -6,7 +6,7 @@ const identifiersMap: Map<Promise<string>, string> = new Map();
 // Returns the same key given the same Card Identifier.
 // This is needed to keep a consistent react element key for lists
 // when given different types of objects
-export const getIdentifierKey = (identifier: Identifier): string => {
+export const generateIdentifierKey = (identifier: Identifier): string => {
   switch (identifier.mediaItemType) {
     case 'external-image':
       return identifier.dataURI;

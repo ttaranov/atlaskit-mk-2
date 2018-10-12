@@ -552,6 +552,23 @@ describe('MediaStore', () => {
         );
         expect(image).toEqual(data);
       });
+
+      it('should generate right url based on params', async () => {
+        const data: ImageMetadata = {
+          pending: false,
+        };
+        fetchMock.mock(`begin:${baseUrl}/file`, {
+          body: data,
+          status: 201,
+        });
+
+        await mediaStore.getImageMetadata('123', {
+          collection: 'my-collection',
+        });
+        expect(fetchMock.lastUrl()).toEqual(
+          `${baseUrl}/file/123/image/metadata?client=some-client-id&collection=my-collection&token=some-token`,
+        );
+      });
     });
 
     describe('getFileBinaryURL', () => {
