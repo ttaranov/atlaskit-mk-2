@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.5.2
+- [patch] ED-5366: fix scrolling when media is pasted inside table cell [eef51cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eef51cf)
+
 ## 85.5.1
 - [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
   - @atlaskit/task-decision@10.0.3
