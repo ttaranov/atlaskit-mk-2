@@ -7,7 +7,8 @@ interface AsyncCardProps {
 }
 
 export default class Card extends React.PureComponent<
-  CardProps & AsyncCardProps
+  CardProps & AsyncCardProps,
+  AsyncCardProps
 > {
   static displayName = 'AsyncCard';
   static Card?: typeof CardType;

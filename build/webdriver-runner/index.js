@@ -14,10 +14,10 @@ const webpack = require('./utils/webpack');
  * function main() to
  * start and stop webpack-dev-server, selenium-standalone-server, browserstack connections
  * and run and wait for webdriver tests complete
- * 
- * maxWorkers set to 4 when using browserstack and 1 when running locally. 
+ *
+ * maxWorkers set to 4 when using browserstack and 1 when running locally.
  * By default the tests are running headlessly, set HEADLESS=false if you want to run them directly on real browsers.
- * if WATCH= true, by default, it will start chrome. 
+ * if WATCH= true, by default, it will start chrome.
  */
 
 process.env.NODE_ENV = 'test';
@@ -40,46 +40,42 @@ function getExitCode(result) {
 }
 
 async function runJest(testPaths) {
-  return new Promise(resolve => {
-    jest.runCLI(
-      {
-        _: testPaths || cli.input,
-        maxWorkers,
-        watch: !!process.env.WATCH,
-        updateSnapshot: cli.flags.updateSnapshot,
-      },
-      [process.cwd()],
-      resolve,
-    );
-  });
+  const status = await jest.runCLI(
+    {
+      _: testPaths || cli.input,
+      maxWorkers,
+      watch: !!process.env.WATCH,
+      updateSnapshot: cli.flags.updateSnapshot,
+    },
+    [process.cwd()],
+  );
+  return status.results;
 }
 
-function rerunFailedTests(result) {
-  return new Promise(async resolve => {
-    const failingTestPaths = result.testResults
-      .filter(testResult => testResult.numFailingTests > 0)
-      .map(testResult => testResult.testFilePath);
+async function rerunFailedTests(result) {
+  const failingTestPaths = result.testResults
+    .filter(testResult => testResult.numFailingTests > 0)
+    .map(testResult => testResult.testFilePath);
 
-    if (!failingTestPaths.length) {
-      resolve(getExitCode(result));
-      return;
-    }
+  if (!failingTestPaths.length) {
+    getExitCode(result);
+    return;
+  }
 
-    console.log(
-      `Re-running ${
-        result.numFailedTestSuites
-      } test suites.\n${failingTestPaths.join('\n')}`,
-    );
+  console.log(
+    `Re-running ${
+      result.numFailedTestSuites
+    } test suites.\n${failingTestPaths.join('\n')}`,
+  );
 
-    // We don't want to clobber the original results
-    // Now we'll upload two test result files.
-    process.env.JEST_JUNIT_OUTPUT = path.join(
-      process.cwd(),
-      'test-reports/junit-rerun.xml',
-    );
-    const results = await runJest(failingTestPaths);
-    resolve(getExitCode(results));
-  });
+  // We don't want to clobber the original results
+  // Now we'll upload two test result files.
+  process.env.JEST_JUNIT_OUTPUT = path.join(
+    process.cwd(),
+    'test-reports/junit-rerun.xml',
+  );
+  const results = await runJest(failingTestPaths);
+  return results;
 }
 
 function runTestsWithRetry() {
@@ -113,7 +109,7 @@ async function main() {
 
   const code = await runTestsWithRetry();
 
-  console.log(`Exiting tests with exit code: ${code}`);
+  console.log(`Exiting tests with exit code: ${+code}`);
   if (!serverAlreadyRunning) {
     webpack.stopDevServer();
   }

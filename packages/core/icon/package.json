@@ -46,6 +46,7 @@
     "@atlaskit/modal-dialog": "^7.0.2",
     "@atlaskit/section-message": "^1.0.9",
     "@atlaskit/tooltip": "^12.1.1",
+    "babel-core": "7.0.0-bridge.0",
     "classnames": "^2.2.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fs-extra": "^4.0.2",

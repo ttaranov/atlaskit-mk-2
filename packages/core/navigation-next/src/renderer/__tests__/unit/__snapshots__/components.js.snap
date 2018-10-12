@@ -4,84 +4,84 @@ exports[`navigation-next view renderer ItemsRenderer should render items correct
 Array [
   <HeaderSection
     customComponents={
-        Object {
-            "Corgie": [Function],
-          }
+      Object {
+        "Corgie": [Function],
+      }
     }
     id="headerSection"
     items={Array []}
     key="headerSection"
-/>,
+  />,
   <MenuSection
     customComponents={
-        Object {
-            "Corgie": [Function],
-          }
+      Object {
+        "Corgie": [Function],
+      }
     }
     id="menuSection"
     items={Array []}
     key="menuSection"
-/>,
+  />,
   <Item
     id="item"
     index={2}
     key="item"
-/>,
+  />,
   <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(InlineCustom)))
     components={
-        Object {
-            "BackItem": [Function],
-            "ContainerHeader": [Function],
-            "Debug": [Function],
-            "GoToItem": [Function],
-            "Group": [Function],
-            "GroupHeading": [Function],
-            "HeaderSection": [Function],
-            "Item": [Function],
-            "MenuSection": [Function],
-            "Section": [Function],
-            "SectionHeading": [Function],
-            "Separator": [Function],
-            "Switcher": [Function],
-            "Wordmark": [Function],
-          }
+      Object {
+        "BackItem": [Function],
+        "ContainerHeader": [Function],
+        "Debug": [Function],
+        "GoToItem": [Function],
+        "Group": [Function],
+        "GroupHeading": [Function],
+        "HeaderSection": [Function],
+        "Item": [Function],
+        "MenuSection": [Function],
+        "Section": [Function],
+        "SectionHeading": [Function],
+        "Separator": [Function],
+        "Switcher": [Function],
+        "Wordmark": [Function],
+      }
     }
     customComponents={
-        Object {
-            "Corgie": [Function],
-          }
+      Object {
+        "Corgie": [Function],
+      }
     }
     id="inlineCustom"
     index={3}
     key="inlineCustom"
-/>,
+  />,
   <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Corgie)))
     components={
-        Object {
-            "BackItem": [Function],
-            "ContainerHeader": [Function],
-            "Debug": [Function],
-            "GoToItem": [Function],
-            "Group": [Function],
-            "GroupHeading": [Function],
-            "HeaderSection": [Function],
-            "Item": [Function],
-            "MenuSection": [Function],
-            "Section": [Function],
-            "SectionHeading": [Function],
-            "Separator": [Function],
-            "Switcher": [Function],
-            "Wordmark": [Function],
-          }
+      Object {
+        "BackItem": [Function],
+        "ContainerHeader": [Function],
+        "Debug": [Function],
+        "GoToItem": [Function],
+        "Group": [Function],
+        "GroupHeading": [Function],
+        "HeaderSection": [Function],
+        "Item": [Function],
+        "MenuSection": [Function],
+        "Section": [Function],
+        "SectionHeading": [Function],
+        "Separator": [Function],
+        "Switcher": [Function],
+        "Wordmark": [Function],
+      }
     }
     customComponents={
-        Object {
-            "Corgie": [Function],
-          }
+      Object {
+        "Corgie": [Function],
+      }
     }
     id="corgie"
     index={4}
     key="corgie"
-/>,
+  />,
 ]
 `;

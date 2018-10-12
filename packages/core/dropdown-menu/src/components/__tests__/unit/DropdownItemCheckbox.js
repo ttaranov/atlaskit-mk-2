@@ -15,6 +15,9 @@ import DropdownMenu, {
 } from '../../..';
 
 test('Skipped tests', () => {});
+/**
+ * TODO: replace these tests - AK-5183
+ */
 /*
 
 describe('dropdown menu - DropdownItemCheckbox', () => {
