@@ -16,6 +16,10 @@ type Props = {
   /** The maximum value to display. If value is 100, and max is 50, "50+" will be displayed */
   max: number,
 
+  /** A symbol to be used before the number. The primary purpose is for representations such as
+   git diffs. This should be one chararacter and most likely only '+' or '-' */
+  symbol?: string,
+
   /** DEPRECATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
 
   Handler function to be called when the value prop is changed. Called with fn({ oldValue, newValue }) */
@@ -28,6 +32,7 @@ type Props = {
   theme: ThemeProps => ThemeProps,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
+  /** DEPRECATED - use children instead. The value displayed within the badge. */
   value?: number,
 };
 
@@ -68,7 +73,9 @@ export default class Badge extends Component<Props> {
       <Theme values={props.theme}>
         {t => (
           <Container {...t.badge({ appearance: props.appearance })}>
-            <Format max={props.max}>{props.value || props.children}</Format>
+            <Format symbol={props.symbol} max={props.max}>
+              {props.value || props.children}
+            </Format>
           </Container>
         )}
       </Theme>
