@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 85.5.3
+- [patch] ED-5524: fix insert column button when numbered column is on [555079c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/555079c)
+
 ## 85.5.2
 - [patch] ED-5366: fix scrolling when media is pasted inside table cell [eef51cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eef51cf)
 
