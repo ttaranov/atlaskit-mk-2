@@ -22,34 +22,34 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
       browser_version: '69.0',
       resolution: '1440x900',
     },
-    // firefox: {
-    //   os: 'Windows',
-    //   os_version: '10',
-    //   browserName: 'firefox',
-    //   browser_version: '61.0',
-    //   resolution: '1440x900',
-    // },
-    // ie: {
-    //   os: 'Windows',
-    //   os_version: '10',
-    //   browserName: 'ie',
-    //   browser_version: '11',
-    //   resolution: '1440x900',
-    // },
-    // safari: {
-    //   os: 'OS X',
-    //   os_version: 'Sierra',
-    //   browserName: 'safari',
-    //   browser_version: '10.1',
-    //   resolution: '1920x1080',
-    // },
-    // edge: {
-    //   os: 'Windows',
-    //   os_version: '10',
-    //   browserName: 'edge',
-    //   browser_version: '16',
-    //   resolution: '1440x900',
-    // },
+    firefox: {
+      os: 'Windows',
+      os_version: '10',
+      browserName: 'firefox',
+      browser_version: '61.0',
+      resolution: '1440x900',
+    },
+    ie: {
+      os: 'Windows',
+      os_version: '10',
+      browserName: 'ie',
+      browser_version: '11',
+      resolution: '1440x900',
+    },
+    safari: {
+      os: 'OS X',
+      os_version: 'Sierra',
+      browserName: 'safari',
+      browser_version: '10.1',
+      resolution: '1920x1080',
+    },
+    edge: {
+      os: 'Windows',
+      os_version: '10',
+      browserName: 'edge',
+      browser_version: '16',
+      resolution: '1440x900',
+    },
   };
   const launchKeys = Object.keys(launchers);
   const options = launchKeys.map(launchKey => {
