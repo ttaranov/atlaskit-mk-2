@@ -1,13 +1,16 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementType } from 'react';
 import uuid from 'uuid/v1';
+import { ThemeProvider } from 'styled-components';
 import Container, { Action, StyledButton } from './styledFlagActions';
 import type { ActionsType, AppearanceTypes } from '../../types';
+import { getFlagTheme } from '../../theme';
 import { DEFAULT_APPEARANCE } from '../Flag';
 
 type Props = {
   appearance: AppearanceTypes,
   actions: ActionsType,
+  linkComponent?: ElementType,
 };
 
 export default class FlagActions extends Component<Props, {}> {
@@ -26,7 +29,7 @@ export default class FlagActions extends Component<Props, {}> {
   getUniqueId = (prefix: string): string => `${prefix}-${uuid()}`;
 
   render() {
-    const { actions, appearance } = this.props;
+    const { actions, appearance, linkComponent } = this.props;
     const isBold = appearance !== DEFAULT_APPEARANCE;
 
     if (!actions.length) return null;
@@ -37,12 +40,26 @@ export default class FlagActions extends Component<Props, {}> {
         hasDivider={!!index}
         useMidDot={!isBold}
       >
-        <StyledButton onClick={action.onClick} appearance={appearance}>
+        <StyledButton
+          onClick={action.onClick}
+          href={action.href}
+          target={action.target}
+          // This is verymuch a hack
+          // This should be tidied up when the appearance prop of flag is aligned
+          // with other appearance props.
+          appearance={appearance === 'normal' ? 'link' : appearance}
+          component={linkComponent}
+          spacing="compact"
+        >
           {action.content}
         </StyledButton>
       </Action>
     ));
 
-    return <Container>{items}</Container>;
+    return (
+      <ThemeProvider theme={getFlagTheme}>
+        <Container>{items}</Container>
+      </ThemeProvider>
+    );
   }
 }

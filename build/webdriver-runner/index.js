@@ -2,20 +2,22 @@
 'use strict';
 
 const path = require('path');
+const isReachable = require('is-reachable');
+const jest = require('jest');
+const meow = require('meow');
+
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
-const isReachable = require('is-reachable');
-const jest = require('jest');
 
 /*
  * function main() to
  * start and stop webpack-dev-server, selenium-standalone-server, browserstack connections
  * and run and wait for webdriver tests complete
- * 
- * maxWorkers set to 4 when using browserstack and 1 when running locally. 
+ *
+ * maxWorkers set to 4 when using browserstack and 1 when running locally.
  * By default the tests are running headlessly, set HEADLESS=false if you want to run them directly on real browsers.
- * if WATCH= true, by default, it will start chrome. 
+ * if WATCH= true, by default, it will start chrome.
  */
 
 process.env.NODE_ENV = 'test';
@@ -24,6 +26,15 @@ process.env.INTEGRATION_TESTS = 'true';
 const isBrowserStack = process.env.TEST_ENV === 'browserstack';
 const maxWorkers = isBrowserStack ? 4 : 1;
 
+const cli = meow({
+  flags: {
+    updateSnapshot: {
+      type: 'boolean',
+      alias: 'u',
+    },
+  },
+});
+
 function getExitCode(result) {
   return !result || result.success ? 0 : 1;
 }
@@ -31,9 +42,10 @@ function getExitCode(result) {
 async function runJest(testPaths) {
   const status = await jest.runCLI(
     {
-      _: testPaths || process.argv.slice(2),
+      _: testPaths || cli.input,
       maxWorkers,
       watch: !!process.env.WATCH,
+      updateSnapshot: cli.flags.updateSnapshot,
     },
     [process.cwd()],
   );

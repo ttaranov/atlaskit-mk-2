@@ -161,7 +161,9 @@ class GlobalNavWithDrawers extends Component<Props, State> {
 
   openSearchDrawer = () => this.setState({ isSearchDrawerOpen: true });
 
-  closeSearchDrawer = () => this.setState({ isSearchDrawerOpen: false });
+  closeSearchDrawer = () => {
+    this.setState({ isSearchDrawerOpen: false });
+  };
 
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
