@@ -103,7 +103,14 @@ export class DrawerBase extends Component<DrawerProps> {
     if (!this.body) {
       return null;
     }
-    const { isOpen, children, icon, width, shouldUnmountOnExit } = this.props;
+    const {
+      isOpen,
+      children,
+      icon,
+      width,
+      shouldUnmountOnExit,
+      onExited,
+    } = this.props;
     return createPortal(
       <TransitionGroup component={OnlyChild}>
         <Fragment>
@@ -116,6 +123,7 @@ export class DrawerBase extends Component<DrawerProps> {
             in={isOpen}
             onClose={this.handleBackButtonClick}
             width={width}
+            onExited={onExited}
             shouldUnmountOnExit={shouldUnmountOnExit}
           >
             {children}

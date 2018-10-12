@@ -27,6 +27,8 @@ export type DrawerProps = BaseProps &
       SyntheticMouseEvent<*> | SyntheticKeyboardEvent<*>,
       analyticsEvent: any,
     ) => void,
+    /** Callback function to be called when the drawer finish closing. */
+    onExited?: () => void,
     /**
       Callback function that will be called when the drawer is displayed and `keydown` event is triggered.
     */

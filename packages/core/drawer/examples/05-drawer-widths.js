@@ -35,6 +35,7 @@ export default class DrawersExample extends Component<{}, State> {
           onClose={this.closeDrawer}
           isOpen={this.state.isDrawerOpen}
           width={this.state.width}
+          onExited={() => console.log('Drawer Exited')}
         >
           <code
             css={{
