@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^14.0.10",
+    "@atlaskit/icon": "^14.0.1",
     "@atlaskit/lozenge": "^6.2.1",
     "@atlaskit/select": "^6.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3"
