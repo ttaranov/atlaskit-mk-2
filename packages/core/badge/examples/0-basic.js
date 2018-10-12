@@ -66,6 +66,12 @@ export default function Example() {
           {100}
         </Badge>
       </Item>
+      <Item>
+        <p>Added</p>
+        <Badge appearance="added" max={4000}>
+          {3000}
+        </Badge>
+      </Item>
     </div>
   );
 }
