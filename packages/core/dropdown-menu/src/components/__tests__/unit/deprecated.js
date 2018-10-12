@@ -161,8 +161,7 @@ describe('dropdown menu', () => {
       expect(menu.find(MoreIcon).length).toBe(1);
     });
 
-    // eslint-disable-next-line
-    it.skip('should render tooltips if provided, skipping to use same version to avoid object comparison issues', () => {
+    it('should render tooltips if provided, skipping to use same version to avoid object comparison issues', () => {
       const menu = mount(
         <Menu items={itemsList} triggerType="button" defaultOpen />,
       );

@@ -1,7 +1,11 @@
 // @flow
-import * as colors from '@atlaskit/theme/src/colors';
-import * as typography from '@atlaskit/theme/src/typography';
-import { gridSize, fontFamily, codeFontFamily } from '@atlaskit/theme/src';
+import {
+  colors,
+  typography,
+  gridSize,
+  fontFamily,
+  codeFontFamily,
+} from '@atlaskit/theme';
 import evaluateInner from './utils/evaluate-inner';
 
 export default evaluateInner`

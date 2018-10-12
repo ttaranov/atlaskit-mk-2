@@ -461,26 +461,11 @@ describe('<EmojiPicker />', () => {
   });
 
   describe('with localStorage available', () => {
-    let originalLocalStorage;
-
-    let mockStorage: Storage;
-    let mockGetItem: jest.Mock<any>;
-    let mockSetItem: jest.Mock<any>;
+    let setItemSpy: jest.SpyInstance<any>;
 
     beforeEach(() => {
-      originalLocalStorage = global.window.localStorage;
-
-      mockGetItem = jest.fn();
-      mockSetItem = jest.fn();
-      mockStorage = {} as Storage;
-      mockStorage.getItem = mockGetItem;
-      mockStorage.setItem = mockSetItem;
-
-      global.window.localStorage = mockStorage;
-    });
-
-    afterEach(() => {
-      global.window.localStorage = originalLocalStorage;
+      // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
+      setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
     });
 
     it('should use localStorage to remember tone selection between sessions', async () => {
@@ -500,10 +485,11 @@ describe('<EmojiPicker />', () => {
       const tone = '2';
       const provider = await getEmojiResourcePromise();
       provider.setSelectedTone(parseInt(tone, 10));
-      mockGetItem.mockReturnValue(tone);
 
-      await waitUntil(() => !!mockSetItem.mock.calls.length);
-      expect(mockSetItem.mock.calls[0]).toEqual([selectedToneStorageKey, tone]);
+      await waitUntil(() => !!setItemSpy.mock.calls.length);
+      global
+        .expect(setItemSpy)
+        .toHaveBeenCalledWith(selectedToneStorageKey, tone);
 
       // First picker should have tone set by default
       const handEmoji1 = await findToneEmojiInNewPicker();

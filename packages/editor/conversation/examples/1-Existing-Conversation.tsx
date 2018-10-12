@@ -1,5 +1,3 @@
-import { ReactionContext } from '@atlaskit/reactions';
-import { MockReactionsClient } from '@atlaskit/reactions/src/client/MockReactionsClient';
 import * as React from 'react';
 import { MOCK_USERS } from '../example-helpers/MockData';
 import {
@@ -12,8 +10,6 @@ const provider = new ConversationResource({
   url: 'http://mockservice/',
   user: MOCK_USERS[3],
 });
-
-const reactionClient = new MockReactionsClient();
 
 export default class ExistingConversation extends React.Component<
   {},
@@ -38,14 +34,12 @@ export default class ExistingConversation extends React.Component<
     }
 
     return (
-      <ReactionContext client={reactionClient}>
-        <Conversation
-          id={conversationId}
-          containerId="ari:cloud:platform::conversation/demo"
-          provider={provider}
-          dataProviders={getDataProviderFactory()}
-        />
-      </ReactionContext>
+      <Conversation
+        id={conversationId}
+        containerId="ari:cloud:platform::conversation/demo"
+        provider={provider}
+        dataProviders={getDataProviderFactory()}
+      />
     );
   }
 }

@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 28.0.0
+- [major] Remove support for ApplicationCard [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+
 ## 27.2.2
 - [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
 
