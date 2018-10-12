@@ -226,13 +226,7 @@ describe('Feedback page', () => {
         }),
       );
       expect(onRatingSelect).not.toHaveBeenCalled();
-      const selectedButton = wrapper.find(Button).findWhere(
-        n =>
-          n
-            .children()
-            .first()
-            .text() === '5',
-      );
+      const selectedButton = wrapper.childAt(5);
       selectedButton.simulate('click');
       expect(onRatingSelect).toHaveBeenCalledWith(5);
     });

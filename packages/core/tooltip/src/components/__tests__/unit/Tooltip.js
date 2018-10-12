@@ -24,8 +24,6 @@ beforeEach(() => {
   jest.useFakeTimers();
 });
 
-afterEach(() => wrapper && wrapper.unmount());
-
 const Target = ({ children }: { children: Node }) => <div>{children}</div>;
 
 test('tooltip should not be shown by default', () => {
