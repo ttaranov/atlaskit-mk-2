@@ -1,6 +1,8 @@
 import {
   EmojiRepository,
   denormaliseEmojiServiceResponse,
+  EmojiDescription,
+  UsageFrequencyTracker,
 } from '@atlaskit/emoji';
 import { customCategory, customType } from './utils';
 import {
@@ -185,7 +187,16 @@ export const siteEmojis = [mediaEmoji];
 export const emojis = [...standardEmojis, ...atlassianEmojis, ...siteEmojis];
 export const searchableEmojis = filterToSearchable(emojis);
 
-export const newEmojiRepository: () => any = () => new EmojiRepository(emojis);
+// EmojiReposity using TestUsageFrequencyTracker
+class TestEmojiRepository extends EmojiRepository {
+  constructor(emojis: EmojiDescription[]) {
+    super(emojis);
+    this.usageTracker = new UsageFrequencyTracker(false);
+  }
+}
+
+export const newEmojiRepository: () => any = () =>
+  new TestEmojiRepository(emojis);
 export const newSiteEmojiRepository: () => any = () =>
   new EmojiRepository(siteEmojis);
 

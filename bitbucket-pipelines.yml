@@ -78,8 +78,10 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
-              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
+              # Run the non-editor tests
+              - TEST_ONLY_PATTERN='!packages/editor' yarn run test:changed
+              # Run the editor tests (runInBand is required or it fails in CI)
+              - TEST_ONLY_PATTERN='packages/editor' yarn run test:changed --runInBand
             caches:
               - node
         - step:
@@ -243,28 +245,28 @@ pipelines:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="0" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="0" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
           - step:
               name: Running Jest 2 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="1" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="1" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
           - step:
               name: Running Jest 3 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="2" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="2" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
           - step:
               name: Running Jest 4 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
       - step:
           name: Wait until no master is running
           script:

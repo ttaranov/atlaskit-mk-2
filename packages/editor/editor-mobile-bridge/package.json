@@ -31,7 +31,7 @@
     "@atlaskit/renderer": "^28.0.0",
     "@atlaskit/task-decision": "^10.0.3",
     "@types/prosemirror-view": "^1.0.0",
-    "babel-polyfill": "^6.26.0",
+    "@babel/polyfill": "^7.0.0",
     "prosemirror-view": "^1.6.0"
   },
   "peerDependencies": {
@@ -41,8 +41,7 @@
   "devDependencies": {
     "@atlaskit/editor-test-helpers": "^6.2.6",
     "ajv": "^4.11.3",
-    "babel-loader": "^7.1.2",
-    "babel-polyfill": "^6.26.0",
+    "babel-loader": "^8.0.2",
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",

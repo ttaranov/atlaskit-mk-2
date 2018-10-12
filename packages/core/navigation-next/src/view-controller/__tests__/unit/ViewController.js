@@ -30,7 +30,7 @@ const incomingView = {
 
 describe('NavigationNext View Controller', () => {
   afterEach(() => {
-    getItems.mockRestore();
+    getItems.mockClear();
   });
 
   it('should NOT set default values for peekView if initial peek view ID value is null', () => {

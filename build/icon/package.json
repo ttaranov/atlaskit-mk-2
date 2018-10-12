@@ -5,7 +5,7 @@
   "dependencies": {
     "svgo": "^0.7.0",
     "prettier": "^1.9.2",
-    "babel-core": "^6.26.0",
+    "babel-core": "7.0.0-bridge.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2"
   },
