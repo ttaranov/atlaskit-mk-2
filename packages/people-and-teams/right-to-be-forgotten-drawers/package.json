@@ -17,7 +17,6 @@
     "@atlaskit/icon": "^14.0.1",
     "@atlaskit/inline-dialog": "^9.0.6",
     "@atlaskit/section-message": "^1.0.9",
-    "@atlaskit/spinner": "^9.0.9",
     "@atlaskit/theme": "^6.1.0"
   },
   "devDependencies": {

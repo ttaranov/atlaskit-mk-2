@@ -1,1 +1,1 @@
-export { DeleteUserDrawer } from './src';
+export { RightToBeForgottenDrawer } from './src';

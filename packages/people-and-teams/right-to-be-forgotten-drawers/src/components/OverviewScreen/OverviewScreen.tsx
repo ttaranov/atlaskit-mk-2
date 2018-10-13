@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import InfoIcon from '@atlaskit/icon/glyph/info';
-import Spinner from '@atlaskit/spinner';
 
 import { commonMessages, overviewMessages } from '../../messages';
 import StatefulInlineDialog from '../StatefulInlineDialog';
@@ -17,11 +16,6 @@ import * as Styled from './styled';
  */
 
 export class OverviewScreen extends React.Component<OverviewScreenProps> {
-  componentDidMount() {
-    const { getAccessibleSites, user } = this.props;
-    getAccessibleSites(user.id);
-  }
-
   static defaultProps: Partial<OverviewScreenProps> = {
     isCurrentUser: false,
   };
@@ -31,19 +25,7 @@ export class OverviewScreen extends React.Component<OverviewScreenProps> {
   };
 
   render() {
-    const { accessibleSites, user, isLoading } = this.props;
-
-    if (isLoading) {
-      return (
-        <Styled.LoadingWrapper>
-          <Spinner size="large" />
-        </Styled.LoadingWrapper>
-      );
-    }
-
-    if (!accessibleSites) {
-      return null;
-    }
+    const { accessibleSites, user } = this.props;
 
     return (
       <Styled.Screen>

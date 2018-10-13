@@ -1,20 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches snapshots !isLoading and no accessible sites 1`] = `""`;
-
-exports[`Matches snapshots isLoading 1`] = `
-<styled.div>
-  <Spinner
-    delay={100}
-    invertColor={false}
-    isCompleting={false}
-    onComplete={[Function]}
-    size="large"
-  />
-</styled.div>
-`;
-
-exports[`Matches snapshots shows accessible sites 1`] = `
+exports[`Matches snapshots 1`] = `
 <styled.div>
   <styled.div>
     <FormattedMessage

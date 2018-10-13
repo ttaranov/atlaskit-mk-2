@@ -1,1 +1,3 @@
-export { default as DeleteUserDrawer } from './DeleteUserDrawer';
+export {
+  default as RightToBeForgottenDrawer,
+} from './RightToBeForgottenDrawer';

@@ -1,1 +1,3 @@
-export { default as DeleteUserDrawer } from './components/DeleteUserDrawer';
+export {
+  default as RightToBeForgottenDrawer,
+} from './components/RightToBeForgottenDrawer';

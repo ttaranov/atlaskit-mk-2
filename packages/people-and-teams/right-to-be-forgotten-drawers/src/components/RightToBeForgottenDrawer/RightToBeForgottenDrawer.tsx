@@ -5,10 +5,6 @@ import Drawer from '@atlaskit/drawer';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 
-import { Screens } from '../../constants';
-import { User } from '../../types';
-import OverviewScreen from '../OverviewScreen';
-import ContentPreviewScreen from '../ContentPreviewScreen';
 import * as Styled from './styled';
 import Footer from '../Footer';
 import { commonMessages } from '../../messages';
@@ -17,63 +13,39 @@ interface Props {
   isOpen: boolean;
   deleteAccount: () => void;
   onClose: () => void;
-  user: User;
-  currentUserId: string;
+  screens: React.ReactNode[];
 }
 
-export class DeleteUserDrawer extends React.Component<Props> {
+export class RightToBeForgottenDrawer extends React.Component<Props> {
   state = {
-    currentScreenId: Screens.OVERVIEW,
+    currentScreenIdx: 0,
   };
 
-  screens = [
-    {
-      id: Screens.OVERVIEW,
-      component: (
-        <OverviewScreen
-          isCurrentUser={this.props.user.id === this.props.currentUserId}
-          user={this.props.user}
-        />
-      ),
-    },
-    {
-      id: Screens.CONTENT_PREVIEW,
-      component: <ContentPreviewScreen user={this.props.user} />,
-    },
-  ];
-
-  getScreenIndexById = screenId =>
-    this.screens.findIndex(s => s.id === screenId);
-
   nextScreen = () => {
-    const currentScreenIdx = this.getScreenIndexById(
-      this.state.currentScreenId,
-    );
+    const { screens } = this.props;
+    const { currentScreenIdx } = this.state;
     const nextScreenIdx =
-      currentScreenIdx < this.screens.length - 1
+      currentScreenIdx < screens.length - 1
         ? currentScreenIdx + 1
-        : this.screens.length - 1;
-    this.setState({ currentScreenId: this.screens[nextScreenIdx].id });
+        : screens.length - 1;
+    this.setState({ currentScreenIdx: nextScreenIdx });
   };
 
   previousScreen = () => {
-    const currentScreenIdx = this.getScreenIndexById(
-      this.state.currentScreenId,
-    );
+    const { currentScreenIdx } = this.state;
     const previousScreenIdx =
       currentScreenIdx - 1 >= 0 ? currentScreenIdx - 1 : 0;
-    this.setState({ currentScreenId: this.screens[previousScreenIdx].id });
+    this.setState({ currentScreenIdx: previousScreenIdx });
   };
 
   renderCurrentScreen = () => {
-    const currentScreen = this.screens.find(
-      s => s.id === this.state.currentScreenId,
-    );
-    return currentScreen && currentScreen.component;
+    const currentScreen = this.props.screens[this.state.currentScreenIdx];
+    return currentScreen;
   };
 
   render() {
-    const { deleteAccount, isOpen, onClose, user } = this.props;
+    const { deleteAccount, isOpen, onClose, screens } = this.props;
+    const { currentScreenIdx } = this.state;
     return (
       <Drawer
         icon={props => <CrossIcon label="" {...props} size="medium" />}
@@ -85,10 +57,8 @@ export class DeleteUserDrawer extends React.Component<Props> {
           {this.renderCurrentScreen()}
 
           <Footer
-            numScreens={this.screens.length}
-            currentScreenIdx={this.getScreenIndexById(
-              this.state.currentScreenId,
-            )}
+            numScreens={screens.length}
+            currentScreenIdx={currentScreenIdx}
             onCancel={onClose}
             onNext={this.nextScreen}
             onPrevious={this.previousScreen}
@@ -110,4 +80,4 @@ export class DeleteUserDrawer extends React.Component<Props> {
   }
 }
 
-export default DeleteUserDrawer;
+export default RightToBeForgottenDrawer;

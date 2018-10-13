@@ -8,19 +8,10 @@ exports[`isOpen snapshot 1`] = `
   width="full"
 >
   <styled.div>
-    <Component
-      isCurrentUser={true}
-      user={
-        Object {
-          "email": "catherine.hirons@acme.com",
-          "fullName": "Catherine Hirons",
-          "id": "chirons",
-        }
-      }
-    />
+    a
     <Footer
       currentScreenIdx={0}
-      numScreens={2}
+      numScreens={3}
       onCancel={[Function]}
       onNext={[Function]}
       onPrevious={[Function]}

@@ -2,38 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import OverviewScreen from '../OverviewScreen';
 import { catherineHirons } from '../../../mocks/users';
-
-const accessibleSites = {
-  sites: [
-    {
-      cloudId: 'a436116f-02ce-4520-8fbb-7301462a1674',
-      url: 'https://hello.atlassian.net',
-      products: ['hipchat.cloud'],
-      avatarUrl:
-        'https://static.stride.com/default-site-avatars/atlassian-avatar.png',
-      displayName: 'hello',
-      isVertigo: true,
-    },
-    {
-      cloudId: 'a436116f-02ce-4520-8fbb-7301462a1674',
-      url: 'https://acme.atlassian.net',
-      products: ['hipchat.cloud'],
-      avatarUrl:
-        'https://static.stride.com/default-site-avatars/atlassian-avatar.png',
-      displayName: 'hello',
-      isVertigo: true,
-    },
-    {
-      cloudId: 'a436116f-02ce-4520-8fbb-7301462a1674',
-      url: 'https://test.atlassian.net',
-      products: ['hipchat.cloud'],
-      avatarUrl:
-        'https://static.stride.com/default-site-avatars/atlassian-avatar.png',
-      displayName: 'hello',
-      isVertigo: true,
-    },
-  ],
-};
+import accessibleSites from '../../../mocks/accessibleSites';
 
 const defaultProps = {
   accessibleSites,
@@ -48,20 +17,8 @@ const defaultProps = {
 const render = (props = {}) =>
   shallow(<OverviewScreen {...defaultProps} {...props} />);
 
-describe('Matches snapshots', () => {
-  test('isLoading', () => {
-    expect(render({ isLoading: true })).toMatchSnapshot();
-  });
-
-  test('!isLoading and no accessible sites', () => {
-    expect(
-      render({ isLoading: false, accessibleSites: null }),
-    ).toMatchSnapshot();
-  });
-
-  test('shows accessible sites', () => {
-    expect(render()).toMatchSnapshot();
-  });
+test('Matches snapshots', () => {
+  expect(render()).toMatchSnapshot();
 });
 
 describe('selectAdminOrSelfCopy', () => {

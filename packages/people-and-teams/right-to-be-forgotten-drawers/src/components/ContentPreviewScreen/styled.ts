@@ -10,4 +10,5 @@ export const Screen = styled.div`
 export const Title = styled.div`
   ${typography.h700};
   margin-bottom: ${gridSizeTimes(3)}px;
+  margin-top: 0;
 `;
