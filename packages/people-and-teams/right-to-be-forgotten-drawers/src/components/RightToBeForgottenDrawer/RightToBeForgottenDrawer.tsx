@@ -11,9 +11,9 @@ import { commonMessages } from '../../messages';
 
 interface Props {
   isOpen: boolean;
-  deleteAccount: () => void;
   onClose: () => void;
   screens: React.ReactNode[];
+  submitButton: React.ReactNode;
 }
 
 export class RightToBeForgottenDrawer extends React.Component<Props> {
@@ -44,7 +44,7 @@ export class RightToBeForgottenDrawer extends React.Component<Props> {
   };
 
   render() {
-    const { deleteAccount, isOpen, onClose, screens } = this.props;
+    const { isOpen, onClose, screens, submitButton } = this.props;
     const { currentScreenIdx } = this.state;
     return (
       <Drawer
@@ -68,11 +68,7 @@ export class RightToBeForgottenDrawer extends React.Component<Props> {
                 <ShortcutIcon size="small" label="" />
               </Button>
             }
-            submitButton={
-              <Button appearance="primary" onClick={deleteAccount}>
-                <FormattedMessage {...commonMessages.deleteAccount} />
-              </Button>
-            }
+            submitButton={submitButton}
           />
         </Styled.DrawerInner>
       </Drawer>

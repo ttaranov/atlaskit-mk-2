@@ -4,45 +4,33 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { Checkbox } from '@atlaskit/checkbox';
 
-import { RightToBeForgottenDrawer } from '../src';
-import { OverviewScreen } from '../src/components/OverviewScreen';
-import ContentPreviewScreen from '../src/components/ContentPreviewScreen';
 import accessibleSites from '../src/mocks/accessibleSites';
-
-const catherineHirons = {
-  id: 'chirons',
-  fullName: 'Catherine Hirons',
-  email: 'catherine.hirons@acme.com',
-};
-
-const Outer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+import { catherineHirons } from '../src/mocks/users';
+import StatefulInlineDialog from '../src/components/StatefulInlineDialog';
+import {
+  RightToBeForgottenDrawer,
+  OverviewScreen,
+  ContentPreviewScreen,
+} from '..';
 
 const Controls = styled.div`
-  background: #5e6c84;
-  height: 48px;
   display: flex;
   align-items: center;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1000;
-  padding: 0 8px;
-
-  opacity: 0.5;
-  transition: opacity 0.25s;
-
-  :hover {
-    opacity: 1;
+  > {
+    padding-right: 4px;
   }
 `;
+
+const submitButton = (
+  <Button appearance="primary" onClick={() => null}>
+    Delete account
+  </Button>
+);
 
 export default class DeleteUserDrawerExample extends React.Component {
   state = {
     isCurrentUser: false,
-    isOpen: true,
+    isOpen: false,
   };
 
   openDrawer = () => this.setState({ isOpen: true });
@@ -66,33 +54,36 @@ export default class DeleteUserDrawerExample extends React.Component {
 
   render() {
     return (
-      <Outer>
-        <Controls>
-          <Checkbox
-            label="Is current user"
-            onChange={this.toggleIsCurrentUser}
-            name="toggle-is-current-user"
-          />
-        </Controls>
-        <IntlProvider locale="en">
-          <>
-            <span>
-              <Button onClick={this.openDrawer}>Open drawer</Button>
-            </span>
-            {this.state.isOpen && (
-              <RightToBeForgottenDrawer
-                onClose={this.closeDrawer}
-                deleteAccount={() => null}
-                isOpen
-                screens={[
-                  this.renderOverviewScreen(),
-                  this.renderContentPreviewScreen(),
-                ]}
-              />
-            )}
-          </>
-        </IntlProvider>
-      </Outer>
+      <IntlProvider locale="en">
+        <>
+          <Controls>
+            <Button onClick={this.openDrawer}>Open drawer</Button>
+            <Checkbox
+              label={
+                <StatefulInlineDialog
+                  placement="right"
+                  content="Toggles between 2nd and 3rd person text."
+                >
+                  Is current user
+                </StatefulInlineDialog>
+              }
+              onChange={this.toggleIsCurrentUser}
+              name="toggle-is-current-user"
+            />
+          </Controls>
+          {this.state.isOpen && (
+            <RightToBeForgottenDrawer
+              onClose={this.closeDrawer}
+              isOpen
+              screens={[
+                this.renderOverviewScreen(),
+                this.renderContentPreviewScreen(),
+              ]}
+              submitButton={submitButton}
+            />
+          )}
+        </>
+      </IntlProvider>
     );
   }
 }

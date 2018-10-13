@@ -16,10 +16,7 @@ export class UserInfo extends React.Component<Props> {
     const { user } = this.props;
     return (
       <Styled.UserInfoOuter>
-        <Avatar
-          size="large"
-          src={getAvatarUrlByUserId(avatarCdnUrl, user.id)}
-        />
+        <Avatar size="large" src={user.avatarUrl} />
         <Styled.UserDetails>
           <Styled.UserName>{user.fullName}</Styled.UserName>
           <Styled.UserEmail>{user.email}</Styled.UserEmail>
