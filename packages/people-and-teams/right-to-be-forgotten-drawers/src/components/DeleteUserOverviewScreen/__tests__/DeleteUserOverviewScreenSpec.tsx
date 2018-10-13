@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import OverviewScreen from '../OverviewScreen';
+import { DeleteUserOverviewScreen } from '../DeleteUserOverviewScreen';
 import { catherineHirons } from '../../../mocks/users';
 import accessibleSites from '../../../mocks/accessibleSites';
 
@@ -15,7 +15,7 @@ const defaultProps = {
 };
 
 const render = (props = {}) =>
-  shallow(<OverviewScreen {...defaultProps} {...props} />);
+  shallow(<DeleteUserOverviewScreen {...defaultProps} {...props} />);
 
 test('Matches snapshots', () => {
   expect(render()).toMatchSnapshot();
@@ -23,14 +23,16 @@ test('Matches snapshots', () => {
 
 describe('selectAdminOrSelfCopy', () => {
   test('selects admin copy if delete candidate is not current user', () => {
-    const selectAdminOrSelfCopy = render({ isCurrentUser: false }).instance()
-      .selectAdminOrSelfCopy;
+    const selectAdminOrSelfCopy = (render({
+      isCurrentUser: false,
+    }).instance() as DeleteUserOverviewScreen).selectAdminOrSelfCopy;
     expect(selectAdminOrSelfCopy('admin', 'self')).toBe('admin');
   });
 
   test('selects self copy if delete candidate is current user', () => {
-    const selectAdminOrSelfCopy = render({ isCurrentUser: true }).instance()
-      .selectAdminOrSelfCopy;
+    const selectAdminOrSelfCopy = (render({
+      isCurrentUser: true,
+    }).instance() as DeleteUserOverviewScreen).selectAdminOrSelfCopy;
     expect(selectAdminOrSelfCopy('admin', 'self')).toBe('self');
   });
 });

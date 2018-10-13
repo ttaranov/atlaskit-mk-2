@@ -7,7 +7,7 @@ import InfoIcon from '@atlaskit/icon/glyph/info';
 import { commonMessages, overviewMessages } from '../../messages';
 import StatefulInlineDialog from '../StatefulInlineDialog';
 import UserInfo from '../UserInfo';
-import { OverviewScreenProps } from './types';
+import { DeleteUserOverviewScreenProps } from './types';
 import * as Styled from './styled';
 
 /**
@@ -15,8 +15,10 @@ import * as Styled from './styled';
  * i18n yet to be applied - ROCKET-1610
  */
 
-export class OverviewScreen extends React.Component<OverviewScreenProps> {
-  static defaultProps: Partial<OverviewScreenProps> = {
+export class DeleteUserOverviewScreen extends React.Component<
+  DeleteUserOverviewScreenProps
+> {
+  static defaultProps: Partial<DeleteUserOverviewScreenProps> = {
     isCurrentUser: false,
   };
 
@@ -137,4 +139,4 @@ export class OverviewScreen extends React.Component<OverviewScreenProps> {
   }
 }
 
-export default OverviewScreen;
+export default DeleteUserOverviewScreen;

@@ -1,7 +1,9 @@
 export {
   default as RightToBeForgottenDrawer,
 } from './src/components/RightToBeForgottenDrawer';
-export { default as OverviewScreen } from './src/components/OverviewScreen';
 export {
-  default as ContentPreviewScreen,
-} from './src/components/ContentPreviewScreen';
+  default as DeleteUserOverviewScreen,
+} from './src/components/DeleteUserOverviewScreen';
+export {
+  default as DeleteUserContentPreviewScreen,
+} from './src/components/DeleteUserContentPreviewScreen';

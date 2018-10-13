@@ -9,8 +9,8 @@ import { catherineHirons } from '../src/mocks/users';
 import StatefulInlineDialog from '../src/components/StatefulInlineDialog';
 import {
   RightToBeForgottenDrawer,
-  OverviewScreen,
-  ContentPreviewScreen,
+  DeleteUserOverviewScreen,
+  DeleteUserContentPreviewScreen,
 } from '..';
 
 const Controls = styled.div`
@@ -40,16 +40,16 @@ export default class DeleteUserDrawerExample extends React.Component {
   toggleIsCurrentUser = event =>
     this.setState({ isCurrentUser: event.target.checked });
 
-  renderOverviewScreen = () => (
-    <OverviewScreen
+  renderDeleteUserOverviewScreen = () => (
+    <DeleteUserOverviewScreen
       accessibleSites={accessibleSites}
       isCurrentUser={this.state.isCurrentUser}
       user={catherineHirons}
     />
   );
 
-  renderContentPreviewScreen = () => (
-    <ContentPreviewScreen user={catherineHirons} />
+  renderDeleteUserContentPreviewScreen = () => (
+    <DeleteUserContentPreviewScreen user={catherineHirons} />
   );
 
   render() {
@@ -76,8 +76,8 @@ export default class DeleteUserDrawerExample extends React.Component {
               onClose={this.closeDrawer}
               isOpen
               screens={[
-                this.renderOverviewScreen(),
-                this.renderContentPreviewScreen(),
+                this.renderDeleteUserOverviewScreen(),
+                this.renderDeleteUserContentPreviewScreen(),
               ]}
               submitButton={submitButton}
             />

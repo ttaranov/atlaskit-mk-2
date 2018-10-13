@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 
 import accessibleSites from '../src/mocks/accessibleSites';
 import { catherineHirons } from '../src/mocks/users';
-import { RightToBeForgottenDrawer, OverviewScreen } from '..';
+import { RightToBeForgottenDrawer, DeleteUserOverviewScreen } from '..';
 
 const submitButton = (
   <Button appearance="primary" onClick={() => null}>
@@ -12,8 +12,8 @@ const submitButton = (
   </Button>
 );
 
-const overviewScreen = (
-  <OverviewScreen
+const deleteUserOverviewScreen = (
+  <DeleteUserOverviewScreen
     accessibleSites={accessibleSites}
     isCurrentUser
     user={catherineHirons}
@@ -40,7 +40,7 @@ export default class SingleScreenDrawerExample extends React.Component {
             <RightToBeForgottenDrawer
               onClose={this.closeDrawer}
               isOpen
-              screens={[overviewScreen]}
+              screens={[deleteUserOverviewScreen]}
               submitButton={submitButton}
             />
           )}

@@ -6,8 +6,8 @@ import { catherineHirons } from '../src/mocks/users';
 
 import {
   RightToBeForgottenDrawer,
-  OverviewScreen,
-  ContentPreviewScreen,
+  DeleteUserOverviewScreen,
+  DeleteUserContentPreviewScreen,
 } from '..';
 
 const submitButton = (
@@ -21,14 +21,15 @@ export default function Example() {
     <>
       <h1>See code</h1>
       <RightToBeForgottenDrawer
+        onClose={() => {}}
         isOpen={false}
         screens={[
-          <OverviewScreen
+          <DeleteUserOverviewScreen
             accessibleSites={accessibleSites}
             isCurrentUser
             user={catherineHirons}
           />,
-          <ContentPreviewScreen user={catherineHirons} />,
+          <DeleteUserContentPreviewScreen user={catherineHirons} />,
         ]}
         submitButton={submitButton}
       />

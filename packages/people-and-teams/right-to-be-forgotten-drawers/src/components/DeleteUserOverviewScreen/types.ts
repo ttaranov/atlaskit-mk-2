@@ -1,8 +1,7 @@
 import { User } from '../../types';
 
-export interface OverviewScreenProps {
+export interface DeleteUserOverviewScreenProps {
   accessibleSites: AvailableSitesResponse;
-  // tslint:disable-next-line no-any
   isCurrentUser: boolean;
   user: User;
 }

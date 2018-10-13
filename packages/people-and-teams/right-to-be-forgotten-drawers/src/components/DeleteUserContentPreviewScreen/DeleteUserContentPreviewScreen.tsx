@@ -10,7 +10,7 @@ interface Props {
   user: User;
 }
 
-export class ContentPreviewScreen extends React.Component<Props> {
+export class DeleteUserContentPreviewScreen extends React.Component<Props> {
   render() {
     const { user } = this.props;
     return (
@@ -25,4 +25,4 @@ export class ContentPreviewScreen extends React.Component<Props> {
   }
 }
 
-export default ContentPreviewScreen;
+export default DeleteUserContentPreviewScreen;
