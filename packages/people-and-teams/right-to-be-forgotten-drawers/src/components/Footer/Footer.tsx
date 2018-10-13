@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 
-import { commonMessages } from '../../messages';
 import * as Styled from './styled';
 
 interface FooterProps {
@@ -24,14 +21,12 @@ export default class Footer extends React.Component<FooterProps> {
       onCancel,
       onNext,
       onPrevious,
+      secondaryActions,
       submitButton,
     } = this.props;
     return (
       <Styled.FooterOuter>
-        <Button appearance="subtle-link" spacing="none">
-          <FormattedMessage {...commonMessages.learnMore} />{' '}
-          <ShortcutIcon size="small" label="" />
-        </Button>
+        <div>{secondaryActions}</div>
 
         <ButtonGroup>
           {currentScreenIdx < 1 ? (

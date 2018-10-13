@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Button from '@atlaskit/button';
 import Drawer from '@atlaskit/drawer';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Button from '@atlaskit/button';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 
 import { Screens } from '../../constants';
 import { User } from '../../types';
@@ -22,28 +23,57 @@ interface Props {
 
 export class DeleteUserDrawer extends React.Component<Props> {
   state = {
-    currentScreen: Screens.OVERVIEW,
+    currentScreenId: Screens.OVERVIEW,
   };
 
-  screens = [Screens.OVERVIEW, Screens.CONTENT_PREVIEW];
+  screens = [
+    {
+      id: Screens.OVERVIEW,
+      component: (
+        <OverviewScreen
+          isCurrentUser={this.props.user.id === this.props.currentUserId}
+          user={this.props.user}
+        />
+      ),
+    },
+    {
+      id: Screens.CONTENT_PREVIEW,
+      component: <ContentPreviewScreen user={this.props.user} />,
+    },
+  ];
+
+  getScreenIndexById = screenId =>
+    this.screens.findIndex(s => s.id === screenId);
 
   nextScreen = () => {
-    const currentScreenIdx = this.screens.indexOf(this.state.currentScreen);
-    const nextScreen =
+    const currentScreenIdx = this.getScreenIndexById(
+      this.state.currentScreenId,
+    );
+    const nextScreenIdx =
       currentScreenIdx < this.screens.length - 1
         ? currentScreenIdx + 1
         : this.screens.length - 1;
-    this.setState({ currentScreen: this.screens[nextScreen] });
+    this.setState({ currentScreenId: this.screens[nextScreenIdx].id });
   };
 
   previousScreen = () => {
-    const currentScreenIdx = this.screens.indexOf(this.state.currentScreen);
-    const previousScreen = currentScreenIdx - 1 >= 0 ? currentScreenIdx - 1 : 0;
-    this.setState({ currentScreen: this.screens[previousScreen] });
+    const currentScreenIdx = this.getScreenIndexById(
+      this.state.currentScreenId,
+    );
+    const previousScreenIdx =
+      currentScreenIdx - 1 >= 0 ? currentScreenIdx - 1 : 0;
+    this.setState({ currentScreenId: this.screens[previousScreenIdx].id });
+  };
+
+  renderCurrentScreen = () => {
+    const currentScreen = this.screens.find(
+      s => s.id === this.state.currentScreenId,
+    );
+    return currentScreen && currentScreen.component;
   };
 
   render() {
-    const { currentUserId, deleteAccount, isOpen, onClose, user } = this.props;
+    const { deleteAccount, isOpen, onClose, user } = this.props;
     return (
       <Drawer
         icon={props => <CrossIcon label="" {...props} size="medium" />}
@@ -52,27 +82,22 @@ export class DeleteUserDrawer extends React.Component<Props> {
         width="full"
       >
         <Styled.DrawerInner>
-          {this.state.currentScreen === Screens.OVERVIEW && (
-            <OverviewScreen
-              isCurrentUser={user.id === currentUserId}
-              onCancel={this.props.onClose}
-              onNext={this.nextScreen}
-              user={user}
-            />
-          )}
-          {this.state.currentScreen === Screens.CONTENT_PREVIEW && (
-            <ContentPreviewScreen
-              onPrevious={this.previousScreen}
-              onDeleteAccount={deleteAccount}
-              user={user}
-            />
-          )}
+          {this.renderCurrentScreen()}
+
           <Footer
             numScreens={this.screens.length}
-            currentScreenIdx={this.screens.indexOf(this.state.currentScreen)}
+            currentScreenIdx={this.getScreenIndexById(
+              this.state.currentScreenId,
+            )}
             onCancel={onClose}
             onNext={this.nextScreen}
             onPrevious={this.previousScreen}
+            secondaryActions={
+              <Button appearance="subtle-link" spacing="none">
+                <FormattedMessage {...commonMessages.learnMore} />{' '}
+                <ShortcutIcon size="small" label="" />
+              </Button>
+            }
             submitButton={
               <Button appearance="primary" onClick={deleteAccount}>
                 <FormattedMessage {...commonMessages.deleteAccount} />

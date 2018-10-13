@@ -25,17 +25,21 @@ describe('nextScreen()', () => {
     const screens = wrapper.instance().screens;
     wrapper.instance().nextScreen();
     wrapper.update();
-    expect(screens.indexOf(wrapper.state().currentScreen)).toBe(1);
+    expect(
+      screens.findIndex(s => s.id === wrapper.state().currentScreenId),
+    ).toBe(1);
   });
 
   test('No-op if on last screen', () => {
     const wrapper = render();
     const screens = wrapper.instance().screens;
     const lastScreenIdx = screens.length - 1;
-    wrapper.setState({ currentScreen: screens[lastScreenIdx] });
+    wrapper.setState({ currentScreenId: screens[lastScreenIdx].id });
     wrapper.instance().nextScreen();
     wrapper.update();
-    expect(screens.indexOf(wrapper.state().currentScreen)).toBe(lastScreenIdx);
+    expect(
+      screens.findIndex(s => s.id === wrapper.state().currentScreenId),
+    ).toBe(lastScreenIdx);
   });
 });
 
@@ -44,12 +48,12 @@ describe('previousScreen()', () => {
     const wrapper = render();
     const screens = wrapper.instance().screens;
     const lastScreenIdx = screens.length - 1;
-    wrapper.setState({ currentScreen: screens[lastScreenIdx] });
+    wrapper.setState({ currentScreenId: screens[lastScreenIdx].id });
     wrapper.instance().previousScreen();
     wrapper.update();
-    expect(screens.indexOf(wrapper.state().currentScreen)).toBe(
-      lastScreenIdx - 1,
-    );
+    expect(
+      screens.findIndex(s => s.id === wrapper.state().currentScreenId),
+    ).toBe(lastScreenIdx - 1);
   });
 
   test('Goes to next screen', () => {
@@ -57,6 +61,8 @@ describe('previousScreen()', () => {
     const screens = wrapper.instance().screens;
     wrapper.instance().previousScreen();
     wrapper.update();
-    expect(screens.indexOf(wrapper.state().currentScreen)).toBe(0);
+    expect(
+      screens.findIndex(s => s.id === wrapper.state().currentScreenId),
+    ).toBe(0);
   });
 });

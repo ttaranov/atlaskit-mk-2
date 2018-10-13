@@ -10,8 +10,6 @@ exports[`isOpen snapshot 1`] = `
   <styled.div>
     <Component
       isCurrentUser={true}
-      onCancel={[Function]}
-      onNext={[Function]}
       user={
         Object {
           "email": "catherine.hirons@acme.com",
@@ -26,6 +24,24 @@ exports[`isOpen snapshot 1`] = `
       onCancel={[Function]}
       onNext={[Function]}
       onPrevious={[Function]}
+      secondaryActions={
+        <Button
+          appearance="subtle-link"
+          spacing="none"
+        >
+          <FormattedMessage
+            defaultMessage="Learn more"
+            description="Text for a link to a page where a user can learn more about a particular topic"
+            id="right-to-be-forgotten.learnMore"
+            values={Object {}}
+          />
+           
+          <ShortcutIcon
+            label=""
+            size="small"
+          />
+        </Button>
+      }
       submitButton={
         <Button
           appearance="primary"
