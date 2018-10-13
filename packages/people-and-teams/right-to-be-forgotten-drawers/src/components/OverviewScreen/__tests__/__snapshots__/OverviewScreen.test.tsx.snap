@@ -44,8 +44,9 @@ exports[`Matches snapshots shows accessible sites 1`] = `
         values={Object {}}
       />
       <p>
-        <a
-          href="#"
+        <Button
+          appearance="link"
+          spacing="none"
         >
           <FormattedMessage
             defaultMessage="Deactivate account"
@@ -53,7 +54,7 @@ exports[`Matches snapshots shows accessible sites 1`] = `
             id="right-to-be-forgotten.deactivate-account"
             values={Object {}}
           />
-        </a>
+        </Button>
       </p>
     </SectionMessage>
   </styled.div>
@@ -176,45 +177,5 @@ exports[`Matches snapshots shows accessible sites 1`] = `
       </styled.span>
     </li>
   </styled.ul>
-  <styled.div>
-    <Button
-      appearance="subtle-link"
-    >
-      <FormattedMessage
-        defaultMessage="Learn more"
-        description="Text for a link to a page where a user can learn more about a particular topic"
-        id="right-to-be-forgotten.learnMore"
-        values={Object {}}
-      />
-       
-      <ShortcutIcon
-        label=""
-        size="small"
-      />
-    </Button>
-    <ButtonGroup>
-      <Button
-        onClick={[Function]}
-      >
-        <FormattedMessage
-          defaultMessage="Cancel"
-          description="Text for a button for a user to cancel the current task/process"
-          id="right-to-be-forgotten.cancel"
-          values={Object {}}
-        />
-      </Button>
-      <Button
-        appearance="primary"
-        onClick={[Function]}
-      >
-        <FormattedMessage
-          defaultMessage="Next"
-          description="Text for a button for a user to proceed to the next step of a process"
-          id="right-to-be-forgotten.next"
-          values={Object {}}
-        />
-      </Button>
-    </ButtonGroup>
-  </styled.div>
 </styled.div>
 `;

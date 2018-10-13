@@ -7,8 +7,6 @@ export interface OverviewScreenProps {
   getAccessibleSites: (userId: string) => Promise<any>;
   isCurrentUser: boolean;
   user: User;
-  onNext: () => void;
-  onCancel: () => void;
 }
 
 interface AvailableSitesResponse {

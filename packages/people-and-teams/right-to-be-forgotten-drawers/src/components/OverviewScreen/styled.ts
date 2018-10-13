@@ -17,6 +17,7 @@ export const LoadingWrapper = styled.div`
 export const Title = styled.div`
   ${typography.h700};
   margin-bottom: ${gridSizeTimes(3)}px;
+  margin-top: 0;
 `;
 
 export const SectionMessageOuter = styled.div`
@@ -40,10 +41,4 @@ export const InfoIconWrapper = styled.span`
   div {
     display: inline-block;
   }
-`;
-
-export const Footer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: ${gridSizeTimes(4)}px;
 `;

@@ -221,11 +221,4 @@ export const contentPreviewMessages = {
     description:
       'Heading for the screen that explains what other users will see when viewing the deleted/deactivated user',
   },
-
-  deleteAccount: {
-    id:
-      'right-to-be-forgotten.close-account-focused-task.content-preview.delete-account',
-    defaultMessage: 'Delete account',
-    description: "Text for a button for deleting a user's account",
-  },
 };

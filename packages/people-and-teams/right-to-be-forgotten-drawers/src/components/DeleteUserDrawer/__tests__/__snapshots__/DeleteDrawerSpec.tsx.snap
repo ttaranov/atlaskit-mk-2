@@ -20,6 +20,26 @@ exports[`isOpen snapshot 1`] = `
         }
       }
     />
+    <Footer
+      currentScreenIdx={0}
+      numScreens={2}
+      onCancel={[Function]}
+      onNext={[Function]}
+      onPrevious={[Function]}
+      submitButton={
+        <Button
+          appearance="primary"
+          onClick={[Function]}
+        >
+          <FormattedMessage
+            defaultMessage="Delete account"
+            description="Text that appears in a button, link or heading for the action of deleting an account"
+            id="right-to-be-forgotten.delete-account"
+            values={Object {}}
+          />
+        </Button>
+      }
+    />
   </styled.div>
 </Drawer>
 `;

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import InfoIcon from '@atlaskit/icon/glyph/info';
-import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import Spinner from '@atlaskit/spinner';
 
 import { commonMessages, overviewMessages } from '../../messages';
@@ -12,20 +11,18 @@ import UserInfo from '../UserInfo';
 import { OverviewScreenProps } from './types';
 import * as Styled from './styled';
 
-type Props = OverviewScreenProps;
-
 /**
  * Copy not final - ROCKET-1610
  * i18n yet to be applied - ROCKET-1610
  */
 
-export class OverviewScreen extends React.Component<Props> {
+export class OverviewScreen extends React.Component<OverviewScreenProps> {
   componentDidMount() {
     const { getAccessibleSites, user } = this.props;
     getAccessibleSites(user.id);
   }
 
-  static defaultProps: Partial<Props> = {
+  static defaultProps: Partial<OverviewScreenProps> = {
     isCurrentUser: false,
   };
 
@@ -34,7 +31,7 @@ export class OverviewScreen extends React.Component<Props> {
   };
 
   render() {
-    const { accessibleSites, onCancel, onNext, user, isLoading } = this.props;
+    const { accessibleSites, user, isLoading } = this.props;
 
     if (isLoading) {
       return (
@@ -58,9 +55,9 @@ export class OverviewScreen extends React.Component<Props> {
           <SectionMessage appearance="warning">
             <FormattedMessage {...overviewMessages.warningSectionBody} />
             <p>
-              <a href="#">
+              <Button appearance="link" spacing="none">
                 <FormattedMessage {...commonMessages.deactivateAccount} />
-              </a>
+              </Button>
             </p>
           </SectionMessage>
         </Styled.SectionMessageOuter>
@@ -153,20 +150,6 @@ export class OverviewScreen extends React.Component<Props> {
             </Styled.InfoIconWrapper>
           </li>
         </Styled.MainInformationList>
-        <Styled.Footer>
-          <Button appearance="subtle-link">
-            <FormattedMessage {...commonMessages.learnMore} />{' '}
-            <ShortcutIcon size="small" label="" />
-          </Button>
-          <ButtonGroup>
-            <Button onClick={onCancel}>
-              <FormattedMessage {...commonMessages.cancel} />
-            </Button>
-            <Button appearance="primary" onClick={onNext}>
-              <FormattedMessage {...commonMessages.next} />
-            </Button>
-          </ButtonGroup>
-        </Styled.Footer>
       </Styled.Screen>
     );
   }

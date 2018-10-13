@@ -1,12 +1,16 @@
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Drawer from '@atlaskit/drawer';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Button from '@atlaskit/button';
 
 import { Screens } from '../../constants';
 import { User } from '../../types';
 import OverviewScreen from '../OverviewScreen';
 import ContentPreviewScreen from '../ContentPreviewScreen';
 import * as Styled from './styled';
+import Footer from '../Footer';
+import { commonMessages } from '../../messages';
 
 interface Props {
   isOpen: boolean;
@@ -41,7 +45,12 @@ export class DeleteUserDrawer extends React.Component<Props> {
   render() {
     const { currentUserId, deleteAccount, isOpen, onClose, user } = this.props;
     return (
-      <Drawer icon={CrossIcon} isOpen={isOpen} onClose={onClose} width="full">
+      <Drawer
+        icon={props => <CrossIcon label="" {...props} size="medium" />}
+        isOpen={isOpen}
+        onClose={onClose}
+        width="full"
+      >
         <Styled.DrawerInner>
           {this.state.currentScreen === Screens.OVERVIEW && (
             <OverviewScreen
@@ -58,6 +67,18 @@ export class DeleteUserDrawer extends React.Component<Props> {
               user={user}
             />
           )}
+          <Footer
+            numScreens={this.screens.length}
+            currentScreenIdx={this.screens.indexOf(this.state.currentScreen)}
+            onCancel={onClose}
+            onNext={this.nextScreen}
+            onPrevious={this.previousScreen}
+            submitButton={
+              <Button appearance="primary" onClick={deleteAccount}>
+                <FormattedMessage {...commonMessages.deleteAccount} />
+              </Button>
+            }
+          />
         </Styled.DrawerInner>
       </Drawer>
     );
