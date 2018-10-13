@@ -1,11 +1,8 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 
-import getAvatarUrlByUserId from '../../util/getAvatarUrlByUserId';
 import { User } from '../../types';
 import * as Styled from './styles';
-
-import { avatarCdnUrl } from '../../__temp_mocks__';
 
 interface Props {
   user: User;

@@ -4,7 +4,7 @@ import InlineDialog from '@atlaskit/inline-dialog';
 interface Props {
   children: React.ReactNode;
   content: React.ReactNode;
-  placement: string;
+  placement?: string;
 }
 
 interface State {

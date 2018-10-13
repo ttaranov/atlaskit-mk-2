@@ -23,9 +23,11 @@ export default md`
 
   ### Usage
 
-  This package provides the building blocks required to assemble the "Right to be forgotten" drawers.
+  This package provides the view components required to assemble the "Right to be forgotten" drawers.
 
-  Start by rendering a RightToBeForgottenDrawer then provide it the necessary screens.
+  By providing the building blocks rather than a single complete solution, a simpler and more flexible API can be provided for adjustments, customizations and data-routing.
+
+  Start by rendering a RightToBeForgottenDrawer then provide it the necessary screens, plugging in data providing callbacks where necessary.
 
   For example, to assemble the "Delete user" flow, provide the DeleteUserOverviewScreen and DeleteUserContentPreviewScreen.
 

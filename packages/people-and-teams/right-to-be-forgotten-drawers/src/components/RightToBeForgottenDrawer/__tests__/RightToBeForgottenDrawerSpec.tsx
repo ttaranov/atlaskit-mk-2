@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { catherineHirons } from '../../../mocks/users';
-import RightToBeForgottenDrawer from '../RightToBeForgottenDrawer';
+import { RightToBeForgottenDrawer } from '../RightToBeForgottenDrawer';
 
 const defaultProps = {
   isOpen: false,
-  deleteAccount: jest.fn(),
   onClose: jest.fn(),
-  currentUserId: catherineHirons.id,
   screens: ['a', 'b', 'c'],
+  submitButton: <div id="submit" />,
 };
 
 const render = (props = {}) =>
@@ -25,7 +23,7 @@ describe('nextScreen()', () => {
 
     expect(wrapper.state().currentScreenIdx).toBe(0);
 
-    wrapper.instance().nextScreen();
+    (wrapper.instance() as RightToBeForgottenDrawer).nextScreen();
     wrapper.update();
 
     expect(wrapper.state().currentScreenIdx).toBe(1);
@@ -37,7 +35,7 @@ describe('nextScreen()', () => {
     const lastScreenIdx = screens.length - 1;
 
     wrapper.setState({ currentScreenIdx: lastScreenIdx });
-    wrapper.instance().nextScreen();
+    (wrapper.instance() as RightToBeForgottenDrawer).nextScreen();
     wrapper.update();
 
     expect(wrapper.state().currentScreenIdx).toBe(lastScreenIdx);
@@ -51,7 +49,7 @@ describe('previousScreen()', () => {
     const lastScreenIdx = screens.length - 1;
 
     wrapper.setState({ currentScreenIdx: lastScreenIdx });
-    wrapper.instance().previousScreen();
+    (wrapper.instance() as RightToBeForgottenDrawer).previousScreen();
     wrapper.update();
 
     expect(wrapper.state().currentScreenIdx).toBe(lastScreenIdx - 1);
@@ -59,7 +57,7 @@ describe('previousScreen()', () => {
 
   test('Goes to next screen', () => {
     const wrapper = render();
-    wrapper.instance().previousScreen();
+    (wrapper.instance() as RightToBeForgottenDrawer).previousScreen();
     wrapper.update();
     expect(wrapper.state().currentScreenIdx).toBe(0);
   });

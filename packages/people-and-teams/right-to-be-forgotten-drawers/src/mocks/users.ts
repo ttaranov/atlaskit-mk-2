@@ -1,5 +1,5 @@
 export const catherineHirons = {
-  id: 'chirons',
+  avatarUrl: '',
   fullName: 'Catherine Hirons',
   email: 'catherine.hirons@acme.com',
 };
