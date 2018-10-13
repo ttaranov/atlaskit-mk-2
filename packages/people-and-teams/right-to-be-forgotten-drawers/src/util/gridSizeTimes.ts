@@ -1,3 +1,4 @@
 import { gridSize } from '@atlaskit/theme';
 
-export default n => n * gridSize();
+const gridSizeTimes = n => n * gridSize();
+export default gridSizeTimes;

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Request from '../Request';
 import OverviewScreen from './OverviewScreen';
 

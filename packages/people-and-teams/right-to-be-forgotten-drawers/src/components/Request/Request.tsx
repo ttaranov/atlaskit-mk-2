@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { RequestProps, RequestState, CallbackArguments } from './types';
 
 const defaultState: RequestState = {

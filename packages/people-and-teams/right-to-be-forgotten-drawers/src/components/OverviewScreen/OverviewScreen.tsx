@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
@@ -101,7 +101,7 @@ export class OverviewScreen extends React.Component<Props> {
             />{' '}
             <Styled.InfoIconWrapper>
               <StatefulInlineDialog
-                position="top left"
+                placement="auto-start"
                 content={
                   <FormattedMessage
                     {...this.selectAdminOrSelfCopy(
@@ -128,7 +128,7 @@ export class OverviewScreen extends React.Component<Props> {
             />{' '}
             <Styled.InfoIconWrapper>
               <StatefulInlineDialog
-                position="top left"
+                placement="auto-start"
                 content={
                   <div>
                     <FormattedMessage

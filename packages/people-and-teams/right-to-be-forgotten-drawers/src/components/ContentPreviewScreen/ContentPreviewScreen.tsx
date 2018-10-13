@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';

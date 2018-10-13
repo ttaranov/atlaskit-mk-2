@@ -1,7 +1,7 @@
 import { User } from '../../types';
 
 export interface OverviewScreenProps {
-  accessibleSites: AvailableSitesResponse;
+  accessibleSites: AvailableSitesResponse | null;
   isLoading: boolean;
   // tslint:disable-next-line no-any
   getAccessibleSites: (userId: string) => Promise<any>;

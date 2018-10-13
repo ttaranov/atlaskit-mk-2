@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Drawer from '@atlaskit/drawer';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 
@@ -6,7 +6,7 @@ import { Screens } from '../../constants';
 import { User } from '../../types';
 import OverviewScreen from '../OverviewScreen';
 import ContentPreviewScreen from '../ContentPreviewScreen';
-import * as Styled from './DeleteUserDrawer.styled';
+import * as Styled from './styled';
 
 interface Props {
   isOpen: boolean;
@@ -26,9 +26,9 @@ export class DeleteUserDrawer extends React.Component<Props> {
   nextScreen = () => {
     const currentScreenIdx = this.screens.indexOf(this.state.currentScreen);
     const nextScreen =
-      currentScreenIdx + 1 <= this.screens.length
+      currentScreenIdx < this.screens.length - 1
         ? currentScreenIdx + 1
-        : this.screens.length;
+        : this.screens.length - 1;
     this.setState({ currentScreen: this.screens[nextScreen] });
   };
 

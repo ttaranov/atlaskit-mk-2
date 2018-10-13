@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`isOpen snapshot 1`] = `
+<Drawer
+  icon={[Function]}
+  isOpen={false}
+  onClose={[Function]}
+  width="full"
+>
+  <styled.div>
+    <Component
+      isCurrentUser={true}
+      onCancel={[Function]}
+      onNext={[Function]}
+      user={
+        Object {
+          "email": "catherine.hirons@acme.com",
+          "fullName": "Catherine Hirons",
+          "id": "chirons",
+        }
+      }
+    />
+  </styled.div>
+</Drawer>
+`;

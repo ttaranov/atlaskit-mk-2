@@ -1,18 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import OverviewScreen from '../OverviewScreen';
-
-jest.mock('@atlaskit/button', () => ({
-  __esModule: true,
-  default: 'Button',
-  ButtonGroup: 'ButtonGroup',
-}));
-
-const catherineHirons = {
-  id: 'chirons',
-  fullName: 'Catherine Hirons',
-  email: 'catherine.hirons@acme.com',
-};
+import { catherineHirons } from '../../../mocks/users';
 
 const accessibleSites = {
   sites: [
@@ -46,7 +35,7 @@ const accessibleSites = {
   ],
 };
 
-const props = {
+const defaultProps = {
   accessibleSites,
   isCurrentUser: false,
   user: catherineHirons,
@@ -56,6 +45,35 @@ const props = {
   getAccessibleSites: jest.fn(),
 };
 
-test('matches snapshot', () => {
-  expect(shallow(<OverviewScreen {...props} />)).toMatchSnapshot();
+const render = (props = {}) =>
+  shallow(<OverviewScreen {...defaultProps} {...props} />);
+
+describe('Matches snapshots', () => {
+  test('isLoading', () => {
+    expect(render({ isLoading: true })).toMatchSnapshot();
+  });
+
+  test('!isLoading and no accessible sites', () => {
+    expect(
+      render({ isLoading: false, accessibleSites: null }),
+    ).toMatchSnapshot();
+  });
+
+  test('shows accessible sites', () => {
+    expect(render()).toMatchSnapshot();
+  });
+});
+
+describe('selectAdminOrSelfCopy', () => {
+  test('selects admin copy if delete candidate is not current user', () => {
+    const selectAdminOrSelfCopy = render({ isCurrentUser: false }).instance()
+      .selectAdminOrSelfCopy;
+    expect(selectAdminOrSelfCopy('admin', 'self')).toBe('admin');
+  });
+
+  test('selects self copy if delete candidate is current user', () => {
+    const selectAdminOrSelfCopy = render({ isCurrentUser: true }).instance()
+      .selectAdminOrSelfCopy;
+    expect(selectAdminOrSelfCopy('admin', 'self')).toBe('self');
+  });
 });
