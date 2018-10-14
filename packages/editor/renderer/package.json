@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "28.0.0",
+  "version": "28.0.1",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -28,7 +28,7 @@
     "@atlaskit/mention": "^15.0.10",
     "@atlaskit/smart-card": "^8.2.2",
     "@atlaskit/status": "^0.2.1",
-    "@atlaskit/task-decision": "^10.0.3",
+    "@atlaskit/task-decision": "^11.0.0",
     "@atlaskit/theme": "^6.0.0",
     "prosemirror-model": "^1.6.1",
     "react-loadable": "^5.1.0"
@@ -48,7 +48,7 @@
     "@atlaskit/media-test-helpers": "^18.2.7",
     "@atlaskit/profilecard": "^4.0.10",
     "@atlaskit/size-detector": "^5.0.3",
-    "@atlaskit/util-data-test": "^10.0.14",
+    "@atlaskit/util-data-test": "^10.0.15",
     "@atlaskit/visual-regression": "^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
     "@types/react-loadable": "^5.4.1",
