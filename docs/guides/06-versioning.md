@@ -42,7 +42,6 @@ Some examples of what would fall under the abstract semver umbrella:
   - Change named exports exposed via the main entry point.
   - Changing and renaming public props.
   - Making a public prop more restrictive in what it accepts.
-  - Change named exports exposed via the main entry point.
   - Icon sizes changing.
   - Changes in CSS that can affect layout outside of a component. For example, changing display property from flex to block and vice-versa.
   - Upgrade peer dependencies.
