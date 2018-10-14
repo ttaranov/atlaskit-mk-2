@@ -81,7 +81,7 @@ pipelines:
               # Run the non-editor tests
               - TEST_ONLY_PATTERN='!packages/editor' yarn run test:changed
               # Run the editor tests (runInBand is required or it fails in CI)
-              - TEST_ONLY_PATTERN='packages/editor' yarn run test:changed
+              - TEST_ONLY_PATTERN='packages/editor' yarn run test:changed --runInBand
             caches:
               - node
         - step:
