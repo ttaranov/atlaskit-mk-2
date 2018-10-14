@@ -78,10 +78,8 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              # Run the non-editor tests
-              - TEST_ONLY_PATTERN='!packages/editor' yarn run test:changed
-              # Run the editor tests (runInBand is required or it fails in CI)
-              - TEST_ONLY_PATTERN='packages/editor' yarn run test:changed --runInBand
+              # Need to be investigated as using TEST_ONLY_PATTERN and changed packages return exit code 1 when no tests are found 
+              - yarn run test:changed
             caches:
               - node
         - step:
