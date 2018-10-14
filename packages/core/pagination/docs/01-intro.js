@@ -50,7 +50,7 @@ ${code`
 
 ${(
   <Props
-    props={require('!!extract-react-types-loader!../src/components/link')}
+    props={require('!!extract-react-types-loader!../src/components/pagination')}
     heading="Link props"
   />
 )}

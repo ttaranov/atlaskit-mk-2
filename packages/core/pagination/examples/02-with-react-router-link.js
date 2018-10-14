@@ -53,9 +53,16 @@ const PaginationWithSelectPage = ({
           <LeftNavigator isDisabled />
         )}
         {pages.map((page, index) => (
-          <Link to={page.link} key={`${page.link}`}>
-            <AKLink selected={pageSelected === index}>{page.label}</AKLink>
-          </Link>
+          <AKLink
+            isSelected={pageSelected === index}
+            component={({ className, children }) => (
+              <Link to={page.link} className={className} key={`${page.link}`}>
+                {children}
+              </Link>
+            )}
+          >
+            {page.label}
+          </AKLink>
         ))}
         {pageSelected !== 2 ? (
           <Link to={pageSelected === 2 ? '' : pages[pageSelected + 1].link}>
