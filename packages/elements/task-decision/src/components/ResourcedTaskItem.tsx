@@ -20,6 +20,7 @@ export interface Props {
   objectAri?: string;
   containerAri?: string;
   showPlaceholder?: boolean;
+  placeholder?: string;
   appearance?: Appearance;
   participants?: User[];
   showParticipants?: boolean;
@@ -173,6 +174,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
       participants,
       showParticipants,
       showPlaceholder,
+      placeholder,
       taskId,
     } = this.props;
 
@@ -192,6 +194,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           participants={participants}
           showParticipants={showParticipants}
           showPlaceholder={showPlaceholder}
+          placeholder={placeholder}
           creator={creator}
           lastUpdater={lastUpdater}
         >

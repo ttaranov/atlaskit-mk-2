@@ -1,6 +1,10 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
-import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  p,
+  createEditor,
+  mountWithIntl,
+} from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import ToolbarTask from '../../../../../plugins/tasks-and-decisions/ui/ToolbarTask';
@@ -20,7 +24,7 @@ describe('@atlaskit/editor-core/ui/ToolbarTask', () => {
 
   it('should be disabled if isDisabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarTask editorView={editorView} isDisabled={true} />,
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toEqual(true);

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-mobile-bridge",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "Mobile destribution of the Editor",
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
@@ -24,14 +24,14 @@
   "homepage": "https://bitbucket.org/atlaskit/atlaskit-mk-2#readme",
   "dependencies": {
     "@atlaskit/editor-common": "^19.3.2",
-    "@atlaskit/editor-core": "^85.5.1",
+    "@atlaskit/editor-core": "^85.6.0",
     "@atlaskit/editor-json-transformer": "^4.0.17",
     "@atlaskit/media-core": "^24.2.2",
     "@atlaskit/mention": "^15.0.6",
-    "@atlaskit/renderer": "^28.0.0",
-    "@atlaskit/task-decision": "^10.0.3",
-    "@types/prosemirror-view": "^1.0.0",
+    "@atlaskit/renderer": "^28.0.1",
+    "@atlaskit/task-decision": "^11.0.0",
     "@babel/polyfill": "^7.0.0",
+    "@types/prosemirror-view": "^1.0.0",
     "prosemirror-view": "^1.6.0"
   },
   "peerDependencies": {
