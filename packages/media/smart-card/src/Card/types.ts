@@ -1,17 +1,19 @@
 import { Client } from '../Client';
 import { CardAppearance } from './CardContent';
 
-export type CardWithData = {
+type BaseCardProps = {
   appearance: CardAppearance;
-  data?: any;
   isSelected?: boolean;
+  onClick?: () => void;
 };
 
-export type CardWithUrl = {
-  appearance: CardAppearance;
+export type CardWithData = BaseCardProps & {
+  data?: any;
+};
+
+export type CardWithUrl = BaseCardProps & {
   url?: string;
   client?: Client;
-  isSelected?: boolean;
 };
 
 export type CardProps = CardWithData | CardWithUrl;

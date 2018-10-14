@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "10.0.2",
+  "version": "10.0.3",
   "config": {
     "access": "public"
   },
@@ -50,8 +50,8 @@
     "@atlaskit/analytics-listeners": "^4.0.3",
     "@atlaskit/avatar": "^14.0.11",
     "@atlaskit/docs": "^5.0.8",
-    "@atlaskit/editor-common": "^19.0.0",
-    "@atlaskit/renderer": "^27.0.0",
+    "@atlaskit/editor-common": "^19.3.2",
+    "@atlaskit/renderer": "^28.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^10.0.14",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

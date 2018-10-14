@@ -7,7 +7,6 @@ import {
   insertBlockMenuItem,
 } from '../_helpers';
 
-import { messages as ToolbarMessages } from '../../../plugins/lists/ui/ToolbarLists';
 import { messages as BlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists';
 
@@ -32,7 +31,7 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
         await page.click(`span[aria-label="${node}"]`);
       } else if (node === 'action') {
         await page.click(
-          `span[aria-label="${ToolbarMessages.action.defaultMessage}"]`,
+          `span[aria-label="${BlockMessages.action.defaultMessage}"]`,
         );
       } else if (node === 'table') {
         await page.click(

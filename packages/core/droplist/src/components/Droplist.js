@@ -29,7 +29,7 @@ type Props = {
   /**
    * Controls the appearance of the menu.
    * Default menu has scroll after its height exceeds the pre-defined amount.
-   * Tall menu has no restrictions.
+   * Tall menu has no scroll until the height exceeds the height of the viewport.
    */
   appearance?: 'default' | 'tall',
   /** Value passed to the Layer component to determine when to reposition the droplist */

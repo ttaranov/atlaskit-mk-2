@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dropdown-menu",
-  "version": "6.1.17",
+  "version": "6.1.18",
   "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
     "@atlaskit/button": "^9.0.13",
-    "@atlaskit/droplist": "^7.0.10",
+    "@atlaskit/droplist": "^7.0.11",
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/item": "^8.0.8",
     "@atlaskit/theme": "^6.0.2",

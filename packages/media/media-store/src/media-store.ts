@@ -208,7 +208,7 @@ export class MediaStore {
     const auth = await this.config.authProvider({ collectionName });
 
     return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
-      params: { dl: true },
+      params: { dl: true, collection: collectionName },
       auth,
     });
   };

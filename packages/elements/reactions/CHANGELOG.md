@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 15.0.0
+- [major] Fix reactions. Remove context and receive store as a prop. [b1de9c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1de9c8)
+
 ## 14.0.5
 - [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
   - @atlaskit/emoji@44.0.0

@@ -1,5 +1,38 @@
 # @atlaskit/editor-core
 
+## 85.5.3
+- [patch] ED-5524: fix insert column button when numbered column is on [555079c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/555079c)
+
+## 85.5.2
+- [patch] ED-5366: fix scrolling when media is pasted inside table cell [eef51cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eef51cf)
+
+## 85.5.1
+- [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+  - @atlaskit/task-decision@10.0.3
+  - @atlaskit/editor-common@19.3.2
+  - @atlaskit/media-core@24.2.2
+  - @atlaskit/media-filmstrip@16.0.1
+  - @atlaskit/media-picker@20.0.1
+  - @atlaskit/media-test-helpers@18.2.7
+  - @atlaskit/renderer@28.0.0
+  - @atlaskit/media-card@40.0.0
+
+## 85.5.0
+- [minor] Deprecate quickInsert prop [c595e8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c595e8d)
+
+## 85.4.2
+- [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
+
+## 85.4.1
+- [patch] ED-5289 add toolbar for inline smart card [25d7af7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d7af7)
+
+## 85.4.0
+- [minor] FS-2901 - Move action toolbar icon to insert group [57502ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57502ac)
+
+## 85.3.1
+- [patch] Updated dependencies [17afe04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17afe04)
+  - @atlaskit/media-picker@20.0.0
+
 ## 85.3.0
 - [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
 
