@@ -17,7 +17,7 @@ const defaultProps = {
 const render = (props = {}) =>
   shallow(<DeleteUserOverviewScreen {...defaultProps} {...props} />);
 
-test('Matches snapshots', () => {
+test('DeleteUserOverviewScreen', () => {
   expect(render()).toMatchSnapshot();
 });
 

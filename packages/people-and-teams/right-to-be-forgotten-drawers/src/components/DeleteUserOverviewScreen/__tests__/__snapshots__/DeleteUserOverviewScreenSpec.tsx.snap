@@ -13,9 +13,9 @@ exports[`Matches snapshots 1`] = `
   <UserInfo
     user={
       Object {
-        "email": "catherine.hirons@acme.com",
+        "avatarUrl": "",
+        "email": "cathqerine.hirons@acme.com",
         "fullName": "Catherine Hirons",
-        "id": "chirons",
       }
     }
   />
