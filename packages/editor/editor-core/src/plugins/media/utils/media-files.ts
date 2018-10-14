@@ -90,6 +90,7 @@ export const insertMediaGroupNode = (
     }
     dispatch(tr);
     setSelectionAfterMediaInsertion(view, mediaInsertPos);
+    return;
   }
 
   const content =
@@ -112,7 +113,6 @@ const createMediaFileNodes = (
 ): PMNode[] => {
   const nodes = mediaStates.map(mediaState => {
     const { id } = mediaState;
-
     const node = media.create({ id, type: 'file', collection, __key: id });
     copyOptionalAttrsFromMediaState(mediaState, node);
     return node;

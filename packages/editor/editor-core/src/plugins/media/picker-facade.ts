@@ -11,6 +11,7 @@ import {
   UploadPreviewUpdateEventPayload,
   UploadEndEventPayload,
   UploadParams,
+  UploadErrorEventPayload,
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
 
@@ -56,10 +57,9 @@ export default class PickerFacade {
       );
     }
 
-    // picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
-    // picker.on('upload-status-update', this.handleUploadPreviewUpdate);
     picker.on('upload-end', this.handleUploadEnd);
+    picker.on('upload-error', this.handleUploadError);
 
     if (picker instanceof Dropzone) {
       picker.on('drag-enter', this.handleDragEnter);
@@ -82,9 +82,9 @@ export default class PickerFacade {
       return;
     }
 
-    (picker as any).removeAllListeners('uploads-start');
-    // (picker as any).removeAllListeners('upload-preview-update');
+    (picker as any).removeAllListeners('upload-preview-update');
     (picker as any).removeAllListeners('upload-end');
+    (picker as any).removeAllListeners('upload-error');
 
     if (picker instanceof Dropzone) {
       picker.removeAllListeners('drag-enter');
@@ -105,8 +105,6 @@ export default class PickerFacade {
     } catch (ex) {
       this.errorReporter.captureException(ex);
     }
-
-    // this.deferredDimensions.clear();
   }
 
   setUploadParams(params: UploadParams): void {
@@ -199,34 +197,63 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  private handleUploadEnd = async (event: UploadEndEventPayload) => {
-    this.stateManager.updateState(event.file.id, {
-      status: 'ready',
-    });
-  };
+  resolvePublicId(file) {
+    file.upfrontId &&
+      file.upfrontId.then(data => {
+        this.stateManager.updateState(file.id, {
+          publicId: data,
+        });
+      });
+  }
 
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
   ) => {
     let { file, preview } = event;
+
+    /** Check if error event occured even before preview */
+    const existingImage = this.stateManager.getState(file.id);
+    if (existingImage && existingImage.status === 'error') {
+      return;
+    }
+
     const states = this.stateManager.newState(file.id, {
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,
       fileId: file.upfrontId,
+      status: 'preview',
       dimensions: preview.dimensions,
-      status: 'ready',
     });
 
-    file.upfrontId &&
-      file.upfrontId.then(data => {
-        this.stateManager.updateState(file.id, {
-          status: 'ready',
-          publicId: data,
-        });
-      });
+    this.resolvePublicId(file);
 
     this.onStartListeners.forEach(cb => cb.call(cb, [states]));
+  };
+
+  private handleUploadEnd = (event: UploadEndEventPayload) => {
+    const { file } = event;
+
+    this.stateManager.updateState(file.id, {
+      status: 'ready',
+    });
+  };
+
+  private handleUploadError = ({ error }: UploadErrorEventPayload) => {
+    if (!error || !error.fileId) {
+      const err = new Error(
+        `Media: unknown upload-error received from Media Picker: ${error &&
+          error.name}`,
+      );
+      this.errorReporter.captureException(err);
+      return;
+    }
+
+    this.stateManager.updateState(error.fileId, {
+      id: error.fileId,
+      status: 'error',
+      error: error && { description: error.description, name: error.name },
+    });
   };
 
   private handleDragEnter = () => {

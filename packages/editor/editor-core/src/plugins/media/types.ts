@@ -1,7 +1,12 @@
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
 
-export type MediaStateStatus = 'unknown' | 'ready' | 'cancelled' | 'preview';
+export type MediaStateStatus =
+  | 'unknown'
+  | 'ready'
+  | 'cancelled'
+  | 'preview'
+  | 'error';
 
 export interface MediaState {
   id: string;
@@ -14,7 +19,7 @@ export interface MediaState {
     height: number;
   };
   fileId: Promise<string>;
-  publicId: string;
+  publicId?: string;
   error?: {
     name: string;
     description: string;

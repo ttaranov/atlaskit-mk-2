@@ -85,7 +85,7 @@ export default class MediaSingleNode extends Component<
   };
 
   mediaReady(mediaState) {
-    return mediaState && mediaState.status === 'ready' && mediaState!.preview;
+    return mediaState && mediaState.status === 'ready';
   }
 
   selectMediaSingle = () => {
@@ -155,7 +155,7 @@ export default class MediaSingleNode extends Component<
       canResize = canResize && !disabledNode;
     }
 
-    if (width === null && this.mediaReady(mediaState)) {
+    if (width === null) {
       width = DEFAULT_WIDTH;
       height = DEFAULT_HEIGHT;
     }
@@ -171,7 +171,31 @@ export default class MediaSingleNode extends Component<
       pctWidth: mediaSingleWidth,
     };
 
-    return 1 ? (
+    const MediaChild = (
+      <WithProviders
+        providers={['mediaProvider']}
+        providerFactory={this.mediaPluginState.options.providerFactory}
+        renderNode={({ mediaProvider }) => {
+          return (
+            <MediaItem
+              node={this.child}
+              view={this.props.view}
+              getPos={this.props.getPos}
+              cardDimensions={{
+                width: '100%',
+                height: '100%',
+              }}
+              mediaProvider={mediaProvider}
+              selected={selected()}
+              onClick={this.selectMediaSingle}
+              onExternalImageLoaded={this.onExternalImageLoaded}
+            />
+          );
+        }}
+      />
+    );
+
+    return canResize ? (
       <ResizableMediaSingle
         {...props}
         getPos={getPos}
@@ -181,52 +205,10 @@ export default class MediaSingleNode extends Component<
         state={this.props.view.state}
         appearance={this.mediaPluginState.options.appearance}
       >
-        <WithProviders
-          providers={['mediaProvider']}
-          providerFactory={this.mediaPluginState.options.providerFactory}
-          renderNode={({ mediaProvider }) => {
-            return (
-              <MediaItem
-                node={this.child}
-                view={this.props.view}
-                getPos={this.props.getPos}
-                cardDimensions={{
-                  width: '100%',
-                  height: '100%',
-                }}
-                mediaProvider={mediaProvider}
-                selected={selected()}
-                onClick={this.selectMediaSingle}
-                onExternalImageLoaded={this.onExternalImageLoaded}
-              />
-            );
-          }}
-        />
+        {MediaChild}
       </ResizableMediaSingle>
     ) : (
-      <MediaSingle {...props}>
-        <WithProviders
-          providers={['mediaProvider']}
-          providerFactory={this.mediaPluginState.options.providerFactory}
-          renderNode={({ mediaProvider }) => {
-            return (
-              <MediaItem
-                node={this.child}
-                view={this.props.view}
-                getPos={this.props.getPos}
-                cardDimensions={{
-                  width: '100%',
-                  height: '100%',
-                }}
-                mediaProvider={mediaProvider}
-                selected={selected()}
-                onClick={this.selectMediaSingle}
-                onExternalImageLoaded={this.onExternalImageLoaded}
-              />
-            );
-          }}
-        />
-      </MediaSingle>
+      <MediaSingle {...props}>{MediaChild}</MediaSingle>
     );
   }
 }

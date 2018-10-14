@@ -9,7 +9,7 @@ import {
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
 import { FileIdentifier } from '@atlaskit/media-card';
-import { setNodeSelection } from '../../../utils/index';
+import { setNodeSelection } from '../../../utils';
 import WithPluginState from '../../../ui/WithPluginState';
 import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
@@ -20,15 +20,16 @@ export interface Props {
 }
 
 export type MediaGroupProps = {
-  forwardRef: (ref: HTMLElement) => void;
+  forwardRef?: (ref: HTMLElement) => void;
   node: PMNode;
   view: EditorView;
   getPos: () => number;
   selected: number | null;
 };
 
-class MediaGroup extends React.Component<MediaGroupProps> {
+export default class MediaGroup extends React.Component<MediaGroupProps> {
   private mediaPluginState: MediaPluginState;
+  private mediaNodes: PMNode[];
 
   state = {
     selected: null,
@@ -37,6 +38,7 @@ class MediaGroup extends React.Component<MediaGroupProps> {
   constructor(props) {
     super(props);
     this.mediaPluginState = mediaStateKey.getState(props.view.state);
+    this.setMediaItems(props);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -44,72 +46,57 @@ class MediaGroup extends React.Component<MediaGroupProps> {
       this.props.selected !== nextProps.selected ||
       this.props.node !== nextProps.node
     ) {
+      this.setMediaItems(nextProps);
       return true;
     }
 
     return false;
   }
 
-  renderChildNodes = node => {
-    const tempIds = [] as any;
-    const existingMedia = [] as any;
-    this.mediaPluginState.mediaNodes = [];
-
+  setMediaItems = props => {
+    const { node } = props;
+    this.mediaNodes = [] as any;
     node.forEach((item, childOffset) => {
-      this.mediaPluginState.mediaGroupNodes[item.attrs.__key] = {
+      this.mediaPluginState.mediaGroupNodes[
+        item.attrs.__key || item.attrs.id
+      ] = {
         node: item,
-        getPos: () => this.props.getPos() + childOffset + 1,
+        getPos: () => props.getPos() + childOffset + 1,
       };
-      const getState = this.mediaPluginState.stateManager.getState(
-        item.attrs.__key,
-      );
-      getState ? tempIds.push(item.attrs.__key) : existingMedia.push(item);
+      this.mediaNodes.push(item);
     });
+  };
 
-    const tempItems = tempIds.map((id, idx) => {
-      const getState = this.mediaPluginState.stateManager.getState(id);
+  renderChildNodes = node => {
+    const items = this.mediaNodes.map((item, idx) => {
+      const getState = this.mediaPluginState.stateManager.getState(
+        item.attrs.__key || item.attrs.id,
+      );
       const identifier: FileIdentifier = {
-        id: getState!.fileId,
+        id: getState ? getState!.fileId : item.attrs.id,
         mediaItemType: 'file',
       };
+
+      const nodePos = this.props.getPos() + idx + 1;
       return {
-        filename: this.mediaPluginState.stateManager.getState(id)!.fileName,
         identifier,
         selectable: true,
-        selected: this.props.selected === this.props.getPos() + idx + 1,
+        selected: this.props.selected === nodePos,
         onClick: (e, x) => {
-          setNodeSelection(this.props.view, this.props.getPos() + idx + 1);
+          setNodeSelection(this.props.view, nodePos);
         },
         actions: [
           {
             handler: this.mediaPluginState.handleMediaNodeRemoval.bind(
               null,
               null,
-              () => this.props.getPos() + idx + 1,
+              () => nodePos,
             ),
             icon: <EditorCloseIcon label="close" />,
           },
         ],
       };
     });
-
-    const existingItems = existingMedia.map((item, idx) => {
-      const identifier: FileIdentifier = {
-        id: item.attrs.id,
-        mediaItemType: 'file',
-      };
-      return {
-        filename: item.attrs.__fileName,
-        identifier,
-        selectable: true,
-        selected: this.props.selected === this.props.getPos() + idx + 1,
-        onClick: (e, x) => {
-          setNodeSelection(this.props.view, this.props.getPos() + idx + 1);
-        },
-      };
-    });
-
-    const items = tempItems.concat(existingItems);
 
     return (
       <Filmstrip items={items} context={this.mediaPluginState.mediaContext} />

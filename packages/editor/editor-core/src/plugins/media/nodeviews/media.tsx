@@ -118,6 +118,7 @@ class MediaNode extends Component<
     const { node, selected, cardDimensions, onClick } = this.props;
     const { id, type, collection, url, __key } = node.attrs;
 
+    /** For new images, the media state will be loaded inside the plugin state */
     const getState = this.pluginState.getMediaNodeState(__key);
     let fileId;
     if (getState && getState.fileId) {
@@ -148,7 +149,6 @@ class MediaNode extends Component<
         selected={selected}
         disableOverlay={true}
         onClick={onClick}
-        onExternalImageLoaded={this.props.onExternalImageLoaded}
       />
     );
   }

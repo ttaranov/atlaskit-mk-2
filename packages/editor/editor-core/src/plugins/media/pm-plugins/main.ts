@@ -260,7 +260,7 @@ export class MediaPluginState {
       if (!node.childNodes.length) {
         return node.parentNode as HTMLElement | undefined;
       }
-      return (node as HTMLElement).querySelector('.wrapper');
+      return (node as HTMLElement).querySelector('.wrapper') || node;
     }
   }
 
@@ -287,9 +287,9 @@ export class MediaPluginState {
       nonImageAttachments = [];
     }
 
-    mediaStates.forEach(mediaState =>
-      this.stateManager.on(mediaState.id, this.handleMediaState),
-    );
+    mediaStates.forEach(mediaState => {
+      this.stateManager.on(mediaState.id, this.handleMediaState);
+    });
 
     if (this.editorAppearance !== 'message' && mediaSingle) {
       insertMediaGroupNode(this.view, nonImageAttachments, collection);
@@ -311,7 +311,7 @@ export class MediaPluginState {
           const onStateChange = newState => {
             // When media item reaches its final state, remove listener and resolve
             if (isEndState(newState)) {
-              // stateManager.off(state.id, onStateChange);
+              stateManager.off(state.id, onStateChange);
               resolve(newState);
             }
           };
@@ -415,13 +415,6 @@ export class MediaPluginState {
     }
     removeMediaNode(this.view, getNode, getPos);
   };
-
-  /**
-   * This is called when media node is removed from media group node view
-   */
-  cancelInFlightUpload(id: string) {
-    this.pickers.forEach(picker => picker.cancel(id));
-  }
 
   /**
    * Called from React UI Component on componentDidMount
@@ -684,6 +677,15 @@ export class MediaPluginState {
 
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
+      case 'error':
+        this.removeNodeById(state);
+        const { uploadErrorHandler } = this.options;
+
+        if (uploadErrorHandler) {
+          uploadErrorHandler(state);
+        }
+        break;
+
       case 'ready':
         this.replaceTemporaryNode(state, isImage(state.fileMimeType));
         this.stateManager.off(state.id, this.handleMediaState);
@@ -695,9 +697,12 @@ export class MediaPluginState {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
   };
 
-  removeNodeById = (id: string) => {
+  removeNodeById = (state: MediaState) => {
     // TODO: we would like better error handling and retry support here.
-    const mediaNodeWithPos = this.findMediaNode(id);
+    const { id } = state;
+    const mediaNodeWithPos = isImage(state.fileMimeType)
+      ? this.findMediaNode(id)
+      : this.mediaGroupNodes[id];
     if (mediaNodeWithPos) {
       removeMediaNode(
         this.view,
