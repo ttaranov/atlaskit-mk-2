@@ -114,6 +114,11 @@ If there is an alternative package, then documenting it would also be a good ide
 
 > This package is deprecated and will be supported until [insert date]. We recommend using [x package] instead.
 
+Use @atlaskit/section-message component with appearence set to "error" in order to make the deprecation notice
+visible in the component docs.
+
+You can see examples of deprecation notices using SectionMessage in @atlaskit/single-select component docs.
+
 #### Run `npm deprecate`
 
 The `npm deprecate` command deprecates a version of a package, but it can be run on a version range. We should run this on the current version and any future versions and specify the same message that we put in the docs.
