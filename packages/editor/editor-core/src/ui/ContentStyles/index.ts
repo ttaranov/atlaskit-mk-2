@@ -88,6 +88,10 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${mentionsStyles}
   ${tasksAndDecisionsStyles}
   ${gridStyles}
+
+  .mediaGroupView-content-wrap ul {
+    padding: 0;
+  }
 `;
 
 export default ContentStyles;

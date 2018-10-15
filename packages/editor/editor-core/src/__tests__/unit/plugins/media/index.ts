@@ -23,14 +23,12 @@ import {
   randomId,
   sleep,
   insertText,
-  getLinkCreateContextMock,
 } from '@atlaskit/editor-test-helpers';
 
 import {
   stateKey as mediaPluginKey,
   MediaPluginState,
   DefaultMediaStateManager,
-  MediaState,
 } from '../../../../plugins/media/pm-plugins/main';
 import { setNodeSelection, setTextSelection } from '../../../../utils';
 import { AnalyticsHandler, analyticsService } from '../../../../analytics';
@@ -43,8 +41,6 @@ import { insertMediaAsMediaSingle } from '../../../../plugins/media/utils/media-
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-const testLinkId = `mock-link-id${randomId()}`;
-const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
 const getFreshMediaProvider = () =>
   storyMediaProviderFactory({
@@ -84,8 +80,15 @@ describe('Media plugin', () => {
       pluginKey: mediaPluginKey,
     });
 
-  const getNodePos = (pluginState: MediaPluginState, id: string) => {
-    const mediaNodeWithPos = pluginState.findMediaNode(id);
+  const getNodePos = (
+    pluginState: MediaPluginState,
+    id: string,
+    isMediaSingle: boolean,
+  ) => {
+    const mediaNodeWithPos = isMediaSingle
+      ? pluginState.findMediaNode(id)
+      : pluginState.mediaGroupNodes[id];
+
     assert(
       mediaNodeWithPos,
       `Media node with id "${id}" has not been mounted yet`,
@@ -130,38 +133,6 @@ describe('Media plugin', () => {
     pluginState.destroy();
   });
 
-  it('should set local preview on context when file is uploaded', async () => {
-    const provider = await mediaProvider;
-    const { pluginState } = editor(doc(p('')));
-    const temporaryId = 'temp-id';
-    const publicId = 'public-id';
-    const src = 'file-preview';
-
-    await waitForMediaPickerReady(pluginState);
-    await provider.viewContext;
-
-    const context = await pluginState['mediaProvider'].viewContext;
-    const spy = jest.spyOn(context, 'setLocalPreview');
-    pluginState.insertFiles([
-      {
-        id: temporaryId,
-        fileMimeType: 'image/jpeg',
-      },
-    ]);
-    stateManager.updateState(temporaryId, {
-      id: temporaryId,
-      status: 'processing',
-      thumbnail: {
-        src,
-      },
-      publicId,
-    });
-
-    await sleep(0);
-
-    expect(spy).toBeCalledWith(publicId, src);
-  });
-
   describe('when message editor', () => {
     it('inserts media group', async () => {
       const { editorView, pluginState } = editor(doc(p('')), {
@@ -170,8 +141,16 @@ describe('Media plugin', () => {
       await waitForMediaPickerReady(pluginState);
 
       pluginState.insertFiles([
-        { id: 'foo', fileMimeType: 'image/jpeg' },
-        { id: 'bar', fileMimeType: 'image/png' },
+        {
+          id: 'foo',
+          fileMimeType: 'image/jpeg',
+          fileId: Promise.resolve('id'),
+        },
+        {
+          id: 'bar',
+          fileMimeType: 'image/png',
+          fileId: Promise.resolve('id2'),
+        },
       ]);
 
       expect(editorView.state.doc).toEqualDocument(
@@ -204,43 +183,45 @@ describe('Media plugin', () => {
         const { editorView, pluginState } = editor(doc(p('')));
         await waitForMediaPickerReady(pluginState);
 
-        pluginState.insertFiles([
+        const foo = [
           {
-            id: 'foo',
+            id: '1',
             fileMimeType: 'image/jpeg',
+            fileId: Promise.resolve('foo'),
+            fileName: 'foo.jpg',
+            fileSize: 100,
+            dimensions: {
+              height: 100,
+              width: 100,
+            },
           },
+        ];
+
+        const bar = [
           {
-            id: 'bar',
+            id: '2',
             fileMimeType: 'image/png',
+            fileId: Promise.resolve('bar'),
+            fileName: 'bar.png',
+            fileSize: 200,
+            dimensions: {
+              height: 200,
+              width: 200,
+            },
           },
-        ]);
+        ];
 
-        stateManager.updateState('foo', {
-          id: 'foo',
-          status: 'preview',
-          fileName: 'foo.jpg',
-          fileSize: 100,
-          fileMimeType: 'image/jpeg',
-          thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
-        });
+        pluginState.insertFiles(foo);
+        pluginState.insertFiles(bar);
 
-        stateManager.updateState('foo', {
-          id: 'foo',
+        pluginState.stateManager.updateState('1', {
+          ...foo[0],
           status: 'ready',
           publicId: 'foo',
         });
 
-        stateManager.updateState('bar', {
-          id: 'bar',
-          status: 'preview',
-          fileName: 'bar.png',
-          fileSize: 200,
-          fileMimeType: 'image/png',
-          thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
-        });
-
-        stateManager.updateState('bar', {
-          id: 'bar',
+        pluginState.stateManager.updateState('2', {
+          ...bar[0],
           status: 'ready',
           publicId: 'bar',
         });
@@ -252,7 +233,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'foo',
-                __key: 'foo',
+                __key: '1',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'foo.jpg',
@@ -267,7 +248,7 @@ describe('Media plugin', () => {
             })(
               media({
                 id: 'bar',
-                __key: 'bar',
+                __key: '2',
                 type: 'file',
                 collection: testCollectionName,
                 __fileName: 'bar.png',
@@ -275,51 +256,6 @@ describe('Media plugin', () => {
                 __fileMimeType: 'image/png',
                 height: 200,
                 width: 200,
-              })(),
-            ),
-            p(),
-          ),
-        );
-      });
-
-      it(`shouldn't insert multiple media in uploading triggers multiple times`, async () => {
-        const { editorView, pluginState } = editor(doc(p('')));
-        await waitForMediaPickerReady(pluginState);
-
-        pluginState.insertFiles([
-          {
-            id: 'foo',
-            fileMimeType: 'image/jpeg',
-          },
-        ]);
-
-        const eventPayload: MediaState = {
-          id: 'foo',
-          status: 'preview',
-          fileName: 'foo.jpg',
-          fileSize: 100,
-          fileMimeType: 'image/jpeg',
-          thumbnail: { dimensions: { width: 100, height: 100 }, src: '' },
-        };
-
-        stateManager.updateState('foo', eventPayload);
-        stateManager.updateState('foo', eventPayload);
-
-        expect(editorView.state.doc).toEqualDocument(
-          doc(
-            mediaSingle({
-              layout: 'center',
-            })(
-              media({
-                id: 'foo',
-                __key: 'foo',
-                type: 'file',
-                collection: testCollectionName,
-                __fileName: 'foo.jpg',
-                __fileSize: 100,
-                __fileMimeType: 'image/jpeg',
-                height: 100,
-                width: 100,
               })(),
             ),
             p(),
@@ -433,19 +369,44 @@ describe('Media plugin', () => {
       it('inserts pdf as a media group and images as single', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
         await waitForMediaPickerReady(pluginState);
+        const id1 = `${randomId()}`;
+        const id2 = `${randomId()}`;
+        const lala = [
+          {
+            id: id1,
+            fileName: 'lala.pdf',
+            fileSize: 200,
+            fileMimeType: 'pdf',
+            dimensions: { width: 200, height: 200 },
+            fileId: Promise.resolve('lala'),
+          },
+        ];
 
-        pluginState.insertFiles([
-          { id: 'lala', fileMimeType: 'pdf' },
-          { id: 'bar', fileMimeType: 'image/png' },
-        ]);
+        const bar = [
+          {
+            id: id2,
+            fileName: 'bar.png',
+            fileSize: 200,
+            fileMimeType: 'image/png',
+            dimensions: { width: 200, height: 200 },
+            fileId: Promise.resolve('bar'),
+          },
+        ];
 
-        stateManager.updateState('bar', {
-          id: 'bar',
-          status: 'preview',
-          fileName: 'bar.png',
-          fileSize: 200,
-          fileMimeType: 'image/png',
-          thumbnail: { dimensions: { width: 200, height: 200 }, src: '' },
+        pluginState.insertFiles(lala);
+        pluginState.insertFiles(bar);
+
+        pluginState.stateManager.updateState(id1, {
+          ...lala[0],
+          status: 'ready',
+          publicId: 'lala',
+        });
+
+        pluginState.stateManager.updateState(id2, {
+          ...bar[0],
+
+          status: 'ready',
+          publicId: 'bar',
         });
 
         expect(editorView.state.doc).toEqualDocument(
@@ -453,16 +414,18 @@ describe('Media plugin', () => {
             mediaGroup(
               media({
                 id: 'lala',
-                __key: 'lala',
+                __key: id1,
                 type: 'file',
                 __fileMimeType: 'pdf',
+                __fileSize: 200,
+                __fileName: 'lala.pdf',
                 collection: testCollectionName,
               })(),
             ),
             mediaSingle({ layout: 'center' })(
               media({
                 id: 'bar',
-                __key: 'bar',
+                __key: id2,
                 __fileName: 'bar.png',
                 __fileSize: 200,
                 height: 200,
@@ -484,9 +447,9 @@ describe('Media plugin', () => {
         await waitForMediaPickerReady(pluginState);
 
         pluginState.insertFiles([
-          { id: 'foo', fileMimeType: 'pdf' },
-          { id: 'bar', fileMimeType: 'pdf' },
-          { id: 'foobar', fileMimeType: 'pdf' },
+          { id: 'foo', fileMimeType: 'pdf', fileId: Promise.resolve('id1') },
+          { id: 'bar', fileMimeType: 'pdf', fileId: Promise.resolve('id2') },
+          { id: 'foobar', fileMimeType: 'pdf', fileId: Promise.resolve('id3') },
         ]);
 
         expect(editorView.state.doc).toEqualDocument(
@@ -521,44 +484,7 @@ describe('Media plugin', () => {
     });
   });
 
-  it('should call uploadErrorHandler on upload error', async () => {
-    const errorHandlerSpy = jest.fn();
-    const { pluginState } = editor(doc(p(), p('{<>}')), {
-      uploadErrorHandler: errorHandlerSpy,
-    });
-    const collectionFromProvider = jest.spyOn(
-      pluginState,
-      'collectionFromProvider' as any,
-    );
-    collectionFromProvider.mockImplementation(() => testCollectionName);
-
-    await waitForMediaPickerReady(pluginState);
-
-    pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
-
-    stateManager.updateState(temporaryFileId, {
-      id: temporaryFileId,
-      status: 'error',
-      error: {
-        name: 'some-error',
-        description: 'something went wrong',
-      },
-    });
-
-    expect(errorHandlerSpy).toHaveBeenCalledTimes(1);
-    expect(errorHandlerSpy).toHaveBeenCalledWith({
-      id: temporaryFileId,
-      status: 'error',
-      error: {
-        name: 'some-error',
-        description: 'something went wrong',
-      },
-    });
-    collectionFromProvider.mockRestore();
-    pluginState.destroy();
-  });
-
-  it.skip('should swap temporary id with public id', async () => {
+  it('should swap temporary id with public id', async () => {
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
 
     const tempFileId = `temporary:${randomId()}`;
@@ -569,9 +495,11 @@ describe('Media plugin', () => {
     await provider.uploadContext;
 
     const publicId = 'public-id';
+    const fileState = [
+      { id: tempFileId, fileId: Promise.resolve('hello'), fileMimeType: 'pdf' },
+    ];
 
-    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
-
+    pluginState.insertFiles(fileState);
     expect(editorView.state.doc).toEqualDocument(
       doc(
         p(),
@@ -580,6 +508,7 @@ describe('Media plugin', () => {
             id: tempFileId,
             __key: tempFileId,
             type: 'file',
+            __fileMimeType: 'pdf',
             collection: testCollectionName,
           })(),
         ),
@@ -587,13 +516,11 @@ describe('Media plugin', () => {
       ),
     );
 
-    stateManager.updateState(tempFileId, {
-      id: tempFileId,
-      status: 'processing',
+    pluginState.stateManager.updateState(tempFileId, {
+      ...fileState[0],
+      status: 'ready',
       publicId,
     });
-
-    await sleep(0);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -603,160 +530,13 @@ describe('Media plugin', () => {
             id: publicId,
             __key: tempFileId,
             type: 'file',
+            __fileMimeType: 'pdf',
             collection: testCollectionName,
           })(),
         ),
         p(),
       ),
     );
-    editorView.destroy();
-    pluginState.destroy();
-  });
-
-  it('should remove failed uploads from the document', async () => {
-    const handler = jest.fn();
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
-    const collectionFromProvider = jest.spyOn(
-      pluginState,
-      'collectionFromProvider' as any,
-    );
-    collectionFromProvider.mockImplementation(() => testCollectionName);
-
-    const provider = await mediaProvider;
-    await provider.uploadContext;
-
-    pluginState.insertFiles([{ id: temporaryFileId, status: 'uploading' }]);
-
-    expect(editorView.state.doc).toEqualDocument(
-      doc(
-        p(),
-        mediaGroup(
-          media({
-            id: temporaryFileId,
-            __key: temporaryFileId,
-            type: 'file',
-            collection: testCollectionName,
-          })(),
-        ),
-        p(),
-      ),
-    );
-
-    stateManager.updateState(temporaryFileId, {
-      id: temporaryFileId,
-      status: 'error',
-    });
-
-    expect(editorView.state.doc).toEqualDocument(doc(p(), p()));
-    collectionFromProvider.mockRestore();
-    editorView.destroy();
-    pluginState.destroy();
-  });
-
-  it.skip('should cancel in-flight uploads after media item is removed from document', async () => {
-    const spy = jest.fn();
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
-    const collectionFromProvider = jest.spyOn(
-      pluginState,
-      'collectionFromProvider' as any,
-    );
-    collectionFromProvider.mockImplementation(() => testCollectionName);
-    const firstTemporaryFileId = `temporary:first`;
-    const secondTemporaryFileId = `temporary:second`;
-    const secondFileId = `second`;
-    const thirdTemporaryFileId = `temporary:third`;
-
-    // wait until mediaProvider has been set
-    const provider = await mediaProvider;
-    // wait until mediaProvider's uploadContext has been set
-    await provider.uploadContext;
-    await waitForMediaPickerReady(pluginState);
-
-    pluginState.insertFiles([
-      { id: firstTemporaryFileId, status: 'uploading' },
-      { id: secondTemporaryFileId, status: 'uploading' },
-      { id: thirdTemporaryFileId, status: 'uploading' },
-    ]);
-
-    expect(editorView.state.doc).toEqualDocument(
-      doc(
-        p(),
-        mediaGroup(
-          media({
-            id: firstTemporaryFileId,
-            __key: firstTemporaryFileId,
-            type: 'file',
-            collection: testCollectionName,
-          })(),
-          media({
-            id: secondTemporaryFileId,
-            __key: secondTemporaryFileId,
-            type: 'file',
-            collection: testCollectionName,
-          })(),
-          media({
-            id: thirdTemporaryFileId,
-            __key: thirdTemporaryFileId,
-            type: 'file',
-            collection: testCollectionName,
-          })(),
-        ),
-        p(),
-      ),
-    );
-
-    stateManager.updateState(firstTemporaryFileId, {
-      id: firstTemporaryFileId,
-      status: 'uploading',
-    });
-
-    stateManager.updateState(secondTemporaryFileId, {
-      id: secondTemporaryFileId,
-      status: 'processing',
-      publicId: secondTemporaryFileId,
-    });
-
-    stateManager.on(firstTemporaryFileId, spy);
-    stateManager.on(secondTemporaryFileId, spy);
-    stateManager.on(secondFileId, spy);
-    stateManager.on(thirdTemporaryFileId, spy);
-
-    let pos: number;
-    pos = getNodePos(pluginState, firstTemporaryFileId);
-    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
-    // When removing multiple nodes with node view, ProseMirror performs the DOM update
-    // asynchronously after a 20ms timeout. In order for the operations to succeed, we
-    // must wait for the DOM reconciliation to conclude before proceeding.
-    await sleep(100);
-
-    pos = getNodePos(pluginState, secondTemporaryFileId);
-    editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
-    await sleep(100);
-
-    expect(editorView.state.doc).toEqualDocument(
-      doc(
-        p(),
-        mediaGroup(
-          media({
-            id: thirdTemporaryFileId,
-            __key: thirdTemporaryFileId,
-            type: 'file',
-            collection: testCollectionName,
-          })(),
-        ),
-        p(),
-      ),
-    );
-
-    /** Since we have a state manager in the nodeview now too */
-    expect(spy).toHaveBeenCalledTimes(2);
-
-    expect(spy).toHaveBeenCalledWith({
-      id: firstTemporaryFileId,
-      status: 'cancelled',
-    });
-
-    collectionFromProvider.mockRestore();
     editorView.destroy();
     pluginState.destroy();
   });
@@ -775,7 +555,9 @@ describe('Media plugin', () => {
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
-    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
+    pluginState.insertFiles([
+      { id: tempFileId, fileId: Promise.resolve('id') },
+    ]);
 
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -791,11 +573,6 @@ describe('Media plugin', () => {
         p(),
       ),
     );
-
-    stateManager.updateState(tempFileId, {
-      id: tempFileId,
-      status: 'uploading',
-    });
 
     // mark the upload as finished, triggering replacement of media node
     stateManager.updateState(tempFileId, {
@@ -824,30 +601,6 @@ describe('Media plugin', () => {
 
     expect(editorView.state.doc).toEqualDocument(doc(p(), p()));
     collectionFromProvider.mockRestore();
-    editorView.destroy();
-    pluginState.destroy();
-  });
-
-  it('It should not hide the progress bar before upload is done', async () => {
-    const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
-
-    const tempFileId = `temporary:${randomId()}`;
-
-    // wait until mediaProvider has been set
-    const provider = await mediaProvider;
-    // wait until mediaProvider's uploadContext has been set
-    await provider.uploadContext;
-
-    pluginState.insertFiles([{ id: tempFileId, status: 'uploading' }]);
-
-    /** update to preview state of the media */
-    stateManager.updateState(tempFileId, {
-      id: tempFileId,
-      publicId: tempFileId,
-      status: 'preview',
-    });
-    const updatedState = stateManager.getState(tempFileId);
-    expect(updatedState!.progress).not.toEqual(1);
     editorView.destroy();
     pluginState.destroy();
   });
@@ -948,23 +701,28 @@ describe('Media plugin', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
-
+    await provider.viewContext;
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     const testFileData = {
-      files: [
-        {
-          id: 'test',
-          name: 'test.png',
-          size: 1,
-          type: 'file/test',
+      file: {
+        id: 'test',
+        name: 'test.png',
+        size: 1,
+        type: 'file/test',
+      },
+      preview: {
+        dimensions: {
+          height: 200,
+          width: 200,
         },
-      ],
+      },
     };
 
-    (pluginState as any).dropzonePicker!.handleUploadsStart(testFileData);
+    (pluginState as any).dropzonePicker!.handleUploadPreviewUpdate(
+      testFileData,
+    );
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.dropzone', {
       fileMimeType: 'file/test',
     });
@@ -979,25 +737,35 @@ describe('Media plugin', () => {
       analyticsService.handler = null;
     });
 
+    const collectionFromProvider = jest.spyOn(
+      pluginState,
+      'collectionFromProvider' as any,
+    );
+    collectionFromProvider.mockImplementation(() => testCollectionName);
     const provider = await mediaProvider;
     await provider.uploadContext;
-
+    await provider.viewContext;
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     const testFileData = {
-      files: [
-        {
-          id: 'test',
-          name: 'test.png',
-          size: 1,
-          type: `file/test`,
+      file: {
+        id: 'test',
+        name: 'test.png',
+        size: 1,
+        type: 'file/test',
+      },
+      preview: {
+        dimensions: {
+          height: 200,
+          width: 200,
         },
-      ],
+      },
     };
 
-    (pluginState as any).clipboardPicker!.handleUploadsStart(testFileData);
+    (pluginState as any).clipboardPicker!.handleUploadPreviewUpdate(
+      testFileData,
+    );
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.clipboard', {
       fileMimeType: 'file/test',
     });
@@ -1014,23 +782,26 @@ describe('Media plugin', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
-
+    await provider.viewContext;
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     const testFileData = {
-      files: [
-        {
-          id: 'test',
-          name: 'test.png',
-          size: 1,
-          type: `file/test`,
+      file: {
+        id: 'test',
+        name: 'test.png',
+        size: 1,
+        type: 'file/test',
+      },
+      preview: {
+        dimensions: {
+          height: 200,
+          width: 200,
         },
-      ],
+      },
     };
 
-    (pluginState as any).popupPicker!.handleUploadsStart(testFileData);
+    (pluginState as any).popupPicker!.handleUploadPreviewUpdate(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.popup', {
       fileMimeType: 'file/test',
     });
@@ -1047,23 +818,26 @@ describe('Media plugin', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
-
+    await provider.viewContext;
     await waitForMediaPickerReady(pluginState);
-
     expect(typeof pluginState.binaryPicker!).toBe('object');
 
     const testFileData = {
-      files: [
-        {
-          id: 'test',
-          name: 'test.png',
-          size: 1,
-          type: `file/test`,
+      file: {
+        id: 'test',
+        name: 'test.png',
+        size: 1,
+        type: 'file/test',
+      },
+      preview: {
+        dimensions: {
+          height: 200,
+          width: 200,
         },
-      ],
+      },
     };
 
-    (pluginState as any).binaryPicker!.handleUploadsStart(testFileData);
+    (pluginState as any).binaryPicker!.handleUploadPreviewUpdate(testFileData);
     expect(spy).toHaveBeenCalledWith('atlassian.editor.media.file.binary', {
       fileMimeType: 'file/test',
     });
@@ -1075,6 +849,7 @@ describe('Media plugin', () => {
       const deletingMediaNode = media({
         id: deletingMediaNodeId,
         type: 'file',
+        __fileMimeType: 'pdf',
         collection: testCollectionName,
       })();
       const { editorView, pluginState } = editor(
@@ -1090,7 +865,7 @@ describe('Media plugin', () => {
         ),
       );
 
-      const pos = getNodePos(pluginState, deletingMediaNodeId);
+      const pos = getNodePos(pluginState, deletingMediaNodeId, false);
       pluginState.handleMediaNodeRemoval(
         deletingMediaNode(editorView.state.schema),
         () => pos,
@@ -1229,10 +1004,10 @@ describe('Media plugin', () => {
 
     const spy = jest.spyOn(editorView, 'focus');
 
-    pluginState.insertFiles([{ id: 'foo' }]);
+    pluginState.insertFiles([{ id: 'foo', fileId: Promise.resolve('id') }]);
     expect(spy).toHaveBeenCalled();
 
-    pluginState.insertFiles([{ id: 'bar' }]);
+    pluginState.insertFiles([{ id: 'bar', fileId: Promise.resolve('id') }]);
     expect(editorView.state.doc).toEqualDocument(
       doc(
         mediaGroup(
@@ -1268,7 +1043,8 @@ describe('Media plugin', () => {
     pluginState.insertFiles([
       {
         id: temporaryFileId,
-        status: 'uploading',
+        fileId: Promise.resolve('id'),
+        status: 'preview',
         fileName: 'foo.png',
         fileSize: 1234,
         fileMimeType: 'pdf',
@@ -1294,112 +1070,6 @@ describe('Media plugin', () => {
     collectionFromProvider.mockRestore();
     editorView.destroy();
     pluginState.destroy();
-  });
-
-  describe('detectLinkRangesInSteps', () => {
-    const link1 = a({ href: 'www.google.com' })('google');
-    const link2 = a({ href: 'www.baidu.com' })('baidu');
-
-    describe('when ignore links flag is set to true', () => {
-      it('does not detect any links', () => {
-        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
-        const { state } = editorView;
-        const tr = state.tr.replaceWith(
-          sel,
-          sel,
-          link1(editorView.state.schema).concat(link2(editorView.state.schema)),
-        );
-        pluginState.ignoreLinks = true;
-        pluginState.allowsLinks = true;
-
-        const linksRanges = pluginState.detectLinkRangesInSteps(tr, state);
-
-        expect(linksRanges).toEqual([]);
-        editorView.destroy();
-        pluginState.destroy();
-      });
-
-      it('resets ignore links flag to false', () => {
-        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
-        const { state } = editorView;
-        const tr = state.tr.replaceWith(
-          sel,
-          sel,
-          link1(editorView.state.schema).concat(link2(editorView.state.schema)),
-        );
-        pluginState.ignoreLinks = true;
-        pluginState.allowsLinks = true;
-
-        pluginState.detectLinkRangesInSteps(tr, state);
-
-        expect(pluginState.ignoreLinks).toBe(false);
-        editorView.destroy();
-        pluginState.destroy();
-      });
-    });
-
-    describe('when ignore links flag is set to false', () => {
-      it('sets ranges with links', () => {
-        const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
-        const { state } = editorView;
-        const nodes = link1(editorView.state.schema).concat(
-          link2(editorView.state.schema),
-        );
-        const tr = state.tr.replaceWith(sel, sel, nodes);
-        pluginState.ignoreLinks = false;
-        pluginState.allowsLinks = true;
-
-        pluginState.detectLinkRangesInSteps(tr, state);
-
-        expect((pluginState as any).linkRanges).toEqual([
-          { href: 'www.google.com', pos: 1 },
-          { href: 'www.baidu.com', pos: 'google'.length + 1 },
-        ]);
-        editorView.destroy();
-        pluginState.destroy();
-      });
-    });
-  });
-
-  describe('insertLinks', () => {
-    it('creates a link card below linkified text', async () => {
-      const href = 'www.google.com';
-      const { editorView, pluginState } = editor(doc(p(`${href} {<>}`)));
-      const mediaProvider = getFreshMediaProvider();
-
-      // wait until mediaProvider has been set
-      const provider = await mediaProvider;
-      // wait until mediaProvider's linkCreateContext has been set
-      await provider.linkCreateContext;
-
-      provider.linkCreateContext = Promise.resolve(linkCreateContextMock);
-
-      await pluginState.setMediaProvider(Promise.resolve(provider));
-
-      // way to stub private member
-      (pluginState as any).linkRanges = [{ href, pos: 1 }];
-
-      // -1 for space, simulate the scenario of autoformatting link
-      const linkIds = await pluginState.insertLinks();
-
-      expect(linkIds).toHaveLength(1);
-
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p(`${href} `),
-          mediaGroup(
-            media({
-              id: `${linkIds![0]}`,
-              type: 'link',
-              collection: testCollectionName,
-            })(),
-          ),
-          p(),
-        ),
-      );
-      editorView.destroy();
-      pluginState.destroy();
-    });
   });
 
   describe('splitMediaGroup', () => {
@@ -1479,35 +1149,6 @@ describe('Media plugin', () => {
         editorView.destroy();
         pluginState.destroy();
       });
-    });
-  });
-
-  describe('ignoreLinks', () => {
-    it('should set to true when at the beginning of a link', () => {
-      const { pluginState } = editor(
-        doc(p(a({ href: 'www.google.com' })('{<>}www.google.com'))),
-      );
-      expect(pluginState.ignoreLinks).toBe(true);
-      pluginState.destroy();
-    });
-
-    it('should set to true when at the end of a link', () => {
-      const { pluginState } = editor(
-        doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))),
-      );
-      expect(pluginState.ignoreLinks).toBe(true);
-      pluginState.destroy();
-    });
-
-    it('should switch from true to false when insert space after a link', () => {
-      const { editorView, pluginState, sel } = editor(
-        doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))),
-      );
-      expect(pluginState.ignoreLinks).toBe(true);
-      insertText(editorView, ' ', sel);
-      expect(pluginState.ignoreLinks).toBe(false);
-      editorView.destroy();
-      pluginState.destroy();
     });
   });
 

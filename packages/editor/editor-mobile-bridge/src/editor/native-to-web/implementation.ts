@@ -35,6 +35,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   mediaPicker: CustomMediaPicker | undefined;
   blockState: BlockTypeState | undefined;
   listState: ListsState | undefined;
+  mediaMap: Map<string, Function> = new Map();
 
   onBoldClicked() {
     if (this.textFormattingPluginState && this.editorView) {
@@ -110,9 +111,29 @@ export default class WebBridgeImpl implements NativeToWebBridge {
   setTextFormattingStateAndSubscribe(state: TextFormattingState) {
     this.textFormattingPluginState = state;
   }
-  onMediaPicked(eventName: string, payload: string) {
+  onMediaPicked(eventName: string, mediaPayload: string) {
     if (this.mediaPicker) {
-      this.mediaPicker.emit(eventName, JSON.parse(payload));
+      const payload = JSON.parse(mediaPayload);
+
+      switch (eventName) {
+        case 'upload-preview-update': {
+          const uploadPromise = new Promise(resolve => {
+            this.mediaMap.set(payload.file.id, resolve);
+          });
+          payload.file.upfrontId = uploadPromise;
+          payload.preview = {
+            dimensions: payload.file.dimensions,
+          };
+          this.mediaPicker!.emit(eventName, payload);
+
+          return;
+        }
+        case 'upload-end': {
+          const getUploadPromise = this.mediaMap.get(payload.file.id);
+          getUploadPromise!(payload.file.publicId);
+          return;
+        }
+      }
     }
   }
   onPromiseResolved(uuid: string, paylaod: string) {

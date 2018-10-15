@@ -7,12 +7,7 @@ import {
   Dropzone,
   Clipboard,
   BinaryUploader,
-  UploadsStartEventPayload,
   UploadPreviewUpdateEventPayload,
-  UploadStatusUpdateEventPayload,
-  UploadProcessingEventPayload,
-  UploadErrorEventPayload,
-  UploadEndEventPayload,
 } from '@atlaskit/media-picker';
 import { ContextFactory } from '@atlaskit/media-core';
 import {
@@ -24,6 +19,7 @@ import { randomId } from '@atlaskit/editor-test-helpers';
 import {
   DefaultMediaStateManager,
   MediaStateManager,
+  MediaState,
 } from '../../../../plugins/media';
 import PickerFacade, {
   PickerType,
@@ -51,24 +47,6 @@ describe('Media PickerFacade', () => {
   });
 
   const testFileId = randomId();
-  const testTemporaryFileId = `temporary:${testFileId}`;
-  const testFilePublicId = '7899d969-c1b2-4460-ad3e-44d51ac85452';
-  const testFileData = {
-    id: testFileId,
-    name: 'test name',
-    size: Math.round(Math.random() * 1047552),
-    type: 'test/file',
-    creationDate: new Date().getTime(),
-  };
-  const testFileProgress = {
-    absolute: 1,
-    portion: Math.random(),
-    max: 1,
-    overallTime: 1,
-    expectedFinishTime: 1,
-    timeLeft: 1,
-  };
-  const preview = { src: '' };
 
   // Spies
   const spies = {
@@ -83,68 +61,54 @@ describe('Media PickerFacade', () => {
     browse: jest.fn(),
   };
 
-  // Helpers
-  function triggerStart(payload?: Partial<UploadsStartEventPayload>) {
-    // [ 'uploads-start', [Function] ]
-    const [eventName, cb] = spies.on.mock.calls[0];
-    cb({ files: [testFileData], ...payload });
-    // Just to make sure we are call the correct callback
-    expect(eventName).toBe('uploads-start');
-  }
+  const previewPayload: UploadPreviewUpdateEventPayload = {
+    file: {
+      id: testFileId,
+      name: 'test name',
+      size: 100,
+      type: 'test/file',
+      upfrontId: Promise.resolve('publicid'),
+      creationDate: 10,
+    },
+    preview: {
+      dimensions: {
+        height: 100,
+        width: 100,
+      },
+    },
+  };
 
-  function triggerPreviewUpdate(
-    payload?: Partial<UploadPreviewUpdateEventPayload>,
-  ) {
-    const [eventName, cb] = spies.on.mock.calls[1];
-    cb({
-      file: testFileData,
-      preview,
-      ...payload,
-    });
+  const endPayload = {
+    file: {
+      id: testFileId,
+    },
+  };
+
+  const insertPayload: MediaState[] = [
+    {
+      id: testFileId,
+      fileName: 'test name',
+      fileSize: 100,
+      fileId: Promise.resolve('publicid'),
+      fileMimeType: 'test/file',
+      dimensions: {
+        height: 100,
+        width: 100,
+      },
+      status: 'preview',
+    },
+  ];
+
+  // Helpers
+  function triggerStart(payload?: Partial<MediaState>) {
+    const [eventName, cb] = spies.on.mock.calls[0];
+    cb(previewPayload);
     expect(eventName).toBe('upload-preview-update');
   }
 
-  function triggerProcessing(payload?: Partial<UploadProcessingEventPayload>) {
-    const [eventName, cb] = spies.on.mock.calls[2];
-    cb({
-      file: { ...testFileData, publicId: testFilePublicId },
-      ...payload,
-    });
-    expect(eventName).toBe('upload-processing');
-  }
-
-  function triggerStatusUpdate(
-    payload?: Partial<UploadStatusUpdateEventPayload>,
-  ) {
-    const [eventName, cb] = spies.on.mock.calls[3];
-    cb({
-      file: testFileData,
-      progress: testFileProgress,
-      ...payload,
-    });
-    expect(eventName).toBe('upload-status-update');
-  }
-
-  function triggerError(payload?: Partial<UploadErrorEventPayload>) {
-    const [eventName, cb] = spies.on.mock.calls[4];
-    cb({
-      error: {
-        name: 'some-error',
-        description: 'something went wrong',
-        fileId: testFileData.id,
-      },
-      ...payload,
-    });
-    expect(eventName).toBe('upload-error');
-  }
-
-  function triggerEnd(payload?: Partial<UploadEndEventPayload>) {
-    const [eventName, cb] = spies.on.mock.calls[5];
-    cb({
-      file: { ...testFileData, publicId: testFilePublicId },
-      public: { id: 'test-id' },
-      payload,
-    });
+  function triggerEnd(payload?: Partial<MediaState>) {
+    const [eventName, cb] = spies.on.mock.calls[1];
+    cb(endPayload);
     expect(eventName).toBe('upload-end');
   }
 
@@ -201,13 +165,9 @@ describe('Media PickerFacade', () => {
       it(`listens to picker events`, () => {
         const fn = jasmine.any(Function);
         expect(spies.on).toHaveBeenCalledTimes(
-          pickerType === 'dropzone' ? 8 : 6,
+          pickerType === 'dropzone' ? 5 : 3,
         );
-        expect(spies.on).toHaveBeenCalledWith('uploads-start', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-preview-update', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-processing', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-status-update', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-error', fn);
         expect(spies.on).toHaveBeenCalledWith('upload-end', fn);
 
         if (pickerType === 'dropzone') {
@@ -219,21 +179,12 @@ describe('Media PickerFacade', () => {
       it('removes listeners on destruction', () => {
         facade.destroy();
         expect(spies.removeAllListeners).toHaveBeenCalledTimes(
-          pickerType === 'dropzone' ? 8 : 6,
+          pickerType === 'dropzone' ? 5 : 3,
         );
-        expect(spies.removeAllListeners).toHaveBeenCalledWith('uploads-start');
         expect(spies.removeAllListeners).toHaveBeenCalledWith(
           'upload-preview-update',
         );
-        expect(spies.removeAllListeners).toHaveBeenCalledWith(
-          'upload-processing',
-        );
-        expect(spies.removeAllListeners).toHaveBeenCalledWith(
-          'upload-status-update',
-        );
-        expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-error');
         expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-end');
-
         if (pickerType === 'dropzone') {
           expect(spies.removeAllListeners).toHaveBeenCalledWith('drag-enter');
           expect(spies.removeAllListeners).toHaveBeenCalledWith('drag-leave');
@@ -245,19 +196,7 @@ describe('Media PickerFacade', () => {
 
         beforeEach(() => {
           spy.mockClear();
-          stateManager.on(testTemporaryFileId, spy);
-        });
-
-        it('should for upload starting', () => {
-          triggerStart();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
-            status: 'uploading',
-            fileName: testFileData.name,
-            fileSize: testFileData.size,
-            fileMimeType: testFileData.type,
-          });
+          stateManager.on(testFileId, spy);
         });
 
         it('for new uploads via onNewMedia()', () => {
@@ -267,90 +206,17 @@ describe('Media PickerFacade', () => {
           triggerStart();
 
           expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith([
-            {
-              id: testTemporaryFileId,
-              status: 'uploading',
-              publicId: undefined,
-              fileName: testFileData.name,
-              fileSize: testFileData.size,
-              fileMimeType: testFileData.type,
-            },
-          ]);
-        });
-
-        it('for upload progress', () => {
-          triggerStatusUpdate();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            status: 'uploading',
-            progress: testFileProgress.portion,
-          });
-        });
-
-        it('for upload preview availability', () => {
-          triggerPreviewUpdate();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy.mock.calls[0][0]).toMatchObject({
-            thumbnail: preview,
-          });
-        });
-
-        it('for upload processing', () => {
-          triggerProcessing();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            status: 'processing',
-            publicId: testFilePublicId,
-          });
-        });
-
-        it('for upload error', () => {
-          triggerError();
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
-            status: 'error',
-            error: {
-              name: 'some-error',
-              description: 'something went wrong',
-            },
-          });
+          expect(spy).toHaveBeenCalledWith(insertPayload);
         });
 
         it('for upload end', () => {
           triggerEnd();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith({
-            publicId: testFilePublicId,
             status: 'ready',
-            progress: 1,
-            ready: true,
+            id: testFileId,
           });
         });
-      });
-
-      // @see ED-2062
-      it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status', () => {
-        stateManager.updateState(testTemporaryFileId, {
-          id: testTemporaryFileId,
-          status: 'uploading',
-        });
-
-        triggerStatusUpdate();
-        triggerProcessing();
-        triggerStatusUpdate();
-
-        expect(stateManager.getState(testTemporaryFileId)!.status).toBe(
-          'processing',
-        );
-
-        triggerEnd();
-        triggerStatusUpdate();
-
-        expect(stateManager.getState(testTemporaryFileId)!.status).toEqual(
-          'ready',
-        );
       });
 
       // Picker Specific Tests
@@ -453,25 +319,6 @@ describe('Media PickerFacade', () => {
           spies.deactivate.mockClear();
           facade.deactivate();
           expect(spies.deactivate).toHaveBeenCalledTimes(0);
-        });
-      }
-
-      if (pickerType === 'popup') {
-        it('should change the status to cancelled on cancel', () => {
-          const spy = jest.fn();
-          stateManager.updateState(testTemporaryFileId, {
-            id: testTemporaryFileId,
-            status: 'uploading',
-          });
-
-          stateManager.on(testTemporaryFileId, spy);
-          facade.cancel(testTemporaryFileId);
-
-          expect(spy).toHaveBeenCalledTimes(1);
-          expect(spy).toHaveBeenCalledWith({
-            id: testTemporaryFileId,
-            status: 'cancelled',
-          });
         });
       }
 

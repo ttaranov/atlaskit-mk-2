@@ -13,6 +13,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { stateKey as pluginKey } from '../../../../../plugins/media/pm-plugins/main';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
+import FloatingToolbar from '../../../../../ui/FloatingToolbar';
 import MediaSingleEdit from '../../../../../plugins/media/ui/MediaSingleEdit';
 
 describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
@@ -50,20 +51,24 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     const pluginState = pluginKey.getState(editorView.state);
 
     const mediaSingleEdit = mountWithIntl(
-      <MediaSingleEdit pluginState={pluginState} />,
+      <MediaSingleEdit
+        pluginState={pluginState}
+        allowBreakout={true}
+        allowLayout={true}
+      />,
     );
     expect(editorView.state.selection.$from.node().type.name).toEqual(
       'mediaSingle',
     );
     expect(
-      mediaSingleEdit.findWhere(child => {
+      mediaSingleEdit.find(FloatingToolbar).findWhere(child => {
         return child.type() === ToolbarButton && child.prop('disabled');
       }).length,
     ).toEqual(0);
     mediaSingleEdit.unmount();
   });
 
-  it('should not have layout options if media single inside bodied extension', () => {
+  it('should not have layout options if media single inside bodied extension', async () => {
     const { editorView } = editor(
       doc(
         bodiedExtension({
@@ -84,20 +89,27 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
         ),
       ),
     );
+
     editorView.focus();
     const pluginState = pluginKey.getState(editorView.state);
 
     const mediaSingleEdit = mountWithIntl(
-      <MediaSingleEdit pluginState={pluginState} />,
+      <MediaSingleEdit
+        pluginState={pluginState}
+        target={pluginState.element}
+        allowBreakout={true}
+        allowLayout={false}
+      />,
     );
     expect(editorView.state.selection.$from.node().type.name).toEqual(
       'mediaSingle',
     );
+
     expect(
-      mediaSingleEdit.findWhere(child => {
+      mediaSingleEdit.find(ToolbarButton).findWhere(child => {
         return child.type() === ToolbarButton && child.prop('disabled');
       }).length,
-    ).toEqual(3);
+    ).toEqual(5);
     mediaSingleEdit.unmount();
   });
 
@@ -126,7 +138,12 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     const pluginState = pluginKey.getState(editorView.state);
 
     const mediaSingleEdit = mountWithIntl(
-      <MediaSingleEdit pluginState={pluginState} />,
+      <MediaSingleEdit
+        pluginState={pluginState}
+        target={pluginState.target}
+        allowBreakout={true}
+        allowLayout={false}
+      />,
     );
     expect(editorView.state.selection.$from.node().type.name).toEqual(
       'mediaSingle',
