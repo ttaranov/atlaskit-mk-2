@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 5.10.1
+- [patch] remove hyphen from qs and convert values to camel case [ec5a8c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec5a8c3)
+
+## 5.10.0
+- [minor] Add link to advanced issue search at the top of the jira pre query screen. [f0f66b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0f66b7)
+
 ## 5.9.9
 - [patch] Adds small amount of padding between the Jira advanced search footer and the result list [5e8fe66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e8fe66)
 

@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 12.1.3
+- [patch] onHide and onShow are now called in componentDidUpdate so they behave consistently between all hides and shows [e20f11a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20f11a)
+
 ## 12.1.2
 - [patch] Fix edgecase where when handleMouseOver was called before handleMouseEnter, causing the mouseCoordinates to be null, and the tooltip to render at the top left of the page [c2694aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2694aa)
 

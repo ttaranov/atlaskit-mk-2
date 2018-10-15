@@ -1,5 +1,8 @@
 # @atlaskit/date
 
+## 0.1.4
+- [patch] ED-5529 Fix JSON Schema [d286ab3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d286ab3)
+
 ## 0.1.3
 - [patch] Fix rxjs and date-fns import in TS components [ab15cee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab15cee)
 

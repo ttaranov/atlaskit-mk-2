@@ -32,7 +32,8 @@ export interface Props {
   hasHeaderRow?: boolean;
   tableHeight?: number;
   dangerRows?: number[];
-  showInsertButton?: boolean;
+  insertColumnButtonIndex?: number;
+  insertRowButtonIndex?: number;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -54,11 +55,13 @@ export default class TableFloatingControls extends Component<Props, State> {
       isNumberColumnEnabled,
       selection,
       tableHeight,
-      showInsertButton,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
     } = this.props;
     return (
       tableRef !== nextProps.tableRef ||
-      showInsertButton !== nextProps.showInsertButton ||
+      insertColumnButtonIndex !== nextProps.insertColumnButtonIndex ||
+      insertRowButtonIndex !== nextProps.insertRowButtonIndex ||
       tableHeight !== nextProps.tableHeight ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
@@ -83,7 +86,8 @@ export default class TableFloatingControls extends Component<Props, State> {
       tableActive,
       hasHeaderRow,
       dangerRows,
-      showInsertButton,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
     } = this.props;
 
     if (!tableRef) {
@@ -109,12 +113,14 @@ export default class TableFloatingControls extends Component<Props, State> {
         ) : null}
         <CornerControls
           editorView={editorView}
+          tableRef={tableRef}
           selection={editorView.state.selection}
           clearHoverSelection={this.clearHoverSelection}
           isTableInDanger={isTableInDanger}
           isHeaderColumnEnabled={isHeaderColumnEnabled}
           isHeaderRowEnabled={isHeaderRowEnabled}
-          showInsertButton={showInsertButton}
+          insertColumnButtonIndex={insertColumnButtonIndex}
+          insertRowButtonIndex={insertRowButtonIndex}
         />
         <RowControls
           editorView={editorView}
@@ -128,7 +134,7 @@ export default class TableFloatingControls extends Component<Props, State> {
           isTableInDanger={isTableInDanger}
           selectRow={this.selectRow}
           insertRow={this.insertRow}
-          showInsertButton={showInsertButton}
+          insertRowButtonIndex={insertRowButtonIndex}
         />
       </div>
     );

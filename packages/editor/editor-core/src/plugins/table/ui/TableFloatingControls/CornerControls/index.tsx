@@ -10,12 +10,14 @@ import { TableCssClassName as ClassName } from '../../../types';
 export interface Props {
   editorView: EditorView;
   selection?: Selection;
+  tableRef?: HTMLElement;
   clearHoverSelection: () => void;
   isTableInDanger?: boolean;
   isHeaderColumnEnabled?: boolean;
   isHeaderRowEnabled?: boolean;
   isNumberColumnEnabled?: boolean;
-  showInsertButton?: boolean;
+  insertColumnButtonIndex?: number;
+  insertRowButtonIndex?: number;
 }
 
 export default class CornerControls extends Component<Props, any> {
@@ -29,7 +31,9 @@ export default class CornerControls extends Component<Props, any> {
       isTableInDanger,
       isHeaderRowEnabled,
       isHeaderColumnEnabled,
-      showInsertButton,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
+      tableRef,
     } = this.props;
 
     return (
@@ -50,16 +54,18 @@ export default class CornerControls extends Component<Props, any> {
         {!isHeaderColumnEnabled && (
           <InsertButton
             type="column"
+            tableRef={tableRef!}
             index={0}
-            showInsertButton={showInsertButton}
+            showInsertButton={insertColumnButtonIndex === 0}
             onMouseDown={this.insertColumn}
           />
         )}
         {!isHeaderRowEnabled && (
           <InsertButton
             type="row"
+            tableRef={tableRef!}
             index={0}
-            showInsertButton={showInsertButton}
+            showInsertButton={insertRowButtonIndex === 0}
             onMouseDown={this.insertRow}
           />
         )}
