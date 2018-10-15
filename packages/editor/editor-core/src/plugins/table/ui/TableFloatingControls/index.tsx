@@ -114,7 +114,6 @@ export default class TableFloatingControls extends Component<Props, State> {
           isTableInDanger={isTableInDanger}
           isHeaderColumnEnabled={isHeaderColumnEnabled}
           isHeaderRowEnabled={isHeaderRowEnabled}
-          isNumberColumnEnabled={isNumberColumnEnabled}
           showInsertButton={showInsertButton}
         />
         <RowControls

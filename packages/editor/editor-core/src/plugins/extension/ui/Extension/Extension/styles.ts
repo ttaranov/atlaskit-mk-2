@@ -11,11 +11,15 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   margin: ${blockNodesVerticalMargin} 0;
 
-  /* extension container breakout */
-  &[data-layout='full-width'],
-  &[data-layout='wide'] {
+  /* extension container breakout, only works on top level */
+  .ProseMirror > [extensiontype] &[data-layout='full-width'],
+  .ProseMirror > [extensiontype] &[data-layout='wide'] {
     margin-left: 50%;
     transform: translateX(-50%);
+  }
+  .ProseMirror > * [extensiontype] &[data-layout='wide'],
+  .ProseMirror > * [extensiontype] &[data-layout='wide'] {
+    width: 100% !important;
   }
 `;
 

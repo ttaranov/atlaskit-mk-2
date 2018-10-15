@@ -112,4 +112,7 @@ export const TableCssClassName = {
   // come from prosemirror-table
   COLUMN_RESIZE_HANDLE: 'column-resize-handle',
   SELECTED_CELL: 'selectedCell',
+
+  // defined in ReactNodeView based on PM node name
+  NODEVIEW_WRAPPER: 'tableView-content-wrap',
 };

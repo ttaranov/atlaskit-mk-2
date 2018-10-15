@@ -173,6 +173,20 @@ export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle}
 
+    /* Breakout only works on top level */
+    > .${ClassName.NODEVIEW_WRAPPER} .${
+  ClassName.TABLE_CONTAINER
+}[data-layout='full-width'],
+    > .${ClassName.NODEVIEW_WRAPPER} .${
+  ClassName.TABLE_CONTAINER
+}[data-layout='wide'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    > * .${ClassName.NODEVIEW_WRAPPER} .${ClassName.TABLE_CONTAINER} {
+      width: 100% !important;
+    }
+
     /* Column controls */
     .${ClassName.COLUMN_CONTROLS} {
       height: ${tableToolbarSize}px;

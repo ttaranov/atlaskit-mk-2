@@ -68,17 +68,19 @@ describe('<TaskItem/>', () => {
   describe('showPlaceholder', () => {
     it('should render placeholder if task is empty', () => {
       const component = mount(
-        <TaskItem taskId="task-1" showPlaceholder={true} />,
+        <TaskItem
+          taskId="task-1"
+          showPlaceholder={true}
+          placeholder="cheese"
+        />,
       );
       const placeholder = component.find(Placeholder);
-      expect(placeholder.text()).toEqual(
-        "Type your action, use '@' to assign to someone.",
-      );
+      expect(placeholder.text()).toEqual('cheese');
     });
 
     it('should not render placeholder if task is not empty', () => {
       const component = mount(
-        <TaskItem taskId="task-1" showPlaceholder={true}>
+        <TaskItem taskId="task-1" showPlaceholder={true} placeholder="cheese">
           Hello <b>world</b>
         </TaskItem>,
       );
