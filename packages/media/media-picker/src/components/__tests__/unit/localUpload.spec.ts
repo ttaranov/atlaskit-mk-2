@@ -4,7 +4,6 @@ import { NewUploadServiceImpl } from '../../../service/newUploadServiceImpl';
 import { MediaFile } from '../../../domain/file';
 
 describe('MediaLocalUpload', () => {
-  const imagePreviewSrc = 'some-image-src';
   const imageFile: MediaFile = {
     id: 'some-id',
     name: 'some-name',
