@@ -19,7 +19,7 @@ export interface Props {
   hoveredRows?: number[];
   clearHoverSelection: () => void;
   isTableInDanger?: boolean;
-  showInsertButton?: boolean;
+  insertRowButtonIndex?: number;
 }
 
 export default class RowControls extends Component<Props, any> {
@@ -103,7 +103,7 @@ export default class RowControls extends Component<Props, any> {
     const {
       editorView: { state },
       tableRef,
-      showInsertButton,
+      insertRowButtonIndex,
     } = this.props;
     if (!tableRef) {
       return null;
@@ -147,8 +147,9 @@ export default class RowControls extends Component<Props, any> {
           ) ? (
             <InsertButton
               type="row"
+              tableRef={tableRef}
               index={i + 1}
-              showInsertButton={showInsertButton}
+              showInsertButton={insertRowButtonIndex === i + 1}
               onMouseDown={() => this.props.insertRow(i + 1)}
             />
           ) : null}

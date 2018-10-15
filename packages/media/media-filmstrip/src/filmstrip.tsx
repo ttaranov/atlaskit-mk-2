@@ -12,7 +12,7 @@ import {
 } from '@atlaskit/media-card';
 import { Context } from '@atlaskit/media-core';
 import { FilmstripView } from './filmstripView';
-import { getIdentifierKey } from './utils/getIdentifierKey';
+import { generateIdentifierKey } from './utils/generateIdentifierKey';
 
 export interface FilmstripItem {
   readonly identifier: Identifier;
@@ -48,7 +48,7 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   private renderCards() {
     const { items, context } = this.props;
     const cards = items.map(item => {
-      const key = getIdentifierKey(item.identifier);
+      const key = generateIdentifierKey(item.identifier);
 
       return <Card key={key} context={context} {...item} />;
     });

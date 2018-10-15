@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 8.0.3
+- [patch] Fix styling of button rendering icon in IE [b4c5b87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b4c5b87)
+
 ## 8.0.2
 - [patch] Fix styling in IE and maintain it in other browsers [0d67e69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d67e69)
 

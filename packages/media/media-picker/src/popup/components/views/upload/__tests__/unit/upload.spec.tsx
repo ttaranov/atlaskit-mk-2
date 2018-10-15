@@ -5,7 +5,6 @@ import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { Card } from '@atlaskit/media-card';
 import { MediaCollectionItem } from '@atlaskit/media-store';
-import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Context } from '@atlaskit/media-core';
 import { State, SelectedItem, LocalUpload } from '../../../../../domain';
