@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 11.0.1
+- [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/editor-common@20.0.0
+  - @atlaskit/renderer@29.0.0
+  - @atlaskit/util-data-test@10.0.16
+
 ## 11.0.0
 - [major] FS-1311 - i18n support for task-decsions. task-decisions now require the placeholder text to be passed in. [8a1ccf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a1ccf2)
 
