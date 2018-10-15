@@ -135,7 +135,7 @@ describe('mapJiraItemToResult', () => {
         searchSessionId: sessionId,
         searchContainerId: 'containerId',
         searchObjectId: 'objectId',
-        searchContentType: ContentType.JiraIssue,
+        searchContentType: 'issue',
       });
       expect(href).toBe(
         'https://product-fabric.atlassian.net/browse/ETH-671?searchSessionId=sessionId&searchContainerId=containerId&searchObjectId=objectId&searchContentType=jira-issue',

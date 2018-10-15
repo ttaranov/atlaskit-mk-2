@@ -87,5 +87,5 @@ export interface JiraResultQueryParams {
   searchSessionId: string;
   searchContainerId?: string;
   searchObjectId?: string;
-  searchContentType?: ContentType;
+  searchContentType?: 'issue' | 'board' | 'project' | 'filter';
 }
