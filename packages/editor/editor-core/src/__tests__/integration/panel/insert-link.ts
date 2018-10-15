@@ -10,7 +10,7 @@ import {
 
 BrowserTestCase(
   'Insert link by typing Markdown',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const browser = new Page(client);
 
