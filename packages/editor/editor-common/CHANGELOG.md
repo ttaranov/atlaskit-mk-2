@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 19.3.3
+- [patch] ED-5529 Fix JSON Schema [d286ab3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d286ab3)
+
 ## 19.3.2
 - [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
   - @atlaskit/media-core@24.2.2
