@@ -255,6 +255,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
       tr th:first-child {
         counter-increment: row-number;
         position: relative;
+        font-weight: normal;
         padding-left: ${akEditorTableNumberColumnWidth + 10}px;
       }
 
