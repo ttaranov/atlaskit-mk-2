@@ -1,19 +1,39 @@
 import * as React from 'react';
-import { Actions, Context } from './Context';
-import { State } from './ReactionContext';
+import { ReactionAction } from '../types';
+import { ReactionsStore, State } from './ReactionsStore';
+
+export type ReactionStoreProp = ReactionsStore | Promise<ReactionsStore>;
+
+export type Actions = {
+  getReactions: (containerId: string, aris: string) => void;
+  toggleReaction: ReactionAction;
+  addReaction: ReactionAction;
+  getDetailedReaction: ReactionAction;
+};
 
 export type Props<PropsFromState extends {}, PropsFromActions extends {}> = {
   stateMapper?: (state: State) => PropsFromState;
   actionsMapper?: (actions: Actions) => PropsFromActions;
   children: (props: PropsFromState & PropsFromActions) => React.ReactNode;
+  store: ReactionStoreProp;
 };
+
+type ConsumerState = { store?: ReactionsStore };
 
 export class ReactionConsumer<
   PropsFromState extends {},
   PropsFromActions extends {}
-> extends React.PureComponent<Props<PropsFromState, PropsFromActions>> {
+> extends React.PureComponent<
+  Props<PropsFromState, PropsFromActions>,
+  ConsumerState
+> {
   private previousActions: Actions | undefined;
   private propsFromActions: PropsFromActions | undefined;
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   private getPropsFromActions = (actions: Actions) => {
     const { actionsMapper } = this.props;
@@ -38,22 +58,33 @@ export class ReactionConsumer<
     return undefined;
   };
 
-  private renderChildren = context => {
-    if (context) {
-      const { actions, value } = context;
-      const props = Object.assign(
-        {},
-        this.getPropsFromState(value),
-        this.getPropsFromActions(actions),
-      );
-      return this.props.children(props);
-    }
-    throw new Error(
-      'ReactionContext is required. See https://atlaskit.atlassian.com/packages/elements/reactions.',
-    );
+  private handleOnChange = () => {
+    this.forceUpdate();
   };
 
+  componentWillMount() {
+    Promise.resolve(this.props.store).then(store => {
+      this.setState({ store });
+      store.onChange(this.handleOnChange);
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.state.store) {
+      this.state.store.removeOnChangeListener(this.handleOnChange);
+    }
+  }
+
   render() {
-    return <Context.Consumer>{this.renderChildren}</Context.Consumer>;
+    if (!this.state.store) {
+      return null;
+    }
+    return this.props.children(
+      Object.assign(
+        {},
+        this.getPropsFromState(this.state.store.getState()),
+        this.getPropsFromActions(this.state.store),
+      ),
+    );
   }
 }

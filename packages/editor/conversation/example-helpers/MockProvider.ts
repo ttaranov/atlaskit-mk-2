@@ -1,37 +1,41 @@
-import {
-  ConversationResourceConfig,
-  AbstractConversationResource,
-} from '../src/api/ConversationResource';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { Comment, Conversation, User } from '../src/model';
-import { uuid } from '../src/internal/uuid';
-import { generateMockConversation, mockInlineConversation } from './MockData';
-import { mention, emoji } from '@atlaskit/util-data-test';
-import { HttpError } from '../src/api/HttpError';
-
+import { MemoryReactionsStore } from '@atlaskit/reactions';
+import { MockReactionsClient } from '@atlaskit/reactions/src/client/MockReactionsClient';
+import { emoji, mention } from '@atlaskit/util-data-test';
 import {
-  FETCH_CONVERSATIONS_REQUEST,
-  FETCH_CONVERSATIONS_SUCCESS,
+  AbstractConversationResource,
+  ConversationResourceConfig,
+} from '../src/api/ConversationResource';
+import { HttpError } from '../src/api/HttpError';
+import {
+  ADD_COMMENT_ERROR,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
-  ADD_COMMENT_ERROR,
-  UPDATE_COMMENT_REQUEST,
-  UPDATE_COMMENT_SUCCESS,
-  UPDATE_COMMENT_ERROR,
-  DELETE_COMMENT_REQUEST,
-  DELETE_COMMENT_SUCCESS,
-  DELETE_COMMENT_ERROR,
-  REVERT_COMMENT,
+  CREATE_CONVERSATION_ERROR,
   CREATE_CONVERSATION_REQUEST,
   CREATE_CONVERSATION_SUCCESS,
-  CREATE_CONVERSATION_ERROR,
+  DELETE_COMMENT_ERROR,
+  DELETE_COMMENT_REQUEST,
+  DELETE_COMMENT_SUCCESS,
+  FETCH_CONVERSATIONS_REQUEST,
+  FETCH_CONVERSATIONS_SUCCESS,
+  REVERT_COMMENT,
+  UPDATE_COMMENT_ERROR,
+  UPDATE_COMMENT_REQUEST,
+  UPDATE_COMMENT_SUCCESS,
   UPDATE_USER_SUCCESS,
 } from '../src/internal/actions';
+import { uuid } from '../src/internal/uuid';
+import { Comment, Conversation, User } from '../src/model';
+import { generateMockConversation, mockInlineConversation } from './MockData';
 
 const MockDataProviders = {
   mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   emojiProvider: Promise.resolve(
     emoji.storyData.getEmojiResource({ uploadSupported: true }),
+  ),
+  reactionsStore: Promise.resolve(
+    new MemoryReactionsStore(new MockReactionsClient()),
   ),
 };
 

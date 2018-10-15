@@ -11,7 +11,6 @@ const GlobalNavigationComponent = () => null;
 
 describe('LayoutManagerWithViewController', () => {
   let wrapper;
-  let originalLocalStorage;
 
   let onCollapseStart;
   let onCollapseEnd;
@@ -20,19 +19,6 @@ describe('LayoutManagerWithViewController', () => {
   let getRefs;
 
   beforeEach(() => {
-    originalLocalStorage = global.localStorage;
-
-    global.localStorage = {
-      setItem: Function.prototype,
-      getItem: Function.prototype,
-      clear: Function.prototype,
-      removeItem: Function.prototype,
-      key: Function.prototype,
-    };
-
-    jest.spyOn(global.localStorage, 'setItem');
-    jest.spyOn(global.localStorage, 'getItem');
-
     onCollapseStart = jest.fn();
     onCollapseEnd = jest.fn();
     onExpandStart = jest.fn();
@@ -42,6 +28,7 @@ describe('LayoutManagerWithViewController', () => {
     wrapper = mount(
       <HashRouter>
         <NavigationProvider
+          cache={false}
           initialPeekViewId="root/index"
           isDebugEnabled={false}
         >
@@ -65,11 +52,6 @@ describe('LayoutManagerWithViewController', () => {
   });
 
   afterEach(() => {
-    global.localStorage.setItem.mockRestore();
-    global.localStorage.getItem.mockRestore();
-
-    global.localStorage = originalLocalStorage;
-
     onCollapseStart.mockReset();
     onCollapseEnd.mockReset();
     onExpandStart.mockReset();

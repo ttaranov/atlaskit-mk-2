@@ -1,5 +1,4 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import applicationCard from './applicationCard';
 import blockquote from './blockquote';
 import bulletList from './bulletList';
 import decisionItem from './decisionItem';
@@ -24,7 +23,6 @@ export const reduce: NodeReducer = (node: PMNode, schema: Schema) => {
 };
 
 export const nodeToReducerMapping: { [key: string]: NodeReducer } = {
-  applicationCard,
   blockquote,
   bulletList,
   decisionItem,

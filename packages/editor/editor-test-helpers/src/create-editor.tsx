@@ -26,6 +26,11 @@ class TestReactEditorView extends ReactEditorView<{
   }
 }
 
+/**
+ * Currently skipping these three failing tests
+ * TODO: JEST-23 Fix these tests
+ */
+
 export type Options = {
   doc?: (schema: Schema) => RefsNode;
   // It needs to be any, otherwise TypeScript complains about mismatching types when dist folder exists
@@ -81,10 +86,8 @@ export default function createEditorForTests<T = any>({
   const editor = wrapper.find(TestReactEditorView);
 
   // Work around JSDOM/Node not supporting DOM Selection API
-  if (
-    !('getSelection' in window) &&
-    navigator.userAgent.indexOf('Node.js') !== -1
-  ) {
+  if (!('getSelection' in window)) {
+    // TODO JEST-23
     patchEditorViewForJSDOM((editor.instance() as ReactEditorView).view);
   }
 

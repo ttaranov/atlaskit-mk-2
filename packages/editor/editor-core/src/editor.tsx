@@ -139,6 +139,16 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
 
     if (
+      props.hasOwnProperty('quickInsert') &&
+      typeof props.quickInsert === 'boolean'
+    ) {
+      // tslint:disable-next-line:no-console
+      console.warn(
+        `quickInsert property is deprecated. [Will be enabled by default in editor-core@${nextVersion}]`,
+      );
+    }
+
+    if (
       props.hasOwnProperty('allowTables') &&
       typeof props.allowTables !== 'boolean' &&
       !props.allowTables.advanced

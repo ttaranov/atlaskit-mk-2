@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
-import { DecisionItem } from '@atlaskit/task-decision';
+import DecisionItem from '../ui/Decision';
 import { ReactNodeView } from '../../../nodeviews';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
