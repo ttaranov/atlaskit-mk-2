@@ -85,6 +85,21 @@ Deprecating and eventually discontinuing the support of a package is never somet
 
 First and foremost, we should communicate our intent to deprecate and give reasoning. Internally, we should notify our consumers directly and discuss the ramifications of deprecating and eventually removing the package in question. It's also a good candidate for a blog post to get a wider opinion.
 
+### Consider making the package private
+
+Consider making the package private by setting `internal` flag to true in package.json. Ex:
+
+```js
+  // package.json
+  {
+    "atlaskit": {
+      "internal": true
+    }
+  }
+```
+
+This will make the component not show up on Atlaskit website.
+
 ### Deprecate
 
 Based on the response to the communication, we should come up with a reasonable deprecation timeline where we still support the component and may offer bugfixes, but will discontinue feature development.
