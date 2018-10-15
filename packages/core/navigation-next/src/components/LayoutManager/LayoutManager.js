@@ -352,7 +352,7 @@ export default class LayoutManager extends Component<
                         {this.renderContentNavigation({
                           isDragging,
                           transitionState,
-                          transitionStyle,
+                          ...{ transitionStyle },
                           width,
                         })}
                       </ContainerNavigationMask>
