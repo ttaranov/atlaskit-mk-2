@@ -124,13 +124,15 @@ export default class WebBridgeImpl implements NativeToWebBridge {
           payload.preview = {
             dimensions: payload.file.dimensions,
           };
-          this.mediaPicker!.emit(eventName, payload);
+          this.mediaPicker.emit(eventName, payload);
 
           return;
         }
         case 'upload-end': {
           const getUploadPromise = this.mediaMap.get(payload.file.id);
-          getUploadPromise!(payload.file.publicId);
+          if (getUploadPromise) {
+            getUploadPromise!(payload.file.publicId);
+          }
           return;
         }
       }

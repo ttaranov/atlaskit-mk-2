@@ -11,7 +11,6 @@ import {
   mediaSingle,
   media,
   p,
-  a,
   hr,
   table,
   tr,

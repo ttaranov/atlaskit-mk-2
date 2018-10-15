@@ -141,7 +141,7 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
       <MediaSingleEdit
         pluginState={pluginState}
         target={pluginState.target}
-        allowBreakout={true}
+        allowBreakout={false}
         allowLayout={false}
       />,
     );
