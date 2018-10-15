@@ -1,33 +1,33 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+
 import {
   editable,
   getDocFromElement,
   fullpage,
   quickInsert,
-} from '../_helpers';
-import {
   clipboardHelper,
   clipboardInput,
   copyAsHTMLButton,
   copyAsPlaintextButton,
+  insertBlockMenuItem,
 } from '../_helpers';
 import { insertMentionUsingClick } from '../message-renderer/_mention-helpers';
-import { tab } from 'src/keymaps';
+import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
+
+// Panels in extensions is tested in bodied-insert-1.ts
 
 BrowserTestCase(
-  'Inserts a panel on fullpage',
+  'Insert via quick insert',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);
-
     await browser.click(editable);
     await quickInsert(browser, 'Panel');
 
-    // type some text
     await browser.type(editable, 'this text should be in the panel');
 
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -36,7 +36,26 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Changes the type of a panel to Error',
+  'Insert via toolbar menu',
+  { skip: ['edge', 'ie', 'safari'] },
+  async client => {
+    const browser = new Page(client);
+
+    await browser.goto(fullpage.path);
+    await browser.waitForSelector(editable);
+    await browser.click(editable);
+
+    await insertBlockMenuItem(browser, 'Panel');
+
+    await browser.type(editable, 'this text should be in the panel');
+
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+  },
+);
+
+BrowserTestCase(
+  'Changes the type to Error',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);
@@ -45,13 +64,11 @@ BrowserTestCase(
 
     await browser.waitForSelector(fullpage.placeholder);
     await browser.click(fullpage.placeholder);
-
     await quickInsert(browser, 'Panel');
 
-    // type some text
     await browser.type(editable, 'this text should be in the panel');
 
-    // click on Error label
+    // Change panel type to Error
     const selector = `[aria-label="Error"]`;
     await browser.click(selector);
 
@@ -61,7 +78,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Inserts a link into a panel by typing Markdown',
+  'Insert link by typing Markdown',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);
@@ -73,7 +90,6 @@ BrowserTestCase(
 
     await quickInsert(browser, 'Panel');
 
-    // type some text
     await browser.type(editable, '[Atlassian](https://www.atlassian.com/)');
 
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -83,7 +99,7 @@ BrowserTestCase(
 
 // Cannot paste rich text in IE/Edge
 BrowserTestCase(
-  'Can paste rich text',
+  'Paste rich text',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);
@@ -109,7 +125,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'can paste plain text',
+  'Paste plain text',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);
@@ -150,9 +166,6 @@ BrowserTestCase(
   },
 );
 
-// Panels in extensions is tested in bodied-insert-1.ts
-import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
-
 BrowserTestCase(
   'Table floating toolbar should be visible even after table scrolls',
   { skip: ['edge', 'ie', 'safari'] },
@@ -185,8 +198,3 @@ BrowserTestCase(
     expect(await browser.isVisible(tableControls)).toBe(false);
   },
 );
-
-/*
-panels inside of tab
-inside of an extenion
-*/

@@ -1,6 +1,179 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Can paste rich text 1`] = `
+exports[`Changes the type to Error 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "panelType": "error",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this text should be in the panel",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Insert link by typing Markdown 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "__confluenceMetadata": null,
+                    "href": "https://www.atlassian.com/",
+                  },
+                  "type": "link",
+                },
+              ],
+              "text": "Atlassian",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Insert via quick insert 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this text should be in the panel",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Insert via toolbar menu 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this text should be in the panel",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Paste plain text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this is a link ",
+              "type": "text",
+            },
+            Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "__confluenceMetadata": null,
+                    "href": "http://www.google.com",
+                  },
+                  "type": "link",
+                },
+              ],
+              "text": "http://www.google.com",
+              "type": "text",
+            },
+            Object {
+              "text": " more elements with some ",
+              "type": "text",
+            },
+            Object {
+              "marks": Array [
+                Object {
+                  "type": "strong",
+                },
+              ],
+              "text": "format",
+              "type": "text",
+            },
+            Object {
+              "text": " some addition ",
+              "type": "text",
+            },
+            Object {
+              "marks": Array [
+                Object {
+                  "type": "em",
+                },
+              ],
+              "text": "formatting",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Paste rich text 1`] = `
 Object {
   "content": Array [
     Object {
@@ -61,90 +234,6 @@ Object {
                 },
               ],
               "text": " formatting",
-              "type": "text",
-            },
-          ],
-          "type": "paragraph",
-        },
-      ],
-      "type": "panel",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Changes the type of a panel to Error 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "panelType": "error",
-      },
-      "content": Array [
-        Object {
-          "content": Array [
-            Object {
-              "text": "this text should be in the panel",
-              "type": "text",
-            },
-          ],
-          "type": "paragraph",
-        },
-      ],
-      "type": "panel",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Inserts a link into a panel by typing Markdown 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "panelType": "info",
-      },
-      "content": Array [
-        Object {
-          "content": Array [
-            Object {
-              "marks": Array [
-                Object {
-                  "attrs": Object {
-                    "__confluenceMetadata": null,
-                    "href": "https://www.atlassian.com/",
-                  },
-                  "type": "link",
-                },
-              ],
-              "text": "Atlassian",
-              "type": "text",
-            },
-          ],
-          "type": "paragraph",
-        },
-      ],
-      "type": "panel",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Inserts a panel on fullpage 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "panelType": "info",
-      },
-      "content": Array [
-        Object {
-          "content": Array [
-            Object {
-              "text": "this text should be in the panel",
               "type": "text",
             },
           ],
@@ -352,70 +441,6 @@ Object {
             },
             Object {
               "text": " ",
-              "type": "text",
-            },
-          ],
-          "type": "paragraph",
-        },
-      ],
-      "type": "panel",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`can paste plain text 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "panelType": "info",
-      },
-      "content": Array [
-        Object {
-          "content": Array [
-            Object {
-              "text": "this is a link ",
-              "type": "text",
-            },
-            Object {
-              "marks": Array [
-                Object {
-                  "attrs": Object {
-                    "__confluenceMetadata": null,
-                    "href": "http://www.google.com",
-                  },
-                  "type": "link",
-                },
-              ],
-              "text": "http://www.google.com",
-              "type": "text",
-            },
-            Object {
-              "text": " more elements with some ",
-              "type": "text",
-            },
-            Object {
-              "marks": Array [
-                Object {
-                  "type": "strong",
-                },
-              ],
-              "text": "format",
-              "type": "text",
-            },
-            Object {
-              "text": " some addition ",
-              "type": "text",
-            },
-            Object {
-              "marks": Array [
-                Object {
-                  "type": "em",
-                },
-              ],
-              "text": "formatting",
               "type": "text",
             },
           ],
