@@ -95,6 +95,7 @@ export const Slide = ({
       transform: 'translate3d(-100%,0,0)',
     }}
     transitionStyles={{
+      // Unset transform so we do not create a new stacking context for fixed-position children - NAV-159
       entered: { transform: null },
       exited: { transform: 'translate3d(-100%,0,0)' },
     }}

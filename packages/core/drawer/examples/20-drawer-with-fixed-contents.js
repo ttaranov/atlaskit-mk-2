@@ -14,7 +14,7 @@ type State = {
 
 export default class DrawersExample extends Component<{}, State> {
   state = {
-    isDrawerOpen: false,
+    isDrawerOpen: true,
   };
 
   openDrawer = () =>
@@ -36,11 +36,12 @@ export default class DrawersExample extends Component<{}, State> {
           width="wide"
         >
           <div id="drawer-contents">
-            {/* <p id="paragraph">
+            <p id="paragraph">
               The drawer should not set a new stacking context by using a
               transform CSS property as this causes issues for fixed positioned
               elements such as @atlaskit/dropdown-menu.
-            </p> */}
+            </p>
+            {/* The position here is used by the withDropdown integration test. */}
             <div css={{ position: 'fixed', left: 100, top: 200 }}>
               <DropdownMenu
                 trigger={<div id="trigger">Choices</div>}
