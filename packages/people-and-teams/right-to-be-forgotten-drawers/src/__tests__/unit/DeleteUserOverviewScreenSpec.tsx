@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { DeleteUserOverviewScreen } from '../DeleteUserOverviewScreen';
-import { catherineHirons } from '../../../mocks/users';
-import accessibleSites from '../../../mocks/accessibleSites';
+import { DeleteUserOverviewScreen } from '../../components/DeleteUserOverviewScreen';
+import { catherineHirons } from '../../mocks/users';
+import accessibleSites from '../../mocks/accessibleSites';
 
 const defaultProps = {
   accessibleSites,

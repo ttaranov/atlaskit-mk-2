@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { RightToBeForgottenDrawer } from '../RightToBeForgottenDrawer';
+import { RightToBeForgottenDrawer } from '../../components/RightToBeForgottenDrawer';
 
 const defaultProps = {
   isOpen: false,

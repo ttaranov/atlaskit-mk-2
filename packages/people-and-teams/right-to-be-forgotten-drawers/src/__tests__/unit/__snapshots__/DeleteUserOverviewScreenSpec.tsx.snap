@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Matches snapshots 1`] = `
+exports[`DeleteUserOverviewScreen 1`] = `
 <styled.div>
   <styled.div>
     <FormattedMessage
@@ -14,7 +14,7 @@ exports[`Matches snapshots 1`] = `
     user={
       Object {
         "avatarUrl": "",
-        "email": "cathqerine.hirons@acme.com",
+        "email": "catherine.hirons@acme.com",
         "fullName": "Catherine Hirons",
       }
     }

@@ -9,7 +9,7 @@ export default md`
     <SectionMessage appearance="warning">
       <p>
         <strong>
-          Note: @atlaskit/right-to-be-forgotten is currently a developer
+          Note: @atlaskit/right-to-be-forgotten-drawers is currently a developer
           preview.
         </strong>
       </p>
@@ -38,7 +38,7 @@ import {
   RightToBeForgottenDrawer,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
-} from '@atlaskit/right-to-be-forgotten';
+} from '@atlaskit/right-to-be-forgotten-drawers';
   `}
 
 ### Examples
