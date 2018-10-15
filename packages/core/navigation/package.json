@@ -58,14 +58,9 @@
     "@atlaskit/logo": "^9.2.3",
     "@atlaskit/page": "^8.0.8",
     "@atlaskit/quick-search": "^4.2.9",
-<<<<<<< HEAD
+    "@atlaskit/section-message": "^1.0.9",
     "@atlaskit/single-select": "^6.0.7",
     "@atlaskit/toggle": "^5.0.10",
-=======
-    "@atlaskit/section-message": "^1.0.9",
-    "@atlaskit/single-select": "^6.0.6",
-    "@atlaskit/toggle": "^5.0.9",
->>>>>>> Use SectionMessage in package docs
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "raf-stub": "^2.0.1",
