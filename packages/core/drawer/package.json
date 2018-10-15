@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^9.0.13",
+    "@atlaskit/dropdown-menu": "^6.1.18",
     "@atlaskit/section-message": "^1.0.8",
+    "@atlaskit/webdriver-runner": "^0.1.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-lorem-component": "^0.12.2"
   }
