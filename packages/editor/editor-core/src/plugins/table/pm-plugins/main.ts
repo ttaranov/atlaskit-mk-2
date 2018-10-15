@@ -21,8 +21,8 @@ import {
   handleDocChanged,
   handleSelectionChanged,
   handleToggleContextualMenu,
-  handleShowInsertLine,
-  handleHideInsertLine,
+  handleShowInsertColumnButton,
+  handleShowInsertRowButton,
 } from '../action-handlers';
 import {
   handleMouseOver,
@@ -44,6 +44,8 @@ export const defaultTableSelection = {
   dangerRows: [],
   isTableInDanger: false,
   isTableHovered: false,
+  insertColumnButtonIndex: undefined,
+  insertRowButtonIndex: undefined,
 };
 
 export enum ACTIONS {
@@ -56,9 +58,8 @@ export enum ACTIONS {
   HOVER_ROWS,
   HOVER_TABLE,
   TOGGLE_CONTEXTUAL_MENU,
-  SHOW_COLUMN_INSERT_LINE,
-  SHOW_ROW_INSERT_LINE,
-  HIDE_INSERT_LINE,
+  SHOW_INSERT_COLUMN_BUTTON,
+  SHOW_INSERT_ROW_BUTTON,
 }
 
 export const createPlugin = (
@@ -94,8 +95,8 @@ export const createPlugin = (
           dangerRows,
           isTableInDanger,
           isContextualMenuOpen,
-          insertLineDecoration,
-          insertLineIndex,
+          insertColumnButtonIndex,
+          insertRowButtonIndex,
         } = data;
 
         let pluginState = { ..._pluginState };
@@ -153,16 +154,17 @@ export const createPlugin = (
               dispatch,
             );
 
-          case ACTIONS.SHOW_COLUMN_INSERT_LINE:
-          case ACTIONS.SHOW_ROW_INSERT_LINE:
-            return handleShowInsertLine(insertLineDecoration, insertLineIndex)(
-              state,
+          case ACTIONS.SHOW_INSERT_COLUMN_BUTTON:
+            return handleShowInsertColumnButton(insertColumnButtonIndex)(
               pluginState,
               dispatch,
             );
 
-          case ACTIONS.HIDE_INSERT_LINE:
-            return handleHideInsertLine(pluginState, dispatch);
+          case ACTIONS.SHOW_INSERT_ROW_BUTTON:
+            return handleShowInsertRowButton(insertRowButtonIndex)(
+              pluginState,
+              dispatch,
+            );
 
           default:
             break;
