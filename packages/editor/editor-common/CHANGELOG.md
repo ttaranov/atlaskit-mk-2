@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 20.1.1
+- [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
+
 ## 20.1.0
 - [minor] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
 
