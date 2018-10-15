@@ -2,10 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 
 import Badge from '@atlaskit/badge';
-import {
-  NotificationLogProvider,
-  NotificationLogClient,
-} from '@atlaskit/notification-log-client';
+import { NotificationLogProvider } from '@atlaskit/notification-log-client';
 
 const MAX_NOTIFICATIONS_COUNT: number = 9;
 
@@ -34,8 +31,6 @@ export interface Props {
   refreshOnVisibilityChange?: boolean;
   onCountUpdating?: (param: ValueUpdatingParams) => ValueUpdatingResult;
   onCountUpdated?: (param: ValueUpdatedParams) => void;
-  fabricNotificationLogUrl: string;
-  cloudId: string;
 }
 
 export interface State {
@@ -60,12 +55,8 @@ export default class NotificationIndicator extends Component<Props, State> {
   };
 
   async componentDidMount() {
-    const { fabricNotificationLogUrl, cloudId } = this.props;
-    this.notificationLogProvider = await new NotificationLogClient(
-      fabricNotificationLogUrl,
-      cloudId,
-    );
-    this.refresh('mount');
+    this.notificationLogProvider = await this.props.notificationLogProvider;
+    await this.refresh('mount');
     this.updateInterval();
     document.addEventListener('visibilitychange', this.onVisibilityChange);
   }

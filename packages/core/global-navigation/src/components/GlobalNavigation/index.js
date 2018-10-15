@@ -5,6 +5,10 @@ import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import { NotificationIndicator } from '@atlaskit/notification-indicator';
+import {
+  // NotificationLogProvider,
+  NotificationLogClient,
+} from '@atlaskit/notification-log-client';
 import Drawer from '@atlaskit/drawer';
 import {
   name as packageName,
@@ -143,7 +147,7 @@ export default class GlobalNavigation
       }
     });
 
-    console.log('Checking props', this.props);
+    // console.log('Checking props', this.props);
 
     const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
@@ -154,7 +158,7 @@ export default class GlobalNavigation
       prevProps.product !== product ||
       prevState.notificationBadgeCount !== this.state.notificationBadgeCount
     ) {
-      console.log('Updating the notification integration');
+      // console.log('Updating the notification integration');
 
       this.NotificationDrawer = this.getNotificationDrawerContent();
       this.NotificationBadge = this.getNotificationBadgeIndicator();
@@ -182,7 +186,7 @@ export default class GlobalNavigation
   };
 
   onNotificationBadgeCountUpdated = (param: { newCount?: number } = {}) => {
-    console.log('Changed state count');
+    // console.log('Changed state count');
     const { newCount = 0 } = param;
     this.updateLocalStorageCount(newCount);
     this.setState({
@@ -229,15 +233,18 @@ export default class GlobalNavigation
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
     let onOpenCallback = noop;
 
+    // console.log(capitalisedDrawerName);
+
     if (typeof this.props[`on${capitalisedDrawerName}Open`] === 'function') {
       onOpenCallback = this.props[`on${capitalisedDrawerName}Open`];
     }
 
     // This function was not used
-    // if (drawerName === 'notification') {
-    //   onOpenCallback = this.notificationIntegrationInstance
-    //     .onNotificationDrawerOpen;
-    // }
+    if (drawerName === 'notification') {
+      // onOpenCallback = this.notificationIntegrationInstance
+      //   .onNotificationDrawerOpen;
+      onOpenCallback = () => console.log('notification drawer was opened');
+    }
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -266,10 +273,11 @@ export default class GlobalNavigation
     }
 
     // this function was not used
-    // if (drawerName === 'notification') {
-    //   onCloseCallback = this.notificationIntegrationInstance
-    //     .onNotificationDrawerClose;
-    // }
+    if (drawerName === 'notification') {
+      //   onCloseCallback = this.notificationIntegrationInstance
+      //     .onNotificationDrawerClose;
+      onCloseCallback = () => console.log('notification drawer was closed');
+    }
 
     fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
@@ -290,12 +298,24 @@ export default class GlobalNavigation
 
   getNotificationBadgeIndicator = () => {
     const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
-    const { fabricNotificationLogUrl, cloudId } = this.props;
+    const {
+      fabricNotificationLogUrl,
+      cloudId,
+      notificationLogProvider: NotificationLogProviderProps,
+    } = this.props;
 
+    let notificationClient;
+    if (NotificationLogProviderProps) {
+      notificationClient = NotificationLogProviderProps;
+    } else {
+      notificationClient = new NotificationLogClient(
+        fabricNotificationLogUrl,
+        cloudId,
+      );
+    }
     const NotificationBadger = () => (
       <NotificationIndicator
-        fabricNotificationLogUrl={fabricNotificationLogUrl}
-        cloudId={cloudId}
+        notificationLogProvider={Promise.resolve(notificationClient)}
         refreshRate={refreshRate}
         onCountUpdated={this.onNotificationBadgeCountUpdated}
         onCountUpdating={this.onNotificationBadgeCountUpdating}
@@ -321,7 +341,7 @@ export default class GlobalNavigation
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
-    console.log('Getting the badge from notification integration');
+    // console.log('Getting the badge from notification integration');
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]

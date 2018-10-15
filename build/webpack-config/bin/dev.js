@@ -109,22 +109,6 @@ async function runDevServer() {
       // https://github.com/TypeStrong/ts-loader/issues/751
       warningsFilter: /export .* was not found in/,
     },
-    before: function(app) {
-      let seen = false;
-      const fabricNotificationLogUrl = '/';
-      const cloudId = 'DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b';
-      let counter = 0;
-
-      app.get(
-        '/gateway/api/notification-log/api/2/notifications/count/unseen',
-        function(req, res) {
-          // const count = seen && counter > 2 ? 0 : 4;
-          // seen = true;
-          // counter += 1;
-          res.json({ count: 4 });
-        },
-      );
-    },
   });
 
   return new Promise((resolve, reject) => {
