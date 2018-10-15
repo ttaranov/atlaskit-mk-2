@@ -239,6 +239,8 @@ class ResizeControl extends PureComponent<Props, State> {
       }, FLYOUT_DELAY);
     } else {
       clearTimeout(this.flyoutTimeout);
+      // TODO: Remove the setState below
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         shouldShowExpandIcon: false,
       });
