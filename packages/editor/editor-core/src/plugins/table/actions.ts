@@ -783,3 +783,31 @@ export const showInsertRowButton = (rowIndex: number): Command => (
   }
   return false;
 };
+
+export const handleCut = (
+  oldTr: Transaction,
+  oldState: EditorState,
+  newState: EditorState,
+): Transaction => {
+  const oldSelection = oldState.tr.selection;
+  let { tr } = newState;
+  if (oldSelection instanceof CellSelection) {
+    const $anchorCell = oldTr.doc.resolve(
+      oldTr.mapping.map(oldSelection.$anchorCell.pos),
+    );
+    const $headCell = oldTr.doc.resolve(
+      oldTr.mapping.map(oldSelection.$headCell.pos),
+    );
+    tr.setSelection(new CellSelection($anchorCell, $headCell) as any);
+
+    if (tr.selection instanceof CellSelection) {
+      if (tr.selection.isRowSelection()) {
+        tr = removeSelectedRows(tr);
+      } else if (tr.selection.isColSelection()) {
+        tr = removeSelectedColumns(tr);
+      }
+    }
+  }
+
+  return tr;
+};
