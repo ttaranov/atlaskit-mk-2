@@ -165,6 +165,29 @@ describe('Jira Quick Search Container', () => {
       });
       expect(logger.safeError).toHaveBeenCalledTimes(0);
     });
+
+    it('should return include recent people if no browse permission', async () => {
+      const jiraClient = mockJiraClientWithData([...issues, ...boards], false);
+      const peopleSearchClient = mockPeopleSearchClient({
+        recentPeople: people,
+        searchResultData: [],
+      });
+
+      const getRecentItems = getQuickSearchProperty(
+        renderComponent({ jiraClient, peopleSearchClient }),
+        'getRecentItems',
+      );
+      const recentItems = await getRecentItems(sessionId);
+      expect(jiraClient.getRecentItems).toHaveBeenCalledTimes(1);
+      expect(recentItems).toMatchObject({
+        results: {
+          objects: issues,
+          containers: boards,
+          people: [],
+        },
+      });
+      expect(logger.safeError).toHaveBeenCalledTimes(0);
+    });
   });
 
   describe('getSearchResults', () => {
@@ -239,5 +262,75 @@ describe('Jira Quick Search Container', () => {
       });
       expect(logger.safeError).toHaveBeenCalledTimes(0);
     });
+
+    it('should not return people search results if no browse permission', async () => {
+      const peopleSearchClient = mockPeopleSearchClient({
+        recentPeople: [],
+        searchResultData: people,
+      });
+
+      const resultsMap = new Map<Scope, Result[]>();
+      resultsMap.set(Scope.JiraIssue, issues);
+      resultsMap.set(Scope.JiraBoardProjectFilter, boards);
+      const crossProductSearchClient = mockCrossProductSearchClient({
+        results: resultsMap,
+      });
+      const getSearchResults = getQuickSearchProperty(
+        renderComponent({
+          peopleSearchClient,
+          crossProductSearchClient,
+          jiraClient: mockNoResultJiraClient(false),
+        }),
+        'getSearchResults',
+      );
+      const searchResults = await getSearchResults('query', sessionId, 100);
+      expect(searchResults).toMatchObject({
+        results: {
+          objects: issues,
+          containers: boards,
+          people: [],
+        },
+        timings: {
+          crossProductSearchElapsedMs: expect.any(Number),
+          peopleElapsedMs: expect.any(Number),
+        },
+      });
+      expect(logger.safeError).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  it('should not return recent people if no browse permission', async () => {
+    const peopleSearchClient = mockPeopleSearchClient({
+      recentPeople: [],
+      searchResultData: people,
+    });
+
+    const resultsMap = new Map<Scope, Result[]>();
+    resultsMap.set(Scope.JiraIssue, issues);
+    resultsMap.set(Scope.JiraBoardProjectFilter, boards);
+    const crossProductSearchClient = mockCrossProductSearchClient({
+      results: resultsMap,
+    });
+    const getSearchResults = getQuickSearchProperty(
+      renderComponent({
+        peopleSearchClient,
+        crossProductSearchClient,
+        jiraClient: mockNoResultJiraClient(false),
+      }),
+      'getSearchResults',
+    );
+    const searchResults = await getSearchResults('query', sessionId, 100);
+    expect(searchResults).toMatchObject({
+      results: {
+        objects: issues,
+        containers: boards,
+        people: [],
+      },
+      timings: {
+        crossProductSearchElapsedMs: expect.any(Number),
+        peopleElapsedMs: expect.any(Number),
+      },
+    });
+    expect(logger.safeError).toHaveBeenCalledTimes(0);
   });
 });

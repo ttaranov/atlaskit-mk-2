@@ -1,6 +1,6 @@
 import { utils } from '@atlaskit/util-service-support';
 
-import JiraClientImpl from '../../../api/JiraClient';
+import JiraClientImpl, { JiraClient } from '../../../api/JiraClient';
 import {
   JiraRecentResponse,
   TransformedResponse,
@@ -10,10 +10,20 @@ import { ContentType } from '../../../model/Result';
 
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
-const PATH = 'rest/internal/2/productsearch/recent';
+const RECENT_PATH = 'rest/internal/2/productsearch/recent';
+const MY_PERMISSION_PATH = 'rest/api/2/mypermissions?permissions=USER_PICKER';
+
+const EXCEPTION_CASES = [
+  () => Promise.reject(new Error('error occured during request')),
+  () => {
+    throw new Error('general error');
+  },
+  () => 'invalid response will fail during transformation',
+];
+
 describe('JiraClient', () => {
   let requestSpy;
-  let jiraClient;
+  let jiraClient: JiraClient;
 
   beforeEach(() => {
     requestSpy = jest.spyOn(utils, 'requestService');
@@ -24,162 +34,239 @@ describe('JiraClient', () => {
     requestSpy.mockRestore();
   });
 
-  it('should call remote endpoint with correct params', () => {
-    const sessionId = 'sessionId-1';
-    const counts = {
-      issues: 7,
-      projects: 5,
-      boards: 3,
-      filters: 1,
-    };
+  describe('canSearchPeople', () => {
+    it('should call correct permissions endpoint', () => {
+      jiraClient.canSearchUsers();
 
-    jiraClient.getRecentItems(sessionId, counts);
+      expect(requestSpy).toHaveBeenCalledTimes(1);
 
-    expect(requestSpy).toHaveBeenCalledTimes(1);
+      const serviceConfigParam = requestSpy.mock.calls[0][0];
+      expect(serviceConfigParam).toHaveProperty('url', url);
 
-    const serviceConfigParam = requestSpy.mock.calls[0][0];
-    expect(serviceConfigParam).toHaveProperty('url', url);
-
-    const requestOptions = requestSpy.mock.calls[0][1];
-    expect(requestOptions).toHaveProperty('path', PATH);
-    expect(requestOptions.queryParams).toMatchObject({
-      search_id: sessionId,
-      ...counts,
+      const requestOptions = requestSpy.mock.calls[0][1];
+      expect(requestOptions).toHaveProperty('path', MY_PERMISSION_PATH);
     });
-  });
 
-  [
-    () => Promise.reject(new Error('error occured during request')),
-    () => {
-      throw new Error('general error');
-    },
-    () => 'invalid response will fail during transformation',
-  ].forEach(mockImpl => {
-    it('should throws exception on error calling request', async () => {
-      requestSpy.mockImplementation(mockImpl);
-      try {
-        await jiraClient.getRecentItems('sessionId-2');
-        expect(true).toBe(false); // should never reach this line
-      } catch (e) {
-        expect(e).not.toBeNull();
-      }
-    });
-  });
+    EXCEPTION_CASES.forEach(exceptionImpl => {
+      it('should fall back to false if an exception occurs', async () => {
+        requestSpy.mockImplementation(exceptionImpl);
 
-  [[[], []], [JiraRecentResponse, TransformedResponse]].forEach(
-    ([jiraResponse, transformedResponse]) => {
-      it('should transform valid response without error', async () => {
-        requestSpy.mockReturnValue(Promise.resolve(jiraResponse));
-        const result = await jiraClient.getRecentItems('session');
-        expect(result).toEqual(transformedResponse);
+        const result = await jiraClient.canSearchUsers();
+
+        expect(result).toEqual(false);
       });
-    },
-  );
+    });
 
-  describe('Jira responses with attributes', () => {
-    beforeEach(() => {
+    it('should correctly parse the value when permission is present and true', async () => {
       requestSpy.mockReturnValue(
-        Promise.resolve(jiraRecentResponseWithAttributes),
+        Promise.resolve({
+          permissions: {
+            USER_PICKER: {
+              id: '27',
+              key: 'USER_PICKER',
+              name: 'Browse users and groups',
+              type: 'GLOBAL',
+              description: 'Description',
+              havePermission: true,
+            },
+          },
+        }),
       );
+
+      const result = await jiraClient.canSearchUsers();
+
+      expect(result).toEqual(true);
     });
 
-    const extractContainerId = (result, types) =>
-      result
-        .filter(({ contentType }) => types.includes(contentType))
-        .map(({ containerId }) => containerId);
+    it('should correctly parse the value when permission is present and false', async () => {
+      requestSpy.mockReturnValue(
+        Promise.resolve({
+          permissions: {
+            USER_PICKER: {
+              id: '27',
+              key: 'USER_PICKER',
+              name: 'Browse users and groups',
+              type: 'GLOBAL',
+              description: 'Description',
+              havePermission: false,
+            },
+          },
+        }),
+      );
 
-    it('should return correct container id', async () => {
-      const result = await jiraClient.getRecentItems('session');
-      const containerIds = extractContainerId(result, [
-        ContentType.JiraIssue,
-        ContentType.JiraBoard,
-      ]);
-      expect(containerIds).toEqual([
-        '10000',
-        '10000',
-        '47720',
-        '42023',
-        '67401',
-        '57420',
-        '42023',
-        '37300',
-        '78096',
-        '77816',
-      ]);
-      const projectsContainerId = extractContainerId(result, [
-        ContentType.JiraProject,
-      ]);
-      projectsContainerId.forEach(containerId =>
-        expect(containerId).toBeUndefined(),
-      );
-      const filtersContainerId = extractContainerId(result, [
-        ContentType.JiraFilter,
-      ]);
-      expect(filtersContainerId.length).toBe(1);
-      expect(filtersContainerId[0]).toEqual(
-        'b777fa0a-cd87-4cf7-b64f-00d24feb16eb',
-      );
+      const result = await jiraClient.canSearchUsers();
+
+      expect(result).toEqual(false);
     });
 
-    it('should transform issue type and key to container name and object key', async () => {
-      const result = await jiraClient.getRecentItems('session');
-      const issuesTypeAndKey = result
-        .filter(({ contentType }) => contentType === ContentType.JiraIssue)
-        .map(({ containerName, objectKey }) => ({ containerName, objectKey }));
-      expect(issuesTypeAndKey).toEqual([
-        { containerName: 'Bug', objectKey: 'JDEV-38497' },
-        { containerName: 'Bug', objectKey: 'JDEV-39110' },
-        { containerName: 'Story', objectKey: 'VPP-1379' },
-        { containerName: 'Task', objectKey: 'NEXT-6112' },
-        { containerName: 'Story', objectKey: 'BENTO-1564' },
-        { containerName: 'Bug', objectKey: 'JOOME-22' },
-        { containerName: 'Task', objectKey: 'NEXT-5876' },
-      ]);
-    });
+    it('should correctly parse the value when permissions are not present', async () => {
+      requestSpy.mockReturnValue(
+        Promise.resolve({
+          permissions: {},
+        }),
+      );
 
-    it('should extract container name for boards', async () => {
-      const result = await jiraClient.getRecentItems('session');
-      const boardContainers = result
-        .filter(({ contentType }) => contentType === ContentType.JiraBoard)
-        .map(({ containerName }) => containerName);
-      expect(boardContainers).toEqual([
-        'Ky Pham',
-        'Endeavour - Jira SPA',
-        'Jira Data Integrity',
-      ]);
-      const boardObjectKeys = result
-        .filter(({ contentType }) => contentType === ContentType.JiraBoard)
-        .map(({ objectKey }) => objectKey);
-      boardObjectKeys.forEach(key => expect(key).toBeUndefined());
+      const result = await jiraClient.canSearchUsers();
+
+      expect(result).toEqual(false);
     });
   });
 
-  it('should not modify urls when addSessionIdToJiraResult is false', async () => {
-    const client = new JiraClientImpl(url, cloudId, false);
-    const response = [
-      {
-        id: 'quick-search-issues',
-        name: 'Recent Issues',
-        viewAllTitle: 'View all issues',
-        items: [
-          {
-            id: 67391,
-            title: 'Jira recent endpoint is missing some fields',
-            subtitle: 'QS-136',
-            metadata: 'QS-136',
-            avatarUrl:
-              'https://product-fabric.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype',
-            url: 'https://product-fabric.atlassian.net/browse/QS-136',
-            favourite: false,
-          },
-        ],
+  describe('getRecentItems', () => {
+    it('should call remote endpoint with correct params', () => {
+      const sessionId = 'sessionId-1';
+      const counts = {
+        issues: 7,
+        projects: 5,
+        boards: 3,
+        filters: 1,
+      };
+
+      jiraClient.getRecentItems(sessionId, counts);
+
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+
+      const serviceConfigParam = requestSpy.mock.calls[0][0];
+      expect(serviceConfigParam).toHaveProperty('url', url);
+
+      const requestOptions = requestSpy.mock.calls[0][1];
+      expect(requestOptions).toHaveProperty('path', RECENT_PATH);
+      expect(requestOptions.queryParams).toMatchObject({
+        search_id: sessionId,
+        ...counts,
+      });
+    });
+
+    EXCEPTION_CASES.forEach(mockImpl => {
+      it('should throws exception on error calling request', async () => {
+        requestSpy.mockImplementation(mockImpl);
+        try {
+          await jiraClient.getRecentItems('sessionId-2');
+          expect(true).toBe(false); // should never reach this line
+        } catch (e) {
+          expect(e).not.toBeNull();
+        }
+      });
+    });
+
+    [[[], []], [JiraRecentResponse, TransformedResponse]].forEach(
+      ([jiraResponse, transformedResponse]) => {
+        it('should transform valid response without error', async () => {
+          requestSpy.mockReturnValue(Promise.resolve(jiraResponse));
+          const result = await jiraClient.getRecentItems('session');
+          expect(result).toEqual(transformedResponse);
+        });
       },
-    ];
-    requestSpy.mockReturnValue(Promise.resolve(response));
-    const result = await client.getRecentItems('session');
-    expect(result.length).toBe(1);
-    expect(result[0].href).toBe(
-      'https://product-fabric.atlassian.net/browse/QS-136',
     );
+
+    describe('Jira responses with attributes', () => {
+      beforeEach(() => {
+        requestSpy.mockReturnValue(
+          Promise.resolve(jiraRecentResponseWithAttributes),
+        );
+      });
+
+      const extractContainerId = (result, types) =>
+        result
+          .filter(({ contentType }) => types.includes(contentType))
+          .map(({ containerId }) => containerId);
+
+      it('should return correct container id', async () => {
+        const result = await jiraClient.getRecentItems('session');
+        const containerIds = extractContainerId(result, [
+          ContentType.JiraIssue,
+          ContentType.JiraBoard,
+        ]);
+        expect(containerIds).toEqual([
+          '10000',
+          '10000',
+          '47720',
+          '42023',
+          '67401',
+          '57420',
+          '42023',
+          '37300',
+          '78096',
+          '77816',
+        ]);
+        const projectsContainerId = extractContainerId(result, [
+          ContentType.JiraProject,
+        ]);
+        projectsContainerId.forEach(containerId =>
+          expect(containerId).toBeUndefined(),
+        );
+        const filtersContainerId = extractContainerId(result, [
+          ContentType.JiraFilter,
+        ]);
+        expect(filtersContainerId.length).toBe(1);
+        expect(filtersContainerId[0]).toEqual(
+          'b777fa0a-cd87-4cf7-b64f-00d24feb16eb',
+        );
+      });
+
+      it('should transform issue type and key to container name and object key', async () => {
+        const result = await jiraClient.getRecentItems('session');
+        const issuesTypeAndKey = result
+          .filter(({ contentType }) => contentType === ContentType.JiraIssue)
+          .map(({ containerName, objectKey }) => ({
+            containerName,
+            objectKey,
+          }));
+        expect(issuesTypeAndKey).toEqual([
+          { containerName: 'Bug', objectKey: 'JDEV-38497' },
+          { containerName: 'Bug', objectKey: 'JDEV-39110' },
+          { containerName: 'Story', objectKey: 'VPP-1379' },
+          { containerName: 'Task', objectKey: 'NEXT-6112' },
+          { containerName: 'Story', objectKey: 'BENTO-1564' },
+          { containerName: 'Bug', objectKey: 'JOOME-22' },
+          { containerName: 'Task', objectKey: 'NEXT-5876' },
+        ]);
+      });
+
+      it('should extract container name for boards', async () => {
+        const result = await jiraClient.getRecentItems('session');
+        const boardContainers = result
+          .filter(({ contentType }) => contentType === ContentType.JiraBoard)
+          .map(({ containerName }) => containerName);
+        expect(boardContainers).toEqual([
+          'Ky Pham',
+          'Endeavour - Jira SPA',
+          'Jira Data Integrity',
+        ]);
+        const boardObjectKeys = result
+          .filter(({ contentType }) => contentType === ContentType.JiraBoard)
+          .map(({ objectKey }) => objectKey);
+        boardObjectKeys.forEach(key => expect(key).toBeUndefined());
+      });
+    });
+
+    it('should not modify urls when addSessionIdToJiraResult is false', async () => {
+      const client = new JiraClientImpl(url, cloudId, false);
+      const response = [
+        {
+          id: 'quick-search-issues',
+          name: 'Recent Issues',
+          viewAllTitle: 'View all issues',
+          items: [
+            {
+              id: 67391,
+              title: 'Jira recent endpoint is missing some fields',
+              subtitle: 'QS-136',
+              metadata: 'QS-136',
+              avatarUrl:
+                'https://product-fabric.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype',
+              url: 'https://product-fabric.atlassian.net/browse/QS-136',
+              favourite: false,
+            },
+          ],
+        },
+      ];
+      requestSpy.mockReturnValue(Promise.resolve(response));
+      const result = await client.getRecentItems('session');
+      expect(result.length).toBe(1);
+      expect(result[0].href).toBe(
+        'https://product-fabric.atlassian.net/browse/QS-136',
+      );
+    });
   });
 });
