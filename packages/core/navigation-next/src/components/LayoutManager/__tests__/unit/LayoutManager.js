@@ -123,7 +123,10 @@ describe('LayoutManager', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
         wrapper.setState({ flyoutIsOpen: true });
-        jest.runAllTimers();
+        jest.advanceTimersByTime(349);
+        expect(wrapper.find('ChevronRightIcon').exists()).toBeFalsy();
+        wrapper.update();
+        jest.advanceTimersByTime(1);
         wrapper.update();
         expect(wrapper.find('ChevronRightIcon').exists()).toBeTruthy();
         expect(wrapper.find('MenuIcon').exists()).toBeFalsy();
