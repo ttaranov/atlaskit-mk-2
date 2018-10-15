@@ -101,7 +101,7 @@ If there is an alternative package, then documenting it would also be a good ide
 
 #### Run `npm deprecate`
 
-The `npm deprecate` command deprecates a version of a package, but it can be run on a verison range. We should run this on the current version and any future versions and specify the same message that we put in the docs.
+The `npm deprecate` command deprecates a version of a package, but it can be run on a version range. We should run this on the current version and any future versions and specify the same message that we put in the docs.
 
 #### Wait it out
 
