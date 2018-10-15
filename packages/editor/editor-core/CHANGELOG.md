@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.6
+- [patch] Scroll selection into view when navigating with arrows [01edbc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01edbc7)
+
 ## 86.0.5
 - [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
 
