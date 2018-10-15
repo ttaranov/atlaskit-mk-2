@@ -26,7 +26,7 @@ export default class App extends Component<
 > {
   state = {
     isDebugEnabled: true,
-    isFlyoutAvailable: true,
+    isFlyoutAvailable: false,
   };
 
   onDebugToggle = () => {
