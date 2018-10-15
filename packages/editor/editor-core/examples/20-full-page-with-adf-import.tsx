@@ -81,7 +81,7 @@ export default class Example extends React.Component<any, State> {
 
   private handleExport = (actions: EditorActions) => {
     actions.getValue().then(value => {
-      this.setState({ inputValue: JSON.stringify(value) });
+      this.setState({ inputValue: JSON.stringify(value, null, 2) });
     });
   };
 }

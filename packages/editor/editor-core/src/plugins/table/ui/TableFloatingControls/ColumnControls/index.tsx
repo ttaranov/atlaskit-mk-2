@@ -29,7 +29,7 @@ export interface Props {
   isTableInDanger?: boolean;
   numberOfColumns?: number;
   dangerColumns?: number[];
-  showInsertButton?: boolean;
+  insertColumnButtonIndex?: number;
 }
 
 export default class ColumnControls extends Component<Props, any> {
@@ -44,7 +44,7 @@ export default class ColumnControls extends Component<Props, any> {
       isTableInDanger,
       selection,
       numberOfColumns,
-      showInsertButton,
+      insertColumnButtonIndex,
     } = this.props;
 
     if (nextProps.tableRef) {
@@ -60,7 +60,7 @@ export default class ColumnControls extends Component<Props, any> {
 
     return (
       tableRef !== nextProps.tableRef ||
-      showInsertButton !== nextProps.showInsertButton ||
+      insertColumnButtonIndex !== nextProps.insertColumnButtonIndex ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
       numberOfColumns !== nextProps.numberOfColumns ||
@@ -139,7 +139,7 @@ export default class ColumnControls extends Component<Props, any> {
     const {
       editorView: { state },
       tableRef,
-      showInsertButton,
+      insertColumnButtonIndex,
     } = this.props;
     if (!tableRef) {
       return null;
@@ -183,8 +183,9 @@ export default class ColumnControls extends Component<Props, any> {
           ) ? (
             <InsertButton
               type="column"
+              tableRef={tableRef}
               index={i + 1}
-              showInsertButton={showInsertButton}
+              showInsertButton={insertColumnButtonIndex === i + 1}
               onMouseDown={() => this.insertColumn(i + 1)}
             />
           ) : null}

@@ -22,7 +22,7 @@ export class CardContent extends PureComponent<CardContentProps, {}> {
     }
 
     if (shouldDisplayImageThumbnail(dataURI, mediaType)) {
-      return <MediaImage dataURI={dataURI} fadeIn={loading} crop={crop} />;
+      return <MediaImage dataURI={dataURI} crop={crop} />;
     } else {
       return null;
     }
