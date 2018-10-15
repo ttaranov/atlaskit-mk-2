@@ -22,16 +22,13 @@ import {
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import {
   channel,
+  context,
   ViewerLoadPayload,
   itemViewerErrorEvent,
   itemViewerCommencedEvent,
   itemViewerLoadedEvent,
 } from './analytics';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 
 export type Props = Readonly<{
   identifier: Identifier;
@@ -215,7 +212,5 @@ export class ItemViewerBase extends React.Component<
 }
 
 export const ItemViewer = withAnalyticsContext({
-  componentName: 'media-viewer',
-  packageName,
-  packageVersion,
+  context,
 })(withAnalyticsEvents()(ItemViewerBase));
