@@ -1,9 +1,17 @@
 // @flow
 import React from 'react';
 import { md, Props } from '@atlaskit/docs';
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
-  **DEPRECATED** - This package is deprecated. We recommend using [@atlaskit/navigation-next](https://atlaskit.atlassian.com/packages/core/navigation-next) instead.
+  ${(
+    <SectionMessage appearance="error">
+      <p>
+        <strong>Note: @atlaskit/navigation is now deprecated.</strong>
+      </p>
+      <p>We recommend upgrading to @atlaskit/navigation-next</p>
+    </SectionMessage>
+  )}
 
   These are the props available to the main \`Navigation\` component export. They
   are used for both controlling the appearance of itself and other sub-components
