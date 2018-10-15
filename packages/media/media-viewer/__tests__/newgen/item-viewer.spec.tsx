@@ -1,7 +1,7 @@
 import {
   setViewerPayload,
   ImageViewer as ImageViewerMock,
-} from './mocks/image-viewer';
+} from '../../mocks/image-viewer';
 jest.mock('../../src/newgen/viewers/image', () => ({
   ImageViewer: ImageViewerMock,
 }));

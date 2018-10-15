@@ -61,7 +61,12 @@ export class ImageViewer extends React.Component<
     return this.state.objectUrl.match({
       pending: () => <Spinner />,
       successful: objectUrl => (
-        <InteractiveImg src={objectUrl} onClose={onClose} />
+        <InteractiveImg
+          onLoad={this.onLoad}
+          onError={this.onError}
+          src={objectUrl}
+          onClose={onClose}
+        />
       ),
       failed: err => (
         <ErrorMessage error={err}>
@@ -71,6 +76,17 @@ export class ImageViewer extends React.Component<
       ),
     });
   }
+
+  private onLoad = () => {
+    this.props.onLoad({ status: 'success' });
+  };
+
+  private onError = () => {
+    this.props.onLoad({
+      status: 'error',
+      errorMessage: 'Interactive-img render failed',
+    });
+  };
 
   private renderDownloadButton() {
     const { item, context, collectionName } = this.props;
@@ -104,7 +120,6 @@ export class ImageViewer extends React.Component<
         this.setState({
           objectUrl: Outcome.successful(objectUrl),
         });
-        onLoad({ status: 'success' });
       } catch (err) {
         if (err.message === REQUEST_CANCELLED) {
           this.preventRaceCondition();
