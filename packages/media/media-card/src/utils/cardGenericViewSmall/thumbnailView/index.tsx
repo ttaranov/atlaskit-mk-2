@@ -27,7 +27,7 @@ export class ThumbnailView extends React.Component<ThumbnailViewProps, {}> {
     } else if (url) {
       return (
         <RoundedBackground>
-          <MediaImage dataURI={url} fadeIn={isLoading} />
+          <MediaImage dataURI={url} />
         </RoundedBackground>
       );
     } else {
