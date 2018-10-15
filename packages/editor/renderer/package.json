@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "29.0.0",
+  "version": "29.0.1",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
