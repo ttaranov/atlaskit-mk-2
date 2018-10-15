@@ -18,7 +18,7 @@ export function keymapPlugin(): Plugin {
       if (!pluginState || !pluginState.active) {
         return false;
       }
-      return selectCurrentItem()(state, dispatch);
+      return selectCurrentItem('enter')(state, dispatch);
     },
     list,
   );
@@ -56,7 +56,7 @@ export function keymapPlugin(): Plugin {
       if (!pluginState || !pluginState.active) {
         return false;
       }
-      return selectCurrentItem()(state, dispatch);
+      return selectCurrentItem('shift-enter')(state, dispatch);
     },
     list,
   );
@@ -68,7 +68,7 @@ export function keymapPlugin(): Plugin {
       if (!pluginState || !pluginState.active) {
         return false;
       }
-      return selectCurrentItem()(state, dispatch);
+      return selectCurrentItem('tab')(state, dispatch);
     },
     list,
   );
@@ -91,7 +91,7 @@ export function keymapPlugin(): Plugin {
     (state: EditorState, dispatch) => {
       const pluginState = pluginKey.getState(state);
       if (pluginState && pluginState.active) {
-        selectSingleItemOrDismiss({ ignoreSpace: true })(state, dispatch);
+        selectSingleItemOrDismiss('space')(state, dispatch);
       }
       return false;
     },

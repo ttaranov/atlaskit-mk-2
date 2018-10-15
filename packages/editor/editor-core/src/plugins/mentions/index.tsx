@@ -115,15 +115,23 @@ const mentionsPlugin: EditorPlugin = {
           mention,
         }));
       },
-      selectItem(state, item, insert) {
+      selectItem(state, item, insert, { mode }) {
         const pluginState = getPluginState(state);
         const { id, name, nickname, accessLevel, userType } = item.mention;
         const renderName = nickname ? nickname : name;
+        const typeAheadPluginState = typeAheadPluginKey.getState(
+          state,
+        ) as TypeAheadPluginState;
 
         analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
+          mode,
           isSpecial: isSpecialMention(item.mention) || false,
           accessLevel: accessLevel || '',
           mentionee: id,
+          duration: typeAheadPluginState.queryStarted
+            ? Date.now() - typeAheadPluginState.queryStarted
+            : 0,
+          queryLength: (typeAheadPluginState.query || '').length,
           ...(pluginState.contextIdentifier as any),
         });
 

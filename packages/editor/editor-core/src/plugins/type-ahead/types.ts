@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { InjectedIntl } from 'react-intl';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
+import { SelectItemMode } from './commands/select-item';
 
 export type TypeAheadItem = {
   title: string;
@@ -24,6 +25,9 @@ export type TypeAheadHandler = {
     state: EditorState,
     item: TypeAheadItem,
     insert: (node: Node | Object | string) => Transaction,
+    meta: {
+      mode: SelectItemMode;
+    },
   ) => Transaction | false;
 };
 

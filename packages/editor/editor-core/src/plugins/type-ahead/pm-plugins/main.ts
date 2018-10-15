@@ -24,6 +24,7 @@ export type PluginState = {
   itemsLoader: TypeAheadItemsLoader;
   currentIndex: number;
   queryMarkPos: number | null;
+  queryStarted?: number;
 };
 
 export const ACTIONS = {
@@ -301,6 +302,7 @@ export function defaultActionHandler({
     itemsLoader: itemsLoader,
     currentIndex: pluginState.currentIndex,
     queryMarkPos: queryMark !== null ? queryMark.start : null,
+    queryStarted: Date.now(),
   };
 
   dispatch(pluginKey, newPluginState);

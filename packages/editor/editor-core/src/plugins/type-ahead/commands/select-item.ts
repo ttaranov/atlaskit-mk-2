@@ -9,7 +9,17 @@ import { TypeAheadHandler, TypeAheadItem } from '../types';
 import { findTypeAheadQuery } from '../utils/find-query-mark';
 import { dismissCommand } from './dismiss';
 
-export const selectCurrentItem = (): Command => (state, dispatch) => {
+export type SelectItemMode =
+  | 'shift-enter'
+  | 'enter'
+  | 'space'
+  | 'select'
+  | 'tab';
+
+export const selectCurrentItem = (mode: SelectItemMode = 'select'): Command => (
+  state,
+  dispatch,
+) => {
   const { active, currentIndex, items, typeAheadHandler } = pluginKey.getState(
     state,
   );
@@ -24,14 +34,15 @@ export const selectCurrentItem = (): Command => (state, dispatch) => {
     );
   }
 
-  return selectItem(typeAheadHandler, items[currentIndex])(state, dispatch);
+  return selectItem(typeAheadHandler, items[currentIndex], mode)(
+    state,
+    dispatch,
+  );
 };
 
-export const selectSingleItemOrDismiss = ({
-  ignoreSpace,
-}: {
-  ignoreSpace?: boolean;
-} = {}): Command => (state, dispatch) => {
+export const selectSingleItemOrDismiss = (
+  mode: SelectItemMode = 'select',
+): Command => (state, dispatch) => {
   const { active, items, typeAheadHandler } = pluginKey.getState(state);
 
   if (!active || !typeAheadHandler || !typeAheadHandler.selectItem) {
@@ -39,7 +50,7 @@ export const selectSingleItemOrDismiss = ({
   }
 
   if (items.length === 1) {
-    return selectItem(typeAheadHandler, items[0], ignoreSpace)(state, dispatch);
+    return selectItem(typeAheadHandler, items[0], mode)(state, dispatch);
   }
 
   if (!items || items.length === 0) {
@@ -67,7 +78,7 @@ export const selectByIndex = (index: number): Command => (state, dispatch) => {
 export const selectItem = (
   handler: TypeAheadHandler,
   item: TypeAheadItem,
-  ignoreSpace?: boolean,
+  mode: SelectItemMode = 'select',
 ): Command => (state, dispatch) => {
   return withTypeAheadQueryMarkPosition(state, (start, end) => {
     const insert = (maybeNode?: Node | Object | string) => {
@@ -112,9 +123,10 @@ export const selectItem = (
          *
          */
       } else if (node.isInline) {
-        const fragment = ignoreSpace
-          ? Fragment.from(node)
-          : Fragment.fromArray([node, state.schema.text(' ')]);
+        const fragment =
+          mode === 'space'
+            ? Fragment.from(node)
+            : Fragment.fromArray([node, state.schema.text(' ')]);
 
         tr = tr.replaceWith(start, start, fragment);
 
@@ -135,9 +147,9 @@ export const selectItem = (
       return tr;
     };
 
-    analyticsService.trackEvent('atlassian.editor.typeahead.select');
+    analyticsService.trackEvent('atlassian.editor.typeahead.select', { mode });
 
-    const tr = handler.selectItem(state, item, insert);
+    const tr = handler.selectItem(state, item, insert, { mode });
 
     if (tr === false) {
       return insertFallbackCommand(start, end)(state, dispatch);
