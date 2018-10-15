@@ -412,8 +412,9 @@ export const strike = markFactory(sampleSchema.marks.strike, {});
 export const a = (attrs: LinkAttributes) =>
   markFactory(sampleSchema.marks.link, attrs);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
-export const typeAheadQuery = (attrs = { trigger: '' }) =>
-  markFactory(sampleSchema.marks.typeAheadQuery, attrs);
+export const typeAheadQuery = (
+  attrs: { trigger: string; query?: string } = { trigger: '', query: '' },
+) => markFactory(sampleSchema.marks.typeAheadQuery, attrs);
 export const textColor = (attrs: { color: string }) =>
   markFactory(sampleSchema.marks.textColor, attrs);
 export const confluenceInlineComment = (attrs: { reference: string }) =>

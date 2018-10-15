@@ -3,7 +3,9 @@ import {
   doc,
   p,
   insertText,
+  insert,
   code_block,
+  typeAheadQuery,
 } from '@atlaskit/editor-test-helpers';
 import { createTypeAheadPlugin } from './_create-type-ahead-plugin';
 import { selectCurrentItem } from '../../../../../plugins/type-ahead/commands/select-item';
@@ -48,5 +50,17 @@ describe('typeAhead main plugin', () => {
     });
     const pluginState = typeAheadPluginKey.getState(editorView.state);
     expect(pluginState.isAllowed).toBe(false);
+  });
+
+  it('should dismiss type ahead when trigger has been removed', async () => {
+    const { editorView } = createEditor({
+      doc: doc(
+        p(typeAheadQuery({ trigger: '/', query: 'test' })('{<}/test{>}')),
+      ),
+    });
+
+    insert(editorView, ['']);
+
+    expect(editorView.state.doc).toEqualDocument(doc(p('')));
   });
 });

@@ -135,9 +135,7 @@ export const selectItem = (
       return tr;
     };
 
-    analyticsService.trackEvent('atlassian.editor.typeahead.select', {
-      item: item.title,
-    });
+    analyticsService.trackEvent('atlassian.editor.typeahead.select');
 
     const tr = handler.selectItem(state, item, insert);
 

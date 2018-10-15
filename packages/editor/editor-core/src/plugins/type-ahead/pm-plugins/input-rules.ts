@@ -7,6 +7,10 @@ import {
 } from '../../../utils/input-rules';
 import { analyticsService } from '../../../analytics';
 import { TypeAheadHandler } from '../types';
+import {
+  PluginState as TypeAheadPluginState,
+  pluginKey as typeAheadPluginKey,
+} from './main';
 
 export function inputRulePlugin(
   schema: Schema,
@@ -25,6 +29,14 @@ export function inputRulePlugin(
   const typeAheadInputRule = createInputRule(regex, (state, match, start, end):
     | Transaction
     | undefined => {
+    const typeAheadState = typeAheadPluginKey.getState(
+      state,
+    ) as TypeAheadPluginState;
+
+    if (!typeAheadState.isAllowed) {
+      return;
+    }
+
     const mark = schema.mark('typeAheadQuery', { trigger: match[2] });
     const { tr, selection } = state;
     const marks = selection.$from.marks();

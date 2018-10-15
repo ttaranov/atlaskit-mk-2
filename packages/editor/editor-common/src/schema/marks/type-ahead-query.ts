@@ -1,3 +1,4 @@
+import { colors } from '@atlaskit/theme';
 import { MarkSpec } from 'prosemirror-model';
 import { SEARCH_QUERY } from '../groups';
 
@@ -12,6 +13,7 @@ export const typeAheadQuery: MarkSpec = {
       {
         'data-type-ahead-query': 'true',
         'data-trigger': node.attrs.trigger,
+        style: `color: ${colors.B400}`,
       },
     ];
   },

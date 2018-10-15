@@ -116,7 +116,10 @@ export function createPlugin(
     view() {
       return {
         update(editorView) {
-          const pluginState = pluginKey.getState(editorView.state);
+          const pluginState = pluginKey.getState(
+            editorView.state,
+          ) as PluginState;
+
           if (!pluginState) {
             return;
           }
@@ -127,19 +130,23 @@ export function createPlugin(
           const { from, to } = selection;
           const { typeAheadQuery } = state.schema.marks;
 
-          // Disable type ahead query when the first character is a space.
-          if (pluginState.active && pluginState.query.indexOf(' ') === 0) {
+          // Disable type ahead query when removing trigger.
+          if (
+            pluginState.active &&
+            !pluginState.query &&
+            !pluginState.trigger
+          ) {
             dismissCommand()(state, dispatch);
             return;
           }
 
-          // Disable type ahead query when removing trigger.
-          if (pluginState.active && !pluginState.query) {
-            const { nodeBefore } = selection.$from;
-            if (nodeBefore && !(nodeBefore.text || '').replace(/\s/g, '')) {
-              dismissCommand()(state, dispatch);
-              return;
-            }
+          // Disable type ahead query when the first character is a space.
+          if (
+            pluginState.active &&
+            (pluginState.query || '').indexOf(' ') === 0
+          ) {
+            dismissCommand()(state, dispatch);
+            return;
           }
 
           // Optimization to not call dismissCommand if plugin is in an inactive state.
@@ -241,11 +248,20 @@ export function defaultActionHandler({
     return pluginState;
   }
 
+  const textContent = nodeBefore.textContent || '';
   const trigger = typeAheadMark.attrs.trigger.replace(
     /([^\x00-\xFF]|[\s\n])+/g,
     '',
   );
-  const query = (nodeBefore.textContent || '')
+
+  // If trigger has been removed, reset plugin state
+  if (!textContent.includes(trigger)) {
+    const newPluginState = { ...createInitialPluginState(true), active: true };
+    dispatch(pluginKey, newPluginState);
+    return newPluginState;
+  }
+
+  const query = textContent
     .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
     .replace(trigger, '');
 

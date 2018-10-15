@@ -37,7 +37,6 @@ BrowserTestCase(
   },
 );
 
-// IE still has mentionQuery true at this point
 BrowserTestCase(
   'mention-3.ts: should not insert on space if multiple exact nickname match',
   { skip: ['ie'] },

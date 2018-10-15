@@ -66,7 +66,7 @@ const hasUnsupportedMarkForBlockInputRule = (
   const isUnsupportedMark = node =>
     node.type === marks.code ||
     node.type === marks.link ||
-    node.type === marks.mentionQuery;
+    node.type === marks.typeAheadQuery;
   doc.nodesBetween(start, end, node => {
     unsupportedMarksPresent =
       unsupportedMarksPresent ||
@@ -86,7 +86,7 @@ const hasUnsupportedMarkForInputRule = (
   } = state;
   let unsupportedMarksPresent = false;
   const isCodemark = node =>
-    node.type === marks.code || node.type === marks.mentionQuery;
+    node.type === marks.code || node.type === marks.typeAheadQuery;
   doc.nodesBetween(start, end, node => {
     unsupportedMarksPresent =
       unsupportedMarksPresent || node.marks.filter(isCodemark).length > 0;
