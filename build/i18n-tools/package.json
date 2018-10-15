@@ -9,7 +9,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.1.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "babel-plugin-react-intl": "^2.4.0",
     "babel-plugin-react-intl-pot": "^0.5.7",

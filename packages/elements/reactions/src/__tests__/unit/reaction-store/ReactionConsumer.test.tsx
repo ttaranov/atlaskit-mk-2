@@ -1,16 +1,12 @@
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import * as React from 'react';
 import { ReactionConsumer } from '../../../reaction-store/ReactionConsumer';
-import { Context } from '../../../reaction-store/Context';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
 describe('ReactionConsumer', () => {
   const children = jest.fn();
   const stateMapper = jest.fn();
   const actionsMapper = jest.fn();
-  const actions = {
-    addReaction: jest.fn(),
-  };
   const value = {
     reactions: {},
     flash: {},
@@ -23,27 +19,37 @@ describe('ReactionConsumer', () => {
     someValue: 1,
   };
 
-  let consumer;
+  const store = {
+    getReactions: jest.fn(),
+    toggleReaction: jest.fn(),
+    addReaction: jest.fn(),
+    getDetailedReaction: jest.fn(),
+    getState: jest.fn(),
+    onChange: jest.fn(),
+    removeOnChangeListener: jest.fn(),
+  };
 
   beforeAll(() => {
     actionsMapper.mockReturnValue(mappedActions);
     stateMapper.mockReturnValue(mappedState);
+    store.getState.mockReturnValue(value);
   });
 
   beforeEach(() => {
     children.mockClear();
     stateMapper.mockClear();
     actionsMapper.mockClear();
-    consumer = shallow(
-      <ReactionConsumer stateMapper={stateMapper} actionsMapper={actionsMapper}>
+    store.getState.mockClear();
+    store.onChange.mockClear();
+    shallow(
+      <ReactionConsumer
+        store={store}
+        stateMapper={stateMapper}
+        actionsMapper={actionsMapper}
+      >
         {children}
       </ReactionConsumer>,
     );
-
-    consumer.find(Context.Consumer).prop('children')({
-      value,
-      actions,
-    });
   });
 
   it('should map state', () => {
@@ -54,7 +60,7 @@ describe('ReactionConsumer', () => {
 
   it('should map actions', () => {
     expect(actionsMapper).toHaveBeenCalledTimes(1);
-    expect(actionsMapper).toHaveBeenCalledWith(actions);
+    expect(actionsMapper).toHaveBeenCalledWith(store);
     expect(children).toHaveBeenCalledWith(
       expect.objectContaining(mappedActions),
     );
@@ -65,7 +71,7 @@ describe('ReactionConsumer', () => {
     expect(stateMapper).toHaveBeenCalledWith(value);
 
     expect(actionsMapper).toHaveBeenCalledTimes(1);
-    expect(actionsMapper).toHaveBeenCalledWith(actions);
+    expect(actionsMapper).toHaveBeenCalledWith(store);
 
     expect(children).toHaveBeenCalledWith({ ...mappedState, ...mappedActions });
 
@@ -84,24 +90,14 @@ describe('ReactionConsumer', () => {
     };
 
     stateMapper.mockReturnValueOnce(newMapped);
+    store.getState.mockReturnValue(newValue);
 
-    consumer.find(Context.Consumer).prop('children')({
-      value: newValue,
-      actions,
-    });
+    store.onChange.mock.calls[0][0](newValue);
 
     expect(stateMapper).toHaveBeenCalledTimes(2);
     expect(stateMapper).toHaveBeenCalledWith(newValue);
     expect(actionsMapper).toHaveBeenCalledTimes(1);
 
     expect(children).toHaveBeenCalledWith({ ...newMapped, ...mappedActions });
-  });
-
-  it('should fail when ', () => {
-    expect(() =>
-      mount(<ReactionConsumer>{() => <div />}</ReactionConsumer>),
-    ).toThrow(
-      'ReactionContext is required. See https://atlaskit.atlassian.com/packages/elements/reactions.',
-    );
   });
 });

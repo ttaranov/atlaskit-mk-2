@@ -1,5 +1,9 @@
 # @atlaskit/flag
 
+## 9.1.0
+- [minor] Now the flag actions accept href and target [65af057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65af057)
+- [patch] Updated the flag actions to accept the href and target as props [43ac1ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43ac1ec)
+
 ## 9.0.13
 - [patch] Updated the flag to use atlaskit button [d2084ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2084ad)
 

@@ -62,7 +62,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 125
+              - source build/ci-scripts/count-flowfixme.sh 127
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
               # Get the commit that we diverged from master at
               - export DIVERGED_AT=$(git merge-base master HEAD)
@@ -78,8 +78,8 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - OVERRIDE_TEST_IGNORE='(editor)' yarn run test:changed
-              - OVERRIDE_TEST_IGNORE='(!editor)' yarn run test:changed --runInBand
+              # Need to be investigated as using TEST_ONLY_PATTERN and changed packages return exit code 1 when no tests are found 
+              - yarn run test:changed
             caches:
               - node
         - step:
@@ -243,28 +243,28 @@ pipelines:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="0" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="0" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
           - step:
               name: Running Jest 2 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="1" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="1" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
           - step:
               name: Running Jest 3 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="2" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="2" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
           - step:
               name: Running Jest 4 of 4 chunks
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
-                - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
+                - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests --json)" yarn jest --runInBand
       - step:
           name: Wait until no master is running
           script:

@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import * as pWaitFor from 'p-wait-for';
 
 import { customCategory, customType } from '../../../constants';
 import { EmojiDescription, SearchSort } from '../../../types';
@@ -607,23 +608,20 @@ describe('EmojiRepository', () => {
       });
     });
 
-    it('should return a limited number of frequently used', done => {
+    it('should return a limited number of frequently used', async () => {
       const emojiRepository = newEmojiRepository();
       emojiRepository.used(thumbsupEmoji);
       emojiRepository.used(thumbsdownEmoji);
       emojiRepository.used(smileyEmoji);
       emojiRepository.used(openMouthEmoji);
 
-      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
-      setTimeout(() => {
-        let emoji = emojiRepository.getFrequentlyUsed();
-        expect(emoji).to.have.lengthOf(4);
+      await pWaitFor(() => emojiRepository.getFrequentlyUsed().length === 4);
 
-        emoji = emojiRepository.getFrequentlyUsed({ limit: 2 });
-        expect(emoji).to.have.lengthOf(2);
+      let emoji = emojiRepository.getFrequentlyUsed();
+      expect(emoji).to.have.lengthOf(4);
 
-        done();
-      });
+      emoji = emojiRepository.getFrequentlyUsed({ limit: 2 });
+      expect(emoji).to.have.lengthOf(2);
     });
 
     it('should return frequent emoji on find operations with original category', done => {

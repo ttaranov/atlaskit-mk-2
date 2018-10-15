@@ -1,7 +1,10 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import * as React from 'react';
 import { ReactionPicker } from '../components/ReactionPicker';
-import { ReactionConsumer } from '../reaction-store/ReactionConsumer';
+import {
+  ReactionConsumer,
+  ReactionStoreProp,
+} from '../reaction-store/ReactionConsumer';
 
 export type Props = {
   containerAri: string;
@@ -11,6 +14,7 @@ export type Props = {
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
+  store: ReactionStoreProp;
 };
 
 export default class ReactionPickerContainer extends React.PureComponent<
@@ -26,7 +30,10 @@ export default class ReactionPickerContainer extends React.PureComponent<
 
   render() {
     return (
-      <ReactionConsumer actionsMapper={this.actionsMapper}>
+      <ReactionConsumer
+        store={this.props.store}
+        actionsMapper={this.actionsMapper}
+      >
         {this.renderChild}
       </ReactionConsumer>
     );

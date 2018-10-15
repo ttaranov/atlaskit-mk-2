@@ -29,7 +29,6 @@ export default class CornerControls extends Component<Props, any> {
       isTableInDanger,
       isHeaderRowEnabled,
       isHeaderColumnEnabled,
-      isNumberColumnEnabled,
       showInsertButton,
     } = this.props;
 
@@ -48,15 +47,14 @@ export default class CornerControls extends Component<Props, any> {
           onMouseOver={this.hoverTable}
           onMouseOut={this.props.clearHoverSelection}
         />
-        {!isHeaderColumnEnabled &&
-          !isNumberColumnEnabled && (
-            <InsertButton
-              type="column"
-              index={0}
-              showInsertButton={showInsertButton}
-              onMouseDown={this.insertColumn}
-            />
-          )}
+        {!isHeaderColumnEnabled && (
+          <InsertButton
+            type="column"
+            index={0}
+            showInsertButton={showInsertButton}
+            onMouseDown={this.insertColumn}
+          />
+        )}
         {!isHeaderRowEnabled && (
           <InsertButton
             type="row"

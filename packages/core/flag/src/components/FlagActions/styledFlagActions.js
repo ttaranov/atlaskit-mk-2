@@ -3,15 +3,10 @@
 
 import styled, { css } from 'styled-components';
 
-import { gridSize, fontSize, math } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
 
-import {
-  buttonBackgroundColor,
-  buttonTextColor,
-  flagTextColor,
-  flagFocusRingColor,
-} from '../../theme';
+import { flagTextColor, flagFocusRingColor } from '../../theme';
 
 // Outputs the styles for actions separator: mid-dot for non-bold flags, or space for bold flags.
 const getDivider = ({ hasDivider, useMidDot }) => css`
@@ -36,23 +31,13 @@ export const Action = styled.div`
   }
 `;
 
-const height = `${gridSize() * 3 / parseInt(fontSize(), 10)}em`;
 export const StyledButton = styled(Button)`
-  background: ${buttonBackgroundColor};
-  color: ${buttonTextColor} !important;
-  cursor: pointer;
-  font-weight: 500;
-  height: ${height} !important;
-  line-height: ${height} !important;
-  padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize())}px;
-  text-decoration: none;
-  user-select: none;
-  vertical-align: baseline;
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px ${flagFocusRingColor};
+  &,
+  a& {
+    font-weight: 500;
+    padding: 0 ${p => (p.appearance === 'link' ? 0 : gridSize())}px !important;
+    &:focus {
+      box-shadow: 0 0 0 2px ${flagFocusRingColor};
+    }
   }
 `;

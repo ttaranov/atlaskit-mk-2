@@ -20,10 +20,14 @@ exports[`ResizeControlBase should render correctly 1`] = `
           <div
             className="css-jeedki"
           >
-            <span />
+            <span>
+              
+            </span>
             <div
               className="css-1cgkjdn"
-            />
+            >
+              
+            </div>
           </div>
         }
         delay={600}

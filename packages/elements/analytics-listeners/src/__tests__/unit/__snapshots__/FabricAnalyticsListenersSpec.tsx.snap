@@ -4,10 +4,10 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
 <MediaAnalyticsListener
   client={
     Object {
-      "sendOperationalEvent": [Function],
-      "sendScreenEvent": [Function],
-      "sendTrackEvent": [Function],
-      "sendUIEvent": [Function],
+      "sendOperationalEvent": [MockFunction],
+      "sendScreenEvent": [MockFunction],
+      "sendTrackEvent": [MockFunction],
+      "sendUIEvent": [MockFunction],
     }
   }
   logger={
@@ -19,10 +19,10 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
   <NavigationListener
     client={
       Object {
-        "sendOperationalEvent": [Function],
-        "sendScreenEvent": [Function],
-        "sendTrackEvent": [Function],
-        "sendUIEvent": [Function],
+        "sendOperationalEvent": [MockFunction],
+        "sendScreenEvent": [MockFunction],
+        "sendTrackEvent": [MockFunction],
+        "sendUIEvent": [MockFunction],
       }
     }
     logger={
@@ -34,10 +34,10 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
     <AtlaskitListener
       client={
         Object {
-          "sendOperationalEvent": [Function],
-          "sendScreenEvent": [Function],
-          "sendTrackEvent": [Function],
-          "sendUIEvent": [Function],
+          "sendOperationalEvent": [MockFunction],
+          "sendScreenEvent": [MockFunction],
+          "sendTrackEvent": [MockFunction],
+          "sendUIEvent": [MockFunction],
         }
       }
       logger={
@@ -49,10 +49,10 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
       <FabricEditorListener
         client={
           Object {
-            "sendOperationalEvent": [Function],
-            "sendScreenEvent": [Function],
-            "sendTrackEvent": [Function],
-            "sendUIEvent": [Function],
+            "sendOperationalEvent": [MockFunction],
+            "sendScreenEvent": [MockFunction],
+            "sendTrackEvent": [MockFunction],
+            "sendUIEvent": [MockFunction],
           }
         }
         logger={
@@ -64,10 +64,10 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
         <FabricElementsListener
           client={
             Object {
-              "sendOperationalEvent": [Function],
-              "sendScreenEvent": [Function],
-              "sendTrackEvent": [Function],
-              "sendUIEvent": [Function],
+              "sendOperationalEvent": [MockFunction],
+              "sendScreenEvent": [MockFunction],
+              "sendTrackEvent": [MockFunction],
+              "sendUIEvent": [MockFunction],
             }
           }
           logger={

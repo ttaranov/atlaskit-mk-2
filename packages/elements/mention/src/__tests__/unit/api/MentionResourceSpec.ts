@@ -6,7 +6,6 @@ import * as queryString from 'query-string';
 
 import { MentionDescription } from '../../../types';
 import MentionResource, {
-  HttpError,
   MentionResourceConfig,
   MentionStats,
 } from '../../../api/MentionResource';
@@ -230,22 +229,24 @@ describe('MentionResource', () => {
       resource.filter('');
     });
 
-    it.skip('should add weight based on response order', done => {
-      const resource = new MentionResource(apiConfig);
-      resource.subscribe(
-        'test1',
-        (mentions, query: string, stats?: MentionStats) => {
-          for (let i = 0; i < mentions.length; i++) {
-            expect(mentions[i].weight).toBe(i);
-          }
-          expect(stats).toBeDefined();
-          expect(stats!.duration).toBeGreaterThan(0);
-          expect(stats!.remoteSearch).toBeTruthy();
-          done();
-        },
-      );
-      resource.filter('c');
-    });
+    // TODO: JEST-23 - skipping as it failed in landkid - needs to be investigated
+    // https://bitbucket.org/atlassian/atlaskit-mk-2/addon/pipelines/home#!/results/35513/steps/%7B6c9f6e68-2d31-4029-a7ce-d9bc3a76d831%7D/test-report
+    // it('should add weight based on response order', done => {
+    //   const resource = new MentionResource(apiConfig);
+    //   resource.subscribe(
+    //     'test1',
+    //     (mentions, query: string, stats?: MentionStats) => {
+    //       for (let i = 0; i < mentions.length; i++) {
+    //         expect(mentions[i].weight).toBe(i);
+    //       }
+    //       expect(stats).toBeDefined();
+    //       expect(stats!.duration).toBeGreaterThan(0);
+    //       expect(stats!.remoteSearch).toBeTruthy();
+    //       done();
+    //     },
+    //   );
+    //   resource.filter('c');
+    // });
 
     it('in order responses', done => {
       const resource = new MentionResource(apiConfig);
@@ -430,7 +431,7 @@ describe('MentionResource', () => {
               defaultSecurityCode,
             );
             const secondCall = fetchMock.calls('authonce2');
-            expect(getSecurityHeader(secondCall[1])).toEqual('666');
+            expect(getSecurityHeader(secondCall[0])).toEqual('666');
             done();
           } catch (ex) {
             done(ex);
@@ -487,7 +488,14 @@ describe('MentionResource', () => {
     });
 
     it('401 for search when documents from previous search are already indexed', done => {
-      fetchMock.mock(/\/mentions\/search\?.*query=cz(&|$)/, 401);
+      fetchMock.restore();
+      fetchMock
+        .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+          body: {
+            mentions: resultC,
+          },
+        })
+        .mock(/.*\/mentions\/search\?.*query=cz(&|$)/, 401);
 
       const resource = new MentionResource(apiConfig);
       let count = 0;
@@ -510,8 +518,7 @@ describe('MentionResource', () => {
           }
         },
         err => {
-          expect(err).toBeInstanceOf(HttpError);
-          expect((<HttpError>err).statusCode).toEqual(401);
+          expect((err as any).code).toEqual(401);
           done();
         },
       );

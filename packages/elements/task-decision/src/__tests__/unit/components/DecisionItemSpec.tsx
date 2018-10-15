@@ -32,13 +32,15 @@ describe('<DecisionItem/>', () => {
 
   describe('showPlaceholder', () => {
     it('shoud render placeholder if decision is empty', () => {
-      const component = mount(<DecisionItem showPlaceholder={true} />);
+      const component = mount(
+        <DecisionItem showPlaceholder={true} placeholder="cheese" />,
+      );
       expect(component.find(Placeholder).length).toEqual(1);
     });
 
     it('should not render placeholder if decision is not empty', () => {
       const component = mount(
-        <DecisionItem showPlaceholder={true}>
+        <DecisionItem showPlaceholder={true} placeholder="cheese">
           Hello <b>world</b>
         </DecisionItem>,
       );

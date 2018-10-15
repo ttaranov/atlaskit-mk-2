@@ -8,6 +8,7 @@ import {
   WidthConsumer,
 } from '@atlaskit/editor-common';
 import { calcExtensionWidth } from '@atlaskit/editor-common';
+import { RendererCssClassName } from '../../consts';
 
 export interface Props {
   serializer: Serializer<any>;
@@ -24,10 +25,11 @@ export const renderExtension = (content: any, layout: string) => (
   <WidthConsumer>
     {({ width }) => (
       <div
-        className={`Extension-${layout}`}
+        className={RendererCssClassName.EXTENSION}
         style={{
           width: calcExtensionWidth(layout, width),
         }}
+        data-layout={layout}
       >
         {content}
       </div>

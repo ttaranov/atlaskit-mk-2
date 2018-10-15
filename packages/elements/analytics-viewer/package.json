@@ -4,7 +4,7 @@
   "config": {
     "access": "private"
   },
-  "description": "Analytics viewer for the exemples",
+  "description": "Analytics viewer for the examples",
   "main": "dist/es5/index.js",
   "modules": "dist/es2015/index.js",
   "types": "dist/es5/types.d.ts",
