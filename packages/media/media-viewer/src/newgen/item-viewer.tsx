@@ -72,6 +72,7 @@ export class ItemViewerBase extends React.Component<
   private onViewerLoaded = (payload: ViewerLoadPayload) => {
     const { id } = this.props.identifier;
     const { item } = this.state;
+    // the item.whenFailed case is handled in the "init" method
     item.whenSuccessful(file => {
       if (file.status === 'processed') {
         if (payload.status === 'success') {
