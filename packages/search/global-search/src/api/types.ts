@@ -1,5 +1,3 @@
-import { ContentType } from '../model/Result';
-
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
   ConfluencePageBlogAttachment = 'confluence.page,blogpost,attachment',

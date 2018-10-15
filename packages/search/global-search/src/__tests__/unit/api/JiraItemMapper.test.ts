@@ -138,7 +138,7 @@ describe('mapJiraItemToResult', () => {
         searchContentType: 'issue',
       });
       expect(href).toBe(
-        'https://product-fabric.atlassian.net/browse/ETH-671?searchSessionId=sessionId&searchContainerId=containerId&searchObjectId=objectId&searchContentType=jira-issue',
+        'https://product-fabric.atlassian.net/browse/ETH-671?searchSessionId=sessionId&searchContainerId=containerId&searchObjectId=objectId&searchContentType=issue',
       );
     });
 
@@ -190,7 +190,7 @@ describe('mapJiraItemToResult', () => {
     it('should add query params when addSessionIdToJiraResult is true', () => {
       const result = mapJiraItemToResult(issue, sessionId, true);
       expect(result.href).toBe(
-        'https://exmaple.jira.com/ISSUE-576?searchSessionId=sessionId&searchContainerId=container-id&searchObjectId=issue-id&searchContentType=jira-issue',
+        'https://exmaple.jira.com/ISSUE-576?searchSessionId=sessionId&searchContainerId=container-id&searchObjectId=issue-id&searchContentType=issue',
       );
     });
 
