@@ -140,8 +140,8 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     const mediaSingleEdit = mountWithIntl(
       <MediaSingleEdit
         pluginState={pluginState}
-        target={pluginState.target}
-        allowBreakout={false}
+        target={pluginState.element}
+        allowBreakout={true}
         allowLayout={false}
       />,
     );

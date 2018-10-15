@@ -12,6 +12,7 @@ import {
   UploadEndEventPayload,
   UploadParams,
   UploadErrorEventPayload,
+  isImagePreview,
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
 
@@ -224,7 +225,9 @@ export default class PickerFacade {
       fileMimeType: file.type,
       fileId: file.upfrontId,
       status: 'preview',
-      dimensions: preview.dimensions,
+      dimensions: isImagePreview(preview)
+        ? preview.dimensions
+        : { height: 200, width: 250 },
     });
 
     this.resolvePublicId(file);
