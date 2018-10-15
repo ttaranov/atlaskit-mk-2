@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.3
+- [patch] Async load the help dialog. The help dialog shouldn't be on the critical path to rendering as it's infrequently used. It's also the only consumer of ak/modal-dialog(9kb gzipped) [5d6333d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d6333d)
+
 ## 86.0.2
 - [patch] ED-5533: fix insert line decorations on merged cells [d421f39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d421f39)
 
