@@ -16,8 +16,8 @@ describe('Drawer Transitions', () => {
       const { defaultStyles } = wrapper.find('TransitionHandler').props();
 
       expect(defaultStyles).toMatchObject({
-        transition: 'transform 220ms cubic-bezier(0.2, 0, 0, 1)',
-        transform: 'translate3d(-100%,0,0)',
+        transition: 'left 220ms cubic-bezier(0.2, 0, 0, 1)',
+        left: '-100%',
       });
     });
 
@@ -30,8 +30,8 @@ describe('Drawer Transitions', () => {
       const { transitionStyles } = wrapper.find('TransitionHandler').props();
 
       expect(transitionStyles).toMatchObject({
-        entered: { transform: 'translate3d(0,0,0)' },
-        exited: { transform: 'translate3d(-100%,0,0)' },
+        entered: { left: 0 },
+        exited: { left: '-100%' },
       });
     });
 
