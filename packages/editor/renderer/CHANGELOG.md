@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 29.0.2
+- [patch] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
 ## 29.0.1
 - [patch] ED-5523: fix rendering number column table with header column [f74c658](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f74c658)
 

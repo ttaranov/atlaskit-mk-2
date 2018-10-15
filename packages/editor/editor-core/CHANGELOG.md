@@ -1,5 +1,14 @@
 # @atlaskit/editor-core
 
+## 86.0.6
+- [patch] Scroll selection into view when navigating with arrows [01edbc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01edbc7)
+
+## 86.0.5
+- [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
+
+## 86.0.4
+- [patch] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
 ## 86.0.3
 - [patch] Async load the help dialog. The help dialog shouldn't be on the critical path to rendering as it's infrequently used. It's also the only consumer of ak/modal-dialog(9kb gzipped) [5d6333d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d6333d)
 
