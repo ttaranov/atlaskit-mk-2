@@ -129,14 +129,6 @@ export default class Page {
     });
   }
 
-  keydown(selector, keycode) {
-    this.browser.execute(selector => {
-      return document
-        .querySelector(selector)
-        .trigger({ type: 'keydown', which: keycode });
-    });
-  }
-
   // To be replaced by those puppeeter functions
   //  keyboard.down('KeyA');
   //  keyboard.press('KeyA');
