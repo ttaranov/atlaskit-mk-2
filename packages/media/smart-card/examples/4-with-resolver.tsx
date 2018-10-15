@@ -1,18 +1,23 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { Provider, Card, Client } from '../src';
+import { Provider, Card, Client, ResolveResponse } from '..';
 import '../mocks';
 
 const clientWithResolver = new Client({
-  TEMPORARY_resolver: (url: string) =>
-    Promise.resolve(
-      url === 'public-happy'
-        ? {
-            url,
-            name: 'From resolver',
-          }
-        : undefined,
-    ),
+  customFetch: (url: string) => {
+    if (url === 'public-happy') {
+      return Promise.resolve({
+        meta: {
+          visibility: 'public',
+          access: 'granted',
+          auth: [],
+          definitionId: 'def1',
+        },
+        data: { url, name: 'From resolver' },
+      } as ResolveResponse);
+    }
+    return null;
+  },
 });
 
 export default () => (
