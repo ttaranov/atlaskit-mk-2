@@ -72,7 +72,7 @@ describe('<ItemViewer />', () => {
   it('should show the image viewer if media type is image', () => {
     const context = makeFakeContext(
       Observable.of({
-        id: '123',
+        id: identifier.id,
         mediaType: 'image',
         status: 'processed',
       }),
@@ -101,7 +101,7 @@ describe('<ItemViewer />', () => {
   it('should show the video viewer if media type is video', () => {
     const context = makeFakeContext(
       Observable.of({
-        id: '123',
+        id: identifier.id,
         mediaType: 'video',
         status: 'processed',
       }),
@@ -118,7 +118,7 @@ describe('<ItemViewer />', () => {
   it('should show the audio viewer if media type is audio', () => {
     const context = makeFakeContext(
       Observable.of({
-        id: '123',
+        id: identifier.id,
         mediaType: 'audio',
         status: 'processed',
       }),
@@ -135,7 +135,7 @@ describe('<ItemViewer />', () => {
   it('should show the document viewer if media type is document', () => {
     const context = makeFakeContext(
       Observable.of({
-        id: '123',
+        id: identifier.id,
         mediaType: 'doc',
         status: 'processed',
       }),
@@ -152,7 +152,7 @@ describe('<ItemViewer />', () => {
   it('should should error and download button if file is unsupported', () => {
     const context = makeFakeContext(
       Observable.of({
-        id: '123',
+        id: identifier.id,
         mediaType: 'unknown',
         status: 'processed',
       }),
@@ -170,7 +170,7 @@ describe('<ItemViewer />', () => {
   it('MSW-720: passes the collectionName to getFileState', () => {
     const context = makeFakeContext(
       Observable.of({
-        id: '123',
+        id: identifier.id,
         mediaType: 'image',
         status: 'processed',
       }),
@@ -268,7 +268,7 @@ describe('<ItemViewer />', () => {
     it('should trigger analytics when the preview commences', () => {
       const context = makeFakeContext(
         Observable.of({
-          id: '123',
+          id: identifier.id,
           mediaType: 'unknown',
           status: 'processed',
         }),
@@ -280,7 +280,7 @@ describe('<ItemViewer />', () => {
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
         action: 'commenced',
         actionSubject: 'mediaFile',
-        actionSubjectId: 'fileId',
+        actionSubjectId: 'some-id',
         attributes: { fileId: 'some-id' },
         eventType: 'operational',
       });
@@ -298,14 +298,14 @@ describe('<ItemViewer />', () => {
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
         action: 'commenced',
         actionSubject: 'mediaFile',
-        actionSubjectId: 'fileId',
+        actionSubjectId: 'some-id',
         attributes: { fileId: 'some-id' },
         eventType: 'operational',
       });
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
         action: 'loaded',
         actionSubject: 'mediaFile',
-        actionSubjectId: 'fileId',
+        actionSubjectId: 'some-id',
         attributes: {
           failReason: 'Metadata fetching failed',
           fileId: 'some-id',
@@ -318,7 +318,7 @@ describe('<ItemViewer />', () => {
     it('should trigger analytics when viewer returned an error', () => {
       const context = makeFakeContext(
         Observable.of({
-          id: '123',
+          id: identifier.id,
           mediaType: 'image',
           status: 'processed',
         }),
@@ -330,10 +330,10 @@ describe('<ItemViewer />', () => {
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
         action: 'loaded',
         actionSubject: 'mediaFile',
-        actionSubjectId: 'fileId',
+        actionSubjectId: 'some-id',
         attributes: {
           failReason: 'Viewer error',
-          fileId: '123',
+          fileId: 'some-id',
           fileMediatype: 'image',
           fileSize: undefined,
           status: 'fail',
