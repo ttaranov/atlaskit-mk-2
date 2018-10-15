@@ -149,10 +149,10 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
       'mediaSingle',
     );
     expect(
-      mediaSingleEdit.findWhere(child => {
+      mediaSingleEdit.find(ToolbarButton).findWhere(child => {
         return child.type() === ToolbarButton && child.prop('disabled');
       }).length,
-    ).toEqual(3);
+    ).toEqual(5);
     mediaSingleEdit.unmount();
   });
 });
