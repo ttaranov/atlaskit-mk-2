@@ -5,6 +5,7 @@ import { toMatchSnapshot } from 'jest-snapshot';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 import * as emotion from 'emotion';
 import { createSerializer } from 'jest-emotion';
+import path from 'path';
 
 let consoleError;
 let consoleWarn;
@@ -347,6 +348,7 @@ if (process.env.VISUAL_REGRESSION) {
 
   // TODO tweak failureThreshold to provide best results
   const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
+    customSnapshotsDir: path.join(__dirname, '/__image_snapshots__'),
     customDiffConfig: { threshold: 0.2 },
     failureThreshold: '5',
     failureThresholdType: 'percent',

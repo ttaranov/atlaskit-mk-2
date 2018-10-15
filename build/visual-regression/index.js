@@ -40,7 +40,7 @@ function getProdSnapshots() {
 // function to run tests and compare snapshot against prod snapshot
 function runTests() {
   return new Promise((resolve, reject) => {
-    const cmd = `VISUAL_REGRESSION=true jest`;
+    const cmd = `VISUAL_REGRESSION=true jest `;
     runCommand(cmd, resolve, reject);
   });
 }
@@ -75,6 +75,7 @@ async function main() {
   if (!isLocalRun) {
     prodTestStatus = await getProdSnapshots();
   }
+  // const prodSnapshots = await getProdSnapshots();
   const { code, signal } = await runTests();
 
   console.log(
