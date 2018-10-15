@@ -15,7 +15,6 @@ export type AnalyticViewerProps = {
 const loadedEventPayload: GasPayload = {
   action: 'loaded',
   actionSubject: 'mediaFile',
-  actionSubjectId: 'fileId',
   eventType: 'operational',
 };
 
@@ -40,6 +39,7 @@ export const itemViewerErrorEvent = (
 ): GasPayload => {
   return {
     ...loadedEventPayload,
+    actionSubjectId: id,
     attributes: {
       status: 'fail',
       ...getAttributesForFile(id, file),
@@ -51,6 +51,7 @@ export const itemViewerErrorEvent = (
 export const itemViewerLoadedEvent = (file: ProcessedFileState): GasPayload => {
   return {
     ...loadedEventPayload,
+    actionSubjectId: file.id,
     attributes: {
       status: 'success',
       ...getAttributesForFile(file.id, file),
@@ -62,7 +63,7 @@ export const itemViewerCommencedEvent = (id: string): GasPayload => {
   return {
     action: 'commenced',
     actionSubject: 'mediaFile',
-    actionSubjectId: 'fileId',
+    actionSubjectId: id,
     eventType: 'operational',
     attributes: {
       fileId: id,
