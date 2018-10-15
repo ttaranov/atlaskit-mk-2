@@ -10,7 +10,7 @@ import {
 
 BrowserTestCase(
   'Changes the type to Error',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const browser = new Page(client);
 
