@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.1
+- [patch] Async load the floating toolbar. This remove @atlaskit/select & react-select from the critical path of rendering the editor [e55dcde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e55dcde)
+
 ## 86.0.0
 - [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/editor-common@20.0.0
