@@ -1,10 +1,12 @@
 // @flow
 import * as presets from './theme/presets';
 
-// eslint-disable-next-line no-console
-console.warn(
-  'Warning: @atlaskit/navigation is deprecated. We recommend using @atlaskit/navigation-next instead. \n More details here: https://atlaskit.atlassian.com/packages/core/navigation-next',
-);
+if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line no-console
+  console.warn(
+    'Warning: @atlaskit/navigation is deprecated. We recommend using @atlaskit/navigation-next instead. \n More details here: https://atlaskit.atlassian.com/packages/core/navigation-next',
+  );
+}
 
 export { default } from './components/js/NavigationWithTheme';
 export {
