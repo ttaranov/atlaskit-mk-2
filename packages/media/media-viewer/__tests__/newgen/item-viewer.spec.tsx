@@ -38,9 +38,8 @@ function mountComponent(context: Context, identifier: Identifier) {
   const el = mount(
     <ItemViewer previewCount={0} context={context} identifier={identifier} />,
   );
-  const itemViewerBase = el.find(ItemViewerBase);
   const instance = el.find(ItemViewerBase).instance() as any;
-  return { el, itemViewerBase, instance };
+  return { el, instance };
 }
 
 function mountBaseComponent(context: Context, identifier: Identifier) {
