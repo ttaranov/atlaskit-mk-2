@@ -23,7 +23,7 @@ export interface LocalUpload {
   readonly index: number;
   readonly timeStarted: number;
 
-  progress: number | null; // TODO: Remove
+  progress: number | null;
   proxy?: string[];
 }
 
