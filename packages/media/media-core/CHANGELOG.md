@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 24.3.0
+- [minor] Split Media + Editor cleanup part 1 [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+
 ## 24.2.2
 - [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
   - @atlaskit/media-test-helpers@18.2.7
