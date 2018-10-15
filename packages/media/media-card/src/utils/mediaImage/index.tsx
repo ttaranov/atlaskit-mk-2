@@ -26,7 +26,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     height: '100%',
     className: '',
   };
-  imageRef: React.RefObject<any>; // TODO any!!!!
+  imageRef: React.RefObject<HTMLImageElement>;
 
   constructor(props: MediaImageProps) {
     super(props);
@@ -58,7 +58,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   onImageLoad = () => {
-    if (!this.imageRef) {
+    if (!this.imageRef || !this.imageRef.current) {
       return;
     }
     this.setState({
