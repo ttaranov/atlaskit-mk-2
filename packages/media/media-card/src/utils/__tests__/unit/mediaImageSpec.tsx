@@ -78,7 +78,7 @@ describe('MediaImage', () => {
   });
 
   describe('when image is more landscapy than container', () => {
-    describe('when image is smaller than congtainer', () => {
+    describe('when image is smaller than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, true, true);
         expect(component.props().style).toEqual({ maxHeight: '100%' });
@@ -91,7 +91,7 @@ describe('MediaImage', () => {
         });
       });
     });
-    describe('when image is bigger than congtainer', () => {
+    describe('when image is bigger than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, true, false);
         expect(component.props().style).toEqual({ height: '100%' });
@@ -105,7 +105,7 @@ describe('MediaImage', () => {
     });
   });
   describe('when image is more portraity than container', () => {
-    describe('when image is smaller than congtainer', () => {
+    describe('when image is smaller than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, false, true);
         expect(component.props().style).toEqual({ maxWidth: '100%' });
@@ -118,7 +118,7 @@ describe('MediaImage', () => {
         });
       });
     });
-    describe('when image is bigger than congtainer', () => {
+    describe('when image is bigger than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, false, false);
         expect(component.props().style).toEqual({ width: '100%' });
