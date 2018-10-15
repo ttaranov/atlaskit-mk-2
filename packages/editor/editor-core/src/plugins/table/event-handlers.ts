@@ -4,7 +4,6 @@ import { TableMap } from 'prosemirror-tables';
 import { Node as PmNode } from 'prosemirror-model';
 import { browser } from '@atlaskit/editor-common';
 import { getPluginState } from './pm-plugins/main';
-import { findInsertLineDecoration } from './utils';
 import { TableCssClassName as ClassName } from './types';
 import {
   isElementInTableCell,
@@ -14,9 +13,9 @@ import {
 } from '../../utils/';
 import {
   setEditorFocus,
-  showColumnInsertLine,
-  showRowInsertLine,
-  hideInsertLine,
+  showInsertColumnButton,
+  showInsertRowButton,
+  clearHoverSelection,
 } from './actions';
 
 const isIE11 = browser.ie_version === 11;
@@ -28,6 +27,9 @@ const isInsertColumnButton = (node: HTMLElement) =>
 const isInsertRowButton = (node: HTMLElement) =>
   node.classList.contains(ClassName.CONTROLS_INSERT_ROW) ||
   closestElement(node, `.${ClassName.CONTROLS_INSERT_ROW}`);
+
+const getIndex = (target: HTMLElement) =>
+  parseInt(target.getAttribute('data-index') || '-1', 10);
 
 export const handleBlur = (view: EditorView, event): boolean => {
   const { state, dispatch } = view;
@@ -98,24 +100,23 @@ export const handleMouseOver = (
   mouseEvent: MouseEvent,
 ): boolean => {
   const { state, dispatch } = view;
-  const { decorationSet } = getPluginState(state);
-  const isInsertLineVisible = !!findInsertLineDecoration(decorationSet).length;
   const target = mouseEvent.target as HTMLElement;
-  const insertLineIndex = parseInt(
-    target.getAttribute('data-index') || '-1',
-    10,
-  );
 
   if (isInsertColumnButton(target)) {
-    if (!isInsertLineVisible && insertLineIndex > -1) {
-      return showColumnInsertLine(insertLineIndex)(state, dispatch);
-    }
-  } else if (isInsertRowButton(target)) {
-    if (!isInsertLineVisible && insertLineIndex > -1) {
-      return showRowInsertLine(insertLineIndex)(state, dispatch);
-    }
-  } else if (isInsertLineVisible) {
-    return hideInsertLine(state, dispatch);
+    return showInsertColumnButton(getIndex(target))(state, dispatch);
+  }
+  if (isInsertRowButton(target)) {
+    return showInsertRowButton(getIndex(target))(state, dispatch);
+  }
+
+  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
+    state,
+  );
+  if (
+    typeof insertColumnButtonIndex === 'number' ||
+    typeof insertRowButtonIndex === 'number'
+  ) {
+    return clearHoverSelection(state, dispatch);
   }
 
   return false;
@@ -123,9 +124,14 @@ export const handleMouseOver = (
 
 export const handleMouseLeave = (view: EditorView): boolean => {
   const { state, dispatch } = view;
-  const { decorationSet } = getPluginState(state);
-  if (findInsertLineDecoration(decorationSet).length) {
-    hideInsertLine(state, dispatch);
+  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
+    state,
+  );
+  if (
+    typeof insertColumnButtonIndex === 'number' ||
+    typeof insertRowButtonIndex === 'number'
+  ) {
+    return clearHoverSelection(state, dispatch);
   }
   return false;
 };
