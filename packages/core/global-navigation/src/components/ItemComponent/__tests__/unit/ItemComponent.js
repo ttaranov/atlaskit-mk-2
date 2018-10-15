@@ -13,13 +13,25 @@ describe('ItemComponent', () => {
     expect(wrapper.find(GlobalItem).exists()).toBe(true);
   });
 
-  it('should render a DropdownMenuStateless with a GlobalItem as the trigger if passed dropdownItems', () => {
-    const DropdownItems = () => null;
-    const wrapper = mount(
-      <ItemComponent dropdownItems={DropdownItems} icon={() => null} />,
-    );
-    expect(wrapper.find(DropdownMenuStateless).exists()).toBe(true);
-    expect(wrapper.find(GlobalItem).exists()).toBe(true);
+  describe('when passsed dropdownItems', () => {
+    it('should render a DropdownMenuStateless with a GlobalItem as the trigger', () => {
+      const DropdownItems = () => null;
+      const wrapper = mount(
+        <ItemComponent dropdownItems={DropdownItems} icon={() => null} />,
+      );
+      expect(wrapper.find(DropdownMenuStateless).exists()).toBe(true);
+      expect(wrapper.find(GlobalItem).exists()).toBe(true);
+    });
+
+    it('should render a DropdownMenuStateless with appearance "tall"', () => {
+      const DropdownItems = () => [];
+      const wrapper = mount(
+        <ItemComponent dropdownItems={DropdownItems} icon={() => null} />,
+      );
+      expect(wrapper.find(DropdownMenuStateless).prop('appearance')).toBe(
+        'tall',
+      );
+    });
   });
 
   it('should render a completely custom component if passed an itemComponent', () => {

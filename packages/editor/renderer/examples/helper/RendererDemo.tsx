@@ -155,10 +155,6 @@ const eventHandlers = {
       );
     },
   },
-  applicationCard: {
-    onClick: () => console.log('onClick'),
-    onActionClick: () => console.log('onActionClick'),
-  },
   action: {
     onClick: event => console.log('onClick', '[react.MouseEvent]', event),
   },
@@ -327,7 +323,7 @@ export default class RendererDemo extends PureComponent<
             &lt;Renderer&gt;
           </div>
           <div id="RendererOutput">
-            <Renderer {...props} useNewApplicationCard={true} />
+            <Renderer {...props} />
           </div>
           {this.props.truncationEnabled ? expandButton : null}
           <div style={{ color: '#ccc', marginTop: '8px' }}>

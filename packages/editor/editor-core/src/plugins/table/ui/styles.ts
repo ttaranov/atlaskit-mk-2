@@ -1,27 +1,7 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
-import {
-  akColorN40A,
-  akColorB100,
-  akColorB300,
-  akColorB400,
-  akColorN300,
-  akColorB75,
-  akColorN20,
-  akColorN50,
-  akColorR50,
-  akColorR300,
-  akColorR75,
-  akColorN20A,
-  akBorderRadius,
-  akColorN60A,
-  akColorN30,
-  akColorN90,
-  akColorN200,
-  akColorN0,
-  akColorR500,
-} from '@atlaskit/util-shared-styles';
+import { borderRadius, colors } from '@atlaskit/theme';
 import {
   browser,
   tableMarginTop,
@@ -35,15 +15,36 @@ import {
 import { scrollbarStyles } from '../../../ui/styles';
 import { TableCssClassName as ClassName } from '../types';
 
-export const tableToolbarColor = akColorN20;
-export const tableBorderColor = akColorN50;
-export const tableFloatingControlsColor = akColorN20;
-export const tableCellSelectedColor = akColorB75;
-export const tableToolbarSelectedColor = akColorB100;
-export const tableBorderSelectedColor = akColorB300;
-export const tableCellDeleteColor = akColorR50;
-export const tableBorderDeleteColor = akColorR300;
-export const tableToolbarDeleteColor = akColorR75;
+const {
+  N40A,
+  B100,
+  B300,
+  B400,
+  N300,
+  B75,
+  N20,
+  N50,
+  R50,
+  R300,
+  R75,
+  N20A,
+  N60A,
+  N30,
+  N90,
+  N200,
+  N0,
+  R500,
+} = colors;
+
+export const tableToolbarColor = N20;
+export const tableBorderColor = N50;
+export const tableFloatingControlsColor = N20;
+export const tableCellSelectedColor = B75;
+export const tableToolbarSelectedColor = B100;
+export const tableBorderSelectedColor = B300;
+export const tableCellDeleteColor = R50;
+export const tableBorderDeleteColor = R300;
+export const tableToolbarDeleteColor = R75;
 
 export const tableToolbarSize = akEditorTableToolbarSize;
 export const tableBorderRadiusSize = 3;
@@ -55,8 +56,8 @@ export const contextualMenuDropdownWidth = 180;
 const isIE11 = browser.ie_version === 11;
 
 const Button = (css?: string) => `
-  background: ${akColorB400};
-  border-radius: ${akBorderRadius};
+  background: ${B400};
+  border-radius: ${borderRadius()}px;
   border-width: 0px;
   display: inline-flex;
   max-width: 100%;
@@ -70,7 +71,7 @@ const Button = (css?: string) => `
   cursor: pointer;
   color: white;
   :hover {
-    background: ${akColorB300};
+    background: ${B300};
   }
   > .${ClassName.CONTROLS_BUTTON_ICON} {
     display: inline-flex;
@@ -140,10 +141,10 @@ const DeleteButton = (css?: string) => `
 
     .${ClassName.CONTROLS_DELETE_BUTTON} {
       ${Button(`
-        background: ${akColorN20A};
-        color: ${akColorN300};
+        background: ${N20A};
+        color: ${N300};
         :hover {
-          background: ${akColorR300};
+          background: ${R300};
           color: white;
         }
       `)}
@@ -171,6 +172,20 @@ const InsertMarker = (css?: string) => `
 export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle}
+
+    /* Breakout only works on top level */
+    > .${ClassName.NODEVIEW_WRAPPER} .${
+  ClassName.TABLE_CONTAINER
+}[data-layout='full-width'],
+    > .${ClassName.NODEVIEW_WRAPPER} .${
+  ClassName.TABLE_CONTAINER
+}[data-layout='wide'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    > * .${ClassName.NODEVIEW_WRAPPER} .${ClassName.TABLE_CONTAINER} {
+      width: 100% !important;
+    }
 
     /* Column controls */
     .${ClassName.COLUMN_CONTROLS} {
@@ -348,7 +363,7 @@ export const tableStyles = css`
       padding: 10px 2px;
       text-align: center;
       background-color: ${tableToolbarColor};
-      color: ${akColorN200};
+      color: ${N200};
       border-color: ${akEditorTableBorder};
 
       :first-child {
@@ -379,15 +394,45 @@ export const tableStyles = css`
           background-color: ${tableToolbarSelectedColor};
           position: relative;
           z-index: ${akEditorUnitZIndex};
-          color: ${akColorN0};
+          color: ${N0};
         }
         .${ClassName.NUMBERED_COLUMN_BUTTON}.danger {
           background-color: ${tableToolbarDeleteColor};
           border: 1px solid ${tableBorderDeleteColor};
-          color: ${akColorR500};
+          color: ${R500};
           position: relative;
           z-index: ${akEditorUnitZIndex};
         }
+      }
+      /* scroll shadows */
+      .${ClassName.TABLE_RIGHT_SHADOW},
+      .${ClassName.TABLE_LEFT_SHADOW}::after {
+        display: block;
+        position: absolute;
+        pointer-events: none;
+        z-index: ${akEditorSmallZIndex};
+        width: 8px;
+      }
+      .${ClassName.TABLE_LEFT_SHADOW}::after {
+        background: linear-gradient(
+          to left,
+          rgba(99, 114, 130, 0) 0,
+          ${N40A} 100%
+        );
+        content: '';
+        height: 100%;
+        right: -8px;
+        bottom: 0;
+      }
+      .${ClassName.TABLE_RIGHT_SHADOW} {
+        background: linear-gradient(
+          to right,
+          rgba(99, 114, 130, 0) 0,
+          ${N40A} 100%
+        );
+        height: calc(100% - ${tableMarginTop - 1}px);
+        left: calc(100% + 2px);
+        top: ${tableMarginTop - tableToolbarSize + 1}px;
       }
     }
 
@@ -431,7 +476,7 @@ export const tableStyles = css`
       position: absolute;
       top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
     }
-    .${ClassName.ROW_CONTROLS_WRAPPER}.scrolling {
+    .${ClassName.ROW_CONTROLS_WRAPPER}.${ClassName.TABLE_LEFT_SHADOW} {
       z-index: ${akEditorUnitZIndex};
     }
     .${ClassName.COLUMN_CONTROLS_WRAPPER} {
@@ -507,36 +552,6 @@ export const tableStyles = css`
 
   /* =============== TABLE COLUMN RESIZING ================== */
   .ProseMirror.${ClassName.RESIZING} {
-    .${ClassName.TABLE_SHADOW} {
-      pointer-events: none;
-      display: none;
-      position: absolute;
-      width: 0;
-
-      top: ${tableMarginTop}px;
-    }
-    .${ClassName.WITH_CONTROLS} .${ClassName.TABLE_SHADOW} {
-      top: ${tableMarginTop - tableToolbarSize + 1}px;
-    }
-    .${ClassName.TABLE_SHADOW} {
-      display: ${isIE11 ? 'none' : 'block'};
-      z-index: ${akEditorSmallZIndex};
-    }
-    .${ClassName.TABLE_SHADOW}.-left {
-      left: 0;
-      background: linear-gradient(
-        to left,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
-    .${ClassName.TABLE_SHADOW}.-right {
-      background: linear-gradient(
-        to right,
-        rgba(99, 114, 130, 0) 0,
-        ${akColorN40A} 100%
-      );
-    }
     .${ClassName.TABLE_NODE_WRAPPER} {
       overflow-x: ${isIE11 ? 'none' : 'auto'};
       ${!isIE11 ? scrollbarStyles : ''};
@@ -565,8 +580,8 @@ export const tableStyles = css`
   /* =============== TABLE CONTEXTUAL MENU ================== */
   .${ClassName.CONTEXTUAL_MENU_TRIGGER} {
     > div {
-      background: ${akColorN20A};
-      border-radius: ${akBorderRadius};
+      background: ${N20A};
+      border-radius: ${borderRadius()}px;
       display: flex;
       height: ${contextualMenuTriggerSize}px;
       flex-direction: column;
@@ -577,9 +592,9 @@ export const tableStyles = css`
     }
   }
   .${ClassName.CONTEXTUAL_SUBMENU} {
-    border-radius: ${akBorderRadius};
+    border-radius: ${borderRadius()}px;
     background: white;
-    box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+    box-shadow: 0 4px 8px -2px ${N60A}, 0 0 1px ${N60A};
     display: block;
     position: absolute;
     width: 130px;
@@ -593,8 +608,8 @@ export const tableStyles = css`
     }
   }
   .${ClassName.CONTEXTUAL_MENU_ICON} {
-    border: 1px solid ${akColorN30};
-    border-radius: ${akBorderRadius};
+    border: 1px solid ${N30};
+    border-radius: ${borderRadius()}px;
     display: block;
     width: 20px;
     height: 20px;
@@ -608,7 +623,7 @@ export const tableStyles = css`
       position: relative;
       left: 25px;
       top: -3px;
-      color: ${akColorN90};
+      color: ${N90};
     }
   }
 `;

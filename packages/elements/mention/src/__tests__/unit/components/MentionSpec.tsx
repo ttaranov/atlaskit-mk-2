@@ -25,7 +25,6 @@ const createPayload = (actionSubject, action) => ({
       isSpecial: false,
       userId: mentionData.id,
     },
-    source: 'unknown',
     eventType: 'ui',
   },
 });

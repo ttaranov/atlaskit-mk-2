@@ -19,7 +19,6 @@ const imageItem: ProcessedFileState = {
   size: 11222,
   mediaType: 'image',
   mimeType: 'jpeg',
-  binaryUrl: '',
   artifacts: {},
 };
 
@@ -131,7 +130,6 @@ describe('ImageViewer', () => {
       size: 11222,
       mediaType: 'image',
       mimeType: 'jpeg',
-      binaryUrl: '',
       artifacts: {},
     };
 

@@ -8,6 +8,7 @@ export type Cell = { pos: number; start: number; node: PmNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
 
 export interface PluginConfig {
+  advanced?: boolean;
   allowBackgroundColor?: boolean;
   allowColumnResizing?: boolean;
   allowHeaderColumn?: boolean;
@@ -100,8 +101,9 @@ export const TableCssClassName = {
   HOVERED_CELL: `${clPrefix}hovered-cell`,
   HOVERED_TABLE: `${clPrefix}hovered-table`,
   RESIZING: `${clPrefix}resizing`,
-  TABLE_SHADOW: `${clPrefix}shadow`,
   WITH_CONTROLS: `${clPrefix}with-controls`,
+  TABLE_LEFT_SHADOW: `${clPrefix}with-left-shadow`,
+  TABLE_RIGHT_SHADOW: `${clPrefix}with-right-shadow`,
 
   CONTEXTUAL_SUBMENU: `${clPrefix}contextual-submenu`,
   CONTEXTUAL_MENU_TRIGGER: `${clPrefix}contextual-menu-trigger`,
@@ -110,4 +112,7 @@ export const TableCssClassName = {
   // come from prosemirror-table
   COLUMN_RESIZE_HANDLE: 'column-resize-handle',
   SELECTED_CELL: 'selectedCell',
+
+  // defined in ReactNodeView based on PM node name
+  NODEVIEW_WRAPPER: 'tableView-content-wrap',
 };

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { pd } from 'pretty-data';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorN80 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import {
   Editor,
   EditorContext,
@@ -40,7 +40,7 @@ export const TitleInput = styled.input`
   padding: 0;
 
   &::placeholder {
-    color: ${akColorN80};
+    color: ${colors.N80};
   }
 `;
 TitleInput.displayName = 'TitleInput';
@@ -164,7 +164,6 @@ class Example extends Component<ExampleProps, ExampleState> {
                 <Editor
                   appearance="full-page"
                   analyticsHandler={analyticsHandler}
-                  allowTasksAndDecisions={true}
                   allowCodeBlocks={true}
                   allowLists={true}
                   allowTextColor={true}

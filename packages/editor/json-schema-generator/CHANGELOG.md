@@ -1,5 +1,8 @@
 # @atlaskit/json-schema-generator
 
+## 1.1.3
+- [patch] ED-5529 Fix JSON Schema [d286ab3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d286ab3)
+
 ## 1.1.2
 - [patch] Fix generator to work with TS3 [4040b00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4040b00)
 

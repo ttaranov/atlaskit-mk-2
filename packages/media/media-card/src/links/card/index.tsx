@@ -3,7 +3,6 @@ import { Component } from 'react';
 import { UrlPreview, ImageResizeMode, Resource } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus, CardAppearance } from '../..';
-import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { URLEmbedCard } from '../embed/urlEmbedCard';
@@ -22,7 +21,7 @@ export const defaultLinkCardAppearance: CardAppearance = 'square';
 export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
     const {
-      resources: { smartCard, app, player },
+      resources: { app, player },
     } = this;
     const { appearance } = this.props;
 
@@ -37,9 +36,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         return this.renderGenericLink(appearance);
 
       default:
-        if (smartCard) {
-          return this.renderSmartCard();
-        } else if (app && this.isEmbed(app)) {
+        if (app && this.isEmbed(app)) {
           return this.renderEmbed(app);
         } else if (player && this.isEmbed(player)) {
           return this.renderEmbed(player);
@@ -119,23 +116,6 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
     // this case should never occur provided we've called `isEmbed(embed)` before calling this method
     return null;
-  }
-
-  private renderSmartCard(): JSX.Element {
-    const {
-      resources: { smartCard },
-    } = this;
-
-    // this check is just to silence TS - this method should never be called if we don't have
-    // data for a smart-card
-    if (!smartCard) {
-      throw new Error('Must have smartCard data to render a smart card');
-    }
-
-    return this.renderInLink(
-      smartCard.link ? smartCard.link.url : '',
-      <AppCardView model={smartCard} />,
-    );
   }
 
   private renderGenericLink(appearance: CardAppearance): JSX.Element | null {

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { borderRadius } from '@atlaskit/theme';
 import { Wrapper as WrapperDefault } from '../styles';
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
@@ -13,7 +13,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
   margin: 1px;
 
   > img {
-    border-radius: ${akBorderRadius};
+    border-radius: ${borderRadius()}px;
   }
 
   &::after,

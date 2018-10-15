@@ -15,6 +15,7 @@ import {
   EmptyFile,
   GetItemsRequestBody,
   ItemsPayload,
+  ImageMetadata,
 } from '../../media-store';
 
 describe('MediaStore', () => {
@@ -389,6 +390,68 @@ describe('MediaStore', () => {
             expect(authProvider).toHaveBeenCalledWith({ collectionName });
           });
       });
+
+      it('should not return empty files', () => {
+        const collectionName = 'some-collection-name';
+        const data: MediaCollectionItems = {
+          nextInclusiveStartKey: '121',
+          contents: [
+            {
+              id: '1',
+              insertedAt: 1,
+              occurrenceKey: 'key-1',
+              type: 'file',
+              details: {
+                size: 1,
+                artifacts: {},
+                mediaType: 'image',
+                mimeType: '',
+                name: 'file',
+              },
+            },
+            {
+              id: '2',
+              insertedAt: 1,
+              occurrenceKey: 'key-2',
+              type: 'file',
+              details: {
+                size: 0,
+                artifacts: {},
+                mediaType: 'image',
+                mimeType: '',
+                name: 'file',
+              },
+            },
+            {
+              id: '3',
+              insertedAt: 1,
+              occurrenceKey: 'key-3',
+              type: 'file',
+              details: {} as any,
+            },
+          ],
+        };
+
+        fetchMock.mock(`begin:${baseUrl}/collection/${collectionName}`, {
+          body: {
+            data,
+          },
+          status: 201,
+        });
+
+        return mediaStore
+          .getCollectionItems(collectionName, {
+            limit: 10,
+            details: 'full',
+            inclusiveStartKey: 'some-inclusive-start-key',
+            sortDirection: 'desc',
+          })
+          .then(response => {
+            // We want to exclude all files without size. Contents contains 3 files, 2 of them empty, so we only care about the first one
+            expect(response.data.contents).toHaveLength(1);
+            expect(response.data.contents).toEqual([data.contents[0]]);
+          });
+      });
     });
 
     describe('createFile', () => {
@@ -533,6 +596,66 @@ describe('MediaStore', () => {
               ],
             }),
           });
+        });
+      });
+    });
+
+    describe('getImageMetadata()', () => {
+      it('should return image metadata for the given id', async () => {
+        const data: ImageMetadata = {
+          pending: false,
+          original: {
+            height: 10,
+            width: 10,
+            url: 'some-preview',
+          },
+        };
+        fetchMock.mock(`begin:${baseUrl}/file`, {
+          body: data,
+          status: 201,
+        });
+
+        const image = await mediaStore.getImageMetadata('123');
+        expect(fetchMock.lastUrl()).toEqual(
+          `${baseUrl}/file/123/image/metadata?client=some-client-id&token=some-token`,
+        );
+        expect(image).toEqual(data);
+      });
+
+      it('should generate right url based on params', async () => {
+        const data: ImageMetadata = {
+          pending: false,
+        };
+        fetchMock.mock(`begin:${baseUrl}/file`, {
+          body: data,
+          status: 201,
+        });
+
+        await mediaStore.getImageMetadata('123', {
+          collection: 'my-collection',
+        });
+        expect(fetchMock.lastUrl()).toEqual(
+          `${baseUrl}/file/123/image/metadata?client=some-client-id&collection=my-collection&token=some-token`,
+        );
+      });
+    });
+
+    describe('getFileBinaryURL', () => {
+      let url = '';
+
+      beforeEach(async () => {
+        url = await mediaStore.getFileBinaryURL('1234', 'some-collection-name');
+      });
+
+      it('should return file url', () => {
+        expect(url).toEqual(
+          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&token=some-token`,
+        );
+      });
+
+      it('should call authProvider with given collection name', async () => {
+        expect(authProvider).toHaveBeenCalledWith({
+          collectionName: 'some-collection-name',
         });
       });
     });

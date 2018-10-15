@@ -59,11 +59,7 @@ import {
   CONFLUENCE_LANGUAGE_MAP as LANGUAGE_MAP,
 } from '../../src';
 import { mapPanelTypeToPm } from '../../src/utils';
-import {
-  akColorG50,
-  akColorB50,
-  akColorR50,
-} from '../../../editor-core/node_modules/@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 chai.use(chaiPlugin);
 
@@ -780,11 +776,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
               td({
                 colwidth: [table2ColumnPx[1]],
-                background: akColorG50.toLowerCase(),
+                background: colors.G50.toLowerCase(),
               })(p('5')),
               td({
                 colwidth: [table2ColumnPx[2]],
-                background: akColorG50.toLowerCase(),
+                background: colors.G50.toLowerCase(),
               })(p('6')),
             ),
             tr(
@@ -792,11 +788,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
               td({
                 colwidth: [table2ColumnPx[1]],
-                background: akColorB50.toLowerCase(),
+                background: colors.B50.toLowerCase(),
               })(p(hardBreak())),
               td({
                 colwidth: [table2ColumnPx[2]],
-                background: akColorB50.toLowerCase(),
+                background: colors.B50.toLowerCase(),
               })(p(hardBreak())),
             ),
             tr(
@@ -818,7 +814,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               td({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
             ),
             tr(
-              td({ colwidth: [42], background: akColorR50.toLowerCase() })(
+              td({ colwidth: [42], background: colors.R50.toLowerCase() })(
                 p('6'),
               ),
               td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),
@@ -826,7 +822,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               td({ colwidth: [table2ColumnPx[2]] })(p(hardBreak())),
             ),
             tr(
-              td({ colwidth: [42], background: akColorR50.toLowerCase() })(
+              td({ colwidth: [42], background: colors.R50.toLowerCase() })(
                 p('7'),
               ),
               td({ colwidth: [table2ColumnPx[0]] })(p(hardBreak())),

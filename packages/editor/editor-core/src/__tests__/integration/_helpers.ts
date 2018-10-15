@@ -154,9 +154,13 @@ export const quickInsert = async (browser, insertTitle) => {
   }
 
   await browser.browser.waitUntil(async () => {
-    const firstInsertText = await browser.browser.getText(
+    let firstInsertText = await browser.browser.getText(
       '[aria-label="Popup"] [role="button"]',
     );
+    if (Array.isArray(firstInsertText)) {
+      firstInsertText = firstInsertText[0];
+    }
+
     return firstInsertText && firstInsertText.startsWith(firstTitleWord);
   }, LONG_WAIT_FOR);
 

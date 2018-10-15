@@ -1,11 +1,11 @@
-import { akColorN20, akColorN50 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { createTag, serializeStyle } from '../util';
 import { NodeSerializerOpts } from '../interfaces';
 
 const baseStyle = {
-  'background-color': akColorN20,
+  'background-color': colors.N20,
   'background-clip': 'padding-box',
-  border: `1px solid ${akColorN50}`,
+  border: `1px solid ${colors.N50}`,
   'border-right-width': 0,
   'border-bottom-width': 0,
   'font-weight': 'bold',

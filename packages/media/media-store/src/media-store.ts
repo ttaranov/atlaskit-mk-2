@@ -69,11 +69,11 @@ export class MediaStore {
     }).then(mapResponseToJson);
   }
 
-  getCollectionItems(
+  async getCollectionItems(
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
-    return this.request(`/collection/${collectionName}/items`, {
+    const response = await this.request(`/collection/${collectionName}/items`, {
       authContext: { collectionName },
       params: {
         ...defaultGetCollectionItems,
@@ -82,7 +82,24 @@ export class MediaStore {
       headers: {
         Accept: 'application/json',
       },
-    }).then(mapResponseToJson);
+    });
+    const {
+      data: { contents, nextInclusiveStartKey },
+    }: MediaStoreResponse<MediaCollectionItems> = await mapResponseToJson(
+      response,
+    );
+    // [TODO] MS-705: remove after backend adds filter
+    // This prevents showing "ghost" files in recents
+    const contentsWithoutEmptyFiles = contents.filter(
+      item => item.details.size && item.details.size > 0,
+    );
+
+    return {
+      data: {
+        contents: contentsWithoutEmptyFiles,
+        nextInclusiveStartKey,
+      },
+    };
   }
 
   createUpload(
@@ -180,6 +197,18 @@ export class MediaStore {
     });
   };
 
+  getFileBinaryURL = async (
+    id: string,
+    collectionName?: string,
+  ): Promise<string> => {
+    const auth = await this.config.authProvider({ collectionName });
+
+    return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
+      params: { dl: true, collection: collectionName },
+      auth,
+    });
+  };
+
   getImage = (
     id: string,
     params?: MediaStoreGetFileImageParams,
@@ -203,6 +232,16 @@ export class MediaStore {
       method: 'POST',
       body: JSON.stringify({ descriptors }),
       headers: jsonHeaders,
+    }).then(mapResponseToJson);
+  };
+
+  getImageMetadata = (
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<{ metadata: ImageMetadata }> => {
+    return this.request(`/file/${id}/image/metadata`, {
+      params,
+      authContext: { collectionName: params && params.collection },
     }).then(mapResponseToJson);
   };
 
@@ -264,6 +303,20 @@ export interface GetItemsRequestBody {
   id: string;
   collection?: string;
 }
+
+export type ImageMetadataArtifact = {
+  url?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+};
+
+export interface ImageMetadata {
+  pending: boolean;
+  preview?: ImageMetadataArtifact;
+  original?: ImageMetadataArtifact;
+}
+
 export interface MediaStoreResponse<Data> {
   readonly data: Data;
 }

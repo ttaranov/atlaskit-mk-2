@@ -24,7 +24,6 @@ const videoItem: ProcessedFileState = {
   size: 11222,
   mediaType: 'video',
   mimeType: 'mp4',
-  binaryUrl: '',
   artifacts: {
     'video_640.mp4': {
       url: '/video',

@@ -25,12 +25,10 @@ import { State } from '../../domain';
 export type BasePayload = GasCorePayload | GasScreenEventPayload;
 export type Payload = { action?: string } & BasePayload;
 export type HandlerResult = Payload[] | void;
-export const source = 'unknown';
 export const buttonClickPayload: GasCorePayload & { action: string } = {
   action: 'clicked',
   actionSubject: 'button',
   eventType: UI_EVENT_TYPE as EventType,
-  source,
 };
 
 export default [

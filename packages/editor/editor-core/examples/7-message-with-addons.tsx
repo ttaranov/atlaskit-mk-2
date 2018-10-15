@@ -99,7 +99,6 @@ export default function Example() {
           <Editor
             appearance="message"
             analyticsHandler={analyticsHandler}
-            allowTasksAndDecisions={true}
             allowCodeBlocks={true}
             allowHelpDialog={true}
             disabled={disabled}
