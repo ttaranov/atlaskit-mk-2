@@ -3,6 +3,7 @@ import React from 'react';
 import { md, Props } from '@atlaskit/docs';
 
 export default md`
+  **DEPRECATED** - This package is deprecated. We recommend using [@atlaskit/navigation-next](https://atlaskit.atlassian.com/packages/core/navigation-next) instead.
 
   Drawers are designed to enter from the left of the screen and overlay the site,
   allowing additional options to be visible that are outside or may change the

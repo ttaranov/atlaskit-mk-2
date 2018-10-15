@@ -3,6 +3,8 @@ import React from 'react';
 import { md, Props } from '@atlaskit/docs';
 
 export default md`
+  **DEPRECATED** - This package is deprecated. We recommend using [@atlaskit/navigation-next](https://atlaskit.atlassian.com/packages/core/navigation-next) instead.
+
   There is a specific \`AkGlobalItem\` component that is designed to be used in the
   \`globalSecondaryActions\` prop for navigation. Wrapping an icon, possibly
   with a tooltip insie a \`AkGlobalItem\` component will ensure the correct

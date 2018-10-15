@@ -5,6 +5,8 @@ import { md, Props, code } from '@atlaskit/docs';
 export default md`
   # Concepts
 
+  **DEPRECATED** - This package is deprecated. We recommend using [@atlaskit/navigation-next](https://atlaskit.atlassian.com/packages/core/navigation-next) instead.
+
   The navigation package is not designed to be a single component, but instead
   a composable navigation layout to sit at the far left of your app, with links
   around your site. It is an opinionated navigation option, with a set minimum width,

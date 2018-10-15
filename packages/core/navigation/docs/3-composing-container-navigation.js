@@ -7,6 +7,8 @@ import { md, Props } from '@atlaskit/docs';
 // AkCollapseOverflowItemGroup
 
 export default md`
+  **DEPRECATED** - This package is deprecated. We recommend using [@atlaskit/navigation-next](https://atlaskit.atlassian.com/packages/core/navigation-next) instead.
+
   The components provided here are designed to be used within the container
   navigation to ensure the correct stylistic behaviour for items within them.
 
