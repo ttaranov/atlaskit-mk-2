@@ -112,7 +112,7 @@ export class ImageViewer extends React.Component<
           this.setState({
             objectUrl: Outcome.failed(createError('previewFailed', err, file)),
           });
-          onLoad({ status: 'error' });
+          onLoad({ status: 'error', errorMessage: err.message });
         }
       }
     });
