@@ -17,6 +17,7 @@ import {
   GLOBAL_NAV_WIDTH,
   CONTENT_NAV_WIDTH,
   CONTENT_NAV_WIDTH_COLLAPSED,
+  FLYOUT_DELAY,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
@@ -179,6 +180,7 @@ type State = {
   mouseIsOverGrabArea: boolean,
   showGrabArea: boolean,
   width: number,
+  shouldShowExpandIcon: boolean,
 };
 
 /* NOTE: experimental props use an underscore */
@@ -187,6 +189,7 @@ type State = {
 class ResizeControl extends PureComponent<Props, State> {
   invalidDragAttempted = false;
   lastWidth: number;
+  flyoutTimeout: TimeoutID;
   wrapper: HTMLElement;
   state = {
     delta: 0,
@@ -198,6 +201,7 @@ class ResizeControl extends PureComponent<Props, State> {
     mouseIsOverGrabArea: false,
     showGrabArea: true,
     width: this.props.navigation.state.productNavWidth,
+    shouldShowExpandIcon: false,
   };
   static getDerivedStateFromProps(props: Props, state: State) {
     const { experimental_flyoutOnHover, flyoutIsOpen, navigation } = props;
@@ -217,6 +221,28 @@ class ResizeControl extends PureComponent<Props, State> {
     }
 
     return null;
+  }
+
+  componentDidUpdate() {
+    const { flyoutIsOpen, navigation } = this.props;
+    const { isCollapsed } = navigation.state;
+    if (isCollapsed && flyoutIsOpen) {
+      this.flyoutTimeout = setTimeout(() => {
+        this.setState(
+          {
+            shouldShowExpandIcon: true,
+          },
+          () => {
+            clearTimeout(this.flyoutTimeout);
+          },
+        );
+      }, FLYOUT_DELAY);
+    } else {
+      clearTimeout(this.flyoutTimeout);
+      this.setState({
+        shouldShowExpandIcon: false,
+      });
+    }
   }
 
   onResizerChevronClick = () => {
@@ -403,7 +429,7 @@ class ResizeControl extends PureComponent<Props, State> {
     // the button shouldn't "flip" until the drag is complete
     let ButtonIcon = ChevronLeft;
     if (isCollapsed || (didDragOpen && isDragging)) ButtonIcon = MenuIcon;
-    if (isCollapsed && flyoutIsOpen) ButtonIcon = ChevronRight;
+    if (this.state.shouldShowExpandIcon) ButtonIcon = ChevronRight;
 
     const button = (
       <Button
