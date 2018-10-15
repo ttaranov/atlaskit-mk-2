@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 5.0.4
+- [patch] Bump @atlaskit/drawer dependency to fix positioning issues within the drawer for dropdowns and other fixed position elements. [3c34445](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c34445)
+
 ## 5.0.3
 - [patch] Fixes an erroneous for an improper prop validation. Basic code cleanup and adds tests for GlobalNavigation. [a4e9f03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4e9f03)
 
