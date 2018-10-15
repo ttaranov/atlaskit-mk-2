@@ -13,6 +13,6 @@ const inlinesEncoderMapping = {
   text,
 };
 
-export const inlines: NodeEncoder = (node: PMNode): string => {
-  return inlinesEncoderMapping[node.type.name](node);
+export const inlines: NodeEncoder = (node: PMNode, parent?: PMNode): string => {
+  return inlinesEncoderMapping[node.type.name](node, parent);
 };

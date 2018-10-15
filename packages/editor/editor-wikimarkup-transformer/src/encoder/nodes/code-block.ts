@@ -44,7 +44,7 @@ export const codeBlock: NodeEncoder = (node: PMNode): string => {
   let result = '';
 
   node.forEach(n => {
-    result += inlines(n);
+    result += inlines(n, node);
   });
 
   if (supportedLanguageInWiki.indexOf(node.attrs.language) !== -1) {
