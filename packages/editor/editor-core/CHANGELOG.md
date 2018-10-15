@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.2
+- [patch] ED-5533: fix insert line decorations on merged cells [d421f39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d421f39)
+
 ## 86.0.1
 - [patch] Async load the floating toolbar. This remove @atlaskit/select & react-select from the critical path of rendering the editor [e55dcde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e55dcde)
 
