@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable  mocha/no-skipped-tests */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 

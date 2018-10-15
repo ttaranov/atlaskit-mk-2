@@ -170,9 +170,12 @@ export default class EmojiRepository {
   // protected to allow subclasses to access (for testing and storybooks).
   protected usageTracker: UsageFrequencyTracker;
 
-  constructor(emojis: EmojiDescription[]) {
+  constructor(
+    emojis: EmojiDescription[],
+    usageTracker?: UsageFrequencyTracker,
+  ) {
     this.emojis = emojis;
-    this.initMembers();
+    this.initMembers(usageTracker);
   }
 
   /**
@@ -311,7 +314,7 @@ export default class EmojiRepository {
       // Remove the deleted emojis from the internal list
       this.emojis.splice(deletedIndex, 1);
       // Reconstruct repository member variables
-      this.initMembers();
+      this.initMembers(this.usageTracker);
     }
   }
 
@@ -371,8 +374,8 @@ export default class EmojiRepository {
     return emojis;
   }
 
-  private initMembers(): void {
-    this.usageTracker = new UsageFrequencyTracker();
+  private initMembers(usageTracker?: UsageFrequencyTracker): void {
+    this.usageTracker = usageTracker || new UsageFrequencyTracker();
     this.initRepositoryMetadata();
     this.initSearchIndex();
   }
