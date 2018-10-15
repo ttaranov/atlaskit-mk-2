@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 20.1.0
+- [minor] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
 ## 20.0.1
 - [patch] ED-5487: fix popup when editor is initialised in the head of the page [0c3a2f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c3a2f3)
 
