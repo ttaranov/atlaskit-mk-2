@@ -12,6 +12,7 @@ import { ContextFactory } from '../../../src/context/context';
 import { fileStreamsCache } from '../../../src/context/fileStreamCache';
 
 import { uploadFile } from '@atlaskit/media-store';
+import { nextTick } from '@atlaskit/media-test-helpers';
 
 const getOrInsertSpy = jest.spyOn(fileStreamsCache, 'getOrInsert');
 const authProvider: AuthProvider = () =>
@@ -219,20 +220,25 @@ describe('Context', () => {
     });
   });
 
-  describe('.file.getFile()', () => {
-    it('should fetch the file if it doesnt exist locally', done => {
+  describe.only('.file.getFileState()', () => {
+    it.only('should fetch the file if it doesnt exist locally', async done => {
       const context = createContext();
-      const getFile = jest.fn().mockReturnValue({
+      const getItems = jest.fn().mockReturnValue({
         data: {
-          processingStatus: 'succeeded',
-          id: '1',
-          name: 'file-one',
-          size: 1,
-          fooo: 'bar',
+          items: [
+            {
+              id: '1',
+              details: {
+                name: 'file-one',
+                size: 1,
+                processingStatus: 'succeeded',
+              },
+            },
+          ],
         },
       });
       const fakeStore = {
-        getFile,
+        getItems,
       };
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
@@ -240,6 +246,7 @@ describe('Context', () => {
 
       observer.subscribe({
         next(state) {
+          console.log(state);
           expect(state).toEqual({
             id: '1',
             status: 'processed',
@@ -250,9 +257,9 @@ describe('Context', () => {
           done();
         },
       });
-
-      expect(getFile).toHaveBeenCalledTimes(1);
-      expect(getFile).lastCalledWith('1', { collection: undefined });
+      await nextTick();
+      expect(getItems).toHaveBeenCalledTimes(1);
+      expect(getItems).lastCalledWith([{ id: '1', collection: undefined }]);
     });
 
     it('should poll for changes and return the latest file state', done => {
