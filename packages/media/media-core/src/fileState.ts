@@ -4,6 +4,7 @@ import {
   MediaStoreResponse,
   MediaType,
   MediaFileArtifacts,
+  MediaCollectionItemFullDetails,
 } from '@atlaskit/media-store';
 
 export type FileStatus = 'uploading' | 'processing' | 'processed' | 'error';
@@ -128,4 +129,16 @@ export const mapMediaFileToFileState = (
         status,
       };
   }
+};
+
+export const mapMediaItemToFileState = (
+  id: string,
+  item: MediaCollectionItemFullDetails,
+): FileState => {
+  return mapMediaFileToFileState({
+    data: {
+      id,
+      ...item,
+    },
+  });
 };

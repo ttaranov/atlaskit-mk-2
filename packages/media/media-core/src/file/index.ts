@@ -14,8 +14,7 @@ import {
   FilePreview,
   FileState,
   GetFileOptions,
-  mapMediaFileToFileState,
-  ProcessedFileState,
+  mapMediaItemToFileState,
 } from '../fileState';
 import { fileStreamsCache } from '../context/fileStreamCache';
 import FileStreamCache from '../context/fileStreamCache';
@@ -30,19 +29,23 @@ interface DataloaderKey {
 export class FileFetcher {
   dataloader: Dataloader<DataloaderKey, MediaCollectionItemFullDetails>;
   constructor(private readonly mediaStore: MediaStore) {
-    // TODO: not found file
     // TODO: caching function
-    // TODO: mapping to input files to response files
-    // TODO: set max batch size to 100
     this.dataloader = new Dataloader<
       DataloaderKey,
       MediaCollectionItemFullDetails
-    >(async keys => {
-      const response = await this.mediaStore.getItems(keys);
-
-      return response.data.items.map(item => item.details);
+    >(this.batchLoadingFunc, {
+      maxBatchSize: 100,
     });
   }
+
+  // TODO: map input files to response files
+  // TODO: not found file
+  batchLoadingFunc = async (keys: DataloaderKey[]) => {
+    console.log(keys);
+    const response = await this.mediaStore.getItems(keys);
+
+    return response.data.items.map(item => item.details);
+  };
 
   getFileState(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
@@ -69,18 +72,7 @@ export class FileFetcher {
       const fetchFile = async () => {
         try {
           const response = await this.dataloader.load({ id, collection });
-          // TODO: handle all cases
-          const fileState: ProcessedFileState = {
-            id,
-            binaryUrl: '',
-            mediaType: response.mediaType,
-            mimeType: response.mimeType,
-            artifacts: {} as any,
-            name: response.name,
-            size: response.size,
-            status: 'processed',
-          };
-          // const fileState = mapMediaFileToFileState(response);
+          const fileState = mapMediaItemToFileState(id, response);
 
           observer.next(fileState);
 

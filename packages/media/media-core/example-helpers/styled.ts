@@ -45,3 +45,10 @@ export const Header = styled.div`
     margin: 5px;
   }
 `;
+
+export const FileStateWrapper = styled.div`
+  border: 1px solid;
+  margin: 10px;
+  padding: 10px;
+  width: 500px;
+`;
