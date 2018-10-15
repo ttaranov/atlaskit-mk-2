@@ -1,8 +1,13 @@
 import { createAndFireEvent } from '@atlaskit/analytics-next';
-export const channel = 'media';
-export const createAndFireEventOnMedia = createAndFireEvent(channel);
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { ProcessedFileState } from '@atlaskit/media-core';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
+export const channel = 'media';
+export const createAndFireEventOnMedia = createAndFireEvent(channel);
 
 export type ViewerLoadPayload = {
   status: 'success' | 'error';
@@ -69,4 +74,10 @@ export const itemViewerCommencedEvent = (id: string): GasPayload => {
       fileId: id,
     },
   };
+};
+
+export const context = {
+  componentName: 'media-viewer',
+  packageName,
+  packageVersion,
 };
