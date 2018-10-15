@@ -13,6 +13,7 @@ import {
   copyAsPlaintextButton,
 } from '../_helpers';
 import { insertMentionUsingClick } from '../message-renderer/_mention-helpers';
+import { tab } from 'src/keymaps';
 
 BrowserTestCase(
   'Inserts a panel on fullpage',
@@ -148,3 +149,44 @@ BrowserTestCase(
     expect(doc).toMatchDocSnapshot();
   },
 );
+
+// Panels in extensions is tested in bodied-insert-1.ts
+import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
+
+BrowserTestCase(
+  'Table floating toolbar should be visible even after table scrolls',
+  { skip: ['edge', 'ie', 'safari'] },
+  async client => {
+    const insertTableMenu = `[aria-label="${
+      insertBlockMessages.table.defaultMessage
+    }"]`;
+    const tableControls = '[aria-label="Table floating controls"]';
+
+    const browser = new Page(client);
+
+    await browser.goto(fullpage.path);
+    await browser.waitForSelector(editable);
+    await browser.click(editable);
+    await browser.click(insertTableMenu);
+    await browser.waitForSelector(tableControls);
+
+    await quickInsert(browser, 'Panel');
+
+    // type some text
+    await browser.type(editable, 'this text should be in the panel');
+
+    // click on Error label
+    const selector = `[aria-label="Error"]`;
+    await browser.click(selector);
+
+    const doc = await browser.$eval(editable, getDocFromElement);
+    expect(doc).toMatchDocSnapshot();
+    expect(await browser.isExisting(tableControls)).toBe(false);
+    expect(await browser.isVisible(tableControls)).toBe(false);
+  },
+);
+
+/*
+panels inside of tab
+inside of an extenion
+*/
