@@ -95,6 +95,7 @@ describe('Card', () => {
     expect(wrapper.find(BlockCard.ForbiddenView).exists()).toBeTruthy();
   });
 
+  // LB: Should we skip
   it('should render the unauthorized view when unauthorized', async () => {
     const client = createClient([{ status: 'unauthorized' } as ObjectState]);
     const wrapper = mount(

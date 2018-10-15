@@ -18,16 +18,27 @@ type State = {
 const createContainer = (zIndex: number) => {
   const container = document.createElement('div');
   container.setAttribute('class', 'atlaskit-portal');
-  container.setAttribute(
-    'style',
-    `z-index: ${zIndex}; position: absolute; top: 0; left: 0; width: 100%;`,
-  );
+  container.setAttribute('style', `z-index: ${zIndex};`);
   return container;
 };
 
 const body = () => {
   invariant(document && document.body, 'cannot find document.body');
   return document.body;
+};
+
+const portalParent = () => {
+  const parentElement = document.querySelector(
+    'body > .atlaskit-portal-container',
+  );
+  if (!parentElement) {
+    const parent = document.createElement('div');
+    parent.setAttribute('class', 'atlaskit-portal-container');
+    parent.setAttribute('style', `display: flex;`);
+    body().appendChild(parent);
+    return parent;
+  }
+  return parentElement;
 };
 
 // This is a generic component does two things:
@@ -50,19 +61,19 @@ class Portal extends React.Component<Props, State> {
     if (container && prevProps.zIndex !== zIndex) {
       const newContainer = createContainer(zIndex);
 
-      body().replaceChild(container, newContainer);
+      portalParent().replaceChild(container, newContainer);
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ container: newContainer });
     } else if (!prevState.container && container) {
       // SSR path
-      body().appendChild(container);
+      portalParent().appendChild(container);
     }
   }
   componentDidMount() {
     const { container } = this.state;
     const { zIndex } = this.props;
     if (container) {
-      body().appendChild(container);
+      portalParent().appendChild(container);
     } else {
       // SSR path
       const newContainer = createContainer(zIndex);
@@ -73,7 +84,14 @@ class Portal extends React.Component<Props, State> {
   componentWillUnmount() {
     const { container } = this.state;
     if (container) {
-      body().removeChild(container);
+      portalParent().removeChild(container);
+      // clean up parent element if there are no more portals
+      const portals = !!document.querySelector(
+        'body > .atlaskit-portal-container > .atlaskit-portal',
+      );
+      if (!portals) {
+        body().removeChild(portalParent());
+      }
     }
   }
   render() {

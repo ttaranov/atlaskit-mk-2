@@ -46,6 +46,9 @@ module.exports = {
         loader: require.resolve('babel-loader'),
         options: {
           cacheDirectory: true,
+          babelrc: true,
+          rootMode: 'upward',
+          envName: 'production:cjs',
         },
       },
       {

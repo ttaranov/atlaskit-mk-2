@@ -69,8 +69,24 @@ test('should create a new stacking context', () => {
       </Portal>
     </App>,
   );
-  const elements = document.getElementsByClassName('atlaskit-portal');
-  expect(elements).toHaveLength(1);
-  const position = elements[0].style.getPropertyValue('position');
-  expect(position).toBe('absolute');
+  const container = document.querySelector('body > .atlaskit-portal-container');
+  expect(container && container.style.getPropertyValue('display')).toBe('flex');
+});
+
+test('should clean up elements after unmount', () => {
+  const Wrapper = ({ renderPortal }: { renderPortal: boolean }) => (
+    <App>
+      {renderPortal && (
+        <Portal zIndex={500}>
+          <div>Hi</div>
+        </Portal>
+      )}
+    </App>
+  );
+  wrapper = mount(<Wrapper renderPortal />);
+  wrapper.setProps({ renderPortal: false });
+  const parent = document.querySelector('.atlaskit-portal-container');
+  expect(parent).toBeNull();
+  const portal = document.querySelector('.atlaskit-portal');
+  expect(portal).toBeNull();
 });

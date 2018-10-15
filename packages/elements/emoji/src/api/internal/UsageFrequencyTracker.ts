@@ -24,9 +24,9 @@ export class UsageFrequencyTracker {
   protected queue: DuplicateLimitedQueue<string>;
   private gateway: Gateway;
 
-  constructor() {
+  constructor(useStorageIfPossible = true) {
     const options = UsageFrequencyTracker.queueOptions;
-    if (options.storage) {
+    if (useStorageIfPossible && options.storage) {
       const queueOptions = {
         ...options,
         storage: options.storage as Storage,

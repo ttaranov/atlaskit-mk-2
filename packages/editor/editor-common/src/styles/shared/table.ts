@@ -27,11 +27,6 @@ const tableSharedStyle = css`
   .${TableSharedCssClassName.TABLE_CONTAINER}[data-number-column='true'] {
     padding-left: ${akEditorTableNumberColumnWidth - 1}px;
   }
-  .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='full-width'],
-  .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='wide'] {
-    margin-left: 50%;
-    transform: translateX(-50%);
-  }
   /* avoid applying styles to nested tables (possible via extensions) */
   .${TableSharedCssClassName.TABLE_CONTAINER} > table,
   .${TableSharedCssClassName.TABLE_NODE_WRAPPER} > table {

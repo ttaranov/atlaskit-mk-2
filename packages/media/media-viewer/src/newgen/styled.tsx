@@ -238,6 +238,15 @@ export const Img: ComponentClass<ImgHTMLAttributes<{}> & ImgProps> = styled.img`
       return 'auto';
     }
   }};
+  /* Prevent images from being smoothed when scaled up */
+  image-rendering: optimizeSpeed; /* Legal fallback */
+  image-rendering: -moz-crisp-edges; /* Firefox        */
+  image-rendering: -o-crisp-edges; /* Opera          */
+  image-rendering: -webkit-optimize-contrast; /* Safari         */
+  image-rendering: optimize-contrast; /* CSS3 Proposed  */
+  image-rendering: crisp-edges; /* CSS4 Proposed  */
+  image-rendering: pixelated; /* CSS4 Proposed  */
+  -ms-interpolation-mode: nearest-neighbor; /* IE8+           */
 `;
 
 export const MedatadataTextWrapper = styled.div`
