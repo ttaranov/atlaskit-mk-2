@@ -160,19 +160,25 @@ export default class LayoutManager extends Component<
     this.pageRef = ref;
   };
 
+  flyoutTimeout = null;
   mouseOutFlyoutArea = ({ currentTarget, relatedTarget }: *) => {
     if (currentTarget.contains(relatedTarget)) return;
+    if (this.flyoutTimeout) clearTimeout(this.flyoutTimeout);
     this.setState({ flyoutIsOpen: false });
   };
   mouseOverFlyoutArea = ({ currentTarget, target }: *) => {
     if (!currentTarget.contains(target)) return;
-    this.setState({ flyoutIsOpen: true });
+    if (this.flyoutTimeout) clearTimeout(this.flyoutTimeout);
+    this.flyoutTimeout = setTimeout(() => {
+      this.setState({ flyoutIsOpen: true });
+    }, 350);
   };
 
   mouseEnter = () => {
     this.setState({ mouseIsOverNavigation: true });
   };
   mouseLeave = () => {
+    if (this.flyoutTimeout) clearTimeout(this.flyoutTimeout);
     this.setState({ mouseIsOverNavigation: false });
   };
 
@@ -346,7 +352,7 @@ export default class LayoutManager extends Component<
                         {this.renderContentNavigation({
                           isDragging,
                           transitionState,
-                          transitionStyle,
+                          ...{ transitionStyle },
                           width,
                         })}
                       </ContainerNavigationMask>
