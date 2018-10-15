@@ -140,7 +140,6 @@ export class MediaPluginState {
     }
 
     // TODO disable (not destroy!) pickers until mediaProvider is resolved
-    // let resolvedMediaProvider: MediaProvider;
     let Picker: typeof PickerFacade;
 
     try {
@@ -698,7 +697,6 @@ export class MediaPluginState {
   };
 
   removeNodeById = (state: MediaState) => {
-    // TODO: we would like better error handling and retry support here.
     const { id } = state;
     const mediaNodeWithPos = isImage(state.fileMimeType)
       ? this.findMediaNode(id)

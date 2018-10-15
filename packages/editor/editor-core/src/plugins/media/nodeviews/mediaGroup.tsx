@@ -41,12 +41,15 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
     this.setMediaItems(props);
   }
 
+  componentWillReceiveProps(props) {
+    this.setMediaItems(props);
+  }
+
   shouldComponentUpdate(nextProps) {
     if (
       this.props.selected !== nextProps.selected ||
       this.props.node !== nextProps.node
     ) {
-      this.setMediaItems(nextProps);
       return true;
     }
 
@@ -55,7 +58,7 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
 
   setMediaItems = props => {
     const { node } = props;
-    this.mediaNodes = [] as any;
+    this.mediaNodes = [] as Array<PMNode>;
     node.forEach((item, childOffset) => {
       this.mediaPluginState.mediaGroupNodes[
         item.attrs.__key || item.attrs.id
@@ -73,7 +76,7 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
         item.attrs.__key || item.attrs.id,
       );
       const identifier: FileIdentifier = {
-        id: getState ? getState!.fileId : item.attrs.id,
+        id: getState ? getState.fileId : item.attrs.id,
         mediaItemType: 'file',
       };
 
@@ -82,7 +85,7 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
         identifier,
         selectable: true,
         selected: this.props.selected === nodePos,
-        onClick: (e, x) => {
+        onClick: () => {
           setNodeSelection(this.props.view, nodePos);
         },
         actions: [
@@ -104,7 +107,7 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
   };
 
   render() {
-    return <>{this.renderChildNodes(this.props.node)}</>;
+    return this.renderChildNodes(this.props.node);
   }
 }
 
@@ -116,7 +119,7 @@ class MediaGroupNodeView extends ReactNodeView {
         plugins={{
           reactNodeViewState: reactNodeViewStateKey,
         }}
-        render={({ reactNodeViewState }) => {
+        render={() => {
           const nodePos = this.getPos();
           const { $anchor, $head } = this.view.state.selection;
           const isSelected =
@@ -137,8 +140,8 @@ class MediaGroupNodeView extends ReactNodeView {
 }
 
 export const ReactMediaGroupNode = (portalProviderAPI: PortalProviderAPI) => (
-  node: any,
-  view: any,
+  node: PMNode,
+  view: EditorView,
   getPos: () => number,
 ): NodeView => {
   return new MediaGroupNodeView(node, view, getPos, portalProviderAPI).init();

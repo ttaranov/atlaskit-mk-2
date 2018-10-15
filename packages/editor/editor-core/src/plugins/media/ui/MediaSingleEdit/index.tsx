@@ -99,7 +99,6 @@ class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
       allowBreakout,
       allowLayout,
     } = this.props;
-    // console.log('target ', target)
     if (
       target &&
       !closestElement(target, 'li') &&

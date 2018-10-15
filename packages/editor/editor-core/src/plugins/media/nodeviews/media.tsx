@@ -96,7 +96,7 @@ class MediaNode extends Component<
 
   componentDidMount() {
     this.handleNewNode(this.props);
-    this.updateContext();
+    this.updateMediaContext();
   }
 
   componentWillUnmount() {
@@ -104,12 +104,12 @@ class MediaNode extends Component<
     this.pluginState.handleMediaNodeUnmount(node);
   }
 
-  private updateContext = async () => {
+  private updateMediaContext = async () => {
     const mediaProvider = await this.mediaProvider;
     if (mediaProvider) {
-      const mediaContext = await mediaProvider.viewContext;
-      if (mediaContext) {
-        this.setState({ viewContext: mediaContext });
+      const viewContext = await mediaProvider.viewContext;
+      if (viewContext) {
+        this.setState({ viewContext });
       }
     }
   };
@@ -118,12 +118,13 @@ class MediaNode extends Component<
     const { node, selected, cardDimensions, onClick } = this.props;
     const { id, type, collection, url, __key } = node.attrs;
 
+    if (!this.state.viewContext) {
+      return <CardView status="loading" dimensions={cardDimensions} />;
+    }
+
     /** For new images, the media state will be loaded inside the plugin state */
     const getState = this.pluginState.getMediaNodeState(__key);
-    let fileId;
-    if (getState && getState.fileId) {
-      fileId = getState!.fileId;
-    }
+    const fileId = getState && getState.fileId ? getState.fileId : id;
 
     const identifier: Identifier =
       type === 'external'
@@ -133,14 +134,12 @@ class MediaNode extends Component<
             mediaItemType: 'external-image',
           }
         : {
-            id: fileId || id,
+            id: fileId,
             mediaItemType: 'file',
             collectionName: collection!,
           };
 
-    return !this.state.viewContext ? (
-      <CardView status="loading" dimensions={cardDimensions} />
-    ) : (
+    return (
       <Card
         context={this.state.viewContext!}
         dimensions={cardDimensions}

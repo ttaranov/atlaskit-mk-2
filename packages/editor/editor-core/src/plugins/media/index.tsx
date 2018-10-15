@@ -8,6 +8,7 @@ import {
   MediaState,
   MediaStateManager,
   DefaultMediaStateManager,
+  MediaPluginState,
 } from './pm-plugins/main';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
@@ -135,7 +136,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           mediaState: pluginKey,
         }}
         render={({ mediaState }) => {
-          const { element: target, layout } = mediaState;
+          const { element: target, layout } = mediaState as MediaPluginState;
           const node = mediaState.selectedMediaNode();
           const allowBreakout = !!(
             node &&

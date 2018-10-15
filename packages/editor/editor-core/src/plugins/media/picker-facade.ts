@@ -198,12 +198,13 @@ export default class PickerFacade {
   }
 
   resolvePublicId(file) {
-    file.upfrontId &&
+    if (file.upfrontId) {
       file.upfrontId.then(data => {
         this.stateManager.updateState(file.id, {
           publicId: data,
         });
       });
+    }
   }
 
   private handleUploadPreviewUpdate = (

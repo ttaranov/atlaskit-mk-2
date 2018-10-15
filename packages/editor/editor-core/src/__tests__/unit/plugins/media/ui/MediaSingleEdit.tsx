@@ -68,7 +68,7 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     mediaSingleEdit.unmount();
   });
 
-  it.only('should not have layout options if media single inside bodied extension', async () => {
+  it('should not have layout options if media single inside bodied extension', async () => {
     const { editorView } = editor(
       doc(
         bodiedExtension({

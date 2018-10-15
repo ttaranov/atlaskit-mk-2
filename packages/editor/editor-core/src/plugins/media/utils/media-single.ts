@@ -71,7 +71,10 @@ export const createMediaSingleNode = (schema: Schema, collection: string) => (
   mediaState: MediaSingleState,
 ) => {
   const { id, dimensions } = mediaState;
-  const { width = undefined, height = undefined } = dimensions || {};
+  const { width, height } = dimensions || {
+    height: undefined,
+    width: undefined,
+  };
   const { media, mediaSingle } = schema.nodes;
 
   const mediaNode = media.create({

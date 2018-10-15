@@ -69,7 +69,9 @@ export default class MediaSingleNode extends Component<
 
   componentDidUpdate() {
     const { layout } = this.props.node.attrs;
-    if (this.props.selected()) this.mediaPluginState.updateLayout(layout);
+    if (this.props.selected()) {
+      this.mediaPluginState.updateLayout(layout);
+    }
   }
 
   private onExternalImageLoaded = ({ width, height }) => {
@@ -240,8 +242,8 @@ class MediaSingleNodeView extends ReactNodeView {
 }
 
 export const ReactMediaSingleNode = portalProviderAPI => (
-  node: any,
-  view: any,
+  node: PMNode,
+  view: EditorView,
   getPos: () => number,
 ): NodeView => {
   return new MediaSingleNodeView(node, view, getPos, portalProviderAPI).init();

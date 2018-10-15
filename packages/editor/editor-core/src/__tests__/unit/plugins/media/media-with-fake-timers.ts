@@ -12,7 +12,7 @@ import {
   MediaPluginState,
   DefaultMediaStateManager,
 } from '../../../../plugins/media/pm-plugins/main';
-import mediaPlugin, { MediaProvider } from '../../../../plugins/media';
+import mediaPlugin from '../../../../plugins/media';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -55,7 +55,9 @@ describe('Media plugin', async () => {
   describe('updateUploadState', () => {
     it('should change upload state to unfinished when uploads start', async () => {
       const { pluginState } = editor(doc(p('')));
-      (await mediaProvider) as MediaProvider;
+      const provider = await mediaProvider;
+      await provider.uploadContext;
+      await provider.viewContext;
 
       pluginState.insertFiles([
         {
@@ -83,7 +85,6 @@ describe('Media plugin', async () => {
         },
       ]);
       jest.runOnlyPendingTimers();
-      debugger;
       pluginState.stateManager.updateState('foo', {
         id: 'foo',
         fileName: 'foo.jpg',
