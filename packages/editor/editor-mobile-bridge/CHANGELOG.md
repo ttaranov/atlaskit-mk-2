@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.15
+- [patch] Fixing the padding and the renderer bridge content [e550390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e550390)
+
 ## 4.0.14
 - [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/editor-common@20.0.0
