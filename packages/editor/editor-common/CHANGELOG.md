@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 20.0.1
+- [patch] ED-5487: fix popup when editor is initialised in the head of the page [0c3a2f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c3a2f3)
+
 ## 20.0.0
 - [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/emoji@45.0.0
