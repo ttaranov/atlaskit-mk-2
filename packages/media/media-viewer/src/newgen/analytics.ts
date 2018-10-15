@@ -11,6 +11,7 @@ export const createAndFireEventOnMedia = createAndFireEvent(channel);
 
 export type ViewerLoadPayload = {
   status: 'success' | 'error';
+  errorMessage?: string;
 };
 
 export type AnalyticViewerProps = {

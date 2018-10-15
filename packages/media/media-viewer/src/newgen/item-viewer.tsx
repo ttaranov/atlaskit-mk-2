@@ -77,7 +77,13 @@ export class ItemViewerBase extends React.Component<
         if (payload.status === 'success') {
           this.fireAnalytics(itemViewerLoadedEvent(file));
         } else if (payload.status === 'error') {
-          this.fireAnalytics(itemViewerErrorEvent(id, 'Viewer error', file));
+          this.fireAnalytics(
+            itemViewerErrorEvent(
+              id,
+              payload.errorMessage || 'Viewer error',
+              file,
+            ),
+          );
         }
       }
     });

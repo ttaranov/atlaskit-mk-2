@@ -1,3 +1,11 @@
+import {
+  setViewerPayload,
+  ImageViewer as ImageViewerMock,
+} from './mocks/image-viewer';
+jest.mock('../../src/newgen/viewers/image', () => ({
+  ImageViewer: ImageViewerMock,
+}));
+
 import * as React from 'react';
 import { Observable } from 'rxjs';
 import { mount } from 'enzyme';
@@ -51,6 +59,10 @@ function mountBaseComponent(context: Context, identifier: Identifier) {
 }
 
 describe('<ItemViewer />', () => {
+  beforeEach(() => {
+    setViewerPayload({ status: 'success' });
+  });
+
   it('shows an indicator while loading', () => {
     const context = makeFakeContext(Observable.empty());
     const { el } = mountComponent(context, identifier);
@@ -316,6 +328,10 @@ describe('<ItemViewer />', () => {
     });
 
     it('should trigger analytics when viewer returned an error', () => {
+      setViewerPayload({
+        status: 'error',
+        errorMessage: 'Image viewer failed :(',
+      });
       const context = makeFakeContext(
         Observable.of({
           id: identifier.id,
@@ -332,7 +348,7 @@ describe('<ItemViewer />', () => {
         actionSubject: 'mediaFile',
         actionSubjectId: 'some-id',
         attributes: {
-          failReason: 'Viewer error',
+          failReason: 'Image viewer failed :(',
           fileId: 'some-id',
           fileMediatype: 'image',
           fileSize: undefined,
@@ -343,8 +359,29 @@ describe('<ItemViewer />', () => {
     });
 
     it('should trigger analytics when viewer is successful', () => {
-      // TODO.
-      // should we mock the ImageViewer component or its internals (getBlobService)?
+      const context = makeFakeContext(
+        Observable.of({
+          id: identifier.id,
+          mediaType: 'image',
+          status: 'processed',
+        }),
+      );
+      const { createAnalyticsEventSpy } = mountBaseComponent(
+        context,
+        identifier,
+      );
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'loaded',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'some-id',
+        attributes: {
+          fileId: 'some-id',
+          fileMediatype: 'image',
+          fileSize: undefined,
+          status: 'success',
+        },
+        eventType: 'operational',
+      });
     });
   });
 });
