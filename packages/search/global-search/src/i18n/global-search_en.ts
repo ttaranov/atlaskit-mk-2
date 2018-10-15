@@ -31,6 +31,7 @@ export default {
   "global-search.jira.advanced-search-boards": "boards",
   "global-search.jira.advanced-search-filters": "filters",
   "global-search.jira.advanced-search-people": "people",
+  "global-search.jira.advanced-issue-search": "View all issues",
   "global-search.jira.no-results-title": "No results in issue summaries, names and people",
   "global-search.jira.no-results-body": "Try searching with a different term. You can search all text fields in issues as well with advanced search, or search for other items more specifically.",
   "global-search.jira.no-recent-activity-body": "Or refine your results with our advanced search."
