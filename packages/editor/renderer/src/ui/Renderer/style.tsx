@@ -25,6 +25,7 @@ import {
   TableSharedCssClassName,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
+import { RendererCssClassName } from '../../consts';
 
 export const FullPagePadding = 32;
 
@@ -206,7 +207,23 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-right: 0;
   }
 
-  ${tableSharedStyle} & .${TableSharedCssClassName.TABLE_CONTAINER} {
+  /* Breakout for tables and extensions */
+  .${RendererCssClassName.DOCUMENT} > {
+    .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='full-width'],
+    .${TableSharedCssClassName.TABLE_CONTAINER}[data-layout='wide'],
+    .${RendererCssClassName.EXTENSION}[data-layout='wide'],
+    .${RendererCssClassName.EXTENSION}[data-layout='full-width']   {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    * .${TableSharedCssClassName.TABLE_CONTAINER},
+    * .${RendererCssClassName.EXTENSION} {
+      width: 100% !important;
+    }
+  }
+
+  ${tableSharedStyle}
+  .${TableSharedCssClassName.TABLE_CONTAINER} {
     transition: all 0.1s linear;
     overflow-x: auto;
     table {
@@ -217,31 +234,33 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     table[data-number-column='true'] {
       counter-reset: row-number;
 
-      /*
-       * Only increment the row number if its a standard cell.
-       * When we have a header row that should count as the 0th row.
-       */
-      tr > td:first-of-type {
-        counter-increment: row-number;
-      }
-
       /**
        * Don't show the row increment on header rows.
        */
-      tr:first-of-type {
-        th:first-of-type::before {
+      tr:first-child {
+        th:first-child::before {
           content: '';
+        }
+
+        /*
+        * Only increment the row number if its a standard cell.
+        * When we have a header row that should count as the 0th row.
+        */  
+        th:first-child {
+          counter-reset: row-number;
         }
       }
 
-      tr td:first-of-type,
-      tr th:first-of-type {
+      tr td:first-child,
+      tr th:first-child {
+        counter-increment: row-number;
         position: relative;
+        font-weight: normal;
         padding-left: ${akEditorTableNumberColumnWidth + 10}px;
       }
 
-      tr td:first-of-type::before,
-      tr th:first-of-type::before {
+      tr td:first-child::before,
+      tr th:first-child::before {
         content: counter(row-number);
         display: table-cell;
         box-sizing: border-box;
@@ -282,7 +301,6 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & .ApplicationCard,
   & .MediaGroup,
   & .CodeBlock {
     margin-top: ${blockNodesVerticalMargin};
@@ -290,12 +308,6 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     &:first-child {
       margin-top: 0;
     }
-  }
-
-  & .Extension-wide,
-  & .Extension-full-width {
-    margin-left: 50%;
-    transform: translateX(-50%);
   }
 
   ${columnLayoutSharedStyle};

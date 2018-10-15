@@ -6,6 +6,7 @@ import * as last from 'lodash.last';
 import * as merge from 'lodash.merge';
 
 import {
+  DEFAULT_SOURCE,
   UI_EVENT_TYPE,
   SCREEN_EVENT_TYPE,
   TRACK_EVENT_TYPE,
@@ -58,7 +59,7 @@ export default (
   logger: Logger,
 ): GasPayload | GasScreenEventPayload | null => {
   const sources = getSources(event);
-  const source = last(sources) || 'unknown';
+  const source = last(sources) || DEFAULT_SOURCE;
   const extraAttributes = getExtraAttributes(event);
   const components = getComponents(event);
 

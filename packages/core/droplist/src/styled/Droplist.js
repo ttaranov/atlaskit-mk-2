@@ -13,8 +13,7 @@ const getMaxHeight = ({ isTall, maxHeight }) => {
   const verticalPadding = gridSize();
   const height = heightWithoutPadding + verticalPadding * 2;
   const defaultMaxHeight = 9.5 * height + verticalPadding / 2;
-
-  return isTall ? 'none' : `${defaultMaxHeight}px`;
+  return isTall ? '90vh' : `${defaultMaxHeight}px`;
 };
 
 export default styled.div`

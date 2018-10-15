@@ -235,7 +235,7 @@ export const formatting: ((intl: InjectedIntl) => Format[]) = ({
     ),
   },
   {
-    name: formatMessage(listMessages.action),
+    name: formatMessage(insertBlockMessages.action),
     type: 'taskItem',
     autoFormatting: () => (
       <span>

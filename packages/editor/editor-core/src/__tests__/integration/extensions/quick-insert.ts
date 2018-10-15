@@ -1,6 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { messages } from '../../../plugins/lists/ui/ToolbarLists';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 import {
   getDocFromElement,

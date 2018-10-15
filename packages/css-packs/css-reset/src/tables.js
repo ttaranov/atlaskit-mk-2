@@ -1,7 +1,5 @@
 //@flow
-import * as colors from '@atlaskit/theme/src/colors';
-import { gridSize } from '@atlaskit/theme/src';
-import * as typography from '@atlaskit/theme/src/typography';
+import { colors, gridSize, typography } from '@atlaskit/theme';
 import evaluateInner from './utils/evaluate-inner';
 
 const tableBorderWdth = 2;

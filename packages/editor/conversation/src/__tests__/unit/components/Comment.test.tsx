@@ -1,7 +1,6 @@
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, { CommentAction, CommentAuthor } from '@atlaskit/comment';
-import { ConnectedReactionsView, ReactionContext } from '@atlaskit/reactions';
-import { MockReactionsClient } from '@atlaskit/reactions/src/client/MockReactionsClient';
+import { ConnectedReactionsView } from '@atlaskit/reactions';
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import {
@@ -384,18 +383,32 @@ describe('Comment', () => {
   describe('reactions', () => {
     const [user] = MOCK_USERS;
 
+    it('should render reactions-component if dataProvider contains reactionsProvider and emojiProvider', () => {
+      const comment = mount(
+        <Comment
+          {...defaultProps}
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={mockComment}
+          dataProviders={getDataProviderFactory()}
+          user={user}
+        />,
+      );
+
+      expect(comment.first().find(ConnectedReactionsView).length).toEqual(1);
+      comment.unmount();
+    });
+
     it('should render reactions-component if dataProvider contains emojiProvider', () => {
       const comment = mount(
-        <ReactionContext client={new MockReactionsClient()}>
-          <Comment
-            {...defaultProps}
-            conversationId={mockComment.conversationId}
-            containerId="ari:cloud:platform::conversation/demo"
-            comment={mockComment}
-            dataProviders={getDataProviderFactory()}
-            user={user}
-          />
-        </ReactionContext>,
+        <Comment
+          {...defaultProps}
+          conversationId={mockComment.conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          comment={mockComment}
+          dataProviders={getDataProviderFactory()}
+          user={user}
+        />,
       );
 
       expect(comment.first().find(ConnectedReactionsView).length).toEqual(1);
