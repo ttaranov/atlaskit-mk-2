@@ -75,6 +75,9 @@ describe('Avatar', () =>
           wrapper = mount(
             <AvatarImage src={src} appearance="circle" size="medium" />,
           );
+          // setting src to a string doesn't seem to trigger the successful loading in tests
+          // so we mock that and wait for our component to respond
+          wrapper.instance().handleLoadSuccess();
         });
         afterEach(() => {
           clearCache();
@@ -93,6 +96,7 @@ describe('Avatar', () =>
           expect(wrapper.find(imgSpan).exists()).toBe(true));
 
         it('should set isLoading=false when a same src is provided as the src already loaded', () => {
+          // isLoading is still true here, perhaps need a waitUntil?
           expect(wrapper.state('isLoading')).toBe(false);
           wrapper.setProps({ src });
           expect(wrapper.state('isLoading')).toBe(false);
@@ -126,6 +130,8 @@ describe('Avatar', () =>
 
           const stateSpy = jest.spyOn(wrapper.instance(), 'setState');
           wrapper.setProps({ src });
+          wrapper.instance().handleLoadSuccess();
+
           expect(stateSpy.mock.calls[0][0]).toEqual({ isLoading: true });
           expect(stateSpy.mock.calls[1][0]).toEqual({
             hasError: false,

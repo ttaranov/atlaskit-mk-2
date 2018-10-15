@@ -310,23 +310,6 @@ describe('Renderer - TextSerializer', () => {
     expect(render(doc)).to.equal('Atlassian is for TEAM');
   });
 
-  it('should render application card text', () => {
-    const doc = {
-      type: 'doc',
-      version: 1,
-      content: [
-        {
-          type: 'applicationCard',
-          attrs: {
-            text: 'applicationCard text',
-          },
-        },
-      ],
-    };
-
-    expect(render(doc)).to.equal('applicationCard text');
-  });
-
   it('should render blockquote text prefixed with "> "', () => {
     const doc = {
       type: 'doc',

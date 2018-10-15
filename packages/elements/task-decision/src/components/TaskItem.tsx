@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-
 import { CheckBoxWrapper } from '../styled/TaskItem';
 
 import Item from './Item';
@@ -15,6 +14,7 @@ export interface Props {
   onChange?: (taskId: string, isChecked: boolean) => void;
   contentRef?: ContentRef;
   children?: any;
+  placeholder?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
   participants?: User[];
@@ -88,6 +88,7 @@ export class TaskItem extends PureComponent<
       contentRef,
       children,
       participants,
+      placeholder,
       showPlaceholder,
       disabled,
     } = this.props;
@@ -112,7 +113,7 @@ export class TaskItem extends PureComponent<
         contentRef={contentRef}
         icon={icon}
         participants={participants}
-        placeholder="Type your action, use '@' to assign to someone."
+        placeholder={placeholder}
         showPlaceholder={showPlaceholder}
         attribution={this.getAttributionText()}
       >

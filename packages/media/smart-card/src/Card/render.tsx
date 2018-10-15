@@ -12,6 +12,7 @@ export const renderCardWithURL = ({
   client,
   appearance,
   isSelected,
+  onClick,
 }: CardWithUrl) => {
   if (!url) {
     throw new Error(
@@ -30,6 +31,7 @@ export const renderCardWithURL = ({
             services: [],
             data: { url },
           }}
+          onClick={onClick}
           reload={() => {
             /* do nothing */
           }}
@@ -45,6 +47,7 @@ export const renderCardWithURL = ({
                 ...state,
                 data: { url, ...state.data },
               }}
+              onClick={onClick}
               reload={reload}
             />
           )}
@@ -58,6 +61,7 @@ export const renderCardWithData = ({
   appearance,
   data,
   isSelected,
+  onClick,
 }: CardWithData) => (
   <CardContent
     isSelected={isSelected}
@@ -67,6 +71,7 @@ export const renderCardWithData = ({
       services: [],
       data,
     }}
+    onClick={onClick}
     reload={() => {
       /* do nothing */
     }}

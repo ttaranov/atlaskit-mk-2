@@ -49,7 +49,7 @@ const getRelevantConfig = (
 
 const getDomRefFromSelection = (view: EditorView) =>
   findDomRefAtPos(
-    view.state.selection.head,
+    view.state.selection.from,
     view.domAtPos.bind(view),
   ) as HTMLElement;
 

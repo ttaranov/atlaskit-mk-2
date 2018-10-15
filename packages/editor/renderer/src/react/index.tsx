@@ -42,7 +42,6 @@ export interface ConstructorParams {
   extensionHandlers?: ExtensionHandlers;
   portal?: HTMLElement;
   objectContext?: RendererContext;
-  useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   disableHeadingIDs?: boolean;
   allowDynamicTextSizing?: boolean;
@@ -54,7 +53,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private extensionHandlers?: ExtensionHandlers;
   private portal?: HTMLElement;
   private rendererContext?: RendererContext;
-  private useNewApplicationCard?: boolean;
   private appearance?: RendererAppearance;
   private disableHeadingIDs?: boolean;
   private headingIds: string[] = [];
@@ -66,7 +64,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     extensionHandlers,
     portal,
     objectContext,
-    useNewApplicationCard,
     appearance,
     disableHeadingIDs,
     allowDynamicTextSizing,
@@ -76,7 +73,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.extensionHandlers = extensionHandlers;
     this.portal = portal;
     this.rendererContext = objectContext;
-    this.useNewApplicationCard = useNewApplicationCard;
     this.appearance = appearance;
     this.disableHeadingIDs = disableHeadingIDs;
     this.allowDynamicTextSizing = allowDynamicTextSizing;
@@ -223,7 +219,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       rendererContext: this.rendererContext,
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
-      useNewApplicationCard: this.useNewApplicationCard,
       allowDynamicTextSizing: this.allowDynamicTextSizing,
       appearance: this.appearance,
       ...node.attrs,

@@ -24,9 +24,20 @@ describe('ReactionsContainer', () => {
   let stateMapper;
   let actionsMapper;
 
+  const store = {
+    getReactions: jest.fn(),
+    toggleReaction: jest.fn(),
+    addReaction: jest.fn(),
+    getDetailedReaction: jest.fn(),
+    getState: jest.fn(),
+    onChange: jest.fn(),
+    removeOnChangeListener: jest.fn(),
+  };
+
   beforeAll(() => {
     container = shallow(
       <ReactionsContainer
+        store={store}
         containerAri={containerAri}
         ari={ari}
         emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
@@ -124,5 +135,9 @@ describe('ReactionsContainer', () => {
         'emojiA',
       );
     });
+  });
+
+  it('should set store in the consumer', () => {
+    expect(container.find(ReactionConsumer).prop('store')).toBe(store);
   });
 });
