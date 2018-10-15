@@ -23,7 +23,8 @@
     "@atlaskit/field-base": "^11.0.8",
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/section-message": "^1.0.8",
-    "@atlaskit/theme": "^6.0.2"
+    "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",

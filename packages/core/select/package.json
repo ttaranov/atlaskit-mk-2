@@ -29,6 +29,7 @@
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "focus-trap": "^2.4.5",
     "memoize-one": "^3.0.1",
     "react-fast-compare": "^2.0.1",

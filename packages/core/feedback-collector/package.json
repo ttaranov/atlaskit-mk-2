@@ -23,6 +23,7 @@
     "@atlaskit/modal-dialog": "^7.0.2",
     "@atlaskit/select": "^6.0.2",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "lodash.truncate": "^4.4.2"
   },
   "devDependencies": {

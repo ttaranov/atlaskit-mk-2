@@ -21,6 +21,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@babel/runtime": "^7.0.0",
     "raf-schd": "^2.1.0",
     "react-scrolllock": "^3.0.1"
   },

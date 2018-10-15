@@ -26,6 +26,7 @@
     "@atlaskit/button": "^9.0.13",
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "calendar-base": "^0.3.0",
     "lodash.pick": "^4.4.0",
     "uuid": "^3.1.0"

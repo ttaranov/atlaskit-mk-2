@@ -19,6 +19,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@babel/runtime": "^7.0.0",
     "memoize-one": "^3.0.1",
     "react-popper": "^1.0.2"
   },

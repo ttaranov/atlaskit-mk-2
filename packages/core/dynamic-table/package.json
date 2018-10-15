@@ -27,6 +27,7 @@
     "@atlaskit/pagination": "^8.0.0",
     "@atlaskit/spinner": "^9.0.9",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "prop-types": "^15.5.10",
     "react-beautiful-dnd": "^9.0.0"
   },

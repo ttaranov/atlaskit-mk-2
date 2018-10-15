@@ -24,6 +24,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
