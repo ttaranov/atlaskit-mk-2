@@ -27,24 +27,35 @@ interface DataloaderKey {
   collection?: string;
 }
 export class FileFetcher {
-  dataloader: Dataloader<DataloaderKey, MediaCollectionItemFullDetails>;
+  dataloader: Dataloader<
+    DataloaderKey,
+    MediaCollectionItemFullDetails | undefined
+  >;
   constructor(private readonly mediaStore: MediaStore) {
     // TODO: caching function
     this.dataloader = new Dataloader<
       DataloaderKey,
-      MediaCollectionItemFullDetails
+      MediaCollectionItemFullDetails | undefined
     >(this.batchLoadingFunc, {
       maxBatchSize: 100,
     });
   }
 
-  // TODO: map input files to response files
-  // TODO: not found file
+  // Returns an array of the same length as the keys filled with file items
   batchLoadingFunc = async (keys: DataloaderKey[]) => {
-    console.log(keys);
     const response = await this.mediaStore.getItems(keys);
+    const { items } = response.data;
 
-    return response.data.items.map(item => item.details);
+    return keys.map(key => {
+      const item = items.find(
+        item => item.id === key.id && item.collection === key.collection,
+      );
+      if (!item) {
+        return undefined;
+      }
+
+      return item.details;
+    });
   };
 
   getFileState(id: string, options?: GetFileOptions): Observable<FileState> {
@@ -72,6 +83,10 @@ export class FileFetcher {
       const fetchFile = async () => {
         try {
           const response = await this.dataloader.load({ id, collection });
+          if (!response) {
+            return;
+          }
+
           const fileState = mapMediaItemToFileState(id, response);
 
           observer.next(fileState);

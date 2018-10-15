@@ -4,10 +4,10 @@ import {
   createStorybookContext,
   imageFileId,
   genericFileId,
-  noMetadataFileId,
-  errorFileId,
   gifFileId,
+  defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
+import * as uuid from 'uuid';
 import { FileState } from '../src';
 import { FileStateWrapper } from '../example-helpers/styled';
 
@@ -27,8 +27,7 @@ class Example extends Component<{}, ExampleState> {
     this.fetchItem(genericFileId.id, genericFileId.collectionName); // Normal case
     this.fetchItem(imageFileId.id, imageFileId.collectionName); // Calling the first item again
     this.fetchItem(imageFileId.id); // Calling first item without collection on pourpuse
-    // this.fetchItem(errorFileId.id, errorFileId.collectionName); // Non existing item
-    // this.fetchItem(noMetadataFileId.id, noMetadataFileId.collectionName); // Calling item without metadata
+    this.fetchItem(uuid(), defaultCollectionName); // No existing item
   }
 
   fetchItem(id: string, collectionName?: string) {
@@ -55,8 +54,11 @@ class Example extends Component<{}, ExampleState> {
   renderFileState = (): ReactNode => {
     const { fileStates } = this.state;
     const states = Object.keys(fileStates).map(id => {
-      // TODO: handle different states
-      const { name } = fileStates[id];
+      let name: string = '';
+      const state = fileStates[id];
+      if (state.status !== 'error') {
+        name = state.name;
+      }
 
       return (
         <FileStateWrapper key={id}>
