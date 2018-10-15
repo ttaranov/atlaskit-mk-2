@@ -15,7 +15,14 @@ import { Outcome } from '../../../../src/newgen/domain';
 
 function createFixture() {
   const onClose = jest.fn();
-  const el = mount(<InteractiveImg src={''} onClose={onClose} />);
+  const el = mount(
+    <InteractiveImg
+      onLoad={jest.fn()}
+      onError={jest.fn()}
+      src={''}
+      onClose={onClose}
+    />,
+  );
   const viewport = new Rectangle(400, 300);
   const originalImg = new Rectangle(800, 600);
   const camera = new Camera(viewport, originalImg);
