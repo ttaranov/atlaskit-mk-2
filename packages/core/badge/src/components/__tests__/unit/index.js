@@ -26,7 +26,7 @@ test('children', () => {
 });
 
 test('using a string', () => {
-  expect(getFormatProps(<Badge>+100</Badge>)).toMatchObject({
+  expect(mount(<Badge>+100</Badge>).props()).toMatchObject({
     children: '+100',
   });
 });
