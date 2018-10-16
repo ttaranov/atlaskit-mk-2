@@ -302,7 +302,7 @@ const ResizeBox = ({ pending, width }: BoxProps) => (
   </div>
 );
 
-type StatusEvent = { key: string, name: string, value?: number };
+type StatusEvent = { key: string, name: string, isFlyout: boolean };
 type State = {
   boxWidth: number | 'auto',
   callStack: Array<StatusEvent>,
@@ -320,10 +320,10 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
   componentDidMount() {
     this.updateWidth();
   }
-  onEmit = (name: string) => (value?: number) => {
+  onEmit = (name: string) => (isFlyout: boolean) => {
     const callStack = this.state.callStack.slice(0);
     const key = makeKey();
-    callStack.push({ key, name, value });
+    callStack.push({ key, name, isFlyout });
     this.setState({ callStack });
   };
   getStack = () => {
@@ -332,22 +332,22 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
     const len = callStack.length;
     return len < total ? callStack : callStack.slice(len - total, len);
   };
-  onCollapseStart = () => {
-    this.onEmit('onCollapseStart')();
+  onCollapseStart = (node, isAppearing, isFlyout) => {
+    this.onEmit('onCollapseStart')(isFlyout);
     this.makePending();
   };
-  onCollapseEnd = () => {
-    this.onEmit('onCollapseEnd')();
+  onCollapseEnd = (node, isAppearing, isFlyout) => {
+    this.onEmit('onCollapseEnd')(isFlyout);
     this.updateWidth();
   };
-  onExpandStart = () => {
+  onExpandStart = (node, isAppearing, isFlyout) => {
     if (this.props.navState.isResizing) return; // ignore expand events when resizing
-    this.onEmit('onExpandStart')();
+    this.onEmit('onExpandStart')(isFlyout);
     this.makePending();
   };
-  onExpandEnd = () => {
+  onExpandEnd = (node, isAppearing, isFlyout) => {
     if (this.props.navState.isResizing) return; // ignore expand events when resizing
-    this.onEmit('onExpandEnd')();
+    this.onEmit('onExpandEnd')(isFlyout);
     this.updateWidth();
   };
   onResizeEnd = () => {
@@ -403,7 +403,7 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
               lastTen.map(e => (
                 <div key={e.key}>
                   <code>
-                    {e.name}({e.value})
+                    {e.name}({`${e.isFlyout}`})
                   </code>
                 </div>
               ))

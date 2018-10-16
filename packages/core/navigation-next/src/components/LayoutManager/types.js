@@ -4,7 +4,7 @@ import type { ComponentType, ElementRef, Node } from 'react';
 
 import UIController from '../../ui-controller/UIController';
 
-export type CollapseListener = number => void;
+export type CollapseListener = (HTMLElement, boolean, boolean) => void;
 
 export type CollapseToggleTooltipContent = (
   isCollapsed: boolean,
