@@ -86,6 +86,9 @@ const mentionsPlugin: EditorPlugin = {
     ],
     typeAhead: {
       trigger: '@',
+      // Custom regex must have a capture group around trigger
+      // so it's possible to use it without needing to scan through all triggers again
+      customRegex: '\\(?(@)',
       getItems(query, state, intl, { prevActive, queryChanged }) {
         if (!prevActive && queryChanged) {
           analyticsService.trackEvent(
@@ -285,6 +288,11 @@ function mentionPluginFactory(
               .then((provider: MentionProvider) => {
                 if (mentionProvider) {
                   mentionProvider.unsubscribe('mentionPlugin');
+                }
+
+                // Preload mentions, and populate cache
+                if (provider) {
+                  provider.filter('');
                 }
 
                 mentionProvider = provider;

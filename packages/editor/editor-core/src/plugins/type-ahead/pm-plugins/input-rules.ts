@@ -16,14 +16,16 @@ export function inputRulePlugin(
   schema: Schema,
   typeAheads: TypeAheadHandler[],
 ): Plugin | undefined {
-  const triggers = typeAheads.map(t => t.trigger).join('|');
+  const triggersRegex = typeAheads
+    .map(t => t.customRegex || t.trigger)
+    .join('|');
 
-  if (!triggers.length) {
+  if (!triggersRegex.length) {
     return;
   }
 
   const regex = new RegExp(
-    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${triggers})$`,
+    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${triggersRegex})$`,
   );
 
   const typeAheadInputRule = createInputRule(regex, (state, match, start, end):
@@ -33,20 +35,27 @@ export function inputRulePlugin(
       state,
     ) as TypeAheadPluginState;
 
-    if (!typeAheadState.isAllowed) {
+    /**
+     * Why using match 2 and 3?  Regex:
+     * (allowed characters before trigger)(joined|triggers|(sub capture groups))
+     *            match[1]                     match[2]          match[3] – optional
+     */
+    const trigger = match[3] || match[2];
+
+    if (!typeAheadState.isAllowed || !trigger) {
       return;
     }
 
-    const mark = schema.mark('typeAheadQuery', { trigger: match[2] });
+    const mark = schema.mark('typeAheadQuery', { trigger });
     const { tr, selection } = state;
     const marks = selection.$from.marks();
 
     analyticsService.trackEvent('atlassian.editor.typeahead.trigger', {
-      trigger: match[2],
+      trigger,
     });
 
     return tr.replaceSelectionWith(
-      schema.text(match[2], [mark, ...marks]),
+      schema.text(trigger, [mark, ...marks]),
       false,
     );
   });

@@ -12,6 +12,7 @@ export type TypeAheadItem = {
 
 export type TypeAheadHandler = {
   trigger: string;
+  customRegex?: string;
   getItems: (
     query: string,
     editorState: EditorState,
