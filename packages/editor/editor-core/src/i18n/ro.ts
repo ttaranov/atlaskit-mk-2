@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Lat',
   'fabric.editor.layoutFullWidth': 'Lățime completă',
   'fabric.editor.remove': 'Eliminare',
+  'fabric.editor.visit': 'Open link in a new window',
   'fabric.editor.normal': 'Text normal',
   'fabric.editor.heading1': 'Titlu 1',
   'fabric.editor.heading2': 'Titlu 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Text de afișat',
   'fabric.editor.linkPlaceholderWithSearch':
     'Lipire link sau căutare elemente vizualizate recent',
+  'fabric.editor.action': 'Articol acțiune',
   'fabric.editor.link': 'Link',
   'fabric.editor.filesAndImages': 'Fișiere și imagini',
   'fabric.editor.image': 'Imagine',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Trei coloane',
   'fabric.editor.unorderedList': 'Listă cu marcatori',
   'fabric.editor.orderedList': 'Listă numerotată',
-  'fabric.editor.action': 'Articol acțiune',
   'fabric.editor.lists': 'Liste',
   'fabric.editor.wrapLeft': 'Încadrare stânga',
   'fabric.editor.wrapRight': 'Încadrare dreapta',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Inserare rând',
   'fabric.editor.removeRows':
     '{0, plural, one{Eliminare rând} few{Eliminare rânduri} other{Eliminare rânduri}}',
+  'fabric.editor.decisionPlaceholder': 'Add a decision…',
+  'fabric.editor.taskPlaceholder':
+    "Type your action, use '@' to assign to someone.",
   'fabric.editor.textColor': 'Culoare text',
   'fabric.editor.underline': 'Subliniere',
   'fabric.editor.strike': 'Tăiere cu o linie',
