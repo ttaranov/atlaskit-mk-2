@@ -1,5 +1,9 @@
 # @atlaskit/modal-dialog
 
+## 7.0.4
+- [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
+  - @atlaskit/portal@0.0.12
+
 ## 7.0.3
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

@@ -1,5 +1,9 @@
 # @atlaskit/flag
 
+## 9.1.2
+- [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
+  - @atlaskit/portal@0.0.12
+
 ## 9.1.1
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 
