@@ -6,20 +6,15 @@ import React, {
   type Node,
 } from 'react';
 import Portal from '@atlaskit/portal';
-import { Provider, Subscribe } from 'unstated';
-import ScrollLock from 'react-scrolllock';
 
-import SpotlightRegistry from './SpotlightRegistry';
 import { Fade } from './Animation';
 import Blanket from '../styled/Blanket';
 
-// NOTE: Instantiate a global registry, as this component will likely be
-// re-rendered by its parent tree
-const registry = new SpotlightRegistry();
-
 const noop = () => {};
 
-const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext();
+const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext(
+  noop,
+);
 const {
   Consumer: SpotlightStateConsumer,
   Provider: SpotlightStateProvider,
@@ -31,8 +26,8 @@ export class SpotlightConsumer extends React.Component<{
   name: string,
   children: ((string) => HTMLElement) => Node,
 }> {
-  opened;
-  closed;
+  opened = noop;
+  closed = noop;
   componentDidMount() {
     this.opened(this.props.name);
   }
@@ -113,7 +108,9 @@ export default class SpotlightManager extends PureComponent<
           <React.Fragment>
             <Fade in={this.state.spotlightCount > 0}>
               {animationStyles => (
-                <Blanket style={animationStyles} isTinted={blanketIsTinted} />
+                <Portal>
+                  <Blanket style={animationStyles} isTinted={blanketIsTinted} />
+                </Portal>
               )}
             </Fade>
             {children}
@@ -123,11 +120,3 @@ export default class SpotlightManager extends PureComponent<
     );
   }
 }
-
-export const withSpotlightState = (WrappedComponent: any) => (props: any) => (
-  <Subscribe to={[SpotlightRegistry]}>
-    {spotlightRegistry => (
-      <WrappedComponent {...props} spotlightRegistry={spotlightRegistry} />
-    )}
-  </Subscribe>
-);

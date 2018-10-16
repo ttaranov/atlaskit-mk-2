@@ -1,36 +1,19 @@
 // @flow
-import React, { Component, type ElementType } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { Popper } from '@atlaskit/popper';
+import React, { Component, type ElementType, type Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { FocusLock } from '@atlaskit/layer-manager';
-import Layer from '@atlaskit/layer';
-import { layers } from '@atlaskit/theme';
 
 import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
 
-import { getSpotlightTheme } from './theme';
-
-import {
-  Dialog,
-  DialogBody,
-  FillScreen,
-  Heading,
-  Image,
-} from '../styled/Dialog';
+import { Image } from '../styled/Dialog';
 import SpotlightCard from './SpotlightCard';
-
-import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
-import Actions from './SpotlightActions';
-import { SpotlightConsumer } from './SpotlightManager';
-import { type Props as SpotlightProps } from './Spotlight';
 
 type Props = {
   /** Buttons to render in the footer */
@@ -65,26 +48,25 @@ type Props = {
   image?: string,
   /** The spotlight target node */
   targetNode: HTMLElement,
-  /** whether the spotlight is open or not */
-  isOpen: boolean,
   /** js object containing the animation styles to apply to component */
   animationStyles: Object,
 };
 
-class SpotlightDialog extends Component<Props> {
-  static defaultProps = {
-    dialogWidth: 400,
-    pulse: true,
-  };
+type State = {
+  hasFocusLock: boolean,
+};
 
+class SpotlightDialog extends Component<Props, State> {
   state = {
     hasFocusLock: false,
   };
 
   componentDidMount() {
     setTimeout(() => {
+      // we delay the enabling of the focus lock to avoid the scroll position
+      // jumping around in some situations
       this.setState({ hasFocusLock: true });
-    }, 500);
+    }, 200);
   }
 
   render() {
@@ -99,7 +81,6 @@ class SpotlightDialog extends Component<Props> {
       header,
       heading,
       image,
-      isOpen,
       targetNode,
     } = this.props;
     const { hasFocusLock } = this.state;
@@ -114,7 +95,7 @@ class SpotlightDialog extends Component<Props> {
 
     return (
       <Popper referenceElement={targetNode}>
-        {({ ref, style, placement, outOfBoundaries }) => (
+        {({ ref, style, placement }) => (
           <FocusLock enabled={hasFocusLock} returnFocus={false}>
             <SpotlightCard
               innerRef={ref}

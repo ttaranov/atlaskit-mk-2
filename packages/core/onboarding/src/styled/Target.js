@@ -34,14 +34,9 @@ export const Div = styled.div`
   z-index: ${layers.spotlight};
 `;
 
-// absolute position anchors the Popper.js dialog
-export const TargetOuter = styled.div`
-  position: absolute;
-`;
-
 // fixed position holds the target in place if overflow/scroll is necessary
 export const TargetInner = styled(Div)`
-  ${animationWithCheck} position: fixed;
+  ${animationWithCheck} position: absolute;
 `;
 
 export const TargetOverlay = styled.div`

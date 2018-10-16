@@ -1,6 +1,6 @@
 // @flow
 import React, { type ComponentType } from 'react';
-import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
+import { TargetOverlay, TargetInner } from '../styled/Target';
 
 type Props = {
   /** Whether or not to display a pulse animation around the spotlighted element */
@@ -32,15 +32,6 @@ function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
   return clonedNode;
 }
 
-/* eslint-disable react/prop-types, react/no-danger */
-const CloneWrapper = ({ html }) => (
-  <div
-    dangerouslySetInnerHTML={{ __html: html }}
-    style={{ pointerEvents: 'none' }}
-  />
-);
-/* eslint-enable react/prop-types, react/no-danger */
-
 const Clone = (props: Props) => {
   const {
     pulse,
@@ -57,9 +48,12 @@ const Clone = (props: Props) => {
     throw Error(`Spotlight couldn't find a target${targetText}.`);
   }
   const { height, left, top, width } = targetNode.getBoundingClientRect();
-  const rect = { height, left, top, width };
-  console.log(rect);
-  const clone = cloneAndOverrideStyles(targetNode);
+  const rect = {
+    height,
+    left: left + window.scrollX,
+    top: top + window.scrollY,
+    width,
+  };
 
   return Replacement ? (
     <Replacement {...rect} />
@@ -70,8 +64,18 @@ const Clone = (props: Props) => {
       radius={targetRadius}
       style={rect}
     >
-      <CloneWrapper html={clone.outerHTML} />
-      <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
+      <div
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: cloneAndOverrideStyles(targetNode).outerHTML,
+        }}
+        style={{ pointerEvents: 'none' }}
+      />
+      <TargetOverlay
+        onClick={
+          targetOnClick ? event => targetOnClick({ event, target }) : undefined
+        }
+      />
     </TargetInner>
   );
 };

@@ -63,36 +63,17 @@ export type Props = {
   targetReplacement?: ComponentType<*>,
 };
 
-class Scroller extends React.Component<{
-  targetNode: HTMLElement,
-  children: boolean => Node,
-}> {
-  componentDidMount() {
-    scrollIntoView(this.props.targetNode, { mode: 'if-needed' });
-    this.forceUpdate();
-    // setTimeout(() => this.forceUpdate(), 1000);
-  }
-  render() {
-    function isElementInViewport(el: HTMLElement) {
-      const rect = el.getBoundingClientRect();
-      return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth)
-      );
-    }
-    return this.props.children(isElementInViewport(this.props.targetNode));
-  }
-}
-
-class SpotlightWrapper extends React.Component<Props> {
+class Spotlight extends React.Component<Props> {
   static defaultProps = {
     dialogWidth: 400,
     pulse: true,
   };
+
+  componentDidMount() {
+    scrollIntoView(this.props.targetNode, {
+      scrollMode: 'if-needed',
+    });
+  }
 
   render() {
     const {
@@ -105,50 +86,45 @@ class SpotlightWrapper extends React.Component<Props> {
       targetReplacement,
     } = this.props;
     return (
-      <SpotlightConsumer>
-        {getTargetElement => (
-          <Scroller targetNode={targetNode || getTargetElement(target)}>
-            {isElementVisible =>
-              console.log('isElementVisible', isElementVisible) || (
-                <SpotlightTransitionConsumer>
-                  {({ isOpen, onExited }) => (
-                    <React.Fragment>
-                      <Portal zIndex={layers.spotlight()}>
-                        <ScrollLock />
-                        {isElementVisible && (
-                          <Clone
-                            pulse={pulse}
-                            target={target}
-                            targetBgColor={targetBgColor}
-                            targetNode={targetNode || getTargetElement(target)}
-                            targetOnClick={targetOnClick}
-                            targetRadius={targetRadius}
-                            targetReplacement={targetReplacement}
-                          />
-                        )}
-                        <Fade in={isOpen} onExited={onExited}>
-                          {animationStyles => (
-                            <SpotlightDialog
-                              {...this.props}
-                              isOpen={isOpen}
-                              animationStyles={animationStyles}
-                              targetNode={
-                                targetNode || getTargetElement(target)
-                              }
-                            />
-                          )}
-                        </Fade>
-                      </Portal>
-                    </React.Fragment>
-                  )}
-                </SpotlightTransitionConsumer>
-              )
-            }
-          </Scroller>
+      <SpotlightTransitionConsumer>
+        {({ isOpen, onExited }) => (
+          <React.Fragment>
+            <Portal zIndex={layers.spotlight()}>
+              <ScrollLock />
+              <Clone
+                pulse={pulse}
+                target={target}
+                targetBgColor={targetBgColor}
+                targetNode={targetNode}
+                targetOnClick={targetOnClick}
+                targetRadius={targetRadius}
+                targetReplacement={targetReplacement}
+              />
+              <Fade in={isOpen} onExited={onExited}>
+                {animationStyles => (
+                  <SpotlightDialog
+                    {...this.props}
+                    isOpen={isOpen}
+                    animationStyles={animationStyles}
+                  />
+                )}
+              </Fade>
+            </Portal>
+          </React.Fragment>
         )}
-      </SpotlightConsumer>
+      </SpotlightTransitionConsumer>
     );
   }
 }
 
-export default SpotlightWrapper;
+export default React.forwardRef((props: Props, ref) => (
+  <SpotlightConsumer>
+    {getTargetElement => (
+      <Spotlight
+        {...props}
+        targetNode={props.targetNode || getTargetElement(props.target)}
+        ref={ref}
+      />
+    )}
+  </SpotlightConsumer>
+));
