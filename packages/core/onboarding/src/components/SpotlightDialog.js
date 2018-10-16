@@ -77,6 +77,16 @@ class SpotlightDialog extends Component<Props> {
     pulse: true,
   };
 
+  state = {
+    hasFocusLock: false,
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ hasFocusLock: true });
+    }, 500);
+  }
+
   render() {
     const {
       actions,
@@ -92,6 +102,7 @@ class SpotlightDialog extends Component<Props> {
       isOpen,
       targetNode,
     } = this.props;
+    const { hasFocusLock } = this.state;
 
     // warn consumers when they provide conflicting props
     if (header && image) {
@@ -104,7 +115,7 @@ class SpotlightDialog extends Component<Props> {
     return (
       <Popper referenceElement={targetNode}>
         {({ ref, style, placement, outOfBoundaries }) => (
-          <FocusLock enabled={isOpen} returnFocus={false}>
+          <FocusLock enabled={hasFocusLock} returnFocus={false}>
             <SpotlightCard
               innerRef={ref}
               styles={{ ...style, ...animationStyles }}

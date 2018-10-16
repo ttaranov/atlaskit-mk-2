@@ -8,6 +8,7 @@ import React, {
 import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
 import ScrollLock from 'react-scrolllock';
+import scrollIntoView from 'scroll-into-view-if-needed';
 import { Fade } from './Animation';
 import Clone from './Clone';
 import SpotlightDialog from './SpotlightDialog';
@@ -62,19 +63,36 @@ export type Props = {
   targetReplacement?: ComponentType<*>,
 };
 
+class Scroller extends React.Component<{
+  targetNode: HTMLElement,
+  children: boolean => Node,
+}> {
+  componentDidMount() {
+    scrollIntoView(this.props.targetNode, { mode: 'if-needed' });
+    this.forceUpdate();
+    // setTimeout(() => this.forceUpdate(), 1000);
+  }
+  render() {
+    function isElementInViewport(el: HTMLElement) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <=
+          (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <=
+          (window.innerWidth || document.documentElement.clientWidth)
+      );
+    }
+    return this.props.children(isElementInViewport(this.props.targetNode));
+  }
+}
+
 class SpotlightWrapper extends React.Component<Props> {
   static defaultProps = {
     dialogWidth: 400,
     pulse: true,
   };
-  state = {
-    showClone: false,
-  };
-  componentDidMount() {
-    window.addEventListener('scroll', e => {
-      this.setState({ showClone: true });
-    });
-  }
 
   render() {
     const {
@@ -86,39 +104,47 @@ class SpotlightWrapper extends React.Component<Props> {
       targetRadius,
       targetReplacement,
     } = this.props;
-    const { showClone } = this.state;
     return (
       <SpotlightConsumer>
         {getTargetElement => (
-          <SpotlightTransitionConsumer>
-            {({ isOpen, onExited }) => (
-              <React.Fragment>
-                <Portal zIndex={layers.spotlight()}>
-                  {showClone && (
-                    <Clone
-                      pulse={pulse}
-                      target={target}
-                      targetBgColor={targetBgColor}
-                      targetNode={targetNode || getTargetElement(target)}
-                      targetOnClick={targetOnClick}
-                      targetRadius={targetRadius}
-                      targetReplacement={targetReplacement}
-                    />
+          <Scroller targetNode={targetNode || getTargetElement(target)}>
+            {isElementVisible =>
+              console.log('isElementVisible', isElementVisible) || (
+                <SpotlightTransitionConsumer>
+                  {({ isOpen, onExited }) => (
+                    <React.Fragment>
+                      <Portal zIndex={layers.spotlight()}>
+                        <ScrollLock />
+                        {isElementVisible && (
+                          <Clone
+                            pulse={pulse}
+                            target={target}
+                            targetBgColor={targetBgColor}
+                            targetNode={targetNode || getTargetElement(target)}
+                            targetOnClick={targetOnClick}
+                            targetRadius={targetRadius}
+                            targetReplacement={targetReplacement}
+                          />
+                        )}
+                        <Fade in={isOpen} onExited={onExited}>
+                          {animationStyles => (
+                            <SpotlightDialog
+                              {...this.props}
+                              isOpen={isOpen}
+                              animationStyles={animationStyles}
+                              targetNode={
+                                targetNode || getTargetElement(target)
+                              }
+                            />
+                          )}
+                        </Fade>
+                      </Portal>
+                    </React.Fragment>
                   )}
-                  <Fade in={isOpen} onExited={onExited}>
-                    {animationStyles => (
-                      <SpotlightDialog
-                        {...this.props}
-                        isOpen={isOpen}
-                        animationStyles={animationStyles}
-                        targetNode={targetNode || getTargetElement(target)}
-                      />
-                    )}
-                  </Fade>
-                </Portal>
-              </React.Fragment>
-            )}
-          </SpotlightTransitionConsumer>
+                </SpotlightTransitionConsumer>
+              )
+            }
+          </Scroller>
         )}
       </SpotlightConsumer>
     );

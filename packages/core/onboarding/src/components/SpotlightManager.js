@@ -98,17 +98,17 @@ export default class SpotlightManager extends PureComponent<
 
   getTargetElement = (name: string) => this.targets[name];
 
+  stateProviderValues = {
+    opened: this.spotlightOpen,
+    closed: this.spotlightClose,
+    getTargetElement: this.getTargetElement,
+  };
+
   render() {
     const { blanketIsTinted, children, component: Tag } = this.props;
 
     return (
-      <SpotlightStateProvider
-        value={{
-          opened: this.spotlightOpen,
-          closed: this.spotlightClose,
-          getTargetElement: this.getTargetElement,
-        }}
-      >
+      <SpotlightStateProvider value={this.stateProviderValues}>
         <TargetProvider value={this.targetRef}>
           <React.Fragment>
             <Fade in={this.state.spotlightCount > 0}>
