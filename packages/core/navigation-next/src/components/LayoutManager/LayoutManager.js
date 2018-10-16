@@ -281,6 +281,7 @@ export default class LayoutManager extends Component<
       props: { onExpandStart },
       state: { flyoutIsOpen },
     } = this;
+
     if (onExpandStart) {
       onExpandStart(node, isAppearing, flyoutIsOpen);
     }
@@ -289,7 +290,7 @@ export default class LayoutManager extends Component<
   onExpandEnd = (node, isAppearing) => {
     const {
       props: { onExpandEnd },
-      state: flyoutIsOpen,
+      state: { flyoutIsOpen },
     } = this;
 
     this.setState({ wasOpenedByFlyout: flyoutIsOpen });
