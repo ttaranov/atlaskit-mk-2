@@ -15,8 +15,8 @@ export interface MediaState {
   fileSize?: number;
   fileMimeType?: string;
   dimensions?: {
-    width: number;
-    height: number;
+    width: number | undefined;
+    height: number | undefined;
   };
   fileId: Promise<string>;
   publicId?: string;

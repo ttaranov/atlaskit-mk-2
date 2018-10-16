@@ -70,12 +70,7 @@ describe('Media PickerFacade', () => {
       upfrontId: Promise.resolve('publicid'),
       creationDate: 10,
     },
-    preview: {
-      dimensions: {
-        height: 100,
-        width: 100,
-      },
-    },
+    preview: {},
   };
 
   const endPayload = {
@@ -91,10 +86,7 @@ describe('Media PickerFacade', () => {
       fileSize: 100,
       fileId: Promise.resolve('publicid'),
       fileMimeType: 'test/file',
-      dimensions: {
-        height: 100,
-        width: 100,
-      },
+      dimensions: undefined,
       status: 'preview',
     },
   ];

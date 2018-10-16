@@ -225,9 +225,7 @@ export default class PickerFacade {
       fileMimeType: file.type,
       fileId: file.upfrontId,
       status: 'preview',
-      dimensions: isImagePreview(preview)
-        ? preview.dimensions
-        : { height: 200, width: 250 },
+      dimensions: isImagePreview(preview) ? preview.dimensions : undefined,
     });
 
     this.resolvePublicId(file);
