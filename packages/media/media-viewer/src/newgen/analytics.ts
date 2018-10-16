@@ -1,5 +1,8 @@
 import { createAndFireEvent } from '@atlaskit/analytics-next';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  GasPayload,
+  GasScreenEventPayload,
+} from '@atlaskit/analytics-gas-types';
 import { ProcessedFileState } from '@atlaskit/media-core';
 import {
   name as packageName,
@@ -79,6 +82,19 @@ export const itemViewerCommencedEvent = (id: string): GasPayload => {
     actionSubject: 'mediaFile',
     actionSubjectId: id,
     eventType: 'operational',
+    attributes: {
+      fileId: id,
+      ...context,
+    },
+  };
+};
+
+export const mediaViewerModalScreenEvent = (
+  id: string,
+): GasScreenEventPayload => {
+  return {
+    eventType: 'screen',
+    name: 'mediaViewerModal',
     attributes: {
       fileId: id,
       ...context,

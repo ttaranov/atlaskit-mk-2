@@ -280,6 +280,30 @@ describe('<ItemViewer />', () => {
   });
 
   describe('Analytics', () => {
+    it('should trigger the screen event when the preview commences', () => {
+      const context = makeFakeContext(
+        Observable.of({
+          id: identifier.id,
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+      );
+      const { createAnalyticsEventSpy } = mountBaseComponent(
+        context,
+        identifier,
+      );
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        attributes: {
+          componentName: 'media-viewer',
+          fileId: 'some-id',
+          packageName: '@atlaskit/media-viewer',
+          packageVersion: '23.0.0',
+        },
+        eventType: 'screen',
+        name: 'mediaViewerModal',
+      });
+    });
+
     it('should trigger analytics when the preview commences', () => {
       const context = makeFakeContext(
         Observable.of({
@@ -314,7 +338,7 @@ describe('<ItemViewer />', () => {
         context,
         identifier,
       );
-      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(2);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(3);
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
         action: 'commenced',
         actionSubject: 'mediaFile',
