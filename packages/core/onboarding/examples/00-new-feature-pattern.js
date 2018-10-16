@@ -10,7 +10,7 @@ import {
   //   SpotlightTarget,
   SpotlightTransition,
 } from '../src';
-import Spotlight from '../src/components/SpotlightNext';
+import Spotlight from '../src/components/Spotlight';
 import SpotlightDialog from '../src/components/SpotlightDialog';
 
 const Wrapper = styled.div`

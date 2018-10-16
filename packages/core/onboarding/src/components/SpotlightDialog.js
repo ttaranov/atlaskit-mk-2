@@ -5,6 +5,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
+import { Popper } from '@atlaskit/popper';
 import { FocusLock } from '@atlaskit/layer-manager';
 
 import {

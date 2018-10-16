@@ -26,12 +26,6 @@ export default md`
       props={require('!!extract-react-types-loader!../src/components/Spotlight')}
     />
   )}
-  ## SpotlightManager
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/SpotlightManager')}
-    />
-  )}
   ## SpotlightTarget
   ${(
     <Props
