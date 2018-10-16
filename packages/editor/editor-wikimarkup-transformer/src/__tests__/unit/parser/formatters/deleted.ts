@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should not be a deleted mark surrounded by non-latin characters', () => {
+    const wiki = 'This is not a 牛-deleted-牛 text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a deleted mark if there is no space before -', () => {
     const wiki = 'This is not a-deleted- text';
 

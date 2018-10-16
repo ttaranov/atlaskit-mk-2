@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should not be a citation mark surrounded by non-latin characters', () => {
+    const wiki = 'This is not a 牛??citation??牛 text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a citation mark if there is no space before ??', () => {
     const wiki = 'This is not a??citation?? text';
 

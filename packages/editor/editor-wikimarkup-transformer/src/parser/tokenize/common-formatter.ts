@@ -3,7 +3,7 @@ import { parseString } from '../text';
 import { Token, TokenType, TokenErrCallback } from './';
 import { macro } from './macro';
 import { linkFormat } from './link-format';
-import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 export interface FormatterOption {
   /** The opening symbol */
@@ -93,7 +93,7 @@ export function commonFormatter(
          */
         if (index < input.length) {
           const charAfterEnd = input.charAt(index);
-          if (/[a-zA-Z0-9]/.test(charAfterEnd)) {
+          if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
             return fallback(input);
           }
         }

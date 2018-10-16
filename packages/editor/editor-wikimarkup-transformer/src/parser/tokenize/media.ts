@@ -2,7 +2,6 @@ import { Schema } from 'prosemirror-model';
 import getMediaSingleNodeView from '../nodes/mediaSingle';
 import { Token } from './';
 import { parseAttrs } from '../utils/attrs';
-import { parseWhitespaceAndNewLine } from './whitespace';
 
 // [!image.jpg!|https://www.atlassian.com]
 const MEDIA_REGEXP = /^\!([\(\)\w. -]+)(\|[\w=,. ]*)?\!/;
@@ -32,7 +31,7 @@ export function media(input: string, schema: Schema): Token {
   const index = match[0].length;
   if (index < input.length) {
     const charAfterEnd = input.charAt(index);
-    if (/[a-zA-Z0-9]/.test(charAfterEnd)) {
+    if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
       return fallback(input);
     }
   }

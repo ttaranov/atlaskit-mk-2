@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { Token } from './';
-import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const processState = {
   START: 0,
@@ -59,7 +59,7 @@ export function monospace(input: string, schema: Schema): Token {
          */
         if (index < input.length) {
           const charAfterEnd = input.charAt(index);
-          if (/[a-zA-Z0-9]/.test(charAfterEnd)) {
+          if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
             return fallback();
           }
         }

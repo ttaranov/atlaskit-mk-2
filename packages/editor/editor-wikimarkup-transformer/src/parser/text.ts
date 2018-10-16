@@ -77,7 +77,10 @@ export function parseString(
         const endingChar = buffer[buffer.length - 1];
         if (buffer.endsWith('{')) {
           match = parseOtherKeyword(substring);
-        } else if (endingChar && !/[a-zA-Z0-9]/.test(endingChar)) {
+        } else if (
+          endingChar &&
+          !/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(endingChar)
+        ) {
           match =
             parseFormatterKeyword(substring) ||
             parseMacroKeyword(substring) ||
