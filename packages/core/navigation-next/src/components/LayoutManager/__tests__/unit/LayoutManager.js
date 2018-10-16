@@ -49,7 +49,7 @@ describe('LayoutManager', () => {
         jest.useFakeTimers();
       });
 
-      it('should open when mousing over ContainerNavigationMask', () => {
+      it('should open when mousing over ContainerNavigationMask with a delay of 350ms', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
@@ -59,6 +59,20 @@ describe('LayoutManager', () => {
 
         jest.advanceTimersByTime(1);
         expect(wrapper.state('flyoutIsOpen')).toBe(true);
+      });
+
+      it('should not open when mousing out before 350ms', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+
+        jest.advanceTimersByTime(300);
+        wrapper.find(ContainerNavigationMask).simulate('mouseout');
+        wrapper.update();
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+
+        jest.advanceTimersByTime(1);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
 
       it('should close when mousing out of NavigationContainer', () => {
