@@ -15,16 +15,16 @@ export default class CheckboxGroups extends Component<
   state = {
     flexDirection: 'column',
   };
-  onChange = event => {
-    switch (event.target.value) {
+  onChange = (event: SyntheticEvent<*>) => {
+    switch (event.currentTarget.value) {
       case 'column':
         this.setState({
-          flexDirection: event.target.checked ? 'column' : undefined,
+          flexDirection: event.currentTarget.checked ? 'column' : undefined,
         });
         break;
       case 'row':
         this.setState({
-          flexDirection: event.target.checked ? 'row' : undefined,
+          flexDirection: event.currentTarget.checked ? 'row' : undefined,
         });
         break;
       default:

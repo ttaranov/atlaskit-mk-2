@@ -7,15 +7,16 @@ export default md`
   There are a few breaking changes you need to be aware of in upgrading from 4.x to 5.x.
 
   ## Exports
-  @atlaskit/checkbox no longer exports the Checkbox component as a default, the CheckboxStateless component has also been deprecated.
-  Instead there are now two named exports:
+  @atlaskit/checkbox no longer specifies the Checkbox component as the default export.
+  Moreover the following changes have been made to exports from the @atlaskit/checkbox package.
 
   ### Checkbox:
+  Checkbox is now a **named** export of the @atlaskit/checkbox package. Please import it as below.
 
   ${code`import { Checkbox } from @atlaskit/checkbox;`}
 
-  The Checkbox component is now a conditionally controlled component, the isChecked prop is exposed for users to control the checked state of the component.
-  This was the sole reason for having the CheckboxStateless component in pre 5.x.
+  The Checkbox component is now a conditionally controlled component, the **isChecked** prop is exposed for users to control the checked state of the component.
+  This was the sole reason for having the CheckboxStateless component in pre 5.x, and as a result leveraging this pattern allows us to do away with the CheckboxStateless component.
 
   ${(
     <Example
@@ -36,7 +37,7 @@ export default md`
   )}
 
 
-  Additionally, one can control the initial checked state of a component by setting the defaultChecked (boolean) prop.
+  Additionally, one can control the initial checked state of a component by setting the **defaultChecked** (boolean) prop.
   This is used as the initial value of the internal 'isChecked' property in state. This value will be overridden by additional user interactions with the component.
 
   ${(
@@ -46,6 +47,9 @@ export default md`
       source={require('!!raw-loader!../examples/05-default-checked')}
     />
   )}
+
+  ### CheckboxStateless
+  **This component has been deprecated in favor of the conditionally controlled component pattern specified above.**
 
   ### CheckboxGroup:
 
@@ -67,7 +71,14 @@ export default md`
 
   ${code`import { CheckboxIcon } from @atlaskit/checkbox;`}
 
-  @atlaskit/checkbox now exports a CheckboxIcon component, this is a functional wrapper around the @atlaskit/icon/glyph/checkbox svg,
-  and is intended to be consumed in cases where a user wants a presentational checkbox, without the Label and additional form markup.
-  (see the Checkbox Select in @atlaskit/select as an example).
+  @atlaskit/checkbox now also exports a CheckboxIcon component, this is a functional wrapper around the @atlaskit/icon/glyph/checkbox svg,
+  and is intended to be consumed in cases where a user wants a presentational checkbox inline with ADG3, without the Label and additional form markup.
+  See the CheckboxSelect in @atlaskit/select for an example use case.
+
+
+  ## Prop Changes
+  ### Checkbox
+  **initiallyChecked** renamed to **defaultChecked**
+  **label** prop now accepts type Node instead of type string.
+  **isChecked** is now an optional boolean prop on the Checkbox component.
 `;
