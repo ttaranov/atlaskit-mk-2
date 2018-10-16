@@ -45,9 +45,6 @@ describe('LayoutManager', () => {
     });
 
     describe('when experimental_flyoutOnHover is set and navigation is collapsed', () => {
-      beforeEach(() => {
-        jest.useFakeTimers();
-      });
       it('should open when mousing over ContainerNavigationMask', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
@@ -107,44 +104,6 @@ describe('LayoutManager', () => {
         expect(
           wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
         ).toBeNull();
-      });
-
-      it('should have transitionDelay style when the flyout is open', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
-        wrapper.setState({ flyoutIsOpen: true });
-        wrapper.update();
-        expect(
-          wrapper.find('ContentNavigationWrapper').prop('style'),
-        ).toHaveProperty('transitionDelay', '350ms');
-      });
-
-      it('should NOT have transitionDelay style when the flyout is closed', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
-        wrapper.setState({ flyoutIsOpen: false });
-        wrapper.update();
-        expect(
-          wrapper.find('ContentNavigationWrapper').prop('style'),
-        ).not.toHaveProperty('transitionDelay', '350ms');
-      });
-
-      it('should show ChevronRight when flyout is open', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
-        wrapper.setState({ flyoutIsOpen: true });
-        jest.runAllTimers();
-        wrapper.update();
-        expect(wrapper.find('ChevronRightIcon').exists()).toBeTruthy();
-        expect(wrapper.find('MenuIcon').exists()).toBeFalsy();
-      });
-      it('should show the menu icon when flyout is closed', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
-        wrapper.setState({ flyoutIsOpen: false });
-        wrapper.update();
-        expect(wrapper.find('MenuIcon').exists()).toBeTruthy();
-        expect(wrapper.find('ChevronRightIcon').exists()).toBeFalsy();
       });
 
       it('should NOT listen to mouseOuts of NavigationContainer if flyout is already closed', () => {
