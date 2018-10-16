@@ -96,7 +96,7 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
               null,
               () => nodePos,
             ),
-            icon: <EditorCloseIcon label="close" />,
+            icon: <EditorCloseIcon label="delete" />,
           },
         ],
       };
