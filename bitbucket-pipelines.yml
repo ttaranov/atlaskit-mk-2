@@ -56,6 +56,13 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
+
+              - echo "\033[0;31mWe are now about to run the `version` command which will read changesets and bump packages"
+              - echo "We do this so that we know if the repo will be in an inconsistent state when this branch hits master"
+              - echo "If the step below fails, it's because a changeset may be bumping a package that is depended upon by a package that didn't exist when the changeset was created"
+              - echo "Read the very last error message, it will tell you exactly what is wrong (ignore all the first warnings you'll see)\033[0m"
+              - node ./build/releases/bin/build-releases.js version || (echo "\033[0;31m If you are reading this message, please see the warning above and read the error message carefully" && false)
+
               - node build/ci-scripts/run.tool.if.changed.js eslint -- yarn lint:eslint
               - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
               - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
@@ -70,7 +77,7 @@ pipelines:
               - export CHANGED_FILES=$(git diff --name-only $DIVERGED_AT -- 'packages' 'build' 'website' | grep -E 'js$|ts$|tsx$' | tr '\n' ',')
               # The below runs prettier over all changed files and fails if anyone of them don't match prettier's rules
               # We add fileMock.js to the list of files so that we never pass an empty list to prettier
-              - yarn prettier --no-editorconfig "{$CHANGED_FILES,fileMock.js}" --list-different
+              # - yarn prettier --no-editorconfig "{$CHANGED_FILES,fileMock.js}" --list-different
             caches:
               - node
         - step:
