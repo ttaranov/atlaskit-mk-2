@@ -12,12 +12,14 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/avatar": "^14.1.1",
     "@atlaskit/button": "^9.0.13",
     "@atlaskit/drawer": "^2.1.1",
     "@atlaskit/icon": "^14.0.1",
     "@atlaskit/inline-dialog": "^9.0.6",
     "@atlaskit/section-message": "^1.0.9",
-    "@atlaskit/theme": "^6.1.0"
+    "@atlaskit/theme": "^6.1.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "devDependencies": {
     "@atlaskit/checkbox": "^5.0.3",
