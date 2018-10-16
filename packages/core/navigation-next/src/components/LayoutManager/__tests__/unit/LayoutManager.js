@@ -45,12 +45,21 @@ describe('LayoutManager', () => {
     });
 
     describe('when experimental_flyoutOnHover is set and navigation is collapsed', () => {
+      let handlers = {};
+      let wrapper;
+
       beforeEach(() => {
         jest.useFakeTimers();
+        handlers = {
+          onExpandStart: jest.fn(),
+          onExpandEnd: jest.fn(),
+          onCollapseStart: jest.fn(),
+          onCollapseEnd: jest.fn(),
+        };
+        wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
       });
 
       it('should open when mousing over ContainerNavigationMask with a delay of 350ms', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
 
@@ -59,10 +68,17 @@ describe('LayoutManager', () => {
 
         jest.advanceTimersByTime(1);
         expect(wrapper.state('flyoutIsOpen')).toBe(true);
+        expect(handlers.onExpandStart).toHaveBeenCalledWith(
+          expect.anything(),
+          false,
+          true,
+        );
+        expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+        expect(handlers.onCollapseStart).not.toHaveBeenCalled();
+        expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
       });
 
       it('should not open when mousing out before 350ms', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
 
@@ -72,36 +88,51 @@ describe('LayoutManager', () => {
 
         jest.runAllTimers();
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        expect(handlers.onExpandStart).not.toHaveBeenCalled();
+        expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+        expect(handlers.onCollapseStart).not.toHaveBeenCalled();
+        expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
       });
 
       it('should close when mousing out of NavigationContainer', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
+        jest.advanceTimersByTime(350);
         wrapper.find(NavigationContainer).simulate('mouseout');
 
+        jest.advanceTimersByTime(300);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
+
+        expect(handlers.onExpandStart).toHaveBeenCalledWith(
+          expect.anything(),
+          false,
+          true,
+        );
+        expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+        expect(handlers.onCollapseStart).toHaveBeenCalledWith(
+          expect.anything(),
+          undefined,
+          false,
+        );
+        expect(handlers.onCollapseEnd).toHaveBeenCalledWith(
+          expect.anything(),
+          undefined,
+          false,
+        );
       });
 
       it('should display ContentNavigation when flyout is open', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         wrapper.setState({ flyoutIsOpen: true });
         wrapper.update();
         expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(true);
       });
 
       it('should NOT display ContentNavigation flyout is closed', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         wrapper.setState({ flyoutIsOpen: false });
         wrapper.update();
         expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(false);
       });
 
       it('should NOT display resize hint bar', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         const resizeBar = wrapper.find(
           'div[aria-label="Click to expand the navigation"]',
         );
@@ -109,17 +140,22 @@ describe('LayoutManager', () => {
       });
 
       it('should NOT be open when nav is permanently expanded', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
         defaultProps.navigationUIController.state.isCollapsed = false;
         wrapper.setProps(defaultProps);
 
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        expect(handlers.onExpandStart).toHaveBeenCalledWith(
+          expect.anything(),
+          false,
+          false,
+        );
+        expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+        expect(handlers.onCollapseStart).not.toHaveBeenCalled();
+        expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
       });
 
       it('should NOT listen to mouseOvers over ContainerNavigationMask if flyout is already open', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(
           wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
         ).toEqual(expect.any(Function));
@@ -139,8 +175,6 @@ describe('LayoutManager', () => {
       });
 
       it('should NOT listen to mouseOuts of NavigationContainer if flyout is already closed', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         wrapper.setState({ flyoutIsOpen: false });
         wrapper.update();
         expect(wrapper.find(NavigationContainer).prop('onMouseOut')).toBeNull();
