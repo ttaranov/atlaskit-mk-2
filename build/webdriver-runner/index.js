@@ -45,6 +45,7 @@ async function runJest(testPaths) {
       _: testPaths || cli.input,
       maxWorkers,
       watch: !!process.env.WATCH,
+      passWithNoTests: true,
       updateSnapshot: cli.flags.updateSnapshot,
     },
     [process.cwd()],
@@ -58,8 +59,7 @@ async function rerunFailedTests(result) {
     .map(testResult => testResult.testFilePath);
 
   if (!failingTestPaths.length) {
-    getExitCode(result);
-    return;
+    return getExitCode(result);
   }
 
   console.log(
@@ -75,7 +75,7 @@ async function rerunFailedTests(result) {
     'test-reports/junit-rerun.xml',
   );
   const results = await runJest(failingTestPaths);
-  return results;
+  return getExitCode(results);
 }
 
 function runTestsWithRetry() {
@@ -85,6 +85,7 @@ function runTestsWithRetry() {
       const results = await runJest();
       code = getExitCode(results);
       if (code !== 0 && isBrowserStack) {
+        // TODO process failing test results and send to GAS.
         code = await rerunFailedTests(results);
       }
     } catch (err) {

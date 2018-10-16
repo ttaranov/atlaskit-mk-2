@@ -24,4 +24,13 @@ describe('ADF => WikiMarkup - CodeBlock', () => {
     );
     expect(transformer.encode(node)).toMatchSnapshot();
   });
+
+  test('[CS-293] should not escape formatter charaters in wiki', () => {
+    const node = doc(
+      code_block({ language: 'xxx' })(
+        'This will not escape [~mention] !file.txt! and {macro}',
+      ),
+    )(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
 });

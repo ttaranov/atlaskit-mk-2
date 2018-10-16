@@ -1,5 +1,8 @@
 # @atlaskit/tree
 
+## 4.1.2
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 4.1.1
 - [patch] Fixing drag&drop on clipped trees [b18ecfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b18ecfe)
 

@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.11
+- [patch] Adds escape for macro, mention and media [8a89d20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a89d20)
+
 ## 2.1.10
 - [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/editor-common@20.0.0

@@ -1,13 +1,30 @@
 import Avatar, { AvatarItem } from '@atlaskit/avatar';
-import Item from '@atlaskit/item';
 import Lozenge from '@atlaskit/lozenge';
 import * as React from 'react';
-import { User } from '../types';
+import styled from 'styled-components';
+import { HighlightRange, User } from '../types';
 import { HighlightText } from './HighlightText';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const AvatarItemWrapper = styled.div`
+  overflow: hidden;
+`;
+
+const LozengeWrapper = styled.div`
+  margin-left: 8px;
+`;
 
 export interface Props {
   user: User;
   status?: 'online' | 'busy' | 'focus' | 'offline';
+  innerRef?: React.Ref<unknown>;
+  context?: 'menu' | 'value';
 }
 
 interface AvatarText {
@@ -29,9 +46,14 @@ export default class UserPickerItem extends React.PureComponent<Props> {
   private renderLozenge = () => {
     const {
       user: { lozenge },
+      context,
     } = this.props;
-    if (lozenge) {
-      return <Lozenge>{lozenge}</Lozenge>;
+    if (lozenge && context === 'menu') {
+      return (
+        <LozengeWrapper>
+          <Lozenge>{lozenge}</Lozenge>
+        </LozengeWrapper>
+      );
     }
     return undefined;
   };
@@ -49,35 +71,39 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     return { primaryText: nickname };
   };
 
+  private highlightText = (text?: string, highlights?: HighlightRange[]) => {
+    if (!text) {
+      return undefined;
+    }
+    if (!highlights || this.props.context !== 'menu') {
+      return text;
+    }
+    return <HighlightText highlights={highlights}>{text}</HighlightText>;
+  };
+
   render() {
     const {
       user: { highlight },
     } = this.props;
-    const nameHighlights = highlight && highlight.name;
+    const primaryHighlights = highlight && highlight.name;
     const secondaryHighlights = highlight && highlight.nickname;
     const { primaryText, secondaryText } = this.generateAvatarText();
 
     return (
-      <Item elemAfter={this.renderLozenge()}>
-        <AvatarItem
-          backgroundColor="transparent"
-          avatar={this.renderAvatar()}
-          primaryText={
-            <HighlightText highlights={nameHighlights}>
-              {primaryText}
-            </HighlightText>
-          }
-          secondaryText={
-            secondaryText ? (
-              <HighlightText highlights={secondaryHighlights}>
-                {secondaryText}
-              </HighlightText>
-            ) : (
-              undefined
-            )
-          }
-        />
-      </Item>
+      <Container>
+        <AvatarItemWrapper>
+          <AvatarItem
+            backgroundColor="transparent"
+            avatar={this.renderAvatar()}
+            primaryText={this.highlightText(primaryText, primaryHighlights)}
+            secondaryText={this.highlightText(
+              secondaryText,
+              secondaryHighlights,
+            )}
+          />
+        </AvatarItemWrapper>
+        {this.renderLozenge()}
+      </Container>
     );
   }
 }
