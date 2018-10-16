@@ -370,7 +370,6 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
   render() {
     const { boxWidth, resizePending } = this.state;
     const lastTen = this.getStack();
-    console.log('navState', this.props.navState);
 
     return (
       <LayoutManager
@@ -381,6 +380,7 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
         onCollapseEnd={this.onCollapseEnd}
         onExpandStart={this.onExpandStart}
         onExpandEnd={this.onExpandEnd}
+        experimental_flyoutOnHover
       >
         <CollapseStatusListener
           onResizeEnd={this.onResizeEnd}

@@ -48,6 +48,7 @@ type RenderContentNavigationArgs = {
 type State = {
   flyoutIsOpen: boolean,
   mouseIsOverNavigation: boolean,
+  wasOpenedByFlyout: boolean,
 };
 
 function defaultTooltipContent(isCollapsed: boolean) {
@@ -114,7 +115,11 @@ export default class LayoutManager extends Component<
   LayoutManagerProps,
   State,
 > {
-  state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
+  state = {
+    flyoutIsOpen: false,
+    mouseIsOverNavigation: false,
+    wasOpenedByFlyout: false,
+  };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
   containerRef: HTMLElement;
@@ -271,15 +276,29 @@ export default class LayoutManager extends Component<
     );
   };
 
+  onExpandStart = () => {
+    console.log(this.state.flyoutIsOpen);
+    this.props.onExpandStart();
+  };
+
+  onExpandEnd = () => {
+    this.setState({ wasOpenedByFlyout: this.state.flyoutIsOpen });
+    console.log(this.state.flyoutIsOpen);
+    this.props.onExpandEnd();
+  };
+
+  onCollapseStart = () => {
+    console.log(this.state.wasOpenedByFlyout);
+    this.props.onCollapseStart();
+  };
+
+  onCollapseEnd = () => {
+    console.log(this.state.wasOpenedByFlyout);
+    this.props.onCollapseEnd();
+  };
+
   renderNavigation = () => {
-    const {
-      navigationUIController,
-      onExpandStart,
-      onExpandEnd,
-      onCollapseStart,
-      onCollapseEnd,
-      experimental_flyoutOnHover,
-    } = this.props;
+    const { navigationUIController, experimental_flyoutOnHover } = this.props;
     const { flyoutIsOpen, mouseIsOverNavigation } = this.state;
     const {
       isCollapsed,
@@ -308,10 +327,10 @@ export default class LayoutManager extends Component<
           userIsDragging={isResizing}
           // only apply listeners to the NAV resize transition
           productNavWidth={productNavWidth}
-          onExpandStart={onExpandStart}
-          onExpandEnd={onExpandEnd}
-          onCollapseStart={onCollapseStart}
-          onCollapseEnd={onCollapseEnd}
+          onExpandStart={this.onExpandStart}
+          onExpandEnd={this.onExpandEnd}
+          onCollapseStart={this.onCollapseStart}
+          onCollapseEnd={this.onCollapseEnd}
         >
           {({ transitionStyle, transitionState }) => {
             const onMouseOut =
