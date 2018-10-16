@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { ComponentClass, ButtonHTMLAttributes } from 'react';
+import {
+  ComponentClass,
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  InputHTMLAttributes,
+} from 'react';
 
 export const InputWrapper: ComponentClass = styled.div`
   margin: 20px 0;
@@ -50,4 +55,28 @@ export const PreviewImageContainer: ComponentClass = styled.div`
 export const OrientationSelectWrapper: ComponentClass = styled.label`
   margin-bottom: 20px;
   display: block;
+`;
+
+export const ItemViewerContainer: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: relative;
+  background-color: red;
+  cursor: move;
+  overflow: visible;
+`;
+
+export const ItemViewerItem: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: absolute;
+  background-color: green;
+  opacity: 0.75;
+`;
+
+export const ItemViewerMargin: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: absolute;
+  border: 1px dotted white;
+`;
+
+export const Slider: ComponentClass<InputHTMLAttributes<{}>> = styled.input`
+  width: 200px;
 `;

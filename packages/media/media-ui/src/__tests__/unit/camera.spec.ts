@@ -18,7 +18,9 @@ describe('Rectangle', () => {
       (w1, h1, w2, h2) => {
         const containing = new Rectangle(w1, h1);
         const original = new Rectangle(w2, h2);
-        const fitted = original.scaled(original.scaleToFit(containing));
+        const fitted = original.scaled(
+          original.scaleToFitLargestSide(containing),
+        );
         return !(
           Math.round(fitted.width) > Math.round(containing.width) ||
           Math.round(fitted.height) > Math.round(containing.height)
@@ -35,7 +37,9 @@ describe('Rectangle', () => {
       (w1, h1, w2, h2) => {
         const containing = new Rectangle(w1, h1);
         const original = new Rectangle(w2, h2);
-        const fitted = original.scaled(original.scaleToFit(containing));
+        const fitted = original.scaled(
+          original.scaleToFitLargestSide(containing),
+        );
         return (
           Math.round(fitted.width) === Math.round(containing.width) ||
           Math.round(fitted.height) === Math.round(containing.height)
@@ -52,7 +56,9 @@ describe('Rectangle', () => {
       (w1, h1, w2, h2) => {
         const containing = new Rectangle(w1, h1);
         const original = new Rectangle(w2, h2);
-        const fitted = original.scaled(original.scaleToFit(containing));
+        const fitted = original.scaled(
+          original.scaleToFitLargestSide(containing),
+        );
         return (
           original.aspectRatio - fitted.aspectRatio <= ACCEPTABLE_FLOATING_ERROR
         );

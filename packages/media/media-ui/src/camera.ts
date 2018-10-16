@@ -19,6 +19,10 @@ export class Vector2 {
   map(fn: (component: number) => number): Vector2 {
     return new Vector2(fn(this.x), fn(this.y));
   }
+
+  clone() {
+    return new Vector2(this.x, this.y);
+  }
 }
 
 export class Rectangle {
@@ -39,9 +43,9 @@ export class Rectangle {
   // Computes the scaling factor that needs to be applied to this
   // Rectangle so that it
   // - is fully visible inside of the containing Rectangle
-  // - is the largest possible size
+  // - is the LARGEST possible size
   // - maintains the original aspect ratio (no distortion)
-  scaleToFit(containing: Rectangle): number {
+  scaleToFitLargestSide(containing: Rectangle): number {
     const widthRatio = containing.width / this.width;
     const heightRatio = containing.height / this.height;
     if (widthRatio <= heightRatio) {
@@ -49,6 +53,71 @@ export class Rectangle {
     } else {
       return heightRatio;
     }
+  }
+
+  // Computes the scaling factor that needs to be applied to this
+  // Rectangle so that it
+  // - is fully visible inside of the containing Rectangle
+  // - is the SMALLEST possible size
+  // - maintains the original aspect ratio (no distortion)
+  scaleToFitSmallestSide(containing: Rectangle): number {
+    const widthRatio = containing.width / this.width;
+    const heightRatio = containing.height / this.height;
+    if (widthRatio >= heightRatio) {
+      return widthRatio;
+    } else {
+      return heightRatio;
+    }
+  }
+
+  clone(): Rectangle {
+    return new Rectangle(this.width, this.height);
+  }
+}
+
+export class Bounds extends Rectangle {
+  constructor(
+    public readonly x: number,
+    public readonly y: number,
+    public readonly width: number,
+    public readonly height: number,
+  ) {
+    super(width, height);
+  }
+
+  get center(): Vector2 {
+    return new Vector2(this.x, this.y).add(
+      new Vector2(this.width / 2, this.height / 2),
+    );
+  }
+
+  scaled(scale: number): Rectangle {
+    return new Bounds(
+      this.x * scale,
+      this.y * scale,
+      this.width * scale,
+      this.height * scale,
+    );
+  }
+
+  clone(): Bounds {
+    return new Bounds(this.x, this.y, this.width, this.height);
+  }
+
+  get left() {
+    return this.x;
+  }
+
+  get top() {
+    return this.y;
+  }
+
+  get right() {
+    return this.x + this.width;
+  }
+
+  get bottom() {
+    return this.y + this.height;
   }
 }
 
@@ -63,7 +132,7 @@ export class Camera {
   }
 
   get scaleToFit(): number {
-    return this.originalImg.scaleToFit(this.viewport);
+    return this.originalImg.scaleToFitLargestSide(this.viewport);
   }
 
   // If the image is smaller than or equal to the viewport, it won't be scaled.
@@ -90,5 +159,90 @@ export class Camera {
       .add(viewport.center)
       .scaled(newScale / prevScale)
       .sub(viewport.center);
+  }
+}
+
+export class ItemViewer {
+  containerRect: Rectangle;
+  itemRect: Rectangle;
+  originalItemRect: Rectangle;
+  margin: number = 28;
+  zoom: number = 0;
+  maxZoom: number = 2;
+  origin: Vector2;
+  dragOrigin?: Vector2;
+  useConstraints: boolean;
+
+  constructor(
+    containerWidth: number,
+    containerHeight: number,
+    itemWidth: number,
+    itemHeight: number,
+    margin: number = 28,
+    zoom: number = 0,
+    maxZoom: number = 2,
+    originX: number = 0,
+    originY: number = 0,
+    useConstraints: boolean = true,
+  ) {
+    this.containerRect = new Rectangle(containerWidth, containerHeight);
+    this.itemRect = new Rectangle(itemWidth, itemHeight);
+    this.originalItemRect = this.itemRect.clone();
+    this.margin = margin;
+    this.zoom = zoom;
+    this.maxZoom = maxZoom;
+    this.origin = new Vector2(originX, originY);
+    this.useConstraints = useConstraints;
+  }
+
+  zoomToFit() {
+    const { itemRect, containerRect, margin } = this;
+    const containerInnerRect = new Rectangle(
+      containerRect.width - margin * 2,
+      containerRect.height - margin * 2,
+    );
+    const scaleFactor = itemRect.scaleToFitSmallestSide(containerInnerRect);
+    this.itemRect = this.itemRect.scaled(scaleFactor);
+    this.origin = new Vector2(0, 0);
+  }
+
+  get itemBounds(): Bounds {
+    const { margin, origin, itemRect, zoom, maxZoom } = this;
+    const x = margin + origin.x;
+    const y = margin + origin.y;
+    const maxWidthDiff = itemRect.width * maxZoom - itemRect.width;
+    const maxHeightDiff = itemRect.height * maxZoom - itemRect.height;
+    const width = itemRect.width + maxWidthDiff * zoom;
+    const height = itemRect.height + maxHeightDiff * zoom;
+    return new Bounds(x, y, width, height);
+  }
+
+  startDrag() {
+    this.dragOrigin = this.origin.clone();
+  }
+
+  drag(delta: Vector2) {
+    const { dragOrigin, containerRect, margin } = this;
+    if (dragOrigin) {
+      let newOriginX = dragOrigin.x + delta.x;
+      let newOriginY = dragOrigin.y + delta.y;
+      this.origin = new Vector2(newOriginX, newOriginY);
+      if (this.useConstraints) {
+        const innerRect = new Bounds(
+          margin,
+          margin,
+          containerRect.width - margin * 2,
+          containerRect.height - margin * 2,
+        );
+        const bounds = this.itemBounds;
+        // if (bounds.left < innerRect.left && bounds.right >= innerRect.right) {
+        //   newOriginX += innerRect.left - bounds.left;
+        // }
+        // if (bounds.right < innerRect.right && bounds.left <= innerRect.left) {
+        //   newOriginX += innerRect.right - bounds.right;
+        // }
+        this.origin = new Vector2(newOriginX, newOriginY);
+      }
+    }
   }
 }
