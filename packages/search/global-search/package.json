@@ -23,7 +23,6 @@
   "dependencies": {
     "@atlaskit/analytics": "^4.0.6",
     "@atlaskit/analytics-gas-types": "^3.1.2",
-<<<<<<< HEAD
     "@atlaskit/analytics-next": "^3.0.10",
     "@atlaskit/avatar": "^14.1.2",
     "@atlaskit/button": "^9.0.15",
@@ -31,23 +30,10 @@
     "@atlaskit/field-text-area": "^4.0.10",
     "@atlaskit/flag": "^9.1.1",
     "@atlaskit/icon": "^14.0.2",
-    "@atlaskit/icon-file-type": "1.0.3",
-    "@atlaskit/icon-object": "1.0.3",
+    "@atlaskit/icon-file-type": "^1.0.3",
+    "@atlaskit/icon-object": "^1.0.3",
     "@atlaskit/logo": "^9.2.3",
     "@atlaskit/modal-dialog": "^7.0.3",
-=======
-    "@atlaskit/analytics-next": "^3.0.4",
-    "@atlaskit/avatar": "^14.0.11",
-    "@atlaskit/button": "^9.0.13",
-    "@atlaskit/dropdown-menu": "^6.1.17",
-    "@atlaskit/field-text-area": "^4.0.6",
-    "@atlaskit/flag": "^9.0.11",
-    "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/icon-file-type": "^1.0.2",
-    "@atlaskit/icon-object": "^1.0.2",
-    "@atlaskit/logo": "^9.2.0",
-    "@atlaskit/modal-dialog": "^7.0.2",
->>>>>>> CHANGESET: Change dependency on all icon package to be caret
     "@atlaskit/quick-search": "^4.2.11",
     "@atlaskit/theme": "^6.1.1",
     "@atlaskit/util-service-support": "^3.0.1",
