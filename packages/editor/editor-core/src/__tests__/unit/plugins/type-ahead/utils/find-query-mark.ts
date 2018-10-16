@@ -4,7 +4,10 @@ import {
   p,
   typeAheadQuery,
 } from '@atlaskit/editor-test-helpers';
-import { findQueryMark } from '../../../../../plugins/type-ahead/utils/find-query-mark';
+import {
+  findQueryMark,
+  findTypeAheadQuery,
+} from '../../../../../plugins/type-ahead/utils/find-query-mark';
 
 describe('findQueryMark', () => {
   it('should return positions of a typeAheadQuery mark', () => {
@@ -35,5 +38,22 @@ describe('findQueryMark', () => {
     );
 
     expect(queryMark).toEqual({ end: -1, start: -1 });
+  });
+});
+
+describe('findTypeAheadQuery', () => {
+  it('should return positions of typeAheadQuery mark based on selection', () => {
+    const { editorView } = createEditor({
+      doc: doc(
+        p('Foo'),
+        p(typeAheadQuery({ trigger: '/' })('/query')),
+        p('Bar'),
+        p(typeAheadQuery({ trigger: '/' })('/query{<>}')),
+      ),
+    });
+
+    const queryMark = findTypeAheadQuery(editorView.state);
+
+    expect(queryMark).toEqual({ end: 25, start: 19 });
   });
 });
