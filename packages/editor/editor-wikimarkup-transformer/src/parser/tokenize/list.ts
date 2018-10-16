@@ -5,7 +5,7 @@ import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType, TokenErrCallback } from './';
 import { parseNewlineOnly } from './whitespace';
 
-const LIST_ITEM_REGEXP = /^\s*([*\-#]+)\s(.*)/;
+const LIST_ITEM_REGEXP = /^ *([*\-#]+)\s(.*)/;
 const NEWLINE = /\r?\n/;
 
 export function list(
