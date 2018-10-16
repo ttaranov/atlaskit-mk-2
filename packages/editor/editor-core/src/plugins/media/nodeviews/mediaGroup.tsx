@@ -78,6 +78,7 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
       const identifier: FileIdentifier = {
         id: getState ? getState.fileId : item.attrs.id,
         mediaItemType: 'file',
+        collectionName: item.attrs.collection,
       };
 
       const nodePos = this.props.getPos() + idx + 1;
