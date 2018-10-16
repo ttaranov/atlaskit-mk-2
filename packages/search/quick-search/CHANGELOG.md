@@ -1,5 +1,8 @@
 # @atlaskit/quick-search
 
+## 4.2.11
+- [patch] Add link to advanced issue search at the top of the jira pre query screen. [f0f66b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0f66b7)
+
 ## 4.2.10
 - [patch] Fixing selected style for Item and Fixing focus on Quick search when component is not remounted [9532a1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9532a1b)
 

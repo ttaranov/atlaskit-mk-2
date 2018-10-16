@@ -191,37 +191,56 @@ const getRecentItems = product =>
         });
       };
 
-      it('should trigger highlight result event', () => {
-        const count = 9;
-        for (let i = 0; i < count; i++) {
-          keyPress('ArrowDown');
-        }
-        expect(onEventSpy).toHaveBeenCalledTimes(count);
-        onEventSpy.mock.calls.forEach(([event], index) => {
-          validateEvent(
-            event,
-            getHighlightEvent({
-              key: 'ArrowDown',
-              globalIndex: index,
-              ...(product === 'confluence'
-                ? {
-                    indexWithinSection: index % (count - 1),
-                    sectionIndex: Math.floor(index / (count - 1)),
-                    resultCount: 16, // 14 + 2 advanced
-                    sectionId: 'recent-confluence',
-                    type: index >= 8 ? 'confluence-space' : 'confluence-page',
-                  }
-                : {
-                    indexWithinSection: index % (count - 2),
-                    sectionIndex: Math.floor(index / (count - 2)),
-                    resultCount: 17, // 14 + 2 advanced
-                    sectionId: 'recent-jira',
-                    type: index >= 7 ? 'jira-board' : 'jira-issue',
-                  }),
-            }),
-          );
+      if (product === 'confluence') {
+        it('should trigger highlight result event', () => {
+          const count = 9;
+          for (let i = 0; i < count; i++) {
+            keyPress('ArrowDown');
+          }
+          expect(onEventSpy).toHaveBeenCalledTimes(count);
+          onEventSpy.mock.calls.forEach(([event], index) => {
+            validateEvent(
+              event,
+              getHighlightEvent({
+                key: 'ArrowDown',
+                globalIndex: index,
+                indexWithinSection: index % (count - 1),
+                sectionIndex: Math.floor(index / (count - 1)),
+                resultCount: 16, // 14 + 2 advanced
+                sectionId: 'recent-confluence',
+                type: index >= 8 ? 'confluence-space' : 'confluence-page',
+              }),
+            );
+          });
         });
-      });
+      }
+
+      if (product === 'jira') {
+        it('should trigger highlight result event', () => {
+          const count = 9;
+          for (let i = 0; i < count; i++) {
+            keyPress('ArrowDown');
+          }
+          expect(onEventSpy).toHaveBeenCalledTimes(count);
+
+          // skip the first link which is advanced issue search link
+          const callsWithoutFirstLink = onEventSpy.mock.calls.slice(1);
+          callsWithoutFirstLink.forEach(([event], index) => {
+            validateEvent(
+              event,
+              getHighlightEvent({
+                key: 'ArrowDown',
+                globalIndex: index + 1,
+                indexWithinSection: index % (count - 2),
+                sectionIndex: Math.floor(index / (count - 2)),
+                resultCount: 18,
+                sectionId: 'recent-jira',
+                type: index >= 7 ? 'jira-board' : 'jira-issue',
+              }),
+            );
+          });
+        });
+      }
 
       it('should trigger highlight result event on arrow up', () => {
         keyPress('ArrowUp');
@@ -241,8 +260,8 @@ const getRecentItems = product =>
                   type: undefined,
                 }
               : {
-                  globalIndex: 16,
-                  resultCount: 17,
+                  globalIndex: 17,
+                  resultCount: 18, // 14 + 3 advanced (1 top + 2 bottom)
                   sectionIndex: undefined, // advanced results is not a section
                   sectionId: 'advanced-search-jira',
                   type: undefined,
@@ -253,7 +272,7 @@ const getRecentItems = product =>
 
       it('should trigger advanced result selected', () => {
         const results = wrapper.find(ResultBase);
-        const expectedResultsCount = product === 'confluence' ? 16 : 17;
+        const expectedResultsCount = product === 'confluence' ? 16 : 18;
         expect(results.length).toBe(expectedResultsCount);
         const advancedSearchResult = results.last();
         advancedSearchResult.simulate('click', {
@@ -274,7 +293,7 @@ const getRecentItems = product =>
                 actionSubjectId: 'advanced_search_jira',
                 resultContentId: 'search_jira',
                 sectionId: 'advanced-search-jira',
-                globalIndex: 16,
+                globalIndex: 17,
                 resultCount: 16, // does not include advanced search links
               };
         validateEvent(event, getAdvancedSearchLinkSelectedEvent(payload));
@@ -282,7 +301,7 @@ const getRecentItems = product =>
 
       it('should trigger result selected', () => {
         const results = wrapper.find(ResultBase);
-        const expectedResultsCount = product === 'confluence' ? 16 : 17;
+        const expectedResultsCount = product === 'confluence' ? 16 : 18;
         expect(results.length).toBe(expectedResultsCount);
         const result = results.at(10);
         result.simulate('click', {
@@ -308,10 +327,10 @@ const getRecentItems = product =>
                 globalIndex: 10,
                 resultCount: 16, // does not include advanced search links
                 sectionIndex: 1,
-                indexWithinSection: 3,
+                indexWithinSection: 2,
                 trigger: 'click',
                 newTab: true,
-                type: 'jira-filter',
+                type: 'jira-board',
               };
         validateEvent(event, getResultSelectedEvent(payload));
       });
@@ -338,9 +357,9 @@ const getRecentItems = product =>
             : {
                 sectionId: 'recent-jira',
                 globalIndex: 1,
-                resultCount: 17, // include advanced search links
+                resultCount: 18, // include advanced search links
                 sectionIndex: 0,
-                indexWithinSection: 1,
+                indexWithinSection: 0,
                 trigger: 'returnKey',
                 newTab: false,
                 type: 'jira-issue',
