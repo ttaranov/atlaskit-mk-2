@@ -118,7 +118,7 @@ export default class LayoutManager extends Component<
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
   containerRef: HTMLElement;
-  flyoutMouseOverTimeout: TimoutID;
+  flyoutMouseOverTimeout: TimeoutID;
 
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
