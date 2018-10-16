@@ -119,16 +119,6 @@ describe('LayoutManager', () => {
         ).toHaveProperty('transitionDelay', '350ms');
       });
 
-      it('should show ChevronRight when flyout is open', () => {
-        const wrapper = mount(<LayoutManager {...defaultProps} />);
-
-        wrapper.setState({ flyoutIsOpen: true });
-        jest.runAllTimers();
-        wrapper.update();
-        expect(wrapper.find('ChevronRightIcon').exists()).toBeTruthy();
-        expect(wrapper.find('MenuIcon').exists()).toBeFalsy();
-      });
-
       it('should NOT have transitionDelay style when the flyout is closed', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
@@ -139,6 +129,15 @@ describe('LayoutManager', () => {
         ).not.toHaveProperty('transitionDelay', '350ms');
       });
 
+      it('should show ChevronRight when flyout is open', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+        wrapper.setState({ flyoutIsOpen: true });
+        jest.runAllTimers();
+        wrapper.update();
+        expect(wrapper.find('ChevronRightIcon').exists()).toBeTruthy();
+        expect(wrapper.find('MenuIcon').exists()).toBeFalsy();
+      });
       it('should show the menu icon when flyout is closed', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
