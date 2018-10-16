@@ -160,16 +160,16 @@ export default class LayoutManager extends Component<
     this.pageRef = ref;
   };
 
-  flyoutTimeout = null;
+  flyoutMouseOverTimeout = null;
   mouseOutFlyoutArea = ({ currentTarget, relatedTarget }: *) => {
     if (currentTarget.contains(relatedTarget)) return;
-    if (this.flyoutTimeout) clearTimeout(this.flyoutTimeout);
+    if (this.flyoutMouseOverTimeout) clearTimeout(this.flyoutMouseOverTimeout);
     this.setState({ flyoutIsOpen: false });
   };
   mouseOverFlyoutArea = ({ currentTarget, target }: *) => {
     if (!currentTarget.contains(target)) return;
-    if (this.flyoutTimeout) clearTimeout(this.flyoutTimeout);
-    this.flyoutTimeout = setTimeout(() => {
+    if (this.flyoutMouseOverTimeout) clearTimeout(this.flyoutMouseOverTimeout);
+    this.flyoutMouseOverTimeout = setTimeout(() => {
       this.setState({ flyoutIsOpen: true });
     }, 350);
   };
@@ -178,7 +178,7 @@ export default class LayoutManager extends Component<
     this.setState({ mouseIsOverNavigation: true });
   };
   mouseLeave = () => {
-    if (this.flyoutTimeout) clearTimeout(this.flyoutTimeout);
+    if (this.flyoutMouseOverTimeout) clearTimeout(this.flyoutMouseOverTimeout);
     this.setState({ mouseIsOverNavigation: false });
   };
 
