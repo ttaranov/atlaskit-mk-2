@@ -685,12 +685,15 @@ export class MediaPluginState {
         }
         break;
 
-      case 'ready':
+      case 'preview':
         this.replaceTemporaryNode(
           state,
           isImage(state.fileMimeType) &&
             !!this.view.state.schema.nodes.mediaSingle,
         );
+        break;
+
+      case 'ready':
         this.stateManager.off(state.id, this.handleMediaState);
         break;
     }

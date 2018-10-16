@@ -215,13 +215,13 @@ describe('Media plugin', () => {
 
         pluginState.stateManager.updateState('1', {
           ...foo[0],
-          status: 'ready',
+          status: 'preview',
           publicId: 'foo',
         });
 
         pluginState.stateManager.updateState('2', {
           ...bar[0],
-          status: 'ready',
+          status: 'preview',
           publicId: 'bar',
         });
 
@@ -397,14 +397,14 @@ describe('Media plugin', () => {
 
         pluginState.stateManager.updateState(id1, {
           ...lala[0],
-          status: 'ready',
+          status: 'preview',
           publicId: 'lala',
         });
 
         pluginState.stateManager.updateState(id2, {
           ...bar[0],
 
-          status: 'ready',
+          status: 'preview',
           publicId: 'bar',
         });
 
@@ -517,7 +517,7 @@ describe('Media plugin', () => {
 
     pluginState.stateManager.updateState(tempFileId, {
       ...fileState[0],
-      status: 'ready',
+      status: 'preview',
       publicId,
     });
 
@@ -575,9 +575,8 @@ describe('Media plugin', () => {
 
     // mark the upload as finished, triggering replacement of media node
     stateManager.updateState(tempFileId, {
-      id: tempFileId,
       publicId: tempFileId,
-      status: 'ready',
+      status: 'preview',
     });
 
     expect(editorView.state.doc).toEqualDocument(

@@ -203,6 +203,7 @@ export default class PickerFacade {
       file.upfrontId.then(data => {
         this.stateManager.updateState(file.id, {
           publicId: data,
+          status: 'preview',
         });
       });
     }
@@ -224,7 +225,6 @@ export default class PickerFacade {
       fileSize: file.size,
       fileMimeType: file.type,
       fileId: file.upfrontId,
-      status: 'preview',
       dimensions: isImagePreview(preview) ? preview.dimensions : undefined,
     });
 

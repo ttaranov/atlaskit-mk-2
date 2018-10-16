@@ -87,7 +87,6 @@ describe('Media PickerFacade', () => {
       fileId: Promise.resolve('publicid'),
       fileMimeType: 'test/file',
       dimensions: undefined,
-      status: 'preview',
     },
   ];
 
