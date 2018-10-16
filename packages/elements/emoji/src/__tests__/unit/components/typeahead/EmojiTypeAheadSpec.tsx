@@ -70,9 +70,9 @@ describe('EmojiTypeAhead', () => {
       }),
     ));
 
-  it('should limit results to those matching "grin"', () =>
+  it('should limit results to those matching "thumbs"', () =>
     setupTypeAhead({
-      query: 'grin',
+      query: 'thumbs',
     } as Props).then(component =>
       waitUntil(() => doneLoading(component)).then(() => {
         expect(findEmojiItems(component).length).to.equal(2);
