@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.13
+- [patch] common formater can be valid if surrounded by non alphanumeric characters [5576cc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5576cc2)
+
 ## 2.1.12
 - [patch] list items should allow leading spaces [2aad896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2aad896)
 
