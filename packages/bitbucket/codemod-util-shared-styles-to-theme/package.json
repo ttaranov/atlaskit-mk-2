@@ -23,5 +23,8 @@
   "devDependencies": {
     "jscodeshift": "^0.5.1",
     "jscodeshift-helper": "^1.1.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0"
   }
 }

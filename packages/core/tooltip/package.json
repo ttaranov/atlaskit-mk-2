@@ -22,6 +22,7 @@
     "@atlaskit/analytics-next": "^3.0.6",
     "@atlaskit/portal": "^0.0.10",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "babel-runtime": "^6.26.0",
     "flushable": "^1.0.0",
     "react-node-resolver": "^1.0.1",

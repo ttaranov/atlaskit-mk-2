@@ -19,7 +19,8 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/theme": "^6.0.2"
+    "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",

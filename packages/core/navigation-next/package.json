@@ -25,6 +25,7 @@
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/theme": "^6.0.2",
     "@atlaskit/tooltip": "^12.1.1",
+    "@babel/runtime": "^7.0.0",
     "chromatism": "^2.6.0",
     "deep-object-diff": "^1.1.0",
     "emotion": "^9.1.1",

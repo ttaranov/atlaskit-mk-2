@@ -17,6 +17,7 @@
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",

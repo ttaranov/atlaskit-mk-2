@@ -33,7 +33,8 @@
     "@atlaskit/dropdown-menu": "^6.1.17",
     "@atlaskit/field-text-area": "^4.0.9",
     "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/theme": "^6.0.2"
+    "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",

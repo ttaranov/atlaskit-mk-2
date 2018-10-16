@@ -26,6 +26,7 @@
     "@atlaskit/layer-manager": "^5.0.13",
     "@atlaskit/portal": "^0.0.10",
     "@atlaskit/theme": "^6.0.2",
+    "@babel/runtime": "^7.0.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
     "react-focus-lock": "^1.11.3",

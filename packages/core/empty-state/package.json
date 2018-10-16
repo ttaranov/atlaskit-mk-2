@@ -25,6 +25,7 @@
     "@atlaskit/button": "^9.0.10",
     "@atlaskit/spinner": "^9.0.9",
     "@atlaskit/theme": "^6.0.3",
+    "@babel/runtime": "^7.0.0",
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
