@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/size-detector",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "Wrapper for components that need to respond to size changes",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -22,6 +22,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@babel/runtime": "^7.0.0",
     "babel-runtime": "^6.26.0",
     "raf-schd": "^2.1.0"
   },

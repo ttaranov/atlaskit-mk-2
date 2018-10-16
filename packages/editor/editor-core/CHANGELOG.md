@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.7
+- [patch] ED-5410: handle rows/columns cutting [b792d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b792d04)
+
 ## 86.0.6
 - [patch] Scroll selection into view when navigating with arrows [01edbc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01edbc7)
 

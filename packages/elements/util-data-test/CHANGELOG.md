@@ -1,5 +1,8 @@
 # @atlaskit/util-data-test
 
+## 10.0.17
+- [patch] FS-3098 multi user picker [095b3b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095b3b6)
+
 ## 10.0.16
 - [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/emoji@45.0.0

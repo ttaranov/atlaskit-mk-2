@@ -79,9 +79,9 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               # Run the non-editor tests, --passWithNoTests has been added in case of no tests found to avoid failure in CI.
-              - TEST_ONLY_PATTERN='!packages/editor' yarn run test:changed --passWithNoTests 
+              - TEST_ONLY_PATTERN='!packages/editor' yarn run test:changed --passWithNoTests
               # Run the editor tests (runInBand is required or it fails in CI)
-              - TEST_ONLY_PATTERN='packages/editor' yarn run test:changed --runInBand --passWithNoTests 
+              - TEST_ONLY_PATTERN='packages/editor' yarn run test:changed --runInBand --passWithNoTests
             caches:
               - node
         - step:
@@ -231,12 +231,17 @@ pipelines:
                 - yarn lint
 
           - step:
-              name: Typechecking
+              name: Typechecking (and checking changesets)
               script:
                 - source ./build-setup.sh
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
                 - yarn typecheck
+                - echo "We are now about to run the `version` command which will read changesets and bump packages"
+                - echo "We do this so that we know if the repo will be in an inconsistent state when this branch hits master"
+                - echo "If the step below fails, it's because a changeset may be bumping a package that is depended upon by a package that didn't exist when the changeset was created"
+                - echo "Read the very last error message, it will tell you exactly what is wrong (ignore all the first warnings you'll see)"
+                - node ./build/releases/bin/build-releases.js version
           # Rest of the steps are jest tests. We no longer use the $BITBUCKET_PARALLEL_STEP_COUNT and $BITBUCKET_PARALLEL_STEP
           # variables as they mean the jest steps need to be in their own parallel block, so we just hardcode them here
           - step:

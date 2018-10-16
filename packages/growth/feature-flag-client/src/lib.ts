@@ -1,4 +1,4 @@
-import { AnyFlag, FlagWithEvaluationDetails, SimpleFlag } from './types';
+import { FlagShape } from './types';
 
 export const isType = (value: any, type: string): boolean => {
   return value !== null && typeof value === type;
@@ -8,13 +8,11 @@ export const isObject = value => isType(value, 'object');
 export const isBoolean = value => isType(value, 'boolean');
 export const isString = value => isType(value, 'string');
 
-export const isFlagWithEvaluationDetails = (
-  flag: AnyFlag,
-): flag is FlagWithEvaluationDetails => {
+export const isFlagWithEvaluationDetails = (flag: FlagShape): boolean => {
   return isObject(flag) && 'value' in flag && 'explanation' in flag;
 };
 
-export const isSimpleFlag = (flag: AnyFlag): flag is SimpleFlag => {
+export const isSimpleFlag = (flag: FlagShape): boolean => {
   return isObject(flag) && 'value' in flag && !('explanation' in flag);
 };
 

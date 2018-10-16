@@ -1,5 +1,8 @@
 # @atlaskit/icon-file-type
 
+## 1.0.3
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 1.0.2
 - [patch] Publish utils folder [272208b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272208b)
 
