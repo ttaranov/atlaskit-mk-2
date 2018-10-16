@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/user-picker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "config": {
     "access": "public"
   },
@@ -43,7 +43,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/util-data-test": "^10.0.13",
+    "@atlaskit/util-data-test": "^10.0.17",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "repository": {
