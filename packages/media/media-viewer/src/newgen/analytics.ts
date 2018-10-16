@@ -14,6 +14,12 @@ export type ViewerLoadPayload = {
   errorMessage?: string;
 };
 
+const context = {
+  componentName: 'media-viewer',
+  packageName,
+  packageVersion,
+};
+
 export type AnalyticViewerProps = {
   onLoad: (payload: ViewerLoadPayload) => void;
 };
@@ -50,6 +56,7 @@ export const itemViewerErrorEvent = (
       status: 'fail',
       ...getAttributesForFile(id, file),
       failReason,
+      ...context,
     },
   };
 };
@@ -61,6 +68,7 @@ export const itemViewerLoadedEvent = (file: ProcessedFileState): GasPayload => {
     attributes: {
       status: 'success',
       ...getAttributesForFile(file.id, file),
+      ...context,
     },
   };
 };
@@ -73,12 +81,7 @@ export const itemViewerCommencedEvent = (id: string): GasPayload => {
     eventType: 'operational',
     attributes: {
       fileId: id,
+      ...context,
     },
   };
-};
-
-export const context = {
-  componentName: 'media-viewer',
-  packageName,
-  packageVersion,
 };
