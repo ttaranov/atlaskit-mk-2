@@ -144,6 +144,21 @@ exports[`user should not be able to see emoji inside inline code user should not
 Object {
   "content": Array [
     Object {
+      "content": Array [
+        Object {
+          "text": "type ",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": ":a:",
+          "type": "text",
+        },
+      ],
       "type": "paragraph",
     },
   ],

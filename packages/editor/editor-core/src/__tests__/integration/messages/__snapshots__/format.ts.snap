@@ -99,6 +99,17 @@ exports[`format.ts format.ts: user should be able to write inline 1`] = `
 Object {
   "content": Array [
     Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "this",
+          "type": "text",
+        },
+      ],
       "type": "paragraph",
     },
   ],
