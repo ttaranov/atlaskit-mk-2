@@ -15,14 +15,10 @@ import {
   ErrorName,
 } from './error';
 import { renderDownloadButton } from './domain/download';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-} from '@atlaskit/analytics-next';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import {
   channel,
-  context,
   ViewerLoadPayload,
   itemViewerErrorEvent,
   itemViewerCommencedEvent,
@@ -216,6 +212,4 @@ export class ItemViewerBase extends React.Component<
   }
 }
 
-export const ItemViewer = withAnalyticsContext({
-  context,
-})(withAnalyticsEvents()(ItemViewerBase));
+export const ItemViewer = withAnalyticsEvents()(ItemViewerBase);

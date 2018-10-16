@@ -19,6 +19,10 @@ import { VideoViewer } from '../../src/newgen/viewers/video';
 import { AudioViewer } from '../../src/newgen/viewers/audio';
 import { DocViewer } from '../../src/newgen/viewers/doc';
 import { Identifier } from '../../src/newgen/domain';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 const identifier = {
   id: 'some-id',
@@ -292,7 +296,12 @@ describe('<ItemViewer />', () => {
         action: 'commenced',
         actionSubject: 'mediaFile',
         actionSubjectId: 'some-id',
-        attributes: { fileId: 'some-id' },
+        attributes: {
+          fileId: 'some-id',
+          packageName,
+          packageVersion,
+          componentName: 'media-viewer',
+        },
         eventType: 'operational',
       });
     });
@@ -310,7 +319,12 @@ describe('<ItemViewer />', () => {
         action: 'commenced',
         actionSubject: 'mediaFile',
         actionSubjectId: 'some-id',
-        attributes: { fileId: 'some-id' },
+        attributes: {
+          fileId: 'some-id',
+          packageName,
+          packageVersion,
+          componentName: 'media-viewer',
+        },
         eventType: 'operational',
       });
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
@@ -321,6 +335,9 @@ describe('<ItemViewer />', () => {
           failReason: 'Metadata fetching failed',
           fileId: 'some-id',
           status: 'fail',
+          packageName,
+          packageVersion,
+          componentName: 'media-viewer',
         },
         eventType: 'operational',
       });
@@ -352,6 +369,9 @@ describe('<ItemViewer />', () => {
           fileMediatype: 'image',
           fileSize: undefined,
           status: 'fail',
+          packageName,
+          packageVersion,
+          componentName: 'media-viewer',
         },
         eventType: 'operational',
       });
@@ -378,6 +398,9 @@ describe('<ItemViewer />', () => {
           fileMediatype: 'image',
           fileSize: undefined,
           status: 'success',
+          packageName,
+          packageVersion,
+          componentName: 'media-viewer',
         },
         eventType: 'operational',
       });
