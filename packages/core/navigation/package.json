@@ -58,6 +58,7 @@
     "@atlaskit/logo": "^9.2.3",
     "@atlaskit/page": "^8.0.8",
     "@atlaskit/quick-search": "^4.2.9",
+    "@atlaskit/section-message": "^1.0.9",
     "@atlaskit/single-select": "^6.0.7",
     "@atlaskit/toggle": "^5.0.10",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
