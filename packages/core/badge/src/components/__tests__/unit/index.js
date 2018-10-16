@@ -24,3 +24,9 @@ test('DEPRECATED - value', () => {
 test('children', () => {
   expect(getFormatProps(<Badge>{100}</Badge>)).toMatchObject({ children: 100 });
 });
+
+test('using a string', () => {
+  expect(getFormatProps(<Badge>+100</Badge>)).toMatchObject({
+    children: '+100',
+  });
+});
