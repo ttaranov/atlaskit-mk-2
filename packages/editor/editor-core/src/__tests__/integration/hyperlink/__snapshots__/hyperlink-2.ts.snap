@@ -6,19 +6,6 @@ Object {
     Object {
       "content": Array [
         Object {
-          "marks": Array [
-            Object {
-              "attrs": Object {
-                "__confluenceMetadata": null,
-                "href": "https://www.google.com",
-              },
-              "type": "link",
-            },
-          ],
-          "text": "https://www.google.com",
-          "type": "text",
-        },
-        Object {
           "text": ".",
           "type": "text",
         },
@@ -30,21 +17,6 @@ Object {
         Object {
           "content": Array [
             Object {
-              "content": Array [
-                Object {
-                  "marks": Array [
-                    Object {
-                      "attrs": Object {
-                        "__confluenceMetadata": null,
-                        "href": "https://www.google.com",
-                      },
-                      "type": "link",
-                    },
-                  ],
-                  "text": "https://www.google.com",
-                  "type": "text",
-                },
-              ],
               "type": "paragraph",
             },
           ],
@@ -67,19 +39,6 @@ Object {
     Object {
       "content": Array [
         Object {
-          "marks": Array [
-            Object {
-              "attrs": Object {
-                "__confluenceMetadata": null,
-                "href": "https://www.google.com",
-              },
-              "type": "link",
-            },
-          ],
-          "text": "https://www.google.com",
-          "type": "text",
-        },
-        Object {
           "text": ".",
           "type": "text",
         },
@@ -91,21 +50,6 @@ Object {
         Object {
           "content": Array [
             Object {
-              "content": Array [
-                Object {
-                  "marks": Array [
-                    Object {
-                      "attrs": Object {
-                        "__confluenceMetadata": null,
-                        "href": "https://www.google.com",
-                      },
-                      "type": "link",
-                    },
-                  ],
-                  "text": "https://www.google.com",
-                  "type": "text",
-                },
-              ],
               "type": "paragraph",
             },
           ],

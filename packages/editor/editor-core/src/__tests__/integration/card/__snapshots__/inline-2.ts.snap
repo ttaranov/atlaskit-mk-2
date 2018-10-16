@@ -6,7 +6,7 @@ Object {
     Object {
       "content": Array [
         Object {
-          "text": "more typing hello have a link ",
+          "text": "hello have a link ",
           "type": "text",
         },
         Object {
@@ -22,7 +22,7 @@ Object {
           "type": "inlineCard",
         },
         Object {
-          "text": " more typing",
+          "text": " more typingmore typing ",
           "type": "text",
         },
       ],

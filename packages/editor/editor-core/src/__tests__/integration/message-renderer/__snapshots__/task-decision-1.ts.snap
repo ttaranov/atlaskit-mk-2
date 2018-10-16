@@ -88,57 +88,6 @@ Object {
             "localId": "abc-123",
             "state": "DECIDED",
           },
-          "content": Array [
-            Object {
-              "text": "this is a link ",
-              "type": "text",
-            },
-            Object {
-              "marks": Array [
-                Object {
-                  "attrs": Object {
-                    "__confluenceMetadata": null,
-                    "href": "http://www.google.com",
-                  },
-                  "type": "link",
-                },
-              ],
-              "text": "www.google.com",
-              "type": "text",
-            },
-            Object {
-              "type": "hardBreak",
-            },
-            Object {
-              "text": "more elements with some ",
-              "type": "text",
-            },
-            Object {
-              "marks": Array [
-                Object {
-                  "type": "strong",
-                },
-              ],
-              "text": "format",
-              "type": "text",
-            },
-            Object {
-              "type": "hardBreak",
-            },
-            Object {
-              "text": "some addition",
-              "type": "text",
-            },
-            Object {
-              "marks": Array [
-                Object {
-                  "type": "em",
-                },
-              ],
-              "text": " formatting",
-              "type": "text",
-            },
-          ],
           "type": "decisionItem",
         },
       ],
