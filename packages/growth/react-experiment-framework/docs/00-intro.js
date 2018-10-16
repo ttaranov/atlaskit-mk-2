@@ -1,8 +1,23 @@
 // @flow
 import React from 'react';
 import { md, Example } from '@atlaskit/docs';
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
+  ${(
+    <SectionMessage appearance="warning">
+      <p>
+        <strong>
+          Note: @atlaskit/xxxxx is currently in developer preview.
+        </strong>
+      </p>
+      <p>
+        Please experiment with and test this package but be aware that the API
+        may & probably will change with future releases.
+      </p>
+    </SectionMessage>
+  )}
+
   The React experiment framework is a set of React component that facilitate easier product experimentation. 
   
   It provides a way of swapping React components at run-time, e.g., switching a control component for your new 
