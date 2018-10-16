@@ -36,7 +36,6 @@ import {
   CONTENT_NAV_WIDTH_COLLAPSED,
   CONTENT_NAV_WIDTH_FLYOUT,
   GLOBAL_NAV_WIDTH,
-  FLYOUT_DELAY,
 } from '../../common/constants';
 
 type RenderContentNavigationArgs = {
@@ -341,19 +340,13 @@ export default class LayoutManager extends Component<
                       isCollapsed && experimental_flyoutOnHover && !flyoutIsOpen
                         ? this.mouseOverFlyoutArea
                         : null;
-                    const combinedStyles = {
-                      ...transitionStyle,
-                      ...(flyoutIsOpen
-                        ? { transitionDelay: `${FLYOUT_DELAY}ms` }
-                        : null),
-                    };
                     return (
                       <ContainerNavigationMask onMouseOver={onMouseOver}>
                         {this.renderGlobalNavigation()}
                         {this.renderContentNavigation({
                           isDragging,
                           transitionState,
-                          ...{ transitionStyle: combinedStyles },
+                          transitionStyle,
                           width,
                         })}
                       </ContainerNavigationMask>
