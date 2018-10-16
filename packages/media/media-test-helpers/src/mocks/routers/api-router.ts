@@ -132,8 +132,8 @@ export function createApiRouter(): Router<DatabaseSchema> {
         pending: false,
         preview: {},
         original: {
-          height: 32,
-          width: 32,
+          height: 4096,
+          width: 4096,
         },
       },
     };
