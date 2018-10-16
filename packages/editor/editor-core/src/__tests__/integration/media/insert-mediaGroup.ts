@@ -28,7 +28,7 @@ import {
       // now we can insert media as necessary
       await insertMedia(browser);
 
-      expect(await browser.isVisible('.image')).toBe(true);
+      expect(await browser.isVisible('.wrapper')).toBe(true);
 
       const doc = await browser.$eval(editable, getDocFromElement);
       expect(doc).toMatchDocSnapshot();
