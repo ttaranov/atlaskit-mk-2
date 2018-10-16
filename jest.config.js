@@ -124,10 +124,8 @@ if (config.testMatch.length === 0) {
   }
 }
 
-// if isDocker = setup something for this
-// --add-host: something : map to this url to run test
-if (PROD) {
-  config.globals.__BASEURL__ = 'https://atlaskit.atlassian.com';
+if (process.env.SNAPSHOT === 'true') {
+  config.globals.__BASEURL__ = 'http://testing.local.com';
 }
 
 module.exports = config;

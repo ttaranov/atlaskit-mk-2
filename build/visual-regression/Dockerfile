@@ -1,4 +1,4 @@
-FROM atlassianlabs/atlaskit-mk-2:1.3.0
+FROM atlassianlabs/atlaskit-mk-2:latest
 
 # OPTIONAL: Install dumb-init (Very handy for easier signal handling of SIGINT/SIGTERM/SIGKILL etc.)
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64.deb
@@ -18,3 +18,6 @@ RUN cd ~/ && yarn add puppeteer
 
 # Run docker docker build -t atlaskit-vr -f Dockerfile.vr .
 # docker run --rm -v `pwd`:`pwd` -w `pwd` -i -t atlaskit-vr yarn test:vr
+# docker run --rm --add-host=testing.local.com:172.22.33.197 -v `pwd`:`pwd` -w `pwd` \
+# -i -t atlaskit-vr bolt test:vr \
+# packages/editor/editor-core/src/__tests__/visual-regression/dynamic-text-sizing.ts

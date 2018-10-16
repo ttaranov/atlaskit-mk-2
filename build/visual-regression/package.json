@@ -6,5 +6,10 @@
   "dependencies": {
      "puppeteer":"^1.4.0",
      "jest-image-snapshot": "^2.4.2"
-  }
+  },
+  "scripts": {
+    "get-image-name": "node -e 'console.log(\"atlassianlabs/atlaskit-mk-vr:\" + require(\"./package.json\").version)'",
+    "build-image": "docker build -t $(yarn -s get-image-name) .",
+    "push-image": "docker push $(yarn -s get-image-name)"
+  }  
 }
