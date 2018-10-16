@@ -23,8 +23,12 @@ import {
   itemViewerErrorEvent,
   itemViewerCommencedEvent,
   itemViewerLoadedEvent,
+  mediaViewerModalScreenEvent,
 } from './analytics';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  GasPayload,
+  GasScreenEventPayload,
+} from '@atlaskit/analytics-gas-types';
 
 export type Props = Readonly<{
   identifier: Identifier;
@@ -169,6 +173,7 @@ export class ItemViewerBase extends React.Component<
       // Once these issues have been fixed, we can make this sequence synchronous
       const { context, identifier } = props;
       this.fireAnalytics(itemViewerCommencedEvent(identifier.id));
+      this.fireAnalytics(mediaViewerModalScreenEvent(identifier.id));
       this.subscription = context.file
         .getFileState(identifier.id, {
           collectionName: identifier.collectionName,
@@ -191,7 +196,7 @@ export class ItemViewerBase extends React.Component<
     });
   }
 
-  private fireAnalytics = (payload: GasPayload) => {
+  private fireAnalytics = (payload: GasPayload | GasScreenEventPayload) => {
     if (this.props.createAnalyticsEvent) {
       const ev = this.props.createAnalyticsEvent(payload);
       ev.fire(channel);
