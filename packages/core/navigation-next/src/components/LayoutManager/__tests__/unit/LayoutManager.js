@@ -67,11 +67,10 @@ describe('LayoutManager', () => {
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
 
         jest.advanceTimersByTime(300);
-        wrapper.find(ContainerNavigationMask).simulate('mouseout');
-        wrapper.update();
+        wrapper.find(NavigationContainer).simulate('mouseleave');
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
 
-        jest.advanceTimersByTime(1);
+        jest.runAllTimers();
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
 
