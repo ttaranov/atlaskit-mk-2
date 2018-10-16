@@ -8,8 +8,8 @@ export const Breakpoints = {
   L: 'L',
 };
 
-const MAX_S = 1060;
-const MAX_M = 1320;
+const MAX_S = 1266;
+const MAX_M = 2146;
 
 export function getBreakpoint(width: number = 0) {
   if (width >= MAX_S && width < MAX_M) {

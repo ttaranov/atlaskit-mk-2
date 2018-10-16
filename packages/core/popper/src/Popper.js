@@ -19,6 +19,8 @@ type Props = {
   offset: number | string,
   /** Which side of the Reference to show on. */
   placement: Placement,
+  /** Replacement reference element to position popper relative to */
+  referenceElement?: HTMLElement,
 };
 
 const getFlipBehavior = (side: string) =>
@@ -67,7 +69,7 @@ export class Popper extends Component<Props, State> {
   });
 
   render() {
-    const { placement, children, ...others } = this.props;
+    const { placement, children, referenceElement } = this.props;
     const modifiers: $ElementType<PopperProps, 'modifiers'> = this.getModifiers(
       this.props.placement,
     );
@@ -77,7 +79,7 @@ export class Popper extends Component<Props, State> {
         positionFixed
         modifiers={modifiers}
         placement={placement}
-        {...others}
+        referenceElement={referenceElement}
       >
         {children}
       </ReactPopper>

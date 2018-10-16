@@ -10,6 +10,7 @@ import {
   ContentType,
 } from '../model/Result';
 import { addJiraResultQueryParams } from './JiraItemMapper';
+import { JiraResultQueryParams } from './types';
 
 const RECENT_ITEMS_PATH: string = 'rest/internal/2/productsearch/recent';
 export type RecentItemsCounts = {
@@ -158,7 +159,10 @@ export default class JiraClientImpl implements JiraClient {
       ? addJiraResultQueryParams(item.url, {
           searchSessionId,
           searchContainerId: containerId,
-          searchContentType: contentType,
+          searchContentType: contentType.replace(
+            'jira-',
+            '',
+          ) as JiraResultQueryParams['searchContentType'],
           searchObjectId: resultId,
         })
       : item.url;

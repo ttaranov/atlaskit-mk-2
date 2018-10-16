@@ -1,5 +1,8 @@
 # @atlaskit/table-tree
 
+## 4.1.10
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 4.1.9
 - [patch] add an example which renders a custom component [371a771](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/371a771)
 

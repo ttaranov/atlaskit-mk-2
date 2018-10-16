@@ -1,9 +1,4 @@
-import {
-  FlagWithEvaluationDetails,
-  SimpleFlag,
-  Flags,
-  ExposureEvent,
-} from './types';
+import { Flags, ExposureEvent, FlagShape } from './types';
 import {
   isObject,
   enforceAttributes,
@@ -56,15 +51,11 @@ export default class FeatureFlagClient {
     const flag = this.flags[flagKey];
 
     if (isFlagWithEvaluationDetails(flag)) {
-      return new TrackedFlag(
-        flagKey,
-        flag as FlagWithEvaluationDetails,
-        this.trackExposure,
-      );
+      return new TrackedFlag(flagKey, flag, this.trackExposure);
     }
 
     if (isSimpleFlag(flag)) {
-      return new UntrackedFlag(flagKey, flag as SimpleFlag);
+      return new UntrackedFlag(flagKey, flag);
     }
 
     return null;
@@ -132,8 +123,13 @@ export default class FeatureFlagClient {
     return flag.getJSONValue();
   }
 
-  trackExposure = (flagKey: string, flag: FlagWithEvaluationDetails) => {
-    if (this.trackedFlags[flagKey] || !flag || !this.analyticsHandler) {
+  trackExposure = (flagKey: string, flag: FlagShape) => {
+    if (
+      this.trackedFlags[flagKey] ||
+      !flag ||
+      !flag.explanation ||
+      !this.analyticsHandler
+    ) {
       return;
     }
 
@@ -142,7 +138,7 @@ export default class FeatureFlagClient {
       actionSubject: 'feature',
       attributes: {
         flagKey,
-        reason: flag.explanation.reason,
+        reason: flag.explanation.kind,
         ruleId: flag.explanation.ruleId,
         value: flag.value,
       },

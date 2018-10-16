@@ -15,7 +15,7 @@ import { table } from './nodes/table';
 import { unknown } from './nodes/unknown';
 
 export type MarkEncoder = (text: string, attrs: any) => string;
-export type NodeEncoder = (node: PMNode) => string;
+export type NodeEncoder = (node: PMNode, parent?: PMNode) => string;
 
 const nodeEncoderMapping = {
   blockquote,

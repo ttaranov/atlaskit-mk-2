@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "14.0.1",
+  "version": "14.0.2",
   "description": "A React package that contains icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
@@ -10,7 +10,8 @@
     "dist",
     "glyph",
     "svgs",
-    "es5"
+    "es5",
+    "utils/icons.js"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -25,7 +26,8 @@
     "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5"
   },
   "dependencies": {
-    "@atlaskit/theme": "^6.0.2",
+    "@atlaskit/theme": "^6.1.1",
+    "@babel/runtime": "^7.0.0",
     "babel-runtime": "^6.26.0",
     "uuid": "^3.1.0"
   },
@@ -35,17 +37,17 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/button": "^9.0.15",
     "@atlaskit/docs": "^5.0.8",
-    "@atlaskit/dynamic-table": "^10.0.12",
-    "@atlaskit/field-text": "^7.0.10",
+    "@atlaskit/dynamic-table": "^10.0.14",
+    "@atlaskit/field-text": "^7.0.12",
     "@atlaskit/icon-build-process": "^0.0.0",
-    "@atlaskit/icon-file-type": "^1.0.0",
-    "@atlaskit/icon-object": "^1.0.0",
-    "@atlaskit/logo": "^9.2.2",
-    "@atlaskit/modal-dialog": "^7.0.2",
-    "@atlaskit/section-message": "^1.0.9",
-    "@atlaskit/tooltip": "^12.1.1",
+    "@atlaskit/icon-file-type": "^1.0.3",
+    "@atlaskit/icon-object": "^1.0.3",
+    "@atlaskit/logo": "^9.2.3",
+    "@atlaskit/modal-dialog": "^7.0.3",
+    "@atlaskit/section-message": "^1.0.10",
+    "@atlaskit/tooltip": "^12.1.4",
     "babel-core": "7.0.0-bridge.0",
     "classnames": "^2.2.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

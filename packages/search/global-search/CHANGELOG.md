@@ -1,5 +1,32 @@
 # @atlaskit/global-search
 
+## 5.10.3
+- [patch] Fix navigation issues when clicking the advanced search button in JIra [3b321ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b321ab)
+
+## 5.10.2
+- [patch] Updated dependencies [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+  - @atlaskit/analytics-next@3.0.10
+  - @atlaskit/analytics@4.0.6
+  - @atlaskit/avatar@14.1.2
+  - @atlaskit/button@9.0.15
+  - @atlaskit/dropdown-menu@6.1.19
+  - @atlaskit/field-text-area@4.0.10
+  - @atlaskit/flag@9.1.1
+  - @atlaskit/icon-file-type@1.0.3
+  - @atlaskit/icon-object@1.0.3
+  - @atlaskit/icon@14.0.2
+  - @atlaskit/logo@9.2.3
+  - @atlaskit/modal-dialog@7.0.3
+  - @atlaskit/navigation@33.2.1
+  - @atlaskit/page@8.0.8
+  - @atlaskit/theme@6.1.1
+
+## 5.10.1
+- [patch] remove hyphen from qs and convert values to camel case [ec5a8c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec5a8c3)
+
+## 5.10.0
+- [minor] Add link to advanced issue search at the top of the jira pre query screen. [f0f66b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0f66b7)
+
 ## 5.9.9
 - [patch] Adds small amount of padding between the Jira advanced search footer and the result list [5e8fe66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e8fe66)
 

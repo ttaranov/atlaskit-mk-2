@@ -1,5 +1,4 @@
 import Avatar, { AvatarItem } from '@atlaskit/avatar';
-import Item from '@atlaskit/item';
 import Lozenge from '@atlaskit/lozenge';
 import { shallow } from 'enzyme';
 import * as React from 'react';
@@ -23,18 +22,13 @@ describe('UserPickerItem', () => {
     it('should render UserPickerItem', () => {
       const component = shallowUserPickerItem();
 
-      const item = component.find(Item);
-      expect(item.prop('elemAfter')).toBeUndefined();
-      const avatarItem = item.find(AvatarItem);
+      expect(component.find(Lozenge)).toHaveLength(0);
+      const avatarItem = component.find(AvatarItem);
       expect(avatarItem.props()).toMatchObject({
         backgroundColor: 'transparent',
         avatar: <Avatar size="medium" name="Jace Beleren" />,
-        primaryText: expect.objectContaining(
-          <HighlightText>Jace Beleren</HighlightText>,
-        ),
-        secondaryText: expect.objectContaining(
-          <HighlightText>jbeleren</HighlightText>,
-        ),
+        primaryText: 'Jace Beleren',
+        secondaryText: 'jbeleren',
       });
     });
   });
@@ -43,12 +37,8 @@ describe('UserPickerItem', () => {
     it('should use name and nickname as text to display', () => {
       const component = shallowUserPickerItem();
       const item = component.find(AvatarItem);
-      expect(item.prop('primaryText')).toMatchObject(
-        <HighlightText>Jace Beleren</HighlightText>,
-      );
-      expect(item.prop('secondaryText')).toMatchObject(
-        <HighlightText>jbeleren</HighlightText>,
-      );
+      expect(item.prop('primaryText')).toEqual('Jace Beleren');
+      expect(item.prop('secondaryText')).toEqual('jbeleren');
     });
 
     it('should use nickname as primaryText if no name present', () => {
@@ -58,37 +48,36 @@ describe('UserPickerItem', () => {
       };
       const component = shallowUserPickerItem({ user: unnamedUser });
       const item = component.find(AvatarItem);
-      expect(item.prop('primaryText')).toMatchObject(
-        <HighlightText>jbeleren</HighlightText>,
-      );
+      expect(item.prop('primaryText')).toEqual('jbeleren');
       expect(item.prop('secondaryText')).toBeFalsy();
     });
   });
 
   describe('lozenge', () => {
     it('should not render lozenge for basic user', () => {
-      const component = shallowUserPickerItem();
+      const component = shallowUserPickerItem({ context: 'menu' });
 
-      const item = component.find(Item);
-      expect(item.find(Lozenge)).toHaveLength(0);
+      expect(component.find(Lozenge)).toHaveLength(0);
     });
 
     it('should render tag if lozenge prop passed in', () => {
       const component = shallowUserPickerItem({
         user: { ...user, lozenge: 'app' },
+        context: 'menu',
       });
 
-      const item = component.find(Item);
-      expect(item.prop('elemAfter')).toEqual(<Lozenge>app</Lozenge>);
+      const lozenge = component.find(Lozenge);
+      expect(lozenge).toHaveLength(1);
+      expect(lozenge.prop('children')).toEqual('app');
     });
 
     it('should not render lozenge if empty string', () => {
       const component = shallowUserPickerItem({
         user: { ...user, lozenge: '' },
+        context: 'menu',
       });
 
-      const item = component.find(Item);
-      expect(item.prop('elemAfter')).toBeFalsy();
+      expect(component.find(Lozenge)).toHaveLength(0);
     });
   });
 
@@ -137,6 +126,7 @@ describe('UserPickerItem', () => {
           highlight: { name, nickname },
         },
         status: 'offline',
+        context: 'menu',
       });
 
       expect(component.find(AvatarItem).prop('primaryText')).toEqual(
