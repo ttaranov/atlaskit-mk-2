@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.10.3
+- [patch] Fix navigation issues when clicking the advanced search button in JIra [3b321ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b321ab)
+
 ## 5.10.2
 - [patch] Updated dependencies [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
   - @atlaskit/analytics-next@3.0.10

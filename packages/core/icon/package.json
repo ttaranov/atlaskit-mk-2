@@ -10,7 +10,8 @@
     "dist",
     "glyph",
     "svgs",
-    "es5"
+    "es5",
+    "utils/icons.js"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [

@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.18.0
+- [minor] Adds a 350ms delay to Flyout to prevent it from opening accidentally. [8175029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8175029)
+
 ## 3.17.2
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 
