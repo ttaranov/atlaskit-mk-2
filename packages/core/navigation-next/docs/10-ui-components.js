@@ -240,6 +240,20 @@ ${(
         }}
       />
     )}
+
+${<Hr />}
+
+${<H>Wordmark</H>}
+
+Renders the provided icon or logo wordmark component with relevant padding.
+
+${(
+      <Props
+        heading="Wordmark props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/Wordmark')}
+      />
+    )}
+
 `}
   </ContentsProvider>
 );
