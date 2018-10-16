@@ -24,6 +24,7 @@ import {
   defaultTimes,
   defaultDateFormat,
   defaultTimeFormat,
+  formatDateTimeZoneIntoIso,
 } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -150,16 +151,6 @@ const styles = {
     },
   }),
 };
-
-function formatDateTimeZoneIntoIso(
-  date: string,
-  time: string,
-  zone: string,
-): string {
-  // If no 'date' then return an empty string otherwise
-  //  Firefox defaults to the beginning of epoch time.
-  return date ? `${date}T${time}${zone}` : '';
-}
 
 class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
