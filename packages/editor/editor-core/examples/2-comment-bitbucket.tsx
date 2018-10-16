@@ -46,29 +46,18 @@ const exampleDocument = {
 
 export type Props = {};
 export type State = {
-  hasJquery?: boolean;
   isExpanded?: boolean;
 };
 
 export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
-    hasJquery: false,
     isExpanded: true,
   };
-
-  componentDidMount() {
-    delete window.jQuery;
-    this.loadJquery();
-  }
 
   onFocus = () =>
     this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
 
   render() {
-    if (!this.state.hasJquery) {
-      return <h3>Please wait, loading jQuery ...</h3>;
-    }
-
     return (
       <EditorContext>
         <div>
@@ -142,20 +131,4 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
       </EditorContext>
     );
   }
-
-  private loadJquery = () => {
-    const scriptElem = document.createElement('script');
-    scriptElem.type = 'text/javascript';
-    scriptElem.src =
-      'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
-
-    scriptElem.onload = () => {
-      this.setState({
-        ...this.state,
-        hasJquery: true,
-      });
-    };
-
-    document.body.appendChild(scriptElem);
-  };
 }
