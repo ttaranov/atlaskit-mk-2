@@ -20,7 +20,6 @@ import {
   PopupContainer,
   PopupHeader,
   PopupEventsWrapper,
-  PreviewImage,
   UploadingFilesWrapper,
   FileProgress,
   FilesInfoWrapper,
@@ -42,7 +41,6 @@ const context = createStorybookContext();
 
 export type PublicFile = {
   publicId: string;
-  preview?: string;
 };
 export interface Event<K extends keyof PopupUploadEventPayloadMap> {
   readonly eventName: K;
@@ -112,7 +110,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
 
     newPopup.on('uploads-start', this.onUploadsStart);
-    newPopup.on('upload-preview-update', this.onUploadPreviewUpdate);
     newPopup.on('upload-status-update', this.onUploadStatusUpdate);
     newPopup.on('upload-processing', this.onUploadProcessing);
     newPopup.on('upload-end', this.onUploadEnd);
@@ -173,28 +170,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
   };
 
-  onUploadPreviewUpdate = (data: UploadPreviewUpdateEventPayload) => {
-    const id = data.file.id;
-    const preview = data.preview && data.preview.src;
-
-    if (preview) {
-      const newPublicFile = {
-        [id]: {
-          publicId: id,
-          preview,
-        },
-      };
-
-      this.setState({
-        publicFiles: { ...this.state.publicFiles, ...newPublicFile },
-        events: [
-          ...this.state.events,
-          { eventName: 'upload-preview-update', data },
-        ],
-      });
-    }
-  };
-
   onUploadProcessing = (data: UploadProcessingEventPayload) => {
     const { publicFiles } = this.state;
     const publicFile = publicFiles[data.file.id];
@@ -202,9 +177,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     if (publicFile) {
       const publicId = data.file.publicId;
       publicFile.publicId = publicId;
-      if (publicFile.preview) {
-        context.setLocalPreview(publicId, publicFile.preview);
-      }
 
       this.setState({
         publicFiles,
@@ -283,19 +255,15 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           return;
         }
 
-        const imageUrl = data.preview.src.toString();
         // We don't want to print the original image src because it freezes the browser
         const newData: UploadPreviewUpdateEventPayload = {
           ...data,
-          preview: { ...data.preview, src: `src length: ${imageUrl.length}` },
+          preview: { ...data.preview },
         };
 
         return (
           <div key={key}>
             {this.renderSerializedEvent(eventName, newData, key)}
-            <div>
-              <PreviewImage src={imageUrl} id={data.file.id} fadedOut={false} />
-            </div>
           </div>
         );
       }

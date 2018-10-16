@@ -1,5 +1,33 @@
 # @atlaskit/editor-common
 
+## 20.1.1
+- [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
+
+## 20.1.0
+- [minor] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
+## 20.0.1
+- [patch] ED-5487: fix popup when editor is initialised in the head of the page [0c3a2f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c3a2f3)
+
+## 20.0.0
+- [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/emoji@45.0.0
+  - @atlaskit/media-card@41.0.0
+  - @atlaskit/editor-json-transformer@4.0.18
+  - @atlaskit/editor-test-helpers@6.2.7
+  - @atlaskit/media-core@24.3.0
+
+## 19.3.3
+- [patch] ED-5529 Fix JSON Schema [d286ab3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d286ab3)
+
+## 19.3.2
+- [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+  - @atlaskit/media-core@24.2.2
+  - @atlaskit/media-card@40.0.0
+
+## 19.3.1
+- [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
+
 ## 19.3.0
 - [minor] Dynamic font size for panels [ea3b522](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea3b522)
 

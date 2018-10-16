@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Fragment, Node } from 'prosemirror-model';
 
-import { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
 import BodiedExtension, {
   Props as BodiedExtensionProps,
@@ -35,13 +34,6 @@ import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 import * as Loadable from 'react-loadable';
-
-const ApplicationCard = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_ApplicationCard" */
-    './applicationCard').then(module => module.default),
-  loading: () => null,
-});
 
 const DecisionItem = Loadable({
   loader: () =>
@@ -109,7 +101,6 @@ const Mention = Loadable({
 import { bigEmojiHeight } from '../../utils';
 
 export const nodeToReact = {
-  applicationCard: ApplicationCard,
   blockquote: Blockquote,
   bulletList: BulletList,
   blockCard: BlockCard,
@@ -291,8 +282,6 @@ const isEmojiBlock = (pnode: Fragment): boolean => {
 };
 
 export {
-  AppCardViewProps,
-  ApplicationCard,
   Blockquote,
   BodiedExtension,
   BodiedExtensionProps,

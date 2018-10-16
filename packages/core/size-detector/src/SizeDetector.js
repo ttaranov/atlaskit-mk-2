@@ -124,6 +124,10 @@ export default class SizeDetector extends Component<Props, State> {
     // $FlowFixMe - resizeObject is typed as HTMLElement which has no contentDocument prop
     this.resizeObjectDocument = this.resizeObject.contentDocument.defaultView;
     this.resizeObjectDocument.addEventListener('resize', this.handleResize);
+
+    // Calculate width first time, after object has loaded.
+    // Prevents it from getting in a weird state where width is always 0.
+    this.handleResize();
   };
 
   renderChildren = () => {

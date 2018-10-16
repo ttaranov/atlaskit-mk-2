@@ -43,7 +43,6 @@ export const pluginConfig = (tablesConfig?: PluginConfig | boolean) => {
         allowHeaderRow: true,
         allowMergeCells: true,
         allowNumberColumn: true,
-        isHeaderRowRequired: true,
         stickToolbarToBottom: true,
         permittedLayouts: 'all' as PermittedLayoutsDescriptor,
         allowControls: true,

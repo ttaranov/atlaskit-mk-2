@@ -11,14 +11,17 @@ const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 export default function Example() {
   return (
     <ReactionsExampleWrapper>
-      <div>
-        <p>This is a message with some reactions</p>
-        <ConnectedReactionsView
-          containerAri={containerAri}
-          ari={demoAri}
-          emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
-        />
-      </div>
+      {store => (
+        <div>
+          <p>This is a message with some reactions</p>
+          <ConnectedReactionsView
+            store={store}
+            containerAri={containerAri}
+            ari={demoAri}
+            emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          />
+        </div>
+      )}
     </ReactionsExampleWrapper>
   );
 }

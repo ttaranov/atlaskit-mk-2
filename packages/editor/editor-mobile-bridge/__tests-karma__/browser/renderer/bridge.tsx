@@ -24,7 +24,6 @@ describe('Renderer bridge', () => {
   it('sets content', () => {
     rendererBridge.setContent(JSON.stringify(originalContent));
     const getComponentState = renderer.state().document;
-    const documentObj = getComponentState && JSON.parse(getComponentState);
-    expect(documentObj).to.be.deep.equal(originalContent);
+    expect(originalContent).to.be.deep.equal(getComponentState);
   });
 });

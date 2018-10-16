@@ -48,7 +48,7 @@ describe('<MediaViewer />', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it('should close Media Viewer on ESC shortcut', () => {
+  it.skip('should close Media Viewer on ESC shortcut', () => {
     const { onClose } = createFixture([identifier], identifier);
     const e = new KeyboardEventWithKeyCode('keydown', {
       bubbles: true,

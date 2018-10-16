@@ -24,8 +24,6 @@ beforeEach(() => {
   jest.useFakeTimers();
 });
 
-afterEach(() => wrapper && wrapper.unmount());
-
 const Target = ({ children }: { children: Node }) => <div>{children}</div>;
 
 test('tooltip should not be shown by default', () => {
@@ -76,25 +74,29 @@ test('tooltip should be visible after target is clicked', () => {
 });
 
 test('tooltip should be hidden after target click with hideTooltipOnClick set', () => {
+  const spy = jest.fn();
   wrapper = mount(
-    <Tooltip content="Tooltip content" hideTooltipOnClick>
+    <Tooltip content="Tooltip content" hideTooltipOnClick onHide={spy}>
       <Target>foo</Target>
     </Tooltip>,
   );
   simulate(wrapper, Target, 'mouseover');
   simulate(wrapper, Target, 'click');
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+  expect(spy).toHaveBeenCalledTimes(1);
 });
 
 test('tooltip should be hidden after target click with hideTooltipOnMouseDown set', () => {
+  const spy = jest.fn();
   wrapper = mount(
-    <Tooltip content="Tooltip content" hideTooltipOnMouseDown>
+    <Tooltip content="Tooltip content" hideTooltipOnMouseDown onHide={spy}>
       <Target>foo</Target>
     </Tooltip>,
   );
   simulate(wrapper, Target, 'mouseover');
   simulate(wrapper, Target, 'mousedown');
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+  expect(spy).toHaveBeenCalledTimes(1);
 });
 
 test('tooltip should render whatever is passed to component prop', () => {
@@ -127,16 +129,19 @@ test('tooltip wrapping element should be whatever is passed as tag prop', () => 
 });
 
 test('tooltip should wait a default delay before showing', () => {
+  const spy = jest.fn();
   wrapper = mount(
-    <Tooltip content="Tooltip content">
+    <Tooltip content="Tooltip content" onShow={spy}>
       <Target>foo</Target>
     </Tooltip>,
   );
   wrapper.find(Target).simulate('mouseover');
+  expect(spy).toHaveBeenCalledTimes(0);
   jest.runTimersToTime(299);
   wrapper.update();
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
   jest.runTimersToTime(1);
+  expect(spy).toHaveBeenCalledTimes(1);
   wrapper.update();
   expect(wrapper.find(StyledTooltip)).toHaveLength(1);
 });
@@ -157,8 +162,9 @@ test('tooltip should wait a configuable delay before showing', () => {
 });
 
 test('tooltip should wait a default delay before hiding', () => {
+  const spy = jest.fn();
   wrapper = mount(
-    <Tooltip content="Tooltip content">
+    <Tooltip content="Tooltip content" onHide={spy}>
       <Target>foo</Target>
     </Tooltip>,
   );
@@ -167,9 +173,11 @@ test('tooltip should wait a default delay before hiding', () => {
   jest.runTimersToTime(299);
   wrapper.update();
   expect(wrapper.find(StyledTooltip)).toHaveLength(1);
+  expect(spy).toHaveBeenCalledTimes(0);
   jest.runTimersToTime(130);
   wrapper.update();
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+  expect(spy).toHaveBeenCalledTimes(1);
 });
 
 test('tooltip should wait a configuable delay before hiding', () => {

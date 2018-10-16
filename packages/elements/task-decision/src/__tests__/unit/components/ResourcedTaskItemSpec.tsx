@@ -321,6 +321,7 @@ describe('<ResourcedTaskItem/>', () => {
           objectAri="objectAri"
           containerAri="containerAri"
           showPlaceholder={true}
+          placeholder="cheese"
           taskDecisionProvider={Promise.resolve(provider)}
         />,
       );
@@ -334,6 +335,7 @@ describe('<ResourcedTaskItem/>', () => {
           objectAri="objectAri"
           containerAri="containerAri"
           showPlaceholder={true}
+          placeholder="cheese"
           taskDecisionProvider={Promise.resolve(provider)}
         >
           Hello <b>world</b>

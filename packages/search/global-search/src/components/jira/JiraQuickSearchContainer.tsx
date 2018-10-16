@@ -46,6 +46,7 @@ import {
   ABTest,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
+import AdvancedIssueSearchLink from './AdvancedIssueSearchLink';
 
 const NoResultsAdvancedSearchContainer = styled.div`
   margin-top: ${4 * gridSize()}px;
@@ -143,6 +144,7 @@ export class JiraQuickSearchContainer extends React.Component<
             />
           </StickyFooter>
         )}
+        renderBeforePreQueryState={() => <AdvancedIssueSearchLink />}
         getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
         getPostQueryGroups={() =>
           mapSearchResultsToUIGroups(searchResults as JiraResultsMap)

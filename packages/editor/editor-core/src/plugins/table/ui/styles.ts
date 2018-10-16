@@ -81,6 +81,16 @@ const Button = (css?: string) => `
   ${css}
 `;
 
+const InsertLine = (css?: string) => `
+  .${ClassName.CONTROLS_INSERT_LINE} {
+    background: ${tableBorderSelectedColor};
+    display: none;
+    position: absolute;
+    z-index: ${akEditorUnitZIndex};
+    ${css}
+  }
+`;
+
 const HeaderButton = (css?: string) => `
   .${ClassName.CONTROLS_BUTTON} {
     background: ${tableToolbarColor};
@@ -173,6 +183,20 @@ export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle}
 
+    /* Breakout only works on top level */
+    > .${ClassName.NODEVIEW_WRAPPER} .${
+  ClassName.TABLE_CONTAINER
+}[data-layout='full-width'],
+    > .${ClassName.NODEVIEW_WRAPPER} .${
+  ClassName.TABLE_CONTAINER
+}[data-layout='wide'] {
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    > * .${ClassName.NODEVIEW_WRAPPER} .${ClassName.TABLE_CONTAINER} {
+      width: 100% !important;
+    }
+
     /* Column controls */
     .${ClassName.COLUMN_CONTROLS} {
       height: ${tableToolbarSize}px;
@@ -229,18 +253,28 @@ export const tableStyles = css`
     }
     .${ClassName.COLUMN_CONTROLS},
     .${ClassName.CONTROLS_INSERT_COLUMN} {
-      ${InsertButton('top: 5px;')}
+      ${InsertButton('top: 2px;')}
+      ${InsertLine(`
+        width: 2px;
+        left: 8px;
+        top: ${tableInsertColumnButtonSize}px;
+      `)}
       ${InsertMarker(`
-        bottom: 3px;
+        bottom: 5px;
         left: 7px;
       `)}
     }
     .${ClassName.ROW_CONTROLS},
     .${ClassName.CONTROLS_INSERT_ROW} {
-      ${InsertButton('left: 5px;')}
+      ${InsertButton('left: 2px;')}
+      ${InsertLine(`
+        height: 2px;
+        top: 8px;
+        left: ${tableInsertColumnButtonSize}px;
+      `)}
       ${InsertMarker(`
         top: 7px;
-        right: 3px;
+        right: 5px;
       `)}
     }
 
@@ -475,18 +509,9 @@ export const tableStyles = css`
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
       z-index: ${akEditorUnitZIndex - 1};
-
       /* fixes gap cursor height */
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
-    }
-    .${ClassName.COLUMN_INSERT_LINE},
-    .${ClassName.ROW_INSERT_LINE},
-    .${ClassName.ROW_INSERT_LINE_OVERLAY} {
-      background-color: ${tableBorderSelectedColor};
-      position: absolute;
-      pointer-events: none;
-      z-index: ${akEditorUnitZIndex};
     }
     .${ClassName.COLUMN_RESIZE_HANDLE} {
       bottom: 0;
@@ -494,45 +519,6 @@ export const tableStyles = css`
       right: -2px;
       width: 2px;
       height: calc(100% + 2px);
-    }
-    .${ClassName.COLUMN_INSERT_LINE} {
-      bottom: 0;
-      right: -2px;
-      width: 2px;
-      top: -${tableToolbarSize}px;
-      height: calc(100% + ${tableToolbarSize}px);
-    }
-    .${ClassName.COLUMN_INSERT_LINE}.left {
-      right: auto;
-      left: -1px;
-    }
-    .${ClassName.ROW_INSERT_LINE} {
-      bottom: -1px;
-      height: 2px;
-      left: -${tableToolbarSize}px;
-      width: calc(100% + ${tableToolbarSize}px);
-    }
-    .${ClassName.ROW_INSERT_LINE}.top {
-      bottom: auto;
-      top: -2px;
-    }
-    .${ClassName.ROW_INSERT_LINE_OVERLAY} {
-      bottom: 10px;
-      height: 2px;
-      right: -${tableToolbarSize + 1}px;
-      width: ${tableToolbarSize + 1}px;
-      display: none;
-    }
-    .${ClassName.CONTROLS_INSERT_ROW}:hover .${
-  ClassName.ROW_INSERT_LINE_OVERLAY
-} {
-      display: block;
-    }
-    [data-number-column='true'] {
-      .${ClassName.ROW_INSERT_LINE_OVERLAY} {
-        width: ${tableToolbarSize + akEditorTableNumberColumnWidth + 1}px;
-        right: -${tableToolbarSize + akEditorTableNumberColumnWidth + 1}px;
-      }
     }
   }
 
