@@ -156,7 +156,9 @@ function formatDateTimeZoneIntoIso(
   time: string,
   zone: string,
 ): string {
-  return `${date}T${time}${zone}`;
+  // If no 'date' then return an empty string otherwise
+  //  Firefox defaults to the beginning of epoch time.
+  return date ? `${date}T${time}${zone}` : '';
 }
 
 class DateTimePicker extends Component<Props, State> {
