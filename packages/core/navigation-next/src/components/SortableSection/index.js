@@ -1,36 +1,42 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  type DropResult,
+  type DragStart,
+  type HookProvided,
+} from 'react-beautiful-dnd';
 
-import type { SortableSectionProps } from './types';
-import { Section } from '../../';
+import type { GroupType, SortableSectionProps } from './types';
+import Section, { getSectionDefaultProps } from '../Section';
 
 import { DraggableItem } from './DraggableItem';
 import { DroppableGroup } from './DroppableGroup';
 
-const noop = () => {};
 const pluck = (arr, key, val) => arr.find(x => x[key] === val);
 
 export default class SortableSection extends Component<SortableSectionProps> {
-  static defaultProps = {
-    onChange: noop,
-  };
-
-  onDragStart = start => {
+  static defaultProps = getSectionDefaultProps();
+  onDragStart = (start: DragStart, provided: HookProvided) => {
     // avoid unintentional interaction with other elements
-    document.body.style.pointerEvents = 'none';
+    if (document && document.body && document.body.style) {
+      document.body.style.pointerEvents = 'none';
+    }
 
     if (this.props.onDragStart) {
-      this.props.onDragStart(start);
+      this.props.onDragStart(start, provided);
     }
   };
 
-  onDragEnd = result => {
-    document.body.style.pointerEvents = null;
+  onDragEnd = (result: DropResult, provided: HookProvided) => {
+    if (document && document.body && document.body.style) {
+      document.body.style.pointerEvents = '';
+    }
 
-    // warn about handlers
+    // warn about combination handlers
     if (this.props.onChange && this.props.onDragEnd) {
+      // eslint-disable-next-line no-console
       console.warn(
         'SortableSection: The `onChange` handler is ignored when `onDragEnd` is provided.\n\nPlease provide one or the other.',
       );
@@ -39,7 +45,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
     // short-circuit the potentially expensive operations below if the consumer
     // wants to handle onDragEnd themselves
     if (this.props.onDragEnd) {
-      this.props.onDragEnd(result);
+      this.props.onDragEnd(result, provided);
       return;
     }
 
@@ -58,8 +64,8 @@ export default class SortableSection extends Component<SortableSectionProps> {
       return; // dropped in its original position
     }
 
-    const start = pluck(groups, 'id', startId);
-    const finish = pluck(groups, 'id', finishId);
+    const start = ((pluck(groups, 'id', startId): any): GroupType);
+    const finish = ((pluck(groups, 'id', finishId): any): GroupType);
 
     // same group
     if (start === finish) {
@@ -72,7 +78,9 @@ export default class SortableSection extends Component<SortableSectionProps> {
         return g;
       });
 
-      this.props.onChange(newGroups, result);
+      if (this.props.onChange) {
+        this.props.onChange(newGroups, result);
+      }
       return;
     }
 
@@ -91,7 +99,9 @@ export default class SortableSection extends Component<SortableSectionProps> {
       return g;
     });
 
-    this.props.onChange(newGroups, result);
+    if (this.props.onChange) {
+      this.props.onChange(newGroups, result);
+    }
   };
 
   render() {
@@ -99,7 +109,6 @@ export default class SortableSection extends Component<SortableSectionProps> {
 
     return (
       <DragDropContext
-        onDragBeforeStart={this.props.onDragBeforeStart}
         onDragUpdate={this.props.onDragUpdate}
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}

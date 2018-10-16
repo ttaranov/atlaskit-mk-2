@@ -10,10 +10,11 @@ import type {
 } from '../src/components/SortableSection/types';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
-const SectionWrapper = props => (
+const SectionWrapper = (props: *) => (
   <div
     css={{
       backgroundColor: colors.N20,
+      height: '100%',
       overflow: 'hidden',
       paddingBottom: 8,
       position: 'relative',
@@ -23,24 +24,21 @@ const SectionWrapper = props => (
   />
 );
 
-function getDefaultItems(from, to) {
-  const items = {
-    dashboards: { text: 'Dashboards' },
-    projects: { text: 'Projects' },
-    settings: { text: 'Settings' },
-    backlog: { text: 'Backlog' },
-    'active-sprint': { text: 'Active Sprint' },
-    'issues-and-filters': { text: 'Issues and filters' },
-    reports: { text: 'Reports' },
-    'viewed-recently': { text: 'Viewed Recently' },
-  };
-
-  // get ids
-  if (from || to) {
-    return Object.keys(items).splice(from, to);
-  }
-
-  return items;
+const DEFAULT_ITEMS = {
+  dashboards: { text: 'Dashboards' },
+  projects: { text: 'Projects' },
+  settings: { text: 'Settings' },
+  backlog: { text: 'Backlog' },
+  'active-sprint': { text: 'Active Sprint' },
+  'issues-and-filters': { text: 'Issues and filters' },
+  reports: { text: 'Reports' },
+  'viewed-recently': { text: 'Viewed Recently' },
+};
+function getDefaultItems() {
+  return DEFAULT_ITEMS;
+}
+function getItemIds(from: number, to: number): Array<string> {
+  return Object.keys(DEFAULT_ITEMS).splice(from, to);
 }
 
 type Props = {
@@ -57,12 +55,22 @@ export default class Example extends Component<Props, State> {
   };
   state = {
     groups: [
-      { id: 'first', heading: 'First', itemIds: getDefaultItems(0, 4) },
-      { id: 'second', heading: 'Second', itemIds: getDefaultItems(4, 8) },
+      {
+        id: 'first',
+        heading: 'First',
+        itemIds: getItemIds(0, 4),
+        hasSeparator: false,
+      },
+      {
+        id: 'second',
+        heading: 'Second',
+        itemIds: getItemIds(4, 8),
+        hasSeparator: false,
+      },
     ],
     showContainer: true,
   };
-  onChange = groups => {
+  onChange = (groups: GroupsType) => {
     this.setState({ groups });
   };
   render() {

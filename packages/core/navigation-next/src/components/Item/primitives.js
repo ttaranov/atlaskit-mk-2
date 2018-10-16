@@ -33,6 +33,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
   static defaultProps = {
     draggableProps: {},
     isActive: false,
+    isDragging: false,
     isHover: false,
     isSelected: false,
     spacing: 'default',
@@ -43,21 +44,21 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     const {
       after: After,
       before: Before,
-      styles: styleReducer,
-      isActive,
-      innerRef,
-      isDragging,
+      component: CustomComponent,
       draggableProps,
+      href,
+      innerRef,
+      isActive,
+      isDragging,
       isHover,
       isSelected,
+      onClick,
       spacing,
+      styles: styleReducer,
       subText,
+      target,
       text,
       theme,
-      component: CustomComponent,
-      href,
-      onClick,
-      target,
     } = this.props;
 
     const { mode, context } = theme;

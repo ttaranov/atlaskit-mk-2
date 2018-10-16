@@ -35,6 +35,7 @@ import type {
   ItemsRendererProps,
   SectionHeadingProps,
   SectionProps,
+  SortableSectionProps,
   WordmarkProps,
 } from './types';
 
@@ -293,21 +294,26 @@ const SortableSection = ({
   onDragEnd,
   parentId,
   shouldGrow,
-}: SectionProps) => (
-  <SortableSectionComponent
-    alwaysShowScrollHint={alwaysShowScrollHint}
-    id={id}
-    items={Array.isArray(items) ? toObject(items) : items}
-    groups={groups}
-    onChange={onChange}
-    key={nestedGroupKey}
-    onDragStart={onDragStart}
-    onDragUpdate={onDragUpdate}
-    onDragEnd={onDragEnd}
-    parentId={parentId}
-    shouldGrow={shouldGrow}
-  />
-);
+  styles,
+}: SortableSectionProps) => {
+  const key = typeof nestedGroupKey === 'string' ? nestedGroupKey : id;
+  return (
+    <SortableSectionComponent
+      alwaysShowScrollHint={alwaysShowScrollHint}
+      id={id}
+      items={Array.isArray(items) ? toObject(items) : items}
+      groups={groups}
+      onChange={onChange}
+      key={key}
+      onDragStart={onDragStart}
+      onDragUpdate={onDragUpdate}
+      onDragEnd={onDragEnd}
+      parentId={parentId}
+      shouldGrow={shouldGrow}
+      styles={styles}
+    />
+  );
+};
 
 const itemComponents = {
   BackItem,

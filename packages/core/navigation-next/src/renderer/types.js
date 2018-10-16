@@ -3,6 +3,7 @@
 import type { ComponentType, Node } from 'react';
 
 import { UIController, ViewController } from '../';
+import type { SortableSectionProps as SortableSectionPropsBase } from '../components/SortableSection/types';
 import type { ViewData } from '../../src/view-controller/types';
 
 /**
@@ -54,6 +55,11 @@ export type SectionProps = SharedGroupTypeProps & {
   parentId: string | null,
   shouldGrow: boolean,
 };
+
+export type SortableSectionProps = SharedGroupTypeProps &
+  SortableSectionPropsBase & {
+    nestedGroupKey: string,
+  };
 
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,

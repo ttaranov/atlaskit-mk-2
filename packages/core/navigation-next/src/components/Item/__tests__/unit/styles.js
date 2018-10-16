@@ -15,6 +15,7 @@ const modeArgs = {
 
 const commonArgs = {
   isActive: false,
+  isDragging: false,
   isSelected: false,
   isHover: false,
   spacing: 'compact',

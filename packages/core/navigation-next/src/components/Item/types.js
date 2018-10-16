@@ -1,6 +1,7 @@
 // @flow
 
 import type { ComponentType, Node, Ref } from 'react';
+import type { DraggableProps } from 'react-beautiful-dnd';
 
 import type { StyleReducer, ProductTheme } from '../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
@@ -11,7 +12,7 @@ export type ItemPresentationProps = {
   /** Whether the Item is currently in the 'active' interaction state. */
   isActive: boolean,
   /** Whether the Item is part of a SortableSection, and is being dragged. */
-  isDragging: boolean,
+  isDragging?: boolean,
   /** Whether the Item is currently in the 'hover' interaction state. */
   isHover: boolean,
   /** Whether the Item should display as being selected. */
@@ -38,6 +39,8 @@ export type ConnectedItemProps = {
    * provided with a className and children, which should be passed on to the
    * element you render. */
   component?: ComponentType<ItemRenderComponentProps>,
+  /** Properties exclusive to Items within a SortableSection. */
+  draggableProps?: DraggableProps,
   /** An href which this Item links to. If this prop is provided the Item will
    * render as an <a>. */
   href?: string,
@@ -49,6 +52,8 @@ export type ConnectedItemProps = {
   index?: number,
   /* React ref to the outer-most wrapping element */
   innerRef?: Ref<*>,
+  /** Whether the Item is part of a SortableSection, and is being dragged. */
+  isDragging?: boolean,
   /** Whether this Item should display as being selected. */
   isSelected: boolean,
   /** A handler which will be called when the Item is clicked. */
