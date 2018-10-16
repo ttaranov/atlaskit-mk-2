@@ -8,7 +8,12 @@ import { Dispatch } from '../../../event-dispatcher';
 import TableNodeView from '../nodeviews/table';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { setTargetCell, setTableRef, clearHoverSelection } from '../actions';
+import {
+  setTargetCell,
+  setTableRef,
+  clearHoverSelection,
+  handleCut,
+} from '../actions';
 import {
   handleSetFocus,
   handleSetTableRef,
@@ -180,6 +185,16 @@ export const createPlugin = (
       },
     },
     key: pluginKey,
+    appendTransaction: (
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ) => {
+      const tr = transactions.find(tr => tr.getMeta('uiEvent') === 'cut');
+      if (tr) {
+        return handleCut(tr, oldState, newState);
+      }
+    },
     view: (editorView: EditorView) => {
       const domAtPos = editorView.domAtPos.bind(editorView);
 
