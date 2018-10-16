@@ -30,6 +30,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect strong mark surrounded by non alphanumeric characters', () => {
+    const wiki = 'This is a (*strong*) text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a strong mark if there is no space before *', () => {
     const wiki = 'This is not a*strong* text';
 

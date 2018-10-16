@@ -30,6 +30,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect deleted mark surrounded by non alphanumeric characters', () => {
+    const wiki = 'This is a (-deleted-) text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a deleted mark if there is no space before -', () => {
     const wiki = 'This is not a-deleted- text';
 

@@ -44,6 +44,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect monospace mark surrounded by non alphanumeric characters', () => {
+    const wiki = 'This is a ({{monospace}}) text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a monospace mark if there is a space before closing }}', () => {
     const wiki = 'This is not a {{monospace }} text';
 

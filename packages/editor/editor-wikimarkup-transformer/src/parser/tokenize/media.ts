@@ -24,13 +24,15 @@ export function media(input: string, schema: Schema): Token {
   if (match[0].startsWith('! ') || match[0].endsWith(' !')) {
     return fallback(input);
   }
+
   /**
-   * This is not image !image.jpg!because of me
+   * If the closing symbol is followed by a alphanumeric, it's
+   * not a valid formatter
    */
   const index = match[0].length;
   if (index < input.length) {
-    const length = parseWhitespaceAndNewLine(input.substring(index));
-    if (length === 0) {
+    const charAfterEnd = input.charAt(index);
+    if (/[a-zA-Z0-9]/.test(charAfterEnd)) {
       return fallback(input);
     }
   }

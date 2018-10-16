@@ -30,6 +30,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect subscript mark surrounded by non alphanumeric characters', () => {
+    const wiki = 'This is a (~subscript~) text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a subscript mark if there is no space before ~', () => {
     const wiki = 'This is not a~subscript~ text';
 

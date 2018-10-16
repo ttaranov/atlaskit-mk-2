@@ -54,16 +54,21 @@ export function citation(input: string, schema: Schema): Token {
         }
 
         /**
-         * If the closing symbol has an empty space before it,
-         * it's not a valid formatter
-         * If the closing symbol is not at the end of the line and
-         * has not a following space, it's not a valid formatter
+         * If the closing symbol is followed by a alphanumeric, it's
+         * not a valid formatter
          */
         if (index < input.length) {
-          const length = parseWhitespaceAndNewLine(input.substring(index));
-          if (buffer.endsWith(' ') || length === 0) {
+          const charAfterEnd = input.charAt(index);
+          if (/[a-zA-Z0-9]/.test(charAfterEnd)) {
             return fallback();
           }
+        }
+        /**
+         * If the closing symbol has an empty space before it,
+         * it's not a valid formatter
+         */
+        if (buffer.endsWith(' ')) {
+          return fallback();
         }
 
         const mark = schema.marks.em.create();
