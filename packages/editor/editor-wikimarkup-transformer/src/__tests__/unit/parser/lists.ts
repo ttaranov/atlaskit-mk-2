@@ -17,6 +17,12 @@ describe('JIRA wiki markup - Lists', () => {
 - types`,
     ],
     [
+      'should find unordered lists where items start with spaces',
+      `- different
+       - bullet
+       - types`,
+    ],
+    [
       'should be able to create nested list with -',
       `- different
 -- bullet
