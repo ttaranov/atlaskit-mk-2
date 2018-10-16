@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.8
+- [patch] New translations (Task & Decisions) [03addbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03addbd)
+
 ## 86.0.7
 - [patch] ED-5410: handle rows/columns cutting [b792d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b792d04)
 
