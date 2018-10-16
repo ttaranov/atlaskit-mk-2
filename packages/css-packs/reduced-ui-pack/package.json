@@ -41,7 +41,6 @@
     "build": "mkdir -p dist && cp src/bundle.css dist/bundle.css && cp src/icons-sprite.svg dist/icons-sprite.svg",
     "update": "BABEL_ENV=production:cjs yarn build-css && yarn run sprite",
     "sprite": "node ./bin/buildSprite.js",
-    "build-css": "babel-node build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs",
-    "build-css-faux": "babel-node build/js-to-css.js --presets @babel/env,@babel/react"
+    "build-css": "babel-node build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"
   }
 }
