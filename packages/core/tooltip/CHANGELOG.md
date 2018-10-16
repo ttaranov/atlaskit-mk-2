@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 12.1.4
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 12.1.3
 - [patch] onHide and onShow are now called in componentDidUpdate so they behave consistently between all hides and shows [e20f11a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e20f11a)
 

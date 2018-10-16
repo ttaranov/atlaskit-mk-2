@@ -1,5 +1,8 @@
 # @atlaskit/avatar-group
 
+## 2.1.5
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 2.1.4
 - [patch] Adds new theming API to Avatar and AvatarItem components [79dd93f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79dd93f)
 

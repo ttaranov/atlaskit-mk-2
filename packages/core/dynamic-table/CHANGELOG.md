@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 10.0.14
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 10.0.13
 - [patch] Added space of 3x gridSize between table and pagination component [83a3471](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83a3471)
 - [patch] Updated dependencies [8276156](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8276156)

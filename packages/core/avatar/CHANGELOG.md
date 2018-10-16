@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 14.1.2
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 14.1.1
 - [patch] Update avatar index exports to fix babel transpilation bug [0208158](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0208158)
 

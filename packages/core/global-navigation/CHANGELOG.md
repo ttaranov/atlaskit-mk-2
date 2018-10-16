@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 5.0.5
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 5.0.4
 - [patch] Bump @atlaskit/drawer dependency to fix positioning issues within the drawer for dropdowns and other fixed position elements. [3c34445](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c34445)
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mobile-header",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A React component rendering a mobile header",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,9 +20,9 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^9.0.13",
-    "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/theme": "^6.0.1",
+    "@atlaskit/button": "^9.0.15",
+    "@atlaskit/icon": "^14.0.2",
+    "@atlaskit/theme": "^6.1.1",
     "@babel/runtime": "^7.0.0"
   },
   "peerDependencies": {
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.8",
-    "@atlaskit/navigation": "^33.1.11",
+    "@atlaskit/navigation": "^33.2.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0"

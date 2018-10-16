@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/codemod-util-shared-styles-to-theme",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Converts @atlaskit/util-shared-styles to @atlaskit/theme",
   "main": "dist/cjs/index.js",
