@@ -277,9 +277,12 @@ export default class LayoutManager extends Component<
   };
 
   onExpandStart = (node, isAppearing) => {
-    const { onExpandStart } = this.props;
+    const {
+      props: { onExpandStart },
+      state: { flyoutIsOpen },
+    } = this;
     if (onExpandStart) {
-      onExpandStart(node, isAppearing, this.state.flyoutIsOpen);
+      onExpandStart(node, isAppearing, flyoutIsOpen);
     }
   };
 
