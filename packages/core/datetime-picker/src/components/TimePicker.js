@@ -303,6 +303,7 @@ class TimePicker extends Component<Props, State> {
               },
             }),
           })}
+          tabSelectsValue={false}
           value={labelAndValue}
           spacing={spacing}
           dropdownIndicatorIcon={icon}
