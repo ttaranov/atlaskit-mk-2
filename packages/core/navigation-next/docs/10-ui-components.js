@@ -6,7 +6,8 @@ import { Example, md, Props, Prop } from '@atlaskit/docs';
 import { Contents, ContentsProvider, H, Hr } from './shared';
 
 export default (
-  <ContentsProvider>{md`
+  <ContentsProvider>
+    {md`
 ${<Contents />}
 
 ${<Hr />}
@@ -44,11 +45,11 @@ ${(
   )}
 
 ${(
-    <Props
-      heading="GlobalItem props"
-      props={require('!!extract-react-types-loader!../src/components/GlobalItem')}
-    />
-  )}
+      <Props
+        heading="GlobalItem props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/GlobalItem')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -59,11 +60,11 @@ If you're building an Atlassian product you probably don't want to use this comp
 The GlobalNav component is a primitive layout component which renders GlobalItems into one of two slots.
 
 ${(
-    <Props
-      heading="GlobalNav props"
-      props={require('!!extract-react-types-loader!../src/components/GlobalNav')}
-    />
-  )}
+      <Props
+        heading="GlobalNav props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/GlobalNav')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -83,11 +84,11 @@ ${(
   )}
 
 ${(
-    <Props
-      heading="Group props"
-      props={require('!!extract-react-types-loader!../src/components/Group')}
-    />
-  )}
+      <Props
+        heading="Group props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/Group')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -96,11 +97,11 @@ ${<H>GroupHeading</H>}
 The heading for a group of items.
 
 ${(
-    <Props
-      heading="GroupHeading props"
-      props={require('!!extract-react-types-loader!../src/components/GroupHeading')}
-    />
-  )}
+      <Props
+        heading="GroupHeading props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/GroupHeading')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -116,11 +117,11 @@ ${(
   )}
 
 ${(
-    <Props
-      heading="Item props"
-      props={require('!!extract-react-types-loader!../src/components/Item')}
-    />
-  )}
+      <Props
+        heading="Item props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/Item')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -129,11 +130,11 @@ ${<H>ItemAvatar</H>}
 The ItemAvatar is a useful wrapper around Atlaskit's Avatar component, which will update its background color based on the state of the Item that it's in. It's intended to be used inside the before or after props of an Item, and you need to pass through the provided item state.
 
 ${(
-    <Props
-      heading="ItemAvatar props"
-      props={require('!!extract-react-types-loader!../src/components/ItemAvatar')}
-    />
-  )}
+      <Props
+        heading="ItemAvatar props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/ItemAvatar')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -142,11 +143,11 @@ ${<H>LayoutManager</H>}
 The LayoutManager is the entrypoint to navigation. It is in charge of laying out the global, product, and container layers of navigation, along with your page content. Read the [Getting Started guide](/packages/core/navigation-next/docs/composing-your-navigation) for for information.
 
 ${(
-    <Props
-      heading="LayoutManager props"
-      props={require('!!extract-react-types-loader!../src/components/LayoutManager')}
-    />
-  )}
+      <Props
+        heading="LayoutManager props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/LayoutManager')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -166,11 +167,11 @@ ${(
   )}
 
 ${(
-    <Props
-      heading="Section props"
-      props={require('!!extract-react-types-loader!../src/components/Section')}
-    />
-  )}
+      <Props
+        heading="Section props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/Section')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -179,11 +180,11 @@ ${<H>SectionHeading</H>}
 The SectionHeading is meant to be used at the top of a nested menu section. There should only be one of these used per view, as opposed to GroupHeadings.
 
 ${(
-    <Props
-      heading="SectionHeading props"
-      props={require('!!extract-react-types-loader!../src/components/SectionHeading')}
-    />
-  )}
+      <Props
+        heading="SectionHeading props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/SectionHeading')}
+      />
+    )}
 
 ${<Hr />}
 
@@ -230,7 +231,7 @@ ${(
 ${(
     <Props
       heading="Switcher props"
-      props={require('!!extract-react-types-loader!../src/components/Switcher')}
+      props={require('!!extract-react-types-loader!../src/components/presentational/Switcher')}
       overrides={{
         // NOTE remove horrible (aesthetically) default value from docs
         // it's not really relevant to the consumer.

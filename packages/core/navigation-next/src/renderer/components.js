@@ -15,14 +15,17 @@ import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
-import ContainerHeaderComponent from '../components/ContainerHeader';
-import BaseItem from '../components/Item';
-import SectionComponent from '../components/Section';
-import SectionHeadingComponent from '../components/SectionHeading';
-import Separator from '../components/Separator';
-import GroupComponent from '../components/Group';
-import GroupHeadingComponent from '../components/GroupHeading';
-import Switcher from '../components/Switcher';
+import {
+  Item as BaseItem,
+  ContainerHeader as ContainerHeaderComponent,
+  Group as GroupComponent,
+  GroupHeading as GroupHeadingComponent,
+  Section as SectionComponent,
+  SectionHeading as SectionHeadingComponent,
+  Separator,
+  Switcher,
+  Wordmark,
+} from '../components/presentational';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
 
@@ -34,7 +37,6 @@ import type {
   ItemsRendererProps,
   SectionHeadingProps,
   SectionProps,
-  WordmarkProps,
 } from './types';
 
 const iconMap = {
@@ -153,22 +155,6 @@ const ContainerHeader = (props: *) => (
   // the scroll hint.
   <div css={{ paddingBottom: gridSize * 2.5 - 2 }}>
     <ContainerHeaderComponent {...props} />
-  </div>
-);
-
-// Wordmark
-const Wordmark = ({ wordmark: WordmarkLogo }: WordmarkProps) => (
-  <div
-    css={{
-      lineHeight: 0,
-      // -2px here to account for the extra space at the top of a MenuSection
-      // for the scroll hint.
-      paddingBottom: gridSize * 3.5 - 2,
-      paddingLeft: gridSize * 2,
-      paddingTop: gridSize,
-    }}
-  >
-    <WordmarkLogo />
   </div>
 );
 
