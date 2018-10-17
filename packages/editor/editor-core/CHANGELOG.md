@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.10
+- [patch] Show color and initial of collab-participants in overflow menu [900ccb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/900ccb8)
+
 ## 86.0.9
 - [patch] Lock typeahead to cursor position [81e28c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81e28c8)
 
