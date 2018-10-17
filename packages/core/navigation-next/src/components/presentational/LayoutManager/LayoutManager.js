@@ -128,10 +128,6 @@ export default class LayoutManager extends Component<
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
     experimental_flyoutOnHover: false,
-    onExpandStart: () => {},
-    onExpandEnd: () => {},
-    onCollapseStart: () => {},
-    onCollapseEnd: () => {},
   };
   static getDerivedStateFromProps(props: LayoutManagerProps, state: State) {
     // kill the flyout when the user commits to expanding navigation
@@ -281,30 +277,36 @@ export default class LayoutManager extends Component<
   };
 
   onExpandStart = (node: HTMLElement, isAppearing: boolean) => {
-    if (!this.state.flyoutIsOpen) {
-      this.props.onExpandStart(node, isAppearing);
+    const { onExpandStart } = this.props;
+    if (!this.state.flyoutIsOpen && onExpandStart) {
+      onExpandStart(node, isAppearing);
     }
   };
 
   onExpandEnd = (node: HTMLElement, isAppearing: boolean) => {
     const { flyoutIsOpen } = this.state;
+    const { onExpandEnd } = this.props;
 
     this.setState({ wasOpenedByFlyout: flyoutIsOpen });
 
-    if (!flyoutIsOpen) {
-      this.props.onExpandEnd(node, isAppearing);
+    if (!flyoutIsOpen && onExpandEnd) {
+      onExpandEnd(node, isAppearing);
     }
   };
 
   onCollapseStart = (node: HTMLElement, isAppearing: boolean) => {
-    if (!this.state.wasOpenedByFlyout) {
-      this.props.onCollapseStart(node, isAppearing);
+    const { onCollapseStart } = this.props;
+
+    if (!this.state.wasOpenedByFlyout && onCollapseStart) {
+      onCollapseStart(node, isAppearing);
     }
   };
 
   onCollapseEnd = (node: HTMLElement, isAppearing: boolean) => {
-    if (!this.state.wasOpenedByFlyout) {
-      this.props.onCollapseEnd(node, isAppearing);
+    const { onCollapseEnd } = this.props;
+
+    if (!this.state.wasOpenedByFlyout && onCollapseEnd) {
+      onCollapseEnd(node, isAppearing);
     }
   };
 
