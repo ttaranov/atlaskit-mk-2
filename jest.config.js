@@ -19,28 +19,6 @@ let codeCoverageConfig = {};
 // Adding code coverage thresold only for unit tests
 if (!INTEGRATION_TESTS && !VISUAL_REGRESSION) {
   codeCoverageConfig = {
-    coverageReporters: ['lcov', 'html', 'text-summary'],
-    collectCoverage: true,
-    coverageDirectory: 'coverage',
-    collectCoverageFrom: [
-      // Adding content to be added in our code coverage
-      // Add your bolt packages here
-      'packages/core/navigation-next/src/**/*.{js,jsx,ts,tsx}',
-
-      // Adding content to be ignored in our code coverage
-      // Global folders to be ignored
-      '!**/node_modules/**',
-      '!**/build/**',
-      '!**/docs/**',
-      '!**/dist/**',
-      // Website content folders to be ignored
-      '!**/public/**',
-      '!**/scripts/**',
-      // Packages monorepo folders to be ignored
-      '!**/examples/**',
-      '!**/releases/**',
-      '!**/examples-util/**',
-    ],
     coverageThreshold: {
       // Add coverage threshold by folder
       [`${__dirname}/packages/core/navigation-next/src`]: {
@@ -112,6 +90,28 @@ const config = {
     // Need this to have jsdom loading images.
     resources: 'usable',
   },
+  coverageReporters: ['lcov', 'html', 'text-summary'],
+  collectCoverage: false,
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: [
+    // Adding content to be added in our code coverage
+    // Add your bolt packages here
+    'packages/core/navigation-next/src/**/*.{js,jsx,ts,tsx}',
+
+    // Adding content to be ignored in our code coverage
+    // Global folders to be ignored
+    '!**/node_modules/**',
+    '!**/build/**',
+    '!**/docs/**',
+    '!**/dist/**',
+    // Website content folders to be ignored
+    '!**/public/**',
+    '!**/scripts/**',
+    // Packages monorepo folders to be ignored
+    '!**/examples/**',
+    '!**/releases/**',
+    '!**/examples-util/**',
+  ],
 };
 
 // If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only
@@ -137,10 +137,7 @@ if (CHANGED_PACKAGES) {
     .filter(Boolean);
 
   if (coverageThreshold.length > 0) {
-    config.coverageReporters = codeCoverageConfig.coverageReporters;
-    config.collectCoverage = codeCoverageConfig.collectCoverage;
-    config.coverageDirectory = codeCoverageConfig.coverageDirectory;
-    config.collectCoverageFrom = codeCoverageConfig.collectCoverageFrom;
+    config.collectCoverage = true;
     config.coverageThreshold = {};
 
     coverageThreshold.forEach(pkgCoverage => {
@@ -211,6 +208,7 @@ if (PARALLELIZE_TESTS) {
 // Annoyingly, if the array is empty, jest will fallback to its defaults and run everything
 if (config.testMatch.length === 0) {
   config.testMatch = ['DONT-RUN-ANYTHING'];
+  config.collectCoverage = false;
   // only log this message if we are running in an actual terminal (output not being piped to a file
   // or a subshell)
   if (process.stdout.isTTY) {
