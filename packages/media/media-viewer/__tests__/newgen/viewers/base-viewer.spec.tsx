@@ -63,4 +63,11 @@ describe('BaseViewer', () => {
     expect(releaseSpy).toHaveBeenCalledTimes(1);
     expect(initSpy).toHaveBeenCalledTimes(2);
   });
+
+  it('calls release(), then init() when collectionName was updated', () => {
+    const { el, initSpy, releaseSpy } = createTestViewer(createProps());
+    el.setProps({ collectionName: 'another-collection-name' });
+    expect(releaseSpy).toHaveBeenCalledTimes(1);
+    expect(initSpy).toHaveBeenCalledTimes(2);
+  });
 });

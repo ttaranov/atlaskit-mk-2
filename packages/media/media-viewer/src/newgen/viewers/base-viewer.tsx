@@ -29,7 +29,9 @@ export abstract class BaseViewer<
 
   protected needsReset(propsA: Props, propsB: Props) {
     return (
-      !deepEqual(propsA.item, propsB.item) || propsA.context !== propsB.context
+      !deepEqual(propsA.item, propsB.item) ||
+      propsA.context !== propsB.context ||
+      propsA.collectionName !== propsB.collectionName
     );
   }
 
