@@ -17,12 +17,14 @@ function createFixture(props: Partial<Props>) {
     type: 'file' as MediaItemType,
   };
   const context = {
-    getFile: () =>
-      Observable.of({
-        id: '123',
-        mediaType: 'image',
-        status: 'processed',
-      }),
+    file: {
+      getFileState: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'image',
+          status: 'processed',
+        }),
+    },
   } as any;
   const el = mount(
     <List

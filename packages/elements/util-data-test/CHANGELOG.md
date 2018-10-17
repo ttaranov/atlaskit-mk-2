@@ -1,5 +1,35 @@
 # @atlaskit/util-data-test
 
+## 10.0.17
+- [patch] FS-3098 multi user picker [095b3b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095b3b6)
+
+## 10.0.16
+- [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/emoji@45.0.0
+  - @atlaskit/task-decision@11.0.1
+
+## 10.0.15
+- [patch] Updated dependencies [8a1ccf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a1ccf2)
+  - @atlaskit/task-decision@11.0.0
+
+## 10.0.14
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/emoji@44.0.0
+  - @atlaskit/task-decision@10.0.2
+
+## 10.0.13
+- [patch] FS-3009 added user picker examples and data [74b88a3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74b88a3)
+
+## 10.0.12
+- [patch] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
+- [patch] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)
+  - @atlaskit/emoji@43.0.0
+  - @atlaskit/task-decision@10.0.1
+
+## 10.0.11
+- [patch] Updated dependencies [23c7eca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23c7eca)
+  - @atlaskit/task-decision@10.0.0
+
 ## 10.0.10
 - [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/emoji@42.0.0

@@ -1,78 +1,57 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Plugin, PluginKey } from 'prosemirror-state';
-import {
-  findParentDomRefOfType,
-  findSelectedNodeOfType,
-  findDomRefAtPos,
-} from 'prosemirror-utils';
+import { findDomRefAtPos, findSelectedNodeOfType } from 'prosemirror-utils';
 import { Popup } from '@atlaskit/editor-common';
 
 import WithPluginState from '../../ui/WithPluginState';
 import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
-import Toolbar from './ui/Toolbar';
+import { ToolbarLoader } from './ui/ToolbarLoader';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
-import { NodeType } from 'prosemirror-model';
-
-const getConfigNodeTypes = (
-  configs: Array<FloatingToolbarConfig>,
-): NodeType[] => {
-  return configs.reduce(
-    (acc, config) => {
-      if (Array.isArray(config.nodeType)) {
-        acc.push(...config.nodeType);
-      } else {
-        acc.push(config.nodeType);
-      }
-
-      return acc;
-    },
-    [] as NodeType[],
-  );
-};
 
 const getRelevantConfig = (
   view: EditorView,
   configs: Array<FloatingToolbarConfig>,
-): FloatingToolbarConfig => {
-  if (configs.length > 1) {
-    const domAtPos = view.domAtPos.bind(view);
+): FloatingToolbarConfig | undefined => {
+  // node selections always take precedence, see if
+  const selectedConfig = configs.find(
+    config => !!findSelectedNodeOfType(config.nodeType)(view.state.selection),
+  );
 
-    const configNodeTypes = getConfigNodeTypes(configs);
+  if (selectedConfig) {
+    return selectedConfig;
+  }
 
-    const atomNodeTypes = configNodeTypes.filter(
-      nodeType => nodeType.isAtom || nodeType.isLeaf,
-    );
-    const bodiedNodeTypes = configNodeTypes.filter(
-      nodeType => !nodeType.isAtom && !nodeType.isLeaf,
-    );
-
-    const bodiedDomRef = findParentDomRefOfType(bodiedNodeTypes, domAtPos)(
-      view.state.selection,
-    );
-
-    // If we have any nodeTypes that are atoms (cursor cannot be placed inside of node)
-    // Selecting the parentNode won't yield any results, instead we look at whats
-    // currently selected and add that as a comparison.
-    let atomDomRef;
-    if (atomNodeTypes.length) {
-      const selectedAtom = findSelectedNodeOfType(atomNodeTypes)(
-        view.state.selection,
-      );
-      atomDomRef = selectedAtom && findDomRefAtPos(selectedAtom.pos, domAtPos);
+  // create mapping of node type name to configs
+  const configByNodeType = {};
+  configs.forEach(config => {
+    if (Array.isArray(config.nodeType)) {
+      config.nodeType.forEach(nodeType => {
+        configByNodeType[nodeType.name] = config;
+      });
+    } else {
+      configByNodeType[config.nodeType.name] = config;
     }
+  });
 
-    const relevantConfig = configs.filter(config => {
-      const configDomRef = config.getDomRef(view);
-      return configDomRef === atomDomRef || configDomRef === bodiedDomRef;
-    });
-    if (relevantConfig.length) {
-      return relevantConfig[0];
+  // search up the tree from selection
+  const { $from } = view.state.selection;
+  for (let i = $from.depth; i > 0; i--) {
+    const node = $from.node(i);
+
+    const matchedConfig = configByNodeType[node.type.name];
+    if (matchedConfig) {
+      return matchedConfig;
     }
   }
-  return configs[0];
 };
+
+const getDomRefFromSelection = (view: EditorView) =>
+  findDomRefAtPos(
+    view.state.selection.from,
+    view.domAtPos.bind(view),
+  ) as HTMLElement;
 
 const floatingToolbarPlugin: EditorPlugin = {
   name: 'floatingToolbar',
@@ -106,11 +85,15 @@ const floatingToolbarPlugin: EditorPlugin = {
         }: {
           floatingToolbarConfigs?: Array<FloatingToolbarConfig>;
         }) => {
-          if (floatingToolbarConfigs && floatingToolbarConfigs.length > 0) {
-            const { title, getDomRef, items } = getRelevantConfig(
-              editorView,
-              floatingToolbarConfigs,
-            );
+          const relevantConfig =
+            floatingToolbarConfigs &&
+            getRelevantConfig(editorView, floatingToolbarConfigs);
+          if (relevantConfig) {
+            const {
+              title,
+              getDomRef = getDomRefFromSelection,
+              items,
+            } = relevantConfig;
             const targetRef = getDomRef(editorView);
             if (targetRef) {
               return (
@@ -125,7 +108,7 @@ const floatingToolbarPlugin: EditorPlugin = {
                   boundariesElement={popupsBoundariesElement}
                   scrollableElement={popupsScrollableElement}
                 >
-                  <Toolbar
+                  <ToolbarLoader
                     items={items}
                     dispatchCommand={fn =>
                       fn && fn(editorView.state, editorView.dispatch)
@@ -164,7 +147,9 @@ function floatingToolbarPluginFactory(options: {
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => undefined,
+      init: () => {
+        ToolbarLoader.preload();
+      },
       apply(tr, pluginState, oldState, newState) {
         const { intl } = reactContext();
         const newPluginState = floatingToolbarHandlers

@@ -32,6 +32,8 @@ export interface Props {
   hasHeaderRow?: boolean;
   tableHeight?: number;
   dangerRows?: number[];
+  insertColumnButtonIndex?: number;
+  insertRowButtonIndex?: number;
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
@@ -53,9 +55,13 @@ export default class TableFloatingControls extends Component<Props, State> {
       isNumberColumnEnabled,
       selection,
       tableHeight,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
     } = this.props;
     return (
       tableRef !== nextProps.tableRef ||
+      insertColumnButtonIndex !== nextProps.insertColumnButtonIndex ||
+      insertRowButtonIndex !== nextProps.insertRowButtonIndex ||
       tableHeight !== nextProps.tableHeight ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
@@ -80,6 +86,8 @@ export default class TableFloatingControls extends Component<Props, State> {
       tableActive,
       hasHeaderRow,
       dangerRows,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
     } = this.props;
 
     if (!tableRef) {
@@ -105,13 +113,14 @@ export default class TableFloatingControls extends Component<Props, State> {
         ) : null}
         <CornerControls
           editorView={editorView}
-          selection={editorView.state.selection}
           tableRef={tableRef}
+          selection={editorView.state.selection}
           clearHoverSelection={this.clearHoverSelection}
           isTableInDanger={isTableInDanger}
           isHeaderColumnEnabled={isHeaderColumnEnabled}
           isHeaderRowEnabled={isHeaderRowEnabled}
-          isNumberColumnEnabled={isNumberColumnEnabled}
+          insertColumnButtonIndex={insertColumnButtonIndex}
+          insertRowButtonIndex={insertRowButtonIndex}
         />
         <RowControls
           editorView={editorView}
@@ -125,6 +134,7 @@ export default class TableFloatingControls extends Component<Props, State> {
           isTableInDanger={isTableInDanger}
           selectRow={this.selectRow}
           insertRow={this.insertRow}
+          insertRowButtonIndex={insertRowButtonIndex}
         />
       </div>
     );

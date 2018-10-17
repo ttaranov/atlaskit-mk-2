@@ -1,5 +1,11 @@
 # @atlaskit/empty-state
 
+## 3.1.1
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 3.1.0
+- [minor] Adds new imageWidth and imageHeight props, useful for fixing the image dimensions while it's loading so the page doesn't bounce around. Changes the root element to use max-width instead of width so it shrinks down in smaller containers. [3209be4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3209be4)
+
 ## 3.0.9
 - [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
 

@@ -3,21 +3,21 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isTableSelected, selectTable } from 'prosemirror-utils';
 import { Selection } from 'prosemirror-state';
-import { tableToolbarSize } from '../../styles';
 import InsertButton from '../InsertButton';
 import { hoverTable, insertColumn, insertRow } from '../../../actions';
-import { getLineMarkerWidth } from '../utils';
 import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   editorView: EditorView;
   selection?: Selection;
-  tableRef: HTMLElement;
+  tableRef?: HTMLElement;
   clearHoverSelection: () => void;
   isTableInDanger?: boolean;
   isHeaderColumnEnabled?: boolean;
   isHeaderRowEnabled?: boolean;
   isNumberColumnEnabled?: boolean;
+  insertColumnButtonIndex?: number;
+  insertRowButtonIndex?: number;
 }
 
 export default class CornerControls extends Component<Props, any> {
@@ -27,14 +27,15 @@ export default class CornerControls extends Component<Props, any> {
 
   render() {
     const {
-      tableRef,
       editorView: { state },
       isTableInDanger,
       isHeaderRowEnabled,
       isHeaderColumnEnabled,
-      isNumberColumnEnabled,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
+      tableRef,
     } = this.props;
-    const tableHeight = tableRef.offsetHeight;
+
     return (
       <div
         className={`${ClassName.CORNER_CONTROLS} ${
@@ -50,26 +51,22 @@ export default class CornerControls extends Component<Props, any> {
           onMouseOver={this.hoverTable}
           onMouseOut={this.props.clearHoverSelection}
         />
-        {!isHeaderColumnEnabled &&
-          !isNumberColumnEnabled && (
-            <InsertButton
-              type="column"
-              onClick={this.insertColumn}
-              insertLineStyle={{
-                height: tableHeight + tableToolbarSize,
-              }}
-            />
-          )}
+        {!isHeaderColumnEnabled && (
+          <InsertButton
+            type="column"
+            tableRef={tableRef!}
+            index={0}
+            showInsertButton={insertColumnButtonIndex === 0}
+            onMouseDown={this.insertColumn}
+          />
+        )}
         {!isHeaderRowEnabled && (
           <InsertButton
             type="row"
-            onClick={this.insertRow}
-            insertLineStyle={{
-              width: getLineMarkerWidth(
-                tableRef,
-                (tableRef.parentNode as HTMLElement).scrollLeft,
-              ),
-            }}
+            tableRef={tableRef!}
+            index={0}
+            showInsertButton={insertRowButtonIndex === 0}
+            onMouseDown={this.insertRow}
           />
         )}
       </div>

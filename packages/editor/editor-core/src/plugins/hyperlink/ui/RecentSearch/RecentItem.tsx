@@ -2,11 +2,7 @@ import * as React from 'react';
 import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 import { ActivityItem } from '@atlaskit/activity';
-import {
-  akColorN100,
-  akColorN800,
-  akColorN20,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 interface ContainerProps {
   selected: boolean;
@@ -16,7 +12,7 @@ const Container: ComponentClass<
   HTMLAttributes<{}> & ContainerProps
 > = styled.li`
   background-color: ${(props: ContainerProps) =>
-    props.selected ? akColorN20 : 'transparent'};
+    props.selected ? colors.N20 : 'transparent'};
   padding: 5px 8px;
   cursor: pointer;
   display: flex;
@@ -27,7 +23,7 @@ const NameWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
 `;
 
 export const Name: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  color: ${akColorN800};
+  color: ${colors.N800};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -36,7 +32,7 @@ export const Name: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const ContainerName: ComponentClass<
   React.HTMLAttributes<{}>
 > = styled.div`
-  color: ${akColorN100};
+  color: ${colors.N100};
   font-size: 12px;
 `;
 

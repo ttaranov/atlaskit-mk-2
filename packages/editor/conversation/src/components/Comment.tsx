@@ -1,27 +1,26 @@
-import * as React from 'react';
-import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, {
-  CommentAuthor,
   CommentAction,
+  CommentAuthor,
   CommentTime,
 } from '@atlaskit/comment';
-
 import { WithProviders } from '@atlaskit/editor-common';
 import { ConnectedReactionsView } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
+import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import * as React from 'react';
 import styled from 'styled-components';
-import Editor from './Editor';
-import { Comment as CommentType, User } from '../model';
-import CommentContainer from '../containers/Comment';
 import { HttpError } from '../api/HttpError';
+import CommentContainer from '../containers/Comment';
 import {
-  fireEvent,
   actionSubjectIds,
   AnalyticsEvent,
   eventTypes,
+  fireEvent,
   trackEventActions,
 } from '../internal/analytics';
+import { Comment as CommentType, User } from '../model';
+import Editor from './Editor';
 import { SharedProps } from './types';
 
 export interface Props extends SharedProps {
@@ -479,17 +478,19 @@ export default class Comment extends React.Component<Props, State> {
       containerId &&
       commentAri &&
       dataProviders &&
+      dataProviders.hasProvider('reactionsStore') &&
       dataProviders.hasProvider('emojiProvider')
     ) {
       actions = [
         ...actions,
         <WithProviders
           key="reactions"
-          providers={['emojiProvider']}
+          providers={['emojiProvider', 'reactionsStore']}
           providerFactory={dataProviders}
-          renderNode={({ emojiProvider }) => (
+          renderNode={({ emojiProvider, reactionsStore }) => (
             <Reactions>
               <ConnectedReactionsView
+                store={reactionsStore}
                 containerAri={containerId}
                 ari={commentAri}
                 emojiProvider={emojiProvider}

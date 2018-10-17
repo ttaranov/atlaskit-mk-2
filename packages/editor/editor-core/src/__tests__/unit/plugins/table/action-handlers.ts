@@ -29,6 +29,8 @@ import {
   handleDocChanged,
   handleToggleContextualMenu,
   handleSelectionChanged,
+  handleShowInsertColumnButton,
+  handleShowInsertRowButton,
 } from '../../../../plugins/table/action-handlers';
 import { TableDecorations } from '../../../../plugins/table/types';
 
@@ -42,8 +44,7 @@ describe('table action handlers', () => {
 
   const dispatch = () => {};
   const defaultPluginState = {
-    dangerColumns: [],
-    dangerRows: [],
+    ...defaultTableSelection,
     decorationSet: DecorationSet.empty,
     pluginConfig: {},
     editorHasFocus: true,
@@ -52,8 +53,8 @@ describe('table action handlers', () => {
     Decoration.node(
       2,
       6,
-      { class: 'hoveredCell' },
-      { id: TableDecorations.CONTROLS_HOVER },
+      { class: ClassName.HOVERED_CELL },
+      { key: TableDecorations.CONTROLS_HOVER },
     );
 
   describe('#handleSetFocus', () => {
@@ -135,6 +136,8 @@ describe('table action handlers', () => {
         dangerRows: [1, 2, 3],
         isTableInDanger: true,
         isTableHovered: true,
+        insertColumnButtonIndex: 4,
+        insertRowButtonIndex: 2,
       };
       const newState = handleClearSelection(pluginState, dispatch);
       expect(newState).toEqual({
@@ -284,7 +287,7 @@ describe('table action handlers', () => {
       const { editorView } = editor(
         doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
       );
-      const newState = handleDocChanged(editorView.state)(
+      const newState = handleDocChanged(editorView.state.tr)(
         pluginState,
         dispatch,
       );
@@ -315,6 +318,40 @@ describe('table action handlers', () => {
       expect(newState).toEqual({
         ...pluginState,
         targetCellPosition: cursorPos - 2,
+      });
+    });
+  });
+  describe('#handleShowInsertColumnButton', () => {
+    it('should return a new state with updated insertColumnButtonIndex', () => {
+      const pluginState = {
+        ...defaultPluginState,
+      };
+      const insertColumnButtonIndex = 0;
+      const newState = handleShowInsertColumnButton(insertColumnButtonIndex)(
+        pluginState,
+        dispatch,
+      );
+
+      expect(newState).toEqual({
+        ...pluginState,
+        insertColumnButtonIndex,
+      });
+    });
+  });
+  describe('#handleShowInsertRowButton', () => {
+    it('should return a new state with updated insertRowButtonIndex', () => {
+      const pluginState = {
+        ...defaultPluginState,
+      };
+      const insertRowButtonIndex = 0;
+      const newState = handleShowInsertRowButton(insertRowButtonIndex)(
+        pluginState,
+        dispatch,
+      );
+
+      expect(newState).toEqual({
+        ...pluginState,
+        insertRowButtonIndex,
       });
     });
   });

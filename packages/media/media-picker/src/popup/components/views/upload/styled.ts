@@ -88,8 +88,14 @@ export const CardWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
   background-color: white;
   padding: 24px 24px 2px 24px;
+`;
+
+export const LoadingNextPageWrapper = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 `;

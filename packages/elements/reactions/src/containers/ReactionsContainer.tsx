@@ -2,7 +2,10 @@ import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-c
 import { EmojiProvider } from '@atlaskit/emoji';
 import * as React from 'react';
 import { Reactions } from '../components/Reactions';
-import { ReactionConsumer } from '../reaction-store/ReactionConsumer';
+import {
+  ReactionConsumer,
+  ReactionStoreProp,
+} from '../reaction-store/ReactionConsumer';
 import { ReactionStatus } from '../types/ReactionStatus';
 
 export type Props = {
@@ -11,6 +14,7 @@ export type Props = {
   allowAllEmojis?: boolean;
   boundariesElement?: string;
   emojiProvider: Promise<EmojiProvider>;
+  store: ReactionStoreProp;
 };
 
 export default class ReactionsContainer extends React.PureComponent<Props> {
@@ -67,6 +71,7 @@ export default class ReactionsContainer extends React.PureComponent<Props> {
   render() {
     return (
       <ReactionConsumer
+        store={this.props.store}
         actionsMapper={this.actionsMapper}
         stateMapper={this.stateMapper}
       >

@@ -1,5 +1,5 @@
 // @flow
-const babel = require('babel-core');
+const babel = require('@babel/core');
 const fs = require('fs-extra');
 const glob = require('glob');
 const path = require('path');
@@ -73,10 +73,9 @@ module.exports = function(config /*: Config */) {
             // Transpile the component code
             .then(componentCode =>
               babel.transform(componentCode, {
-                presets: ['env', 'react'],
+                presets: ['@babel/env', '@babel/react', '@babel/flow'],
               }),
             )
-            // Write the component file
             .then(({ code }) =>
               fs.outputFile(path.join(config.destDir, `${fileKey}.js`), code),
             )
@@ -89,7 +88,7 @@ module.exports = function(config /*: Config */) {
             )
             // Return the filename and display name
             .then(() => ({ fileKey, displayName }))
-            .catch(err => console.error(err))
+          // .catch(err => console.error(err))
         );
       }),
     )

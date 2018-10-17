@@ -3,25 +3,19 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { fontSize } from '@atlaskit/theme';
-import {
-  akColorN20A,
-  akColorN20,
-  akColorB200,
-  akColorN70,
-  akBorderRadius,
-} from '@atlaskit/util-shared-styles';
+import { colors, borderRadius } from '@atlaskit/theme';
 
 export const padding = 8;
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  background: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  background: ${colors.N20};
+  border-radius: ${borderRadius()}px;
   position: relative;
   vertical-align: middle;
-  font-size: ${fontSize}px;
+  font-size: ${fontSize()}px;
 
   .ProseMirror-selectednode > & > .extension-overlay {
-    border: 2px solid ${akColorB200};
+    border: 2px solid ${colors.B200};
     top: -2px;
     left: -2px;
     opacity: 1;
@@ -29,7 +23,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
   &.with-overlay {
     .extension-overlay {
-      background: ${akColorN20A};
+      background: ${colors.N20A};
       color: transparent;
     }
 
@@ -40,7 +34,7 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 `;
 
 export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  border-radius: ${akBorderRadius};
+  border-radius: ${borderRadius()}px;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -66,7 +60,7 @@ export const PlaceholderFallbackParams: ComponentClass<
   display: inline-block;
   max-width: 200px;
   margin-left: 5px;
-  color: ${akColorN70};
+  color: ${colors.N70};
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

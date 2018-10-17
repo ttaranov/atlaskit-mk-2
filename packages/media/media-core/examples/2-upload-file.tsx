@@ -55,7 +55,7 @@ class Example extends Component<ComponentProps, ComponentState> {
       collection: defaultCollectionName,
     };
     const uploadController = new UploadController();
-    const stream = mediaContext.uploadFile(uplodableFile, uploadController);
+    const stream = mediaContext.file.upload(uplodableFile, uploadController);
 
     this.uploadController = uploadController;
     this.addStream(stream);

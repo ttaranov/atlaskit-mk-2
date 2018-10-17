@@ -50,20 +50,20 @@ export default function generateDefaultConfig(): DefaultConfigShape {
     },
     appSwitcher: {
       section: 'secondary',
-      rank: 3,
+      rank: 2,
       id: 'appSwitcher',
     },
     help: {
       label: 'Help',
       section: 'secondary',
-      rank: 4,
+      rank: 3,
       tooltip: 'Help',
       id: 'help',
     },
     profile: {
       label: 'Your profile and Settings',
       section: 'secondary',
-      rank: 5,
+      rank: 4,
       tooltip: 'Your profile and Settings',
       id: 'profile',
     },

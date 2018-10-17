@@ -36,6 +36,7 @@ import {
   CONTENT_NAV_WIDTH_COLLAPSED,
   CONTENT_NAV_WIDTH_FLYOUT,
   GLOBAL_NAV_WIDTH,
+  FLYOUT_DELAY,
 } from '../../common/constants';
 
 type RenderContentNavigationArgs = {
@@ -116,6 +117,8 @@ export default class LayoutManager extends Component<
   state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
+  containerRef: HTMLElement;
+  flyoutMouseOverTimeout: TimeoutID;
 
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
@@ -149,6 +152,9 @@ export default class LayoutManager extends Component<
     }
   }
 
+  getContainerRef = (ref: ElementRef<*>) => {
+    this.containerRef = ref;
+  };
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
@@ -156,19 +162,26 @@ export default class LayoutManager extends Component<
     this.pageRef = ref;
   };
 
-  openFlyout = () => {
-    if (!this.props.navigationUIController.state.isCollapsed) {
-      return;
-    }
+  mouseOutFlyoutArea = ({ currentTarget, relatedTarget }: *) => {
+    if (currentTarget.contains(relatedTarget)) return;
+    clearTimeout(this.flyoutMouseOverTimeout);
+    this.setState({ flyoutIsOpen: false });
+  };
+  mouseOverFlyoutArea = ({ currentTarget, target }: *) => {
+    if (!currentTarget.contains(target)) return;
+    clearTimeout(this.flyoutMouseOverTimeout);
 
-    this.setState({ flyoutIsOpen: true });
+    this.flyoutMouseOverTimeout = setTimeout(() => {
+      this.setState({ flyoutIsOpen: true });
+    }, FLYOUT_DELAY);
   };
 
   mouseEnter = () => {
     this.setState({ mouseIsOverNavigation: true });
   };
   mouseLeave = () => {
-    this.setState({ flyoutIsOpen: false, mouseIsOverNavigation: false });
+    clearTimeout(this.flyoutMouseOverTimeout);
+    this.setState({ mouseIsOverNavigation: false });
   };
 
   renderGlobalNavigation = () => {
@@ -278,7 +291,10 @@ export default class LayoutManager extends Component<
     return (
       <NavigationAnalyticsContext
         data={{
-          attributes: { isExpanded: !isCollapsed },
+          attributes: {
+            isExpanded: !isCollapsed,
+            flyoutOnHoverEnabled: experimental_flyoutOnHover,
+          },
           componentName: 'navigation',
           packageName,
           packageVersion,
@@ -298,9 +314,15 @@ export default class LayoutManager extends Component<
           onCollapseEnd={onCollapseEnd}
         >
           {({ transitionStyle, transitionState }) => {
+            const onMouseOut =
+              isCollapsed && experimental_flyoutOnHover && flyoutIsOpen
+                ? this.mouseOutFlyoutArea
+                : null;
             return (
               <NavigationContainer
+                innerRef={this.getContainerRef}
                 onMouseEnter={this.mouseEnter}
+                onMouseOut={onMouseOut}
                 onMouseLeave={this.mouseLeave}
               >
                 <ResizeControl
@@ -322,11 +344,12 @@ export default class LayoutManager extends Component<
                   navigation={navigationUIController}
                 >
                   {({ isDragging, width }) => {
-                    const onMouseEnter = experimental_flyoutOnHover
-                      ? this.openFlyout
-                      : null;
+                    const onMouseOver =
+                      isCollapsed && experimental_flyoutOnHover && !flyoutIsOpen
+                        ? this.mouseOverFlyoutArea
+                        : null;
                     return (
-                      <ContainerNavigationMask onMouseEnter={onMouseEnter}>
+                      <ContainerNavigationMask onMouseOver={onMouseOver}>
                         {this.renderGlobalNavigation()}
                         {this.renderContentNavigation({
                           isDragging,

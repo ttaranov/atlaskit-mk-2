@@ -3,14 +3,14 @@ import * as util from '../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
-import { createContext } from '../_stubs';
 import { Observable } from 'rxjs';
 import { mount, ReactWrapper } from 'enzyme';
 import { MediaItemType, MediaType, FileState } from '@atlaskit/media-core';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
+import { createContext } from '../_stubs';
 import Header from '../../src/newgen/header';
 import { FeedbackButton } from '../../src/newgen/feedback-button';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
-import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { LeftHeader } from '../../src/newgen/styled';
 
 const identifier = {
@@ -33,7 +33,6 @@ const processedImageState: FileState = {
   name: 'my image',
   size: 0,
   artifacts: {},
-  binaryUrl: '',
 };
 
 describe('<Header />', () => {
@@ -43,7 +42,7 @@ describe('<Header />', () => {
 
   it('shows an empty header while loading', () => {
     const context = createContext({
-      getFile: () => Observable.empty(),
+      getFileState: () => Observable.empty(),
     });
     const el = mount(<Header context={context} identifier={identifier} />);
     const metadata = el.find(LeftHeader);
@@ -52,20 +51,20 @@ describe('<Header />', () => {
 
   it('resubscribes to the provider when the data property value is changed', () => {
     const context = createContext({
-      getFile: () => Observable.of(processedImageState),
+      getFileState: () => Observable.of(processedImageState),
     });
     const el = mount(<Header context={context} identifier={identifier} />);
     el.update();
     expect(el.find(MetadataFileName).text()).toEqual('my image');
 
-    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.file.getFileState).toHaveBeenCalledTimes(1);
     el.setProps({ identifier: identifier2 });
-    expect(context.getFile).toHaveBeenCalledTimes(2);
+    expect(context.file.getFileState).toHaveBeenCalledTimes(2);
   });
 
   it('component resets initial state when new identifier is passed', () => {
     const context = createContext({
-      getFile: () => Observable.of(processedImageState),
+      getFileState: () => Observable.of(processedImageState),
     });
     const el = mount(<Header context={context} identifier={identifier} />);
     expect(el.state().item.status).toEqual('SUCCESSFUL');
@@ -73,7 +72,7 @@ describe('<Header />', () => {
     // since the test is executed synchronously
     // let's prevent the second call to getFile from immediately resolving and
     // updating the state to SUCCESSFUL before we run the assertion.
-    context.getFile = () => Observable.never();
+    context.file.getFileState = () => Observable.never();
 
     el.setProps({ identifier: identifier2 });
     expect(el.state().item.status).toEqual('PENDING');
@@ -81,7 +80,7 @@ describe('<Header />', () => {
 
   it('component resets initial state when new context is passed', () => {
     const context = createContext({
-      getFile: () => Observable.of(processedImageState),
+      getFileState: () => Observable.of(processedImageState),
     });
     const el = mount(<Header context={context} identifier={identifier} />);
     expect(el.state().item.status).toEqual('SUCCESSFUL');
@@ -90,7 +89,7 @@ describe('<Header />', () => {
     // let's prevent the second call to getFile from immediately resolving and
     // updating the state to SUCCESSFUL before we run the assertion.
     const newContext = createContext({
-      getFile: () => Observable.never(),
+      getFileState: () => Observable.never(),
     });
     el.setProps({ context: newContext });
     expect(el.state().item.status).toEqual('PENDING');
@@ -100,7 +99,7 @@ describe('<Header />', () => {
     describe('File collectionName', () => {
       it('shows the title when loaded', () => {
         const context = createContext({
-          getFile: () => Observable.of(processedImageState),
+          getFileState: () => Observable.of(processedImageState),
         });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
@@ -113,7 +112,7 @@ describe('<Header />', () => {
           name: '',
         };
         const context = createContext({
-          getFile: () => Observable.of(unNamedImage),
+          getFileState: () => Observable.of(unNamedImage),
         });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
@@ -134,10 +133,9 @@ describe('<Header />', () => {
           name: 'my item',
           size: 12222222,
           artifacts: {},
-          binaryUrl: '',
         };
         const context = createContext({
-          getFile: () => Observable.of(testItem),
+          getFileState: () => Observable.of(testItem),
         });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
@@ -160,7 +158,7 @@ describe('<Header />', () => {
           size: 0,
         };
         const context = createContext({
-          getFile: () => Observable.of(noSizeImage),
+          getFileState: () => Observable.of(noSizeImage),
         });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
@@ -174,7 +172,7 @@ describe('<Header />', () => {
           size: 23232323,
         };
         const context = createContext({
-          getFile: () => Observable.of(noMediaTypeElement),
+          getFileState: () => Observable.of(noMediaTypeElement),
         });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
@@ -184,7 +182,7 @@ describe('<Header />', () => {
 
     it('shows nothing when metadata failed to be retrieved', () => {
       const context = createContext({
-        getFile: () => Observable.throw('something bad happened!'),
+        getFileState: () => Observable.throw('something bad happened!'),
       });
       const el = mount(<Header context={context} identifier={identifier} />);
       const metadata = el.find(LeftHeader);
@@ -194,16 +192,32 @@ describe('<Header />', () => {
     it('MSW-720: passes the collectionName to getFile', () => {
       const collectionName = 'some-collection';
       const context = createContext({
-        getFile: () => Observable.of(processedImageState),
+        getFileState: () => Observable.of(processedImageState),
       });
       const identifierWithCollection = { ...identifier, collectionName };
       const el = mount(
         <Header context={context} identifier={identifierWithCollection} />,
       );
       el.update();
-      expect(context.getFile).toHaveBeenCalledWith('some-id', {
+      expect(context.file.getFileState).toHaveBeenCalledWith('some-id', {
         collectionName: 'some-collection',
       });
+    });
+
+    it('MSW-720: passes the collectionName to context.file.downloadBinary', () => {
+      const collectionName = 'some-collection';
+      const context = createContext({
+        getFileState: () => Observable.of(processedImageState),
+      });
+      const identifierWithCollection = { ...identifier, collectionName };
+      const el = mount(
+        <Header context={context} identifier={identifierWithCollection} />,
+      );
+      el.update();
+      el.find(DownloadIcon).simulate('click');
+      expect(context.file.downloadBinary.mock.calls[0][2]).toEqual(
+        collectionName,
+      );
     });
   });
 
@@ -220,7 +234,7 @@ describe('<Header />', () => {
 
     it('should not show the feedback button if jQuery is not found in window object', () => {
       const context = createContext({
-        getFile: () => Observable.of(processedImageState),
+        getFileState: () => Observable.of(processedImageState),
       });
       const el = mount(<Header context={context} identifier={identifier} />);
       expect(el.find(FeedbackButton).html()).toBeNull();
@@ -228,7 +242,7 @@ describe('<Header />', () => {
 
     it('should show the feedback button if jQuery is found in window object', () => {
       const context = createContext({
-        getFile: () => Observable.of(processedImageState),
+        getFileState: () => Observable.of(processedImageState),
       });
       window.jQuery = {};
       const el = mount(<Header context={context} identifier={identifier} />);
@@ -249,7 +263,7 @@ describe('<Header />', () => {
 
     it('should show the download button disabled while the item metadata is loading', () => {
       const context = createContext({
-        getFile: () => Observable.empty(),
+        getFileState: () => Observable.empty(),
       });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
@@ -258,7 +272,7 @@ describe('<Header />', () => {
 
     it('should show the download button enabled when the item is loaded', () => {
       const context = createContext({
-        getFile: () => Observable.of(processedImageState),
+        getFileState: () => Observable.of(processedImageState),
       });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
@@ -267,24 +281,11 @@ describe('<Header />', () => {
 
     it('should show the download button disabled when there is an error', () => {
       const context = createContext({
-        getFile: () => Observable.throw('something bad happened!'),
+        getFileState: () => Observable.throw('something bad happened!'),
       });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
       assertDownloadButton(el, false);
-    });
-
-    it('should use a fresh token for the download link', () => {
-      const context = createContext({
-        getFile: () => Observable.of(processedImageState),
-        config: {
-          authProvider: jest.fn(),
-        },
-      });
-      const el = mount(<Header context={context} identifier={identifier} />);
-      el.update();
-      el.find(DownloadIcon).simulate('click');
-      expect(context.config.authProvider).toHaveBeenCalled();
     });
   });
 });

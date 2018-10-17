@@ -1,5 +1,11 @@
 # @atlaskit/form
 
+## 4.0.12
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 4.0.11
+- [patch] Empty form headings and sections no longer result in extra spacing [ac537db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac537db)
+
 ## 4.0.10
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

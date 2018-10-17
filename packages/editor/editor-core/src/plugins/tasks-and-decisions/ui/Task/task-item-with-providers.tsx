@@ -6,6 +6,7 @@ import {
   TaskDecisionProvider,
   ResourcedTaskItem,
 } from '@atlaskit/task-decision';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface Props {
   taskId: string;
@@ -13,6 +14,7 @@ export interface Props {
   contentRef?: ContentRef;
   onChange?: (taskId: string, isChecked: boolean) => void;
   showPlaceholder?: boolean;
+  placeholder?: string;
   children?: ReactElement<any>;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
   contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
@@ -55,13 +57,20 @@ export default class TaskItemWithProviders extends Component<Props, State> {
     const { contextIdentifierProvider, ...otherProps } = this.props;
     const { objectId, containerId } =
       this.state.resolvedContextProvider || ({} as ContextIdentifierProvider);
+    const userContext = objectId ? 'edit' : 'new';
 
     return (
-      <ResourcedTaskItem
-        {...otherProps}
-        objectAri={objectId}
-        containerAri={containerId}
-      />
+      <FabricElementsAnalyticsContext
+        data={{
+          userContext,
+        }}
+      >
+        <ResourcedTaskItem
+          {...otherProps}
+          objectAri={objectId}
+          containerAri={containerId}
+        />
+      </FabricElementsAnalyticsContext>
     );
   }
 }

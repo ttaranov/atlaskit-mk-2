@@ -1,5 +1,16 @@
 # @atlaskit/flag
 
+## 9.1.2
+- [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
+  - @atlaskit/portal@0.0.12
+
+## 9.1.1
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 9.1.0
+- [minor] Now the flag actions accept href and target [65af057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65af057)
+- [patch] Updated the flag actions to accept the href and target as props [43ac1ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43ac1ec)
+
 ## 9.0.13
 - [patch] Updated the flag to use atlaskit button [d2084ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2084ad)
 

@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'ワイド',
   'fabric.editor.layoutFullWidth': '全幅',
   'fabric.editor.remove': '削除',
+  'fabric.editor.visit': 'リンクを新しいウィンドウで開く',
   'fabric.editor.normal': 'ノーマルテキスト',
   'fabric.editor.heading1': '見出し 1',
   'fabric.editor.heading2': '見出し 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': '表示するテキスト',
   'fabric.editor.linkPlaceholderWithSearch':
     'リンクを貼り付けまたは最近表示したページを検索',
+  'fabric.editor.action': 'アクションアイテム',
   'fabric.editor.link': 'リンク',
   'fabric.editor.filesAndImages': 'ファイルおよび画像',
   'fabric.editor.image': '画像',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': '3コラム',
   'fabric.editor.unorderedList': '箇条書きリスト',
   'fabric.editor.orderedList': '番号付きリスト',
-  'fabric.editor.action': 'アクションアイテム',
   'fabric.editor.lists': 'リスト',
   'fabric.editor.wrapLeft': '左揃え',
   'fabric.editor.wrapRight': '右揃え',
@@ -75,6 +76,9 @@ export default {
   'fabric.editor.removeColumns': '{0, plural, other{コラムを削除}}',
   'fabric.editor.insertRow': '列を挿入',
   'fabric.editor.removeRows': '{0, plural, other{列を削除}}',
+  'fabric.editor.decisionPlaceholder': '決定を追加…',
+  'fabric.editor.taskPlaceholder':
+    'アクションを入力し、「@」を使用して担当者を割り当てます。',
   'fabric.editor.textColor': 'テキストカラー',
   'fabric.editor.underline': '下線',
   'fabric.editor.strike': '取り消し線',

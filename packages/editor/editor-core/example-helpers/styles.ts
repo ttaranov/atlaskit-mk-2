@@ -3,14 +3,14 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 
-import { akColorN800, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { colors, gridSize } from '@atlaskit/theme';
 
 // tslint:disable-next-line:variable-name
 export const Content: ComponentClass<HTMLAttributes<{}>> = styled.div`
   & div.toolsDrawer {
     margin-top: 16px;
     padding: 8px 16px;
-    background: ${akColorN800};
+    background: ${colors.N800};
 
     & label {
       display: flex;
@@ -38,6 +38,6 @@ export const ButtonGroup: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: flex;
 
   & > button {
-    margin-left: ${akGridSizeUnitless / 2}px;
+    margin-left: ${gridSize() / 2}px;
   }
 `;

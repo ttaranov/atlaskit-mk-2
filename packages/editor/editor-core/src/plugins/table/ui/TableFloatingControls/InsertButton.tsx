@@ -1,46 +1,95 @@
 import * as React from 'react';
+import { SyntheticEvent } from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import AddIcon from '@atlaskit/icon/glyph/editor/add';
+import { akEditorTableNumberColumnWidth } from '@atlaskit/editor-common';
 import { TableCssClassName as ClassName } from '../../types';
+import { tableToolbarSize } from '../styles';
+import tableMessages from '../messages';
+import { closestElement } from '../../../../utils/';
 
 export interface ButtonProps {
   type: 'row' | 'column';
-  insertLineStyle?: object;
-  onClick: () => void;
+  tableRef: HTMLElement;
+  index: number;
+  showInsertButton: boolean;
+  onMouseDown: (event: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
-const InsertButton = ({ onClick, insertLineStyle, type }: ButtonProps) => (
+const getInsertLineheight = (tableRef: HTMLElement) => {
+  return tableRef.offsetHeight + tableToolbarSize;
+};
+
+const getToolbarSize = (tableRef: HTMLElement): number => {
+  const parent = closestElement(tableRef, `.${ClassName.TABLE_CONTAINER}`);
+  if (parent) {
+    return parent.querySelector(`.${ClassName.NUMBERED_COLUMN}`)
+      ? tableToolbarSize + akEditorTableNumberColumnWidth - 1
+      : tableToolbarSize;
+  }
+
+  return tableToolbarSize;
+};
+
+const getInsertLineWidth = (tableRef: HTMLElement) => {
+  const { parentElement, offsetWidth } = tableRef;
+  const parentOffsetWidth = parentElement!.offsetWidth;
+  const { scrollLeft } = parentElement!;
+  const diff = offsetWidth - parentOffsetWidth;
+  const toolbarSize = getToolbarSize(tableRef);
+  return Math.min(
+    offsetWidth + toolbarSize,
+    parentOffsetWidth + toolbarSize - Math.max(scrollLeft - diff, 0),
+  );
+};
+
+const InsertButton = ({
+  onMouseDown,
+  index,
+  tableRef,
+  showInsertButton,
+  type,
+  intl: { formatMessage },
+}: ButtonProps & InjectedIntlProps) => (
   <div
+    data-index={index}
     className={`${ClassName.CONTROLS_INSERT_BUTTON_WRAP} ${
       type === 'row'
         ? ClassName.CONTROLS_INSERT_ROW
         : ClassName.CONTROLS_INSERT_COLUMN
     }`}
   >
-    <div className={ClassName.CONTROLS_INSERT_BUTTON_INNER}>
-      <button
-        type="button"
-        className={ClassName.CONTROLS_INSERT_BUTTON}
-        onClick={onClick}
-      >
-        <span className={ClassName.CONTROLS_BUTTON_ICON}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            focusable="false"
-            role="presentation"
+    {showInsertButton && (
+      <>
+        <div className={ClassName.CONTROLS_INSERT_BUTTON_INNER}>
+          <button
+            type="button"
+            className={ClassName.CONTROLS_INSERT_BUTTON}
+            onMouseDown={onMouseDown}
           >
-            <path
-              d="M13 11V7a1 1 0 0 0-2 0v4H7a1 1 0 0 0 0 2h4v4a1 1 0 0 0 2 0v-4h4a1 1 0 0 0 0-2h-4z"
-              fill="currentColor"
-              fillRule="evenodd"
-            />
-          </svg>
-        </span>
-      </button>
-    </div>
-    <div className={ClassName.CONTROLS_INSERT_LINE} style={insertLineStyle} />
+            <span className={ClassName.CONTROLS_BUTTON_ICON}>
+              <AddIcon
+                label={formatMessage(
+                  type === 'row'
+                    ? tableMessages.insertRow
+                    : tableMessages.insertColumn,
+                )}
+              />
+            </span>
+          </button>
+        </div>
+        <div
+          className={ClassName.CONTROLS_INSERT_LINE}
+          style={
+            type === 'row'
+              ? { width: getInsertLineWidth(tableRef) }
+              : { height: getInsertLineheight(tableRef) }
+          }
+        />
+      </>
+    )}
     <div className={ClassName.CONTROLS_INSERT_MARKER} />
   </div>
 );
 
-export default InsertButton;
+export default injectIntl(InsertButton);

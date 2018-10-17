@@ -66,14 +66,16 @@ export const insertMedia = async (
     insertBlockMessages.filesAndImages.defaultMessage
   }"]`;
   const insertMediaButton = '.e2e-insert-button';
-  const mediaCardSelector = `${editable} .media-card`;
+  const mediaCardSelector = `${editable} .img-wrapper`;
 
   const existingMediaCards = await browser.$$(mediaCardSelector);
 
   await browser.click(openMediaPopup);
 
   // wait for media item, and select it
-  await browser.waitForSelector('.e2e-recent-upload-card .media-card');
+  await browser.waitForSelector(
+    '.e2e-recent-upload-card [aria-label="one.svg"]',
+  );
   if (filenames) {
     for (const filename of filenames) {
       const selector = fileSelector.replace('%s', filename);
@@ -158,9 +160,13 @@ export const quickInsert = async (browser, insertTitle) => {
   }
 
   await browser.browser.waitUntil(async () => {
-    const firstInsertText = await browser.browser.getText(
+    let firstInsertText = await browser.browser.getText(
       '[aria-label="Popup"] [role="button"]',
     );
+    if (Array.isArray(firstInsertText)) {
+      firstInsertText = firstInsertText[0];
+    }
+
     return firstInsertText && firstInsertText.startsWith(firstTitleWord);
   }, LONG_WAIT_FOR);
 

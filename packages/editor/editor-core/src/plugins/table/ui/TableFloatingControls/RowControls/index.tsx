@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isRowSelected, isTableSelected } from 'prosemirror-utils';
 import InsertButton from '../InsertButton';
-import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
+import { findRowSelection, TableSelection } from '../utils';
 import DeleteButton from '../DeleteButton';
 import { TableCssClassName as ClassName } from '../../../types';
 
@@ -19,6 +19,7 @@ export interface Props {
   hoveredRows?: number[];
   clearHoverSelection: () => void;
   isTableInDanger?: boolean;
+  insertRowButtonIndex?: number;
 }
 
 export default class RowControls extends Component<Props, any> {
@@ -102,6 +103,7 @@ export default class RowControls extends Component<Props, any> {
     const {
       editorView: { state },
       tableRef,
+      insertRowButtonIndex,
     } = this.props;
     if (!tableRef) {
       return null;
@@ -145,13 +147,10 @@ export default class RowControls extends Component<Props, any> {
           ) ? (
             <InsertButton
               type="row"
-              onClick={() => this.props.insertRow(i + 1)}
-              insertLineStyle={{
-                width: getLineMarkerWidth(
-                  tableRef,
-                  (tableRef.parentNode as HTMLElement).scrollLeft,
-                ),
-              }}
+              tableRef={tableRef}
+              index={i + 1}
+              showInsertButton={insertRowButtonIndex === i + 1}
+              onMouseDown={() => this.props.insertRow(i + 1)}
             />
           ) : null}
         </div>,

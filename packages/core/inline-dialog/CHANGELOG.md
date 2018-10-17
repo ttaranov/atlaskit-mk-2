@@ -1,5 +1,13 @@
 # @atlaskit/inline-dialog
 
+## 9.0.8
+- [patch] Updated dependencies [1a752e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a752e6)
+  - @atlaskit/datetime-picker@6.3.13
+  - @atlaskit/popper@0.3.0
+
+## 9.0.7
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 9.0.6
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

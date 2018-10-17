@@ -1,7 +1,10 @@
 // @flow
 
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { navigationItemClicked } from '../../analytics';
+import {
+  navigationItemClicked,
+  navigationExpandedCollapsed,
+} from '../../analytics';
 
 const mockWithAnalyticsEvents: any = withAnalyticsEvents;
 
@@ -15,7 +18,7 @@ jest.mock('@atlaskit/analytics-next', () => ({
 describe('analytics', () => {
   const dummyComp = () => {};
   let fireEventSpy;
-  let createAnalyticsEventSpy;
+  let createAnalyticsEventSpy: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -136,6 +139,41 @@ describe('analytics', () => {
           }),
         }),
       );
+    });
+  });
+
+  describe('navigationExpandedCollapsed', () => {
+    it('should fire a productNavigation expanded event when isCollapsed is false', () => {
+      const analyticsArgs = { isCollapsed: false, trigger: 'chevron' };
+      navigationExpandedCollapsed(createAnalyticsEventSpy, analyticsArgs);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(1);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'expanded',
+        actionSubject: 'productNavigation',
+        attributes: {
+          trigger: 'chevron',
+        },
+      });
+    });
+
+    it('should fire a productNavigation collapsed event when isCollapsed is true', () => {
+      const analyticsArgs = { isCollapsed: true, trigger: 'chevron' };
+      navigationExpandedCollapsed(createAnalyticsEventSpy, analyticsArgs);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(1);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
+        action: 'collapsed',
+        actionSubject: 'productNavigation',
+        attributes: {
+          trigger: 'chevron',
+        },
+      });
+    });
+
+    it('should fire the event on the fabric navigation channel', () => {
+      const analyticsArgs = { isCollapsed: true, trigger: 'chevron' };
+      navigationExpandedCollapsed(createAnalyticsEventSpy, analyticsArgs);
+      expect(fireEventSpy).toHaveBeenCalledTimes(1);
+      expect(fireEventSpy).toHaveBeenCalledWith('navigation');
     });
   });
 });

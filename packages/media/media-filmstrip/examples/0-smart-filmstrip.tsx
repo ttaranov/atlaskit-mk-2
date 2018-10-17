@@ -149,8 +149,8 @@ class Example extends Component<{}, ExampleState> {
       collection: defaultCollectionName,
     };
 
-    context
-      .uploadFile(uplodableFile)
+    context.file
+      .upload(uplodableFile)
       .first()
       .subscribe({
         next: state => {

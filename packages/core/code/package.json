@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "8.0.4",
+  "version": "8.0.9",
   "config": {
     "access": "public"
   },
@@ -14,9 +14,10 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/theme": "^6.0.2",
+    "@atlaskit/theme": "^6.1.1",
+    "@babel/runtime": "^7.0.0",
     "memoize-one": "^3.0.1",
-    "react-syntax-highlighter": "^8.0.1"
+    "react-syntax-highlighter": "^9.0.0"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",

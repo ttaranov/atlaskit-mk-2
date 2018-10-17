@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
+import FabricAnalyticsListener from '@atlaskit/analytics-listeners';
 import TaskItem from '../../../components/TaskItem';
 import Participants from '../../../components/Participants';
 import { AttributionWrapper, ContentWrapper } from '../../../styled/Item';
@@ -8,6 +9,17 @@ import { Placeholder } from '../../../styled/Placeholder';
 import { getParticipants } from '../_test-data';
 
 describe('<TaskItem/>', () => {
+  let analyticsWebClientMock;
+
+  beforeEach(() => {
+    analyticsWebClientMock = {
+      sendUIEvent: jest.fn(),
+      sendOperationalEvent: jest.fn(),
+      sendTrackEvent: jest.fn(),
+      sendScreenEvent: jest.fn(),
+    };
+  });
+
   it('should render children', () => {
     const component = mount(
       <TaskItem taskId="task-1">
@@ -56,17 +68,19 @@ describe('<TaskItem/>', () => {
   describe('showPlaceholder', () => {
     it('should render placeholder if task is empty', () => {
       const component = mount(
-        <TaskItem taskId="task-1" showPlaceholder={true} />,
+        <TaskItem
+          taskId="task-1"
+          showPlaceholder={true}
+          placeholder="cheese"
+        />,
       );
       const placeholder = component.find(Placeholder);
-      expect(placeholder.text()).toEqual(
-        "Type your action, use '@' to assign to someone.",
-      );
+      expect(placeholder.text()).toEqual('cheese');
     });
 
     it('should not render placeholder if task is not empty', () => {
       const component = mount(
-        <TaskItem taskId="task-1" showPlaceholder={true}>
+        <TaskItem taskId="task-1" showPlaceholder={true} placeholder="cheese">
           Hello <b>world</b>
         </TaskItem>,
       );
@@ -195,6 +209,46 @@ describe('<TaskItem/>', () => {
       );
       const attributionWrapper = component.find(AttributionWrapper);
       expect(attributionWrapper.length).toEqual(0);
+    });
+  });
+
+  describe('analytics', () => {
+    it('check action fires an event', () => {
+      const component = mount(
+        <FabricAnalyticsListener client={analyticsWebClientMock}>
+          <TaskItem taskId="task-1" appearance="inline" isDone={false} />
+        </FabricAnalyticsListener>,
+      );
+      component.find('input').simulate('change');
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'checked',
+          actionSubject: 'action',
+          attributes: {
+            localId: 'task-1',
+          },
+        }),
+      );
+    });
+
+    it('uncheck action fires an event', () => {
+      const component = mount(
+        <FabricAnalyticsListener client={analyticsWebClientMock}>
+          <TaskItem taskId="task-1" appearance="inline" isDone={true} />
+        </FabricAnalyticsListener>,
+      );
+      component.find('input').simulate('change');
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'unchecked',
+          actionSubject: 'action',
+          attributes: {
+            localId: 'task-1',
+          },
+        }),
+      );
     });
   });
 });

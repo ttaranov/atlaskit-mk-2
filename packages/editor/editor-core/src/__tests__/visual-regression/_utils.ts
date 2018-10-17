@@ -174,7 +174,9 @@ export const toolBarItemsTests = [
   },
   {
     name: 'Action',
-    clickSelector: `span[aria-label="${listsMessages.action.defaultMessage}"]`,
+    clickSelector: `span[aria-label="${
+      insertBlockMessages.action.defaultMessage
+    }"]`,
     nodeSelector: 'ol[data-task-list-local-id] div',
     content: 'text',
     appearance: ['full-page', 'message'],

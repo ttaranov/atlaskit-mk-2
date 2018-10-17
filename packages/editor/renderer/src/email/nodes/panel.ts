@@ -1,53 +1,40 @@
-import {
-  akBorderRadius,
-  akColorB400,
-  akColorB50,
-  akColorG400,
-  akColorG50,
-  akColorP50,
-  akColorP400,
-  akColorY400,
-  akColorY50,
-  akColorR50,
-  akColorR400,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { colors, gridSize, borderRadius } from '@atlaskit/theme';
 
 import { NodeSerializerOpts } from '../interfaces';
 import { createTag, serializeStyle } from '../util';
 
 const config = {
   info: {
-    background: akColorB50,
-    iconColor: akColorB400,
+    background: colors.B50,
+    iconColor: colors.B400,
   },
   note: {
-    background: akColorP50,
-    iconColor: akColorP400,
+    background: colors.P50,
+    iconColor: colors.P400,
   },
   tip: {
-    background: akColorG50,
-    iconColor: akColorG400,
+    background: colors.G50,
+    iconColor: colors.G400,
   },
   success: {
-    background: akColorG50,
-    iconColor: akColorG400,
+    background: colors.G50,
+    iconColor: colors.G400,
   },
   warning: {
-    background: akColorY50,
-    iconColor: akColorY400,
+    background: colors.Y50,
+    iconColor: colors.Y400,
   },
   error: {
-    background: akColorR50,
-    iconColor: akColorR400,
+    background: colors.R50,
+    iconColor: colors.R400,
   },
 };
 
 export default function panel({ attrs, text }: NodeSerializerOpts) {
   const css = serializeStyle({
-    'border-radius': akBorderRadius,
-    margin: `${akGridSizeUnitless / 2}px 0`,
-    padding: `${akGridSizeUnitless}px`,
+    'border-radius': `${borderRadius()}px`,
+    margin: `${gridSize() / 2}px 0`,
+    padding: `${gridSize()}px`,
     background: config[attrs.panelType] && config[attrs.panelType].background,
   });
 

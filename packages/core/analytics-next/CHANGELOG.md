@@ -1,5 +1,11 @@
 # @atlaskit/analytics-next
 
+## 3.0.10
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 3.0.9
+- [patch] adds missing babel-runtime dependency to package json [93b031a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93b031a)
+
 ## 3.0.8
 - [patch] Fixing analytics events for checkbox/radio/select [3e428e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e428e3)
 

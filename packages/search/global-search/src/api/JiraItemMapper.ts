@@ -1,3 +1,4 @@
+import * as URI from 'urijs';
 import {
   ResultType,
   AnalyticsType,
@@ -5,12 +6,42 @@ import {
   ContentType,
 } from '../model/Result';
 
-import { JiraItem, JiraItemV1, JiraItemV2, JiraItemAttributes } from './types';
+import {
+  JiraItem,
+  JiraItemV1,
+  JiraItemV2,
+  JiraItemAttributes,
+  JiraResultQueryParams,
+} from './types';
 
-export const mapJiraItemToResult = (item: JiraItem): JiraResult =>
+export const mapJiraItemToResult = (
+  item: JiraItem,
+  searchSessionId: string,
+  addSessionIdToJiraResult?: boolean,
+): JiraResult =>
   (<JiraItemV2>item).attributes && (<JiraItemV2>item).attributes['@type']
-    ? mapJiraItemToResultV2(item as JiraItemV2)
+    ? mapJiraItemToResultV2(
+        item as JiraItemV2,
+        searchSessionId,
+        addSessionIdToJiraResult,
+      )
     : mapJiraItemToResultV1(item as JiraItemV1);
+
+/**
+ * add search session id, object id, container id and result type to query params
+ */
+export const addJiraResultQueryParams = (
+  url: string,
+  queryParams: JiraResultQueryParams,
+) => {
+  const href = new URI(url);
+  Object.keys(queryParams)
+    .filter(key => !!queryParams[key])
+    .forEach(key => {
+      href.addQuery(key, queryParams[key]);
+    });
+  return href.toString();
+};
 
 const extractSpecificAttributes = (attributes: JiraItemAttributes) => {
   const type = attributes['@type'];
@@ -52,18 +83,34 @@ const JIRA_TYPE_TO_CONTENT_TYPE = {
   project: ContentType.JiraProject,
 };
 
-const mapJiraItemToResultV2 = (item: JiraItemV2): JiraResult => {
+const mapJiraItemToResultV2 = (
+  item: JiraItemV2,
+  searchSessionId: string,
+  addSessionIdToJiraResult?: boolean,
+): JiraResult => {
   const { id, name, url, attributes } = item;
+  const contentType = JIRA_TYPE_TO_CONTENT_TYPE[attributes['@type']];
+  const queryParams = {
+    searchSessionId,
+    searchContainerId: attributes.containerId,
+    searchObjectId: id,
+    searchContentType: attributes['@type'],
+  };
+
+  const href = addSessionIdToJiraResult
+    ? addJiraResultQueryParams(url, queryParams)
+    : url;
+
   return {
     resultId: id,
     name: name,
-    href: url,
+    href,
     resultType: ResultType.JiraObjectResult,
     containerId: attributes.containerId,
     analyticsType: AnalyticsType.ResultJira,
     ...extractSpecificAttributes(attributes),
     avatarUrl: attributes.avatar && extractAvatarUrl(attributes.avatar),
-    contentType: JIRA_TYPE_TO_CONTENT_TYPE[attributes['@type']],
+    contentType,
   };
 };
 

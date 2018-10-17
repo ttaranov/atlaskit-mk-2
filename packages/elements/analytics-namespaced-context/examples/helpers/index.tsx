@@ -27,7 +27,6 @@ export const createDummyComponentWithAnalytics = channel =>
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
-      source: 'unknown',
       attributes: {
         packageVersion: '1.0.0',
         packageName: '@atlaskit/foo',

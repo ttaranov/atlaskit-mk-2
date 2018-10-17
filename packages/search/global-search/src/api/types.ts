@@ -80,3 +80,10 @@ export interface PersonItem {
   title?: string;
   primaryPhoto: string;
 }
+
+export interface JiraResultQueryParams {
+  searchSessionId: string;
+  searchContainerId?: string;
+  searchObjectId?: string;
+  searchContentType?: 'issue' | 'board' | 'project' | 'filter';
+}

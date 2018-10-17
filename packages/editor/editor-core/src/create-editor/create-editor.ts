@@ -1,9 +1,12 @@
 import { Schema, MarkSpec } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
-import { sanitizeNodes, ProviderFactory } from '@atlaskit/editor-common';
+import {
+  sanitizeNodes,
+  ProviderFactory,
+  ErrorReporter,
+} from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../analytics';
 import { EditorPlugin, EditorProps, EditorConfig } from '../types';
-import ErrorReporter from '../utils/error-reporter';
 import { name, version } from '../version';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 import { PortalProviderAPI } from '../ui/PortalProvider';

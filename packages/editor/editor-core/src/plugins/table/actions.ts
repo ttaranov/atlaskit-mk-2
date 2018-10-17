@@ -38,7 +38,7 @@ import {
 import { TableLayout } from '@atlaskit/editor-common';
 import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
-  createHoverDecoration,
+  createControlsHoverDecoration,
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
@@ -50,6 +50,7 @@ import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { outdentList } from '../lists/commands';
 import { mapSlice } from '../../utils/slice';
+import { Cell } from './types';
 
 export const clearHoverSelection: Command = (
   state: EditorState,
@@ -67,19 +68,16 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = columns.reduce(
-      (acc: { pos: number; node: PMNode }[], colIdx) => {
-        const colCells = getCellsInColumn(colIdx)(state.selection);
-        return colCells ? acc.concat(colCells) : acc;
-      },
-      [],
-    );
+    const cells = columns.reduce((acc: Cell[], colIdx) => {
+      const colCells = getCellsInColumn(colIdx)(state.selection);
+      return colCells ? acc.concat(colCells) : acc;
+    }, []);
     dispatch(
       state.tr
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_COLUMNS,
           data: {
-            hoverDecoration: createHoverDecoration(cells, danger),
+            hoverDecoration: createControlsHoverDecoration(cells, danger),
             dangerColumns: danger ? columns : [],
           },
         })
@@ -96,19 +94,16 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
 ): boolean => {
   const table = findTable(state.selection);
   if (table) {
-    const cells = rows.reduce(
-      (acc: { pos: number; node: PMNode }[], rowIdx) => {
-        const rowCells = getCellsInRow(rowIdx)(state.selection);
-        return rowCells ? acc.concat(rowCells) : acc;
-      },
-      [],
-    );
+    const cells = rows.reduce((acc: Cell[], rowIdx) => {
+      const rowCells = getCellsInRow(rowIdx)(state.selection);
+      return rowCells ? acc.concat(rowCells) : acc;
+    }, []);
     dispatch(
       state.tr
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_ROWS,
           data: {
-            hoverDecoration: createHoverDecoration(cells, danger),
+            hoverDecoration: createControlsHoverDecoration(cells, danger),
             dangerRows: danger ? rows : [],
           },
         })
@@ -131,7 +126,7 @@ export const hoverTable = (danger?: boolean): Command => (
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_TABLE,
           data: {
-            hoverDecoration: createHoverDecoration(cells, danger),
+            hoverDecoration: createControlsHoverDecoration(cells, danger),
             isTableInDanger: danger,
           },
         })
@@ -745,4 +740,74 @@ export const selectRow = (row: number): Command => (
       .setMeta('addToHistory', false),
   );
   return true;
+};
+
+export const showInsertColumnButton = (columnIndex: number): Command => (
+  state,
+  dispatch,
+) => {
+  const { insertColumnButtonIndex } = getPluginState(state);
+  if (typeof insertColumnButtonIndex !== 'number') {
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SHOW_INSERT_COLUMN_BUTTON,
+          data: {
+            insertColumnButtonIndex: columnIndex,
+          },
+        })
+        .setMeta('addToHistory', false),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const showInsertRowButton = (rowIndex: number): Command => (
+  state,
+  dispatch,
+) => {
+  const { insertRowButtonIndex } = getPluginState(state);
+  if (typeof insertRowButtonIndex !== 'number') {
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SHOW_INSERT_ROW_BUTTON,
+          data: {
+            insertRowButtonIndex: rowIndex,
+          },
+        })
+        .setMeta('addToHistory', false),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const handleCut = (
+  oldTr: Transaction,
+  oldState: EditorState,
+  newState: EditorState,
+): Transaction => {
+  const oldSelection = oldState.tr.selection;
+  let { tr } = newState;
+  if (oldSelection instanceof CellSelection) {
+    const $anchorCell = oldTr.doc.resolve(
+      oldTr.mapping.map(oldSelection.$anchorCell.pos),
+    );
+    const $headCell = oldTr.doc.resolve(
+      oldTr.mapping.map(oldSelection.$headCell.pos),
+    );
+    tr.setSelection(new CellSelection($anchorCell, $headCell) as any);
+
+    if (tr.selection instanceof CellSelection) {
+      if (tr.selection.isRowSelection()) {
+        tr = removeSelectedRows(tr);
+      } else if (tr.selection.isColSelection()) {
+        tr = removeSelectedColumns(tr);
+      }
+    }
+  }
+
+  return tr;
 };

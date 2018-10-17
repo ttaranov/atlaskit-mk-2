@@ -104,7 +104,7 @@ class Flag extends Component<FlagProps, State> {
   };
 
   renderBody = () => {
-    const { actions, appearance, description } = this.props;
+    const { actions, appearance, description, linkComponent } = this.props;
     const isExpanded = !this.isBold() || this.state.isExpanded;
 
     return (
@@ -112,7 +112,11 @@ class Flag extends Component<FlagProps, State> {
         {description && (
           <Description appearance={appearance}>{description}</Description>
         )}
-        <Actions actions={actions} appearance={appearance} />
+        <Actions
+          actions={actions}
+          appearance={appearance}
+          linkComponent={linkComponent}
+        />
       </Expander>
     );
   };

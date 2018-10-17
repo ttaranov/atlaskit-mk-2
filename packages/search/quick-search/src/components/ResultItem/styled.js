@@ -22,12 +22,12 @@ export const ResultItemAfterWrapper = styled.div`
   display: flex;
 `;
 
-export const ResultItemCaption = styled.small`
+export const ResultItemCaption = styled.div`
   color: ${colors.N200};
   margin-left: ${gridSize()}px;
 `;
 
-export const ResultItemSubText = styled.small`
+export const ResultItemSubText = styled.div`
   font-size: 12px;
   color: ${colors.N200};
 `;

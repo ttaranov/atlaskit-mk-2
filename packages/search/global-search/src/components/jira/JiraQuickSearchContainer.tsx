@@ -46,8 +46,9 @@ import {
   ABTest,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
+import AdvancedIssueSearchLink from './AdvancedIssueSearchLink';
 
-const AdvancedSearchContainer = styled.div`
+const NoResultsAdvancedSearchContainer = styled.div`
   margin-top: ${4 * gridSize()}px;
 `;
 
@@ -124,16 +125,16 @@ export class JiraQuickSearchContainer extends React.Component<
         renderNoRecentActivity={() => (
           <>
             <FormattedHTMLMessage id="global-search.jira.no-recent-activity-body" />
-            <AdvancedSearchContainer>
+            <NoResultsAdvancedSearchContainer>
               <JiraAdvancedSearch
                 query={query}
                 analyticsData={{ resultsCount: 0, wasOnNoResultsScreen: true }}
               />
-            </AdvancedSearchContainer>
+            </NoResultsAdvancedSearchContainer>
           </>
         )}
         renderAdvancedSearchGroup={(analyticsData?) => (
-          <StickyFooter>
+          <StickyFooter style={{ marginTop: `${2 * gridSize()}px` }}>
             <JiraAdvancedSearch
               analyticsData={analyticsData}
               query={query}
@@ -143,6 +144,7 @@ export class JiraQuickSearchContainer extends React.Component<
             />
           </StickyFooter>
         )}
+        renderBeforePreQueryState={() => <AdvancedIssueSearchLink />}
         getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
         getPostQueryGroups={() =>
           mapSearchResultsToUIGroups(searchResults as JiraResultsMap)

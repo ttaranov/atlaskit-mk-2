@@ -1,5 +1,17 @@
 # @atlaskit/global-navigation
 
+## 5.0.5
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 5.0.4
+- [patch] Bump @atlaskit/drawer dependency to fix positioning issues within the drawer for dropdowns and other fixed position elements. [3c34445](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c34445)
+
+## 5.0.3
+- [patch] Fixes an erroneous for an improper prop validation. Basic code cleanup and adds tests for GlobalNavigation. [a4e9f03](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4e9f03)
+
+## 5.0.2
+- [patch] Fix scrollbars from displaying unnecessarily in global-navigation dropdown menus [28e6739](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e6739)
+
 ## 5.0.1
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8
