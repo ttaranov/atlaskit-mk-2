@@ -297,7 +297,7 @@ describe('<ItemViewer />', () => {
           componentName: 'media-viewer',
           fileId: 'some-id',
           packageName: '@atlaskit/media-viewer',
-          packageVersion: '23.0.0',
+          packageVersion,
         },
         eventType: 'screen',
         name: 'mediaViewerModal',
