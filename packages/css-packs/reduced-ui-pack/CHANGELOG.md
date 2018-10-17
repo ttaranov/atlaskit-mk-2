@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 10.1.0
+- [minor] Add drag-handler [b0a64d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0a64d6)
+
 ## 10.0.1
 - [patch] Update build process to use babel-7 [0e9a221](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e9a221)
 
