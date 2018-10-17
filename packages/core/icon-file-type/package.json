@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon-file-type",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A React package that contains file-type icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
@@ -40,7 +40,7 @@
     "@atlaskit/button": "^9.0.15",
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/field-text": "^7.0.12",
-    "@atlaskit/icon-build-process": "^0.0.0",
+    "@atlaskit/icon-build-process": "^0.0.1",
     "@atlaskit/modal-dialog": "^7.0.3",
     "@atlaskit/tooltip": "^12.1.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
