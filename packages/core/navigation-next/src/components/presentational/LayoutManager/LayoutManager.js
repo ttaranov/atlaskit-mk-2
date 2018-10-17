@@ -281,17 +281,19 @@ export default class LayoutManager extends Component<
   };
 
   onExpandStart = (node, isAppearing) => {
-    if (!this.state.wasOpenedByFlyout) {
+    if (!this.state.flyoutIsOpen) {
       this.props.onExpandStart(node, isAppearing);
     }
   };
 
   onExpandEnd = (node, isAppearing) => {
-    this.setState({ wasOpenedByFlyout: this.state.flyoutIsOpen }, () => {
-      if (!this.state.wasOpenedByFlyout) {
-        this.props.onExpandEnd(node, isAppearing);
-      }
-    });
+    const { flyoutIsOpen } = this.state;
+
+    this.setState({ wasOpenedByFlyout: flyoutIsOpen });
+
+    if (!flyoutIsOpen) {
+      this.props.onExpandEnd(node, isAppearing);
+    }
   };
 
   onCollapseStart = (node, isAppearing) => {

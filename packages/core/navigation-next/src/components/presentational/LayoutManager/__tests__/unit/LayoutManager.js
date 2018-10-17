@@ -149,6 +149,7 @@ describe('LayoutManager', () => {
         let wrapper;
         const node = document.createElement('div');
         const isAppearing = false;
+
         beforeEach(() => {
           handlers = {
             onExpandStart: jest.fn(),
@@ -160,7 +161,7 @@ describe('LayoutManager', () => {
         });
 
         it('Should call callbacks', () => {
-          wrapper.setState({ wasOpenedByFlyout: false, flyoutIsOpen: false });
+          wrapper.setState({ flyoutIsOpen: false });
           wrapper.update();
 
           wrapper.instance().onExpandStart(node, isAppearing);
@@ -186,7 +187,7 @@ describe('LayoutManager', () => {
         });
 
         it('Should NOT call callbacks', () => {
-          wrapper.setState({ wasOpenedByFlyout: true, flyoutIsOpen: true });
+          wrapper.setState({ flyoutIsOpen: true });
           wrapper.update();
 
           wrapper.instance().onExpandStart(node, isAppearing);
