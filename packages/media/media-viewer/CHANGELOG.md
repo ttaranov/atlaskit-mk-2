@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.1.0
+- [minor] Add analytics to MVNG (and reset ImageViewer when collectionName changes) [d60bf6d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d60bf6d)
+
 ## 24.0.1
 - [patch] Fix MediaViewer showing the spinner when it should show the error view [914bdb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/914bdb2)
 
