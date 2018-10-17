@@ -106,9 +106,11 @@ export class ItemViewer extends React.Component<Props, State> {
         switch (item.status) {
           case 'processed':
             return this.renderProcessedFile(item);
+          case 'failed-processing':
           case 'error':
             return this.renderError('previewFailed', item);
-          default:
+          case 'uploading':
+          case 'processing':
             return <Spinner />;
         }
       },
