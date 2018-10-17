@@ -41,10 +41,12 @@ export class FileFetcher {
     });
   }
 
+  // TODO: add test to ensure we return the right items
   // Returns an array of the same length as the keys filled with file items
   batchLoadingFunc = async (keys: DataloaderKey[]) => {
     console.log(keys);
     const response = await this.mediaStore.getItems(keys);
+    // console.log('response', response)
     const { items } = response.data;
 
     return keys.map(key => {
@@ -83,7 +85,7 @@ export class FileFetcher {
 
       const fetchFile = async () => {
         try {
-          console.log(2);
+          console.log(2, { id, collection });
           const response = await this.dataloader.load({ id, collection });
           console.log(3);
           if (!response) {
@@ -93,7 +95,7 @@ export class FileFetcher {
           const fileState = mapMediaItemToFileState(id, response);
 
           observer.next(fileState);
-
+          console.log(fileState.status, { fileState });
           if (fileState.status === 'processing') {
             timeoutId = window.setTimeout(fetchFile, POLLING_INTERVAL);
           } else {
