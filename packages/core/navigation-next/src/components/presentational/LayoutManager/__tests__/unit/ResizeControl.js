@@ -119,6 +119,64 @@ describe('ResizeControlBase', () => {
       expect(wrapper.state('width')).toEqual(cachedWidth);
       expect(wrapper.state('delta')).toEqual(cachedDelta);
     });
+
+    it('should change mutationRef style when mouseIsDown and isDragging are truthy', () => {
+      const mutationRef = {
+        property: 'padding-left',
+        ref: {
+          style: {
+            getPropertyValue: jest.fn().mockReturnValue('562px'),
+            setProperty: jest.fn(),
+          },
+        },
+      };
+      const props = cloneDeep(resizeControlProps);
+      props.mutationRefs = [mutationRef];
+      const wrapper = mount(
+        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+      );
+      wrapper.setState({ mouseIsDown: true, isDragging: true });
+
+      wrapper.instance().handleResize({ pageX: 100 });
+      requestAnimationFrame.step();
+
+      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledTimes(1);
+      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledWith(
+        'padding-left',
+      );
+      expect(mutationRef.ref.style.setProperty).toHaveBeenCalledTimes(1);
+      expect(mutationRef.ref.style.setProperty).toHaveBeenCalledWith(
+        'padding-left',
+        '100px',
+      );
+    });
+
+    it('should not change mutationRef style when current and old property value are equal', () => {
+      const mutationRef = {
+        property: 'padding-left',
+        ref: {
+          style: {
+            getPropertyValue: jest.fn().mockReturnValue('100px'),
+            setProperty: jest.fn(),
+          },
+        },
+      };
+      const props = cloneDeep(resizeControlProps);
+      props.mutationRefs = [mutationRef];
+      const wrapper = mount(
+        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+      );
+      wrapper.setState({ mouseIsDown: true, isDragging: true });
+
+      wrapper.instance().handleResize({ pageX: 100 });
+      requestAnimationFrame.step();
+
+      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledTimes(1);
+      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledWith(
+        'padding-left',
+      );
+      expect(mutationRef.ref.style.setProperty).toHaveBeenCalledTimes(0);
+    });
   });
 });
 
