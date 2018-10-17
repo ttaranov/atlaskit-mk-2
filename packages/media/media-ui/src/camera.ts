@@ -228,19 +228,37 @@ export class ItemViewer {
       let newOriginY = dragOrigin.y + delta.y;
       this.origin = new Vector2(newOriginX, newOriginY);
       if (this.useConstraints) {
-        const innerRect = new Bounds(
+        const innerBounds = new Bounds(
           margin,
           margin,
           containerRect.width - margin * 2,
           containerRect.height - margin * 2,
         );
-        const bounds = this.itemBounds;
-        // if (bounds.left < innerRect.left && bounds.right >= innerRect.right) {
-        //   newOriginX += innerRect.left - bounds.left;
-        // }
-        // if (bounds.right < innerRect.right && bounds.left <= innerRect.left) {
-        //   newOriginX += innerRect.right - bounds.right;
-        // }
+        const itemBounds = this.itemBounds;
+        if (
+          itemBounds.right > innerBounds.right &&
+          itemBounds.left > innerBounds.left
+        ) {
+          newOriginX += innerBounds.left - itemBounds.left;
+        }
+        if (
+          itemBounds.bottom > innerBounds.bottom &&
+          itemBounds.top > innerBounds.top
+        ) {
+          newOriginY += innerBounds.top - itemBounds.top;
+        }
+        if (
+          itemBounds.top < innerBounds.top &&
+          itemBounds.bottom < innerBounds.bottom
+        ) {
+          newOriginY += innerBounds.bottom - itemBounds.bottom;
+        }
+        if (
+          itemBounds.left < innerBounds.left &&
+          itemBounds.right < innerBounds.right
+        ) {
+          newOriginX += innerBounds.right - itemBounds.right;
+        }
         this.origin = new Vector2(newOriginX, newOriginY);
       }
     }

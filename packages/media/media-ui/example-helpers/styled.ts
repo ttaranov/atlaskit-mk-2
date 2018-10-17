@@ -69,6 +69,7 @@ export const ItemViewerContainer: ComponentClass<
 export const ItemViewerItem: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   background-color: green;
+  transition: left 0.33s, top 0.33s, width 0.33s, height 0.33s;
   opacity: 0.75;
 `;
 
