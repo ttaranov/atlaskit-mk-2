@@ -11,6 +11,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/progress-tracker"
       Component={require('../examples/basic').default}
       source={require('!!raw-loader!../examples/basic')}
       title="Basic Usage with Default Link"
@@ -21,6 +22,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/progress-tracker"
       Component={require('../examples/custom').default}
       source={require('!!raw-loader!../examples/custom')}
       title="Custom Usage with React Router Link"

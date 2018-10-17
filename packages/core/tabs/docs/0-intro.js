@@ -7,6 +7,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/tabs"
       Component={require('../examples/00-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic')}
@@ -33,6 +34,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/tabs"
       Component={require('../examples/30-custom-tab-content-component').default}
       title="Custom Content component"
       source={require('!!raw-loader!../examples/30-custom-tab-content-component')}
@@ -52,6 +54,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/tabs"
       Component={require('../examples/20-custom-tab-item-components').default}
       title="Custom Item component"
       source={require('!!raw-loader!../examples/20-custom-tab-item-components')}

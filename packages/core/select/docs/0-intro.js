@@ -8,6 +8,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/00-single-select').default}
       source={require('!!raw-loader!../examples/00-single-select')}
       title="Single"
@@ -16,6 +17,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/01-multi-select').default}
       source={require('!!raw-loader!../examples/01-multi-select')}
       title="Multi"
@@ -24,6 +26,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/05-validation').default}
       source={require('!!raw-loader!../examples/05-validation')}
       title="Validation"
@@ -37,6 +40,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/02-radio-select').default}
       source={require('!!raw-loader!../examples/02-radio-select')}
       title="Radio Select"
@@ -45,6 +49,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/03-checkbox-select').default}
       source={require('!!raw-loader!../examples/03-checkbox-select')}
       title="Checkbox Select"
@@ -53,6 +58,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/04-country-select').default}
       source={require('!!raw-loader!../examples/04-country-select')}
       title="Country Select"
@@ -61,6 +67,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/06-async-select-with-callback').default}
       source={require('!!raw-loader!../examples/06-async-select-with-callback')}
       title="Async Select"
@@ -69,6 +76,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/09-creatable-select.js').default}
       source={require('!!raw-loader!../examples/09-creatable-select.js')}
       title="Creatable Select"
@@ -77,6 +85,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/08-async-creatable-select.js').default}
       source={require('!!raw-loader!../examples/08-async-creatable-select.js')}
       title="AsyncCreatable Select"

@@ -32,6 +32,7 @@ ${(
   
   ${(
     <Example
+      packageName="@atlaskit/form"
       Component={require('../examples/00-form-layout-example').default}
       title="Form Layout"
       source={require('!!raw-loader!../examples/00-form-layout-example')}

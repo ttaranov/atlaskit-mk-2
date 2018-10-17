@@ -18,6 +18,7 @@ import {
   
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/00-basic-usage').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic-usage')}
@@ -26,6 +27,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/01-controlled').default}
       title="Controlled Checkbox"
       source={require('!!raw-loader!../examples/01-controlled')}
@@ -34,6 +36,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/02-uncontrolled').default}
       title="Uncontrolled"
       source={require('!!raw-loader!../examples/02-uncontrolled')}
@@ -42,6 +45,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/03-indeterminate').default}
       title="Indeterminate"
       source={require('!!raw-loader!../examples/03-indeterminate')}
@@ -51,6 +55,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/04-checkbox-form').default}
       title="With a Form"
       source={require('!!raw-loader!../examples/04-checkbox-form')}

@@ -17,6 +17,7 @@ The ContainerHeader is intended to be used in the container navigation layer for
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={require('./examples/ui-components/ContainerHeader').default}
       title="ContainerHeader"
       source={require('!!raw-loader!./examples/ui-components/ContainerHeader')}
@@ -35,6 +36,7 @@ GlobalItems are rendered inside the global navigation layer.
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={require('./examples/ui-components/GlobalItem').default}
       title="GlobalItem"
       source={require('!!raw-loader!./examples/ui-components/GlobalItem')}
@@ -73,6 +75,7 @@ A section of the product or container navigation may contain multiple groups.
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={require('./examples/ui-components/Group').default}
       title="Group"
       source={require('!!raw-loader!./examples/ui-components/Group')}
@@ -105,6 +108,7 @@ ${<H>Item</H>}
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={require('./examples/ui-components/Item').default}
       title="Item"
       source={require('!!raw-loader!./examples/ui-components/Item')}
@@ -154,6 +158,7 @@ Use Sections to perform nesting transitions. If a Section's props update and its
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={require('../examples/30-section').default}
       title="Section"
       source={require('!!raw-loader!../examples/30-section')}
@@ -196,6 +201,7 @@ This component takes no props.
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={
         require('./examples/ui-components/SkeletonContainerView').default
       }
@@ -214,6 +220,7 @@ It's recommended that the value be derived from the URL for accessibility, and t
 
 ${(
     <Example
+      packageName="@atlaskit/navigation-next"
       Component={require('./examples/ui-components/Switcher').default}
       title="Switcher"
       source={require('!!raw-loader!./examples/ui-components/Switcher')}

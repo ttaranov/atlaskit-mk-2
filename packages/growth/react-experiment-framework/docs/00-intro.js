@@ -43,6 +43,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/growth"
       Component={require('../examples/00-basic-usage').default}
       title="Basic example"
       source={require('!!raw-loader!../examples/00-basic-usage')}
