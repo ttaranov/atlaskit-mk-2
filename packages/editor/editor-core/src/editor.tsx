@@ -271,6 +271,8 @@ export default class Editor extends React.Component<EditorProps, {}> {
       onSave: this.props.onSave ? this.handleSave : undefined,
     };
 
+    console.log('Edit rerender, disabled:', this.props.disabled);
+
     const editor = (
       <WidthProvider>
         <EditorContext editorActions={this.editorActions}>
@@ -283,6 +285,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
                   providerFactory={this.providerFactory}
                   onEditorCreated={this.onEditorCreated}
                   onEditorDestroyed={this.onEditorDestroyed}
+                  disabled={!!this.props.disabled}
                   render={({ editor, view, eventDispatcher, config }) => (
                     <BaseTheme
                       dynamicTextSizing={this.props.allowDynamicTextSizing}
