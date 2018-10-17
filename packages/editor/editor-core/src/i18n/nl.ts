@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Breed',
   'fabric.editor.layoutFullWidth': 'Volledige breedte',
   'fabric.editor.remove': 'Verwijderen',
+  'fabric.editor.visit': 'Link openen in een nieuw venster',
   'fabric.editor.normal': 'Normale tekst',
   'fabric.editor.heading1': 'Koptekst 1',
   'fabric.editor.heading2': 'Koptekst 2',
@@ -34,6 +35,7 @@ export default {
   'fabric.editor.linkPlaceholder': 'Plak link',
   'fabric.editor.linkTextPlaceholder': 'Tekst om weer te geven',
   'fabric.editor.linkPlaceholderWithSearch': 'Plak link of zoek recent bekeken',
+  'fabric.editor.action': 'Taak',
   'fabric.editor.link': 'Link',
   'fabric.editor.filesAndImages': 'Bestanden en afbeeldingen',
   'fabric.editor.image': 'Afbeelding',
@@ -51,7 +53,6 @@ export default {
   'fabric.editor.threeColumns': 'Drie kolommen',
   'fabric.editor.unorderedList': 'Opsommingslijst',
   'fabric.editor.orderedList': 'Genummerde lijst',
-  'fabric.editor.action': 'Taak',
   'fabric.editor.lists': 'Lijsten',
   'fabric.editor.wrapLeft': 'Links uitlijnen',
   'fabric.editor.wrapRight': 'Rechts uitlijnen',
@@ -77,6 +78,9 @@ export default {
   'fabric.editor.insertRow': 'Voeg rij in',
   'fabric.editor.removeRows':
     '{0, plural, one{Verwijder rij} other{Verwijder rijen}}',
+  'fabric.editor.decisionPlaceholder': 'Beslissing toevoegen...',
+  'fabric.editor.taskPlaceholder':
+    "Geef je actie in en gebruik een '@' om de actie aan iemand toe te wijzen.",
   'fabric.editor.textColor': 'Tekstkleur',
   'fabric.editor.underline': 'Onderstreept',
   'fabric.editor.strike': 'Doorgehaald',

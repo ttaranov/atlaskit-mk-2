@@ -1,5 +1,22 @@
 # @atlaskit/editor-core
 
+## 87.0.0
+- [major] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+- [patch] Updated dependencies [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+  - @atlaskit/media-card@41.1.0
+  - @atlaskit/media-picker@22.0.0
+  - @atlaskit/media-filmstrip@17.0.1
+  - @atlaskit/media-test-helpers@18.2.9
+
+## 86.0.10
+- [patch] Show color and initial of collab-participants in overflow menu [900ccb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/900ccb8)
+
+## 86.0.9
+- [patch] Lock typeahead to cursor position [81e28c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81e28c8)
+
+## 86.0.8
+- [patch] New translations (Task & Decisions) [03addbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03addbd)
+
 ## 86.0.7
 - [patch] ED-5410: handle rows/columns cutting [b792d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b792d04)
 

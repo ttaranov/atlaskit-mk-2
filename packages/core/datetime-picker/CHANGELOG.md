@@ -1,5 +1,9 @@
 # @atlaskit/datetime-picker
 
+## 6.3.13
+- [patch] Updated dependencies [1a752e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a752e6)
+  - @atlaskit/popper@0.3.0
+
 ## 6.3.12
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

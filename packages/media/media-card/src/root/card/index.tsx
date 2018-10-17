@@ -1,22 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
-import {
-  Context,
-  ImageResizeMode,
-  MediaItemDetails,
-  FileDetails,
-} from '@atlaskit/media-core';
+import { Context, FileDetails } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs/Subscription';
 import {
-  SharedCardProps,
-  CardEventProps,
   CardAnalyticsContext,
-  CardStatus,
   CardAction,
   CardDimensions,
+  CardProps,
+  CardState,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
@@ -31,25 +25,7 @@ import {
   isExternalImageIdentifier,
 } from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
-
-export interface CardProps extends SharedCardProps, CardEventProps {
-  readonly context: Context;
-  readonly identifier: Identifier;
-  readonly isLazy?: boolean;
-  readonly resizeMode?: ImageResizeMode;
-
-  // only relevant to file card with image appearance
-  readonly disableOverlay?: boolean;
-}
-
-export interface CardState {
-  status: CardStatus;
-  isCardVisible: boolean;
-  metadata?: MediaItemDetails;
-  dataURI?: string;
-  progress?: number;
-  readonly error?: Error;
-}
+import { getCardStatus } from './getCardStatus';
 
 export class Card extends Component<CardProps, CardState> {
   subscription?: Subscription;
@@ -164,7 +140,6 @@ export class Card extends Component<CardProps, CardState> {
 
     const { id, collectionName } = identifier;
     const resolvedId = await id;
-
     this.unsubscribe();
     this.subscription = context.file
       .getFileState(resolvedId, { collectionName })
@@ -178,15 +153,17 @@ export class Card extends Component<CardProps, CardState> {
             state,
             currentMetadata as FileDetails,
           );
+          let dataURI: string | undefined;
 
           if (!currentDataURI) {
-            const dataURI = await getDataURIFromFileState(state);
+            dataURI = await getDataURIFromFileState(state);
             this.notifyStateChange({ dataURI });
           }
 
           switch (state.status) {
             case 'uploading':
               const { progress } = state;
+
               this.notifyStateChange({
                 status: 'uploading',
                 progress,
@@ -194,11 +171,18 @@ export class Card extends Component<CardProps, CardState> {
               });
               break;
             case 'processing':
-              this.notifyStateChange({
-                progress: 1,
-                status: 'complete',
-                metadata,
-              });
+              if (dataURI) {
+                this.notifyStateChange({
+                  progress: 1,
+                  status: 'complete',
+                  metadata,
+                });
+              } else {
+                this.notifyStateChange({
+                  status: 'processing',
+                  metadata,
+                });
+              }
               break;
             case 'processed':
               if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
@@ -269,21 +253,6 @@ export class Card extends Component<CardProps, CardState> {
     return getBaseAnalyticsContext('Card', id);
   }
 
-  // we don't want to show complete status for empty files, ideally there should no such file on the media api,
-  // but there are some edge cases when using id upfront that can result on that.
-  get status(): CardStatus {
-    const { status, metadata } = this.state;
-    const { identifier } = this.props;
-
-    if (status === 'complete' && isFileIdentifier(identifier) && metadata) {
-      if (!(metadata as FileDetails).size) {
-        return 'processing';
-      }
-    }
-
-    return status;
-  }
-
   get actions(): CardAction[] {
     const { actions = [], identifier } = this.props;
     const { status, metadata } = this.state;
@@ -318,11 +287,11 @@ export class Card extends Component<CardProps, CardState> {
       identifier,
     } = this.props;
     const { progress, metadata, dataURI } = this.state;
-    const { analyticsContext, onRetry, status, actions } = this;
+    const { analyticsContext, onRetry, actions } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
-          status={status}
+          status={getCardStatus(this.state, this.props)}
           metadata={metadata}
           dataURI={dataURI}
           mediaItemType={identifier.mediaItemType}

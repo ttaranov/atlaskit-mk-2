@@ -36,6 +36,7 @@ import {
   CONTENT_NAV_WIDTH_COLLAPSED,
   CONTENT_NAV_WIDTH_FLYOUT,
   GLOBAL_NAV_WIDTH,
+  FLYOUT_DELAY,
 } from '../../common/constants';
 
 type RenderContentNavigationArgs = {
@@ -117,6 +118,7 @@ export default class LayoutManager extends Component<
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
   containerRef: HTMLElement;
+  flyoutMouseOverTimeout: TimeoutID;
 
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
@@ -162,17 +164,23 @@ export default class LayoutManager extends Component<
 
   mouseOutFlyoutArea = ({ currentTarget, relatedTarget }: *) => {
     if (currentTarget.contains(relatedTarget)) return;
+    clearTimeout(this.flyoutMouseOverTimeout);
     this.setState({ flyoutIsOpen: false });
   };
   mouseOverFlyoutArea = ({ currentTarget, target }: *) => {
     if (!currentTarget.contains(target)) return;
-    this.setState({ flyoutIsOpen: true });
+    clearTimeout(this.flyoutMouseOverTimeout);
+
+    this.flyoutMouseOverTimeout = setTimeout(() => {
+      this.setState({ flyoutIsOpen: true });
+    }, FLYOUT_DELAY);
   };
 
   mouseEnter = () => {
     this.setState({ mouseIsOverNavigation: true });
   };
   mouseLeave = () => {
+    clearTimeout(this.flyoutMouseOverTimeout);
     this.setState({ mouseIsOverNavigation: false });
   };
 

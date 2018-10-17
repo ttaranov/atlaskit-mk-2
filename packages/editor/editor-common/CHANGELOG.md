@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 20.1.2
+- [patch] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+
 ## 20.1.1
 - [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
 

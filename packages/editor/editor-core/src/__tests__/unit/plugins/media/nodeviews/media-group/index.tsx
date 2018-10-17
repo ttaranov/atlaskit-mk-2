@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
 import { mediaGroup, media } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 import {
@@ -9,17 +8,7 @@ import {
   stateKey as mediaStateKey,
   DefaultMediaStateManager,
 } from '../../../../../../plugins/media/pm-plugins/main';
-import MediaGroup from '../../../../../../plugins/media/nodeviews/media-group';
-
-interface MediaProps {
-  node: PMNode;
-}
-
-class Media extends React.Component<MediaProps, {}> {
-  render() {
-    return null;
-  }
-}
+import MediaGroup from '../../../../../../plugins/media/nodeviews/mediaGroup';
 
 describe('nodeviews/mediaGroup', () => {
   let pluginState;
@@ -36,44 +25,9 @@ describe('nodeviews/mediaGroup', () => {
     pluginState.stateManager = stateManager;
     pluginState.getMediaOptions = () => ({});
     pluginState.getMediaNodeState = () => ({});
+    pluginState.mediaGroupNodes = {};
+    pluginState.handleMediaNodeRemoval = () => {};
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
-  });
-
-  it('should re-render when offset changes', () => {
-    const mediaGroupNode = mediaGroup(mediaNode);
-    const props = {
-      view: view,
-      node: mediaGroupNode(defaultSchema),
-    };
-
-    const wrapper = shallow(
-      <MediaGroup {...props}>
-        <Media node={mediaNode(defaultSchema)} />
-      </MediaGroup>,
-    );
-    const spy = jest.spyOn(wrapper.instance(), 'render');
-    wrapper.setState({ offset: 10 });
-    wrapper.setState({ offset: 15 });
-    expect(spy).toHaveBeenCalledTimes(2);
-  });
-
-  it('should not re-render when offset is the same', () => {
-    const mediaGroupNode = mediaGroup(mediaNode);
-    const props = {
-      view: view,
-      node: mediaGroupNode(defaultSchema),
-    };
-
-    const wrapper = shallow(
-      <MediaGroup {...props}>
-        <Media node={mediaNode(defaultSchema)} />
-      </MediaGroup>,
-    );
-
-    wrapper.setState({ offset: 10 });
-    const spy = jest.spyOn(wrapper.instance(), 'render');
-    wrapper.setState({ offset: 10 });
-    expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it('should re-render for custom media picker with no thumb', () => {
@@ -83,19 +37,13 @@ describe('nodeviews/mediaGroup', () => {
     const props = {
       view: view,
       node: mediaGroupNode(defaultSchema),
+      getPos: () => 1,
+      selected: null,
     };
 
-    const wrapper = shallow(
-      <MediaGroup {...props}>
-        <Media node={mediaNode(defaultSchema)} />
-      </MediaGroup>,
-    );
+    const wrapper = mount(<MediaGroup {...props} />);
 
-    wrapper.setState({ offset: 10 });
-    const spy = jest.spyOn(wrapper.instance(), 'render');
-    wrapper.setState({ offset: 10 });
-
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(wrapper.length).toEqual(1);
   });
 
   afterEach(() => {

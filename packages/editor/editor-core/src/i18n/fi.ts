@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Leveä',
   'fabric.editor.layoutFullWidth': 'Koko leveys',
   'fabric.editor.remove': 'Poista',
+  'fabric.editor.visit': 'Avaa linkki uudessa ikkunassa',
   'fabric.editor.normal': 'Normaali teksti',
   'fabric.editor.heading1': 'Otsikko 1',
   'fabric.editor.heading2': 'Otsikko 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Näytettävä teksti',
   'fabric.editor.linkPlaceholderWithSearch':
     'Liimaa linkki tai hae äskettäin katsotuista',
+  'fabric.editor.action': 'Tehtävä',
   'fabric.editor.link': 'Linkki',
   'fabric.editor.filesAndImages': 'Tiedostot & kuvat',
   'fabric.editor.image': 'Kuva',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Kolme saraketta',
   'fabric.editor.unorderedList': 'Pisteluettelo',
   'fabric.editor.orderedList': 'Numeroitu luettelo',
-  'fabric.editor.action': 'Tehtävä',
   'fabric.editor.lists': 'Luettelot',
   'fabric.editor.wrapLeft': 'Rivitä vasemmalle',
   'fabric.editor.wrapRight': 'Rivitä oikealle',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Lisää rivi',
   'fabric.editor.removeRows':
     '{0, plural, one{Poista rivi} other{Poista rivejä}}',
+  'fabric.editor.decisionPlaceholder': 'Lisää päätös...',
+  'fabric.editor.taskPlaceholder':
+    "Kirjoita toimintasi, käytä '@'-merkkiä määrätäksesi sen jollekin henkilölle.",
   'fabric.editor.textColor': 'Tekstin väri',
   'fabric.editor.underline': 'Alleviivaus',
   'fabric.editor.strike': 'Yliviivaus',

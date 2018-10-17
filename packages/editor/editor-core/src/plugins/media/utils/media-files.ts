@@ -77,7 +77,6 @@ export const insertMediaGroupNode = (
 
     // delete the selection or empty paragraph
     const deleteRange = findDeleteRange(state);
-
     if (!deleteRange) {
       tr.insert(mediaInsertPos, content);
     } else if (mediaInsertPos <= deleteRange.start) {
@@ -114,7 +113,6 @@ const createMediaFileNodes = (
 ): PMNode[] => {
   const nodes = mediaStates.map(mediaState => {
     const { id } = mediaState;
-
     const node = media.create({ id, type: 'file', collection, __key: id });
     copyOptionalAttrsFromMediaState(mediaState, node);
     return node;

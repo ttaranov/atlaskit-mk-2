@@ -45,11 +45,33 @@ describe('LayoutManager', () => {
     });
 
     describe('when experimental_flyoutOnHover is set and navigation is collapsed', () => {
-      it('should open when mousing over ContainerNavigationMask', () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
+      });
+
+      it('should open when mousing over ContainerNavigationMask with a delay of 350ms', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
+
+        jest.advanceTimersByTime(349);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+
+        jest.advanceTimersByTime(1);
         expect(wrapper.state('flyoutIsOpen')).toBe(true);
+      });
+
+      it('should not open when mousing out before 350ms', () => {
+        const wrapper = mount(<LayoutManager {...defaultProps} />);
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+        wrapper.find(ContainerNavigationMask).simulate('mouseover');
+
+        jest.advanceTimersByTime(300);
+        wrapper.find(NavigationContainer).simulate('mouseleave');
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
+
+        jest.runAllTimers();
+        expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
 
       it('should close when mousing out of NavigationContainer', () => {
@@ -57,6 +79,7 @@ describe('LayoutManager', () => {
 
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
         wrapper.find(NavigationContainer).simulate('mouseout');
+
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
 
@@ -101,6 +124,15 @@ describe('LayoutManager', () => {
           wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
         ).toEqual(expect.any(Function));
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
+
+        jest.advanceTimersByTime(349);
+        wrapper.update();
+        expect(
+          wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
+        ).toEqual(expect.any(Function));
+
+        jest.advanceTimersByTime(1);
+        wrapper.update();
         expect(
           wrapper.find(ContainerNavigationMask).prop('onMouseOver'),
         ).toBeNull();
@@ -131,6 +163,7 @@ describe('LayoutManager', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(NavigationContainer).simulate('mouseover');
+
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
     });

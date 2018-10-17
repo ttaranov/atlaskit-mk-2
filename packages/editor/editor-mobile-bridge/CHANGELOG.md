@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.0.0
+- [major] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+
 ## 4.0.15
 - [patch] Fixing the padding and the renderer bridge content [e550390](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e550390)
 
