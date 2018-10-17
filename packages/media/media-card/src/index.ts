@@ -157,3 +157,5 @@ export interface CardState {
   progress?: number;
   readonly error?: Error;
 }
+
+export { defaultImageCardDimensions } from './utils';
