@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 87.0.1
+- [patch] Updated dependencies [9add3a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9add3a4)
+  - @atlaskit/media-picker@23.0.0
+
 ## 87.0.0
 - [major] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
 - [patch] Updated dependencies [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
