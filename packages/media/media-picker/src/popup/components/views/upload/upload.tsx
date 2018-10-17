@@ -196,7 +196,7 @@ export class StatelessUploadView extends Component<
       }
     };
   }
-
+  // TODO [i18n]
   private renderWebGLWarningFlag = (): JSX.Element => (
     <FlagGroup onDismissed={this.onFlagDismissed}>
       <Flag
