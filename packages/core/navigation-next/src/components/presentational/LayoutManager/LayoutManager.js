@@ -128,6 +128,10 @@ export default class LayoutManager extends Component<
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
     experimental_flyoutOnHover: false,
+    onExpandStart: () => {},
+    onExpandEnd: () => {},
+    onCollapseStart: () => {},
+    onCollapseEnd: () => {},
   };
   static getDerivedStateFromProps(props: LayoutManagerProps, state: State) {
     // kill the flyout when the user commits to expanding navigation
