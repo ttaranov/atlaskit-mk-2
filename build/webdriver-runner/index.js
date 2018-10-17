@@ -9,6 +9,7 @@ const meow = require('meow');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
+const reportTestFailures = require('./reporting');
 
 /*
  * function main() to
@@ -84,8 +85,9 @@ function runTestsWithRetry() {
     try {
       const results = await runJest();
       code = getExitCode(results);
-      if (code !== 0 && isBrowserStack) {
-        // TODO process failing test results and send to GAS.
+      // Only retry and report results in CI.
+      if (code !== 0 && process.env.CI) {
+        reportTestFailures(results);
         code = await rerunFailedTests(results);
       }
     } catch (err) {
