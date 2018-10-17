@@ -10,6 +10,11 @@ import { Dispatch } from '../../event-dispatcher';
 import { ToolbarLoader } from './ui/ToolbarLoader';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
 
+import {
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../editor-disabled';
+
 const getRelevantConfig = (
   view: EditorView,
   configs: Array<FloatingToolbarConfig>,
@@ -79,11 +84,16 @@ const floatingToolbarPlugin: EditorPlugin = {
   }) {
     return (
       <WithPluginState
-        plugins={{ floatingToolbarConfigs: pluginKey }}
+        plugins={{
+          floatingToolbarConfigs: pluginKey,
+          editorDisabledPlugin: editorDisabledPluginKey,
+        }}
         render={({
+          editorDisabledPlugin,
           floatingToolbarConfigs,
         }: {
           floatingToolbarConfigs?: Array<FloatingToolbarConfig>;
+          editorDisabledPlugin: EditorDisabledPluginState;
         }) => {
           const relevantConfig =
             floatingToolbarConfigs &&
@@ -95,7 +105,11 @@ const floatingToolbarPlugin: EditorPlugin = {
               items,
             } = relevantConfig;
             const targetRef = getDomRef(editorView);
-            if (targetRef) {
+
+            const editorEnabled = editorDisabledPlugin
+              ? editorDisabledPlugin.editorDisabled === false
+              : true;
+            if (targetRef && editorEnabled === true) {
               return (
                 <Popup
                   ariaLabel={title}

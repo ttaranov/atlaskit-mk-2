@@ -13,6 +13,11 @@ import { setNodeSelection } from '../../../utils';
 import WithPluginState from '../../../ui/WithPluginState';
 import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import {
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../../editor-disabled';
+
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
@@ -25,6 +30,7 @@ export type MediaGroupProps = {
   view: EditorView;
   getPos: () => number;
   selected: number | null;
+  disabled?: boolean;
 };
 
 export default class MediaGroup extends React.Component<MediaGroupProps> {
@@ -91,11 +97,13 @@ export default class MediaGroup extends React.Component<MediaGroupProps> {
         },
         actions: [
           {
-            handler: this.mediaPluginState.handleMediaNodeRemoval.bind(
-              null,
-              null,
-              () => nodePos,
-            ),
+            handler: this.props.disabled
+              ? {}
+              : this.mediaPluginState.handleMediaNodeRemoval.bind(
+                  null,
+                  null,
+                  () => nodePos,
+                ),
             icon: <EditorCloseIcon label="delete" />,
           },
         ],
@@ -119,8 +127,13 @@ class MediaGroupNodeView extends ReactNodeView {
         editorView={this.view}
         plugins={{
           reactNodeViewState: reactNodeViewStateKey,
+          editorDisabledPlugin: editorDisabledPluginKey,
         }}
-        render={() => {
+        render={({
+          editorDisabledPlugin,
+        }: {
+          editorDisabledPlugin: EditorDisabledPluginState;
+        }) => {
           const nodePos = this.getPos();
           const { $anchor, $head } = this.view.state.selection;
           const isSelected =
@@ -132,6 +145,11 @@ class MediaGroupNodeView extends ReactNodeView {
               view={this.view}
               forwardRef={forwardRef}
               selected={isSelected ? $anchor.pos : null}
+              disabled={
+                editorDisabledPlugin
+                  ? editorDisabledPlugin.editorDisabled
+                  : false
+              }
             />
           );
         }}

@@ -25,6 +25,11 @@ import {
   TableCssClassName as ClassName,
 } from '../../types';
 
+import {
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../../../editor-disabled';
+
 export const key = new PluginKey('tableFlexiColumnResizing');
 
 export function columnResizing({
@@ -38,8 +43,8 @@ export function columnResizing({
       init() {
         return new ResizeState(-1, false);
       },
-      apply(tr, prev) {
-        return prev.apply(tr);
+      apply(tr, prev, oldState, newState) {
+        return prev.apply(tr, newState);
       },
     },
     view() {
@@ -122,9 +127,18 @@ class ResizeState {
     this.dragging = dragging;
   }
 
-  apply(tr) {
+  apply(tr, newState) {
     let state: ResizeState = this;
     let action = tr.getMeta(key);
+
+    const editorDisabledPluginState: EditorDisabledPluginState = editorDisabledPluginKey.getState(
+      newState,
+    );
+
+    // Disable table resizing if the editor is disabled
+    if (editorDisabledPluginState.editorDisabled) {
+      return new ResizeState(-1, null);
+    }
 
     if (action && action.setHandle !== undefined) {
       return new ResizeState(action.setHandle, null);

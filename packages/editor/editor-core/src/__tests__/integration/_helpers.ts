@@ -37,6 +37,12 @@ export const fullpage = {
   placeholder: '.ProseMirror',
 };
 
+export const fullpageDisabled = {
+  name: 'fullpage-disabled',
+  path: getExampleUrl('editor', 'editor-core', 'full-page-with-content'),
+  placeholder: '.ProseMirror',
+};
+
 export const message = {
   name: 'message',
   path: getExampleUrl('editor', 'editor-core', 'message'),

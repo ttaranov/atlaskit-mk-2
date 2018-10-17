@@ -17,6 +17,11 @@ import UiSeparator from '../../../../ui/Separator';
 import UiFloatingToolbar from '../../../../ui/FloatingToolbar';
 import { closestElement } from '../../../../utils';
 import { MediaPluginState } from '../../pm-plugins/main';
+import WithPluginState from '../../../../ui/WithPluginState';
+import {
+  EditorDisabledPluginState,
+  pluginKey as editorDisabledPluginKey,
+} from '../../../editor-disabled';
 
 export const messages = defineMessages({
   wrapLeft: {
@@ -99,50 +104,68 @@ class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
       allowBreakout,
       allowLayout,
     } = this.props;
-    if (
-      target &&
-      !closestElement(target, 'li') &&
-      !closestElement(target, 'table')
-    ) {
-      const labelRemove = formatMessage(commonMessages.remove);
-      return (
-        <FloatingToolbar
-          target={target}
-          offset={[0, 12]}
-          fitHeight={32}
-          alignX="center"
-        >
-          {Object.keys(icons).map((layout, index) => {
-            // Don't render Wide and Full width button for image smaller than editor content width
-            if (index > 2 && !allowBreakout) {
-              return;
-            }
-            const Icon = icons[layout];
-            const label = formatMessage(layoutToMessages[layout]);
+
+    return (
+      <WithPluginState
+        plugins={{
+          editorDisabledPlugin: editorDisabledPluginKey,
+        }}
+        render={({
+          editorDisabledPlugin,
+        }: {
+          editorDisabledPlugin: EditorDisabledPluginState;
+        }) => {
+          const editorEnabled = editorDisabledPlugin
+            ? editorDisabledPlugin.editorDisabled === false
+            : true;
+          if (
+            target &&
+            !closestElement(target, 'li') &&
+            !closestElement(target, 'table') &&
+            editorEnabled === true
+          ) {
+            const labelRemove = formatMessage(commonMessages.remove);
             return (
-              <ToolbarButton
-                spacing="compact"
-                key={index}
-                disabled={!allowLayout}
-                selected={layout === selectedLayout}
-                onClick={this.handleChangeLayout.bind(this, layout)}
-                title={label}
-                iconBefore={<Icon label={label} />}
-              />
+              <FloatingToolbar
+                target={target}
+                offset={[0, 12]}
+                fitHeight={32}
+                alignX="center"
+              >
+                {Object.keys(icons).map((layout, index) => {
+                  // Don't render Wide and Full width button for image smaller than editor content width
+                  if (index > 2 && !allowBreakout) {
+                    return;
+                  }
+                  const Icon = icons[layout];
+                  const label = formatMessage(layoutToMessages[layout]);
+                  return (
+                    <ToolbarButton
+                      spacing="compact"
+                      key={index}
+                      disabled={!allowLayout}
+                      selected={layout === selectedLayout}
+                      onClick={this.handleChangeLayout.bind(this, layout)}
+                      title={label}
+                      iconBefore={<Icon label={label} />}
+                    />
+                  );
+                })}
+                <Separator />
+                <ToolbarButtonDestructive
+                  spacing="compact"
+                  onClick={this.handleRemove}
+                  title={labelRemove}
+                  iconBefore={<RemoveIcon label={labelRemove} />}
+                />
+              </FloatingToolbar>
             );
-          })}
-          <Separator />
-          <ToolbarButtonDestructive
-            spacing="compact"
-            onClick={this.handleRemove}
-            title={labelRemove}
-            iconBefore={<RemoveIcon label={labelRemove} />}
-          />
-        </FloatingToolbar>
-      );
-    } else {
-      return null;
-    }
+          } else {
+            return null;
+          }
+        }}
+      />
+    );
   }
 
   private handleRemove = () => {

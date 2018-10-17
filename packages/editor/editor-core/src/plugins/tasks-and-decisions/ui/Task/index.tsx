@@ -21,6 +21,7 @@ export interface TaskProps {
   showPlaceholder?: boolean;
   children?: ReactElement<any>;
   providers?: ProviderFactory;
+  disabled?: boolean;
 }
 
 export class TaskItem extends PureComponent<TaskProps & InjectedIntlProps, {}> {

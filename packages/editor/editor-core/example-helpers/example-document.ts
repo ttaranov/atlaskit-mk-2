@@ -271,6 +271,21 @@ export const exampleDocument = {
       ],
     },
     {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'date',
+          attrs: {
+            timestamp: '1540425600000',
+          },
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+      ],
+    },
+    {
       type: 'heading',
       attrs: { level: 1 },
       content: [

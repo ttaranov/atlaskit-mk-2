@@ -6,6 +6,11 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ReactNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
+import WithPluginState from '../../../ui/WithPluginState';
+import {
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../../editor-disabled';
 
 export interface Props {
   children?: React.ReactNode;
@@ -87,13 +92,29 @@ class Task extends ReactNodeView {
         channel="fabric-elements"
         onEvent={this.addListAnalyticsData}
       >
-        <TaskItem
-          taskId={localId}
-          contentRef={forwardRef}
-          isDone={state === 'DONE'}
-          onChange={this.handleOnChange}
-          showPlaceholder={this.isContentEmpty()}
-          providers={props.providerFactory}
+        <WithPluginState
+          plugins={{
+            editorDisabledPlugin: editorDisabledPluginKey,
+          }}
+          render={({
+            editorDisabledPlugin,
+          }: {
+            editorDisabledPlugin: EditorDisabledPluginState;
+          }) => (
+            <TaskItem
+              taskId={localId}
+              contentRef={forwardRef}
+              isDone={state === 'DONE'}
+              onChange={this.handleOnChange}
+              showPlaceholder={this.isContentEmpty()}
+              providers={props.providerFactory}
+              disabled={
+                editorDisabledPlugin
+                  ? editorDisabledPlugin.editorDisabled
+                  : false
+              }
+            />
+          )}
         />
       </AnalyticsListener>
     );

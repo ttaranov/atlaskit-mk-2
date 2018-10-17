@@ -12,6 +12,10 @@ import messages from '../ui/messages';
 import { pluginKey } from '../pm-plugins/main';
 import { toggleContextualMenu } from '../actions';
 import { TableCssClassName as ClassName } from '../types';
+import {
+  EditorDisabledPluginState,
+  pluginKey as editorDisabledPluginKey,
+} from '../../editor-disabled';
 
 export interface CellViewProps {
   node: PmNode;
@@ -45,18 +49,32 @@ class Cell extends React.Component<CellProps & InjectedIntlProps> {
     const labelCellOptions = formatMessage(messages.cellOptions);
 
     return (
-      <div className={ClassName.CELL_NODEVIEW_WRAPPER} ref={forwardRef}>
-        {withCursor && (
-          <div className={ClassName.CONTEXTUAL_MENU_BUTTON}>
-            <ToolbarButton
-              selected={isContextualMenuOpen}
-              title={labelCellOptions}
-              onClick={this.handleClick}
-              iconBefore={<ExpandIcon label={labelCellOptions} />}
-            />
+      <WithPluginState
+        plugins={{
+          editorDisabledPlugin: editorDisabledPluginKey,
+        }}
+        render={({
+          editorDisabledPlugin,
+        }: {
+          editorDisabledPlugin: EditorDisabledPluginState;
+        }) => (
+          <div className={ClassName.CELL_NODEVIEW_WRAPPER} ref={forwardRef}>
+            {withCursor &&
+              !(editorDisabledPlugin
+                ? editorDisabledPlugin.editorDisabled
+                : false) && (
+                <div className={ClassName.CONTEXTUAL_MENU_BUTTON}>
+                  <ToolbarButton
+                    selected={isContextualMenuOpen}
+                    title={labelCellOptions}
+                    onClick={this.handleClick}
+                    iconBefore={<ExpandIcon label={labelCellOptions} />}
+                  />
+                </div>
+              )}
           </div>
         )}
-      </div>
+      />
     );
   }
 
