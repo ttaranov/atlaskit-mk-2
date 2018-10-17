@@ -12,6 +12,32 @@ ${<Contents />}
 
 ${<Hr />}
 
+${<H>BackItem</H>}
+
+BackItem is a pre-configured version of [ConnectedItem](#ConnectedItem) that is used to navigate back to a parent view.
+
+${(
+      <Props
+        heading="BackItem props"
+        props={require('!!extract-react-types-loader!../src/components/connected/BackItem')}
+      />
+    )}
+
+${<Hr />}
+
+${<H>ConnectedItem</H>}
+
+ConnectedItem is an Item that will render a [GoToItem](#GoToItem) if goTo prop is provided, otherwise it will render an [Item](#Item).
+
+${(
+      <Props
+        heading="ConnectedItem props"
+        props={require('!!extract-react-types-loader!../src/components/connected/ConnectedItem')}
+      />
+    )}
+
+${<Hr />}
+
 ${<H>ContainerHeader</H>}
 
 The ContainerHeader is intended to be used in the container navigation layer for a project, space, etc. It is essentially an Item with some custom styles applied to it and has an almost identical props interface. The only difference is that the ContainerHeader does not accept a spacing prop.
@@ -63,6 +89,20 @@ ${(
       <Props
         heading="GlobalNav props"
         props={require('!!extract-react-types-loader!../src/components/presentational/GlobalNav')}
+      />
+    )}
+
+${<Hr />}
+
+${<H>GoToItem</H>}
+
+GoToItem is a special [Item](#Item) that when clicked will cause a transition to the view specified by the 'goTo' prop. You will need to ensure that both the view you're
+transitioning from and to use [MenuSection](#MenuSection) with the correct 'parentId' and 'nestedGroupKey' props so that the transition animation works correctly.
+
+${(
+      <Props
+        heading="GoToItem props"
+        props={require('!!extract-react-types-loader!../src/components/connected/GoToItem')}
       />
     )}
 
@@ -202,7 +242,7 @@ The product or container navigation layers can be separated into Sections - a na
 
 Use Sections to perform nesting transitions. If a Section's props update and its parentId matches its previous id, or vice versa, it will automatically perform a nested navigation animation as it re-renders.
 
-In the majority of cases, you won't need to use Section directly and can use the specific HeaderSection and MenuSections components which provide some extra styling
+In the majority of cases, you won't need to use Section directly and can use the specific [HeaderSection](#HeaderSection) and [MenuSection](#MenuSection) components which provide some extra styling
 specific to headers and nested menu sections.
 
 ${(

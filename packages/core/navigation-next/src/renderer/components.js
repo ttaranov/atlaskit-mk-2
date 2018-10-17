@@ -1,17 +1,6 @@
 // @flow
 
 import React, { PureComponent, type ComponentType } from 'react';
-import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
-import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
-import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
-import BacklogIcon from '@atlaskit/icon/glyph/backlog';
-import BoardIcon from '@atlaskit/icon/glyph/board';
-import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
-import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
-import FolderIcon from '@atlaskit/icon/glyph/folder';
-import IssuesIcon from '@atlaskit/icon/glyph/issues';
-import ShipIcon from '@atlaskit/icon/glyph/ship';
-import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
@@ -21,127 +10,31 @@ import GroupComponent from '../components/presentational/Group';
 import GroupHeadingComponent from '../components/presentational/GroupHeading';
 import HeaderSectionComponent from '../components/presentational/HeaderSection';
 import MenuSectionComponent from '../components/presentational/MenuSection';
-import BaseItem from '../components/presentational/Item';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
 import Separator from '../components/presentational/Separator';
 import Switcher from '../components/presentational/Switcher';
 import Wordmark from '../components/presentational/Wordmark';
 
-import { withNavigationUI } from '../ui-controller';
-import { withNavigationViewController } from '../view-controller';
+import BackItem from '../components/connected/BackItem';
+import ConnectedItem from '../components/connected/ConnectedItem';
+import GoToItem from '../components/connected/GoToItem';
 
 import type {
-  GoToItemProps,
   GroupProps,
   GroupHeadingProps,
   HeaderSectionProps,
-  ItemProps,
   ItemsRendererProps,
   MenuSectionProps,
   SectionHeadingProps,
   SectionProps,
 } from './types';
 
-const iconMap = {
-  ArrowRightIcon,
-  BacklogIcon,
-  BoardIcon,
-  DashboardIcon,
-  GraphLineIcon,
-  FolderIcon,
-  IssuesIcon,
-  ShipIcon,
-};
-
 const gridSize = gridSizeFn();
 
 /**
  * ITEMS
  */
-
-// GoToItem
-const GoToItemBase = ({
-  after: afterProp,
-  goTo,
-  navigationUIController,
-  navigationViewController,
-  spinnerDelay = 200,
-  ...rest
-}: GoToItemProps) => {
-  let after;
-  if (typeof afterProp === 'undefined') {
-    after = ({ isActive, isHover }: *) => {
-      const { incomingView } = navigationViewController.state;
-      if (incomingView && incomingView.id === goTo) {
-        return <Spinner delay={spinnerDelay} invertColor size="small" />;
-      }
-      if (isActive || isHover) {
-        return (
-          <ArrowRightCircleIcon
-            primaryColor="currentColor"
-            secondaryColor="inherit"
-          />
-        );
-      }
-      return null;
-    };
-  }
-
-  const props = { ...rest, after };
-  const handleClick = e => {
-    e.preventDefault();
-
-    const { activeView } = navigationViewController.state;
-
-    if (navigationUIController.state.isPeeking) {
-      if (activeView && goTo === activeView.id) {
-        // If we're peeking and goTo points to the active view, unpeek.
-        navigationUIController.unPeek();
-      } else {
-        // If we're peeking and goTo does not point to the active view, update
-        // the peek view.
-        navigationViewController.setPeekView(goTo);
-      }
-    } else {
-      // If we're not peeking, update the active view.
-      navigationViewController.setView(goTo);
-    }
-  };
-
-  return <Item onClick={e => handleClick(e)} {...props} />;
-};
-const GoToItem = withNavigationUI(withNavigationViewController(GoToItemBase));
-
-// Item
-const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
-  let before = beforeProp;
-  if (!before && icon && iconMap[icon]) {
-    before = iconMap[icon];
-  }
-
-  const props = { ...rest, before };
-  return props.goTo ? <GoToItem {...props} /> : <BaseItem {...props} />;
-};
-
-// BackItem
-const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
-  let before = beforeProp;
-  if (!before) {
-    before = () => (
-      <ArrowLeftCircleIcon
-        primaryColor="currentColor"
-        secondaryColor="inherit"
-      />
-    );
-  }
-
-  return (
-    <div css={{ paddingBottom: gridSize * 2 }}>
-      <Item {...props} after={null} before={before} text={text || 'Back'} />
-    </div>
-  );
-};
 
 // Title
 const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
@@ -263,7 +156,7 @@ const itemComponents = {
   Debug,
   GoToItem,
   GroupHeading,
-  Item,
+  Item: ConnectedItem,
   SectionHeading,
   Separator,
   Switcher,
