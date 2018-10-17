@@ -7,6 +7,9 @@ import { ReactNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
+import WithPluginState from '../../..//ui/WithPluginState';
+import { pluginKey as editorEnabledPluginKey } from '../../editor-enabled';
+
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
@@ -87,13 +90,22 @@ class Task extends ReactNodeView {
         channel="fabric-elements"
         onEvent={this.addListAnalyticsData}
       >
-        <TaskItem
-          taskId={localId}
-          contentRef={forwardRef}
-          isDone={state === 'DONE'}
-          onChange={this.handleOnChange}
-          showPlaceholder={this.isContentEmpty()}
-          providers={props.providerFactory}
+        <WithPluginState
+          editorView={this.view}
+          plugins={{
+            editorEnabledPlugin: editorEnabledPluginKey,
+          }}
+          render={({ editorEnabledPlugin }) => (
+            <TaskItem
+              taskId={localId}
+              contentRef={forwardRef}
+              isDone={state === 'DONE'}
+              onChange={this.handleOnChange}
+              showPlaceholder={this.isContentEmpty()}
+              providers={props.providerFactory}
+              disabled={!editorEnabledPlugin.editorEnabled}
+            />
+          )}
         />
       </AnalyticsListener>
     );
