@@ -120,7 +120,7 @@ export const GitHubIssue = {
   generator: {
     '@type': 'Application',
     icon: 'https://git-scm.com/favicon.ico',
-    name: 'git',
+    name: 'GitHub',
   },
   isCompleted: false,
   isDeleted: false,
