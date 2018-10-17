@@ -1,13 +1,10 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import {
   akColorB400,
   akColorN20,
   akColorN30A,
   akColorN500,
-  akFontSizeDefault,
 } from '@atlaskit/util-shared-styles';
 import { MentionType } from '../../types';
 
@@ -42,9 +39,9 @@ export const MentionStyle: ComponentClass<
   border-radius: 20px;
   color: ${mentionStyle[props.mentionType].text};
   cursor: pointer;
-  padding: 0 4px 2px 3px;
-  line-height: 16px;
-  font-size: ${akFontSizeDefault};
+  padding: 0 0.3em 2px 0.23em;
+  line-height: 1.714;
+  font-size: 1em;
   font-weight: normal;
   word-break: break-word;
 `};
