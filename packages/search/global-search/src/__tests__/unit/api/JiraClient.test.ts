@@ -35,8 +35,8 @@ describe('JiraClient', () => {
   });
 
   describe('canSearchPeople', () => {
-    it('should call correct permissions endpoint', () => {
-      jiraClient.canSearchUsers();
+    it('should call correct permissions endpoint', async () => {
+      await jiraClient.canSearchUsers();
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
 
@@ -45,6 +45,28 @@ describe('JiraClient', () => {
 
       const requestOptions = requestSpy.mock.calls[0][1];
       expect(requestOptions).toHaveProperty('path', MY_PERMISSION_PATH);
+    });
+
+    it('should only request permissions once', async () => {
+      requestSpy.mockReturnValue(
+        Promise.resolve({
+          permissions: {
+            USER_PICKER: {
+              id: '27',
+              key: 'USER_PICKER',
+              name: 'Browse users and groups',
+              type: 'GLOBAL',
+              description: 'Description',
+              havePermission: true,
+            },
+          },
+        }),
+      );
+
+      await jiraClient.canSearchUsers();
+      await jiraClient.canSearchUsers();
+
+      expect(requestSpy).toHaveBeenCalledTimes(1);
     });
 
     EXCEPTION_CASES.forEach(exceptionImpl => {
