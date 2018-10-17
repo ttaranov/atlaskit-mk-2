@@ -93,5 +93,6 @@ export const Label: ComponentClass = styled.label`
   > span {
     display: inline-block;
     min-width: 120px;
+    text-align: right;
   }
 `;

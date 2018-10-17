@@ -23,6 +23,10 @@ export class Vector2 {
   clone() {
     return new Vector2(this.x, this.y);
   }
+
+  toString() {
+    return `[${this.x}, ${this.y}]`;
+  }
 }
 
 export class Rectangle {
@@ -166,6 +170,8 @@ export class Camera {
   }
 }
 
+export const DEFAULT_MAX_ZOOM = 2;
+
 export class ItemViewer {
   containerRect: Rectangle;
   itemRect: Rectangle;
@@ -184,7 +190,7 @@ export class ItemViewer {
     itemHeight: number,
     margin: number = 28,
     zoom: number = 0,
-    maxZoom: number = 2,
+    maxZoom: number = DEFAULT_MAX_ZOOM,
     originX: number = 0,
     originY: number = 0,
     useConstraints: boolean = true,
@@ -294,5 +300,14 @@ export class ItemViewer {
   setUseConstraints(useConstraints: boolean) {
     this.useConstraints = useConstraints;
     this.applyConstraints();
+    if (this.useConstraints) {
+      this.zoomToFit();
+    }
+  }
+
+  reset() {
+    this.itemRect = this.originalItemRect.clone();
+    this.zoom = 0;
+    this.origin = new Vector2(0, 0);
   }
 }

@@ -12,8 +12,8 @@ import {
 const DEFAULT = {
   CONTAINER_WIDTH: 200,
   CONTAINER_HEIGHT: 200,
-  ITEM_WIDTH: 350,
-  ITEM_HEIGHT: 450,
+  ITEM_WIDTH: 50,
+  ITEM_HEIGHT: 50,
   ZOOM: 0,
   MARGIN: 28,
 };
@@ -82,9 +82,20 @@ class Example extends React.Component<{}, ExampleState> {
     this.setState({ itemViewer });
   };
 
+  onResetClick = () => {
+    const itemViewer = this.state.itemViewer;
+    itemViewer.reset();
+    this.setState({ itemViewer });
+  };
+
   render() {
     const { itemViewer } = this.state;
-    const { containerRect, itemRect, margin, useConstraints } = itemViewer;
+    const {
+      containerRect,
+      originalItemRect,
+      margin,
+      useConstraints,
+    } = itemViewer;
     const containerStyle = {
       width: containerRect.width,
       height: containerRect.height,
@@ -135,10 +146,22 @@ class Example extends React.Component<{}, ExampleState> {
         </Grid>
         <Grid>
           <GridColumn>
+            <Label>
+              <span>Zoom: </span>
+              <input type="text" readOnly={true} value={itemViewer.zoom} />
+            </Label>
+            <Label>
+              <span>Origin: </span>
+              <input
+                type="text"
+                readOnly={true}
+                value={itemViewer.origin.toString()}
+              />
+            </Label>
             {this.newSlider('Container_Width', containerRect.width)}
             {this.newSlider('Container_Height', containerRect.height)}
-            {this.newSlider('Item_Width', itemRect.width)}
-            {this.newSlider('Item_Height', itemRect.height)}
+            {this.newSlider('Item_Width', originalItemRect.width)}
+            {this.newSlider('Item_Height', originalItemRect.height)}
             {this.newSlider('Margin', margin, 0, 100, 5)}
             <Label>
               <span>Use Constraints:</span>
@@ -151,6 +174,9 @@ class Example extends React.Component<{}, ExampleState> {
             <Label>
               <button onClick={this.onZoomToFitClick}>Zoom To Fit</button>
             </Label>
+            <Label>
+              <button onClick={this.onResetClick}>Reset</button>
+            </Label>
           </GridColumn>
         </Grid>
       </Page>
@@ -160,7 +186,7 @@ class Example extends React.Component<{}, ExampleState> {
   private newSlider(
     title: string,
     defaultValue: number,
-    min: number = 50,
+    min: number = 0,
     max: number = 2050,
     step: number = 100,
   ): JSX.Element {
@@ -168,10 +194,11 @@ class Example extends React.Component<{}, ExampleState> {
     for (let i = min; i < max; i += step) {
       options.push(<option key={i + title}>{i}</option>);
     }
-    const stepListId = `stepList_${title.replace(/_/g, ' ')}`;
+    const displayTitle = title.replace(/_/g, ' ');
+    const stepListId = `stepList_${displayTitle}`;
     return (
       <Label>
-        <span>{title}:</span>
+        <span>{displayTitle}:</span>
         <Slider
           type="range"
           min={min}
@@ -190,7 +217,7 @@ class Example extends React.Component<{}, ExampleState> {
   onFormSliderChange = (e: any, id: string) => {
     const value = e.target.valueAsNumber;
     const { itemViewer } = this.state;
-    const { containerRect, itemRect, useConstraints } = itemViewer;
+    const { containerRect, itemRect } = itemViewer;
     switch (id) {
       case 'Container_Width':
         itemViewer.setContainerSize(value, containerRect.height);
@@ -207,9 +234,6 @@ class Example extends React.Component<{}, ExampleState> {
       case 'Margin':
         itemViewer.margin = value;
         break;
-    }
-    if (useConstraints) {
-      itemViewer.zoomToFit();
     }
     this.setState({ itemViewer });
   };
