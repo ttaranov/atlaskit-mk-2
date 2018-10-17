@@ -120,62 +120,51 @@ describe('ResizeControlBase', () => {
       expect(wrapper.state('delta')).toEqual(cachedDelta);
     });
 
-    it('should change mutationRef style when mouseIsDown and isDragging are truthy', () => {
-      const mutationRef = {
-        property: 'padding-left',
-        ref: {
-          style: {
-            getPropertyValue: jest.fn().mockReturnValue('562px'),
-            setProperty: jest.fn(),
+    describe('When mouseIsdDown and isDragging are truthy', () => {
+      it('should change mutationRef style if new value is different than old value', () => {
+        const pageX = 100;
+        const mutationRefs = [
+          {
+            property: 'padding-left',
+            ref: {
+              style: {
+                getPropertyValue: jest.fn().mockReturnValue('562px'),
+                setProperty: jest.fn(),
+              },
+            },
           },
-        },
-      };
-      const props = cloneDeep(resizeControlProps);
-      props.mutationRefs = [mutationRef];
-      const wrapper = mount(
-        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-      );
-      wrapper.setState({ mouseIsDown: true, isDragging: true });
-
-      wrapper.instance().handleResize({ pageX: 100 });
-      requestAnimationFrame.step();
-
-      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledTimes(1);
-      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledWith(
-        'padding-left',
-      );
-      expect(mutationRef.ref.style.setProperty).toHaveBeenCalledTimes(1);
-      expect(mutationRef.ref.style.setProperty).toHaveBeenCalledWith(
-        'padding-left',
-        '100px',
-      );
-    });
-
-    it('should not change mutationRef style when current and old property value are equal', () => {
-      const mutationRef = {
-        property: 'padding-left',
-        ref: {
-          style: {
-            getPropertyValue: jest.fn().mockReturnValue('100px'),
-            setProperty: jest.fn(),
+          //not supposed to call setProperty for the ref below
+          {
+            property: 'width',
+            ref: {
+              style: {
+                getPropertyValue: jest.fn().mockReturnValue(`${pageX}px`),
+                setProperty: jest.fn(),
+              },
+            },
           },
-        },
-      };
-      const props = cloneDeep(resizeControlProps);
-      props.mutationRefs = [mutationRef];
-      const wrapper = mount(
-        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-      );
-      wrapper.setState({ mouseIsDown: true, isDragging: true });
+        ];
+        const props = { ...cloneDeep(resizeControlProps), mutationRefs };
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: true, isDragging: true });
 
-      wrapper.instance().handleResize({ pageX: 100 });
-      requestAnimationFrame.step();
+        wrapper.instance().handleResize({ pageX });
+        requestAnimationFrame.step();
 
-      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledTimes(1);
-      expect(mutationRef.ref.style.getPropertyValue).toHaveBeenCalledWith(
-        'padding-left',
-      );
-      expect(mutationRef.ref.style.setProperty).toHaveBeenCalledTimes(0);
+        expect(
+          mutationRefs[0].ref.style.getPropertyValue,
+        ).toHaveBeenCalledTimes(1);
+        expect(mutationRefs[0].ref.style.setProperty).toHaveBeenCalledWith(
+          'padding-left',
+          '100px',
+        );
+        expect(
+          mutationRefs[1].ref.style.getPropertyValue,
+        ).toHaveBeenCalledTimes(1);
+        expect(mutationRefs[1].ref.style.setProperty).not.toHaveBeenCalled();
+      });
     });
   });
 });
