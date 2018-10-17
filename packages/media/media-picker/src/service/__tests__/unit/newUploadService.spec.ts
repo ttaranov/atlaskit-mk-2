@@ -1,5 +1,4 @@
 jest.mock('../../../util/getPreviewFromBlob');
-jest.mock('../../../util/getPreviewFromVideo');
 
 import {
   ContextFactory,
@@ -20,7 +19,6 @@ import { Subscriber } from 'rxjs';
 import { NewUploadServiceImpl } from '../../newUploadServiceImpl';
 import { MediaFile, UploadParams } from '../../..';
 import * as getPreviewModule from '../../../util/getPreviewFromBlob';
-import * as getPreviewFromVideo from '../../../util/getPreviewFromVideo';
 
 const fileStreamCacheSpy = jest.spyOn(fileStreamsCache, 'set');
 
@@ -69,11 +67,7 @@ describe('UploadService', () => {
 
   beforeEach(() => {
     (getPreviewModule.getPreviewFromBlob as any).mockReset();
-    (getPreviewFromVideo.getPreviewFromVideo as any).mockReset();
     (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
-      Promise.resolve(),
-    );
-    (getPreviewFromVideo.getPreviewFromVideo as any).mockReturnValue(
       Promise.resolve(),
     );
   });
@@ -97,41 +91,11 @@ describe('UploadService', () => {
   });
 
   describe('addFiles', () => {
-    it('should NOT emit file upload event when file type is NOT "image"', async () => {
-      const { uploadService } = setup();
-      const file = { size: 100, name: 'some-filename', type: 'unknown' };
-
-      const callback = jest.fn();
-      uploadService.on('file-preview-update', callback);
-
-      uploadService.addFiles([file as File]);
-
-      expect(getPreviewModule.getPreviewFromBlob).not.toHaveBeenCalled();
-      expect(callback).not.toHaveBeenCalled();
-    });
-
-    it('should NOT emit file upload event when file size is greater than 10MB', async () => {
-      const { uploadService } = setup();
-      const file = { size: 10e7, name: 'some-filename', type: 'image/png' };
-
-      const callback = jest.fn();
-      uploadService.on('file-preview-update', callback);
-
-      uploadService.addFiles([file as File]);
-
-      expect(getPreviewModule.getPreviewFromBlob).not.toHaveBeenCalled();
-      expect(callback).not.toHaveBeenCalled();
-    });
-
     it('should emit file-preview-update for video files', async () => {
       const { uploadService, filesAddedPromise } = setup();
 
       const callback = jest.fn();
       uploadService.on('file-preview-update', callback);
-
-      (getPreviewFromVideo.getPreviewFromVideo as any).mockReturnValue(
-        Promise.resolve({ preview: true }),
-      );
 
       uploadService.addFiles([file]);
       await filesAddedPromise;
@@ -146,7 +110,6 @@ describe('UploadService', () => {
           upfrontId,
           occurrenceKey: expect.any(String),
         },
-        preview: { preview: true },
       });
     });
 
@@ -828,7 +791,9 @@ describe('UploadService', () => {
     });
 
     it('should populate fileStreamsCache once we have the upfront id', async () => {
-      const { uploadService } = setup();
+      const { uploadService } = setup(undefined, {
+        collection: 'some-collection',
+      });
       const getUpfrontId = jest.fn().mockReturnValue(Promise.resolve('1234'));
 
       (uploadService as any).getUpfrontId = getUpfrontId;
@@ -836,8 +801,9 @@ describe('UploadService', () => {
 
       await nextTick();
 
-      expect(fileStreamCacheSpy).toHaveBeenCalledTimes(1);
-      expect(fileStreamCacheSpy).lastCalledWith('1234', expect.anything());
+      expect(fileStreamCacheSpy).toHaveBeenCalledTimes(2);
+      expect(fileStreamCacheSpy.mock.calls[0][0]).toBe('1234');
+      expect(fileStreamCacheSpy.mock.calls[1][0]).toBe('1234-some-collection');
     });
   });
 

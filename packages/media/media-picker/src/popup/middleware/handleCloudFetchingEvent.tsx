@@ -1,8 +1,6 @@
 import { SmartMediaProgress } from '../../domain/progress';
 import { Action, Dispatch, Store } from 'redux';
-
 import { finalizeUpload } from '../actions/finalizeUpload';
-import { getPreview } from '../actions/getPreview';
 import {
   HANDLE_CLOUD_FETCHING_EVENT,
   HandleCloudFetchingEventAction,
@@ -105,7 +103,6 @@ export const handleCloudFetchingEvent = (store: Store<State>) => (
     }
 
     store.dispatch(finalizeUpload(uploadedFile, uploadId, source, tenant));
-    store.dispatch(getPreview(uploadId, uploadedFile, RECENTS_COLLECTION));
   };
 
   // Handle cloud upload fail

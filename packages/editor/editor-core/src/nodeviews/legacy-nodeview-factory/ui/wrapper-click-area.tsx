@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, ComponentClass, StatelessComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
@@ -10,7 +10,10 @@ import {
   ProsemirrorGetPosHandler,
   ReactComponentConstructor,
 } from '../../types';
-import { ReactNodeViewComponents } from '../';
+
+export interface ReactNodeViewComponents {
+  [key: string]: ComponentClass<any> | StatelessComponent<any>;
+}
 
 interface Props {
   components: ReactNodeViewComponents;

@@ -46,12 +46,12 @@ describe('getPreview helper method', () => {
       return expect(promise).rejects.toBeInstanceOf(Error);
     });
 
-    it('should return dimensions in addition to src', () => {
+    it('should return dimensions in addition to file', () => {
       const promise = getPreviewFromBlob(file, 'image');
       fileToBase64Promise.then(() => img.onload());
 
       return expect(promise).resolves.toMatchObject({
-        src: someImgSource,
+        file,
         dimensions: {
           width: 5,
           height: 5,
@@ -65,7 +65,7 @@ describe('getPreview helper method', () => {
       const promise = getPreviewFromBlob(file, 'unknown');
       fileToBase64Promise.then(() => img.onload());
 
-      return expect(promise).resolves.toMatchObject({ src: someImgSource });
+      return expect(promise).resolves.toMatchObject({ file });
     });
   });
 });

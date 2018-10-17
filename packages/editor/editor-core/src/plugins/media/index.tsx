@@ -1,28 +1,25 @@
 import * as React from 'react';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
-
 import { EditorPlugin } from '../../types';
-import { legacyNodeViewFactory } from '../../nodeviews';
-import WithPluginState from '../../ui/WithPluginState';
-import { pluginKey as widthPluginKey } from '../width';
-import { messages } from '../insert-block/ui/ToolbarInsertBlock';
-
 import {
   stateKey as pluginKey,
   createPlugin,
   MediaState,
   MediaStateManager,
   DefaultMediaStateManager,
+  MediaPluginState,
 } from './pm-plugins/main';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
 import ToolbarMedia from './ui/ToolbarMedia';
 import MediaSingleEdit from './ui/MediaSingleEdit';
-import ReactMediaGroupNode from './nodeviews/media-group';
-import ReactMediaNode from './nodeviews/media';
-import ReactMediaSingleNode from './nodeviews/media-single';
+import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
+import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
 import { CustomMediaPicker, MediaProvider } from './types';
+import WithPluginState from '../../ui/WithPluginState';
+import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 
 export {
   MediaState,
@@ -86,41 +83,8 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             {
               providerFactory,
               nodeViews: {
-                mediaGroup: legacyNodeViewFactory(
-                  portalProviderAPI,
-                  providerFactory,
-                  {
-                    mediaGroup: ReactMediaGroupNode,
-                    media: ReactMediaNode,
-                  },
-                ),
-                mediaSingle: legacyNodeViewFactory(
-                  portalProviderAPI,
-                  providerFactory,
-                  {
-                    mediaSingle: ({ view, node, ...mediaSingleProps }) => (
-                      <WithPluginState
-                        editorView={view}
-                        eventDispatcher={eventDispatcher}
-                        plugins={{
-                          widthState: widthPluginKey,
-                        }}
-                        render={({ widthState }) => (
-                          <ReactMediaSingleNode
-                            view={view}
-                            node={node}
-                            containerWidth={widthState.width}
-                            lineLength={widthState.lineLength}
-                            isResizable={options && options.allowResizing}
-                            appearance={props.appearance}
-                            {...mediaSingleProps}
-                          />
-                        )}
-                      />
-                    ),
-                    media: ReactMediaNode,
-                  },
-                ),
+                mediaGroup: ReactMediaGroupNode(portalProviderAPI),
+                mediaSingle: ReactMediaSingleNode(portalProviderAPI),
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
@@ -128,6 +92,8 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               customDropzoneContainer:
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
+              appearance: props.appearance,
+              allowResizing: !!(options && options.allowResizing),
             },
             reactContext,
             dispatch,
@@ -163,9 +129,33 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
       return null;
     }
 
-    const pluginState = pluginKey.getState(editorView.state);
-
-    return <MediaSingleEdit pluginState={pluginState} />;
+    return (
+      <WithPluginState
+        editorView={editorView}
+        plugins={{
+          mediaState: pluginKey,
+        }}
+        render={({ mediaState }) => {
+          const { element: target, layout } = mediaState as MediaPluginState;
+          const node = mediaState.selectedMediaNode();
+          const allowBreakout = !!(
+            node &&
+            node.attrs &&
+            node.attrs.width > akEditorFullPageMaxWidth
+          );
+          const allowLayout = !!mediaState.isLayoutSupported();
+          return (
+            <MediaSingleEdit
+              pluginState={mediaState}
+              allowBreakout={allowBreakout}
+              allowLayout={allowLayout}
+              layout={layout}
+              target={target}
+            />
+          );
+        }}
+      />
+    );
   },
 
   secondaryToolbarComponent({ editorView, disabled }) {

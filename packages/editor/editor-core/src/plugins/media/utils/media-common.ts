@@ -111,7 +111,7 @@ export const posOfMediaGroupBelow = (
 export const posOfParentMediaGroup = (
   state: EditorState,
   $pos?: ResolvedPos,
-  prepend: boolean = true,
+  prepend: boolean = false,
 ): number | undefined => {
   const { $from } = state.selection;
   $pos = $pos || $from;
