@@ -5,14 +5,7 @@ import React, {
   type Element,
   type Node,
 } from 'react';
-import { layers } from '@atlaskit/theme';
-import Portal from '@atlaskit/portal';
-import ScrollLock from 'react-scrolllock';
-import scrollIntoView from 'scroll-into-view-if-needed';
-import { Fade } from './Animation';
-import Clone from './Clone';
-import SpotlightDialog from './SpotlightDialog';
-import { SpotlightTransitionConsumer } from './SpotlightTransition';
+import SpotlightInner from './SpotlightInner';
 import { SpotlightConsumer } from './SpotlightManager';
 import type { ActionsType } from '../types';
 
@@ -64,82 +57,23 @@ export type Props = {
 };
 
 class Spotlight extends React.Component<Props> {
-  static defaultProps = {
-    dialogWidth: 400,
-    pulse: true,
-  };
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.targetNode !== this.props.targetNode) {
-      scrollIntoView(this.props.targetNode, {
-        scrollMode: 'if-needed',
-      });
-    }
-  }
-
-  componentDidMount() {
-    scrollIntoView(this.props.targetNode, {
-      scrollMode: 'if-needed',
-    });
-    this.props.onOpen();
-  }
-
-  componentWillUnmount() {
-    this.props.onClose();
-  }
-
   render() {
-    const {
-      pulse,
-      target,
-      targetNode,
-      targetBgColor,
-      targetOnClick,
-      targetRadius,
-      targetReplacement,
-    } = this.props;
+    const { targetNode, target, ...rest } = this.props;
     return (
-      <SpotlightTransitionConsumer>
-        {({ isOpen, onExited }) => (
-          <Portal zIndex={layers.spotlight() + 1}>
-            <Clone
-              pulse={pulse}
-              target={target}
-              targetBgColor={targetBgColor}
-              targetNode={targetNode}
-              targetOnClick={targetOnClick}
-              targetRadius={targetRadius}
-              targetReplacement={targetReplacement}
+      <SpotlightConsumer>
+        {({ opened, closed, targets }) =>
+          targetNode || targets[target] ? (
+            <SpotlightInner
+              {...rest}
+              targetNode={targetNode || targets[target]}
+              onOpened={opened}
+              onClosed={closed}
             />
-            <Fade in={isOpen} onExited={onExited}>
-              {animationStyles => (
-                <SpotlightDialog
-                  {...this.props}
-                  isOpen={isOpen}
-                  animationStyles={animationStyles}
-                />
-              )}
-            </Fade>
-            <ScrollLock />
-          </Portal>
-        )}
-      </SpotlightTransitionConsumer>
+          ) : null
+        }
+      </SpotlightConsumer>
     );
   }
 }
 
-export default React.forwardRef((props: Props, ref) => (
-  <SpotlightConsumer>
-    {({ opened, closed, targets }) =>
-      props.targetNode || targets[props.target] ? (
-        <Spotlight
-          {...props}
-          targetNode={props.targetNode || targets[props.target]}
-          onOpen={opened}
-          onClose={closed}
-          ref={ref}
-        />
-      ) : null
-    }
-  </SpotlightConsumer>
-));
+export default Spotlight;
