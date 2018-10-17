@@ -88,6 +88,38 @@ describe('ResizeControlBase', () => {
       },
     );
   });
+
+  describe('When the component is resizing', () => {
+    it('should not change width and delta when mouseIsDown is falsy', () => {
+      const props = cloneDeep(resizeControlProps);
+      const wrapper = mount(
+        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+      );
+      wrapper.setState({ mouseIsDown: false, isDragging: true });
+      const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
+
+      wrapper.instance().handleResize({ pageX: 100 });
+      requestAnimationFrame.step();
+
+      expect(wrapper.state('width')).toEqual(cachedWidth);
+      expect(wrapper.state('delta')).toEqual(cachedDelta);
+    });
+
+    it('should change width and delta when isDragging is falsy', () => {
+      const props = cloneDeep(resizeControlProps);
+      const wrapper = mount(
+        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+      );
+      wrapper.setState({ mouseIsDown: true, isDragging: false });
+      const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
+
+      wrapper.instance().handleResize({ pageX: 100 });
+      requestAnimationFrame.step();
+
+      expect(wrapper.state('width')).toEqual(cachedWidth);
+      expect(wrapper.state('delta')).toEqual(cachedDelta);
+    });
+  });
 });
 
 describe('ResizeControl', () => {
