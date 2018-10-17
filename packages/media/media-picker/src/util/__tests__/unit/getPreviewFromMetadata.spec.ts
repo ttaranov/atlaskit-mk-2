@@ -18,7 +18,6 @@ describe('getPreviewFromMetadata()', () => {
     };
 
     expect(getPreviewFromMetadata(metadata)).toEqual({
-      src: 'image-url',
       dimensions: {
         width: 10,
         height: 10,
@@ -31,9 +30,7 @@ describe('getPreviewFromMetadata()', () => {
       pending: true,
     };
 
-    expect(getPreviewFromMetadata(metadata)).toEqual({
-      src: '',
-    });
+    expect(getPreviewFromMetadata(metadata)).toEqual({});
   });
 
   it('should default to empty src if url is not available', () => {
@@ -46,7 +43,6 @@ describe('getPreviewFromMetadata()', () => {
     };
 
     expect(getPreviewFromMetadata(metadata)).toEqual({
-      src: '',
       dimensions: {
         width: 10,
         height: 10,
