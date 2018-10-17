@@ -2,6 +2,7 @@
 export {
   Modal,
   Spotlight,
+  SpotlightCard,
   SpotlightManager,
   SpotlightTarget,
   SpotlightTransition,

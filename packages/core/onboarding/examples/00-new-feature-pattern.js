@@ -4,14 +4,12 @@ import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import {
-  //   Spotlight,
+  Spotlight,
   SpotlightPulse,
-  //   SpotlightManager,
-  //   SpotlightTarget,
+  SpotlightManager,
+  SpotlightTarget,
   SpotlightTransition,
 } from '../src';
-import Spotlight from '../src/components/Spotlight';
-import SpotlightDialog from '../src/components/SpotlightDialog';
 
 const Wrapper = styled.div`
   align-items: center;
@@ -29,36 +27,43 @@ class NewFeature extends React.Component<{}, { spotlightVisible: boolean }> {
     const { spotlightVisible } = this.state;
     return (
       <Wrapper>
-        <ButtonGroup>
-          <Spotlight>
-            {({ targetRef }) => (
-              <React.Fragment>
+        <SpotlightManager blanketIsTinted={false}>
+          <ButtonGroup>
+            <SpotlightTarget name="button">
+              <SpotlightPulse>
                 <Button
-                  innerRef={targetRef}
                   onClick={() =>
                     this.setState({ spotlightVisible: !spotlightVisible })
                   }
                 >
                   I am a new feature
                 </Button>
-                <SpotlightTransition>
-                  {spotlightVisible && (
-                    <SpotlightDialog
-                      heading="Switch it up"
-                      actionsBeforeElement="1/3"
-                      actions={[{ onClick: () => {}, text: 'Got it' }]}
-                    >
-                      It is now easier to create an issue. Click on the plus
-                      button to create a new issue.
-                    </SpotlightDialog>
-                  )}
-                </SpotlightTransition>
-              </React.Fragment>
+              </SpotlightPulse>
+            </SpotlightTarget>
+            <Button>Another element</Button>
+          </ButtonGroup>
+          <SpotlightTransition>
+            {spotlightVisible && (
+              <Spotlight
+                target="button"
+                heading="Switch it up"
+                actionsBeforeElement="1/3"
+                pulse={false}
+                targetBgColor="#fff"
+                actions={[
+                  {
+                    onClick: () =>
+                      this.setState({ spotlightVisible: !spotlightVisible }),
+                    text: 'Got it',
+                  },
+                ]}
+              >
+                It is now easier to create an issue. Click on the plus button to
+                create a new issue.
+              </Spotlight>
             )}
-          </Spotlight>
-
-          <Button>Another element</Button>
-        </ButtonGroup>
+          </SpotlightTransition>
+        </SpotlightManager>
       </Wrapper>
     );
   }

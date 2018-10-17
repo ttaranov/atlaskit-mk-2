@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import { typography } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
 import UndoIcon from '@atlaskit/icon/glyph/editor/undo';
-import SpotlightCard from '../src/components/SpotlightCard';
+import { SpotlightCard } from '../src';
 
 import welcomeImage from './assets/this-is-new-jira.png';
 
 const Wrapper = styled.div`
-  width: 650px;
+  width: 600px;
   height: 500px;
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -32,7 +32,7 @@ export default () => (
     <SpotlightCard
       actions={[{ text: 'Next', onClick: () => {} }]}
       actionsBeforeElement="1/3"
-      width={300}
+      width={275}
     >
       {copy}
     </SpotlightCard>
@@ -41,20 +41,20 @@ export default () => (
         { text: 'Next', onClick: () => {} },
         { text: 'Skip', onClick: () => {} },
       ]}
-      width={300}
+      width={275}
     >
       {copy}
     </SpotlightCard>
     <SpotlightCard
       actionsBeforeElement={<Semibold>Try clicking the project name.</Semibold>}
-      width={300}
+      width={275}
     >
       {copy}
     </SpotlightCard>
     <SpotlightCard
-      image={<img alt="" src={welcomeImage} width="300px" />}
+      image={<img alt="" src={welcomeImage} width="275" />}
       actions={[{ text: 'Next', onClick: () => {} }]}
-      width={300}
+      width={275}
     >
       {copy}
     </SpotlightCard>
@@ -66,7 +66,7 @@ export default () => (
         </Button>
       }
       actions={[{ text: 'Got it', onClick: () => {} }]}
-      width={300}
+      width={275}
     >
       {copy}
     </SpotlightCard>

@@ -30,7 +30,7 @@ const borderRadius = p =>
     : null;
 
 export const Div = styled.div`
-  ${backgroundColor} ${borderRadius} position: absolute;
+  ${backgroundColor} ${borderRadius};
   z-index: ${layers.spotlight};
 `;
 
