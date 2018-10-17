@@ -3,18 +3,118 @@ import { BlockCard } from '@atlaskit/media-ui';
 import { relativeTime } from '../utils';
 import ChatIcon from '@atlaskit/icon/glyph/comment';
 import { colors } from '@atlaskit/theme';
+import { LozengeViewModel } from '../../../media-ui/src/types';
 
-const propValueOfTypeOr = (
-  propName: string,
-  typeName: string,
-  alternative: any,
-  data: any,
-): any => {
-  return typeof data[propName] === typeName ? data[propName] : alternative;
+export const buildTitle = (json: any) => {
+  let name = json.name && json.name.trim();
+  return name ? { title: { text: name } } : {};
 };
 
-const stringPropValOrEmpty = (propName: string, data: any): string => {
-  return propValueOfTypeOr(propName, 'string', '', data);
+export const buildDescription = (json: any) => {
+  const summary = json.summary && json.summary.trim();
+  return summary ? { description: { text: summary } } : {};
+};
+
+export const buildLink = (json: any) => {
+  const url = json.url && json.url.trim();
+  return url ? { link: url } : {};
+};
+
+export const buildByline = (json: any) => {
+  const updatedBy =
+    json.updatedBy && json.updatedBy.name ? 'by ' + json.updatedBy.name : '';
+  if (json.dateCreated || json.updated) {
+    return {
+      byline: {
+        text: json.updated
+          ? `Updated ${relativeTime(json.updated)} ${updatedBy}`
+          : `Created ${relativeTime(json.dateCreated)}`,
+      },
+    };
+  }
+  return {};
+};
+
+export const buildUser = (json: any) => {
+  if (json.assignedBy) {
+    return {
+      user: {
+        ...(json.assignedBy.image ? { icon: json.assignedBy.image } : {}),
+        ...(json.assignedBy.name ? { name: json.assignedBy.name } : {}),
+      },
+    };
+  }
+  return {};
+};
+
+export const buildUsers = (json: any) => {
+  if (json.assignedTo && Array.isArray(json.assignedTo)) {
+    return {
+      users: json.assignedTo.map((assignee: any) => ({
+        icon: assignee.image,
+        name: assignee.name,
+      })),
+    };
+  }
+  return {};
+};
+
+export const buildCommentCount = (json: any) => {
+  if (json.commentCount) {
+    return {
+      icon: (
+        <ChatIcon
+          label=""
+          key="comments-count-icon"
+          size="medium"
+          primaryColor={colors.N600}
+        />
+      ),
+      text: `${json.commentCount}`,
+    };
+  }
+  return {};
+};
+
+export const buildDetailsLozenge = (json: any) => {
+  if (json.taskStatus && json.taskStatus.name) {
+    return {
+      lozenge: {
+        text: json.taskStatus.name,
+        appearance: 'success',
+      } as LozengeViewModel,
+    };
+  }
+  return {};
+};
+
+export const buildDetails = (json: any) => {
+  if (json.taskStatus || json.commentCount) {
+    return {
+      details: [buildDetailsLozenge(json), buildCommentCount(json)],
+    };
+  }
+  return {};
+};
+
+export const buildContext = (json: any) => {
+  const genName =
+    json.generator && json.generator.name && json.generator.name.trim();
+  if (genName) {
+    let additional =
+      (json.context &&
+        json.context.name &&
+        json.context.name.trim() &&
+        ` / ${json.context.name.trim()}`) ||
+      '';
+    return {
+      context: {
+        text: genName + additional,
+        ...(json.generator.icon ? { icon: json.generator.icon } : {}),
+      },
+    };
+  }
+  return {};
 };
 
 export function extractPropsFromTask(json: any): BlockCard.ResolvedViewProps {
@@ -23,71 +123,15 @@ export function extractPropsFromTask(json: any): BlockCard.ResolvedViewProps {
   }
 
   const props: BlockCard.ResolvedViewProps = {
-    title: { text: stringPropValOrEmpty('name', json) },
-    description: { text: stringPropValOrEmpty('summary', json) },
+    ...buildContext(json),
+    ...buildTitle(json),
+    ...buildDescription(json),
+    ...buildLink(json),
+    ...buildByline(json),
+    ...buildUser(json),
+    ...buildUsers(json),
+    ...buildDetails(json),
   };
-
-  if (json.url) {
-    props.link = String(json.url);
-  }
-
-  if (json.dateCreated) {
-    props.description = {
-      text: `Created at ${relativeTime(json.dateCreated)}`,
-    };
-  }
-
-  if (json.assignedBy) {
-    props.user = {
-      icon: json.assignedBy.image,
-      name: json.assignedBy.name,
-    };
-  }
-
-  if (json.assignedTo && Array.isArray(json.assignedTo)) {
-    props.users = json.assignedTo.map((assignee: any) => ({
-      icon: assignee.image,
-      name: assignee.name,
-    }));
-  }
-
-  if (json.context && json.context.name) {
-    props.byline = { text: json.context.name };
-  }
-
-  if (json.tag && Array.isArray(json.tag)) {
-    props.details = (props.details || []).concat(
-      json.tag.map((tag: any) => ({
-        lozenge: {
-          text: tag.name,
-          appearance: 'default',
-        },
-      })),
-    );
-  }
-
-  if (json.commentCount) {
-    props.details = (props.details || []).concat([
-      {
-        icon: (
-          <ChatIcon
-            label=""
-            key="comments-count-icon"
-            size="medium"
-            primaryColor={colors.N600}
-          />
-        ),
-        text: `${json.commentCount}`,
-      },
-    ]);
-  }
-
-  if (json.generator && (json.generator.name || json.generator.icon)) {
-    props.context = {
-      text: json.generator.name,
-      icon: json.generator.icon,
-    };
-  }
 
   return props;
 }
