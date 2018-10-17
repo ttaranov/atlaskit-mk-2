@@ -3,12 +3,12 @@ import {
   Context,
   UploadableFile,
   MediaType,
-  FileDetails,
   getMediaTypeFromMimeType,
   ContextFactory,
   FileState,
   FileStreamCache,
   fileStreamsCache,
+  ProcessingFileState,
 } from '@atlaskit/media-core';
 import {
   MediaStore,
@@ -150,7 +150,15 @@ export class NewUploadServiceImpl implements UploadService {
             if (state.status === 'processing') {
               subscrition.unsubscribe();
 
-              this.onFileSuccess(cancellableFileUpload, state.id);
+              this.onFileFinishedUploading(cancellableFileUpload, state);
+            }
+            if (state.status === 'processed') {
+              this.emit('file-converted', {
+                file: {
+                  ...mediaFile,
+                  publicId: state.id,
+                },
+              });
             }
           },
           error: error => {
@@ -269,33 +277,23 @@ export class NewUploadServiceImpl implements UploadService {
     delete this.cancellableFilesUploads[mediaFile.id];
   }
 
-  private readonly onFileSuccess = async (
+  private readonly onFileFinishedUploading = async (
     cancellableFileUpload: CancellableFileUpload,
-    fileId: string,
+    fileState: ProcessingFileState,
   ) => {
     const { mediaFile } = cancellableFileUpload;
 
-    this.copyFileToUsersCollection(fileId)
+    this.copyFileToUsersCollection(fileState.id)
       // tslint:disable-next-line:no-console
       .catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
       ...mediaFile,
-      publicId: fileId,
+      publicId: fileState.id,
     };
 
     this.emit('file-converting', {
       file: publicMediaFile,
-    });
-
-    // TODO: fill extra available details? should we use this.context.getFile(publicId, {collectionName}) here?
-    const details: FileDetails = {
-      id: fileId,
-    };
-
-    this.emit('file-converted', {
-      file: publicMediaFile,
-      public: details,
     });
 
     cancellableFileUpload.cancel = () => {

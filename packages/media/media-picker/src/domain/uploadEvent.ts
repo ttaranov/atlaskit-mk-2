@@ -1,4 +1,3 @@
-import { FileDetails } from '@atlaskit/media-core';
 import { MediaProgress } from './progress';
 import { MediaError } from './error';
 import { Preview } from './preview';
@@ -24,7 +23,6 @@ export type UploadProcessingEventPayload = {
 
 export type UploadEndEventPayload = {
   readonly file: PublicMediaFile;
-  readonly public: FileDetails;
 };
 
 export type UploadErrorEventPayload = {

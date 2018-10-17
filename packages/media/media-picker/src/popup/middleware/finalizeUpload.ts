@@ -4,7 +4,7 @@ import {
   MediaStoreCopyFileWithTokenBody,
   MediaStoreCopyFileWithTokenParams,
 } from '@atlaskit/media-store';
-import { Fetcher } from '../tools/fetcher/fetcher';
+import { Context } from '@atlaskit/media-core';
 import {
   FinalizeUploadAction,
   isFinalizeUploadAction,
@@ -12,22 +12,18 @@ import {
 import { State, Tenant, SourceFile } from '../domain';
 import { mapAuthToSourceFileOwner } from '../domain/source-file';
 import { MediaFile } from '../../domain/file';
-import {
-  sendUploadEvent,
-  SendUploadEventAction,
-} from '../actions/sendUploadEvent';
+import { sendUploadEvent } from '../actions/sendUploadEvent';
 
-export default function(fetcher: Fetcher): Middleware {
+export default function(): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isFinalizeUploadAction(action)) {
-      finalizeUpload(fetcher, store as any, action);
+      finalizeUpload(store as any, action);
     }
     return next(action);
   };
 }
 
 export function finalizeUpload(
-  fetcher: Fetcher,
   store: Store<State>,
   {
     file,
@@ -37,9 +33,9 @@ export function finalizeUpload(
     replaceFileId,
     occurrenceKey,
   }: FinalizeUploadAction,
-): Promise<SendUploadEventAction> {
-  const { userContext } = store.getState();
-  return userContext.config
+) {
+  const { userContext, tenantContext } = store.getState();
+  userContext.config
     .authProvider()
     .then(mapAuthToSourceFileOwner)
     .then(owner => {
@@ -50,7 +46,7 @@ export function finalizeUpload(
 
       const copyFileParams: CopyFileParams = {
         store,
-        fetcher,
+        tenantContext,
         file,
         uploadId,
         sourceFile,
@@ -59,13 +55,13 @@ export function finalizeUpload(
         occurrenceKey,
       };
 
-      return copyFile(copyFileParams);
+      copyFile(copyFileParams);
     });
 }
 
 type CopyFileParams = {
   store: Store<State>;
-  fetcher: Fetcher;
+  tenantContext: Context;
   file: MediaFile;
   uploadId: string;
   sourceFile: SourceFile;
@@ -76,14 +72,14 @@ type CopyFileParams = {
 
 async function copyFile({
   store,
-  fetcher,
+  tenantContext,
   file,
   uploadId,
   sourceFile,
   tenant,
   replaceFileId,
   occurrenceKey,
-}: CopyFileParams): Promise<SendUploadEventAction> {
+}: CopyFileParams) {
   const { deferredIdUpfronts } = store.getState();
   const deferred = deferredIdUpfronts[sourceFile.id];
   const mediaStore = new MediaStore({
@@ -98,15 +94,55 @@ async function copyFile({
     occurrenceKey,
   };
 
+  const sendUploadError = (error: any) => {
+    if (deferred) {
+      const { rejecter } = deferred;
+      rejecter();
+    }
+
+    return store.dispatch(
+      sendUploadEvent({
+        event: {
+          name: 'upload-error',
+          data: {
+            file,
+            error: {
+              name: 'object_create_fail',
+              description: error.message,
+            },
+          },
+        },
+        uploadId,
+      }),
+    );
+  };
+
+  const sendUploadEnd = (id: string) => {
+    if (deferred) {
+      const { resolver } = deferred;
+      resolver(id);
+    }
+
+    store.dispatch(
+      sendUploadEvent({
+        event: {
+          name: 'upload-end',
+          data: {
+            file: {
+              ...file,
+              publicId: id,
+            },
+          },
+        },
+        uploadId,
+      }),
+    );
+  };
+
   return mediaStore
     .copyFileWithToken(body, params)
     .then(destinationFile => {
       const { id: publicId } = destinationFile.data;
-      if (deferred) {
-        const { resolver } = deferred;
-
-        resolver(publicId);
-      }
 
       store.dispatch(
         sendUploadEvent({
@@ -123,51 +159,35 @@ async function copyFile({
         }),
       );
 
-      // TODO [MS-725]: replace by context.getFile
-      return fetcher.pollFile(
-        tenant.auth,
-        publicId,
-        tenant.uploadParams.collection,
-      );
-    })
-    .then(processedDestinationFile => {
-      return store.dispatch(
-        sendUploadEvent({
-          event: {
-            name: 'upload-end',
-            data: {
-              file: {
-                ...file,
-                publicId: processedDestinationFile.id,
-              },
-              public: processedDestinationFile,
-            },
+      const subscription = tenantContext.file
+        .getFileState(publicId, {
+          collectionName: tenant.uploadParams.collection,
+        })
+        .subscribe({
+          next: state => {
+            if (state.status === 'processed') {
+              sendUploadEnd(state.id);
+            } else if (
+              state.status === 'failed-processing' ||
+              state.status === 'error'
+            ) {
+              sendUploadError(state);
+            }
+            if (
+              ['processed', 'failed-processing', 'error'].indexOf(
+                state.status,
+              ) > -1
+            ) {
+              // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
+              setImmediate(() => subscription.unsubscribe());
+            }
           },
-          uploadId,
-        }),
-      );
+          error: error => {
+            sendUploadError(error);
+          },
+        });
     })
     .catch(error => {
-      if (deferred) {
-        const { rejecter } = deferred;
-
-        rejecter();
-      }
-
-      return store.dispatch(
-        sendUploadEvent({
-          event: {
-            name: 'upload-error',
-            data: {
-              file,
-              error: {
-                name: 'object_create_fail',
-                description: error.message,
-              },
-            },
-          },
-          uploadId,
-        }),
-      );
+      sendUploadError(error);
     });
 }

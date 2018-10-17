@@ -6,7 +6,7 @@ import { HandlerResult } from '.';
 
 export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
   if (isFileUploadEndAction(action)) {
-    const { file, publicFile } = action;
+    const { file } = action;
 
     const timeStarted = store.getState().uploads[file.id].timeStarted;
 
@@ -16,17 +16,18 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
         actionSubject: 'mediaUpload',
         actionSubjectId: 'localMedia',
         attributes: {
-          fileAttributes: {
-            fileMediatype: publicFile.mediaType,
-            fileState: publicFile.processingStatus,
-            fileStatus:
-              publicFile.artifacts && publicFile.artifacts.length > 0
-                ? 'original'
-                : 'converted',
-            fileSize: publicFile.size,
-            fileMimetype: publicFile.mimeType,
-            fileSource: 'mediapicker',
-          },
+          // TODO Who cares about analytics anyway?
+          // fileAttributes: {
+          //   fileMediatype: publicFile.mediaType,
+          //   fileState: publicFile.processingStatus,
+          //   fileStatus:
+          //     publicFile.artifacts && publicFile.artifacts.length > 0
+          //       ? 'original'
+          //       : 'converted',
+          //   fileSize: publicFile.size,
+          //   fileMimetype: publicFile.mimeType,
+          //   fileSource: 'mediapicker',
+          // },
           status: 'success',
           uploadDurationMsec:
             timeStarted !== undefined ? Date.now() - timeStarted : -1,

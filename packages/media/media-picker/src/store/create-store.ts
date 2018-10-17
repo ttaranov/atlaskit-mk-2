@@ -69,7 +69,7 @@ export default (
         importFilesMiddleware(eventEmitter, wsProvider),
         editRemoteImageMiddleware(fetcher) as Middleware,
         getPreviewMiddleware(fetcher),
-        finalizeUploadMiddleware(fetcher),
+        finalizeUploadMiddleware(),
         proxyUploadEvents as Middleware,
         handleCloudFetchingEvent as Middleware,
         searchGiphy(fetcher) as Middleware,
