@@ -17,7 +17,7 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
   'table',
 ].forEach(node => {
   BrowserTestCase(
-    `Bodied Extension: Insert ${node}`,
+    `bodied-insert-2.ts: Bodied Extension: Insert ${node}`,
     { skip: ['edge', 'ie'] },
     async client => {
       const page = new Page(client);

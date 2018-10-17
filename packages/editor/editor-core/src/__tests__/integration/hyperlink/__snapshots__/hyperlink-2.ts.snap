@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Link: paste link and add text, paste link into list for comment editor 1`] = `
+exports[`hyperlink-2.ts: Link - paste link and add text, paste link into list for comment editor 1`] = `
 Object {
   "content": Array [
     Object {
@@ -61,7 +61,7 @@ Object {
 }
 `;
 
-exports[`Link: paste link and add text, paste link into list for fullpage editor 1`] = `
+exports[`hyperlink-2.ts: Link - paste link and add text, paste link into list for fullpage editor 1`] = `
 Object {
   "content": Array [
     Object {

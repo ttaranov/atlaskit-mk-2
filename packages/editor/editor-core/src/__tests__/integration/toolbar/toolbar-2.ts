@@ -12,7 +12,7 @@ const input = 'helloworld';
 // https://product-fabric.atlassian.net/browse/ED-4531
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `Toolbar: should be able to select heading1 for ${editor.name} editor`,
+    `toolbar-2.ts: should be able to select heading1 for ${editor.name} editor`,
     { skip: ['ie', 'safari'] },
     async client => {
       const browser = new Page(client);

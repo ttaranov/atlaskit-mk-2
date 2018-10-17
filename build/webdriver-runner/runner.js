@@ -46,11 +46,15 @@ afterAll(async function() {
 });
 
 function BrowserTestCase(...args /*:Array<any> */) {
-  const testName = args.shift();
+  const testname = args.shift();
+  /* Based on the recent changes of the runnner, test names are slightly wrong, they do not represent the test file. We now spinning one session to
+  * run all the tests contained in the test file then closing the session. Hence, we needed to update the test name to contain the filename.
+  * */
+  const testFileName = testname.split(':')[0] || testname;
   const testFn = args.pop();
   const skipForBrowser = args.length > 0 ? args.shift() : { skip: [] };
 
-  describe(testName, () => {
+  describe(testFileName, () => {
     let testsToRun = [];
 
     for (const client of clients) {
@@ -65,20 +69,20 @@ function BrowserTestCase(...args /*:Array<any> */) {
       }
 
       testsToRun.push(async (fn, ...args) => {
-        client.driver.desiredCapabilities.name = testName;
+        client.driver.desiredCapabilities.name = testFileName;
         await launchClient(client);
         try {
           await fn(client.driver, ...args);
         } catch (err) {
           console.error(
-            `[Browser: ${browserName}]\n[Test: ${testName}]\n${err.message}`,
+            `[Browser: ${browserName}]\n[Test: ${testname}]\n${err.message}`,
           );
           throw err;
         }
       });
     }
 
-    testRun(testName, async (...args) => {
+    testRun(testname, async (...args) => {
       await Promise.all(testsToRun.map(f => f(testFn, ...args)));
     });
   });
@@ -107,7 +111,8 @@ function testRun(
   } else {
     callback = () => tester();
   }
-  testFn('', callback);
+  // $FlowFixMe: Coerce object to string
+  testFn(`${testCase}`, callback);
 }
 
 module.exports = { BrowserTestCase };

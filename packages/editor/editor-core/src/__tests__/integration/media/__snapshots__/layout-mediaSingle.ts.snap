@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Can change media single to full-width layout on fullpage 1`] = `
+exports[`layout-mediaSingle.ts: Can change media single to full-width layout on fullpage 1`] = `
 Object {
   "content": Array [
     Object {

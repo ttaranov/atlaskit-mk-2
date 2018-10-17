@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Inserts a media group on comment 1`] = `
+exports[`insert-mediaGroup.ts: Inserts a media group on comment 1`] = `
 Object {
   "content": Array [
     Object {
@@ -42,7 +42,7 @@ Object {
 }
 `;
 
-exports[`Inserts a media group on message 1`] = `
+exports[`insert-mediaGroup.ts: Inserts a media group on message 1`] = `
 Object {
   "content": Array [
     Object {
