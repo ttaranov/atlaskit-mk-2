@@ -57,7 +57,6 @@ export default class ResultList extends React.Component<Props> {
               name={confluenceResult.name}
               href={confluenceResult.href}
               type={confluenceResult.analyticsType}
-              contentType={confluenceResult.contentType}
               containerName={confluenceResult.containerName}
               avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
               analyticsData={analyticsData}
@@ -77,7 +76,6 @@ export default class ResultList extends React.Component<Props> {
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
               {...avatarData}
-              contentType={jiraResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -93,7 +91,6 @@ export default class ResultList extends React.Component<Props> {
               href={containerResult.href}
               type={containerResult.analyticsType}
               avatarUrl={containerResult.avatarUrl}
-              contentType={containerResult.contentType}
               analyticsData={analyticsData}
             />
           );

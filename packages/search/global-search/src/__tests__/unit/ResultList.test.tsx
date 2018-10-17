@@ -108,7 +108,6 @@ it('should pass the correct properties to ObjectResult for Confluence results', 
     type: 'result-confluence',
     name: 'name',
     containerName: 'containerName',
-    contentType: ContentType.ConfluencePage,
     analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 
