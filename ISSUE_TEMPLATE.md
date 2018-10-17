@@ -21,7 +21,8 @@ _Either_
 
 _Or_
 
-Create a gif using [this](http://gifbrewery.com/)
+Create a gif using [this](http://gifbrewery.com/)  
+_If needed, show keystrokes using [this](https://github.com/keycastr/keycastr)_
 
 ### Expected behavior
 
@@ -63,7 +64,8 @@ Either
 ...
 
 Or
-Create a gif using -> http://gifbrewery.com/
+Create a gif using -> http://gifbrewery.com/  
+If needed, show keystrokes using -> https://github.com/keycastr/keycastr
 
 h2.Expected behavior
 What do you expect to happen?
