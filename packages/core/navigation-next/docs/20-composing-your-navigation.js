@@ -73,21 +73,20 @@ Let's move on to the next part of our navigation - the product area. This area w
 We can render basically anything we want in this section. All of the typical primitive UI components are provided by \`@atlaskit/navigation-next\` so let's start putting a few of these together.
 
 ${code`
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { AtlassianWordmark } from '@atlaskit/logo';
-import { GroupHeading, Item, Section, Separator } from '@atlaskit/navigation-next';
-
-const ProductNavigationWrapper = styled.div({ padding: '16px 0' });
+import { GroupHeading, Item, Section, Separator, Wordmark } from '@atlaskit/navigation-next';
 
 const MyProductNavigation = () => (
-  <ProductNavigationWrapper>
-    <Section>
+  <Fragment>
+    <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <AtlassianWordmark />
+          <Wordmark wordmark={AtlassianWordmark} />
         </div>
       )}
-    </Section>
+    </HeaderSection>
     <Section>
       {({ className }) => (
         <div className={className}>
@@ -100,13 +99,13 @@ const MyProductNavigation = () => (
         </div>
       )}
     </Section>
-  </ProductNavigationWrapper>
+  </Fragment>
 );
 `}
 
 **Note:** We don't automatically apply padding or add wrapping elements around your product navigation or within \`Section\`s because we don't want to break your layout. Instead, we provide the \`Section\`'s children with styles through a render function.
 
-Read the [component props docs](/packages/core/navigation-next/docs/ui-components) for more information about the \`Section\`, along with every other UI primitive exported by this package.
+Read the [component props docs](/packages/core/navigation-next/docs/ui-components) for more information about \`HeaderSection\`, \`MenuSection\` and \`Section\`, along with every other UI primitive exported by this package.
 
 Putting it all together we can now render a somewhat complete navigation!
 

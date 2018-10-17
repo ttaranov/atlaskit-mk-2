@@ -18,6 +18,7 @@ import { colors } from '@atlaskit/theme';
 import {
   ContainerHeader,
   GroupHeading,
+  HeaderSection,
   Item,
   ItemAvatar,
   light,
@@ -25,6 +26,7 @@ import {
   SectionHeading,
   Separator,
   ThemeProvider,
+  Wordmark,
 } from '../src';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
@@ -66,22 +68,13 @@ export default () => (
     <FlexColumn>
       <h3>Product home view</h3>
       <FakeContentNav>
-        <Section key="header">
-          {({ css }) => (
-            <div css={{ ...css, paddingTop: 20 }}>
-              <div
-                css={{
-                  lineHeight: 0,
-                  paddingBottom: 28,
-                  paddingLeft: 12,
-                  paddingTop: 8,
-                }}
-              >
-                <JiraWordmark />
-              </div>
+        <HeaderSection key="header">
+          {({ className }) => (
+            <div className={className}>
+              <Wordmark wordmark={JiraWordmark} />
             </div>
           )}
-        </Section>
+        </HeaderSection>
         <Section key="menu" shouldGrow>
           {({ css }) => (
             <div css={{ ...css, paddingBottom: 12 }}>
@@ -97,19 +90,10 @@ export default () => (
     <FlexColumn>
       <h3>Product issues view</h3>
       <FakeContentNav>
-        <Section key="header">
-          {({ css }) => (
-            <div css={{ ...css, paddingTop: 20 }}>
-              <div
-                css={{
-                  lineHeight: 0,
-                  paddingBottom: 28,
-                  paddingLeft: 12,
-                  paddingTop: 8,
-                }}
-              >
-                <JiraWordmark />
-              </div>
+        <HeaderSection key="header">
+          {({ className }) => (
+            <div className={className}>
+              <Wordmark wordmark={JiraWordmark} />
               <div css={{ paddingBottom: 20 }}>
                 <Item
                   before={() => (
@@ -123,7 +107,7 @@ export default () => (
               </div>
             </div>
           )}
-        </Section>
+        </HeaderSection>
         <Section key="menu" shouldGrow alwaysShowScrollHint>
           {({ css }) => (
             <div css={{ ...css, paddingBottom: 12 }}>
@@ -149,9 +133,9 @@ export default () => (
     <FlexColumn>
       <h3>Project backlog view</h3>
       <FakeContentNav isContainer>
-        <Section key="header">
+        <HeaderSection key="header">
           {({ css }) => (
-            <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
+            <div css={{ ...css, paddingBottom: 20 }}>
               <ContainerHeader
                 before={itemState => (
                   <ItemAvatar
@@ -165,7 +149,7 @@ export default () => (
               />
             </div>
           )}
-        </Section>
+        </HeaderSection>
         <Section key="menu" shouldGrow>
           {({ css }) => (
             <div css={{ ...css, paddingBottom: 12 }}>

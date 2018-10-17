@@ -17,6 +17,7 @@ import {
   dark,
   settings,
   ContainerHeader,
+  HeaderSection,
   ItemAvatar,
   Item,
   ThemeProvider,
@@ -44,12 +45,11 @@ export default class Example extends Component<{}, State> {
   renderNavigation = () => {
     return (
       <Fragment>
-        <Section>
+        <HeaderSection>
           {({ css }) => (
             <div
               css={{
                 ...css,
-                paddingTop: gridSize * 2.5,
                 paddingBottom: gridSize * 2.5,
               }}
             >
@@ -66,7 +66,7 @@ export default class Example extends Component<{}, State> {
               />
             </div>
           )}
-        </Section>
+        </HeaderSection>
         <Section>
           {({ css }) => (
             <div css={css}>

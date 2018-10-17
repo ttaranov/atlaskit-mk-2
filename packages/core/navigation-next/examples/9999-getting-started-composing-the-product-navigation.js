@@ -5,11 +5,13 @@ import GlobalNavigation from '@atlaskit/global-navigation';
 import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
 import {
   GroupHeading,
+  HeaderSection,
   Item,
   LayoutManager,
   NavigationProvider,
   Section,
   Separator,
+  Wordmark,
 } from '../src';
 
 const MyGlobalNavigation = () => (
@@ -21,22 +23,13 @@ const MyGlobalNavigation = () => (
 
 const MyProductNavigation = () => (
   <Fragment>
-    <Section>
+    <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <div
-            css={{
-              lineHeight: 0,
-              paddingBottom: 28,
-              paddingLeft: 12,
-              paddingTop: 28,
-            }}
-          >
-            <AtlassianWordmark />
-          </div>
+          <Wordmark wordmark={AtlassianWordmark} />
         </div>
       )}
-    </Section>
+    </HeaderSection>
     <Section>
       {({ className }) => (
         <div className={className}>

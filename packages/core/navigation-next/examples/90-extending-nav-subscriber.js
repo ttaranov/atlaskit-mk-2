@@ -11,12 +11,15 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   ContainerHeader,
   GlobalNav,
   GroupHeading,
+  HeaderSection,
   Item,
   ItemAvatar,
   LayoutManager,
@@ -24,7 +27,10 @@ import {
   Section,
   Separator,
   UIControllerSubscriber,
+  Wordmark,
 } from '../src';
+
+const gridSize = gridSizeFn();
 
 // ==============================
 // Data
@@ -80,66 +86,6 @@ const globalNavSecondaryItems = [
   },
 ];
 
-const productRootNavSections = [
-  {
-    key: 'header',
-    isRootLevel: true,
-    items: [
-      {
-        type: () => (
-          <div css={{ padding: '12px 0' }}>
-            <JiraWordmark />
-          </div>
-        ),
-        key: 'jira-wordmark',
-      },
-    ],
-  },
-  {
-    key: 'menu',
-    isRootLevel: true,
-    items: [
-      {
-        type: Item,
-        key: 'dashboards',
-        text: 'Dashboards',
-        before: DashboardIcon,
-      },
-      { type: Item, key: 'projects', text: 'Projects', before: FolderIcon },
-      { type: Item, key: 'issues', text: 'Issues', before: IssuesIcon },
-    ],
-  },
-];
-
-const productContainerNavSections = [
-  {
-    key: 'header',
-    isRootLevel: true,
-    items: [
-      {
-        type: ContainerHeader,
-        key: 'project-switcher',
-        before: itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
-        ),
-        text: 'My software project',
-        subText: 'Software project',
-      },
-    ],
-  },
-  {
-    key: 'menu',
-    isRootLevel: true,
-    items: [
-      { type: GroupHeading, key: 'title', children: 'Group heading' },
-      { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
-      { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
-      { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },
-      { type: Separator, key: 'separator' },
-    ],
-  },
-];
-
 // ==============================
 // Render components
 // ==============================
@@ -151,28 +97,90 @@ const GlobalNavigation = () => (
   />
 );
 
-const RenderSection = ({ section }: *) => (
-  <div css={{ paddingTop: '16px' }}>
-    {section.map(({ key, isRootLevel, items }) => (
-      <Section key={key}>
-        {({ css }) => (
-          <div
-            css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
-          >
-            {items.map(({ type: Component, ...props }: any) => (
-              <Component {...props} />
-            ))}
-          </div>
-        )}
-      </Section>
-    ))}
+const ProductNavigation = () => (
+  <div data-webdriver-test-key="product-navigation">
+    <HeaderSection>
+      {({ className }) => (
+        <div className={className}>
+          <Wordmark wordmark={JiraWordmark} />
+        </div>
+      )}
+    </HeaderSection>
+    <Section>
+      {({ css }) => (
+        <div css={{ ...css, paddingBottom: 12 }}>
+          <Item
+            before={DashboardIcon}
+            text="Dashboards"
+            testKey="product-item-dashboards"
+          />
+          <Item
+            before={FolderIcon}
+            text="Projects"
+            testKey="product-item-projects"
+          />
+          <Item
+            before={IssuesIcon}
+            text="Issues"
+            testKey="product-item-issues"
+          />
+        </div>
+      )}
+    </Section>
   </div>
 );
-const ProductNavigation = () => (
-  <RenderSection section={productRootNavSections} />
-);
 const ContainerNavigation = () => (
-  <RenderSection section={productContainerNavSections} />
+  <div data-webdriver-test-key="container-navigation">
+    <HeaderSection>
+      {({ css }) => (
+        <div
+          data-webdriver-test-key="container-header"
+          css={{
+            ...css,
+            paddingBottom: gridSize * 2.5,
+          }}
+        >
+          <ContainerHeader
+            before={itemState => (
+              <ItemAvatar
+                itemState={itemState}
+                appearance="square"
+                size="large"
+              />
+            )}
+            text="My software project"
+            subText="Software project"
+          />
+        </div>
+      )}
+    </HeaderSection>
+    <Section>
+      {({ css }) => (
+        <div css={{ ...css, paddingBottom: 12 }}>
+          <Item
+            before={BacklogIcon}
+            text="Backlog"
+            isSelected
+            testKey="container-item-backlog"
+          />
+          <Item
+            before={BoardIcon}
+            text="Active sprints"
+            testKey="container-item-sprints"
+          />
+          <Item
+            before={GraphLineIcon}
+            text="Reports"
+            testKey="container-item-reports"
+          />
+          <Separator />
+          <GroupHeading>Shortcuts</GroupHeading>
+          <Item before={ShortcutIcon} text="Project space" />
+          <Item before={ShortcutIcon} text="Project repo" />
+        </div>
+      )}
+    </Section>
+  </div>
 );
 
 // ==============================

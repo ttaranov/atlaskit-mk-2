@@ -10,6 +10,7 @@ import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import {
   ContainerHeader,
   GroupHeading,
+  HeaderSection,
   Item,
   ItemAvatar,
   LayoutManager,
@@ -17,6 +18,7 @@ import {
   Section,
   Separator,
   UIControllerSubscriber,
+  Wordmark,
 } from '../src';
 
 const MyGlobalNavigation = () => (
@@ -28,22 +30,13 @@ const MyGlobalNavigation = () => (
 
 const MyProductNavigation = () => (
   <Fragment>
-    <Section>
+    <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <div
-            css={{
-              lineHeight: 0,
-              paddingBottom: 28,
-              paddingLeft: 12,
-              paddingTop: 28,
-            }}
-          >
-            <AtlassianWordmark />
-          </div>
+          <Wordmark wordmark={AtlassianWordmark} />
         </div>
       )}
-    </Section>
+    </HeaderSection>
     <Section>
       {({ className }) => (
         <div className={className}>
@@ -61,9 +54,9 @@ const MyProductNavigation = () => (
 
 const MyContainerNavigation = () => (
   <Fragment>
-    <Section>
+    <HeaderSection>
       {({ css }) => (
-        <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
+        <div css={{ ...css, paddingBottom: 20 }}>
           <ContainerHeader
             before={itemState => (
               <ItemAvatar
@@ -77,7 +70,7 @@ const MyContainerNavigation = () => (
           />
         </div>
       )}
-    </Section>
+    </HeaderSection>
     <Section>
       {({ className }) => (
         <div className={className}>

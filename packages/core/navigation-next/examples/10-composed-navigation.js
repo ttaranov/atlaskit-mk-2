@@ -9,7 +9,7 @@
   `packages/core/navigation-next/src/__tests__/integration/navigation.js`
 */
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -36,6 +36,7 @@ import {
   NavigationProvider,
   Section,
   Separator,
+  Wordmark,
 } from '../src';
 
 const gridSize = gridSizeFn();
@@ -83,6 +84,10 @@ const GlobalNavigation = () => (
   </div>
 );
 
+const TestMark = ({ id, children }: { id: string, children: Node }) => (
+  <div data-webdriver-test-key={id}>{children}</div>
+);
+
 /**
  * Content navigation
  */
@@ -91,17 +96,9 @@ const ProductNavigation = () => (
     <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <div
-            data-webdriver-test-key="product-header"
-            css={{
-              lineHeight: 0,
-              paddingBottom: gridSize * 3.5,
-              paddingLeft: gridSize * 1.5,
-              paddingTop: gridSize,
-            }}
-          >
-            <JiraWordmark />
-          </div>
+          <TestMark id="product-header">
+            <Wordmark wordmark={JiraWordmark} />
+          </TestMark>
         </div>
       )}
     </HeaderSection>
