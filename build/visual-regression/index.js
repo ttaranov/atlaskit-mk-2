@@ -92,14 +92,7 @@ async function main() {
   process.exit(code);
 }
 
-if (
-  !process.env.BITBUCKET_BRANCH ||
-  !process.env.BITBUCKET_BRANCH.includes('skip-vr')
-) {
-  main().catch(err => {
-    console.error(err.toString());
-    process.exit(1);
-  });
-} else {
-  console.log('skipping vr test since the branch includes skip-vr');
-}
+main().catch(err => {
+  console.error(err.toString());
+  process.exit(1);
+});
