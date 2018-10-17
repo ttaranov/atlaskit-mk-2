@@ -1,4 +1,6 @@
 import { Slice, Fragment } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
+import { CellSelection } from 'prosemirror-tables';
 import { isColumnSelected, isRowSelected } from 'prosemirror-utils';
 import { defaultSchema } from '@atlaskit/editor-common';
 import {
@@ -24,6 +26,7 @@ import {
   setTableRef,
   selectColumn,
   selectRow,
+  handleCut,
 } from '../../../../plugins/table/actions';
 import { TablePluginState } from '../../../../plugins/table/types';
 import tablesPlugin from '../../../../plugins/table';
@@ -366,6 +369,96 @@ describe('table plugin: actions', () => {
       const pluginState = getPluginState(editorView.state);
       expect(pluginState.targetCellPosition).toEqual(8);
       expect(isRowSelected(1)(editorView.state.selection));
+    });
+  });
+
+  describe('#handleCut', () => {
+    describe('when selected columns are cut', () => {
+      it('should remove those columns', () => {
+        const { editorView, refs } = editor(
+          doc(
+            table()(
+              tr(
+                td()(p('a1')),
+                td()(p('{from}a2')),
+                td()(p('a3')),
+                td()(p('{cursorPos}a4')),
+              ),
+              tr(
+                td()(p('b1')),
+                td()(p('b2')),
+                td()(p('{to}b3')),
+                td()(p('b4')),
+              ),
+            ),
+          ),
+        );
+        const { state, dispatch } = editorView;
+        // selecting 2 and 3 columns
+        const sel = new CellSelection(
+          state.doc.resolve(refs.from - 2),
+          state.doc.resolve(refs.to - 2),
+        );
+        dispatch(state.tr.setSelection(sel as any));
+        const oldState = editorView.state;
+        // re-setting selection to a text selection
+        // this is what happens when we let PM handle cut so that it saves content to a clipboard
+        dispatch(
+          oldState.tr.setSelection(
+            new TextSelection(oldState.doc.resolve(refs.cursorPos)),
+          ),
+        );
+        const newTr = handleCut(oldState.tr, oldState, editorView.state);
+        expect(newTr.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(td()(p('a1')), td()(p('a4'))),
+              tr(td()(p('b1')), td()(p('b4'))),
+            ),
+          ),
+        );
+        editorView.destroy();
+      });
+    });
+
+    describe('when selected rows are cut', () => {
+      it('should remove those rows', () => {
+        const { editorView, refs } = editor(
+          doc(
+            table()(
+              tr(td()(p('a1')), td()(p('a2')), td()(p('a3'))),
+              tr(td()(p('{from}b1')), td()(p('b2')), td()(p('b3'))),
+              tr(td()(p('c1')), td()(p('c2')), td()(p('{to}c3'))),
+              tr(td()(p('{cursorPos}d1')), td()(p('d2')), td()(p('d3'))),
+            ),
+          ),
+        );
+        const { state, dispatch } = editorView;
+        // selecting 2 and 3 rows
+        const sel = new CellSelection(
+          state.doc.resolve(refs.from - 2),
+          state.doc.resolve(refs.to - 2),
+        );
+        dispatch(state.tr.setSelection(sel as any));
+        const oldState = editorView.state;
+        // re-setting selection to a text selection
+        // this is what happens when we let PM handle cut so that it saves content to a clipboard
+        dispatch(
+          oldState.tr.setSelection(
+            new TextSelection(oldState.doc.resolve(refs.cursorPos)),
+          ),
+        );
+        const newTr = handleCut(oldState.tr, oldState, editorView.state);
+        expect(newTr.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(td()(p('a1')), td()(p('a2')), td()(p('a3'))),
+              tr(td()(p('d1')), td()(p('d2')), td()(p('d3'))),
+            ),
+          ),
+        );
+        editorView.destroy();
+      });
     });
   });
 });

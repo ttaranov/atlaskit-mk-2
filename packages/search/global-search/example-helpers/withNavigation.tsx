@@ -50,7 +50,7 @@ export default function withNavigation(
     };
 
     state: State = {
-      context: 'confluence',
+      context: 'jira',
       locale: 'en',
     };
 
@@ -121,6 +121,7 @@ export default function withNavigation(
               name="context"
               value="home"
               onChange={this.handleContextChange}
+              checked={context === 'home'}
             />
             <label htmlFor="home">Home</label>
             <Radio
@@ -129,6 +130,7 @@ export default function withNavigation(
               name="context"
               value="jira"
               onChange={this.handleContextChange}
+              checked={context === 'jira'}
             />
             <label htmlFor="jira">Jira</label>
           </RadioGroup>
@@ -137,6 +139,7 @@ export default function withNavigation(
             searchDrawerContent={
               <LocaleIntlProvider locale={locale}>
                 <WrappedComponent
+                  addSessionIdToJiraResult
                   cloudId="cloudId"
                   context={context}
                   referralContextIdentifiers={{

@@ -1,6 +1,5 @@
 //@flow
-import * as colors from '@atlaskit/theme/src/colors';
-import { gridSize } from '@atlaskit/theme/src';
+import { colors, gridSize } from '@atlaskit/theme';
 import css from './utils/evaluate-inner';
 
 const grid = gridSize() / 2;

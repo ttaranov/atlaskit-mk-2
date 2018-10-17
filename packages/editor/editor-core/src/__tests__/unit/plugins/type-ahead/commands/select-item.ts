@@ -44,7 +44,7 @@ describe('selectCurrentItem', () => {
     const fn = jest.fn(state => state.tr);
     const plugin = createTypeAheadPlugin({ selectItem: fn });
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectCurrentItem()(editorView.state, editorView.dispatch);
@@ -54,7 +54,7 @@ describe('selectCurrentItem', () => {
   it('should update document when item is selected', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectCurrentItem()(editorView.state, editorView.dispatch);
@@ -64,7 +64,7 @@ describe('selectCurrentItem', () => {
   it("should have a fallback behaviour in cases where selectItem doesn't exist on a handler", () => {
     const plugin = createTypeAheadPlugin({ selectItem: null } as any);
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectCurrentItem()(editorView.state, editorView.dispatch);
@@ -74,7 +74,7 @@ describe('selectCurrentItem', () => {
   it('should have a fallback behaviour in cases where selectItem returns false', () => {
     const plugin = createTypeAheadPlugin({ selectItem: () => false });
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectCurrentItem()(editorView.state, editorView.dispatch);
@@ -88,7 +88,7 @@ describe('selectSingleItemOrDismiss', () => {
       getItems: () => [{ title: 'only' }],
     });
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectSingleItemOrDismiss()(editorView.state, editorView.dispatch);
@@ -100,7 +100,7 @@ describe('selectSingleItemOrDismiss', () => {
       getItems: () => [],
     });
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectSingleItemOrDismiss()(editorView.state, editorView.dispatch);
@@ -112,7 +112,7 @@ describe('selectItemByIndex', () => {
   it('should select item by index', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectByIndex(2)(editorView.state, editorView.dispatch);
@@ -122,7 +122,7 @@ describe('selectItemByIndex', () => {
   it("should return false if item with the provided index doesn't exist", () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     expect(selectByIndex(20)(editorView.state, editorView.dispatch)).toBe(
@@ -135,7 +135,7 @@ describe('selectItem', () => {
   it('should add a space when replacing a type ahead query with an inline node', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin, datePlugin],
     });
     selectItem(
@@ -157,7 +157,7 @@ describe('selectItem', () => {
   it('should accept text', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin, datePlugin],
     });
     selectItem(
@@ -174,7 +174,7 @@ describe('selectItem', () => {
   it('should not add a space when replacing a type ahead query with a text node', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectItem(
@@ -192,7 +192,7 @@ describe('selectItem', () => {
   it('should not remove any unrelated characters when replacing a type ahead query with an inline node', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'), 'content')),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'), 'content')),
       editorPlugins: [plugin],
     });
     selectItem(
@@ -210,7 +210,7 @@ describe('selectItem', () => {
   it('should replace an empty paragraph node with insert block node', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectItem(
@@ -236,7 +236,7 @@ describe('selectItem', () => {
   it('should insert a block node below non-empty node', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
-      doc: doc(p('some text ', typeAheadQuery({ trigger: '/' })('/query'))),
+      doc: doc(p('some text ', typeAheadQuery({ trigger: '/' })('/query{<>}'))),
       editorPlugins: [plugin],
     });
     selectItem(

@@ -177,10 +177,6 @@
   dependencies:
     babel-runtime "^6.11.6"
 
-"@atlassian/outbound-auth-flow-client@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@atlassian/outbound-auth-flow-client/-/outbound-auth-flow-client-1.0.4.tgz#98e761c174c7f8e772438b330e7932dbdcd923bb"
-
 "@babel/cli@^7.1.0":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.1.0.tgz#a9429fd63911711b0fa93ae50d73beee6c42aef8"
@@ -12786,9 +12782,9 @@ prosemirror-state@>=1.0.0, prosemirror-state@^1.0.0, prosemirror-state@^1.2.2:
     prosemirror-model "^1.0.0"
     prosemirror-transform "^1.0.0"
 
-prosemirror-tables@^0.7.7:
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.7.7.tgz#7be9a36e5d4d829c2f5111cfcd594cd56b4ffa1f"
+prosemirror-tables@^0.7.8:
+  version "0.7.8"
+  resolved "https://registry.yarnpkg.com/prosemirror-tables/-/prosemirror-tables-0.7.8.tgz#b0a3f9997f0d3c30439bede988490f2cc7b4bb97"
   dependencies:
     prosemirror-keymap "^1.0.0"
     prosemirror-model "^1.0.0"

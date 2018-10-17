@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { ComponentClass } from 'react';
 import { akColorN20, akColorB200 } from '@atlaskit/util-shared-styles';
-import { Root, cardShadow, centerSelf } from '../../styles';
+import { Root, cardShadow } from '../../styles';
 import { borderRadius, size } from '@atlaskit/media-ui';
 
 export interface WrapperProps {
@@ -70,11 +70,7 @@ export const Wrapper: ComponentClass<WrapperProps> = styled(Root)`
       height: inherit;
       display: block;
       overflow: hidden;
-      ${borderRadius} img {
-        ${centerSelf} max-height: 100%;
-        max-width: 100%;
-        display: block;
-      }
+      ${borderRadius}
     }
   }
 `;

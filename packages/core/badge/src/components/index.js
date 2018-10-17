@@ -10,24 +10,26 @@ type Props = {
   /** Affects the visual style of the badge. */
   appearance: ThemeAppearance,
 
-  /** Supercedes the `value` props. The value displayed within the badge. */
-  children: number,
+  /** Supercedes the `value` props. The value displayed within the badge. A string can be provided for
+  custom-formatted numbers, however badge should only be used in cases where you want to represent
+  a number. */
+  children: number | string,
 
   /** The maximum value to display. If value is 100, and max is 50, "50+" will be displayed */
   max: number,
-
   /** DEPRECATED - this handler is unnecessary as you already know the value and this component does not have any internal state.
 
   Handler function to be called when the value prop is changed. Called with fn({ oldValue, newValue }) */
   onValueUpdated: ({
-    oldValue: number,
-    newValue: number,
+    oldValue: number | string,
+    newValue: number | string,
   }) => any,
 
   /** The theme the component should use. */
   theme: ThemeProps => ThemeProps,
 
   /** DEPRECATED - use `Max` from `@atlaskit/format`. The value displayed within the badge. */
+  /** DEPRECATED - use children instead. The value displayed within the badge. */
   value?: number,
 };
 
@@ -68,7 +70,11 @@ export default class Badge extends Component<Props> {
       <Theme values={props.theme}>
         {t => (
           <Container {...t.badge({ appearance: props.appearance })}>
-            <Format max={props.max}>{props.value || props.children}</Format>
+            {typeof props.children === 'string' ? (
+              props.children
+            ) : (
+              <Format max={props.max}>{props.value || props.children}</Format>
+            )}
           </Container>
         )}
       </Theme>

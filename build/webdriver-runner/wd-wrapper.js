@@ -108,6 +108,10 @@ export default class Page {
     return this.browser.getCssProperty(selector, cssProperty);
   }
 
+  getLocation(selector, property) {
+    return this.browser.getLocation(selector, property);
+  }
+
   url() {
     return this.browser.getUrl();
   }

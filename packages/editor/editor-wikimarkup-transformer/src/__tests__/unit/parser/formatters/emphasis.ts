@@ -30,6 +30,20 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect emphasis surrounded by non alphanumeric characters', () => {
+    const wiki = 'This is a (_emphasis_) text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should not be a emphasis mark if surrounded by non-latin characters', () => {
+    const wiki = 'This is not a 牛_emphasis_牛 text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a emphasis mark if there is no space before _', () => {
     const wiki = 'This is not a_emphasis_ text';
 

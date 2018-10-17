@@ -1,5 +1,11 @@
 # @atlaskit/icon
 
+## 14.0.3
+- [patch] Update to use babel-7 for build processes [e7bb74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7bb74d)
+
+## 14.0.2
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 14.0.1
 - [patch] Change devDependency on sectionMessage to caret dependency [91a3ced](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91a3ced)
 

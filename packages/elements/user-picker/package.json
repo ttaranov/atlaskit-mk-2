@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/user-picker",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "config": {
     "access": "public"
   },
@@ -21,11 +21,9 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^14.0.10",
-    "@atlaskit/button": "^9.0.10",
-    "@atlaskit/droplist": "^7.0.9",
-    "@atlaskit/field-text": "^7.0.10",
-    "@atlaskit/item": "^8.0.7",
+    "@atlaskit/icon": "^14.0.1",
     "@atlaskit/lozenge": "^6.2.1",
+    "@atlaskit/select": "^6.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3"
   },
   "peerDependencies": {
@@ -45,7 +43,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/util-data-test": "^10.0.13",
+    "@atlaskit/util-data-test": "^10.0.17",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "repository": {

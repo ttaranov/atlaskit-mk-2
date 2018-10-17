@@ -107,6 +107,19 @@ it('should render pre query state while its loading and it should keep the previ
   expect(preQueryState.length).toBe(1);
 });
 
+it('should render before pre query state when provided', () => {
+  const BeforePreQuery = () => <span className="before" />;
+
+  const props: Partial<Props> = {
+    query: '',
+    isLoading: false,
+    renderBeforePreQueryState: () => <BeforePreQuery />,
+  };
+
+  const wrapper = render(props);
+  expect(wrapper.find(BeforePreQuery)).toHaveLength(1);
+});
+
 it('should render no results state when there are no results and a query is entered', () => {
   const props: Partial<Props> = {
     query: 'foo',

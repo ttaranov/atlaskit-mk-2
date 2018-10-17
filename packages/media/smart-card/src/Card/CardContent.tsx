@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
-import { auth } from '@atlassian/outbound-auth-flow-client';
+import { auth } from '@atlaskit/outbound-auth-flow-client';
 import { ObjectState } from '../Client';
 import { extractBlockPropsFromJSONLD } from '../extractBlockPropsFromJSONLD';
 import { extractInlinePropsFromJSONLD } from '../extractInlinePropsFromJSONLD';
