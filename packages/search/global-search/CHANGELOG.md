@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.11.1
+- [patch] Filter out unsupported groups from jira recent items resource [f429535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f429535)
+
 ## 5.11.0
 - [minor] Adds a check for the Jira version of global search to ensure the user has browse user permission before showing people results. [ce58d96](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce58d96)
 
