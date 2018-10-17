@@ -27,3 +27,4 @@ export {
   ActionMarkAttributes,
   ActionDefinition,
 } from './action';
+export { breakout } from './breakout';

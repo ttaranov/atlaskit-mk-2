@@ -121,6 +121,10 @@ export default {
     'blockCard',
   ],
   marks: [
+    // Block marks
+    'breakout',
+
+    // Inline marks
     'link',
     'confluenceInlineComment',
     'em',

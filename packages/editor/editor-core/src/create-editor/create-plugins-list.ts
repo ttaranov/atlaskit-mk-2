@@ -1,6 +1,7 @@
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
+  breakoutPlugin,
   blockTypePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
   codeBlockPlugin,
@@ -52,6 +53,7 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
   return [
     pastePlugin,
     basePlugin,
+    breakoutPlugin,
     blockTypePlugin,
     placeholderPlugin,
     clearMarksOnChangeToEmptyDocumentPlugin,
