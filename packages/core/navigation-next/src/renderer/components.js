@@ -19,6 +19,7 @@ import { navigationItemClicked } from '../common/analytics';
 import ContainerHeaderComponent from '../components/presentational/ContainerHeader';
 import GroupComponent from '../components/presentational/Group';
 import GroupHeadingComponent from '../components/presentational/GroupHeading';
+import HeaderSectionComponent from '../components/presentational/HeaderSection';
 import BaseItem from '../components/presentational/Item';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
@@ -220,21 +221,15 @@ const HeaderSection = ({
   id,
   items,
   nestedGroupKey,
-  parentId,
 }: SectionProps) =>
   items.length ? (
-    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
-      {({ css }) => (
-        <div
-          css={{
-            ...css,
-            paddingTop: gridSize * 2.5,
-          }}
-        >
+    <HeaderSectionComponent id={id} key={nestedGroupKey}>
+      {({ className }) => (
+        <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
         </div>
       )}
-    </SectionComponent>
+    </HeaderSectionComponent>
   ) : null;
 
 const MenuSection = ({

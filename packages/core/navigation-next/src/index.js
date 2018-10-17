@@ -13,6 +13,9 @@ export { default as Group } from './components/presentational/Group';
 export {
   default as GroupHeading,
 } from './components/presentational/GroupHeading';
+export {
+  default as HeaderSection,
+} from './components/presentational/HeaderSection';
 export { default as Item } from './components/presentational/Item';
 export {
   default as ItemPrimitive,

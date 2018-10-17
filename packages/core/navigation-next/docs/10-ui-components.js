@@ -105,6 +105,28 @@ ${(
 
 ${<Hr />}
 
+${<H>HeaderSection</H>}
+
+A section for the header of your nav view. Applies some minor styling to the standard section component.
+
+${(
+      <Example
+        packageName="@atlaskit/navigation-next"
+        Component={require('./examples/ui-components/HeaderSection').default}
+        title="Header Section"
+        source={require('!!raw-loader!./examples/ui-components/HeaderSection')}
+      />
+    )}
+
+${(
+      <Props
+        heading="HeaderSection props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/HeaderSection')}
+      />
+    )}
+
+${<Hr />}
+
 ${<H>Item</H>}
 
 ${(
@@ -156,6 +178,9 @@ ${<H>Section</H>}
 The product or container navigation layers can be separated into Sections - a navigation is essentially a flat array of Sections. Within a Section, use Groups for further levels of division.
 
 Use Sections to perform nesting transitions. If a Section's props update and its parentId matches its previous id, or vice versa, it will automatically perform a nested navigation animation as it re-renders.
+
+In the majority of cases, you won't need to use Section directly and can use the specific HeaderSection and MenuSections components which provide some extra styling
+specific to headers and nested menu sections.
 
 ${(
       <Example

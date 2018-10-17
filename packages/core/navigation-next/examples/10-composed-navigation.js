@@ -29,6 +29,7 @@ import {
   ContainerHeader,
   GlobalNav,
   GroupHeading,
+  HeaderSection,
   Item as ItemComponent,
   ItemAvatar,
   LayoutManager,
@@ -87,9 +88,9 @@ const GlobalNavigation = () => (
  */
 const ProductNavigation = () => (
   <div data-webdriver-test-key="product-navigation">
-    <Section>
-      {({ css }) => (
-        <div css={{ ...css, paddingTop: gridSize * 2.5 }}>
+    <HeaderSection>
+      {({ className }) => (
+        <div className={className}>
           <div
             data-webdriver-test-key="product-header"
             css={{
@@ -103,7 +104,7 @@ const ProductNavigation = () => (
           </div>
         </div>
       )}
-    </Section>
+    </HeaderSection>
     <Section>
       {({ css }) => (
         <div css={{ ...css, paddingBottom: 12 }}>
@@ -130,13 +131,12 @@ const ProductNavigation = () => (
 
 const ContainerNavigation = () => (
   <div data-webdriver-test-key="container-navigation">
-    <Section>
+    <HeaderSection>
       {({ css }) => (
         <div
           data-webdriver-test-key="container-header"
           css={{
             ...css,
-            paddingTop: gridSize * 2.5,
             paddingBottom: gridSize * 2.5,
           }}
         >
@@ -153,7 +153,7 @@ const ContainerNavigation = () => (
           />
         </div>
       )}
-    </Section>
+    </HeaderSection>
     <Section>
       {({ css }) => (
         <div css={{ ...css, paddingBottom: 12 }}>
