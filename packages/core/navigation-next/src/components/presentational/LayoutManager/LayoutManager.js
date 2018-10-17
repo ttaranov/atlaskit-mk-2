@@ -280,13 +280,13 @@ export default class LayoutManager extends Component<
     );
   };
 
-  onExpandStart = (node, isAppearing) => {
+  onExpandStart = (node: HTMLElement, isAppearing: boolean) => {
     if (!this.state.flyoutIsOpen) {
       this.props.onExpandStart(node, isAppearing);
     }
   };
 
-  onExpandEnd = (node, isAppearing) => {
+  onExpandEnd = (node: HTMLElement, isAppearing: boolean) => {
     const { flyoutIsOpen } = this.state;
 
     this.setState({ wasOpenedByFlyout: flyoutIsOpen });
@@ -296,13 +296,13 @@ export default class LayoutManager extends Component<
     }
   };
 
-  onCollapseStart = (node, isAppearing) => {
+  onCollapseStart = (node: HTMLElement, isAppearing: boolean) => {
     if (!this.state.wasOpenedByFlyout) {
       this.props.onCollapseStart(node, isAppearing);
     }
   };
 
-  onCollapseEnd = (node, isAppearing) => {
+  onCollapseEnd = (node: HTMLElement, isAppearing: boolean) => {
     if (!this.state.wasOpenedByFlyout) {
       this.props.onCollapseEnd(node, isAppearing);
     }

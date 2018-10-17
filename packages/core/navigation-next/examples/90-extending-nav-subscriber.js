@@ -302,7 +302,7 @@ const ResizeBox = ({ pending, width }: BoxProps) => (
   </div>
 );
 
-type StatusEvent = { key: string, name: string, isFlyout: boolean };
+type StatusEvent = { key: string, name: string, value?: number };
 type State = {
   boxWidth: number | 'auto',
   callStack: Array<StatusEvent>,
@@ -320,10 +320,10 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
   componentDidMount() {
     this.updateWidth();
   }
-  onEmit = (name: string) => (isFlyout: boolean) => {
+  onEmit = (name: string) => (value?: number) => {
     const callStack = this.state.callStack.slice(0);
     const key = makeKey();
-    callStack.push({ key, name, isFlyout });
+    callStack.push({ key, name, value });
     this.setState({ callStack });
   };
   getStack = () => {
@@ -332,22 +332,22 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
     const len = callStack.length;
     return len < total ? callStack : callStack.slice(len - total, len);
   };
-  onCollapseStart = (node, isAppearing, isFlyout) => {
-    this.onEmit('onCollapseStart')(isFlyout);
+  onCollapseStart = () => {
+    this.onEmit('onCollapseStart')();
     this.makePending();
   };
-  onCollapseEnd = (node, isAppearing, isFlyout) => {
-    this.onEmit('onCollapseEnd')(isFlyout);
+  onCollapseEnd = () => {
+    this.onEmit('onCollapseEnd')();
     this.updateWidth();
   };
-  onExpandStart = (node, isAppearing, isFlyout) => {
+  onExpandStart = () => {
     if (this.props.navState.isResizing) return; // ignore expand events when resizing
-    this.onEmit('onExpandStart')(isFlyout);
+    this.onEmit('onExpandStart')();
     this.makePending();
   };
-  onExpandEnd = (node, isAppearing, isFlyout) => {
+  onExpandEnd = () => {
     if (this.props.navState.isResizing) return; // ignore expand events when resizing
-    this.onEmit('onExpandEnd')(isFlyout);
+    this.onEmit('onExpandEnd')();
     this.updateWidth();
   };
   onResizeEnd = () => {
@@ -370,6 +370,7 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
   render() {
     const { boxWidth, resizePending } = this.state;
     const lastTen = this.getStack();
+    console.log('navState', this.props.navState);
 
     return (
       <LayoutManager
@@ -403,7 +404,7 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
               lastTen.map(e => (
                 <div key={e.key}>
                   <code>
-                    {e.name}({`${e.isFlyout}`})
+                    {e.name}({e.value})
                   </code>
                 </div>
               ))
