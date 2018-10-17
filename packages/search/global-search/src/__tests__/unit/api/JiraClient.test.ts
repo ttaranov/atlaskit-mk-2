@@ -36,7 +36,7 @@ describe('JiraClient', () => {
 
   describe('canSearchPeople', () => {
     it('should call correct permissions endpoint', async () => {
-      await jiraClient.canSearchUsers();
+      jiraClient.canSearchUsers();
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
 
