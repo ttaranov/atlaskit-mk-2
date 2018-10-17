@@ -1,5 +1,8 @@
 # @atlaskit/docs
 
+## 5.1.0
+- [minor] Example component now accepts a packageName. This prop is now required [7a8278d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a8278d)
+
 ## 5.0.8
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/button@9.0.13
