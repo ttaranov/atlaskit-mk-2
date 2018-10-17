@@ -11,6 +11,49 @@ const STEP_IDX = Number(process.env.STEP_IDX);
 const STEPS = Number(process.env.STEPS);
 
 /**
+ * Code coverage thresold configuration
+ * Currently, it's added only for `@atlaskit/navigation-next`
+ */
+let codeCoverageConfig = {};
+
+// Adding code coverage thresold only for unit tests
+if (!INTEGRATION_TESTS && !VISUAL_REGRESSION) {
+  codeCoverageConfig = {
+    coverageReporters: ['lcov', 'html', 'text-summary'],
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    collectCoverageFrom: [
+      // Adding content to be added in our code coverage
+      // Add your bolt packages here
+      'packages/core/navigation-next/src/**/*.{js,jsx,ts,tsx}',
+
+      // Adding content to be ignored in our code coverage
+      // Global folders to be ignored
+      '!**/node_modules/**',
+      '!**/build/**',
+      '!**/docs/**',
+      '!**/dist/**',
+      // Website content folders to be ignored
+      '!**/public/**',
+      '!**/scripts/**',
+      // Packages monorepo folders to be ignored
+      '!**/examples/**',
+      '!**/releases/**',
+      '!**/examples-util/**',
+    ],
+    coverageThreshold: {
+      // Add coverage threshold by folder
+      [`${__dirname}/packages/core/navigation-next/src`]: {
+        statements: 69,
+        branches: 61,
+        functions: 69,
+        lines: 69,
+      },
+    },
+  };
+}
+
+/**
  * USAGE for parallelizing: setting PARALLELIZE_TESTS to an array of globs or an array of test files when you
  * have the STEPS and STEP_IDX vars set will automatically distribute them evenly.
  * It is important that **ALL** parallel steps are running the same command with the same number of tests and that **ALL**
@@ -79,6 +122,32 @@ if (CHANGED_PACKAGES) {
     pkgPath => `${__dirname}/${pkgPath}/**/__tests__/**/*.(js|tsx|ts)`,
   );
   config.testMatch = changedPackagesTestGlobs;
+
+  const codeCoverageThresoldPackages = Object.keys(
+    codeCoverageConfig.coverageThreshold || {},
+  );
+
+  // Adding code coverage thresold configuration for unit test only
+  // This should add only the packages with code coverage threshold available
+  // If not it will keep the same flow without code coverage check
+  const coverageThreshold = [...changedPackages]
+    .map(pkgPath =>
+      codeCoverageThresoldPackages.find(pkg => pkg.includes(pkgPath)),
+    )
+    .filter(Boolean);
+
+  if (coverageThreshold.length > 0) {
+    config.coverageReporters = codeCoverageConfig.coverageReporters;
+    config.collectCoverage = codeCoverageConfig.collectCoverage;
+    config.coverageDirectory = codeCoverageConfig.coverageDirectory;
+    config.collectCoverageFrom = codeCoverageConfig.collectCoverageFrom;
+    config.coverageThreshold = {};
+
+    coverageThreshold.forEach(pkgCoverage => {
+      config.coverageThreshold[pkgCoverage] =
+        codeCoverageConfig.coverageThreshold[pkgCoverage];
+    });
+  }
 }
 
 // If the INTEGRATION_TESTS / VISUAL_REGRESSION flag is set we need to
@@ -119,6 +188,7 @@ if (TEST_ONLY_PATTERN) {
   if (TEST_ONLY_PATTERN.startsWith('!')) {
     newIgnore = TEST_ONLY_PATTERN.substr(1);
   }
+
   config.testPathIgnorePatterns.push(newIgnore);
 }
 
