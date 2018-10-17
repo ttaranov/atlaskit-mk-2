@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect superscript mark at in between of the line', () => {
+    const wiki = 'This is a ^superscript^superscript^ text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a superscript mark if not surrounded by non-latin characters', () => {
     const wiki = 'This is not a 牛^superscript^牛 text';
 

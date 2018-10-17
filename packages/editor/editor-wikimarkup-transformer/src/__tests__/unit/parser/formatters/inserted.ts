@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect inserted mark and ignoring the invalid closing symbol', () => {
+    const wiki = 'This is a +inserted+inserted+ text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a inserted mark if surrounded by non-latin characters', () => {
     const wiki = 'This is not a 牛+inserted+牛 text';
 
