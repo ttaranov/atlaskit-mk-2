@@ -64,8 +64,10 @@ describe('GlobalNavigation', () => {
       );
 
       const productIcon = wrapper.find(EmojiAtlassianIcon);
+
       expect(productIcon.exists()).toBeTruthy();
       expect(wrapper.find('a').props().href).toEqual('/testtest');
+
       productIcon.simulate('click');
       expect(mockProductClick).toHaveBeenCalled();
     });
