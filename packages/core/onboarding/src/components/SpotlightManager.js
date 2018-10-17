@@ -6,6 +6,7 @@ import React, {
   type Node,
 } from 'react';
 import Portal from '@atlaskit/portal';
+import { layers } from '@atlaskit/theme';
 
 import { Fade } from './Animation';
 import Blanket from '../styled/Blanket';
@@ -18,34 +19,11 @@ const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext(
 const {
   Consumer: SpotlightStateConsumer,
   Provider: SpotlightStateProvider,
-} = createContext({ opened: noop, closed: noop, getTargetElement: noop });
+} = createContext({ opened: noop, closed: noop, targets: {} });
 
 export { TargetConsumer };
 
-export class SpotlightConsumer extends React.Component<{
-  name: string,
-  children: ((string) => HTMLElement) => Node,
-}> {
-  opened = noop;
-  closed = noop;
-  componentDidMount() {
-    this.opened(this.props.name);
-  }
-  componentWillUnmount() {
-    this.closed(this.props.name);
-  }
-  render() {
-    return (
-      <SpotlightStateConsumer>
-        {({ opened, closed, getTargetElement }) => {
-          this.opened = opened;
-          this.closed = closed;
-          return this.props.children(getTargetElement);
-        }}
-      </SpotlightStateConsumer>
-    );
-  }
-}
+export { SpotlightStateConsumer as SpotlightConsumer };
 
 type Props = {
   /** Boolean prop for toggling blanket transparency  */
@@ -59,7 +37,10 @@ type Props = {
 /* eslint-disable react/no-multi-comp */
 export default class SpotlightManager extends PureComponent<
   Props,
-  { spotlightCount: number },
+  {
+    spotlightCount: number,
+    targets: { [string]: HTMLElement },
+  },
 > {
   static defaultProps = {
     blanketIsTinted: true,
@@ -68,19 +49,16 @@ export default class SpotlightManager extends PureComponent<
 
   state = {
     spotlightCount: 0,
+    targets: {},
   };
 
-  targets: { [string]: HTMLElement } = {};
-
   targetRef = (name: string) => (element: HTMLElement | void) => {
-    if (element) {
-      this.targets = {
-        ...this.targets,
-        [name]: element,
-      };
-    } else {
-      delete this.targets[name];
-    }
+    this.setState(state => ({
+      targets: {
+        ...state.targets,
+        [name]: element || undefined,
+      },
+    }));
   };
 
   spotlightOpen = () => {
@@ -91,24 +69,21 @@ export default class SpotlightManager extends PureComponent<
     this.setState(state => ({ spotlightCount: state.spotlightCount - 1 }));
   };
 
-  getTargetElement = (name: string) => this.targets[name];
-
-  stateProviderValues = {
-    opened: this.spotlightOpen,
-    closed: this.spotlightClose,
-    getTargetElement: this.getTargetElement,
-  };
-
   render() {
     const { blanketIsTinted, children, component: Tag } = this.props;
-
     return (
-      <SpotlightStateProvider value={this.stateProviderValues}>
+      <SpotlightStateProvider
+        value={{
+          opened: this.spotlightOpen,
+          closed: this.spotlightClose,
+          targets: this.state.targets,
+        }}
+      >
         <TargetProvider value={this.targetRef}>
           <React.Fragment>
             <Fade in={this.state.spotlightCount > 0}>
               {animationStyles => (
-                <Portal>
+                <Portal zIndex={layers.spotlight()}>
                   <Blanket style={animationStyles} isTinted={blanketIsTinted} />
                 </Portal>
               )}
