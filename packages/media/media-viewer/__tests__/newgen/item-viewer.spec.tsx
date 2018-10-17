@@ -81,6 +81,76 @@ describe('<ItemViewer />', () => {
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
+  it('should show the spinner if the item is being processed', () => {
+    const context = makeFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'video',
+        status: 'processing',
+      }),
+    );
+    const el = mount(
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
+    );
+    el.update();
+    expect(el.find(Spinner)).toHaveLength(1);
+  });
+
+  it('should show the spinner if the item is being uploaded', () => {
+    const context = makeFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'video',
+        status: 'uploading',
+      }),
+    );
+    const el = mount(
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
+    );
+    el.update();
+    expect(el.find(Spinner)).toHaveLength(1);
+  });
+
+  it('should should error and download button if file is processing failed', () => {
+    const context = makeFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'video',
+        status: 'failed-processing',
+      }),
+    );
+    const el = mount(
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
+    );
+    el.update();
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      `We couldn't generate a preview for this file.Try downloading the file to view it.Download`,
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
+  });
+
+  it('should should error and download button if file is in error state', () => {
+    const context = makeFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'image',
+        status: 'error',
+      }),
+    );
+    const el = mount(
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
+    );
+    el.update();
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      `We couldn't generate a preview for this file.Try downloading the file to view it.Download`,
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
+  });
+
   it('should show the video viewer if media type is video', () => {
     const context = makeFakeContext(
       Observable.of({
