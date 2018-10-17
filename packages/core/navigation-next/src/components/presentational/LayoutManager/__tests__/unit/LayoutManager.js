@@ -110,10 +110,8 @@ describe('LayoutManager', () => {
 
       it('should NOT be open when nav is permanently expanded', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
-
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
         defaultProps.navigationUIController.state.isCollapsed = false;
-        wrapper.setProps(defaultProps);
 
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
@@ -144,6 +142,65 @@ describe('LayoutManager', () => {
         wrapper.setState({ flyoutIsOpen: false });
         wrapper.update();
         expect(wrapper.find(NavigationContainer).prop('onMouseOut')).toBeNull();
+      });
+
+      describe('collapse & expand callbacks', () => {
+        let handlers;
+        let wrapper;
+        const node = document.createElement('div');
+        const isAppearing = false;
+        beforeEach(() => {
+          handlers = {
+            onExpandStart: jest.fn(),
+            onExpandEnd: jest.fn(),
+            onCollapseStart: jest.fn(),
+            onCollapseEnd: jest.fn(),
+          };
+          wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+        });
+
+        it('Should call callbacks', () => {
+          wrapper.setState({ wasOpenedByFlyout: false, flyoutIsOpen: false });
+          wrapper.update();
+
+          wrapper.instance().onExpandStart(node, isAppearing);
+          expect(handlers.onExpandStart).toHaveBeenCalledWith(
+            node,
+            isAppearing,
+          );
+
+          wrapper.instance().onExpandEnd(node, isAppearing);
+          expect(handlers.onExpandEnd).toHaveBeenCalledWith(node, isAppearing);
+
+          wrapper.instance().onCollapseStart(node, isAppearing);
+          expect(handlers.onCollapseStart).toHaveBeenCalledWith(
+            node,
+            isAppearing,
+          );
+
+          wrapper.instance().onCollapseEnd(node, isAppearing);
+          expect(handlers.onCollapseEnd).toHaveBeenCalledWith(
+            node,
+            isAppearing,
+          );
+        });
+
+        it('Should NOT call callbacks', () => {
+          wrapper.setState({ wasOpenedByFlyout: true, flyoutIsOpen: true });
+          wrapper.update();
+
+          wrapper.instance().onExpandStart(node, isAppearing);
+          expect(handlers.onExpandStart).not.toHaveBeenCalled();
+
+          wrapper.instance().onExpandEnd(node, isAppearing);
+          expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+
+          wrapper.instance().onCollapseStart(node, isAppearing);
+          expect(handlers.onCollapseStart).not.toHaveBeenCalled();
+
+          wrapper.instance().onCollapseEnd(node, isAppearing);
+          expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
+        });
       });
     });
 
