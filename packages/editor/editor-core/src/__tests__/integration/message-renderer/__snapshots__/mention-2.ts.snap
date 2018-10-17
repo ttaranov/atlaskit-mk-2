@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mention-2.ts mention-2.ts: user should be able remove mention on 1`] = `
+exports[`mention-2.ts: user should be able remove mention on backspace 1`] = `
 Object {
   "content": Array [
     Object {
@@ -39,7 +39,7 @@ Object {
 }
 `;
 
-exports[`mention-2.ts mention-2.ts: user should see space after 1`] = `
+exports[`mention-2.ts: user should see space after node 1`] = `
 Object {
   "content": Array [
     Object {

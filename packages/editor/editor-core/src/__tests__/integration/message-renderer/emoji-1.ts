@@ -11,7 +11,7 @@ import {
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 BrowserTestCase(
-  'emoji-1.ts: should be able to see emoji if typed the name in full',
+  'emoji-1.ts:should be able to see emoji if typed the name in full',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);

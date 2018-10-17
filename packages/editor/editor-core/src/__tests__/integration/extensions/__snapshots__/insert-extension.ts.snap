@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`insert-extension.ts insert-extension.ts: Extension: Insert Block 1`] = `
+exports[`insert-extension.ts: Extension: Insert Block extension 1`] = `
 Object {
   "content": Array [
     Object {
@@ -178,7 +178,7 @@ Object {
 }
 `;
 
-exports[`insert-extension.ts insert-extension.ts: Extension: Insert Inline 1`] = `
+exports[`insert-extension.ts: Extension: Insert Inline extension 1`] = `
 Object {
   "content": Array [
     Object {

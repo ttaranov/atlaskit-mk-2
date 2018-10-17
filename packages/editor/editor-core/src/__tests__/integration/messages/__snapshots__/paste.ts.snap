@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`paste.ts paste.ts: paste tests on message editor: bullet 1`] = `
+exports[`paste.ts: paste tests on message editor: bullet list 1`] = `
 Object {
   "content": Array [
     Object {
@@ -88,7 +88,7 @@ Object {
 }
 `;
 
-exports[`paste.ts paste.ts: paste tests on message editor: ordered 1`] = `
+exports[`paste.ts: paste tests on message editor: ordered list 1`] = `
 Object {
   "content": Array [
     Object {
@@ -207,7 +207,7 @@ Object {
 }
 `;
 
-exports[`paste.ts paste.ts: paste tests on message editor: plain 1`] = `
+exports[`paste.ts: paste tests on message editor: plain text 1`] = `
 Object {
   "content": Array [
     Object {
@@ -224,7 +224,7 @@ Object {
 }
 `;
 
-exports[`paste.ts paste.ts: paste tests on message editor: text 1`] = `
+exports[`paste.ts: paste tests on message editor: text formatting 1`] = `
 Object {
   "content": Array [
     Object {

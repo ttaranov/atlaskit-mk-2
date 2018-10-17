@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`task-decision-2.ts task-decision-2.ts: can edit an 1`] = `
+exports[`task-decision-2.ts: can edit an action 1`] = `
 Object {
   "content": Array [
     Object {
@@ -29,7 +29,7 @@ Object {
 }
 `;
 
-exports[`task-decision-2.ts task-decision-2.ts: can insert mention into an action using 1`] = `
+exports[`task-decision-2.ts: can insert mention into an action using click 1`] = `
 Object {
   "content": Array [
     Object {
@@ -67,7 +67,7 @@ Object {
 }
 `;
 
-exports[`task-decision-2.ts task-decision-2.ts: can paste plain text into an 1`] = `
+exports[`task-decision-2.ts: can paste plain text into an action 1`] = `
 Object {
   "content": Array [
     Object {
@@ -113,7 +113,7 @@ Object {
 }
 `;
 
-exports[`task-decision-2.ts task-decision-2.ts: can paste rich text into an 1`] = `
+exports[`task-decision-2.ts: can paste rich text into an action 1`] = `
 Object {
   "content": Array [
     Object {
