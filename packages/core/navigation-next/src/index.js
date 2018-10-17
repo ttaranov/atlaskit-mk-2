@@ -25,6 +25,9 @@ export {
   default as LayoutManager,
 } from './components/presentational/LayoutManager';
 export {
+  default as MenuSection,
+} from './components/presentational/MenuSection';
+export {
   default as PeekToggleItem,
 } from './components/presentational/PeekToggleItem';
 export {

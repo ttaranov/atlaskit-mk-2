@@ -1,8 +1,8 @@
 // @flow
 
-import type { ComponentType, Node } from 'react';
+import type { ComponentType, Node, ElementConfig } from 'react';
 
-import { UIController, ViewController } from '../';
+import { HeaderSection, MenuSection, UIController, ViewController } from '../';
 import type { ViewData } from '../../src/view-controller/types';
 
 /**
@@ -49,11 +49,19 @@ export type GroupProps = SharedGroupTypeProps & {
 };
 
 export type SectionProps = SharedGroupTypeProps & {
-  alwaysShowScrollHint: boolean,
-  nestedGroupKey: string,
-  parentId: string | null,
-  shouldGrow: boolean,
+  alwaysShowScrollHint?: boolean,
+  nestedGroupKey?: string,
+  parentId?: string | null,
+  shouldGrow?: boolean,
 };
+
+export type HeaderSectionProps = SharedGroupTypeProps &
+  ElementConfig<typeof HeaderSection>;
+
+export type MenuSectionProps = SharedGroupTypeProps &
+  ElementConfig<typeof MenuSection> & {
+    nestedGroupKey?: string,
+  };
 
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,

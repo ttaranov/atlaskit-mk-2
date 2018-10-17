@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`navigation-next view renderer HeaderSection should render the HeaderSection UI component 1`] = `
+<HeaderSection
+  id="header"
+>
+  <unknown />
+</HeaderSection>
+`;
+
 exports[`navigation-next view renderer ItemsRenderer should render items correctly 1`] = `
 Array [
   <HeaderSection
@@ -84,4 +92,12 @@ Array [
     key="corgie"
   />,
 ]
+`;
+
+exports[`navigation-next view renderer MenuSection should render the MenuSection UI component 1`] = `
+<MenuSection
+  id="menu"
+>
+  <unknown />
+</MenuSection>
 `;

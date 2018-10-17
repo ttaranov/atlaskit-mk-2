@@ -173,6 +173,29 @@ ${(
 
 ${<Hr />}
 
+${<H>MenuSection</H>}
+
+A section for the main part of your nav view that can be animate into and out of nested views. Applies some minor styling to the standard section component and allows
+scrolling of content when there are too many items to display.
+
+${(
+      <Example
+        packageName="@atlaskit/navigation-next"
+        Component={require('./examples/ui-components/MenuSection').default}
+        title="Menu Section"
+        source={require('!!raw-loader!./examples/ui-components/MenuSection')}
+      />
+    )}
+
+${(
+      <Props
+        heading="MenuSection props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/MenuSection')}
+      />
+    )}
+
+${<Hr />}
+
 ${<H>Section</H>}
 
 The product or container navigation layers can be separated into Sections - a navigation is essentially a flat array of Sections. Within a Section, use Groups for further levels of division.

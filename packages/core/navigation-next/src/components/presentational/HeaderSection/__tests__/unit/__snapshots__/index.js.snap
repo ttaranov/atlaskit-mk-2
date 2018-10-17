@@ -1,6 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HeaderSection should render children with section styles containing more paddingTop 1`] = `
+exports[`HeaderSection should render Section with correct props 1`] = `
+<Section
+  alwaysShowScrollHint={false}
+  shouldGrow={false}
+  styles={[Function]}
+>
+  <unknown />
+</Section>
+`;
+
+exports[`HeaderSection should render children with section styles containing paddingTop 1`] = `
 .emotion-0 {
   box-sizing: border-box;
   padding-left: 16px;
@@ -25,14 +35,4 @@ exports[`HeaderSection should render children with section styles containing mor
     My Header
   </div>
 </MyHeader>
-`;
-
-exports[`HeaderSection should render correctly 1`] = `
-<Section
-  alwaysShowScrollHint={false}
-  shouldGrow={false}
-  styles={[Function]}
->
-  <unknown />
-</Section>
 `;

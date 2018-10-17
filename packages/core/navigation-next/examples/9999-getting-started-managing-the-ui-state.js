@@ -14,8 +14,8 @@ import {
   Item,
   ItemAvatar,
   LayoutManager,
+  MenuSection,
   NavigationProvider,
-  Section,
   Separator,
   UIControllerSubscriber,
   Wordmark,
@@ -37,7 +37,7 @@ const MyProductNavigation = () => (
         </div>
       )}
     </HeaderSection>
-    <Section>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item text="Dashboard" />
@@ -48,7 +48,7 @@ const MyProductNavigation = () => (
           <Item text="My plugin" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 
@@ -71,7 +71,7 @@ const MyContainerNavigation = () => (
         </div>
       )}
     </HeaderSection>
-    <Section>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item text="Things in this container" />
@@ -82,7 +82,7 @@ const MyContainerNavigation = () => (
           <Item before={ShortcutIcon} text="Team space" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 

@@ -24,7 +24,7 @@ import {
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
-  Section,
+  MenuSection,
   Separator,
   UIControllerSubscriber,
   Wordmark,
@@ -106,9 +106,9 @@ const ProductNavigation = () => (
         </div>
       )}
     </HeaderSection>
-    <Section>
-      {({ css }) => (
-        <div css={{ ...css, paddingBottom: 12 }}>
+    <MenuSection>
+      {({ className }) => (
+        <div className={className}>
           <Item
             before={DashboardIcon}
             text="Dashboards"
@@ -126,7 +126,7 @@ const ProductNavigation = () => (
           />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </div>
 );
 const ContainerNavigation = () => (
@@ -154,9 +154,9 @@ const ContainerNavigation = () => (
         </div>
       )}
     </HeaderSection>
-    <Section>
-      {({ css }) => (
-        <div css={{ ...css, paddingBottom: 12 }}>
+    <MenuSection>
+      {({ className }) => (
+        <div className={className}>
           <Item
             before={BacklogIcon}
             text="Backlog"
@@ -179,7 +179,7 @@ const ContainerNavigation = () => (
           <Item before={ShortcutIcon} text="Project repo" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </div>
 );
 

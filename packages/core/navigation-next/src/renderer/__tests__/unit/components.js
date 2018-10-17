@@ -3,14 +3,17 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
+import { JiraWordmark } from '@atlaskit/logo';
 import Spinner from '@atlaskit/spinner';
 import { Provider } from 'unstated';
 
 import { NavigationProvider, ViewController } from '../../../';
-import BaseItem from '../../../components/presentational/Item';
+import ItemComponent from '../../../components/presentational/Item';
+import HeaderSectionComponent from '../../../components/presentational/HeaderSection';
+import MenuSectionComponent from '../../../components/presentational/MenuSection';
 import ItemsRenderer, { components } from '../../components';
 
-const { GoToItem, Item } = components;
+const { GoToItem, Item, HeaderSection, MenuSection } = components;
 
 const mountWithProvider = element =>
   mount(<NavigationProvider cache={false}>{element}</NavigationProvider>);
@@ -19,7 +22,7 @@ describe('navigation-next view renderer', () => {
   describe('Item', () => {
     it('should render the Item UI component', () => {
       const wrapper = shallow(<Item text="Item" id="id" />);
-      expect(wrapper.find(BaseItem)).toHaveLength(1);
+      expect(wrapper.find(ItemComponent)).toHaveLength(1);
     });
     it('should render a GoToItem if a goTo prop is passed', () => {
       const withGoTo = mountWithProvider(
@@ -45,7 +48,7 @@ describe('navigation-next view renderer', () => {
       // underlying Item
       const itemAfter = mount(
         inHoverState
-          .find(BaseItem)
+          .find(ItemComponent)
           .props()
           .after({ isActive: false, isHover: true, isSelected: false }),
       );
@@ -80,11 +83,109 @@ describe('navigation-next view renderer', () => {
       // underlying Item
       const itemAfter = mount(
         matchesIncoming
-          .find(BaseItem)
+          .find(ItemComponent)
           .props()
           .after({ isActive: false, isHover: true, isSelected: false }),
       );
       expect(itemAfter.find(Spinner)).toHaveLength(1);
+    });
+  });
+
+  describe('HeaderSection', () => {
+    it('should render the HeaderSection UI component', () => {
+      const wrapper = shallow(
+        <HeaderSection
+          id="header"
+          items={[{ type: 'Wordmark', wordmark: JiraWordmark, id: 'wordmark' }]}
+        />,
+      );
+
+      expect(wrapper.find(HeaderSectionComponent)).toHaveLength(1);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the items using ItemsRenderer', () => {
+      const items = [
+        { type: 'Wordmark', wordmark: JiraWordmark, id: 'wordmark' },
+      ];
+      const customComponents = { foo: () => null };
+      const wrapper = mount(
+        <HeaderSection
+          customComponents={customComponents}
+          id="header"
+          items={items}
+        />,
+      );
+
+      expect(wrapper.find(ItemsRenderer)).toHaveLength(1);
+      expect(wrapper.find(ItemsRenderer).props()).toEqual({
+        customComponents,
+        items,
+      });
+    });
+  });
+
+  describe('MenuSection', () => {
+    it('should render the MenuSection UI component', () => {
+      const wrapper = shallow(
+        <MenuSection
+          id="menu"
+          items={[
+            { type: 'Item', text: 'Backlog', id: 'backlog' },
+            { type: 'Item', text: 'Active sprints', id: 'active-sprints' },
+            { type: 'Item', text: 'Issues', id: 'issues' },
+          ]}
+        />,
+      );
+
+      expect(wrapper.find(MenuSectionComponent)).toHaveLength(1);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the MenuSection UI component correctly with all optional props', () => {
+      const items = [
+        { type: 'Item', text: 'Backlog', id: 'backlog' },
+        { type: 'Item', text: 'Active sprints', id: 'active-sprints' },
+        { type: 'Item', text: 'Issues', id: 'issues' },
+      ];
+      const wrapper = shallow(
+        <MenuSection
+          id="menu"
+          items={items}
+          parentId="foo"
+          nestedGroupKey="menu"
+          alwaysShowScrollHint
+        />,
+      );
+
+      expect(wrapper.find(MenuSectionComponent).props()).toEqual({
+        alwaysShowScrollHint: true,
+        children: expect.any(Function),
+        id: 'menu',
+        parentId: 'foo',
+      });
+    });
+
+    it('should render the items using ItemsRenderer', () => {
+      const customComponents = { foo: () => null };
+      const items = [
+        { type: 'Item', text: 'Backlog', id: 'backlog' },
+        { type: 'Item', text: 'Active sprints', id: 'active-sprints' },
+        { type: 'Item', text: 'Issues', id: 'issues' },
+      ];
+      const wrapper = mount(
+        <MenuSection
+          customComponents={customComponents}
+          id="menu"
+          items={items}
+        />,
+      );
+
+      expect(wrapper.find(ItemsRenderer)).toHaveLength(1);
+      expect(wrapper.find(ItemsRenderer).props()).toEqual({
+        customComponents,
+        items,
+      });
     });
   });
 

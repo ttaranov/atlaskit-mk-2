@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import HeaderSection from '../../index';
+import MenuSection from '../../index';
 
-describe('HeaderSection', () => {
+describe('MenuSection', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
@@ -15,32 +15,32 @@ describe('HeaderSection', () => {
       <div className={className}>My Header</div>
     );
     const wrapper = shallow(
-      <HeaderSection>
+      <MenuSection>
         {({ className }) => <MyHeader className={className} />}
-      </HeaderSection>,
+      </MenuSection>,
     );
 
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('should render children with section styles containing paddingTop', () => {
+  it('should render children with section styles containing paddingBottom', () => {
     const MyHeader = ({ className }: { className: string }) => (
       <div className={className}>My Header</div>
     );
     const wrapper = mount(
-      <HeaderSection>
+      <MenuSection>
         {({ className, css }) => (
-          <MyHeader className={className} headerSectionCss={css} />
+          <MyHeader className={className} MenuSectionCss={css} />
         )}
-      </HeaderSection>,
+      </MenuSection>,
     );
 
     const myHeader = wrapper.find(MyHeader);
 
     // css prop
-    expect(myHeader.prop('headerSectionCss')).toEqual(
+    expect(myHeader.prop('MenuSectionCss')).toEqual(
       expect.objectContaining({
-        paddingTop: 20,
+        paddingBottom: 12,
       }),
     );
 

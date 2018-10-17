@@ -87,7 +87,7 @@ const MyProductNavigation = () => (
         </div>
       )}
     </HeaderSection>
-    <Section>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item text="Dashboard" />
@@ -98,7 +98,7 @@ const MyProductNavigation = () => (
           <Item text="My plugin" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 `}

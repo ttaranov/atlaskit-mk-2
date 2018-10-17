@@ -22,7 +22,7 @@ import {
   Item,
   ItemAvatar,
   light,
-  Section,
+  MenuSection,
   SectionHeading,
   Separator,
   ThemeProvider,
@@ -75,16 +75,16 @@ export default () => (
             </div>
           )}
         </HeaderSection>
-        <Section key="menu" shouldGrow>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: 12 }}>
+        <MenuSection key="menu">
+          {({ className }) => (
+            <div className={className}>
               <Item before={DashboardIcon} text="Dashboards" isSelected />
               <Item before={FolderIcon} text="Projects" />
               <Item before={IssueIcon} text="Issues and filters" />
               <Item before={PortfolioIcon} text="Portfolio" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </FakeContentNav>
     </FlexColumn>
     <FlexColumn>
@@ -108,9 +108,9 @@ export default () => (
             </div>
           )}
         </HeaderSection>
-        <Section key="menu" shouldGrow alwaysShowScrollHint>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: 12 }}>
+        <MenuSection key="menu" alwaysShowScrollHint>
+          {({ className }) => (
+            <div className={className}>
               <SectionHeading>Issues and filters</SectionHeading>
               <Item text="Search issues" />
               <GroupHeading>Other</GroupHeading>
@@ -127,7 +127,7 @@ export default () => (
               <Item text="View all filters" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </FakeContentNav>
     </FlexColumn>
     <FlexColumn>
@@ -150,9 +150,9 @@ export default () => (
             </div>
           )}
         </HeaderSection>
-        <Section key="menu" shouldGrow>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: 12 }}>
+        <MenuSection key="menu">
+          {({ className }) => (
+            <div className={className}>
               <Item before={BacklogIcon} text="Backlog" />
               <Item before={BoardIcon} text="Active sprints" />
               <Item before={GraphLineIcon} text="Reports" />
@@ -163,7 +163,7 @@ export default () => (
               <Item before={ComponentIcon} text="Components" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </FakeContentNav>
     </FlexColumn>
   </div>

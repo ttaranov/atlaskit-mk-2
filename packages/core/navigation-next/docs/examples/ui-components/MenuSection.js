@@ -2,8 +2,11 @@
 
 import React, { type ElementConfig } from 'react';
 import { colors } from '@atlaskit/theme';
-import { AtlassianWordmark } from '@atlaskit/logo';
-import { HeaderSection, Section, Wordmark } from '../../../src';
+import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import FolderIcon from '@atlaskit/icon/glyph/folder';
+import IssuesIcon from '@atlaskit/icon/glyph/issues';
+
+import { Item, MenuSection, Section } from '../../../src';
 
 import { CONTENT_NAV_WIDTH } from '../../../src/common/constants';
 
@@ -19,10 +22,24 @@ const SectionExample = ({
       width: `${CONTENT_NAV_WIDTH}px`,
     }}
   >
-    <SectionComponent id="header-section">
+    <SectionComponent id="menu-section">
       {({ className }) => (
         <div className={className}>
-          <Wordmark wordmark={AtlassianWordmark} />
+          <Item
+            before={DashboardIcon}
+            text="Dashboards"
+            testKey="product-item-dashboards"
+          />
+          <Item
+            before={FolderIcon}
+            text="Projects"
+            testKey="product-item-projects"
+          />
+          <Item
+            before={IssuesIcon}
+            text="Issues"
+            testKey="product-item-issues"
+          />
         </div>
       )}
     </SectionComponent>
@@ -32,8 +49,8 @@ const SectionExample = ({
 export default () => (
   <div style={{ display: 'flex', justifyContent: 'space-around' }}>
     <div>
-      <h3>Header section</h3>
-      <SectionExample component={HeaderSection} />
+      <h3>Menu section</h3>
+      <SectionExample component={MenuSection} />
     </div>
     <div>
       <h3>Standard section</h3>

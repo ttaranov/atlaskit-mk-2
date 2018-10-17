@@ -11,7 +11,7 @@ import {
   GlobalNav,
   LayoutManager,
   NavigationProvider,
-  Section,
+  MenuSection,
   SkeletonContainerView,
   light,
   dark,
@@ -67,16 +67,16 @@ export default class Example extends Component<{}, State> {
             </div>
           )}
         </HeaderSection>
-        <Section>
-          {({ css }) => (
-            <div css={css}>
+        <MenuSection>
+          {({ className }) => (
+            <div className={className}>
               <Item before={DashboardIcon} text="Dashboards" />
               <Item before={BacklogIcon} text="Backlog" />
               <Item before={IssuesIcon} text="Issues and filters" />
               <Item before={ReportsIcon} text="Reports" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </Fragment>
     );
   };

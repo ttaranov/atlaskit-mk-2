@@ -20,6 +20,7 @@ import ContainerHeaderComponent from '../components/presentational/ContainerHead
 import GroupComponent from '../components/presentational/Group';
 import GroupHeadingComponent from '../components/presentational/GroupHeading';
 import HeaderSectionComponent from '../components/presentational/HeaderSection';
+import MenuSectionComponent from '../components/presentational/MenuSection';
 import BaseItem from '../components/presentational/Item';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
@@ -34,8 +35,10 @@ import type {
   GoToItemProps,
   GroupProps,
   GroupHeadingProps,
+  HeaderSectionProps,
   ItemProps,
   ItemsRendererProps,
+  MenuSectionProps,
   SectionHeadingProps,
   SectionProps,
 } from './types';
@@ -221,7 +224,7 @@ const HeaderSection = ({
   id,
   items,
   nestedGroupKey,
-}: SectionProps) =>
+}: HeaderSectionProps) =>
   items.length ? (
     <HeaderSectionComponent id={id} key={nestedGroupKey}>
       {({ className }) => (
@@ -233,31 +236,25 @@ const HeaderSection = ({
   ) : null;
 
 const MenuSection = ({
-  alwaysShowScrollHint = false,
+  alwaysShowScrollHint,
   customComponents,
   id,
   items,
   nestedGroupKey,
   parentId,
-}: SectionProps) => (
-  <SectionComponent
+}: MenuSectionProps) => (
+  <MenuSectionComponent
     alwaysShowScrollHint={alwaysShowScrollHint}
     id={id}
     key={nestedGroupKey}
     parentId={parentId}
-    shouldGrow
   >
-    {({ css }) => (
-      <div
-        css={{
-          ...css,
-          paddingBottom: gridSize * 1.5,
-        }}
-      >
+    {({ className }) => (
+      <div className={className}>
         <ItemsRenderer items={items} customComponents={customComponents} />
       </div>
     )}
-  </SectionComponent>
+  </MenuSectionComponent>
 );
 
 const itemComponents = {

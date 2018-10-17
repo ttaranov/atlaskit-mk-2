@@ -40,7 +40,7 @@ const componentView = (
         </div>
       )}
     </HeaderSection>
-    <Section key="menu">
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item before={DashboardIcon} text="Dashboards" />
@@ -49,7 +49,7 @@ const componentView = (
           <Item before={PortfolioIcon} text="Portfolio" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 
