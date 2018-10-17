@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Context, ProcessedFileState, MediaItem } from '@atlaskit/media-core';
-import * as deepEqual from 'deep-equal';
 import { Outcome } from '../../domain';
 import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { InteractiveImg } from './interactive-img';
 import { AnalyticViewerProps } from '../../analytics';
+import { BaseViewer } from '../base-viewer';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -35,26 +35,11 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   };
 }
 
-export class ImageViewer extends React.Component<
+export class ImageViewer extends BaseViewer<
   ImageViewerProps,
   ImageViewerState
 > {
   state: ImageViewerState = initialState;
-
-  componentDidMount() {
-    this.init(this.props.item, this.props.context);
-  }
-
-  componentWillUnmount() {
-    this.release();
-  }
-
-  componentWillUpdate(nextProps: ImageViewerProps) {
-    if (this.needsReset(this.props, nextProps)) {
-      this.release();
-      this.init(nextProps.item, this.props.context);
-    }
-  }
 
   render() {
     const { onClose } = this.props;
@@ -102,7 +87,7 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
-  private async init(file: ProcessedFileState, context: Context) {
+  protected async init(file: ProcessedFileState, context: Context) {
     const { onLoad } = this.props;
     this.setState(initialState, async () => {
       try {
@@ -133,7 +118,7 @@ export class ImageViewer extends React.Component<
     });
   }
 
-  private release() {
+  protected release() {
     if (this.cancelImageFetch) {
       this.cancelImageFetch();
     }
@@ -141,12 +126,6 @@ export class ImageViewer extends React.Component<
     this.state.objectUrl.whenSuccessful(objectUrl => {
       this.revokeObjectUrl(objectUrl);
     });
-  }
-
-  private needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {
-    return (
-      !deepEqual(propsA.item, propsB.item) || propsA.context !== propsB.context
-    );
   }
 
   // This method is spied on by some test cases, so don't rename or remove it.
