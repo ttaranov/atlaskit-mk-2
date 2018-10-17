@@ -6,6 +6,7 @@ import {
   ItemViewerItem,
   ItemViewerMargin,
   Slider,
+  Label,
 } from '../example-helpers/styled';
 
 const DEFAULT = {
@@ -36,12 +37,14 @@ class Example extends React.Component<{}, ExampleState> {
 
   componentWillMount() {
     this.state.itemViewer.zoomToFit();
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
   }
 
-  onSliderChange = (e: any) => {
+  onZoomSliderChange = (e: any) => {
     const value = e.target.valueAsNumber;
     const { itemViewer } = this.state;
-    itemViewer.zoom = value / 100;
+    itemViewer.setZoom(value / 100);
     this.setState({ itemViewer });
   };
 
@@ -66,9 +69,22 @@ class Example extends React.Component<{}, ExampleState> {
     this.setState({ dragStart: undefined });
   };
 
+  onUseConstraintsChanged = (e: any) => {
+    const value = e.target.checked;
+    const itemViewer = this.state.itemViewer;
+    itemViewer.setUseConstraints(value);
+    this.setState({ itemViewer });
+  };
+
+  onZoomToFitClick = () => {
+    const itemViewer = this.state.itemViewer;
+    itemViewer.zoomToFit();
+    this.setState({ itemViewer });
+  };
+
   render() {
     const { itemViewer } = this.state;
-    const { containerRect, margin } = itemViewer;
+    const { containerRect, itemRect, margin, useConstraints } = itemViewer;
     const containerStyle = {
       width: containerRect.width,
       height: containerRect.height,
@@ -99,8 +115,6 @@ class Example extends React.Component<{}, ExampleState> {
             <ItemViewerContainer
               style={containerStyle}
               onMouseDown={this.onMouseDown}
-              onMouseMove={this.onMouseMove}
-              onMouseUp={this.onMouseUp}
             >
               <ItemViewerItem style={itemStyle} />
               <ItemViewerMargin style={marginStyle} />
@@ -115,13 +129,90 @@ class Example extends React.Component<{}, ExampleState> {
               max="100"
               defaultValue="0"
               step="1"
-              onChange={this.onSliderChange}
+              onChange={this.onZoomSliderChange}
             />
+          </GridColumn>
+        </Grid>
+        <Grid>
+          <GridColumn>
+            {this.newSlider('Container_Width', containerRect.width)}
+            {this.newSlider('Container_Height', containerRect.height)}
+            {this.newSlider('Item_Width', itemRect.width)}
+            {this.newSlider('Item_Height', itemRect.height)}
+            {this.newSlider('Margin', margin, 0, 100, 5)}
+            <Label>
+              <span>Use Constraints:</span>
+              <input
+                type="checkbox"
+                defaultChecked={useConstraints}
+                onChange={this.onUseConstraintsChanged}
+              />
+            </Label>
+            <Label>
+              <button onClick={this.onZoomToFitClick}>Zoom To Fit</button>
+            </Label>
           </GridColumn>
         </Grid>
       </Page>
     );
   }
+
+  private newSlider(
+    title: string,
+    defaultValue: number,
+    min: number = 50,
+    max: number = 2050,
+    step: number = 100,
+  ): JSX.Element {
+    const options = [];
+    for (let i = min; i < max; i += step) {
+      options.push(<option key={i + title}>{i}</option>);
+    }
+    const stepListId = `stepList_${title.replace(/_/g, ' ')}`;
+    return (
+      <Label>
+        <span>{title}:</span>
+        <Slider
+          type="range"
+          min={min}
+          max={max}
+          defaultValue={`${defaultValue}`}
+          step={step}
+          list={stepListId}
+          onChange={(e: any) => this.onFormSliderChange(e, title)}
+        />
+        {defaultValue}
+        <datalist id={stepListId}>{options}</datalist>
+      </Label>
+    );
+  }
+
+  onFormSliderChange = (e: any, id: string) => {
+    const value = e.target.valueAsNumber;
+    const { itemViewer } = this.state;
+    const { containerRect, itemRect, useConstraints } = itemViewer;
+    switch (id) {
+      case 'Container_Width':
+        itemViewer.setContainerSize(value, containerRect.height);
+        break;
+      case 'Container_Height':
+        itemViewer.setContainerSize(containerRect.width, value);
+        break;
+      case 'Item_Width':
+        itemViewer.setItemSize(value, itemRect.height);
+        break;
+      case 'Item_Height':
+        itemViewer.setItemSize(itemRect.width, value);
+        break;
+      case 'Margin':
+        itemViewer.margin = value;
+        break;
+    }
+    if (useConstraints) {
+      itemViewer.zoomToFit();
+    }
+    this.setState({ itemViewer });
+  };
 }
 
 export default () => <Example />;

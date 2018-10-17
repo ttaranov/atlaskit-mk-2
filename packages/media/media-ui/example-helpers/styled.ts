@@ -69,7 +69,8 @@ export const ItemViewerContainer: ComponentClass<
 export const ItemViewerItem: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   background-color: green;
-  transition: left 0.33s, top 0.33s, width 0.33s, height 0.33s;
+  transition: left 0.33s ease-out, top 0.33s ease-out, width 0.33s ease-out,
+    height 0.33s ease-out;
   opacity: 0.75;
 `;
 
@@ -80,4 +81,17 @@ export const ItemViewerMargin: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
 export const Slider: ComponentClass<InputHTMLAttributes<{}>> = styled.input`
   width: 200px;
+`;
+
+export const Label: ComponentClass = styled.label`
+  display: block;
+
+  > input {
+    margin-left: 10px;
+  }
+
+  > span {
+    display: inline-block;
+    min-width: 120px;
+  }
 `;

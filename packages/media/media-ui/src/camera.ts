@@ -40,6 +40,10 @@ export class Rectangle {
     return new Rectangle(this.width * scale, this.height * scale);
   }
 
+  resized(width: number, height: number): Rectangle {
+    return new Rectangle(width, height);
+  }
+
   // Computes the scaling factor that needs to be applied to this
   // Rectangle so that it
   // - is fully visible inside of the containing Rectangle
@@ -222,45 +226,73 @@ export class ItemViewer {
   }
 
   drag(delta: Vector2) {
-    const { dragOrigin, containerRect, margin } = this;
+    const { dragOrigin } = this;
     if (dragOrigin) {
       let newOriginX = dragOrigin.x + delta.x;
       let newOriginY = dragOrigin.y + delta.y;
       this.origin = new Vector2(newOriginX, newOriginY);
       if (this.useConstraints) {
-        const innerBounds = new Bounds(
-          margin,
-          margin,
-          containerRect.width - margin * 2,
-          containerRect.height - margin * 2,
-        );
-        const itemBounds = this.itemBounds;
-        if (
-          itemBounds.right > innerBounds.right &&
-          itemBounds.left > innerBounds.left
-        ) {
-          newOriginX += innerBounds.left - itemBounds.left;
-        }
-        if (
-          itemBounds.bottom > innerBounds.bottom &&
-          itemBounds.top > innerBounds.top
-        ) {
-          newOriginY += innerBounds.top - itemBounds.top;
-        }
-        if (
-          itemBounds.top < innerBounds.top &&
-          itemBounds.bottom < innerBounds.bottom
-        ) {
-          newOriginY += innerBounds.bottom - itemBounds.bottom;
-        }
-        if (
-          itemBounds.left < innerBounds.left &&
-          itemBounds.right < innerBounds.right
-        ) {
-          newOriginX += innerBounds.right - itemBounds.right;
-        }
-        this.origin = new Vector2(newOriginX, newOriginY);
+        this.applyConstraints();
       }
     }
+  }
+
+  applyConstraints() {
+    const { containerRect, margin, origin } = this;
+    let newOriginX = origin.x;
+    let newOriginY = origin.y;
+    const innerBounds = new Bounds(
+      margin,
+      margin,
+      containerRect.width - margin * 2,
+      containerRect.height - margin * 2,
+    );
+    const itemBounds = this.itemBounds;
+    if (
+      itemBounds.right >= innerBounds.right &&
+      itemBounds.left >= innerBounds.left
+    ) {
+      newOriginX += innerBounds.left - itemBounds.left;
+    }
+    if (
+      itemBounds.bottom >= innerBounds.bottom &&
+      itemBounds.top >= innerBounds.top
+    ) {
+      newOriginY += innerBounds.top - itemBounds.top;
+    }
+    if (
+      itemBounds.top <= innerBounds.top &&
+      itemBounds.bottom <= innerBounds.bottom
+    ) {
+      newOriginY += innerBounds.bottom - itemBounds.bottom;
+    }
+    if (
+      itemBounds.left <= innerBounds.left &&
+      itemBounds.right <= innerBounds.right
+    ) {
+      newOriginX += innerBounds.right - itemBounds.right;
+    }
+    this.origin = new Vector2(newOriginX, newOriginY);
+  }
+
+  setContainerSize(width: number, height: number) {
+    this.containerRect = this.containerRect.resized(width, height);
+  }
+
+  setItemSize(width: number, height: number) {
+    this.itemRect = this.itemRect.resized(width, height);
+    this.originalItemRect = this.itemRect.clone();
+  }
+
+  setZoom(zoom: number) {
+    this.zoom = zoom;
+    if (this.useConstraints) {
+      this.applyConstraints();
+    }
+  }
+
+  setUseConstraints(useConstraints: boolean) {
+    this.useConstraints = useConstraints;
+    this.applyConstraints();
   }
 }
