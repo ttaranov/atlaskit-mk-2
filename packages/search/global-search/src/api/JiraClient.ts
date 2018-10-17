@@ -152,26 +152,22 @@ export default class JiraClientImpl implements JiraClient {
       .reduce((acc, item) => [...acc, ...item], []);
   }
 
-  public async canSearchUsers() {
+  public async canSearchUsers(): Promise<boolean> {
     if (typeof this.canSearchUsersCache === 'boolean') {
-      return this.canSearchUsersCache;
+      return Promise.resolve(this.canSearchUsersCache);
     }
 
     const options: RequestServiceOptions = {
       path: PERMISSIONS_PATH,
     };
 
-    try {
-      const permissionsResponse: JiraMyPermissionsResponse = await utils.requestService<
-        JiraMyPermissionsResponse
-      >(this.serviceConfig, options);
+    const permissionsResponse: JiraMyPermissionsResponse = await utils.requestService<
+      JiraMyPermissionsResponse
+    >(this.serviceConfig, options);
 
-      this.canSearchUsersCache = permissionsResponse.permissions.USER_PICKER
-        ? permissionsResponse.permissions.USER_PICKER.havePermission
-        : false;
-    } catch (exception) {
-      return false; // don't store the value if we encounter an exception
-    }
+    this.canSearchUsersCache = permissionsResponse.permissions.USER_PICKER
+      ? permissionsResponse.permissions.USER_PICKER.havePermission
+      : false;
 
     return this.canSearchUsersCache;
   }

@@ -1,9 +1,12 @@
 import { JiraResult } from '../../../model/Result';
 import { JiraClient } from '../../../api/JiraClient';
 
-const mockJiraClient = (recentImpl, canSearchUsersImpl): JiraClient => ({
-  getRecentItems: jest.fn(recentImpl),
-  canSearchUsers: jest.fn(canSearchUsersImpl),
+const mockJiraClient = (
+  recentPromise: () => Promise<JiraResult[]>,
+  canSearchUsersPromise: () => Promise<boolean>,
+): JiraClient => ({
+  getRecentItems: jest.fn(recentPromise),
+  canSearchUsers: jest.fn(canSearchUsersPromise),
 });
 
 export const mockErrorJiraClient = (error, canSearchUsers: boolean = true) =>

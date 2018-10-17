@@ -48,12 +48,14 @@ describe('JiraClient', () => {
     });
 
     EXCEPTION_CASES.forEach(exceptionImpl => {
-      it('should fall back to false if an exception occurs', async () => {
+      it('should throw exception if request fails', async () => {
         requestSpy.mockImplementation(exceptionImpl);
-
-        const result = await jiraClient.canSearchUsers();
-
-        expect(result).toEqual(false);
+        try {
+          await jiraClient.canSearchUsers();
+          expect(true).toBe(false); // should never reach this line
+        } catch (e) {
+          expect(e).not.toBeNull();
+        }
       });
     });
 
