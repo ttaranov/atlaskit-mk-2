@@ -24,6 +24,8 @@ export interface ExampleState {
 }
 
 class Example extends React.Component<{}, ExampleState> {
+  zoomSlider?: HTMLInputElement;
+
   state: ExampleState = {
     itemViewer: new ItemViewer(
       DEFAULT.CONTAINER_WIDTH,
@@ -73,19 +75,27 @@ class Example extends React.Component<{}, ExampleState> {
     const value = e.target.checked;
     const itemViewer = this.state.itemViewer;
     itemViewer.setUseConstraints(value);
+    this.setZoomSlider(0);
     this.setState({ itemViewer });
   };
 
-  onZoomToFitClick = () => {
+  private setZoomSlider(value: number) {
+    if (this.zoomSlider) {
+      this.zoomSlider.value = `${value * 100}`;
+    }
+  }
+
+  onWheel = (e: any) => {
     const itemViewer = this.state.itemViewer;
-    itemViewer.zoomToFit();
+    const rawZoom = itemViewer.zoom + e.deltaY / 100;
+    const clampedZoom = Math.min(Math.max(0, rawZoom), 1);
+    itemViewer.setZoom(clampedZoom);
+    this.setZoomSlider(clampedZoom);
     this.setState({ itemViewer });
   };
 
-  onResetClick = () => {
-    const itemViewer = this.state.itemViewer;
-    itemViewer.reset();
-    this.setState({ itemViewer });
+  onZoomSliderRef = (el: any) => {
+    this.zoomSlider = el;
   };
 
   render() {
@@ -95,6 +105,7 @@ class Example extends React.Component<{}, ExampleState> {
       originalItemRect,
       margin,
       useConstraints,
+      zoom,
     } = itemViewer;
     const containerStyle = {
       width: containerRect.width,
@@ -108,10 +119,9 @@ class Example extends React.Component<{}, ExampleState> {
       height: itemBounds.height,
     };
     const marginStyle = {
-      left: margin,
-      top: margin,
       width: containerRect.width - margin * 2,
       height: containerRect.height - margin * 2,
+      borderWidth: margin,
     };
 
     return (
@@ -126,6 +136,7 @@ class Example extends React.Component<{}, ExampleState> {
             <ItemViewerContainer
               style={containerStyle}
               onMouseDown={this.onMouseDown}
+              onWheel={this.onWheel}
             >
               <ItemViewerItem style={itemStyle} />
               <ItemViewerMargin style={marginStyle} />
@@ -138,9 +149,10 @@ class Example extends React.Component<{}, ExampleState> {
               type="range"
               min="0"
               max="100"
-              defaultValue="0"
+              defaultValue={`${zoom}`}
               step="1"
               onChange={this.onZoomSliderChange}
+              innerRef={this.onZoomSliderRef}
             />
           </GridColumn>
         </Grid>
@@ -155,7 +167,7 @@ class Example extends React.Component<{}, ExampleState> {
               <input
                 type="text"
                 readOnly={true}
-                value={itemViewer.origin.toString()}
+                value={itemViewer.mapCoords(0, 0).toString()}
               />
             </Label>
             {this.newSlider('Container_Width', containerRect.width)}
@@ -171,12 +183,6 @@ class Example extends React.Component<{}, ExampleState> {
                 onChange={this.onUseConstraintsChanged}
               />
             </Label>
-            <Label>
-              <button onClick={this.onZoomToFitClick}>Zoom To Fit</button>
-            </Label>
-            <Label>
-              <button onClick={this.onResetClick}>Reset</button>
-            </Label>
           </GridColumn>
         </Grid>
       </Page>
@@ -187,8 +193,8 @@ class Example extends React.Component<{}, ExampleState> {
     title: string,
     defaultValue: number,
     min: number = 0,
-    max: number = 2050,
-    step: number = 100,
+    max: number = 500,
+    step: number = 50,
   ): JSX.Element {
     const options = [];
     for (let i = min; i < max; i += step) {
@@ -217,22 +223,22 @@ class Example extends React.Component<{}, ExampleState> {
   onFormSliderChange = (e: any, id: string) => {
     const value = e.target.valueAsNumber;
     const { itemViewer } = this.state;
-    const { containerRect, itemRect } = itemViewer;
+    const { containerRect, itemRect, originalItemRect } = itemViewer;
     switch (id) {
       case 'Container_Width':
-        itemViewer.setContainerSize(value, containerRect.height);
+        itemViewer.setContainerSize(Math.max(1, value), containerRect.height);
         break;
       case 'Container_Height':
-        itemViewer.setContainerSize(containerRect.width, value);
+        itemViewer.setContainerSize(containerRect.width, Math.max(1, value));
         break;
       case 'Item_Width':
-        itemViewer.setItemSize(value, itemRect.height);
+        itemViewer.setItemSize(Math.max(1, value), originalItemRect.height);
         break;
       case 'Item_Height':
-        itemViewer.setItemSize(itemRect.width, value);
+        itemViewer.setItemSize(originalItemRect.width, Math.max(1, value));
         break;
       case 'Margin':
-        itemViewer.margin = value;
+        itemViewer.setMargin(value);
         break;
     }
     this.setState({ itemViewer });

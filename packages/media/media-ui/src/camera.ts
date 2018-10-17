@@ -24,6 +24,10 @@ export class Vector2 {
     return new Vector2(this.x, this.y);
   }
 
+  rounded() {
+    return new Vector2(Math.round(this.x), Math.round(this.y));
+  }
+
   toString() {
     return `[${this.x}, ${this.y}]`;
   }
@@ -99,6 +103,14 @@ export class Bounds extends Rectangle {
     );
   }
 
+  get location(): Vector2 {
+    return new Vector2(this.x, this.y);
+  }
+
+  get rect(): Rectangle {
+    return new Rectangle(this.width, this.height);
+  }
+
   scaled(scale: number): Rectangle {
     return new Bounds(
       this.x * scale,
@@ -171,14 +183,15 @@ export class Camera {
 }
 
 export const DEFAULT_MAX_ZOOM = 2;
+export const DEFAULT_MARGIN = 2;
 
 export class ItemViewer {
   containerRect: Rectangle;
   itemRect: Rectangle;
   originalItemRect: Rectangle;
-  margin: number = 28;
+  margin: number = DEFAULT_MARGIN;
   zoom: number = 0;
-  maxZoom: number = 2;
+  maxZoom: number = DEFAULT_MAX_ZOOM;
   origin: Vector2;
   dragOrigin?: Vector2;
   useConstraints: boolean;
@@ -188,7 +201,7 @@ export class ItemViewer {
     containerHeight: number,
     itemWidth: number,
     itemHeight: number,
-    margin: number = 28,
+    margin: number = DEFAULT_MARGIN,
     zoom: number = 0,
     maxZoom: number = DEFAULT_MAX_ZOOM,
     originX: number = 0,
@@ -214,6 +227,9 @@ export class ItemViewer {
     const scaleFactor = itemRect.scaleToFitSmallestSide(containerInnerRect);
     this.itemRect = this.itemRect.scaled(scaleFactor);
     this.origin = new Vector2(0, 0);
+    if (this.useConstraints) {
+      this.applyConstraints();
+    }
   }
 
   get itemBounds(): Bounds {
@@ -225,6 +241,16 @@ export class ItemViewer {
     const width = itemRect.width + maxWidthDiff * zoom;
     const height = itemRect.height + maxHeightDiff * zoom;
     return new Bounds(x, y, width, height);
+  }
+
+  get innerBounds(): Bounds {
+    const { containerRect, margin } = this;
+    return new Bounds(
+      margin,
+      margin,
+      containerRect.width - margin * 2,
+      containerRect.height - margin * 2,
+    );
   }
 
   startDrag() {
@@ -244,15 +270,10 @@ export class ItemViewer {
   }
 
   applyConstraints() {
-    const { containerRect, margin, origin } = this;
+    const { origin } = this;
     let newOriginX = origin.x;
     let newOriginY = origin.y;
-    const innerBounds = new Bounds(
-      margin,
-      margin,
-      containerRect.width - margin * 2,
-      containerRect.height - margin * 2,
-    );
+    const innerBounds = this.innerBounds;
     const itemBounds = this.itemBounds;
     if (
       itemBounds.right >= innerBounds.right &&
@@ -283,31 +304,58 @@ export class ItemViewer {
 
   setContainerSize(width: number, height: number) {
     this.containerRect = this.containerRect.resized(width, height);
+    if (this.useConstraints) {
+      this.zoomToFit();
+    }
   }
 
   setItemSize(width: number, height: number) {
     this.itemRect = this.itemRect.resized(width, height);
     this.originalItemRect = this.itemRect.clone();
+    if (this.useConstraints) {
+      this.zoomToFit();
+    }
   }
 
   setZoom(zoom: number) {
+    const lastItemBounds = this.itemBounds;
     this.zoom = zoom;
+    const itemBounds = this.itemBounds;
+    const delta = lastItemBounds.center.sub(itemBounds.center);
+    this.origin = this.origin.add(delta);
     if (this.useConstraints) {
       this.applyConstraints();
     }
   }
 
+  setMargin(value: number) {
+    this.margin = value;
+    if (this.useConstraints) {
+      this.zoomToFit();
+    }
+  }
+
   setUseConstraints(useConstraints: boolean) {
     this.useConstraints = useConstraints;
-    this.applyConstraints();
+    this.reset();
     if (this.useConstraints) {
       this.zoomToFit();
     }
   }
 
   reset() {
-    this.itemRect = this.originalItemRect.clone();
+    this.resetItemSize();
     this.zoom = 0;
     this.origin = new Vector2(0, 0);
+  }
+
+  resetItemSize() {
+    this.itemRect = this.originalItemRect.clone();
+  }
+
+  mapCoords(x: number, y: number): Vector2 {
+    const innerBounds = this.innerBounds;
+    const itemBounds = this.itemBounds;
+    return innerBounds.location.sub(itemBounds.location).rounded();
   }
 }

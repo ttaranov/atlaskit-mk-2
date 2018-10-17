@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { StyledComponentClass, StyledProps } from 'styled-components';
 import {
   ComponentClass,
   ButtonHTMLAttributes,
@@ -77,9 +77,14 @@ export const ItemViewerItem: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const ItemViewerMargin: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   border: 1px dotted white;
+  left: 0;
+  top: 0;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-width: 1px;
 `;
 
-export const Slider: ComponentClass<InputHTMLAttributes<{}>> = styled.input`
+export const Slider: any = styled.input`
   width: 200px;
 `;
 
