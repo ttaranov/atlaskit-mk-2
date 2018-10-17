@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 18.2.9
+- [patch] Cleanup media + editor integration 🔥 [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+
 ## 18.2.8
 - [patch] Split Media + Editor cleanup part 1 [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
 
