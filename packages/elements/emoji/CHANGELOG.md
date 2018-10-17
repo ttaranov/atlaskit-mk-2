@@ -1,5 +1,18 @@
 # @atlaskit/emoji
 
+## 45.0.1
+- [patch] Move canvas-prebuilt to devDep [7c3512e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c3512e)
+
+## 45.0.0
+- [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/util-data-test@10.0.16
+  - @atlaskit/media-core@24.3.0
+
+## 44.0.0
+- [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/util-data-test@10.0.14
+  - @atlaskit/media-core@24.2.0
+
 ## 43.0.0
 - [patch] Deprecate context.uploadFile & context.getFile. Instead context.file.upload & context.file.getFileState should be used; media-store's uploadFile function now takes MediaStore as a second argument, not MediaApiConfig [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
 - [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)

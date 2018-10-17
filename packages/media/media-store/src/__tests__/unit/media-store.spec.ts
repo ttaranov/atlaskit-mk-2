@@ -10,7 +10,11 @@ import {
   MediaCollection,
   MediaCollectionItems,
 } from '../../models/media';
-import { MediaStoreGetFileParams, EmptyFile } from '../../media-store';
+import {
+  MediaStoreGetFileParams,
+  EmptyFile,
+  ImageMetadata,
+} from '../../media-store';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -524,6 +528,66 @@ describe('MediaStore', () => {
         expect(fetchMock.lastUrl()).toEqual(
           `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
         );
+      });
+    });
+
+    describe('getImageMetadata()', () => {
+      it('should return image metadata for the given id', async () => {
+        const data: ImageMetadata = {
+          pending: false,
+          original: {
+            height: 10,
+            width: 10,
+            url: 'some-preview',
+          },
+        };
+        fetchMock.mock(`begin:${baseUrl}/file`, {
+          body: data,
+          status: 201,
+        });
+
+        const image = await mediaStore.getImageMetadata('123');
+        expect(fetchMock.lastUrl()).toEqual(
+          `${baseUrl}/file/123/image/metadata?client=some-client-id&token=some-token`,
+        );
+        expect(image).toEqual(data);
+      });
+
+      it('should generate right url based on params', async () => {
+        const data: ImageMetadata = {
+          pending: false,
+        };
+        fetchMock.mock(`begin:${baseUrl}/file`, {
+          body: data,
+          status: 201,
+        });
+
+        await mediaStore.getImageMetadata('123', {
+          collection: 'my-collection',
+        });
+        expect(fetchMock.lastUrl()).toEqual(
+          `${baseUrl}/file/123/image/metadata?client=some-client-id&collection=my-collection&token=some-token`,
+        );
+      });
+    });
+
+    describe('getFileBinaryURL', () => {
+      let url = '';
+
+      beforeEach(async () => {
+        url = await mediaStore.getFileBinaryURL('1234', 'some-collection-name');
+      });
+
+      it('should return file url', () => {
+        expect(url).toEqual(
+          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&token=some-token`,
+        );
+      });
+
+      it('should call authProvider with given collection name', async () => {
+        expect(authProvider).toHaveBeenCalledWith({
+          collectionName: 'some-collection-name',
+        });
       });
     });
   });

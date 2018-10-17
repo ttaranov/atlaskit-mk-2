@@ -3,6 +3,9 @@ coverage
 dist
 flow-typed
 
+# the docs template
+docs/templates/**
+
 # the core icon package
 packages/core/icon/glyph/**
 packages/core/icon/es5/**

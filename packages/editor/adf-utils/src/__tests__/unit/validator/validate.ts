@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { validate } from '../../../validator';
 
-// @ts-ignore
+declare var __dirname: string;
 const BASE_DIR = `${__dirname}/../../../../../editor-common/src/__tests__/unit/json-schema/v1-reference`;
 
 const readFilesSync = (path: string) =>

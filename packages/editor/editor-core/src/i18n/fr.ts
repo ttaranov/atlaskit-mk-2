@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Large',
   'fabric.editor.layoutFullWidth': 'Pleine largeur',
   'fabric.editor.remove': 'Supprimer',
+  'fabric.editor.visit': 'Ouvrir le lien dans une nouvelle fenêtre',
   'fabric.editor.normal': 'Texte normal',
   'fabric.editor.heading1': 'En-tête 1',
   'fabric.editor.heading2': 'En-tête 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Texte à afficher',
   'fabric.editor.linkPlaceholderWithSearch':
     'Coller un lien ou rechercher les pages récemment consultées',
+  'fabric.editor.action': 'Tâche',
   'fabric.editor.link': 'Lien',
   'fabric.editor.filesAndImages': 'Fichiers et images',
   'fabric.editor.image': 'Image',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Trois colonnes',
   'fabric.editor.unorderedList': 'Liste à puces',
   'fabric.editor.orderedList': 'Liste numérotée',
-  'fabric.editor.action': 'Tâche',
   'fabric.editor.lists': 'Listes',
   'fabric.editor.wrapLeft': 'Ajuster vers la gauche',
   'fabric.editor.wrapRight': 'Ajuster vers la droite',
@@ -79,6 +80,9 @@ export default {
   'fabric.editor.insertRow': 'Insérer une ligne',
   'fabric.editor.removeRows':
     '{0, plural, one{Supprimer une ligne} other{Supprimer des lignes}}',
+  'fabric.editor.decisionPlaceholder': 'Ajoutez une décision…',
+  'fabric.editor.taskPlaceholder':
+    "Saisissez votre action, utilisez « @ » pour l'assigner à quelqu'un.",
   'fabric.editor.textColor': 'Couleur du texte',
   'fabric.editor.underline': 'Souligner',
   'fabric.editor.strike': 'Barrer',

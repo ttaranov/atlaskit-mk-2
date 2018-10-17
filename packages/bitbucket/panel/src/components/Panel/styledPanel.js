@@ -7,6 +7,10 @@ const transition = css`
   transition: all 200ms ease-in-out;
 `;
 
+export const PanelWrapper = styled.div`
+  margin: 0 auto ${gridSize() * 2}px;
+`;
+
 export const ButtonWrapper = styled.div`
   line-height: 0;
   position: absolute;
@@ -25,6 +29,8 @@ export const PanelHeader = withFocusWithin(styled.div`
   display: flex;
   align-items: center;
   left: -${gridSize() * 3}px;
+  margin-top: ${gridSize() * 2}px;
+  margin-bottom: ${gridSize()}px;
   padding: 2px 0 2px ${gridSize() * 3}px;
   position: relative;
   width: 100%;

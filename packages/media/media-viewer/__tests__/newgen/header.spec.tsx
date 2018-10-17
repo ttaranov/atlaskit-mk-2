@@ -33,7 +33,6 @@ const processedImageState: FileState = {
   name: 'my image',
   size: 0,
   artifacts: {},
-  binaryUrl: '',
 };
 
 describe('<Header />', () => {
@@ -134,7 +133,6 @@ describe('<Header />', () => {
           name: 'my item',
           size: 12222222,
           artifacts: {},
-          binaryUrl: '',
         };
         const context = createContext({
           getFileState: () => Observable.of(testItem),
@@ -205,6 +203,22 @@ describe('<Header />', () => {
         collectionName: 'some-collection',
       });
     });
+
+    it('MSW-720: passes the collectionName to context.file.downloadBinary', () => {
+      const collectionName = 'some-collection';
+      const context = createContext({
+        getFileState: () => Observable.of(processedImageState),
+      });
+      const identifierWithCollection = { ...identifier, collectionName };
+      const el = mount(
+        <Header context={context} identifier={identifierWithCollection} />,
+      );
+      el.update();
+      el.find(DownloadIcon).simulate('click');
+      expect(context.file.downloadBinary.mock.calls[0][2]).toEqual(
+        collectionName,
+      );
+    });
   });
 
   describe('Feedback button', () => {
@@ -272,19 +286,6 @@ describe('<Header />', () => {
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
       assertDownloadButton(el, false);
-    });
-
-    it('should use a fresh token for the download link', () => {
-      const context = createContext({
-        getFileState: () => Observable.of(processedImageState),
-        config: {
-          authProvider: jest.fn(),
-        },
-      });
-      const el = mount(<Header context={context} identifier={identifier} />);
-      el.update();
-      el.find(DownloadIcon).simulate('click');
-      expect(context.config.authProvider).toHaveBeenCalled();
     });
   });
 });

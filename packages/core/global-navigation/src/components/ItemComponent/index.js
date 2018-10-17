@@ -21,6 +21,7 @@ class DropdownItem extends Component<DropdownItemProps, DropdownItemState> {
     const { isOpen } = this.state;
     return (
       <DropdownMenuStateless
+        appearance="tall"
         boundariesElement="window"
         isOpen={isOpen}
         onOpenChange={this.handleOpenChange}

@@ -32,10 +32,6 @@ import { GapCursorSelection, Side } from '../plugins/gap-cursor/selection';
 export * from './document';
 export * from './action';
 
-export {
-  default as ErrorReporter,
-  ErrorReportingHandler,
-} from './error-reporter';
 export { JSONDocNode, JSONNode };
 
 export { filterContentByType } from './filter';

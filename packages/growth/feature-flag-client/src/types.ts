@@ -7,27 +7,17 @@ export type Reason =
 
 export type RuleId = string;
 
-export type SimpleFlag = {
-  value: boolean | string;
-};
-
-export type JSONFlag = {
-  value: object;
-};
-
-export type FlagWithEvaluationDetails = {
+export type FlagShape = {
   value: boolean | string | object;
-  explanation: {
-    reason: Reason;
+  explanation?: {
+    kind: Reason;
     ruleId?: RuleId;
+    ruleIndex?: number;
   };
-  [key: string]: any;
 };
-
-export type AnyFlag = SimpleFlag | FlagWithEvaluationDetails | JSONFlag;
 
 export type Flags = {
-  [flagName: string]: AnyFlag;
+  [flagName: string]: FlagShape;
 };
 
 export type ExposureEvent = {
@@ -45,8 +35,8 @@ export type ExposureEvent = {
 export interface FlagConstructor {
   new (
     flagKey: string,
-    flag: AnyFlag,
-    trackExposure: (flagKey: string, flag: FlagWithEvaluationDetails) => void,
+    flag: FlagShape,
+    trackExposure: (flagKey: string, flag: FlagShape) => void,
   ): Flag;
 }
 export interface Flag {

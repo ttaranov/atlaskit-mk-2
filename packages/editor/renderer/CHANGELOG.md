@@ -1,5 +1,61 @@
 # @atlaskit/renderer
 
+## 29.0.2
+- [patch] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
+## 29.0.1
+- [patch] ED-5523: fix rendering number column table with header column [f74c658](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f74c658)
+
+## 29.0.0
+- [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/editor-common@20.0.0
+  - @atlaskit/media-card@41.0.0
+  - @atlaskit/media-filmstrip@17.0.0
+  - @atlaskit/editor-json-transformer@4.0.18
+  - @atlaskit/editor-test-helpers@6.2.7
+  - @atlaskit/task-decision@11.0.1
+  - @atlaskit/util-data-test@10.0.16
+  - @atlaskit/media-core@24.3.0
+  - @atlaskit/media-test-helpers@18.2.8
+
+## 28.0.1
+- [patch] Updated dependencies [8a1ccf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a1ccf2)
+  - @atlaskit/util-data-test@10.0.15
+  - @atlaskit/task-decision@11.0.0
+
+## 28.0.0
+- [major] Remove support for ApplicationCard [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+
+## 27.2.2
+- [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
+
+## 27.2.1
+- [patch] Fixes not rendering whitespace for empty paragraphs. ED-5500 [b7e5935](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7e5935)
+
+## 27.2.0
+- [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
+
+## 27.1.1
+- [patch] Move render document export into seperate file [e976cd8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e976cd8)
+
+## 27.1.0
+- [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
+
+## 27.0.1
+- [patch] Async load highlighter languages [9102fa2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9102fa2)
+
+## 27.0.0
+- [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/editor-common@19.0.0
+  - @atlaskit/media-card@39.0.0
+  - @atlaskit/media-filmstrip@16.0.0
+  - @atlaskit/editor-json-transformer@4.0.17
+  - @atlaskit/editor-test-helpers@6.2.6
+  - @atlaskit/task-decision@10.0.2
+  - @atlaskit/util-data-test@10.0.14
+  - @atlaskit/media-test-helpers@18.2.5
+  - @atlaskit/media-core@24.2.0
+
 ## 26.0.1
 - [patch] Upgrade react-syntax-highlighter again and use async loaded prism [260d66a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/260d66a)
 

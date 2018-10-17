@@ -109,7 +109,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(tablesPlugin(props.allowTables));
   }
 
-  if (props.allowTasksAndDecisions) {
+  if (props.allowTasksAndDecisions || props.taskDecisionProvider) {
     plugins.push(tasksAndDecisionsPlugin);
   }
 

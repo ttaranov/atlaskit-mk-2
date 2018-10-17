@@ -99,8 +99,13 @@ export interface Props {
   /**
    * Indicates whether or not CPUS should be used for people searches.
    */
-
   useCPUSForPeopleResults?: boolean;
+
+  /**
+   * Indicates wheter to add sessionId to jira result query param
+   */
+  addSessionIdToJiraResult?: boolean;
+
   /**
    * logger with 3 levels error, warn and info
    */
@@ -124,6 +129,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       searchAggregatorServiceUrl,
       directoryServiceUrl,
       confluenceUrl,
+      addSessionIdToJiraResult,
     } = this.props;
 
     if (activityServiceUrl) {
@@ -141,6 +147,8 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     if (confluenceUrl) {
       config.confluenceUrl = confluenceUrl;
     }
+
+    config.addSessionIdToJiraResult = addSessionIdToJiraResult;
 
     return config;
   }

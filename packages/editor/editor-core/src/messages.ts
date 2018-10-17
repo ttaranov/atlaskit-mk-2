@@ -26,4 +26,9 @@ export default defineMessages({
     description:
       'Delete the element (image, panel, table, etc.) from your document',
   },
+  visit: {
+    id: 'fabric.editor.visit',
+    defaultMessage: 'Open link in a new window',
+    description: '',
+  },
 });

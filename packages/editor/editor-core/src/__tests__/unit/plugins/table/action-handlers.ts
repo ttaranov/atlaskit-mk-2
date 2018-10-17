@@ -29,8 +29,8 @@ import {
   handleDocChanged,
   handleToggleContextualMenu,
   handleSelectionChanged,
-  handleShowInsertLine,
-  handleHideInsertLine,
+  handleShowInsertColumnButton,
+  handleShowInsertRowButton,
 } from '../../../../plugins/table/action-handlers';
 import { TableDecorations } from '../../../../plugins/table/types';
 
@@ -44,8 +44,7 @@ describe('table action handlers', () => {
 
   const dispatch = () => {};
   const defaultPluginState = {
-    dangerColumns: [],
-    dangerRows: [],
+    ...defaultTableSelection,
     decorationSet: DecorationSet.empty,
     pluginConfig: {},
     editorHasFocus: true,
@@ -57,10 +56,6 @@ describe('table action handlers', () => {
       { class: ClassName.HOVERED_CELL },
       { key: TableDecorations.CONTROLS_HOVER },
     );
-  const getInsertLineDecoration = () =>
-    Decoration.widget(5, document.createElement('div'), {
-      key: TableDecorations.COLUMN_INSERT_LINE,
-    });
 
   describe('#handleSetFocus', () => {
     it('should return a new state with updated editorHasFocus prop', () => {
@@ -141,6 +136,8 @@ describe('table action handlers', () => {
         dangerRows: [1, 2, 3],
         isTableInDanger: true,
         isTableHovered: true,
+        insertColumnButtonIndex: 4,
+        insertRowButtonIndex: 2,
       };
       const newState = handleClearSelection(pluginState, dispatch);
       expect(newState).toEqual({
@@ -324,48 +321,37 @@ describe('table action handlers', () => {
       });
     });
   });
-  describe('#handleShowInsertLine', () => {
-    it('should return a new state with insertLineDecoration added to decorationSet', () => {
-      const { editorView } = editor(
-        doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
-      );
+  describe('#handleShowInsertColumnButton', () => {
+    it('should return a new state with updated insertColumnButtonIndex', () => {
       const pluginState = {
         ...defaultPluginState,
       };
-      const insertLineDecoration = getInsertLineDecoration();
-      const insertLineIndex = 0;
-      const newState = handleShowInsertLine(
-        [insertLineDecoration],
-        insertLineIndex,
-      )(editorView.state, pluginState, dispatch);
+      const insertColumnButtonIndex = 0;
+      const newState = handleShowInsertColumnButton(insertColumnButtonIndex)(
+        pluginState,
+        dispatch,
+      );
 
       expect(newState).toEqual({
         ...pluginState,
-        decorationSet: DecorationSet.create(editorView.state.doc, [
-          insertLineDecoration,
-        ]),
-        insertLineIndex,
+        insertColumnButtonIndex,
       });
     });
   });
-  describe('#handleHideInsertLine', () => {
-    it('should return a new state with insertLineDecoration removed from decorationSet', () => {
-      const { editorView } = editor(
-        doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
-      );
+  describe('#handleShowInsertRowButton', () => {
+    it('should return a new state with updated insertRowButtonIndex', () => {
       const pluginState = {
         ...defaultPluginState,
-        decorationSet: DecorationSet.create(editorView.state.doc, [
-          getInsertLineDecoration(),
-        ]),
-        insertLineIndex: 0,
       };
-      const newState = handleHideInsertLine(pluginState, dispatch);
+      const insertRowButtonIndex = 0;
+      const newState = handleShowInsertRowButton(insertRowButtonIndex)(
+        pluginState,
+        dispatch,
+      );
 
       expect(newState).toEqual({
         ...pluginState,
-        decorationSet: DecorationSet.empty,
-        insertLineIndex: undefined,
+        insertRowButtonIndex,
       });
     });
   });

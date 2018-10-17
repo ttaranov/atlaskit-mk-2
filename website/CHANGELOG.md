@@ -1,5 +1,55 @@
 # @atlaskit/website
 
+## 4.1.18
+- [patch] Updated dependencies [e7bb74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7bb74d)
+  - @atlaskit/icon-object@1.0.4
+  - @atlaskit/icon@14.0.3
+
+## 4.1.17
+- [patch] Updated dependencies [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+  - @atlaskit/badge@9.1.5
+  - @atlaskit/button@9.0.15
+  - @atlaskit/code@8.0.9
+  - @atlaskit/dynamic-table@10.0.14
+  - @atlaskit/field-text@7.0.12
+  - @atlaskit/flag@9.1.1
+  - @atlaskit/icon-object@1.0.3
+  - @atlaskit/icon@14.0.2
+  - @atlaskit/inline-dialog@9.0.7
+  - @atlaskit/layer-manager@5.0.14
+  - @atlaskit/logo@9.2.3
+  - @atlaskit/lozenge@6.2.2
+  - @atlaskit/modal-dialog@7.0.3
+  - @atlaskit/navigation@33.2.1
+  - @atlaskit/page@8.0.8
+  - @atlaskit/single-select@6.0.7
+  - @atlaskit/spinner@9.0.10
+  - @atlaskit/tag-group@6.0.7
+  - @atlaskit/tag@6.0.9
+  - @atlaskit/theme@6.1.1
+  - @atlaskit/tooltip@12.1.4
+
+## 4.1.16
+- [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/media-card@41.0.0
+  - @atlaskit/media-filmstrip@17.0.0
+  - @atlaskit/media-core@24.3.0
+  - @atlaskit/media-test-helpers@18.2.8
+
+## 4.1.15
+- [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+  - @atlaskit/media-core@24.2.2
+  - @atlaskit/media-filmstrip@16.0.1
+  - @atlaskit/media-test-helpers@18.2.7
+  - @atlaskit/media-card@40.0.0
+
+## 4.1.14
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/media-card@39.0.0
+  - @atlaskit/media-filmstrip@16.0.0
+  - @atlaskit/media-test-helpers@18.2.5
+  - @atlaskit/media-core@24.2.0
+
 ## 4.1.13
 - [patch] Updated dependencies [272208b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/272208b)
   - @atlaskit/icon-object@1.0.2

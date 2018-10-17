@@ -1,5 +1,38 @@
 # @atlaskit/conversation
 
+## 11.0.2
+- [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+  - @atlaskit/comment@6.0.23
+  - @atlaskit/editor-core@87.0.0
+  - @atlaskit/editor-common@20.1.2
+
+## 11.0.1
+- [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/editor-common@20.0.0
+  - @atlaskit/editor-core@86.0.0
+  - @atlaskit/renderer@29.0.0
+  - @atlaskit/comment@6.0.21
+  - @atlaskit/reactions@15.0.1
+  - @atlaskit/util-data-test@10.0.16
+
+## 11.0.0
+- [major] Fix reactions. Remove context and receive store as a prop. [b1de9c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1de9c8)
+
+## 10.0.6
+- [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+  - @atlaskit/editor-core@85.5.1
+  - @atlaskit/editor-common@19.3.2
+  - @atlaskit/renderer@28.0.0
+
+## 10.0.5
+- [patch] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/editor-common@19.0.0
+  - @atlaskit/editor-core@85.0.0
+  - @atlaskit/renderer@27.0.0
+  - @atlaskit/comment@6.0.20
+  - @atlaskit/reactions@14.0.5
+  - @atlaskit/util-data-test@10.0.14
+
 ## 10.0.4
 - [patch] Upgrade react-syntax-highlighter again and use async loaded prism [260d66a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/260d66a)
 

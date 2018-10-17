@@ -95,11 +95,11 @@ export default class GlobalNavigation
 
       if (
         props[`${drawer}DrawerContents`] &&
-        !props[`is${capitalisedDrawerName}Close`]
+        !props[`on${capitalisedDrawerName}Close`]
       ) {
         /* eslint-disable no-console */
         console.warn(`You have provided an onClick handler for ${drawer}, but no close handler for the drawer.
-        Please pass is${capitalisedDrawerName}Close prop to handle closing of the ${drawer} drawer.`);
+        Please pass on${capitalisedDrawerName}Close prop to handle closing of the ${drawer} drawer.`);
         /* eslint-enable */
       }
 

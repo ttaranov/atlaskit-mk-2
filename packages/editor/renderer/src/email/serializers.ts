@@ -33,7 +33,6 @@ import underline from './marks/underline';
 const renderNothing = () => '';
 
 export const nodeSerializers: { [key: string]: NodeSerializer } = {
-  applicationCard: renderNothing,
   bodiedExtension: renderNothing,
   blockquote,
   bulletList,

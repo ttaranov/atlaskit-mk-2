@@ -95,6 +95,7 @@ export const getToolbarConfig: FloatingToolbarHandler = (
       nodeType: [
         state.schema.nodes.extension,
         state.schema.nodes.inlineExtension,
+        state.schema.nodes.bodiedExtension,
       ],
       items: [
         {

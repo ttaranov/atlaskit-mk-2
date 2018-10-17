@@ -107,6 +107,7 @@ export default class ReactNodeView implements NodeView {
     return this.reactComponent ? (
       <this.reactComponent
         view={this.view}
+        getPos={this.getPos}
         node={this.node}
         forwardRef={forwardRef}
         {...props}

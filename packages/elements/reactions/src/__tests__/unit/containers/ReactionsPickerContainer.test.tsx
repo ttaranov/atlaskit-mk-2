@@ -1,10 +1,9 @@
 import { EmojiProvider } from '@atlaskit/emoji';
+import { emoji } from '@atlaskit/util-data-test';
+import { shallow } from 'enzyme';
 import * as React from 'react';
 import ReactionPickerContainer from '../../../containers/ReactionsPickerContainer';
 import { ReactionConsumer } from '../../../reaction-store/ReactionConsumer';
-import { shallow } from 'enzyme';
-
-import { emoji } from '@atlaskit/util-data-test';
 
 const { getEmojiResourcePromise } = emoji.testData;
 
@@ -22,9 +21,20 @@ describe('ReactionPickerContainer', () => {
   let container;
   let actionsMapper;
 
+  const store = {
+    getReactions: jest.fn(),
+    toggleReaction: jest.fn(),
+    addReaction: jest.fn(),
+    getDetailedReaction: jest.fn(),
+    getState: jest.fn(),
+    onChange: jest.fn(),
+    removeOnChangeListener: jest.fn(),
+  };
+
   beforeAll(() => {
     container = shallow(
       <ReactionPickerContainer
+        store={store}
         containerAri={containerAri}
         ari={ari}
         emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
@@ -51,5 +61,9 @@ describe('ReactionPickerContainer', () => {
         'emojiA',
       );
     });
+  });
+
+  it('should set store in the consumer', () => {
+    expect(container.find(ReactionConsumer).prop('store')).toBe(store);
   });
 });

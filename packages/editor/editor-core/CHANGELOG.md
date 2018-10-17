@@ -1,5 +1,140 @@
 # @atlaskit/editor-core
 
+## 87.0.0
+- [major] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+- [patch] Updated dependencies [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+  - @atlaskit/media-card@41.1.0
+  - @atlaskit/media-picker@22.0.0
+  - @atlaskit/media-filmstrip@17.0.1
+  - @atlaskit/media-test-helpers@18.2.9
+
+## 86.0.10
+- [patch] Show color and initial of collab-participants in overflow menu [900ccb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/900ccb8)
+
+## 86.0.9
+- [patch] Lock typeahead to cursor position [81e28c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81e28c8)
+
+## 86.0.8
+- [patch] New translations (Task & Decisions) [03addbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03addbd)
+
+## 86.0.7
+- [patch] ED-5410: handle rows/columns cutting [b792d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b792d04)
+
+## 86.0.6
+- [patch] Scroll selection into view when navigating with arrows [01edbc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01edbc7)
+
+## 86.0.5
+- [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
+
+## 86.0.4
+- [patch] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
+## 86.0.3
+- [patch] Async load the help dialog. The help dialog shouldn't be on the critical path to rendering as it's infrequently used. It's also the only consumer of ak/modal-dialog(9kb gzipped) [5d6333d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d6333d)
+
+## 86.0.2
+- [patch] ED-5533: fix insert line decorations on merged cells [d421f39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d421f39)
+
+## 86.0.1
+- [patch] Async load the floating toolbar. This remove @atlaskit/select & react-select from the critical path of rendering the editor [e55dcde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e55dcde)
+
+## 86.0.0
+- [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/editor-common@20.0.0
+  - @atlaskit/renderer@29.0.0
+  - @atlaskit/emoji@45.0.0
+  - @atlaskit/media-card@41.0.0
+  - @atlaskit/media-filmstrip@17.0.0
+  - @atlaskit/media-picker@21.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.16
+  - @atlaskit/editor-json-transformer@4.0.18
+  - @atlaskit/editor-markdown-transformer@2.0.17
+  - @atlaskit/editor-test-helpers@6.2.7
+  - @atlaskit/task-decision@11.0.1
+  - @atlaskit/util-data-test@10.0.16
+  - @atlaskit/media-core@24.3.0
+  - @atlaskit/media-test-helpers@18.2.8
+
+## 85.6.0
+- [minor] FS-1311 - i18n support for task-decsions. task-decisions now require the placeholder text to be passed in. [8a1ccf2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a1ccf2)
+
+## 85.5.3
+- [patch] ED-5524: fix insert column button when numbered column is on [555079c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/555079c)
+
+## 85.5.2
+- [patch] ED-5366: fix scrolling when media is pasted inside table cell [eef51cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eef51cf)
+
+## 85.5.1
+- [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+  - @atlaskit/task-decision@10.0.3
+  - @atlaskit/editor-common@19.3.2
+  - @atlaskit/media-core@24.2.2
+  - @atlaskit/media-filmstrip@16.0.1
+  - @atlaskit/media-picker@20.0.1
+  - @atlaskit/media-test-helpers@18.2.7
+  - @atlaskit/renderer@28.0.0
+  - @atlaskit/media-card@40.0.0
+
+## 85.5.0
+- [minor] Deprecate quickInsert prop [c595e8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c595e8d)
+
+## 85.4.2
+- [patch] ED-5494: fix nested breakout nodes [1eaf1f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1eaf1f1)
+
+## 85.4.1
+- [patch] ED-5289 add toolbar for inline smart card [25d7af7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d7af7)
+
+## 85.4.0
+- [minor] FS-2901 - Move action toolbar icon to insert group [57502ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57502ac)
+
+## 85.3.1
+- [patch] Updated dependencies [17afe04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17afe04)
+  - @atlaskit/media-picker@20.0.0
+
+## 85.3.0
+- [minor] Replaces util-shared-styles with theme. ED-5351 [55a4f00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55a4f00)
+
+## 85.2.3
+- [patch] ED-2644 Fixes panels merging incorrectly when deleting empty paragraph [967edcc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/967edcc)
+
+## 85.2.2
+- [patch] ED-5468: simplify floating toolbar config resolution [1c795f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c795f2)
+
+## 85.2.1
+- [patch] Fix popups are placed incorrectly in modals [2dde31d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dde31d)
+
+## 85.2.0
+- [minor] Summary: Deprecate props, add support for new API. ED-5201 [00e4bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00e4bb3)
+
+## 85.1.0
+- [minor] ED-5370 refactor legacy image-upload plugin [fb10ad4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb10ad4)
+
+## 85.0.1
+- [patch] ED-5453: implement table scroll shadow in CSS [4f21dac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f21dac)
+
+## 85.0.0
+- [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/editor-common@19.0.0
+  - @atlaskit/renderer@27.0.0
+  - @atlaskit/emoji@44.0.0
+  - @atlaskit/media-card@39.0.0
+  - @atlaskit/media-filmstrip@16.0.0
+  - @atlaskit/media-picker@19.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.15
+  - @atlaskit/editor-json-transformer@4.0.17
+  - @atlaskit/editor-markdown-transformer@2.0.16
+  - @atlaskit/editor-test-helpers@6.2.6
+  - @atlaskit/task-decision@10.0.2
+  - @atlaskit/util-data-test@10.0.14
+  - @atlaskit/media-test-helpers@18.2.5
+  - @atlaskit/media-core@24.2.0
+
+## 84.1.0
+- [minor] ED-3889 use color and error-reporter from @atlaskit/editor-core [f924735](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f924735)
+
+## 84.0.1
+- [patch] Upgrade markdown-it to reduce duplicate dependencies [a27ace1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a27ace1)
+
 ## 84.0.0
 - [major] Updated dependencies [8b2c4d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b2c4d3)
 - [major] Updated dependencies [3302d51](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3302d51)

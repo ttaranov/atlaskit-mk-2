@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-confluence-transformer",
-  "version": "5.0.13",
+  "version": "5.0.16",
   "description": "Editor Confluence Transformer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -18,7 +18,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^18.0.0",
+    "@atlaskit/editor-common": "^20.1.2",
     "collapse-whitespace": "^1.1.6",
     "prosemirror-model": "^1.6.1"
   },
@@ -28,10 +28,11 @@
   "devDependencies": {
     "@atlaskit/button": "^9.0.4",
     "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/editor-core": "^84.0.0",
-    "@atlaskit/editor-test-helpers": "^6.2.5",
+    "@atlaskit/editor-core": "^87.0.0",
+    "@atlaskit/editor-test-helpers": "^6.2.8",
     "@atlaskit/spinner": "^9.0.4",
-    "@atlaskit/util-data-test": "^10.0.12",
+    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/util-data-test": "^10.0.16",
     "@types/prosemirror-model": "^1.0.0",
     "chai-as-promised": "^6.0.0"
   }

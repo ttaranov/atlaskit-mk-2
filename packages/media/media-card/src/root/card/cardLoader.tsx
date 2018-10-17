@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { CardLoading } from '../../utils/cardLoading';
-import { Card as CardType, CardProps } from './index';
+import { Card as CardType } from './index';
+import { CardProps } from '../..';
 
 interface AsyncCardProps {
   Card?: typeof CardType;
 }
 
 export default class Card extends React.PureComponent<
-  CardProps & AsyncCardProps
+  CardProps & AsyncCardProps,
+  AsyncCardProps
 > {
   static displayName = 'AsyncCard';
   static Card?: typeof CardType;
@@ -27,9 +29,14 @@ export default class Card extends React.PureComponent<
   }
 
   render() {
+    const { dimensions, identifier } = this.props;
+
     if (!this.state.Card) {
       return (
-        <CardLoading mediaItemType={this.props.identifier.mediaItemType} />
+        <CardLoading
+          dimensions={dimensions}
+          mediaItemType={identifier.mediaItemType}
+        />
       );
     }
 

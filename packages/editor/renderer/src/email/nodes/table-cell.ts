@@ -1,4 +1,4 @@
-import { akColorN50 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { createTag, serializeStyle } from '../util';
 import { NodeSerializerOpts } from '../interfaces';
 
@@ -7,7 +7,7 @@ const baseStyle = {
   height: '2.5em',
   'min-width': '3em',
   'vertical-align': 'top',
-  border: `1px solid ${akColorN50}`,
+  border: `1px solid ${colors.N50}`,
   'border-right-width': 0,
   'border-bottom-width': 0,
   padding: '6px 10px',

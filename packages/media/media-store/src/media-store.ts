@@ -201,6 +201,18 @@ export class MediaStore {
     });
   };
 
+  getFileBinaryURL = async (
+    id: string,
+    collectionName?: string,
+  ): Promise<string> => {
+    const auth = await this.config.authProvider({ collectionName });
+
+    return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
+      params: { dl: true, collection: collectionName },
+      auth,
+    });
+  };
+
   getImage = (
     id: string,
     params?: MediaStoreGetFileImageParams,
@@ -209,6 +221,16 @@ export class MediaStore {
       params: extendImageParams(params),
       authContext: { collectionName: params && params.collection },
     }).then(mapResponseToBlob);
+  };
+
+  getImageMetadata = (
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<{ metadata: ImageMetadata }> => {
+    return this.request(`/file/${id}/image/metadata`, {
+      params,
+      authContext: { collectionName: params && params.collection },
+    }).then(mapResponseToJson);
   };
 
   appendChunksToUpload(
@@ -260,6 +282,19 @@ export class MediaStore {
       body,
     });
   }
+}
+
+export type ImageMetadataArtifact = {
+  url?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+};
+
+export interface ImageMetadata {
+  pending: boolean;
+  preview?: ImageMetadataArtifact;
+  original?: ImageMetadataArtifact;
 }
 
 export interface MediaStoreResponse<Data> {

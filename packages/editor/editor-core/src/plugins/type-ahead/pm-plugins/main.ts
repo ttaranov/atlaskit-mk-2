@@ -8,6 +8,7 @@ import {
 import { dismissCommand } from '../commands/dismiss';
 import { itemsListUpdated } from '../commands/items-list-updated';
 import { isQueryActive } from '../utils/is-query-active';
+import { findTypeAheadQuery } from '../utils/find-query-mark';
 
 export const pluginKey = new PluginKey('typeAheadPlugin');
 
@@ -20,6 +21,7 @@ export type PluginState = {
   items: Array<TypeAheadItem>;
   itemsLoader: TypeAheadItemsLoader;
   currentIndex: number;
+  queryMarkPos: number | null;
 };
 
 export const ACTIONS = {
@@ -40,6 +42,7 @@ export function createInitialPluginState(prevActiveState = false): PluginState {
     currentIndex: 0,
     items: [],
     itemsLoader: null,
+    queryMarkPos: null,
   };
 }
 
@@ -239,6 +242,8 @@ export function defaultActionHandler({
     }
   } catch (e) {}
 
+  const queryMark = findTypeAheadQuery(state);
+
   const newPluginState = {
     query,
     trigger,
@@ -248,6 +253,7 @@ export function defaultActionHandler({
     items: typeAheadItems as Array<TypeAheadItem>,
     itemsLoader: itemsLoader,
     currentIndex: pluginState.currentIndex,
+    queryMarkPos: queryMark !== null ? queryMark.start : null,
   };
 
   dispatch(pluginKey, newPluginState);

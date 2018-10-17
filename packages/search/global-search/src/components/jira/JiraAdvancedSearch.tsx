@@ -62,7 +62,6 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
     selectedItem: JiraEntityTypes.Issues,
   };
 
-  allowNavigationOnClick = false;
   static defaultProps = {
     showKeyboardLozenge: false,
     showSearchIcon: false,
@@ -89,41 +88,38 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
       showSearchIcon,
       analyticsData,
     } = this.props;
+
     return (
       <AdvancedSearchResult
         href={getJiraAdvancedSearchUrl(this.state.selectedItem, query)}
         key="search_jira"
         resultId={ADVANCED_JIRA_SEARCH_RESULT_ID}
         text={
-          <Container
-            onClick={e => {
-              // we need to cancel on click event on the dropdown to stop navigation
-              if (!this.allowNavigationOnClick) {
-                e.preventDefault();
-                e.stopPropagation();
-              }
-            }}
-          >
+          <Container>
             <TextContainer>
               <FormattedMessage id="global-search.jira.advanced-search" />
             </TextContainer>
-            <StyledButton
-              onClick={() => {
-                this.allowNavigationOnClick = true;
-              }}
-            >
+            <StyledButton>
               {getI18nItemName(this.state.selectedItem)}
             </StyledButton>
-            <DropdownMenu
-              trigger=""
-              triggerType="button"
-              shouldFlip={false}
-              position="right bottom"
+            <span
+              onClick={e => {
+                // we need to cancel on click event on the dropdown to stop navigation
+                e.preventDefault();
+                e.stopPropagation();
+              }}
             >
-              <DropdownItemGroup>
-                {this.renderDropdownItems()}
-              </DropdownItemGroup>
-            </DropdownMenu>
+              <DropdownMenu
+                trigger=""
+                triggerType="button"
+                shouldFlip={false}
+                position="right bottom"
+              >
+                <DropdownItemGroup>
+                  {this.renderDropdownItems()}
+                </DropdownItemGroup>
+              </DropdownMenu>
+            </span>
           </Container>
         }
         icon={

@@ -8,6 +8,7 @@ export type Cell = { pos: number; start: number; node: PmNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
 
 export interface PluginConfig {
+  advanced?: boolean;
   allowBackgroundColor?: boolean;
   allowColumnResizing?: boolean;
   allowHeaderColumn?: boolean;
@@ -39,7 +40,8 @@ export interface TablePluginState {
   isContextualMenuOpen?: boolean;
   isTableHovered?: boolean;
   isTableInDanger?: boolean;
-  insertLineIndex?: number;
+  insertColumnButtonIndex?: number;
+  insertRowButtonIndex?: number;
 }
 
 export interface CellRect {
@@ -57,8 +59,6 @@ export interface ColumnResizingPlugin {
 
 export const TableDecorations = {
   CONTROLS_HOVER: 'CONTROLS_HOVER',
-  COLUMN_INSERT_LINE: 'COLUMN_INSERT_LINE',
-  ROW_INSERT_LINE: 'ROW_INSERT_LINE',
 };
 const clPrefix = 'pm-table-';
 
@@ -69,14 +69,11 @@ export const TableCssClassName = {
   COLUMN_CONTROLS: `${clPrefix}column-controls`,
   COLUMN_CONTROLS_INNER: `${clPrefix}column-controls__inner`,
   COLUMN_CONTROLS_BUTTON_WRAP: `${clPrefix}column-controls__button-wrap`,
-  COLUMN_INSERT_LINE: `${clPrefix}column__insert-line`,
 
   ROW_CONTROLS_WRAPPER: `${clPrefix}row-controls-wrapper`,
   ROW_CONTROLS: `${clPrefix}row-controls`,
   ROW_CONTROLS_INNER: `${clPrefix}row-controls__inner`,
   ROW_CONTROLS_BUTTON_WRAP: `${clPrefix}row-controls__button-wrap`,
-  ROW_INSERT_LINE: `${clPrefix}row__insert-line`,
-  ROW_INSERT_LINE_OVERLAY: `${clPrefix}row__insert-line-overlay`,
 
   CONTROLS_BUTTON: `${clPrefix}controls__button`,
   CONTROLS_BUTTON_ICON: `${clPrefix}controls__button-icon`,
@@ -84,6 +81,7 @@ export const TableCssClassName = {
   CONTROLS_INSERT_BUTTON: `${clPrefix}controls__insert-button`,
   CONTROLS_INSERT_BUTTON_INNER: `${clPrefix}controls__insert-button-inner`,
   CONTROLS_INSERT_BUTTON_WRAP: `${clPrefix}controls__insert-button-wrap`,
+  CONTROLS_INSERT_LINE: `${clPrefix}controls__insert-line`,
 
   CONTROLS_INSERT_MARKER: `${clPrefix}controls__insert-marker`,
   CONTROLS_INSERT_COLUMN: `${clPrefix}controls__insert-column`,
@@ -100,8 +98,9 @@ export const TableCssClassName = {
   HOVERED_CELL: `${clPrefix}hovered-cell`,
   HOVERED_TABLE: `${clPrefix}hovered-table`,
   RESIZING: `${clPrefix}resizing`,
-  TABLE_SHADOW: `${clPrefix}shadow`,
   WITH_CONTROLS: `${clPrefix}with-controls`,
+  TABLE_LEFT_SHADOW: `${clPrefix}with-left-shadow`,
+  TABLE_RIGHT_SHADOW: `${clPrefix}with-right-shadow`,
 
   CONTEXTUAL_SUBMENU: `${clPrefix}contextual-submenu`,
   CONTEXTUAL_MENU_TRIGGER: `${clPrefix}contextual-menu-trigger`,
@@ -110,4 +109,7 @@ export const TableCssClassName = {
   // come from prosemirror-table
   COLUMN_RESIZE_HANDLE: 'column-resize-handle',
   SELECTED_CELL: 'selectedCell',
+
+  // defined in ReactNodeView based on PM node name
+  NODEVIEW_WRAPPER: 'tableView-content-wrap',
 };

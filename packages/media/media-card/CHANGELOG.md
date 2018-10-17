@@ -1,5 +1,35 @@
 # @atlaskit/media-image
 
+## 41.1.0
+- [minor] Cleanup media + editor integration 🔥 [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+
+## 41.0.2
+- [patch] Make image in the card non-draggable [615a536](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/615a536)
+
+## 41.0.1
+- [patch] User img tag in cards instead of div with background [22ae8bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22ae8bb)
+
+## 41.0.0
+- [patch] Split Media + Editor cleanup part 1 [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+- [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/media-core@24.3.0
+  - @atlaskit/media-test-helpers@18.2.8
+
+## 40.0.1
+- [patch] Code split media list [d101ce1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d101ce1)
+
+## 40.0.0
+- [major] Remove support for ApplicationCard [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
+
+## 39.0.1
+- [patch] Fix bug with download binary [71ebe0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71ebe0b)
+
+## 39.0.0
+- [minor] Media-card: allow to download binary when processing failed, add failed-processing to CardStatus; Media-core: add context.file.downloadBinary, add failed-processing to FileStatus; Media-store: add getFileBinaryURL; [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+- [major] Updated dependencies [2afa60d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2afa60d)
+  - @atlaskit/media-test-helpers@18.2.5
+  - @atlaskit/media-core@24.2.0
+
 ## 38.0.1
 - [patch] Add pagination to recents view in MediaPicker [4b3c1f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b3c1f5)
 

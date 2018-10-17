@@ -1,5 +1,11 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.19
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 6.1.18
+- [patch] Fix the dropdown menu height exceeding viewport height when appearance prop is set to ‘tall’ [0deec63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0deec63)
+
 ## 6.1.17
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

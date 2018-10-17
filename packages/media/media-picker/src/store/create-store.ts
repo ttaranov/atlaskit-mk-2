@@ -68,7 +68,7 @@ export default (
         cancelUpload as Middleware,
         importFilesMiddleware(eventEmitter, wsProvider),
         editRemoteImageMiddleware(fetcher) as Middleware,
-        getPreviewMiddleware(fetcher),
+        getPreviewMiddleware(),
         finalizeUploadMiddleware(fetcher),
         proxyUploadEvents as Middleware,
         handleCloudFetchingEvent as Middleware,

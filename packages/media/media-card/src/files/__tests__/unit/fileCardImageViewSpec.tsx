@@ -2,10 +2,11 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import { FileCardImageView } from '../..';
-import { CardOverlay } from '../../cardImageView/cardOverlay';
+import { CardOverlay, CardOverlayProps } from '../../cardImageView/cardOverlay';
 import { FileIcon } from '../../../utils';
 import { UploadingView } from '../../../utils/uploadingView';
 import { Wrapper } from '../../cardImageView/styled';
+import { CardAction } from '../../../actions';
 
 describe('FileCardView', () => {
   it('should render card with non-persisting overlay when supplied mediaType is "image" and dataUri string is supplied', function() {
@@ -26,6 +27,31 @@ describe('FileCardView', () => {
     const errorStr = 'Some random error occurred';
     const card = mount(<FileCardImageView error={errorStr} status="error" />);
     expect(card.find(CardOverlay).props().error).toEqual(errorStr);
+  });
+
+  it('should render persistent card overlay with all details when status is "failed"', () => {
+    const actions: CardAction[] = [
+      {
+        handler: () => {},
+      },
+    ];
+    const card = mount(
+      <FileCardImageView
+        mediaName="some-media-name"
+        mediaType="image"
+        actions={actions}
+        status="failed-processing"
+        fileSize="some-size"
+      />,
+    );
+    expect(card.find(CardOverlay).props()).toEqual({
+      noHover: true,
+      persistent: true,
+      mediaName: 'some-media-name',
+      mediaType: 'image',
+      actions,
+      subtitle: 'some-size',
+    } as CardOverlayProps);
   });
 
   it('should NOT render an overlay when loading prop is true', function() {

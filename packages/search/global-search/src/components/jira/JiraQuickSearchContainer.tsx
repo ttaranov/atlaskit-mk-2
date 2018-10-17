@@ -46,8 +46,9 @@ import {
   ABTest,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
+import AdvancedIssueSearchLink from './AdvancedIssueSearchLink';
 
-const AdvancedSearchContainer = styled.div`
+const NoResultsAdvancedSearchContainer = styled.div`
   margin-top: ${4 * gridSize()}px;
 `;
 
@@ -124,16 +125,16 @@ export class JiraQuickSearchContainer extends React.Component<
         renderNoRecentActivity={() => (
           <>
             <FormattedHTMLMessage id="global-search.jira.no-recent-activity-body" />
-            <AdvancedSearchContainer>
+            <NoResultsAdvancedSearchContainer>
               <JiraAdvancedSearch
                 query={query}
                 analyticsData={{ resultsCount: 0, wasOnNoResultsScreen: true }}
               />
-            </AdvancedSearchContainer>
+            </NoResultsAdvancedSearchContainer>
           </>
         )}
         renderAdvancedSearchGroup={(analyticsData?) => (
-          <StickyFooter>
+          <StickyFooter style={{ marginTop: `${2 * gridSize()}px` }}>
             <JiraAdvancedSearch
               analyticsData={analyticsData}
               query={query}
@@ -143,6 +144,7 @@ export class JiraQuickSearchContainer extends React.Component<
             />
           </StickyFooter>
         )}
+        renderBeforePreQueryState={() => <AdvancedIssueSearchLink />}
         getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
         getPostQueryGroups={() =>
           mapSearchResultsToUIGroups(searchResults as JiraResultsMap)
@@ -209,13 +211,27 @@ export class JiraQuickSearchContainer extends React.Component<
     });
   };
 
+  canSearchUsers = (): Promise<boolean> => {
+    return handlePromiseError(
+      this.props.jiraClient.canSearchUsers(),
+      false,
+      error =>
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'error fetching browse user permission',
+          error,
+        ),
+    );
+  };
+
   getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
     return Promise.all([
       this.getJiraRecentItems(sessionId),
       this.getRecentlyInteractedPeople(),
+      this.canSearchUsers(),
     ])
-      .then(([jiraItems, people]) => {
-        return { ...jiraItems, people };
+      .then(([jiraItems, people, canSearchUsers]) => {
+        return { ...jiraItems, people: canSearchUsers ? people : [] };
       })
       .then(results => ({ results } as ResultsWithTiming));
   };
@@ -248,23 +264,31 @@ export class JiraQuickSearchContainer extends React.Component<
     const mapPromiseToPerformanceTime = (p: Promise<any>) =>
       p.then(() => performanceNow() - startTime);
 
-    return Promise.all<CrossProductSearchResults, Result[], number, number>([
+    return Promise.all<
+      CrossProductSearchResults,
+      Result[],
+      number,
+      number,
+      boolean
+    >([
       crossProductSearchPromise,
       searchPeoplePromise,
       mapPromiseToPerformanceTime(crossProductSearchPromise),
       mapPromiseToPerformanceTime(searchPeoplePromise),
+      this.canSearchUsers(),
     ]).then(
       ([
         xpsearchResults,
         peopleResults,
         crossProductSearchElapsedMs,
         peopleElapsedMs,
+        canSearchPeople,
       ]) => ({
         results: {
           objects: xpsearchResults.results.get(Scope.JiraIssue) || [],
           containers:
             xpsearchResults.results.get(Scope.JiraBoardProjectFilter) || [],
-          people: peopleResults,
+          people: canSearchPeople ? peopleResults : [],
         },
         timings: {
           crossProductSearchElapsedMs,

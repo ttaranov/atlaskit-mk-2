@@ -3,10 +3,16 @@ import { Observable } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { fakeContext, nextTick } from '@atlaskit/media-test-helpers';
-import { Context, FileState, UrlPreview } from '@atlaskit/media-core';
+import {
+  Context,
+  FileState,
+  UrlPreview,
+  FileDetails,
+} from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
+  CardAction,
   CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
@@ -565,6 +571,25 @@ describe('Card', () => {
     expect(component.find(CardView).prop('status')).toEqual('error');
   });
 
+  it('should render failed card when getFileState resolves with status=failed', async () => {
+    const context = createContextWithGetFile({
+      status: 'failed-processing',
+    });
+    const { component } = setup(context);
+
+    await nextTick();
+    component.update();
+    const { status, metadata } = component.find(CardView).props();
+    expect(status).toEqual('failed-processing');
+    expect(metadata).toEqual({
+      id: '123',
+      size: 10,
+      name: 'file-name',
+      mimeType: 'image/png',
+      mediaType: 'image',
+    } as FileDetails);
+  });
+
   it('should render error card when getFileState fails', async () => {
     const getFileState = new Observable(subscriber => {
       subscriber.error('some-error');
@@ -689,16 +714,6 @@ describe('Card', () => {
     expect(releaseDataURI).toHaveBeenCalledTimes(1);
   });
 
-  it('should pass status=processing if file size is 0', async () => {
-    const context = createContextWithGetFile({ size: 0 });
-    const { component } = setup(context);
-
-    await nextTick();
-    component.update();
-
-    expect(component.find(CardView).prop('status')).toEqual('processing');
-  });
-
   describe('Retry', () => {
     it('should pass down "onRetry" prop when an error occurs', async () => {
       const { component, context } = setup();
@@ -743,5 +758,43 @@ describe('Card', () => {
         name: 'bla',
       });
     });
+  });
+
+  it('should add download Action when in failed-processing state', () => {
+    const initialActions: Array<CardAction> = [
+      {
+        handler: () => {},
+      },
+    ];
+    const { component } = setup(undefined, {
+      actions: initialActions,
+    });
+    component.setState({
+      status: 'failed-processing',
+      metadata: {},
+    });
+    component.update();
+    const actions = component.find(CardView).prop('actions')!;
+    expect(actions).toHaveLength(2);
+    expect(actions[0].label).toEqual('Download');
+  });
+
+  it('should call item download when download Action is executed', async () => {
+    const { component, context } = setup();
+    component.setState({
+      status: 'failed-processing',
+      metadata: {
+        name: 'some-file-name',
+      },
+    });
+    component.update();
+    const actions = component.find(CardView).prop('actions')!;
+    actions[0].handler();
+    await fileIdentifier.id;
+    expect(context.file.downloadBinary).toHaveBeenCalledWith(
+      fileIdentifier.id,
+      'some-file-name',
+      fileIdentifier.collectionName,
+    );
   });
 });

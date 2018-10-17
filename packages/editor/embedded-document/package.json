@@ -1,0 +1,40 @@
+{
+  "name": "@atlaskit/embedded-document",
+  "version": "0.0.4",
+  "description": "Embedded Document component",
+  "license": "Apache-2.0",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "atlaskit:src": "src/index.ts",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Oscar W"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/editor-core": "^87.0.0",
+    "@atlaskit/renderer": "^29.0.0",
+    "@atlaskit/theme": "^6.0.2",
+    "@atlaskit/util-service-support": "^3.0.2"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "fetch-mock": "^6.5.2",
+    "react": "^16.4.0",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "atlaskit": {
+    "internal": true
+  }
+}

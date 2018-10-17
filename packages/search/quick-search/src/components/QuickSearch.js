@@ -249,7 +249,7 @@ export class QuickSearch extends Component<Props, State> {
    * Callback for register results in flatResults
    */
   handleRegisterResult = (result: ResultBaseType) => {
-    if (!this.flatResults.includes(result)) {
+    if (!getResultById(this.flatResults, result.props.resultId)) {
       this.flatResults.push(result);
     }
   };
@@ -263,7 +263,10 @@ export class QuickSearch extends Component<Props, State> {
     4. All ResultBase components call unregisterResult() in order to unregister itself in quick search
    */
   handleUnregisterResult = (result: ResultBaseType) => {
-    const resultIndex = this.flatResults.indexOf(result);
+    const resultIndex = getResultIndexById(
+      this.flatResults,
+      result.props.resultId,
+    );
     if (resultIndex) {
       this.flatResults.splice(resultIndex, 1);
     }
