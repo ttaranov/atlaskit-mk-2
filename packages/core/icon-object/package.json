@@ -23,7 +23,7 @@
   "scripts": {
     "build": "mkdir -p dist && cp -r es5 dist/esm",
     "update": "node ./build/index.js && yarn build:babel:cjs",
-    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5"
+    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5 --root-mode=\"upward\""
   },
   "dependencies": {
     "@atlaskit/theme": "^6.1.1",

@@ -23,7 +23,7 @@
   "scripts": {
     "build": "mkdir -p dist && cp -r es5 dist/esm",
     "update": "node ./build/index.js && yarn build:babel:cjs",
-    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5"
+    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5 --root-mode=\"upward\""
   },
   "dependencies": {
     "@atlaskit/theme": "^6.1.1",
@@ -48,7 +48,7 @@
     "@atlaskit/modal-dialog": "^7.0.3",
     "@atlaskit/section-message": "^1.0.10",
     "@atlaskit/tooltip": "^12.1.4",
-    "babel-core": "7.0.0-bridge.0",
+    "@babel/core": "^7.1.0",
     "classnames": "^2.2.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fs-extra": "^4.0.2",
