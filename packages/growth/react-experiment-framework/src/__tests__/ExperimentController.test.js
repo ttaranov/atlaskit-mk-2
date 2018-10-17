@@ -46,27 +46,27 @@ describe('ExperimentController', () => {
     ).toBeFalsy();
 
     // call resolver
-    getExperimentValueForReceiverCall(0).enrollmentResolver();
+    const resolverPromise = getExperimentValueForReceiverCall(
+      0,
+    ).enrollmentResolver();
     expect(mockExperimentResolver).toBeCalled();
 
-    // it should update context with cached resolver and still not have decided enrollment
-    expect(mockContextReceiver.mock.calls).toHaveLength(2);
-    expect(
-      getExperimentValueForReceiverCall(1).isEnrollmentDecided,
-    ).toBeFalsy();
-    const cachedResolver = getExperimentValueForReceiverCall(1)
-      .enrollmentResolver;
-    expect(cachedResolver()).toEqual(cachedResolver());
+    // it should not call the resolver again and should return the same promise that the previous
+    // call received because it is still in-progress
+    expect(getExperimentValueForReceiverCall(0).enrollmentResolver()).toBe(
+      resolverPromise,
+    );
+    expect(mockContextReceiver.mock.calls).toHaveLength(1);
     expect(mockExperimentResolver.mock.calls).toHaveLength(1);
 
     // once resolved async-ily
-    return cachedResolver().then(() => {
+    return resolverPromise.then(() => {
       // third call has decided enrollment and has experiment details
-      expect(mockContextReceiver.mock.calls).toHaveLength(3);
+      expect(mockContextReceiver.mock.calls).toHaveLength(2);
       expect(
-        getExperimentValueForReceiverCall(2).isEnrollmentDecided,
+        getExperimentValueForReceiverCall(1).isEnrollmentDecided,
       ).toBeTruthy();
-      expect(getExperimentValueForReceiverCall(2).enrollmentDetails).toEqual(
+      expect(getExperimentValueForReceiverCall(1).enrollmentDetails).toEqual(
         mockExperimentDetails,
       );
     });

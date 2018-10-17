@@ -326,9 +326,15 @@ if (process.env.VISUAL_REGRESSION) {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
   beforeAll(async () => {
+    // show browser when watch is enabled
+    const isWatch = process.env.WATCH === 'true';
+    let headless = true;
+    if (isWatch) {
+      headless = false;
+    }
     global.browser = await puppeteer.launch({
       // run test in headless mode
-      headless: true,
+      headless: headless,
       slowMo: 100,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
@@ -339,8 +345,11 @@ if (process.env.VISUAL_REGRESSION) {
     await global.browser.close();
   });
 
+  // TODO tweak failureThreshold to provide best results
   const toMatchProdImageSnapshot = configureToMatchImageSnapshot({
     customDiffConfig: { threshold: 0.2 },
+    failureThreshold: '5',
+    failureThresholdType: 'percent',
     noColors: true,
   });
 

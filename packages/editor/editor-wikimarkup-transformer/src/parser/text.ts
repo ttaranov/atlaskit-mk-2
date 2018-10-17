@@ -68,19 +68,23 @@ export function parseString(
          */
         const substring = input.substring(index);
         /**
-         * If the previous char is an empty space, we will parse
+         * If the previous char is not a alphanumeric, we will parse
          * format keywords.
          * If the previous char is '{', we need to skip parse macro
          * keyword
          */
         let match: { type: TokenType } | null = null;
-        if (buffer.endsWith(' ')) {
+        const endingChar = buffer[buffer.length - 1];
+        if (buffer.endsWith('{')) {
+          match = parseOtherKeyword(substring);
+        } else if (
+          endingChar &&
+          !/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(endingChar)
+        ) {
           match =
             parseFormatterKeyword(substring) ||
             parseMacroKeyword(substring) ||
             parseOtherKeyword(substring);
-        } else if (buffer.endsWith('{')) {
-          match = parseOtherKeyword(substring);
         } else {
           match = parseMacroKeyword(substring) || parseOtherKeyword(substring);
         }

@@ -30,6 +30,20 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect superscript mark surrounded by non alphanumeric characters', () => {
+    const wiki = 'This is a (^superscript^) text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should not be a superscript mark if not surrounded by non-latin characters', () => {
+    const wiki = 'This is not a 牛^superscript^牛 text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a superscript mark if there is no space before ^', () => {
     const wiki = 'This is not a^superscript^ text';
 

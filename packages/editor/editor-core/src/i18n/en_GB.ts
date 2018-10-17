@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Wide',
   'fabric.editor.layoutFullWidth': 'Full width',
   'fabric.editor.remove': 'Remove',
+  'fabric.editor.visit': 'Open link in a new window',
   'fabric.editor.normal': 'Normal text',
   'fabric.editor.heading1': 'Heading 1',
   'fabric.editor.heading2': 'Heading 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Text to display',
   'fabric.editor.linkPlaceholderWithSearch':
     'Paste link or search recently viewed',
+  'fabric.editor.action': 'Action item',
   'fabric.editor.link': 'Link',
   'fabric.editor.filesAndImages': 'Files & images',
   'fabric.editor.image': 'Image',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Three columns',
   'fabric.editor.unorderedList': 'Bullet list',
   'fabric.editor.orderedList': 'Numbered list',
-  'fabric.editor.action': 'Action item',
   'fabric.editor.lists': 'Lists',
   'fabric.editor.wrapLeft': 'Wrap left',
   'fabric.editor.wrapRight': 'Wrap right',
@@ -77,6 +78,9 @@ export default {
     '{0, plural, one{Remove column} other{Remove columns}}',
   'fabric.editor.insertRow': 'Insert row',
   'fabric.editor.removeRows': '{0, plural, one{Remove row} other{Remove rows}}',
+  'fabric.editor.decisionPlaceholder': 'Add a decision…',
+  'fabric.editor.taskPlaceholder':
+    "Type your action, use '@' to assign to someone.",
   'fabric.editor.textColor': 'Text colour',
   'fabric.editor.underline': 'Underline',
   'fabric.editor.strike': 'Strikethrough',

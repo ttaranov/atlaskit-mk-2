@@ -1,5 +1,15 @@
 # @atlaskit/global-search
 
+## 5.11.0
+- [minor] Adds a check for the Jira version of global search to ensure the user has browse user permission before showing people results. [ce58d96](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce58d96)
+
+## 5.10.4
+- [patch] Change dependency on all icon package to be caret [9961f6d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9961f6d)
+- [patch] Updated dependencies [e7bb74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7bb74d)
+  - @atlaskit/icon-file-type@1.0.4
+  - @atlaskit/icon-object@1.0.4
+  - @atlaskit/icon@14.0.3
+
 ## 5.10.3
 - [patch] Fix navigation issues when clicking the advanced search button in JIra [3b321ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b321ab)
 
