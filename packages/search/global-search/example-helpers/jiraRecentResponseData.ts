@@ -163,6 +163,22 @@ export const JiraRecentResponse = [
     url:
       'https://product-fabric.atlassian.net/secure/ManageFilters.jspa?searchName=&Search=Search&filterView=search',
   },
+  {
+    id: 'quick-search-dashboards',
+    name: 'Recent dashboards',
+    viewAllTitle: 'View all dashboards',
+    items: [
+      {
+        id: 10000,
+        title: 'System dashboard',
+        url:
+          'https://confluence-only.jira-dev.com/secure/Dashboard.jspa?selectPageId=10000',
+        favourite: false,
+      },
+    ],
+    url:
+      'https://confluence-only.jira-dev.com/secure/ConfigurePortalPages%21default.jspa?name=',
+  },
 ];
 
 export const TransformedResponse = [
