@@ -12,7 +12,6 @@ const STEPS = Number(process.env.STEPS);
 
 /**
  * Code coverage thresold configuration
- * Currently, it's added only for `@atlaskit/navigation-next`
  */
 const codeCoverageConfig = {
   coverageThreshold: {
@@ -91,20 +90,6 @@ const config = {
     // Adding content to be added in our code coverage
     // Add your bolt packages here
     'packages/core/navigation-next/src/**/*.{js,jsx,ts,tsx}',
-
-    // Adding content to be ignored in our code coverage
-    // Global folders to be ignored
-    '!**/node_modules/**',
-    '!**/build/**',
-    '!**/docs/**',
-    '!**/dist/**',
-    // Website content folders to be ignored
-    '!**/public/**',
-    '!**/scripts/**',
-    // Packages monorepo folders to be ignored
-    '!**/examples/**',
-    '!**/releases/**',
-    '!**/examples-util/**',
   ],
   coverageThreshold: {},
 };
@@ -136,15 +121,14 @@ if (CHANGED_PACKAGES) {
       )
       .filter(Boolean);
 
-    if (coverageThreshold.length > 0) {
-      config.collectCoverage = true;
-      config.coverageThreshold = {};
-
-      coverageThreshold.forEach(pkgCoverage => {
-        config.coverageThreshold[pkgCoverage] =
-          codeCoverageConfig.coverageThreshold[pkgCoverage];
-      });
-    }
+    config.collectCoverage = coverageThreshold.length > 0;
+    config.coverageThreshold = coverageThreshold.reduce(
+      (result, pkgCoverage) => ({
+        ...result,
+        [pkgCoverage]: codeCoverageConfig.coverageThreshold[pkgCoverage],
+      }),
+      {},
+    );
   }
 }
 
