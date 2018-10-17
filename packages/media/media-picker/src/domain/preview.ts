@@ -1,7 +1,7 @@
 import { ImageMetadata } from '@atlaskit/media-store';
 
 export type NonImagePreview = {
-  readonly src: string;
+  readonly file?: Blob;
 };
 export type ImagePreview = NonImagePreview & {
   readonly dimensions: {
@@ -20,11 +20,7 @@ export const getPreviewFromMetadata = (metadata: ImageMetadata): Preview => {
     !metadata.original.width ||
     !metadata.original.height
   ) {
-    const preview: NonImagePreview = {
-      src: '',
-    };
-
-    return preview;
+    return {};
   }
 
   const preview: ImagePreview = {
@@ -32,7 +28,6 @@ export const getPreviewFromMetadata = (metadata: ImageMetadata): Preview => {
       width: metadata.original.width,
       height: metadata.original.height,
     },
-    src: metadata.original.url || '',
   };
 
   return preview;

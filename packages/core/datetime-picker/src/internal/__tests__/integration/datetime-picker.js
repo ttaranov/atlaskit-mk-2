@@ -18,7 +18,7 @@ const timeValue = `${timepickerDefault} > div > div > div`;
 const timeOption = '[role="option"]';
 
 BrowserTestCase(
-  'When DatePicker is focused & backspace pressed, the input should be cleared',
+  'datetime-picker.js: When DatePicker is focused & backspace pressed, the input should be cleared',
   { skip: ['firefox', 'ie', 'edge'] },
   async client => {
     const dateTimePickerTest = new Page(client);
@@ -43,7 +43,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
+  'datetime-picker.js: When choosing another day in a Datetime picker focused, the date should be updated to the new value',
   { skip: ['firefox'] },
   async client => {
     const dateTimePickerTest = new Page(client);
@@ -71,7 +71,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'When entering a new time in Timepicker Editable, the time should be updated to the new value',
+  'datetime-picker.js: When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['firefox', 'ie', 'safari', 'edge'] }, // Enter key has an issue in those browser
   async client => {
     const timePicker = new Page(client);

@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.0.1
+- [patch] Fix MediaViewer showing the spinner when it should show the error view [914bdb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/914bdb2)
+
 ## 24.0.0
 - [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/media-card@41.0.0

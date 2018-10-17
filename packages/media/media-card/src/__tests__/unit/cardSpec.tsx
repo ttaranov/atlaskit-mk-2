@@ -714,16 +714,6 @@ describe('Card', () => {
     expect(releaseDataURI).toHaveBeenCalledTimes(1);
   });
 
-  it('should pass status=processing if file size is 0', async () => {
-    const context = createContextWithGetFile({ size: 0 });
-    const { component } = setup(context);
-
-    await nextTick();
-    component.update();
-
-    expect(component.find(CardView).prop('status')).toEqual('processing');
-  });
-
   describe('Retry', () => {
     it('should pass down "onRetry" prop when an error occurs', async () => {
       const { component, context } = setup();

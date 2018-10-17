@@ -14,7 +14,7 @@ const OnBoardingDefault = '#examples p:nth-child(3) > button';
 const OnBoardingMenuTitle = 'div h4';
 
 BrowserTestCase(
-  'AK-4279 - Clicking on show should display the onboarding and no errors',
+  'on-boarding.js: AK-4279 - Clicking on show should display the onboarding and no errors',
   { skip: ['safari', 'edge'] }, // Safari and Edge have issues at the moment
   async client => {
     const onBoardingTest = new Page(client);
