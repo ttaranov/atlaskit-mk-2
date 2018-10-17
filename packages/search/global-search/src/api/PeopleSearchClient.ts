@@ -3,6 +3,7 @@ import {
   ResultType,
   AnalyticsType,
   Result,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -181,6 +182,7 @@ function userSearchResultToResult(
     name: searchResult.fullName,
     href: '/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
+    contentType: ContentType.Person,
     analyticsType,
     mentionName: mention,
     presenceMessage: searchResult.title,
