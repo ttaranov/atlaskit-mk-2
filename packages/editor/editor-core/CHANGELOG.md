@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 86.0.9
+- [patch] Lock typeahead to cursor position [81e28c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81e28c8)
+
 ## 86.0.8
 - [patch] New translations (Task & Decisions) [03addbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03addbd)
 
