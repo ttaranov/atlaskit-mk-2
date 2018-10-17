@@ -22,6 +22,7 @@ describe('getPreviewFromMetadata()', () => {
         width: 10,
         height: 10,
       },
+      scaleFactor: 1,
     });
   });
 
@@ -47,6 +48,7 @@ describe('getPreviewFromMetadata()', () => {
         width: 10,
         height: 10,
       },
+      scaleFactor: 1,
     });
   });
 });
