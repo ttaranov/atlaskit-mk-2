@@ -14,23 +14,17 @@ const STEPS = Number(process.env.STEPS);
  * Code coverage thresold configuration
  * Currently, it's added only for `@atlaskit/navigation-next`
  */
-let codeCoverageConfig = {};
-
-// Adding code coverage thresold only for unit tests
-if (!INTEGRATION_TESTS && !VISUAL_REGRESSION) {
-  codeCoverageConfig = {
-    coverageThreshold: {
-      // Add coverage threshold by folder
-      [`${__dirname}/packages/core/navigation-next/src`]: {
-        statements: 69,
-        branches: 61,
-        functions: 69,
-        lines: 69,
-      },
+const codeCoverageConfig = {
+  coverageThreshold: {
+    // Add coverage threshold by folder
+    [`${__dirname}/packages/core/navigation-next/src`]: {
+      statements: 69,
+      branches: 61,
+      functions: 69,
+      lines: 69,
     },
-  };
-}
-
+  },
+};
 /**
  * USAGE for parallelizing: setting PARALLELIZE_TESTS to an array of globs or an array of test files when you
  * have the STEPS and STEP_IDX vars set will automatically distribute them evenly.
@@ -112,6 +106,7 @@ const config = {
     '!**/releases/**',
     '!**/examples-util/**',
   ],
+  coverageThreshold: {},
 };
 
 // If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only
@@ -130,20 +125,26 @@ if (CHANGED_PACKAGES) {
   // Adding code coverage thresold configuration for unit test only
   // This should add only the packages with code coverage threshold available
   // If not it will keep the same flow without code coverage check
-  const coverageThreshold = [...changedPackages]
-    .map(pkgPath =>
-      codeCoverageThresoldPackages.find(pkg => pkg.includes(pkgPath)),
-    )
-    .filter(Boolean);
+  if (
+    !INTEGRATION_TESTS &&
+    !VISUAL_REGRESSION &&
+    !(process.argv || []).includes('--runInBand')
+  ) {
+    const coverageThreshold = [...changedPackages]
+      .map(pkgPath =>
+        codeCoverageThresoldPackages.find(pkg => pkg.includes(pkgPath)),
+      )
+      .filter(Boolean);
 
-  if (coverageThreshold.length > 0) {
-    config.collectCoverage = true;
-    config.coverageThreshold = {};
+    if (coverageThreshold.length > 0) {
+      config.collectCoverage = true;
+      config.coverageThreshold = {};
 
-    coverageThreshold.forEach(pkgCoverage => {
-      config.coverageThreshold[pkgCoverage] =
-        codeCoverageConfig.coverageThreshold[pkgCoverage];
-    });
+      coverageThreshold.forEach(pkgCoverage => {
+        config.coverageThreshold[pkgCoverage] =
+          codeCoverageConfig.coverageThreshold[pkgCoverage];
+      });
+    }
   }
 }
 
