@@ -2,14 +2,14 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
 
-export const pluginKey = new PluginKey('editorEnabledPlugin');
+export const pluginKey = new PluginKey('editorDisabledPlugin');
 
-export type EditorEnabledPluginState = {
-  editorEnabled: boolean;
+export type EditorDisabledPluginState = {
+  editorDisabled: boolean;
 };
 
 export function createPlugin(
-  dispatch: Dispatch<EditorEnabledPluginState>,
+  dispatch: Dispatch<EditorDisabledPluginState>,
 ): Plugin | undefined {
   return new Plugin({
     key: pluginKey,
@@ -17,12 +17,12 @@ export function createPlugin(
       init: () => ({
         editorEnabled: false,
       }),
-      apply(tr, oldPluginState) {
-        const newPluginState = tr.getMeta(pluginKey);
+      apply(tr, oldPluginState: EditorDisabledPluginState) {
+        const newPluginState: EditorDisabledPluginState = tr.getMeta(pluginKey);
 
         if (
           newPluginState &&
-          oldPluginState.editorEnabled !== newPluginState.newEditorEnabled
+          oldPluginState.editorDisabled !== newPluginState.editorDisabled
         ) {
           dispatch(pluginKey, newPluginState);
           return newPluginState;
@@ -33,13 +33,13 @@ export function createPlugin(
   });
 }
 
-const editorEnabledPlugin: EditorPlugin = {
+const editorDisabledPlugin: EditorPlugin = {
   pmPlugins: () => [
     {
-      name: 'editorEnabled',
+      name: 'editorDisabled',
       plugin: ({ dispatch }) => createPlugin(dispatch),
     },
   ],
 };
 
-export default editorEnabledPlugin;
+export default editorDisabledPlugin;

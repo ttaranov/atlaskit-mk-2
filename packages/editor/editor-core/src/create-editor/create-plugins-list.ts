@@ -43,7 +43,7 @@ import {
   floatingToolbarPlugin,
   statusPlugin,
   gridPlugin,
-  editorEnabledPlugin,
+  editorDisabledPlugin,
 } from '../plugins';
 
 /**
@@ -60,7 +60,7 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
     textFormattingPlugin(props.textFormatting || {}),
     widthPlugin,
     typeAheadPlugin,
-    editorEnabledPlugin,
+    editorDisabledPlugin,
   ];
 }
 

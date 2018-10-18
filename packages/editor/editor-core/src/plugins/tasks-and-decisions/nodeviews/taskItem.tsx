@@ -9,9 +9,9 @@ import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 import WithPluginState from '../../..//ui/WithPluginState';
 import {
-  pluginKey as editorEnabledPluginKey,
-  EditorEnabledPluginState,
-} from '../../editor-enabled';
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../../editor-disabled';
 
 export interface Props {
   children?: React.ReactNode;
@@ -95,12 +95,12 @@ class Task extends ReactNodeView {
       >
         <WithPluginState
           plugins={{
-            editorEnabledPlugin: editorEnabledPluginKey,
+            editorDisabledPlugin: editorDisabledPluginKey,
           }}
           render={({
-            editorEnabledPlugin,
+            editorDisabledPlugin,
           }: {
-            editorEnabledPlugin: EditorEnabledPluginState;
+            editorDisabledPlugin: EditorDisabledPluginState;
           }) => (
             <TaskItem
               taskId={localId}
@@ -109,7 +109,7 @@ class Task extends ReactNodeView {
               onChange={this.handleOnChange}
               showPlaceholder={this.isContentEmpty()}
               providers={props.providerFactory}
-              disabled={editorEnabledPlugin.editorEnabled}
+              disabled={editorDisabledPlugin.editorDisabled}
             />
           )}
         />

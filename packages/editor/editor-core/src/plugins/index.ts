@@ -46,4 +46,4 @@ export { default as cardPlugin } from './card';
 export { default as floatingToolbarPlugin } from './floating-toolbar';
 export { default as statusPlugin } from './status';
 export { default as gridPlugin } from './grid';
-export { default as editorEnabledPlugin } from './editor-enabled';
+export { default as editorDisabledPlugin } from './editor-disabled';

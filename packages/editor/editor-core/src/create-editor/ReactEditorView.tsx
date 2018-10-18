@@ -11,9 +11,9 @@ import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps, EditorConfig, EditorPlugin } from '../types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
 import {
-  pluginKey as editorEnabledPluginKey,
-  EditorEnabledPluginState,
-} from '../plugins/editor-enabled';
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../plugins/editor-disabled';
 
 import {
   processPluginsList,
@@ -77,13 +77,12 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     this.editorState = this.createEditorState({ props, replaceDoc: true });
   }
 
-  private broadcastDisabled = disabled => {
+  private broadcastDisabled = (disabled: boolean) => {
     const editorView = this.view;
     if (editorView) {
-      console.log('Broadcast disabled called, disabled:', disabled);
-      const tr = editorView.state.tr.setMeta(editorEnabledPluginKey, {
-        editorEnabled: disabled,
-      } as EditorEnabledPluginState);
+      const tr = editorView.state.tr.setMeta(editorDisabledPluginKey, {
+        editorDisabled: disabled,
+      } as EditorDisabledPluginState);
 
       tr.setMeta('isLocal', true);
       editorView.dispatch(tr);
