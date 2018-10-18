@@ -56,7 +56,7 @@ describe('GlobalItem', () => {
     const MockNavigationItemClicked = jest.fn(
       () => WrappedWithNavigationItemClicked,
     );
-    jest.doMock('../../../../common/analytics', () => ({
+    jest.doMock('../../../../../common/analytics', () => ({
       navigationItemClicked: MockNavigationItemClicked,
     }));
 

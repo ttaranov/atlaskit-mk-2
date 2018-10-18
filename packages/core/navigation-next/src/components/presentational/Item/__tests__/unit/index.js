@@ -20,7 +20,7 @@ describe('Item', () => {
 
   it('should wrap ConnectedItem with navigationItemClicked HOC', () => {
     const mockNavigationItemClicked = jest.fn(() => () => null);
-    jest.doMock('../../../../common/analytics', () => ({
+    jest.doMock('../../../../../common/analytics', () => ({
       navigationItemClicked: mockNavigationItemClicked,
     }));
     const { ConnectedItem: RequiredConnectedItem } = require('../../index');
