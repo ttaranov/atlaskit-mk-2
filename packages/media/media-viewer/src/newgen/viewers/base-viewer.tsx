@@ -23,7 +23,7 @@ export abstract class BaseViewer<
   componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.init(nextProps.item, this.props.context);
+      this.init(nextProps.item, nextProps.context);
     }
   }
 
