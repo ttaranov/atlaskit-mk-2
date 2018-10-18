@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.0.2
+- [patch] Async load datepicker [c38e5a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c38e5a5)
+
 ## 87.0.1
 - [patch] Updated dependencies [9add3a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9add3a4)
   - @atlaskit/media-picker@23.0.0
