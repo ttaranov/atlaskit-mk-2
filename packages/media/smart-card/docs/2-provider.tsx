@@ -6,18 +6,34 @@ export default md`
 The Provider component has one purpose: provide a custom client to cards:
 
 ~~~
-const customFetch = (url: string): Promise<ResolveResponse> | null => {
-  if (checkIfWeCanHandle(url)) {
-    return Promise.resolve(customResponse);
+const myDefinitionId = uuid.v4();
+
+  const customResponse = {
+    meta: {
+      visibility: 'public',
+      access: 'granted',
+      auth: [],
+      definitionId: myDefinitionId,
+    },
+    data: {
+      name: 'My Document',
+    },
+  } as ResolveResponse;
+
+  class CustomClient extends Client {
+    fetchData(url: string) {
+      if (canIHandleThat(url)) {
+        return Promise.resolve(customResponse);
+      }
+      return super.fetchData(url);
+    }
   }
-  return null;
-}
-...
-<Provider client={new Client({ customFetch })}>
   ...
-  <Card appearance="block" url={specialCaseUrl} />
-  ...
-</Provider>
+  <Provider client={new CustomClient()}>
+    ...
+    <Card appearance="block" url={specialCaseUrl} />
+    ...
+  </Provider>
 ...
 ~~~
 
