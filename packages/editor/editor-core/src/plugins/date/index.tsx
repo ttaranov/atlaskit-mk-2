@@ -10,7 +10,14 @@ import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { insertDate, setDatePickerAt } from './actions';
 import createDatePlugin, { DateState, pluginKey } from './plugin';
 import keymap from './keymap';
-import DatePicker from './ui/DatePicker';
+import * as Loadable from 'react-loadable';
+
+const DatePicker = Loadable({
+  loader: import(/* webpackChunkName:"@atlaskit-internal-editor-datepicker" */ './ui/DatePicker').then(
+    module => module.default,
+  ),
+  loading: () => null,
+});
 
 export type DateType = {
   year: number;
@@ -19,6 +26,9 @@ export type DateType = {
 };
 
 const datePlugin: EditorPlugin = {
+  init() {
+    DatePicker.preload();
+  },
   nodes() {
     return [{ name: 'date', node: date }];
   },
