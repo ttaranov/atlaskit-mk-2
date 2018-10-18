@@ -33,8 +33,9 @@ const createConfig = require('../config');
 const utils = require('../config/utils');
 const { print, devServerBanner, errorMsg } = require('../banner');
 
-const HOST = 'localhost';
+const HOST = process.env.IMAGE_SNAPSHOT === 'true' ? '0.0.0.0' : 'localhost';
 const PORT = +process.env.ATLASKIT_DEV_PORT || 9000;
+const disableHostCheck = process.env.IMAGE_SNAPSHOT ? true : false;
 
 async function runDevServer() {
   const [workspacesGlobRaw = ''] = process.argv.slice(2);
@@ -100,6 +101,7 @@ async function runDevServer() {
     compress: true,
 
     historyApiFallback: true,
+    disableHostCheck: disableHostCheck,
 
     overlay: true,
     stats: {

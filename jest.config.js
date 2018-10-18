@@ -124,7 +124,7 @@ if (config.testMatch.length === 0) {
   }
 }
 
-if (process.env.SNAPSHOT === 'true') {
+if (process.env.IMAGE_SNAPSHOT === 'true') {
   config.globals.__BASEURL__ = 'http://testing.local.com';
 }
 
