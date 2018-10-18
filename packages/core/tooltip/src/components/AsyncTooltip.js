@@ -1,7 +1,17 @@
+//@flow
 import React, { Children, Fragment } from 'react';
+import type { Props, State } from './Tooltip';
+import { Tooltip as StyledTooltip } from '../styled';
 
-export default class AsyncTooltip extends React.PureComponent {
+export default class AsyncTooltip extends React.Component<Props, State> {
   static Tooltip = null;
+  static defaultProps = {
+    component: StyledTooltip,
+    delay: 300,
+    mousePosition: 'bottom',
+    position: 'bottom',
+    tag: 'div',
+  };
 
   static preload() {
     return AsyncTooltip.loadTooltip();

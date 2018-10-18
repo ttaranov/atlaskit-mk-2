@@ -80,7 +80,7 @@ export type Props = {
   truncate?: boolean,
 };
 
-type State = {
+export type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   isVisible: boolean,
@@ -107,14 +107,6 @@ const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
 };
 
 class Tooltip extends Component<Props, State> {
-  static defaultProps = {
-    component: StyledTooltip,
-    delay: 300,
-    mousePosition: 'bottom',
-    position: 'bottom',
-    tag: 'div',
-  };
-
   wrapperRef: HTMLElement | null;
   targetRef: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
