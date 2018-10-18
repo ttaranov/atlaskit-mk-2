@@ -44,7 +44,7 @@ export class FileFetcher {
   // TODO: add test to ensure we return the right items
   // Returns an array of the same length as the keys filled with file items
   batchLoadingFunc = async (keys: DataloaderKey[]) => {
-    console.log(keys);
+    // console.log(keys);
     const response = await this.mediaStore.getItems(keys);
     // console.log('response', response)
     const { items } = response.data;
@@ -87,7 +87,7 @@ export class FileFetcher {
         try {
           console.log(2, { id, collection });
           const response = await this.dataloader.load({ id, collection });
-          console.log(3);
+          console.log(3, response);
           if (!response) {
             return;
           }
