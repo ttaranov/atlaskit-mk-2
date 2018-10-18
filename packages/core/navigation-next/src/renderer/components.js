@@ -15,16 +15,16 @@ import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
-import {
-  Item as BaseItem,
-  ContainerHeader as ContainerHeaderComponent,
-  Group as GroupComponent,
-  GroupHeading as GroupHeadingComponent,
-  Section as SectionComponent,
-  SectionHeading as SectionHeadingComponent,
-  Separator,
-  Switcher,
-} from '../components/presentational';
+
+import ContainerHeaderComponent from '../components/presentational/ContainerHeader';
+import GroupComponent from '../components/presentational/Group';
+import GroupHeadingComponent from '../components/presentational/GroupHeading';
+import BaseItem from '../components/presentational/Item';
+import SectionComponent from '../components/presentational/Section';
+import SectionHeadingComponent from '../components/presentational/SectionHeading';
+import Separator from '../components/presentational/Separator';
+import Switcher from '../components/presentational/Switcher';
+
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
 
