@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.1.2
+- [patch] use latest onLoad prop in ImageViewer init [de72be8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de72be8)
+
 ## 24.1.1
 - [patch] Pass the proper context object when reinitializing the BaseViewer" [215ea6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/215ea6c)
 
