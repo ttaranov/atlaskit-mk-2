@@ -74,6 +74,9 @@ class Example extends Component<{}, ExampleState> {
   render() {
     return (
       <div>
+        <h1>
+          Demonstrates that we batch calls to /items endpoint for file metadata
+        </h1>
         <button onClick={this.fetchFirstItem}>Fetch first item</button>
         <button onClick={this.fetchNewItem}>Fetch new item</button>
         {this.renderFileState()}

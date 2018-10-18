@@ -5,14 +5,24 @@ import {
   imageFileId,
   audioFileId,
 } from '@atlaskit/media-test-helpers';
-import { MediaStore } from '../src';
+import { MediaStore, ItemsPayload } from '../src';
 
 const context = createStorybookContext();
 const store = new MediaStore({
   authProvider: context.config.authProvider,
 });
 
-class Example extends Component {
+interface ExampleState {
+  payload: ItemsPayload;
+}
+
+class Example extends Component<{}, ExampleState> {
+  state: ExampleState = {
+    payload: {
+      items: [],
+    },
+  };
+
   async componentDidMount() {
     const response = await store.getItems([
       {
@@ -24,15 +34,23 @@ class Example extends Component {
         collection: audioFileId.collectionName,
       },
     ]);
-    response.data.items.forEach(item => {
-      console.log(item.id, item.details);
+
+    this.setState({
+      payload: response.data,
     });
   }
 
   render() {
+    const { payload } = this.state;
+
     return (
       <div>
-        <h1>Get Items</h1>
+        <h1>MediaStore=>getItems()</h1>
+        <pre>
+          {payload.items.length
+            ? JSON.stringify(payload.items, undefined, 2)
+            : 'fetching items...'}
+        </pre>
       </div>
     );
   }

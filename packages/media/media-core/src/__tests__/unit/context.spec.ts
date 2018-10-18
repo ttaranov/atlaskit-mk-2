@@ -12,7 +12,6 @@ import { ContextFactory } from '../../../src/context/context';
 import { fileStreamsCache } from '../../../src/context/fileStreamCache';
 
 import { uploadFile } from '@atlaskit/media-store';
-import { nextTick } from '@atlaskit/media-test-helpers';
 
 const getOrInsertSpy = jest.spyOn(fileStreamsCache, 'getOrInsert');
 const authProvider: AuthProvider = () =>

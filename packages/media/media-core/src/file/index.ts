@@ -21,7 +21,7 @@ import FileStreamCache from '../context/fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
 const POLLING_INTERVAL = 1000;
-
+const maxNumberOfItemsPerCall = 100;
 interface DataloaderKey {
   id: string;
   collection?: string;
@@ -32,32 +32,25 @@ export class FileFetcher {
     MediaCollectionItemFullDetails | undefined
   >;
   constructor(private readonly mediaStore: MediaStore) {
-    // TODO: caching function
     this.dataloader = new Dataloader<
       DataloaderKey,
       MediaCollectionItemFullDetails | undefined
     >(this.batchLoadingFunc, {
-      maxBatchSize: 100,
+      maxBatchSize: maxNumberOfItemsPerCall,
     });
   }
 
   // TODO: add test to ensure we return the right items
   // Returns an array of the same length as the keys filled with file items
   batchLoadingFunc = async (keys: DataloaderKey[]) => {
-    // console.log(keys);
     const response = await this.mediaStore.getItems(keys);
-    // console.log('response', response)
     const { items } = response.data;
 
     return keys.map(key => {
       const item = items.find(
         item => item.id === key.id && item.collection === key.collection,
       );
-      if (!item) {
-        return undefined;
-      }
-
-      return item.details;
+      return item && item.details;
     });
   };
 
