@@ -29,9 +29,17 @@ type Props = {
   blanketIsTinted?: boolean,
   /* Typically the app, or a section of the app */
   children: Node,
-  /* Until we can use Fragment */
-  component: ElementType,
+  /* Replaces the wrapping fragment with component **Deprecated** */
+  component?: ElementType,
 };
+
+const Container = ({
+  component: Wrapper,
+  children,
+}: {
+  component: ElementType,
+  children: Node,
+}) => <Wrapper>{children}</Wrapper>;
 
 export default class SpotlightManager extends PureComponent<
   Props,
@@ -42,7 +50,6 @@ export default class SpotlightManager extends PureComponent<
 > {
   static defaultProps = {
     blanketIsTinted: true,
-    component: 'div',
   };
 
   state = {
@@ -80,7 +87,7 @@ export default class SpotlightManager extends PureComponent<
         value={this.getStateProviderValue(this.state.targets)}
       >
         <TargetProvider value={this.targetRef}>
-          <React.Fragment>
+          <Container component={Tag || React.Fragment}>
             <Fade in={this.state.spotlightCount > 0}>
               {animationStyles => (
                 <Portal zIndex={layers.spotlight()}>
@@ -89,7 +96,7 @@ export default class SpotlightManager extends PureComponent<
               )}
             </Fade>
             {children}
-          </React.Fragment>
+          </Container>
         </TargetProvider>
       </SpotlightStateProvider>
     );

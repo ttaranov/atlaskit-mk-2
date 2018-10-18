@@ -1,11 +1,16 @@
 // @flow
-import React, { Component, type ElementType, type Node } from 'react';
+import React, {
+  Component,
+  type ElementType,
+  type Element,
+  type Node,
+} from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { Popper } from '@atlaskit/popper';
+import { Popper, type Placement } from '@atlaskit/popper';
 import { FocusLock } from '@atlaskit/layer-manager';
 
 import {
@@ -13,6 +18,7 @@ import {
   version as packageVersion,
 } from '../../package.json';
 
+import type { ActionsType } from '../types';
 import { Image } from '../styled/Dialog';
 import SpotlightCard from './SpotlightCard';
 
@@ -94,8 +100,25 @@ class SpotlightDialog extends Component<Props, State> {
       console.warn('Please provide "footer" OR "actions", not both.'); // eslint-disable-line no-console
     }
 
+    const translatedPlacement: Placement | void = dialogPlacement
+      ? {
+          'top left': 'top-start',
+          'top center': 'top',
+          'top right': 'top-end',
+          'right top': 'right-start',
+          'right middle': 'right',
+          'right bottom': 'right-end',
+          'bottom left': 'bottom-start',
+          'bottom center': 'bottom',
+          'bottom right': 'bottom-end',
+          'left top': 'left-start',
+          'left middle': 'left',
+          'left bottom': 'left-end',
+        }[dialogPlacement]
+      : undefined;
+
     return (
-      <Popper referenceElement={targetNode}>
+      <Popper referenceElement={targetNode} placement={translatedPlacement}>
         {({ ref, style, placement }) => (
           <FocusLock enabled={hasFocusLock} returnFocus={false}>
             <SpotlightCard

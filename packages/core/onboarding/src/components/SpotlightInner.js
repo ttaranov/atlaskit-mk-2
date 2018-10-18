@@ -96,7 +96,6 @@ class SpotlightInner extends React.Component<
                   <SpotlightDialog
                     {...this.props}
                     targetNode={replacementElement || targetNode}
-                    isOpen={isOpen}
                     animationStyles={animationStyles}
                   />
                 )}
