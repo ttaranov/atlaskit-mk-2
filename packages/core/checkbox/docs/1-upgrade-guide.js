@@ -20,6 +20,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/01-controlled').default}
       title="Controlled"
       source={require('!!raw-loader!../examples/01-controlled')}
@@ -30,6 +31,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/02-uncontrolled').default}
       title="Uncontrolled"
       source={require('!!raw-loader!../examples/02-uncontrolled')}
@@ -42,6 +44,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/05-default-checked').default}
       title="Default Checked"
       source={require('!!raw-loader!../examples/05-default-checked')}
@@ -61,6 +64,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/checkbox"
       Component={require('../examples/06-checkbox-groups').default}
       title="Checkbox Groups"
       source={require('!!raw-loader!../examples/06-checkbox-groups')}
