@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { md, Example, code } from '@atlaskit/docs';
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
   @atlaskit/checkbox 5.x is part of an ongoing body of work to normalise atlaskit form components.
@@ -52,13 +53,26 @@ export default md`
   )}
 
   ### CheckboxStateless
-  **This component has been deprecated in favor of the conditionally controlled component pattern specified above.**
+
+  ${(
+    <SectionMessage title="Deprecated Component" appearance="error">
+      {
+        'This component has been deprecated in favor of the conditionally controlled component pattern specified above.**'
+      }
+    </SectionMessage>
+  )}
 
   ### CheckboxGroup:
 
-  @atlaskit/checkbox no longer exports a CheckboxGroup component. It has been removed for the following reasons:
-  - It was really a thin wrapper enforcing very basic styling opinions over its children (display: flex, flex: column)
-  - The existing styling blocks the horizontal display of checkbox group children.
+  ${(
+    <SectionMessage title="Deprecated Component" appearance="error">
+      {`
+        @atlaskit/checkbox no longer exports a CheckboxGroup component. It has been removed for the following reasons:
+        - It was really a thin wrapper enforcing very basic styling opinions over its children (display: flex, flex: column)
+        - The existing styling blocks the horizontal display of checkbox group children.
+      `}
+    </SectionMessage>
+  )}
 
   If you were previously using CheckboxGroup, you can replace your CheckboxGroup component with a simple flex wrapper, see the example below:
 

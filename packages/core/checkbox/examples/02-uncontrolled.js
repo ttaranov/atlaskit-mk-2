@@ -12,7 +12,7 @@ export default class UncontrolledExample extends PureComponent<void, State> {
   };
   onChange = (event: SyntheticEvent<*>) => {
     this.setState({
-      onChangeResult: `this.state.isChecked = ${event.currentTarget.checked}`,
+      onChangeResult: `this.state.isChecked: ${event.currentTarget.checked}`,
     });
   };
 
