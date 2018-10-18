@@ -51,6 +51,9 @@ export { default as Switcher } from './components/presentational/Switcher';
 export { default as Wordmark } from './components/presentational/Wordmark';
 
 /** Connected components */
+export { default as BackItem } from './components/connected/BackItem';
+export { default as ConnectedItem } from './components/connected/ConnectedItem';
+export { default as GoToItem } from './components/connected/GoToItem';
 export {
   default as LayoutManagerWithViewController,
 } from './components/connected/LayoutManagerWithViewController';

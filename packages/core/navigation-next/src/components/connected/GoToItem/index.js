@@ -6,7 +6,7 @@ import Spinner from '@atlaskit/spinner';
 
 import { withNavigationUI } from '../../../ui-controller';
 import { withNavigationViewController } from '../../../view-controller';
-import { ConnectedItem } from '../';
+import ConnectedItem from '../ConnectedItem';
 
 import type { GoToItemProps } from './types';
 

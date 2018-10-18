@@ -11,8 +11,8 @@ import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
 
-import { GoToItem } from '../';
-import { Item as PresentationalItem } from '../../presentational';
+import GoToItem from '../GoToItem';
+import PresentationalItem from '../../presentational/Item';
 import type { ConnectedItemProps } from './types';
 
 export const iconMap = {
