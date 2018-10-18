@@ -21,7 +21,6 @@ const ButtonContent = (props: Props) => {
   const style = {
     alignItems: getAlignment(props),
     alignSelf: getAlignment(props),
-    display: 'inline-flex',
     flex: '1 1 auto',
     margin: getMargin(props),
     maxWidth: '100%',
