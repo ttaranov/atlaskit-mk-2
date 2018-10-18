@@ -1,8 +1,8 @@
 // @flow
-import React, { type Element } from 'react';
+import React from 'react';
 import Button from '@atlaskit/button';
 
-import { Actions, ActionItems, ActionItem } from '../styled/Dialog';
+import { ActionItems, ActionItem } from '../styled/Dialog';
 import type { ActionsType } from '../types';
 
 type Props = {|
@@ -14,9 +14,7 @@ type Props = {|
 // eslint-disable-next-line react/prop-types
 const renderButtonsMap = ({ text, ...rest }, idx) => (
   <ActionItem key={text || idx}>
-    <Button {...rest} appearance={idx === 0 ? 'default' : 'subtle-link'}>
-      {text}
-    </Button>
+    <Button {...rest}>{text}</Button>
   </ActionItem>
 );
 

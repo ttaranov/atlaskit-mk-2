@@ -46,8 +46,9 @@ export default md`
 
   ## Benefits Modal
 
-  This component can be used to show off blah blah.
-  
+  If the product change is large enough, this component can be used to outline the
+  benefits of the change to the user.
+
   ${(
     <Example
       Component={require('../examples/99-modal-basic').default}
