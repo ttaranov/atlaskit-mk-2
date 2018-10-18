@@ -87,8 +87,9 @@ export class ImageViewer extends BaseViewer<
     // anything.
   }
 
-  protected init({ item: file, context }: ImageViewerProps) {
+  protected init() {
     this.setState(initialState, async () => {
+      const { item: file, context } = this.props;
       try {
         const service = context.getBlobService(this.props.collectionName);
         // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
