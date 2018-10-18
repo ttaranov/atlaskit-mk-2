@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.11.2
+- [patch] Fix duplicate keyboard selection for results [d0674c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0674c1)
+
 ## 5.11.1
 - [patch] Filter out unsupported groups from jira recent items resource [f429535](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f429535)
 
