@@ -114,42 +114,29 @@ export const getUrlsNotTiedToDefinitionId = (
   );
 };
 
-export type ClientConfig = {
-  customFetch?: CustomFetch;
-};
+export interface Client {
+  fetchData(url: string): Promise<ResolveResponse>;
+}
 
-export class Client {
-  private readonly customFetch?: CustomFetch;
+export class Client implements Client {
   private readonly mapDefinitionIdToUrls: MapDefinitionIdToUrls;
   private readonly mapUrlToCardRecords: MapUrlToCardRecords;
 
-  constructor(config?: ClientConfig) {
-    this.customFetch = config && config.customFetch;
+  constructor() {
     this.mapDefinitionIdToUrls = {};
     this.mapUrlToCardRecords = {};
   }
 
-  private fetchData(objectUrl: string): Observable<ResolveResponse> {
+  fetchData(objectUrl: string): Promise<ResolveResponse> {
     return fetch$<ResolveResponse>('post', `${SERVICE_URL}/resolve`, {
       resourceUrl: encodeURI(objectUrl),
-    });
+    }).toPromise();
   }
 
   startStreaming(objectUrl: string): Observable<ObjectState> {
-    if (this.customFetch) {
-      const maybeCustomData = this.customFetch(objectUrl);
-      if (maybeCustomData) {
-        return fromPromise(maybeCustomData).pipe(
-          map(responseToStateMapper),
-          catchError(() =>
-            of({ status: 'errored', services: [] } as ObjectState),
-          ),
-        );
-      }
-    }
     return merge(
       of({ status: 'resolving', services: [] } as ObjectState),
-      this.fetchData(objectUrl).pipe(
+      fromPromise(this.fetchData(objectUrl)).pipe(
         map(responseToStateMapper),
         catchError(() =>
           of({ status: 'errored', services: [] } as ObjectState),

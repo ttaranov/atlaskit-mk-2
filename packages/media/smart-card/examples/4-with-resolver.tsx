@@ -3,8 +3,8 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Provider, Card, Client, ResolveResponse } from '..';
 import '../mocks';
 
-const clientWithResolver = new Client({
-  customFetch: (url: string) => {
+class CustomClient extends Client {
+  fetchData(url: string) {
     if (url === 'public-happy') {
       return Promise.resolve({
         meta: {
@@ -16,9 +16,11 @@ const clientWithResolver = new Client({
         data: { url, name: 'From resolver' },
       } as ResolveResponse);
     }
-    return null;
-  },
-});
+    return super.fetchData(url);
+  }
+}
+
+const clientWithResolver = new CustomClient();
 
 export default () => (
   <Page>

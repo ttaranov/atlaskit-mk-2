@@ -305,15 +305,16 @@ describe('Client', () => {
       },
     } as ResolveResponse;
 
-    const customFetch = (url: string): Promise<ResolveResponse> | null => {
-      if (url === specialCaseUrl) {
-        return Promise.resolve(customResponse);
-      }
-      return null;
-    };
-
     const callHistory = await new Promise<ObjectState[]>(resolve => {
-      const customClient = new Client({ customFetch });
+      class CustomClient extends Client {
+        fetchData(url: string) {
+          if (url === specialCaseUrl) {
+            return Promise.resolve(customResponse);
+          }
+          return super.fetchData(url);
+        }
+      }
+      const customClient = new CustomClient();
       const stack: ObjectState[] = [];
 
       const callbackForSpecialCase = (s: ObjectState) => {
@@ -322,7 +323,7 @@ describe('Client', () => {
 
       const callbackForNormalCase = (s: ObjectState) => {
         stack.push(s);
-        if (stack.length === 3) {
+        if (stack.length === 4) {
           resolve(stack);
         }
       };
@@ -336,6 +337,7 @@ describe('Client', () => {
     });
 
     expect(callHistory).toMatchObject([
+      { status: 'resolving' },
       { status: 'resolving' },
       {
         status: 'resolved',

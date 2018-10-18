@@ -337,15 +337,17 @@ describe('Card', () => {
       },
     } as ResolveResponse;
 
-    const customFetch = (url: string): Promise<ResolveResponse> | null => {
-      if (url === specialCaseUrl) {
-        return Promise.resolve(customResponse);
+    class CustomClient extends Client {
+      fetchData(url: string) {
+        if (url === specialCaseUrl) {
+          return Promise.resolve(customResponse);
+        }
+        return super.fetchData(url);
       }
-      return null;
-    };
+    }
 
     const wrapper = mount(
-      <Provider client={new Client({ customFetch })}>
+      <Provider client={new CustomClient()}>
         <Card appearance="block" url={specialCaseUrl} />
       </Provider>,
     );
