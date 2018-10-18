@@ -18,7 +18,11 @@
     "build:no-minimize": "yarn build --no-minimize",
     "build:copy": "cp dist/index.html dist/404.html && cp -R public/* dist/",
     "deploy:staging": "netlify deploy --dir dist/ -a $NETLIFY_TOKEN -s $NETLIFY_SITE_ID_STAGING",
+<<<<<<< HEAD
     "deploy:production": "netlify deploy --dir dist/ -a $NETLIFY_TOKEN -s $NETLIFY_SITE_ID"
+=======
+    "deploy:production": "netlify deploy --dir dist/ -a $NETLIFY_TOKEN -s $NETLIFY_SITE_ID",
+>>>>>>> Refactors deploys to use the new netlify cli
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
