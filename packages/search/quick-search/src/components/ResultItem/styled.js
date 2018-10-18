@@ -10,7 +10,7 @@ export const ResultItemGroupHeader = styled.div`
 
 export const ResultItemGroupTitle = styled.div`
   font-size: 11px;
-  line-height: ${(gridSize() * 2) / 11};
+  line-height: ${gridSize() * 2}px;
   font-weight: 600;
 `;
 
