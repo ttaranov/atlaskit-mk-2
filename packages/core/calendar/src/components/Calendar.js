@@ -210,10 +210,13 @@ class Calendar extends Component<Props, State> {
   };
 
   handleClickNext = () => {
+    console.log('NEXT CLICKED');
     const { day, month, year } = {
       ...this.getState(),
       ...this.getNextMonth(),
     };
+    console.log(this.getState());
+    console.log(day, month, year);
     this.triggerOnChange({ day, month, year, type: 'next' });
   };
 
