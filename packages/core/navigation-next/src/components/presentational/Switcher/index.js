@@ -8,8 +8,8 @@ import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
 import Option from './Option';
-import { UIControllerSubscriber } from '../../ui-controller';
-import { CONTENT_NAV_WIDTH } from '../../common/constants';
+import { UIControllerSubscriber } from '../../../ui-controller';
+import { CONTENT_NAV_WIDTH } from '../../../common/constants';
 import type { SwitcherProps, SwitcherState } from './types';
 
 const gridSize = gridSizeFn();
