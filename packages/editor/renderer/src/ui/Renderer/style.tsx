@@ -292,6 +292,12 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
     grid-template-columns: minmax(0, 1fr);
 
+    /*
+     * The overall renderer has word-wrap: break; which causes issues with
+     * code block line numbers in Safari / iOS.
+     */
+    word-wrap: normal;
+
     & > span {
       /* stylelint-disable value-no-vendor-prefix */
       -ms-grid-row: 1;

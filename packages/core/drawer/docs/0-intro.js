@@ -10,6 +10,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/drawer"
       Component={require('../examples/00-basic-drawer').default}
       source={require('!!raw-loader!../examples/00-basic-drawer')}
       title="Basic Usage"
@@ -20,6 +21,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/drawer"
       Component={require('../examples/05-drawer-widths').default}
       source={require('!!raw-loader!../examples/05-drawer-widths')}
       title="Drawer Width"
@@ -35,6 +37,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/drawer"
       Component={
         require('../examples/15-retain-drawer-contents-on-close').default
       }

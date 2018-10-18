@@ -8,6 +8,7 @@ This panel component is designed hold content and expand and collapse with user 
 
 ${(
   <Example
+    packageName="@atlaskit/panel"
     Component={require('../examples/01-collapsed').default}
     title="Simple Example"
     source={require('!!raw-loader!../examples/01-collapsed')}

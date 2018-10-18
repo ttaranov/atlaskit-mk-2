@@ -1,5 +1,8 @@
 # @atlaskit/theme
 
+## 6.2.0
+- [minor] Add smallFontSize as an export to theme [3469f64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3469f64)
+
 ## 6.1.1
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

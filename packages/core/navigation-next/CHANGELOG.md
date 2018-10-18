@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.18.1
+- [patch] fix issues with PopupSelect and NavigationSwitcher [b4e19c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b4e19c3)
+
 ## 3.18.0
 - [minor] Adds a 350ms delay to Flyout to prevent it from opening accidentally. [8175029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8175029)
 

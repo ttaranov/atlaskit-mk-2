@@ -13,7 +13,7 @@ const messageEditor = getExampleUrl('editor', 'editor-core', 'message');
 const editorSelector = '.ProseMirror';
 
 BrowserTestCase(
-  'paste tests on message editor: plain text',
+  'paste.ts: paste tests on message editor: plain text',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const sample = new Page(client);
@@ -33,7 +33,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'paste tests on message editor: text formatting',
+  'paste.ts: paste tests on message editor: text formatting',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const sample = new Page(client);
@@ -57,7 +57,7 @@ BrowserTestCase(
 // eslint-disable-next-line jest/no-disabled-tests
 describe.skip('Tables are not enabled in the message editor', () => {
   BrowserTestCase(
-    'paste tests on message editor: table',
+    'paste.ts: paste tests on message editor: table',
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const sample = new Page(client);
@@ -81,7 +81,7 @@ describe.skip('Tables are not enabled in the message editor', () => {
 });
 
 BrowserTestCase(
-  'paste tests on message editor: bullet list',
+  'paste.ts: paste tests on message editor: bullet list',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const sample = new Page(client);
@@ -104,7 +104,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'paste tests on message editor: ordered list',
+  'paste.ts: paste tests on message editor: ordered list',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const sample = new Page(client);

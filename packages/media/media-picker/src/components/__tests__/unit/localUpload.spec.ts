@@ -4,7 +4,6 @@ import { NewUploadServiceImpl } from '../../../service/newUploadServiceImpl';
 import { MediaFile } from '../../../domain/file';
 
 describe('MediaLocalUpload', () => {
-  const imagePreviewSrc = 'some-image-src';
   const imageFile: MediaFile = {
     id: 'some-id',
     name: 'some-name',
@@ -69,18 +68,18 @@ describe('MediaLocalUpload', () => {
           width: 100,
           height: 200,
         },
-        src: imagePreviewSrc,
+        scaleFactor: 1,
       },
     });
 
     expect(emitter.emit).toBeCalledWith('upload-preview-update', {
       file: expect.objectContaining(imageFile),
       preview: {
-        src: imagePreviewSrc,
         dimensions: {
           width: 100,
           height: 200,
         },
+        scaleFactor: 1,
       },
     });
   });

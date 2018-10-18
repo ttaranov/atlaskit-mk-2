@@ -1,5 +1,11 @@
 # @atlaskit/media-image
 
+## 41.1.1
+- [patch] Override css rules for an image inside a cart [20a15ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20a15ef)
+
+## 41.1.0
+- [minor] Cleanup media + editor integration 🔥 [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+
 ## 41.0.2
 - [patch] Make image in the card non-draggable [615a536](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/615a536)
 

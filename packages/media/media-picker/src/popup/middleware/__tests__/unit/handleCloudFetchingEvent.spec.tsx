@@ -5,7 +5,6 @@ import {
   HandleCloudFetchingEventAction,
 } from '../../../actions/handleCloudFetchingEvent';
 import { FINALIZE_UPLOAD } from '../../../actions/finalizeUpload';
-import { GET_PREVIEW } from '../../../actions/getPreview';
 import { RECENTS_COLLECTION } from '../../../config';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 
@@ -92,7 +91,7 @@ describe('handleCloudFetchingEvent', () => {
       id: fileId,
     };
 
-    expect(store.dispatch).toHaveBeenCalledTimes(2);
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(store.dispatch.mock.calls[0][0]).toEqual({
       type: FINALIZE_UPLOAD,
       uploadId,
@@ -102,12 +101,6 @@ describe('handleCloudFetchingEvent', () => {
         collection: RECENTS_COLLECTION,
       },
       tenant,
-    });
-    expect(store.dispatch.mock.calls[1][0]).toEqual({
-      type: GET_PREVIEW,
-      uploadId,
-      file: uploadedFile,
-      collection: RECENTS_COLLECTION,
     });
   });
 

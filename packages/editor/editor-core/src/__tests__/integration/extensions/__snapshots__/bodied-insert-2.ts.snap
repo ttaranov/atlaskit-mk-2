@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bodied Extension: Insert Bullet list 1`] = `
+exports[`bodied-insert-2.ts: Bodied Extension: Insert Bullet list 1`] = `
 Object {
   "content": Array [
     Object {
@@ -45,7 +45,7 @@ Object {
 }
 `;
 
-exports[`Bodied Extension: Insert Numbered list 1`] = `
+exports[`bodied-insert-2.ts: Bodied Extension: Insert Numbered list 1`] = `
 Object {
   "content": Array [
     Object {
@@ -90,7 +90,7 @@ Object {
 }
 `;
 
-exports[`Bodied Extension: Insert action 1`] = `
+exports[`bodied-insert-2.ts: Bodied Extension: Insert action 1`] = `
 Object {
   "content": Array [
     Object {
@@ -137,7 +137,7 @@ Object {
 }
 `;
 
-exports[`Bodied Extension: Insert table 1`] = `
+exports[`bodied-insert-2.ts: Bodied Extension: Insert table 1`] = `
 Object {
   "content": Array [
     Object {

@@ -33,6 +33,7 @@ ${(
 
   ${(
     <Example
+      packageName="@atlaskit/radio"
       Component={require('../examples/00-basic-usage').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic-usage')}
@@ -44,6 +45,7 @@ ${(
 
   ${(
     <Example
+      packageName="@atlaskit/radio"
       Component={require('../examples/03-default-checked-value').default}
       title="defaultCheckedValue prop"
       source={require('!!raw-loader!../examples/03-default-checked-value')}
@@ -55,6 +57,7 @@ ${(
 
   ${(
     <Example
+      packageName="@atlaskit/radio"
       Component={require('../examples/01-controlled-example').default}
       title="checkedValue prop"
       source={require('!!raw-loader!../examples/01-controlled-example')}
@@ -66,6 +69,7 @@ ${(
 
   ${(
     <Example
+      packageName="@atlaskit/radio"
       Component={require('../examples/02-form-example').default}
       title="With a Form"
       source={require('!!raw-loader!../examples/02-form-example')}

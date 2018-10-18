@@ -16,9 +16,13 @@ const timepickerDefault = 'label[for="react-select-timepicker-4--input"] + div';
 const timePickerMenu = '.timepicker-select__menu-list';
 const timeValue = `${timepickerDefault} > div > div > div`;
 const timeOption = '[role="option"]';
+const dateTime = 'label[for="react-select-datetimepicker-1--input"]';
+const dateTimePicker = `${dateTime} + div > div`;
+const dateTimePickerDateInput = '#react-select-datetimepicker-1-input';
+const dateTimeValues = `${dateTimePicker} > div > div > div`;
 
 BrowserTestCase(
-  'When DatePicker is focused & backspace pressed, the input should be cleared',
+  'datetime-picker.js: When DatePicker is focused & backspace pressed, the input should be cleared',
   { skip: ['firefox', 'ie', 'edge'] },
   async client => {
     const dateTimePickerTest = new Page(client);
@@ -43,7 +47,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
+  'datetime-picker.js: When choosing another day in a Datetime picker focused, the date should be updated to the new value',
   { skip: ['firefox'] },
   async client => {
     const dateTimePickerTest = new Page(client);
@@ -71,7 +75,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'When entering a new time in Timepicker Editable, the time should be updated to the new value',
+  'datetime-picker.js: When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['firefox', 'ie', 'safari', 'edge'] }, // Enter key has an issue in those browser
   async client => {
     const timePicker = new Page(client);
@@ -92,6 +96,44 @@ BrowserTestCase(
     //       val.level,
     //       'SEVERE',
     //       `Console errors :${val.message} when the time is updated`,
+    //     );
+    //   });
+    // }
+  },
+);
+
+BrowserTestCase(
+  'datetime-picker.js: When DateTimePicker is focused & backspace pressed, the date value should be cleared but the time value should not be affected',
+  { skip: ['ie', 'edge'] },
+  async client => {
+    const dateTimePickerTest = new Page(client);
+    await dateTimePickerTest.goto(urlDateTimePicker);
+    await dateTimePickerTest.click(dateTimePicker);
+    await dateTimePickerTest.waitForSelector(datepickerMenu);
+    await dateTimePickerTest.click(date);
+    const previousDate = (await dateTimePickerTest.getText(dateTimeValues))[0];
+    const previousTime = (await dateTimePickerTest.getText(dateTimeValues))[1];
+    // In FF, there is an issue to send keys
+    if (
+      dateTimePickerTest.browser.desiredCapabilities.browserName === 'firefox'
+    ) {
+      await dateTimePickerTest.setValue(dateTimePickerDateInput, '');
+      await dateTimePickerTest.click(dateTimePicker);
+    } else {
+      await dateTimePickerTest.keys(['Backspace']);
+    }
+
+    const AfterDate = (await dateTimePickerTest.getText(dateTimeValues))[0];
+    const AfterTime = (await dateTimePickerTest.getText(dateTimeValues))[1];
+    expect(AfterDate).not.toBe(previousDate);
+    expect(previousTime).toBe(AfterTime);
+    // TODO: AK-5546: There is an issue with .log
+    // if (dateTimePickerTest.log('browser').value) {
+    //   dateTimePickerTest.log('browser').value.forEach(val => {
+    //     assert.notEqual(
+    //       val.level,
+    //       'SEVERE',
+    //       `Console errors :${val.message} when the input is cleared`,
     //     );
     //   });
     // }

@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 29.0.3
+- [patch] Fix incorrect word-breaking for codeblocks in Safari. FM-1278 [9fef2a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fef2a7)
+
 ## 29.0.2
 - [patch] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
 

@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 import { AkCodeBlock } from '@atlaskit/code';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
+import replaceSrc from './replaceSrc';
 
 type Props = {
   Component: ComponentType<any>,
   language: string,
   source: string,
   title: string,
+  packageName: string,
 };
 
 type State = {
@@ -32,7 +34,7 @@ export default class Example extends React.Component<Props, State> {
   };
 
   render() {
-    const { Component, source, language, title } = this.props;
+    const { Component, source, language, title, packageName } = this.props;
     const { isHover, isSourceVisible } = this.state;
     const toggleLabel = isSourceVisible
       ? 'Hide Code Snippet'
@@ -57,7 +59,7 @@ export default class Example extends React.Component<Props, State> {
         {isSourceVisible ? (
           <CodeWrapper>
             <AkCodeBlock
-              text={source}
+              text={packageName ? replaceSrc(source, packageName) : source}
               language={language}
               showLineNumbers={false}
             />
