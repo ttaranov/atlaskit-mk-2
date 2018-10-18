@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.1.1
+- [patch] Pass the proper context object when reinitializing the BaseViewer" [215ea6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/215ea6c)
+
 ## 24.1.0
 - [minor] Add analytics to MVNG (and reset ImageViewer when collectionName changes) [d60bf6d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d60bf6d)
 
