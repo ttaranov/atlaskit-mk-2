@@ -91,7 +91,6 @@ class Task extends ReactNodeView {
         onEvent={this.addListAnalyticsData}
       >
         <WithPluginState
-          editorView={this.view}
           plugins={{
             editorEnabledPlugin: editorEnabledPluginKey,
           }}
