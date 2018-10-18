@@ -198,8 +198,8 @@ export default class NPS extends React.Component<Props, State> {
     rating,
     comment,
   }: {
-    rating: Rating | null,
-    comment: Comment,
+    rating: Rating | null, // eslint-disable-line react/no-unused-prop-types
+    comment: Comment, // eslint-disable-line react/no-unused-prop-types
   }) => {
     try {
       this.setState({
