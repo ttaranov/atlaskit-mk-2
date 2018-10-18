@@ -17,9 +17,8 @@
     "build:report": "yarn build --report",
     "build:no-minimize": "yarn build --no-minimize",
     "build:copy": "cp dist/index.html dist/404.html && cp -R public/* dist/",
-    "build:zip": "rm -rf dist.zip && zip -r dist.zip dist/",
-    "deploy:production": "netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID -p dist.zip",
-    "deploy:staging": "netlify-patched -t $NETLIFY_TOKEN deploy --site-id $NETLIFY_SITE_ID_STAGING -p dist.zip"
+    "deploy:staging": "netlify deploy --dir dist/ -a $NETLIFY_TOKEN -s $NETLIFY_SITE_ID_STAGING",
+    "deploy:production": "netlify deploy --dir dist/ -a $NETLIFY_TOKEN -s $NETLIFY_SITE_ID"
   },
   "repository": "atlaskit/fabric",
   "devDependencies": {
@@ -27,7 +26,7 @@
     "bolt-query": "^1.1.4",
     "chalk": "^2.1.0",
     "extract-react-types-loader": "^0.2.2",
-    "netlify-cli": "^1.2.2",
+    "netlify-cli": "^2.1.1",
     "node-fetch": "^2.2.0",
     "tty-table": "^2.6.8"
   },
@@ -63,8 +62,6 @@
     "@atlaskit/tooltip": "^12.1.4",
     "@atlaskit/webpack-config": "^2.0.1",
     "@babel/runtime": "^7.0.0",
-    "@lbatchelor/netlify": "^1.2.0-patched.7",
-    "@lbatchelor/netlify-cli": "^1.2.2-patched.9",
     "babel-runtime": "^6.26.0",
     "codesandboxer": "^0.2.2",
     "commonmark": "^0.27.0",
