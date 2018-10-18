@@ -11,12 +11,14 @@ import SpotlightDialog from './SpotlightDialog';
 import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import { type Props as SpotlightProps } from './Spotlight';
 
-export type Props = SpotlightProps & {
+export type Props = {
+  /** the spotlight tagert dom element */
+  targetNode: HTMLElement,
   /** Called when the component has been mounted */
   onOpened: () => any,
   /** Called when the component has been unmounted */
   onClosed: () => any,
-};
+} & SpotlightProps;
 
 class SpotlightInner extends React.Component<
   Props,
