@@ -43,11 +43,6 @@ const Clone = (props: Props) => {
     targetRadius,
   } = props;
 
-  if (!target && !targetNode) {
-    const targetText = target ? ` matching "${target}".` : '.';
-    throw Error(`Spotlight couldn't find a target${targetText}.`);
-  }
-
   return (
     <TargetInner
       pulse={pulse}
