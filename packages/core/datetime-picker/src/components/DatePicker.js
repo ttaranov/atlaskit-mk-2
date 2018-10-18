@@ -9,7 +9,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { format, isValid, parse, getDaysInMonth, getMonth } from 'date-fns';
+import { format, isValid, parse, getDaysInMonth } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
@@ -97,6 +97,7 @@ function isoToObj(iso: string) {
   const lastDayInMonth = getDaysInMonth(
     new Date(parseInt(year, 10), parseInt(month, 10) - 1),
   );
+
   if (parseInt(lastDayInMonth, 10) < parseInt(date, 10)) {
     const newIso = `${year}-${month}-${lastDayInMonth}`;
     const newparsed = parse(newIso);
@@ -106,6 +107,7 @@ function isoToObj(iso: string) {
       year: newparsed.getFullYear(),
     };
   }
+
   return {
     day: parsed.getDate(),
     month: parsed.getMonth() + 1,
