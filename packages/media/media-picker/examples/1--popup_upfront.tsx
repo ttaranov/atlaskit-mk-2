@@ -9,6 +9,7 @@ import {
   userAuthProvider,
   defaultMediaPickerCollectionName,
   createUploadContext,
+  defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { Card, CardList } from '@atlaskit/media-card';
 import { MediaPicker } from '../src';
@@ -126,7 +127,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
         <h1>{`<CardList ${defaultMediaPickerCollectionName} />`}</h1>
         <CardList
           context={context}
-          collectionName={defaultMediaPickerCollectionName}
+          collectionName={defaultCollectionName}
           cardAppearance="small"
           height={260}
           useInfiniteScroll
