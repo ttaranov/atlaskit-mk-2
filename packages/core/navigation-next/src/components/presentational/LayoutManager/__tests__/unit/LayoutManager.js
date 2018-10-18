@@ -147,98 +147,6 @@ describe('LayoutManager', () => {
         wrapper.update();
         expect(wrapper.find(NavigationContainer).prop('onMouseOut')).toBeNull();
       });
-
-      describe('collapse & expand callbacks', () => {
-        let handlers;
-        let wrapper;
-        const node = document.createElement('div');
-        const isAppearing = false;
-
-        beforeEach(() => {
-          handlers = {
-            onExpandStart: jest.fn(),
-            onExpandEnd: jest.fn(),
-            onCollapseStart: jest.fn(),
-            onCollapseEnd: jest.fn(),
-          };
-          wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
-        });
-
-        it('Should call callbacks', () => {
-          wrapper.setState({ flyoutIsOpen: false });
-          wrapper.update();
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onExpandStart(node, isAppearing);
-          expect(handlers.onExpandStart).toHaveBeenCalledWith(
-            node,
-            isAppearing,
-          );
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onExpandEnd(node, isAppearing);
-          expect(handlers.onExpandEnd).toHaveBeenCalledWith(node, isAppearing);
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onCollapseStart(node, isAppearing);
-          expect(handlers.onCollapseStart).toHaveBeenCalledWith(
-            node,
-            isAppearing,
-          );
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onCollapseEnd(node, isAppearing);
-          expect(handlers.onCollapseEnd).toHaveBeenCalledWith(
-            node,
-            isAppearing,
-          );
-        });
-
-        it('Should NOT call callbacks', () => {
-          wrapper.setState({ flyoutIsOpen: true });
-          wrapper.update();
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onExpandStart(node, isAppearing);
-          expect(handlers.onExpandStart).not.toHaveBeenCalled();
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onExpandEnd(node, isAppearing);
-          expect(handlers.onExpandEnd).not.toHaveBeenCalled();
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onCollapseStart(node, isAppearing);
-          expect(handlers.onCollapseStart).not.toHaveBeenCalled();
-
-          wrapper
-            .find(ResizeTransition)
-            .first()
-            .props()
-            .onCollapseEnd(node, isAppearing);
-          expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
-        });
-      });
     });
 
     describe('when experimental_flyoutOnHover is not set', () => {
@@ -279,6 +187,129 @@ describe('LayoutManager', () => {
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
         wrapper.find(NavigationContainer).simulate('mouseover');
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
+      });
+    });
+
+    describe('collapse & expand callbacks', () => {
+      let handlers;
+      let wrapper;
+      const node = document.createElement('div');
+      const isAppearing = false;
+
+      beforeEach(() => {
+        handlers = {
+          onExpandStart: jest.fn(),
+          onExpandEnd: jest.fn(),
+          onCollapseStart: jest.fn(),
+          onCollapseEnd: jest.fn(),
+        };
+        wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+      });
+
+      describe('when flyoutIsOpen is false', () => {
+        beforeEach(() => {
+          wrapper.setState({ flyoutIsOpen: false });
+          wrapper.update();
+        });
+
+        it('should call onExpandStart', () => {
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandStart(node, isAppearing);
+
+          expect(handlers.onExpandStart).toHaveBeenCalledWith(
+            node,
+            isAppearing,
+          );
+        });
+
+        it('should call onExpandEnd', () => {
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandEnd(node, isAppearing);
+
+          expect(handlers.onExpandEnd).toHaveBeenCalledWith(node, isAppearing);
+        });
+
+        it('should call onCollapseStart & onCollapseEnd', () => {
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandEnd(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseStart(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseEnd(node, isAppearing);
+
+          expect(handlers.onCollapseStart).toHaveBeenCalledWith(
+            node,
+            isAppearing,
+          );
+
+          expect(handlers.onCollapseEnd).toHaveBeenCalledWith(
+            node,
+            isAppearing,
+          );
+        });
+      });
+
+      describe('when flyoutIsOpen is true', () => {
+        beforeEach(() => {
+          wrapper.setState({ flyoutIsOpen: true });
+          wrapper.update();
+        });
+
+        it('should NOT call onExpandStart', () => {
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandStart(node, isAppearing);
+
+          expect(handlers.onExpandStart).not.toHaveBeenCalled();
+        });
+
+        it('should NOT call onExpandEnd', () => {
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandEnd(node, isAppearing);
+
+          expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+        });
+
+        it('should NOT call onCollapseStart & onCollapseEnd', () => {
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandEnd(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseStart(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseEnd(node, isAppearing);
+
+          expect(handlers.onCollapseStart).not.toHaveBeenCalled();
+          expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
+        });
       });
     });
   });
