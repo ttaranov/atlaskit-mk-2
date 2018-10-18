@@ -1,5 +1,11 @@
 # @atlaskit/droplist
 
+## 7.0.12
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 7.0.11
+- [patch] Fix the dropdown menu height exceeding viewport height when appearance prop is set to ‘tall’ [0deec63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0deec63)
+
 ## 7.0.10
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

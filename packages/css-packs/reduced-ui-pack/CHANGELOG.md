@@ -1,5 +1,14 @@
 # @atlaskit/reduced-ui-pack
 
+## 10.1.1
+- [patch] Consume smallFontSize from @atlaskit/theme [a6f8a43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6f8a43)
+
+## 10.1.0
+- [minor] Add drag-handler [b0a64d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0a64d6)
+
+## 10.0.1
+- [patch] Update build process to use babel-7 [0e9a221](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e9a221)
+
 ## 10.0.0
 - [major] Icons that do not exist in the main icons package have been removed [6dd05b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6dd05b2)
 

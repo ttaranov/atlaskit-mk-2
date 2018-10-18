@@ -4,10 +4,11 @@ import { DecorationSet } from 'prosemirror-view';
 import { TableLayout, TableSharedCssClassName } from '@atlaskit/editor-common';
 
 export type PermittedLayoutsDescriptor = TableLayout[] | 'all';
-export type Cell = { pos: number; node: PmNode };
+export type Cell = { pos: number; start: number; node: PmNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
 
 export interface PluginConfig {
+  advanced?: boolean;
   allowBackgroundColor?: boolean;
   allowColumnResizing?: boolean;
   allowHeaderColumn?: boolean;
@@ -39,6 +40,8 @@ export interface TablePluginState {
   isContextualMenuOpen?: boolean;
   isTableHovered?: boolean;
   isTableInDanger?: boolean;
+  insertColumnButtonIndex?: number;
+  insertRowButtonIndex?: number;
 }
 
 export interface CellRect {
@@ -54,9 +57,9 @@ export interface ColumnResizingPlugin {
   lastColumnResizable?: boolean;
 }
 
-export const enum TableDecorations {
-  CONTROLS_HOVER,
-}
+export const TableDecorations = {
+  CONTROLS_HOVER: 'CONTROLS_HOVER',
+};
 const clPrefix = 'pm-table-';
 
 export const TableCssClassName = {
@@ -79,6 +82,7 @@ export const TableCssClassName = {
   CONTROLS_INSERT_BUTTON_INNER: `${clPrefix}controls__insert-button-inner`,
   CONTROLS_INSERT_BUTTON_WRAP: `${clPrefix}controls__insert-button-wrap`,
   CONTROLS_INSERT_LINE: `${clPrefix}controls__insert-line`,
+
   CONTROLS_INSERT_MARKER: `${clPrefix}controls__insert-marker`,
   CONTROLS_INSERT_COLUMN: `${clPrefix}controls__insert-column`,
   CONTROLS_INSERT_ROW: `${clPrefix}controls__insert-row`,
@@ -94,8 +98,9 @@ export const TableCssClassName = {
   HOVERED_CELL: `${clPrefix}hovered-cell`,
   HOVERED_TABLE: `${clPrefix}hovered-table`,
   RESIZING: `${clPrefix}resizing`,
-  TABLE_SHADOW: `${clPrefix}shadow`,
   WITH_CONTROLS: `${clPrefix}with-controls`,
+  TABLE_LEFT_SHADOW: `${clPrefix}with-left-shadow`,
+  TABLE_RIGHT_SHADOW: `${clPrefix}with-right-shadow`,
 
   CONTEXTUAL_SUBMENU: `${clPrefix}contextual-submenu`,
   CONTEXTUAL_MENU_TRIGGER: `${clPrefix}contextual-menu-trigger`,
@@ -104,4 +109,7 @@ export const TableCssClassName = {
   // come from prosemirror-table
   COLUMN_RESIZE_HANDLE: 'column-resize-handle',
   SELECTED_CELL: 'selectedCell',
+
+  // defined in ReactNodeView based on PM node name
+  NODEVIEW_WRAPPER: 'tableView-content-wrap',
 };

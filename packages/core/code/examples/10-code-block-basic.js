@@ -20,5 +20,16 @@ const exampleCodeBlock = `  // React Component
 `;
 
 export default function Component() {
-  return <AkCodeBlock language="java" text={exampleCodeBlock} />;
+  return (
+    <div>
+      <h2>Showing code without line numbers</h2>
+      <AkCodeBlock
+        language="java"
+        text={exampleCodeBlock}
+        showLineNumbers={false}
+      />
+      <h2>Showing code with line numbers</h2>
+      <AkCodeBlock language="java" text={exampleCodeBlock} />
+    </div>
+  );
 }

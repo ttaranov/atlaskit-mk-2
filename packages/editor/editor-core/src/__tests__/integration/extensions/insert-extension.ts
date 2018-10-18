@@ -11,7 +11,7 @@ import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 ['Inline', 'Block'].forEach(async extensionType => {
   BrowserTestCase(
-    `Extension: Insert ${extensionType} extension`,
+    `insert-extension.ts: Extension: Insert ${extensionType} extension`,
     { skip: ['ie'] },
     async client => {
       const page = new Page(client);

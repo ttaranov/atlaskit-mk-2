@@ -1,5 +1,14 @@
 # @atlaskit/tree
 
+## 4.1.2
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 4.1.1
+- [patch] Fixing drag&drop on clipped trees [b18ecfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b18ecfe)
+
+## 4.1.0
+- [minor] Expanded parent item is collapsed while dragged. [192b3e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/192b3e2)
+
 ## 4.0.0
 - [major] Implementing nesting and expanding parents while dragging [2bdbf04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2bdbf04)
 

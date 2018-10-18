@@ -3,7 +3,7 @@ import React from 'react';
 import { AtlasKitThemeProvider } from '@atlaskit/theme';
 import { AkCodeBlock } from '../src';
 
-const exampleCodeBlock = `
+const exampleCodeBlock = `  // React component
   class HelloMessage extends React.Component {
     render() {
       return (

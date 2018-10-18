@@ -16,7 +16,7 @@ const client = new FrontendFeatureFlagClient({
     'my.experiment': {
       value: 'experiment',
       explanation: {
-        reason: 'RULE_MATCH',
+        kind: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
       },
     },
@@ -29,14 +29,14 @@ const client = new FrontendFeatureFlagClient({
         footer: 'black',
       },
       explanation: {
-        reason: 'RULE_MATCH',
+        kind: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
       },
     },
     'my.detailed.boolean.flag': {
       value: false,
       explanation: {
-        reason: 'RULE_MATCH',
+        kind: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
       },
     },
@@ -76,7 +76,7 @@ client.setFlags({
   'my.async.boolean.flag': {
     value: false,
     explanation: {
-      reason: 'RULE_MATCH',
+      kind: 'RULE_MATCH',
       ruleId: '333-bbbbb-ccc',
     },
   }
@@ -99,7 +99,7 @@ client.getBooleanValue('my.detailed.boolean.flag', {
 client.trackExposure('my.detailed.boolean.flag', {
   value: true,
   explanation: {
-    reason: 'RULE_MATCH',
+    kind: 'RULE_MATCH',
     ruleId: 'aaaa-vbbbb-ccccc'
   }
 });

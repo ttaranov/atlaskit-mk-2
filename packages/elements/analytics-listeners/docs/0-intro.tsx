@@ -57,7 +57,6 @@ ${code`
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
-      source: 'unknown',
     }),
   })(DummyComponent);
 

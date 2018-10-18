@@ -1,17 +1,16 @@
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+
 import { of } from 'rxjs/observable/of';
 import { startWith } from 'rxjs/operators/startWith';
-import { publishReplay } from 'rxjs/operators/publishReplay';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+
 import {
   MediaStore,
-  uploadFile,
   UploadableFile,
   ContextConfig,
   MediaApiConfig,
   UploadController,
   MediaStoreGetFileImageParams,
+  ImageMetadata,
 } from '@atlaskit/media-store';
 import { CollectionFetcher } from '../collection';
 import {
@@ -30,14 +29,8 @@ import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
 import { FileItem } from '../item';
-import {
-  GetFileOptions,
-  FileState,
-  mapMediaFileToFileState,
-  FilePreview,
-} from '../fileState';
-import FileStreamCache, { fileStreamsCache } from './fileStreamCache';
-import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
+import { GetFileOptions, FileState } from '../fileState';
+import { FileFetcher } from '../file';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -74,6 +67,8 @@ export interface Context {
 
   refreshCollection(collectionName: string, pageSize: number): void;
 
+  // TODO Next two methods are deprecated and will be removed with next major release.
+  // Please use .file.getFile and .file.uploadFile APIs
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
   uploadFile(
     file: UploadableFile,
@@ -81,8 +76,13 @@ export interface Context {
   ): Observable<FileState>;
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
+  getImageMetadata(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<ImageMetadata>;
 
   readonly collection: CollectionFetcher;
+  readonly file: FileFetcher;
   readonly config: ContextConfig;
 }
 
@@ -92,8 +92,6 @@ export class ContextFactory {
   }
 }
 
-const pollingInterval = 1000;
-
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
@@ -102,6 +100,7 @@ class ContextImpl implements Context {
   private readonly localPreviewCache: LRUCache<string, string>;
   private readonly mediaStore: MediaStore;
   readonly collection: CollectionFetcher;
+  readonly file: FileFetcher;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
@@ -110,54 +109,16 @@ class ContextImpl implements Context {
       authProvider: config.authProvider,
     });
     this.collection = new CollectionFetcher(this.mediaStore);
+    this.file = new FileFetcher(this.mediaStore);
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
-    const key = FileStreamCache.createKey(id, options);
-
-    return fileStreamsCache.getOrInsert(key, () => {
-      const collection = options && options.collectionName;
-      const fileStream$ = publishReplay<FileState>(1)(
-        this.createDownloadFileStream(id, collection),
-      );
-
-      fileStream$.connect();
-
-      return fileStream$;
-    });
+    /* tslint:disable-next-line:no-console */
+    console.warn(
+      'context.getFile is deprecated. Please use context.file.getFileState instead',
+    );
+    return this.file.getFileState(id, options);
   }
-
-  private createDownloadFileStream = (
-    id: string,
-    collection?: string,
-  ): Observable<FileState> => {
-    return Observable.create(async (observer: Observer<FileState>) => {
-      let timeoutId: number;
-
-      const fetchFile = async () => {
-        try {
-          const response = await this.mediaStore.getFile(id, { collection });
-          const fileState = mapMediaFileToFileState(response);
-
-          observer.next(fileState);
-
-          if (fileState.status === 'processing') {
-            timeoutId = window.setTimeout(fetchFile, pollingInterval);
-          } else {
-            observer.complete();
-          }
-        } catch (e) {
-          observer.error(e);
-        }
-      };
-
-      fetchFile();
-
-      return () => {
-        window.clearTimeout(timeoutId);
-      };
-    });
-  };
 
   getMediaItemProvider(
     id: string,
@@ -252,82 +213,11 @@ class ContextImpl implements Context {
     file: UploadableFile,
     controller?: UploadController,
   ): Observable<FileState> {
-    let fileId: string;
-    let mimeType = '';
-    let preview: FilePreview;
-    // TODO [MSW-796]: get file size for base64
-    const size = file.content instanceof Blob ? file.content.size : 0;
-    const mediaType = getMediaTypeFromUploadableFile(file);
-    const collectionName = file.collection;
-    const name = file.name || ''; // name property is not available in base64 image
-    const subject = new ReplaySubject<FileState>(1);
-
-    if (file.content instanceof Blob) {
-      mimeType = file.content.type;
-      preview = {
-        blob: file.content,
-      };
-    }
-    const { deferredFileId: onUploadFinish, cancel } = uploadFile(
-      file,
-      this.apiConfig,
-      {
-        onProgress: progress => {
-          if (fileId) {
-            subject.next({
-              progress,
-              name,
-              size,
-              mediaType,
-              mimeType,
-              id: fileId,
-              status: 'uploading',
-            });
-          }
-        },
-        onId: id => {
-          fileId = id;
-          const key = FileStreamCache.createKey(fileId, { collectionName });
-          fileStreamsCache.set(key, subject);
-          if (file.content instanceof Blob) {
-            subject.next({
-              name,
-              size,
-              mediaType,
-              mimeType,
-              id: fileId,
-              progress: 0,
-              status: 'uploading',
-              preview,
-            });
-          }
-        },
-      },
+    /* tslint:disable-next-line:no-console */
+    console.warn(
+      'context.uploadFile is deprecated. Please use context.file.upload instead',
     );
-
-    if (controller) {
-      controller.setAbort(cancel);
-    }
-
-    onUploadFinish
-      .then(() => {
-        subject.next({
-          id: fileId,
-          name,
-          size,
-          mediaType,
-          mimeType,
-          status: 'processing',
-          preview,
-        });
-        subject.complete();
-      })
-      .catch(error => {
-        // we can't use .catch(subject.error) due that will change the Subscriber context
-        subject.error(error);
-      });
-
-    return subject;
+    return this.file.upload(file, controller);
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {
@@ -336,6 +226,13 @@ class ContextImpl implements Context {
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob> {
     return this.mediaStore.getImage(id, params);
+  }
+
+  async getImageMetadata(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<ImageMetadata> {
+    return (await this.mediaStore.getImageMetadata(id, params)).metadata;
   }
 
   private get apiConfig(): MediaApiConfig {

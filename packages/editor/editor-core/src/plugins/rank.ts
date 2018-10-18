@@ -2,6 +2,8 @@ export default {
   plugins: [
     'focusHandlerPlugin',
     'submitEditor',
+    'imageUpload',
+    'imageUploadInputRule',
     'paste',
     'pasteKeymap',
     'mention',
@@ -54,8 +56,6 @@ export default {
     'media',
     'mediaKeymap',
     'mediaSingleKeymap',
-    'imageUpload',
-    'imageUploadInputRule',
     'unsupportedContent',
     'jiraIssue',
     'fakeTextCursor',

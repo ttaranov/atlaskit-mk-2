@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/quick-search",
-  "version": "4.2.9",
+  "version": "4.2.13",
   "description": "A quick-search component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -24,7 +24,7 @@
     "@atlaskit/avatar": "^14.0.11",
     "@atlaskit/field-base": "^11.0.8",
     "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/item": "^8.0.8",
+    "@atlaskit/item": "^8.0.9",
     "@atlaskit/theme": "^6.0.0",
     "babel-runtime": "^6.26.0"
   },
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/drawer": "^2.1.0",
     "@atlaskit/navigation": "^33.1.11",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "prop-types": "^15.5.10",

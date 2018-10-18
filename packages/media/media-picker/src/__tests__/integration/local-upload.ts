@@ -4,7 +4,7 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { gotoPopupSimplePage } from '../../../pages/popup-simple-page';
 
 BrowserTestCase(
-  'MediaPicker: local upload',
+  'local-upload.ts: MediaPicker - local upload',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
   async client => {
     const page = await gotoPopupSimplePage(client);

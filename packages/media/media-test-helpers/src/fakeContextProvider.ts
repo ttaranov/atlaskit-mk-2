@@ -32,15 +32,24 @@ export const fakeContext = (
     observable: returns(of('nothing')),
   });
   const getFile = jest.fn().mockReturnValue(of({}));
+  const downloadBinary = jest.fn();
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
-  const collection = jest.fn() as any;
-  const getImage = {} as any;
+  const collection = {
+    loadNextPage: jest.fn(),
+  } as any;
+  const getImage = jest.fn() as any;
+  const getImageMetadata = jest.fn();
+  const file = {
+    getFileState: getFile,
+    downloadBinary,
+  } as any;
   const defaultContext: Context = {
+    getImageMetadata,
     getImage,
     getFile,
     getBlobService,
@@ -56,12 +65,37 @@ export const fakeContext = (
     uploadFile,
     config,
     collection,
+    file,
   };
 
   const wrappedStubbedContext: any = {};
   Object.keys(stubbedContext).forEach(methodName => {
     wrappedStubbedContext[methodName] = returns(stubbedContext[methodName]);
   });
+
+  if (stubbedContext.file) {
+    Object.keys(stubbedContext.file).forEach(methodName => {
+      wrappedStubbedContext.file[methodName] = returns(
+        stubbedContext.file[methodName],
+      );
+    });
+  }
+
+  if (stubbedContext.collection) {
+    Object.keys(stubbedContext.collection).forEach(methodName => {
+      wrappedStubbedContext.collection[methodName] = returns(
+        stubbedContext.collection[methodName],
+      );
+    });
+  }
+
+  if (stubbedContext.context) {
+    Object.keys(stubbedContext.context).forEach(methodName => {
+      wrappedStubbedContext.context[methodName] = returns(
+        stubbedContext.context[methodName],
+      );
+    });
+  }
 
   return {
     ...defaultContext,

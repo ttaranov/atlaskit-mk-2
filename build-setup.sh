@@ -44,3 +44,6 @@ yarn config list
 
 echo -e "\e[32m  NPM config list"
 npm config list
+
+# We had issues where private registry where found in the yarn.lock. This test ensures, you are not adding it back.
+test -z "$(cat yarn.lock | grep "packages.atlassian")" || (echo "Private registry found in yarn.lock - check your local ~/.npmrc remove it and regenerate the lockfile" && false)

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { ResourcedTaskItem, TaskItem } from '@atlaskit/task-decision';
 import { taskDecision } from '@atlaskit/util-data-test';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 import Task from '../../../../../plugins/tasks-and-decisions/ui/Task';
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
@@ -33,7 +33,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
   });
 
   it('should render resourced task item', () => {
-    const task = mount(<Task taskId="abcd-abcd-abcd" isDone />);
+    const task = mountWithIntl(<Task taskId="abcd-abcd-abcd" isDone />);
     const resourcedTask = task.find(ResourcedTaskItem);
 
     expect(resourcedTask.prop('taskId')).toEqual('abcd-abcd-abcd');
@@ -44,7 +44,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
   it('should pass TaskDecisionProvider into resourced task item', () => {
     providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
 
-    const task = mount(
+    const task = mountWithIntl(
       <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
     const resourcedTaskItem = task.find(ResourcedTaskItem);
@@ -60,7 +60,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
       'contextIdentifierProvider',
       contextIdentifierProvider,
     );
-    const task = mount(
+    const task = mountWithIntl(
       <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
@@ -78,7 +78,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
       'contextIdentifierProvider',
       contextIdentifierProvider,
     );
-    const task = mount(
+    const task = mountWithIntl(
       <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
@@ -96,7 +96,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
       'contextIdentifierProvider',
       contextIdentifierProvider,
     );
-    const task = mount(
+    const task = mountWithIntl(
       <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 
@@ -108,7 +108,7 @@ describe('@atlaskit/editor-core/ui/Task', () => {
 
   it('should not change state of task if no contextIdentifierProvider', () => {
     providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
-    const task = mount(
+    const task = mountWithIntl(
       <Task taskId="abcd-abcd-abcd" isDone providers={providerFactory} />,
     );
 

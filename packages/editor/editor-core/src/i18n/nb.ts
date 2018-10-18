@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Bred',
   'fabric.editor.layoutFullWidth': 'Full bredde',
   'fabric.editor.remove': 'Fjern',
+  'fabric.editor.visit': 'Åpne koblingen i et nytt vindu',
   'fabric.editor.normal': 'Normal tekst',
   'fabric.editor.heading1': '1. overskrift',
   'fabric.editor.heading2': '2. overskrift',
@@ -34,6 +35,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Tekst som skal vises',
   'fabric.editor.linkPlaceholderWithSearch':
     'Lim inn kobling eller søk nylig vist',
+  'fabric.editor.action': 'Handlingselement',
   'fabric.editor.link': 'Kobling',
   'fabric.editor.filesAndImages': 'Filer og bilder',
   'fabric.editor.image': 'Bilde',
@@ -51,7 +53,6 @@ export default {
   'fabric.editor.threeColumns': 'Tre kolonner',
   'fabric.editor.unorderedList': 'Punktliste',
   'fabric.editor.orderedList': 'Nummerert liste',
-  'fabric.editor.action': 'Handlingselement',
   'fabric.editor.lists': 'Lister',
   'fabric.editor.wrapLeft': 'Juster til venstre',
   'fabric.editor.wrapRight': 'Juster til høyre',
@@ -76,6 +77,9 @@ export default {
     '{0, plural, one{Slett kolonne} other{Slett kolonner}}',
   'fabric.editor.insertRow': 'Sett inn rad',
   'fabric.editor.removeRows': '{0, plural, one{Slett rad} other{Slett rader}}',
+  'fabric.editor.decisionPlaceholder': 'Legg til en beslutning …',
+  'fabric.editor.taskPlaceholder':
+    'Skriv inn handlingen. Bruk @ for å tilordne den til noen.',
   'fabric.editor.textColor': 'Tekstfarge',
   'fabric.editor.underline': 'Understreking',
   'fabric.editor.strike': 'Gjennomstreking',

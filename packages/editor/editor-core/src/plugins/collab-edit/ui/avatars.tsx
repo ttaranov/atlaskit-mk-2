@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import Avatar from '@atlaskit/avatar';
 import AvatarGroup from '@atlaskit/avatar-group';
-import { akGridSizeUnitless, akColorN20 } from '@atlaskit/util-shared-styles';
+import { gridSize, colors } from '@atlaskit/theme';
 import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
 import { akEditorSmallZIndex } from '@atlaskit/editor-common';
 
@@ -21,7 +21,7 @@ export interface Props {
 }
 
 const AvatarContainer = styled.div`
-  margin-right: ${akGridSizeUnitless}px;
+  margin-right: ${gridSize()}px;
   display: flex;
   align-items: center;
   div:last-child > button {
@@ -33,10 +33,10 @@ const AvatarContainer = styled.div`
 `;
 
 const InviteTeamWrapper = styled.div`
-  background: ${akColorN20};
+  background: ${colors.N20};
   border-radius: 50%;
-  min-width: ${akGridSizeUnitless * 4}px;
-  margin-left: -${akGridSizeUnitless / 2}px;
+  min-width: ${gridSize() * 4}px;
+  margin-left: -${gridSize() / 2}px;
 `;
 
 const itemAppear = keyframes`
@@ -53,14 +53,36 @@ const itemAppear = keyframes`
 }
 `;
 
+const animateAvatar = ({ shouldAnimate }) => {
+  if (!shouldAnimate) {
+    return;
+  }
+
+  return `
+    & > div {
+      animation: ${itemAppear} 500ms 1;
+      animation-fill-mode: both;
+    }
+  `;
+};
+
+const animateBadge = ({ shouldAnimate }) => {
+  if (!shouldAnimate) {
+    return;
+  }
+
+  return `
+    animation: ${itemAppear} 250ms 1;
+    animation-fill-mode: both;
+    animation-delay: 400ms;
+  `;
+};
+
 const AvatarItem: any = styled.div`
   position: relative;
   align-self: center;
 
-  & > div {
-    animation: ${itemAppear} 500ms 1;
-    animation-fill-mode: both;
-  }
+  ${animateAvatar}
 
   &::before {
     content: '${(props: any) => props.avatar}';
@@ -81,30 +103,25 @@ const AvatarItem: any = styled.div`
     box-shadow: 0 0 1px #fff;
     box-sizing: border-box;
 
-    animation: ${itemAppear} 250ms 1;
-    animation-fill-mode: both;
-    animation-delay: 400ms;
+    ${animateBadge}
   }
 `;
 
-declare interface ItemProps {
-  name: string;
-  sessionId: string;
-  email: string;
-  src: string;
-}
-
-function Item(props: ItemProps) {
+function Item(props: any) {
   const color = getAvatarColor(props.sessionId).color.solid;
   const avatar = props.name.substr(0, 1).toUpperCase();
+  const { children, theme, ...other } = props;
 
   return (
-    <AvatarItem badgeColor={color} avatar={avatar}>
-      <Avatar {...props} />
+    <AvatarItem
+      badgeColor={color}
+      avatar={avatar}
+      shouldAnimate={props.isInteractive}
+    >
+      <Avatar {...other} />
     </AvatarItem>
   );
 }
-
 export default class Avatars extends React.Component<Props, any> {
   private onAvatarClick = event => {};
   private renderAvatars = state => {
@@ -121,6 +138,7 @@ export default class Avatars extends React.Component<Props, any> {
         src: p.avatar,
         sessionId: p.sessionId,
         size: 'medium',
+        component: Item,
       }))
       .sort(p => (p.sessionId === sessionId ? -1 : 1));
 
@@ -135,7 +153,6 @@ export default class Avatars extends React.Component<Props, any> {
           size="medium"
           data={avatars}
           onAvatarClick={this.onAvatarClick}
-          avatar={Item}
         />
         {this.props.inviteToEditHandler && (
           <InviteTeamWrapper>

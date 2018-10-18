@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ComponentType, type Ref } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import type { ResultData, Context } from './Results/types';
@@ -15,8 +15,6 @@ import {
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
 } from './constants';
-
-const noOp = () => {};
 
 /**
  * Get the result ID of a result by its index in the flatResults array
@@ -108,31 +106,29 @@ type State = {
 export class QuickSearch extends Component<Props, State> {
   static defaultProps = {
     children: [],
-    firePrivateAnalyticsEvent: noOp,
+    firePrivateAnalyticsEvent: Function.prototype,
     isLoading: false,
-    onSearchBlur: noOp,
-    onSearchKeyDown: noOp,
-    onSearchSubmit: noOp,
+    onSearchBlur: Function.prototype,
+    onSearchKeyDown: Function.prototype,
+    onSearchSubmit: Function.prototype,
     placeholder: 'Search',
     value: '',
   };
 
+  inputSearchRef: Ref<*>;
   flatResults: Array<ResultBaseType> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
   lastKeyPressed: string = '';
-
   constructor(props: Props) {
     super(props);
+
     this.state = {
       /** Select first result by default if `selectedResultId` prop is not provided */
       selectedResultId: this.props.selectedResultId || null,
       context: {
-        registerResult: (result: ResultBaseType) => {
-          if (!this.flatResults.includes(result)) {
-            this.flatResults.push(result);
-          }
-        },
+        registerResult: this.handleRegisterResult,
+        unregisterResult: this.handleUnregisterResult,
         onMouseEnter: this.handleResultMouseEnter,
         onMouseLeave: this.handleResultMouseLeave,
         sendAnalytics: this.props.firePrivateAnalyticsEvent,
@@ -142,16 +138,6 @@ export class QuickSearch extends Component<Props, State> {
         linkComponent: this.props.linkComponent,
       },
     };
-  }
-
-  /**
-    * Reconcile list of results for keyboard navigation after every update.
-    1. Empty list of results
-    2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
-    3. All ResultBase components call registerResult() in order to register itself
-   */
-  resetResults() {
-    this.flatResults = [];
   }
 
   componentDidMount() {
@@ -164,7 +150,6 @@ export class QuickSearch extends Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.children !== this.props.children) {
-      this.resetResults();
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
       });
@@ -258,6 +243,33 @@ export class QuickSearch extends Component<Props, State> {
   /** Select previous result */
   selectPrevious = () => {
     this.adjustSelectedResultIndex(-1);
+  };
+
+  /**
+   * Callback for register results in flatResults
+   */
+  handleRegisterResult = (result: ResultBaseType) => {
+    if (!getResultById(this.flatResults, result.props.resultId)) {
+      this.flatResults.push(result);
+    }
+  };
+
+  /**
+    * Callback for unregister results in flatResults
+    * It will reconcile a list of results for keyboard navigation after every update.
+    1. Component starts with an empty list of results
+    2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
+    3. All ResultBase components call registerResult() in order to register itself in quick search
+    4. All ResultBase components call unregisterResult() in order to unregister itself in quick search
+   */
+  handleUnregisterResult = (result: ResultBaseType) => {
+    const resultIndex = getResultIndexById(
+      this.flatResults,
+      result.props.resultId,
+    );
+    if (resultIndex) {
+      this.flatResults.splice(resultIndex, 1);
+    }
   };
 
   /**
@@ -355,6 +367,21 @@ export class QuickSearch extends Component<Props, State> {
     }
   };
 
+  setSearchInputRef = (refs: any) => {
+    if (refs && refs.inputRef) {
+      this.inputSearchRef = refs.inputRef;
+    }
+  };
+
+  focusSearchInput = () => {
+    if (
+      this.inputSearchRef &&
+      typeof this.inputSearchRef.focus === 'function'
+    ) {
+      this.inputSearchRef.focus();
+    }
+  };
+
   render() {
     return (
       <AkSearch
@@ -364,6 +391,7 @@ export class QuickSearch extends Component<Props, State> {
         onKeyDown={this.handleSearchKeyDown}
         placeholder={this.props.placeholder}
         value={this.props.value}
+        ref={this.setSearchInputRef}
       >
         <ResultContext.Provider value={this.state.context}>
           <SelectedResultIdContext.Provider value={this.state.selectedResultId}>

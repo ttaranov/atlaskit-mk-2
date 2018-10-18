@@ -19,7 +19,6 @@ const imageItem: ProcessedFileState = {
   size: 11222,
   mediaType: 'image',
   mimeType: 'jpeg',
-  binaryUrl: '',
   artifacts: {},
 };
 
@@ -34,12 +33,14 @@ function createFixture(
   });
   const context = createContext({ blobService });
   const onClose = jest.fn();
+  const onLoaded = jest.fn();
   const el = mount(
     <ImageViewer
       context={context}
       item={imageItem}
       collectionName={collectionName}
       onClose={onClose}
+      onLoad={onLoaded}
     />,
   );
   return { blobService, context, el, onClose };
@@ -131,7 +132,6 @@ describe('ImageViewer', () => {
       size: 11222,
       mediaType: 'image',
       mimeType: 'jpeg',
-      binaryUrl: '',
       artifacts: {},
     };
 

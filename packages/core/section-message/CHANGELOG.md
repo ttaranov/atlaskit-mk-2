@@ -1,5 +1,11 @@
 # @atlaskit/section-message
 
+## 1.0.10
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
+## 1.0.9
+- [patch] Update how actions wrap [5a791f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a791f2)
+
 ## 1.0.8
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

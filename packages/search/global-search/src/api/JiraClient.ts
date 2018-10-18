@@ -9,8 +9,13 @@ import {
   JiraResult,
   ContentType,
 } from '../model/Result';
+import { addJiraResultQueryParams } from './JiraItemMapper';
+import { JiraResultQueryParams } from './types';
 
 const RECENT_ITEMS_PATH: string = 'rest/internal/2/productsearch/recent';
+const PERMISSIONS_PATH: string =
+  'rest/api/2/mypermissions?permissions=USER_PICKER';
+
 export type RecentItemsCounts = {
   issues?: number;
   boards?: number;
@@ -38,6 +43,8 @@ export interface JiraClient {
     searchSessionId: string,
     recentItemCounts?: RecentItemsCounts,
   ): Promise<JiraResult[]>;
+
+  canSearchUsers(): Promise<boolean>;
 }
 
 enum JiraResponseGroup {
@@ -90,13 +97,28 @@ type JiraRecentItem = {
     | JiraRecentFilterAttributes;
 };
 
+type JiraMyPermissionsResponse = {
+  permissions: {
+    USER_PICKER?: {
+      havePermission: boolean;
+    };
+  };
+};
+
 export default class JiraClientImpl implements JiraClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
+  private addSessionIdToJiraResult;
+  private canSearchUsersCache: boolean | undefined;
 
-  constructor(url: string, cloudId: string) {
+  constructor(
+    url: string,
+    cloudId: string,
+    addSessionIdToJiraResult?: boolean,
+  ) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
+    this.addSessionIdToJiraResult = addSessionIdToJiraResult;
   }
 
   // Unused, just to mute ts lint
@@ -126,27 +148,69 @@ export default class JiraClientImpl implements JiraClient {
       options,
     );
     return recentItems
-      .map(group => this.recentItemGroupToItems(group))
+      .filter(group => JiraResponseGroupToContentType.hasOwnProperty(group.id))
+      .map(group => this.recentItemGroupToItems(group, searchSessionId))
       .reduce((acc, item) => [...acc, ...item], []);
   }
 
-  private recentItemGroupToItems(group: JiraRecentItemGroup) {
+  public async canSearchUsers(): Promise<boolean> {
+    if (typeof this.canSearchUsersCache === 'boolean') {
+      return Promise.resolve(this.canSearchUsersCache);
+    }
+
+    const options: RequestServiceOptions = {
+      path: PERMISSIONS_PATH,
+    };
+
+    const permissionsResponse: JiraMyPermissionsResponse = await utils.requestService<
+      JiraMyPermissionsResponse
+    >(this.serviceConfig, options);
+
+    this.canSearchUsersCache = permissionsResponse.permissions.USER_PICKER
+      ? permissionsResponse.permissions.USER_PICKER.havePermission
+      : false;
+
+    return this.canSearchUsersCache;
+  }
+
+  private recentItemGroupToItems(
+    group: JiraRecentItemGroup,
+    searchSessionId: string,
+  ) {
     const { id, items } = group;
-    return items.map(item => this.recentItemToResultItem(item, id));
+    return items.map(item =>
+      this.recentItemToResultItem(item, id, searchSessionId),
+    );
   }
   private recentItemToResultItem(
     item: JiraRecentItem,
     jiraGroup: JiraResponseGroup,
+    searchSessionId: string,
   ): JiraResult {
+    const containerId = this.getContainerId(item, jiraGroup);
+    const contentType = JiraResponseGroupToContentType[jiraGroup];
+    const resultId = '' + item.id;
+    const href = this.addSessionIdToJiraResult
+      ? addJiraResultQueryParams(item.url, {
+          searchSessionId,
+          searchContainerId: containerId,
+          searchContentType: contentType.replace(
+            'jira-',
+            '',
+          ) as JiraResultQueryParams['searchContentType'],
+          searchObjectId: resultId,
+        })
+      : item.url;
+
     return {
       resultType: ResultType.JiraObjectResult,
-      resultId: '' + item.id,
+      resultId,
       name: item.title,
-      href: item.url,
+      href,
       analyticsType: AnalyticsType.RecentJira,
       avatarUrl: `${item.avatarUrl}`,
-      containerId: this.getContainerId(item, jiraGroup),
-      contentType: JiraResponseGroupToContentType[jiraGroup],
+      containerId: containerId,
+      contentType,
       ...this.getTypeSpecificAttributes(item, jiraGroup),
     };
   }

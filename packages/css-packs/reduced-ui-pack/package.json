@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reduced-ui-pack",
-  "version": "10.0.0",
+  "version": "10.1.1",
   "description": "CSS classes which provide styling for a reduced number of Atlaskit components.",
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
@@ -19,7 +19,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^6.0.3",
+    "@atlaskit/theme": "^6.2.0",
     "fbjs": "^1.0.0"
   },
   "peerDependencies": {
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.8",
-    "@atlaskit/icon": "^14.0.0",
+    "@atlaskit/icon": "^14.1.0",
     "@atlaskit/section-message": "^1.0.8",
     "@babel/node": "^7.0.0",
     "cheerio": "^0.22.0",
@@ -41,6 +41,6 @@
     "build": "mkdir -p dist && cp src/bundle.css dist/bundle.css && cp src/icons-sprite.svg dist/icons-sprite.svg",
     "update": "BABEL_ENV=production:cjs yarn build-css && yarn run sprite",
     "sprite": "node ./bin/buildSprite.js",
-    "build-css": "babel-node build/js-to-css.js"
+    "build-css": "babel-node build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"
   }
 }

@@ -10,14 +10,13 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  `Bodied Extension: Insert Media`,
+  `bodied-insert-3.ts: Bodied Extension: Insert Media`,
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const page = new Page(client);
     await page.goto(fullpage.path);
 
     await setupMediaMocksProviders(page);
-
     await page.waitForSelector(fullpage.placeholder);
     await page.click(fullpage.placeholder);
 

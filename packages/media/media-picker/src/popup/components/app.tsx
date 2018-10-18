@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
-
+import { IntlShape } from 'react-intl';
 import { Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
 import {
@@ -89,6 +89,7 @@ export interface AppDispatchProps {
 export interface AppProxyReactContext {
   getAtlaskitAnalyticsEventHandlers: () => UIAnalyticsEventHandlerSignature[];
   getAtlaskitAnalyticsContext?: () => ObjectType[];
+  intl?: IntlShape;
 }
 
 export interface AppOwnProps {

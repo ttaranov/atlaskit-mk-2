@@ -91,6 +91,10 @@ export default class Page {
     return this.browser.addValue(selector, text);
   }
 
+  setValue(selector, text) {
+    return this.browser.setValue(selector, text);
+  }
+
   click(selector) {
     return this.browser.click(selector);
   }
@@ -106,6 +110,10 @@ export default class Page {
   // Get
   getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
+  }
+
+  getLocation(selector, property) {
+    return this.browser.getLocation(selector, property);
   }
 
   url() {

@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { Editor, EditorContext, CollapsedEditor } from '@atlaskit/editor-core';
+import { taskDecision } from '@atlaskit/util-data-test';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { BitbucketTransformer } from '../src';
 
@@ -60,7 +61,6 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
-                    allowTasksAndDecisions={true}
                     allowCodeBlocks={true}
                     allowLists={true}
                     allowRule={true}
@@ -75,6 +75,9 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     contentTransformerProvider={schema =>
                       new BitbucketTransformer(schema)
                     }
+                    taskDecisionProvider={Promise.resolve(
+                      taskDecision.getMockTaskDecisionResource(),
+                    )}
                   />
                 </CollapsedEditor>
               </div>

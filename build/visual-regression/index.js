@@ -14,7 +14,7 @@ const glob = require('glob');
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
 const isLocalRun = process.env.RUN_LOCAL_ONLY === 'true';
 const watch = process.env.WATCH ? '--watch' : '';
-const updateSnapshot = process.env.SNAPSHOT ? '--u' : '';
+const updateSnapshot = process.env.IMAGE_SNAPSHOT ? '--u' : '';
 
 // move logic to remove all production snapshots before test starts
 function removeSnapshotDir() {
@@ -55,11 +55,8 @@ function runCommand(cmd, resolve, reject) {
 }
 
 async function main() {
-  let serverAlreadyRunning;
-  if (updateSnapshot) {
-    serverAlreadyRunning = await isReachable('http://testing.local.com:9000');
-  } else {
-    serverAlreadyRunning = await isReachable('http://localhost:9000');
+  let serverAlreadyRunning = await isReachable('http://localhost:9000');
+  if (!serverAlreadyRunning || !process.env.IMAGE_SNAPSHOT) {
   }
 
   if (isLocalRun && !updateSnapshot && !serverAlreadyRunning) {

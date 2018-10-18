@@ -1,10 +1,12 @@
-import { Node as PmNode } from 'prosemirror-model';
 import { Decoration, DecorationSet } from 'prosemirror-view';
-import { TableDecorations } from '../types';
-import { TableCssClassName as ClassName } from '../types';
+import {
+  TableCssClassName as ClassName,
+  TableDecorations,
+  Cell,
+} from '../types';
 
-export const createHoverDecoration = (
-  cells: { pos: number; node: PmNode }[],
+export const createControlsHoverDecoration = (
+  cells: Cell[],
   danger?: boolean,
 ): Decoration[] => {
   const deco = cells.map(cell => {
@@ -19,22 +21,18 @@ export const createHoverDecoration = (
       {
         class: classes.join(' '),
       },
-      { id: TableDecorations.CONTROLS_HOVER },
+      { key: TableDecorations.CONTROLS_HOVER },
     );
   });
 
   return deco;
 };
 
-export const findHoverDecoration = (
+export const findControlsHoverDecoration = (
   decorationSet: DecorationSet,
 ): Decoration[] =>
-  decorationSet
-    .find()
-    .reduce(
-      (decorationArr: Decoration[], deco: Decoration) =>
-        deco.spec.id === TableDecorations.CONTROLS_HOVER
-          ? decorationArr.concat(deco)
-          : decorationArr,
-      [],
-    );
+  decorationSet.find(
+    undefined,
+    undefined,
+    spec => spec.key === TableDecorations.CONTROLS_HOVER,
+  );

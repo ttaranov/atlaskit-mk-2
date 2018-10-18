@@ -235,15 +235,15 @@ expect.extend({
   toMatchDocSnapshot(actual) {
     const { currentTestName, snapshotState } = this;
 
-    const removeLastWord = sentence =>
+    const removeFirstWord = sentence =>
       sentence
         .split(' ')
-        .slice(0, -1)
+        .slice(1)
         .join(' ');
 
-    // we append the browser name to the end of the test, so remove it so
-    // all the individual browser snapshots map to the same one
-    const newTestName = removeLastWord(currentTestName);
+    // this change is to ensure we are mentioning test file name only once in snapshot file
+    // for integration tests only
+    const newTestName = removeFirstWord(currentTestName);
 
     // remove ids that may change from the document so snapshots are repeatable
     const transformedDoc = removeIdsFromDoc(actual);

@@ -1,27 +1,29 @@
 import { Node as PmNode } from 'prosemirror-model';
-import { TableCellContent } from './doc';
-import {
-  akColorN20,
-  akColorB50,
-  akColorT50,
-  akColorP50,
-  akColorR50,
-  akColorG50,
-  akColorY50,
-  akColorN0,
-  akColorB75,
-  akColorG75,
-  akColorR75,
-  akColorN40,
-  akColorP75,
-  akColorT75,
-  akColorY75,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { hexToRgba, isHex } from '../../utils';
 import {
   akEditorTableCellBackgroundOpacity,
   akEditorTableNumberColumnWidth,
 } from '../../styles';
+import { TableCellContent } from './doc';
+
+const {
+  N20,
+  B50,
+  T50,
+  P50,
+  R50,
+  G50,
+  Y50,
+  N0,
+  B75,
+  G75,
+  R75,
+  N40,
+  P75,
+  T75,
+  Y75,
+} = colors;
 
 const getCellAttrs = (dom: HTMLElement) => {
   const widthAttr = dom.getAttribute('data-colwidth');
@@ -84,26 +86,26 @@ export const tableBackgroundColorPalette = new Map<string, string>();
 
 /** New borders for colors in the color picker */
 export const tableBackgroundBorderColors = {
-  blue: akColorB75,
-  teal: akColorT75,
-  red: akColorR75,
-  gray: akColorN40,
-  purple: akColorP75,
-  green: akColorG75,
-  yellow: akColorY75,
-  white: akColorN40,
+  blue: B75,
+  teal: T75,
+  red: R75,
+  gray: N40,
+  purple: P75,
+  green: G75,
+  yellow: Y75,
+  white: N40,
 };
 
 export const tableBackgroundColorNames = new Map<string, string>();
 [
-  [akColorB50, 'Blue'],
-  [akColorT50, 'Teal'],
-  [akColorR50, 'Red'],
-  [akColorN20, 'Gray'],
-  [akColorP50, 'Purple'],
-  [akColorG50, 'Green'],
-  [akColorY50, 'Yellow'],
-  [akColorN0, 'White'],
+  [B50, 'Blue'],
+  [T50, 'Teal'],
+  [R50, 'Red'],
+  [N20, 'Gray'],
+  [P50, 'Purple'],
+  [G50, 'Green'],
+  [Y50, 'Yellow'],
+  [N0, 'White'],
 ].forEach(([colorValue, colorName]) => {
   tableBackgroundColorPalette.set(colorValue.toLowerCase(), colorName);
   tableBackgroundColorNames.set(
@@ -187,9 +189,6 @@ export interface TableCell {
 export interface TableHeader {
   type: 'tableHeader';
   attrs?: CellAttributes;
-  /**
-   * @minItems 1
-   */
   content: TableCellContent;
 }
 

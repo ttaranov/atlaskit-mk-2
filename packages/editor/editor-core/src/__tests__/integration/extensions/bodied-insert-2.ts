@@ -7,7 +7,6 @@ import {
   insertBlockMenuItem,
 } from '../_helpers';
 
-import { messages as ToolbarMessages } from '../../../plugins/lists/ui/ToolbarLists';
 import { messages as BlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists';
 
@@ -18,21 +17,20 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
   'table',
 ].forEach(node => {
   BrowserTestCase(
-    `Bodied Extension: Insert ${node}`,
+    `bodied-insert-2.ts: Bodied Extension: Insert ${node}`,
     { skip: ['edge', 'ie'] },
     async client => {
       const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);
-
       await insertBlockMenuItem(page, 'Bodied macro (EH)');
 
       if (node.endsWith('list')) {
         await page.click(`span[aria-label="${node}"]`);
       } else if (node === 'action') {
         await page.click(
-          `span[aria-label="${ToolbarMessages.action.defaultMessage}"]`,
+          `span[aria-label="${BlockMessages.action.defaultMessage}"]`,
         );
       } else if (node === 'table') {
         await page.click(

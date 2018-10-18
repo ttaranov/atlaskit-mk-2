@@ -54,9 +54,15 @@ const typeAheadPlugin: EditorPlugin = {
         }: {
           typeAhead: TypeAheadPluginState;
         }) => {
-          const anchorElement = editorView.dom.querySelector(
-            '[data-type-ahead-query]',
-          ) as HTMLElement;
+          const { queryMarkPos } = typeAhead;
+          const domRef =
+            queryMarkPos !== null ? editorView.domAtPos(queryMarkPos) : null;
+          const anchorElement = domRef
+            ? ((domRef.node as HTMLElement).childNodes[
+                domRef.offset
+              ] as HTMLElement)
+            : undefined;
+
           return (
             <TypeAhead
               editorView={editorView}

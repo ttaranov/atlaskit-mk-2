@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-
 import { CheckBoxWrapper } from '../styled/TaskItem';
 
 import Item from './Item';
 import { Appearance, ContentRef, User } from '../types';
-import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import { createAndFireEventInElementsChannel } from '../analytics';
 
 export interface Props {
   taskId: string;
@@ -13,21 +14,23 @@ export interface Props {
   onChange?: (taskId: string, isChecked: boolean) => void;
   contentRef?: ContentRef;
   children?: any;
+  placeholder?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
   participants?: User[];
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
-  fireAnalyticsEvent?: FireAnalyticsEvent;
-  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   disabled?: boolean;
 }
 
 let taskCount = 0;
 const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
 
-export class InternalTaskItem extends PureComponent<Props, {}> {
+export class TaskItem extends PureComponent<
+  Props & WithAnalyticsEventProps,
+  {}
+> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline',
   };
@@ -46,23 +49,21 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
   }
 
   handleOnChange = (evt: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      onChange,
-      taskId,
-      isDone,
-      fireAnalyticsEvent,
-      firePrivateAnalyticsEvent,
-    } = this.props;
+    const { onChange, taskId, isDone, createAnalyticsEvent } = this.props;
     const newIsDone = !isDone;
     if (onChange) {
       onChange(taskId, newIsDone);
     }
-    const suffix = newIsDone ? 'check' : 'uncheck';
-    if (fireAnalyticsEvent) {
-      fireAnalyticsEvent(suffix, {});
-    }
-    if (firePrivateAnalyticsEvent) {
-      firePrivateAnalyticsEvent(`atlassian.fabric.action.${suffix}`, {});
+    const action = newIsDone ? 'checked' : 'unchecked';
+    if (createAnalyticsEvent) {
+      createAndFireEventInElementsChannel({
+        action,
+        actionSubject: 'action',
+        eventType: 'ui',
+        attributes: {
+          localId: taskId,
+        },
+      })(createAnalyticsEvent);
     }
   };
 
@@ -87,6 +88,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
       contentRef,
       children,
       participants,
+      placeholder,
       showPlaceholder,
       disabled,
     } = this.props;
@@ -111,7 +113,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
         contentRef={contentRef}
         icon={icon}
         participants={participants}
-        placeholder="Type your action, use '@' to assign to someone."
+        placeholder={placeholder}
         showPlaceholder={showPlaceholder}
         attribution={this.getAttributionText()}
       >
@@ -124,11 +126,4 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
 // This is to ensure that the "type" is exported, as it gets lost and not exported along with TaskItem after
 // going through the high order component.
 // tslint:disable-next-line:variable-name
-const TaskItem = withAnalytics<typeof InternalTaskItem>(
-  InternalTaskItem,
-  {},
-  { analyticsId: 'atlassian.fabric.action' },
-);
-type TaskItem = InternalTaskItem;
-
-export default TaskItem;
+export default withAnalyticsEvents()(TaskItem);

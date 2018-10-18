@@ -10,7 +10,7 @@ export const ResultItemGroupHeader = styled.div`
 
 export const ResultItemGroupTitle = styled.div`
   font-size: 11px;
-  line-height: ${gridSize() * 2 / 11};
+  line-height: ${gridSize() * 2}px;
   font-weight: 600;
 `;
 
@@ -22,12 +22,13 @@ export const ResultItemAfterWrapper = styled.div`
   display: flex;
 `;
 
-export const ResultItemCaption = styled.small`
+export const ResultItemCaption = styled.span`
   color: ${colors.N200};
+  font-size: 12px;
   margin-left: ${gridSize()}px;
 `;
 
-export const ResultItemSubText = styled.small`
+export const ResultItemSubText = styled.span`
   font-size: 12px;
   color: ${colors.N200};
 `;

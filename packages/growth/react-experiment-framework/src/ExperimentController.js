@@ -7,6 +7,7 @@ import type {
   EnrollmentDetails,
   Experiments,
   ExperimentEnrollmentConfig,
+  ResolverPromises,
 } from './types';
 
 type Props = {
@@ -21,6 +22,8 @@ type State = {
 class ExperimentController extends Component<Props, State> {
   static displayName = 'ExperimentController';
 
+  resolverPromises: ResolverPromises = {};
+
   constructor(props: Props) {
     super(props);
 
@@ -32,6 +35,7 @@ class ExperimentController extends Component<Props, State> {
         [experimentKey]: {
           isEnrollmentDecided: false,
           enrollmentResolver: () =>
+            this.resolverPromises[experimentKey] ||
             this.resolveEnrollmentForExperiment(experimentKey),
         },
       }),
@@ -49,27 +53,21 @@ class ExperimentController extends Component<Props, State> {
     const enrollmentResolver = experimentEnrollmentConfig[experimentKey];
 
     // updates context after resolving
-    const enrollmentPromise = enrollmentResolver().then(
-      (enrollmentDetails: EnrollmentDetails) => {
-        this.setState({
-          experiments: {
-            [experimentKey]: {
-              isEnrollmentDecided: true,
-              enrollmentDetails,
-            },
-          },
-        });
-      },
-    );
+    const enrollmentPromise = enrollmentResolver();
 
-    // replaces original resolver to avoid resolving enrollment multiple times, essentially caching....
-    this.setState({
-      experiments: {
-        [experimentKey]: {
-          enrollmentResolver: () => enrollmentPromise,
+    enrollmentPromise.then((enrollmentDetails: EnrollmentDetails) => {
+      this.setState({
+        experiments: {
+          [experimentKey]: {
+            isEnrollmentDecided: true,
+            enrollmentDetails,
+          },
         },
-      },
+      });
     });
+
+    // cache the resolver promise to avoid resolving enrollment multiple times
+    this.resolverPromises[experimentKey] = enrollmentPromise;
 
     return enrollmentPromise;
   }

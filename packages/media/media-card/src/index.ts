@@ -4,14 +4,16 @@ import {
   MediaCollectionItem,
   MediaType,
   FileProcessingStatus,
+  Context,
+  ImageResizeMode,
 } from '@atlaskit/media-core';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { CardAction } from './actions';
+import { Identifier } from './root/domain';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export { default as Card } from './root/card/cardLoader';
-export { CardProps, CardState } from './root/card';
 
 export { CardView } from './root/cardViewLoader';
 
@@ -21,22 +23,20 @@ export {
 } from './root/cardView';
 
 export * from './root/domain';
-export * from './list';
+export { CardListProps, CardListState } from './list';
+export { default as CardList } from './list/cardListLoader';
+
 export * from './actions';
 export { isUrlPreviewIdentifier } from './utils/identifier';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
-export {
-  AppCardView,
-  AppCardModel,
-  convertAppCardToSmartCard,
-} from './app_2/AppCardViewV2';
 
 export type CardStatus =
   | 'uploading'
   | 'loading'
   | 'processing'
   | 'complete'
-  | 'error';
+  | 'error'
+  | 'failed-processing';
 
 export type CardAppearance =
   | 'auto'
@@ -138,3 +138,24 @@ export interface CardViewAnalyticsContext extends BaseAnalyticsContext {
   fileAttributes?: AnalyticsFileAttributes;
   linkAttributes?: AnalyticsLinkAttributes;
 }
+
+export interface CardProps extends SharedCardProps, CardEventProps {
+  readonly context: Context;
+  readonly identifier: Identifier;
+  readonly isLazy?: boolean;
+  readonly resizeMode?: ImageResizeMode;
+
+  // only relevant to file card with image appearance
+  readonly disableOverlay?: boolean;
+}
+
+export interface CardState {
+  status: CardStatus;
+  isCardVisible: boolean;
+  metadata?: MediaItemDetails;
+  dataURI?: string;
+  progress?: number;
+  readonly error?: Error;
+}
+
+export { defaultImageCardDimensions } from './utils';

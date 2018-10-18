@@ -142,4 +142,19 @@ describe('ADF => WikiMarkup - Paragraph', () => {
     )(defaultSchema);
     expect(transformer.encode(node)).toMatchSnapshot();
   });
+
+  test('[CS-293] escape macro formatter characters', () => {
+    const node = doc(p('this is not a \\{macro}'))(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
+
+  test('[CS-293] escape media formatter characters', () => {
+    const node = doc(p('this is not a !file.txt!'))(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
+
+  test('[CS-293] escape link/mention/file link formatter characters', () => {
+    const node = doc(p('this is not a [~mention]'))(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
 });

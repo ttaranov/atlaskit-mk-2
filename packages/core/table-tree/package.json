@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/table-tree",
-  "version": "4.1.8",
+  "version": "4.1.11",
   "description": "A React Component for displaying expandable tables with tree-like hierarchies",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,11 +19,12 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^3.0.6",
-    "@atlaskit/button": "^9.0.13",
-    "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/spinner": "^9.0.8",
-    "@atlaskit/theme": "^6.0.2",
+    "@atlaskit/analytics-next": "^3.0.10",
+    "@atlaskit/button": "^9.0.15",
+    "@atlaskit/icon": "^14.0.2",
+    "@atlaskit/spinner": "^9.0.10",
+    "@atlaskit/theme": "^6.1.1",
+    "@babel/runtime": "^7.0.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "prop-types": "^15.5.10"
@@ -35,8 +36,9 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.8",
-    "@atlaskit/section-message": "^1.0.8",
-    "@atlaskit/select": "^6.0.2",
+    "@atlaskit/empty-state": "^3.1.1",
+    "@atlaskit/section-message": "^1.0.10",
+    "@atlaskit/select": "^6.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.0",

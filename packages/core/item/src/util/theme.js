@@ -6,7 +6,6 @@ import type { ItemTheme } from '../types';
 export const themeNamespace = '@atlaskit-shared-theme/item';
 
 // Used for Group titles and Item descriptions
-export const smallFontSize = 12;
 export const compactSmallFontSize = 10;
 export const compactLineHeight = 1.2;
 export const gridSize: number = akGridSize();
@@ -48,7 +47,7 @@ export const defaultTheme: ItemTheme = {
     secondaryText: colors.N200,
   },
   selected: {
-    background: colors.N0,
+    background: colors.backgroundActive,
     text: colors.N500,
     secondaryText: colors.N200,
   },

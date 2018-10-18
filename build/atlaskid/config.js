@@ -101,6 +101,14 @@ const navigationTeam = [
   'wmendesneto',
   'isriharsha',
 ];
+const homeTeam = [
+  'losang', // maintainer
+  'damevin', // maintainer
+  'sesther', // maintainer
+  'erwinbolwidt',
+  'zeev_gilovitz',
+  'hmaher',
+];
 const usersAllowedToApprove = [].concat(
   atlaskitTeam,
   editorTeam,
@@ -111,6 +119,7 @@ const usersAllowedToApprove = [].concat(
   kitkatTeam,
   growthTeam,
   navigationTeam,
+  homeTeam,
 );
 
 module.exports = {

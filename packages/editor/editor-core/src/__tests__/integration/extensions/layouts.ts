@@ -21,7 +21,7 @@ const changeSelectedNodeLayout = async (page, layoutName) => {
   commonMessages.layoutFullWidth.defaultMessage,
 ].forEach(async layoutName => {
   BrowserTestCase(
-    `Extension: ${layoutName} Layout`,
+    `layouts.ts: Extension: ${layoutName} Layout`,
     { skip: ['edge', 'ie'] },
     async client => {
       const page = new Page(client);

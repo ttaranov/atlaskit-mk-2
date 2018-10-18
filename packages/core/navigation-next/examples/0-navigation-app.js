@@ -26,7 +26,7 @@ export default class App extends Component<
 > {
   state = {
     isDebugEnabled: true,
-    isFlyoutAvailable: false,
+    isFlyoutAvailable: true,
   };
 
   onDebugToggle = () => {
@@ -57,15 +57,20 @@ export default class App extends Component<
                 <Route path="/issues/search" component={SearchIssuesView} />
                 <Route path="/" component={DashboardsView} />
               </Switch>
-              <Label label="Toggle debug logger" />
-              <ToggleStateless
-                isChecked={isDebugEnabled}
-                onChange={this.onDebugToggle}
-              />
+
+              <p>
+                The search drawer can be opened via the <kbd>/</kbd> keyboard
+                shortcut.
+              </p>
               <Label label="Toggle flyout on hover (experimental)" />
               <ToggleStateless
                 isChecked={isFlyoutAvailable}
                 onChange={this.onFlyoutToggle}
+              />
+              <Label label="Toggle debug logger" />
+              <ToggleStateless
+                isChecked={isDebugEnabled}
+                onChange={this.onDebugToggle}
               />
             </div>
           </LayoutManagerWithViewController>

@@ -6,7 +6,7 @@ import UiButton, { themeNamespace } from '@atlaskit/button';
 import { colors, themed } from '@atlaskit/theme';
 
 import styled, { ThemeProvider } from 'styled-components';
-import { hexToRgba } from '../../../utils/color';
+import { hexToRgba } from '@atlaskit/editor-common';
 
 const editorButtonTheme = {
   danger: {

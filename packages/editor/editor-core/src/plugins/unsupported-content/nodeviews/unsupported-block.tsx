@@ -1,21 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {
-  akBorderRadius,
-  akColorN30,
-  akColorN50,
-} from '@atlaskit/util-shared-styles';
+import { borderRadius, colors } from '@atlaskit/theme';
 import { fontSize } from '@atlaskit/theme';
 
 const BlockNode = styled.div`
   align-items: center;
-  background: ${akColorN30};
-  border: 1px dashed ${akColorN50};
-  border-radius: ${akBorderRadius};
+  background: ${colors.N30};
+  border: 1px dashed ${colors.N50};
+  border-radius: ${borderRadius()}px;
   box-sizing: border-box;
   cursor: default;
   display: block;
-  font-size: ${fontSize}px;
+  font-size: ${fontSize()}px;
   margin: 10px 0;
   min-height: 24px;
   padding: 10px;
@@ -24,7 +20,7 @@ const BlockNode = styled.div`
   white-space: nowrap;
 
   &.ProseMirror-selectednode {
-    background: ${akColorN50};
+    background: ${colors.N50};
     outline: none;
   }
 `;

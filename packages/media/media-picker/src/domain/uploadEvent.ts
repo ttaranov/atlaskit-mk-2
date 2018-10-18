@@ -1,8 +1,10 @@
 import { FileDetails } from '@atlaskit/media-core';
 import { MediaProgress } from './progress';
 import { MediaError } from './error';
-import { Preview } from './preview';
+import { Preview, isImagePreview } from './preview';
 import { MediaFile, PublicMediaFile } from './file';
+
+export { isImagePreview };
 
 export type UploadsStartEventPayload = {
   readonly files: MediaFile[];

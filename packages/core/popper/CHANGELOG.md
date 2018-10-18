@@ -1,5 +1,14 @@
 # @atlaskit/popper
 
+## 0.3.1
+- [patch] Fix referenceElement overriding ref from Reference component  [874d5bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/874d5bd)
+
+## 0.3.0
+- [minor] Adds replacementElement prop to enable onboarding use-case. See prop documentation [here](https://github.com/FezVrasta/react-popper#usage-without-a-reference-htmlelement) [1a752e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a752e6)
+
+## 0.2.5
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 0.2.4
 - [patch] Fixed popper placement offset to not fire deprecation warning. [4fcff1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fcff1c)
 

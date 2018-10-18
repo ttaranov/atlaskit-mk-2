@@ -24,6 +24,7 @@ export interface Config {
   directoryServiceUrl: string;
   confluenceUrl: string;
   jiraUrl: string;
+  addSessionIdToJiraResult?: boolean;
 }
 
 const defaultConfig: Config = {
@@ -32,6 +33,7 @@ const defaultConfig: Config = {
   directoryServiceUrl: '/gateway/api/directory',
   confluenceUrl: '/wiki',
   jiraUrl: '',
+  addSessionIdToJiraResult: false,
 };
 
 export default function configureSearchClients(
@@ -51,12 +53,17 @@ export default function configureSearchClients(
     crossProductSearchClient: new CrossProductSearchClientImpl(
       config.searchAggregatorServiceUrl,
       cloudId,
+      config.addSessionIdToJiraResult,
     ),
     peopleSearchClient: new PeopleSearchClientImpl(
       config.directoryServiceUrl,
       cloudId,
     ),
     confluenceClient: new ConfluenceClientImpl(config.confluenceUrl, cloudId),
-    jiraClient: new JiraClientImpl(config.jiraUrl, cloudId),
+    jiraClient: new JiraClientImpl(
+      config.jiraUrl,
+      cloudId,
+      config.addSessionIdToJiraResult,
+    ),
   };
 }

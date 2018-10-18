@@ -1,7 +1,7 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
-import { akColorN90 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 export const placeholderStyles = css`
   .ProseMirror .placeholder-decoration {
@@ -11,7 +11,7 @@ export const placeholderStyles = css`
 
     &::before {
       content: attr(data-text);
-      color: ${akColorN90};
+      color: ${colors.N90};
       pointer-events: none;
     }
   }

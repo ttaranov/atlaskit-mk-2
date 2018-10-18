@@ -4,7 +4,8 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import * as assert from 'assert';
+// TODO: AK-5546: There is an issue with .log
+// import * as assert from 'assert';
 
 /* Url to test the example */
 const exampleURL = getExampleUrl(
@@ -16,20 +17,20 @@ const exampleURL = getExampleUrl(
 /* Css selectors used for the tests */
 const getByKey = key => `[data-webdriver-test-key="${key}"]`;
 
-function checkConsoleErrors(instance) {
-  if (!instance.log('browser').value) return;
+// function checkConsoleErrors(instance) {
+//   if (!instance.log('browser').value) return;
 
-  instance.log('browser').value.forEach(val => {
-    assert.notEqual(
-      val.level,
-      'SEVERE',
-      `Console errors :${val.message} when view the form`,
-    );
-  });
-}
+//   instance.log('browser').value.forEach(val => {
+//     assert.notEqual(
+//       val.level,
+//       'SEVERE',
+//       `Console errors :${val.message} when view the form`,
+//     );
+//   });
+// }
 
 BrowserTestCase(
-  '🌏 Global navigation should render without errors',
+  'navigation.js: 🌏 Global navigation should render without errors',
   async client => {
     const page = new Page(client);
     const globalNav = getByKey('global-navigation');
@@ -41,12 +42,12 @@ BrowserTestCase(
     );
     expect(await page.isVisible(`${globalNav} [aria-label="Add"]`)).toBe(true);
     expect(await page.isVisible(`${globalNav} [aria-label="Help"]`)).toBe(true);
-
-    checkConsoleErrors(page);
+    // TODO: AK-5546: There is an issue with .log
+    // checkConsoleErrors(page);
   },
 );
 BrowserTestCase(
-  '📦 Product navigation should render without errors',
+  'navigation.js: 📦 Product navigation should render without errors',
   async client => {
     const page = new Page(client);
     await page.goto(exampleURL);
@@ -57,12 +58,12 @@ BrowserTestCase(
     );
     expect(await page.isVisible(getByKey('product-item-projects'))).toBe(true);
     expect(await page.isVisible(getByKey('product-item-issues'))).toBe(true);
-
-    checkConsoleErrors(page);
+    // TODO: AK-5546: There is an issue with .log
+    // checkConsoleErrors(page);
   },
 );
 BrowserTestCase(
-  '🎁 Container navigation should render without errors',
+  'navigation.js: 🎁 Container navigation should render without errors',
   async client => {
     const page = new Page(client);
     await page.goto(exampleURL);
@@ -71,7 +72,7 @@ BrowserTestCase(
     expect(await page.isVisible(getByKey('container-item-backlog'))).toBe(true);
     expect(await page.isVisible(getByKey('container-item-sprints'))).toBe(true);
     expect(await page.isVisible(getByKey('container-item-reports'))).toBe(true);
-
-    checkConsoleErrors(page);
+    // TODO: AK-5546: There is an issue with .log
+    // checkConsoleErrors(page);
   },
 );

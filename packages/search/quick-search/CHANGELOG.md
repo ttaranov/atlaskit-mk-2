@@ -1,5 +1,17 @@
 # @atlaskit/quick-search
 
+## 4.2.13
+- [patch] Fixes styling of item captions and subtext [d0d45ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0d45ff)
+
+## 4.2.12
+- [patch] Fix sub text style. [5bdb0bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bdb0bb)
+
+## 4.2.11
+- [patch] Add link to advanced issue search at the top of the jira pre query screen. [f0f66b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0f66b7)
+
+## 4.2.10
+- [patch] Fixing selected style for Item and Fixing focus on Quick search when component is not remounted [9532a1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9532a1b)
+
 ## 4.2.9
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

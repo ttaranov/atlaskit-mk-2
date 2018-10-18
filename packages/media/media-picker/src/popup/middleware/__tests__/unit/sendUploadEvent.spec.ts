@@ -84,9 +84,11 @@ describe('sendUploadEvent middleware', () => {
   it('should emit upload preview update event', () => {
     const { eventEmitter, store, next } = setup();
     const preview = {
-      width: 1980,
-      height: 1080,
-      src: 'some-preview-src',
+      dimensions: {
+        width: 1980,
+        height: 1080,
+      },
+      scaleFactor: 1,
     };
 
     sendUploadEventMiddleware(eventEmitter)(store)(next)(

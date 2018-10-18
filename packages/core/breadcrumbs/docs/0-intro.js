@@ -18,6 +18,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/breadcrumbs"
       Component={require('../examples/0-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/0-basic')}
@@ -26,6 +27,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/breadcrumbs"
       Component={require('../examples/1-expand').default}
       title="With Expand"
       source={require('!!raw-loader!../examples/1-expand')}

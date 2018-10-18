@@ -24,7 +24,7 @@ const moveUp = (page, selector) => {
 
 [fullpage].forEach(editor => {
   BrowserTestCase(
-    `pasting an link then typing still converts to inline card`,
+    `inline-2.ts: pasting an link then typing still converts to inline card`,
     {
       skip: ['chrome', 'ie', 'safari'],
     },

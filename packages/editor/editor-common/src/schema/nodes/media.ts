@@ -1,5 +1,5 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 export type MediaType = 'file' | 'link' | 'external';
 export type DisplayType = 'file' | 'thumbnail';
@@ -40,7 +40,8 @@ export interface MediaBaseAttributes {
   __fileMimeType?: string | null;
   // For JIRA
   __displayType?: DisplayType | null;
-  // For Stride @see ED-4030
+
+  // Need this until there is actual "upfront" media ID
   __key?: string | null;
 }
 
@@ -129,7 +130,9 @@ export const media: NodeSpec = {
       title: 'Attachment',
       // Manually kept in sync with the style of media cards. The goal is to render a plain gray
       // rectangle that provides an affordance for media.
-      style: `display: inline-block; border-radius: 3px; background: ${akColorN30}; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);`,
+      style: `display: inline-block; border-radius: 3px; background: ${
+        colors.N30
+      }; box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);`,
     };
 
     copyPrivateAttributes(
