@@ -143,6 +143,26 @@ describe('UploadService', () => {
       });
     });
 
+    it('should use getPreviewFromBlob for non-image files when emitting preview', async () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
+
+      const callback = jest.fn();
+      uploadService.on('file-preview-update', callback);
+
+      (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
+        Promise.resolve({ someImagePreview: true }),
+      );
+
+      uploadService.addFiles([file as File]);
+      await filesAddedPromise;
+
+      expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledWith(
+        file,
+        'video',
+      );
+    });
+
     it('should not emit files-added if files is empty list', () => {
       const { uploadService } = setup();
       const filesAddedCallback = jest.fn();
