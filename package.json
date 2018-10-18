@@ -25,7 +25,7 @@
     "delete:build": "                        bolt ws exec --parallel -- rm -rf dist",
     "precommit": "                           lint-staged",
     "test": "                                yarn jest",
-    "test:changed": "                        CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn jest",
+    "test:changed": "                        CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) COVERAGE_PACKAGES=$(node build/ci-scripts/get.code.threshold.for.changed.packages.since.master.js) yarn jest",
     "test:browser": "                        projector ./projector testBrowser",
     "test:browser:watch": "                  projector ./projector testBrowser --watch",
     "test:browser:browserstack": "           projector ./projector testBrowserCI --browserstack",

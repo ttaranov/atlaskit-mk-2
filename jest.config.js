@@ -1,6 +1,7 @@
 //@flow
 /* eslint-disable no-console */
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
+const COVERAGE_PACKAGES = process.env.COVERAGE_PACKAGES;
 const INTEGRATION_TESTS = process.env.INTEGRATION_TESTS;
 const VISUAL_REGRESSION = process.env.VISUAL_REGRESSION;
 const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
@@ -10,20 +11,6 @@ const PROD = process.env.PROD;
 const STEP_IDX = Number(process.env.STEP_IDX);
 const STEPS = Number(process.env.STEPS);
 
-/**
- * Code coverage thresold configuration
- */
-const codeCoverageConfig = {
-  coverageThreshold: {
-    // Add coverage threshold by folder
-    [`${__dirname}/packages/core/navigation-next/src`]: {
-      statements: 69,
-      branches: 61,
-      functions: 69,
-      lines: 69,
-    },
-  },
-};
 /**
  * USAGE for parallelizing: setting PARALLELIZE_TESTS to an array of globs or an array of test files when you
  * have the STEPS and STEP_IDX vars set will automatically distribute them evenly.
@@ -85,12 +72,7 @@ const config = {
   },
   coverageReporters: ['lcov', 'html', 'text-summary'],
   collectCoverage: false,
-  coverageDirectory: 'coverage',
-  collectCoverageFrom: [
-    // Adding content to be added in our code coverage
-    // Add your bolt packages here
-    'packages/core/navigation-next/src/**/*.{js,jsx,ts,tsx}',
-  ],
+  collectCoverageFrom: [],
   coverageThreshold: {},
 };
 
@@ -102,33 +84,17 @@ if (CHANGED_PACKAGES) {
     pkgPath => `${__dirname}/${pkgPath}/**/__tests__/**/*.(js|tsx|ts)`,
   );
   config.testMatch = changedPackagesTestGlobs;
+}
 
-  const codeCoverageThresoldPackages = Object.keys(
-    codeCoverageConfig.coverageThreshold || {},
-  );
-
-  // Adding code coverage thresold configuration for unit test only
-  // This should add only the packages with code coverage threshold available
-  // If not it will keep the same flow without code coverage check
-  if (
-    !INTEGRATION_TESTS &&
-    !VISUAL_REGRESSION &&
-    !(process.argv || []).includes('--runInBand')
-  ) {
-    const coverageThreshold = [...changedPackages]
-      .map(pkgPath =>
-        codeCoverageThresoldPackages.find(pkg => pkg.includes(pkgPath)),
-      )
-      .filter(Boolean);
-
-    config.collectCoverage = coverageThreshold.length > 0;
-    config.coverageThreshold = coverageThreshold.reduce(
-      (result, pkgCoverage) => ({
-        ...result,
-        [pkgCoverage]: codeCoverageConfig.coverageThreshold[pkgCoverage],
-      }),
-      {},
-    );
+// Adding code coverage thresold configuration for unit test only
+// This should add only the packages with code coverage threshold available
+// If not it will keep the same flow without code coverage check
+if (COVERAGE_PACKAGES) {
+  const coveragePackages = JSON.parse(COVERAGE_PACKAGES);
+  if (Object.keys(coveragePackages).length > 0) {
+    config.collectCoverage = true;
+    config.collectCoverageFrom = coveragePackages.collectCoverageFrom;
+    config.coverageThreshold = coveragePackages.coverageThreshold;
   }
 }
 
