@@ -73,7 +73,7 @@ export function media(input: string, schema: Schema): Token {
           continue;
         }
 
-        //!image.gif|align=right, vspace=4|ignore-this!
+        // !image.gif|align=right, vspace=4|ignore-this!
         // If it splits into more than 2 items, we ignore the rest
         const [rawContent, rawAttrs = ''] = buffer.split('|');
 
