@@ -70,4 +70,12 @@ describe('BaseViewer', () => {
     expect(releaseSpy).toHaveBeenCalledTimes(1);
     expect(initSpy).toHaveBeenCalledTimes(2);
   });
+
+  it('passes the new properties to the init() function when updated', () => {
+    const { el, initSpy } = createTestViewer(createProps());
+    const newItem = { ...createItem(), id: 'new-id' };
+    const newProps = { ...el.props(), item: newItem };
+    el.setProps(newProps);
+    expect(initSpy).toHaveBeenLastCalledWith(newProps);
+  });
 });

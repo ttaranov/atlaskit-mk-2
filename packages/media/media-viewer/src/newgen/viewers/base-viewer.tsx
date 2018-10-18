@@ -13,7 +13,7 @@ export abstract class BaseViewer<
   State
 > extends React.Component<Props, State> {
   componentDidMount() {
-    this.init(this.props.item, this.props.context);
+    this.init(this.props);
   }
 
   componentWillUnmount() {
@@ -23,7 +23,7 @@ export abstract class BaseViewer<
   componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.init(nextProps.item, nextProps.context);
+      this.init(nextProps);
     }
   }
 
@@ -35,6 +35,6 @@ export abstract class BaseViewer<
     );
   }
 
-  protected abstract init(file: ProcessedFileState, context: Context): void;
+  protected abstract init(props: Props): void;
   protected abstract release(): void;
 }

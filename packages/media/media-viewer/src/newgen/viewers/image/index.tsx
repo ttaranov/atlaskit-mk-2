@@ -87,7 +87,7 @@ export class ImageViewer extends BaseViewer<
     // anything.
   }
 
-  protected async init(file: ProcessedFileState, context: Context) {
+  protected init({ item: file, context }: ImageViewerProps) {
     const { onLoad } = this.props;
     this.setState(initialState, async () => {
       try {
