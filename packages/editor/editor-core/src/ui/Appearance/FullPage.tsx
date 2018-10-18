@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import { akEditorMenuZIndex } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
-import Avatars from '../../plugins/collab-edit/ui/avatars';
+import { AvatarsLoader } from '../../plugins/collab-edit/ui/avatarsLoader';
 import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
@@ -214,7 +214,7 @@ export default class Editor extends React.Component<
             disabled={!!disabled}
           />
           <MainToolbarCustomComponentsSlot>
-            <Avatars
+            <AvatarsLoader
               editorView={editorView}
               eventDispatcher={eventDispatcher}
               inviteToEditHandler={collabEdit && collabEdit.inviteToEditHandler}

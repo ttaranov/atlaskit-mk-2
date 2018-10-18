@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { EditorView } from 'prosemirror-view';
-import Avatar from '@atlaskit/avatar';
-import AvatarGroup from '@atlaskit/avatar-group';
 import { gridSize, colors } from '@atlaskit/theme';
 import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
 import { akEditorSmallZIndex } from '@atlaskit/editor-common';
+import AvatarType from '@atlaskit/avatar';
+import AvatarGroupType from '@atlaskit/avatar-group';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -18,6 +18,8 @@ export interface Props {
   isInviteToEditButtonSelected?: boolean;
   editorView?: EditorView;
   eventDispatcher?: EventDispatcher;
+  Avatar: typeof AvatarType;
+  AvatarGroup: typeof AvatarGroupType;
 }
 
 const AvatarContainer = styled.div`
@@ -107,23 +109,25 @@ const AvatarItem: any = styled.div`
   }
 `;
 
-function Item(props: any) {
-  const color = getAvatarColor(props.sessionId).color.solid;
-  const avatar = props.name.substr(0, 1).toUpperCase();
-  const { children, theme, ...other } = props;
-
-  return (
-    <AvatarItem
-      badgeColor={color}
-      avatar={avatar}
-      shouldAnimate={props.isInteractive}
-    >
-      <Avatar {...other} />
-    </AvatarItem>
-  );
-}
 export default class Avatars extends React.Component<Props, any> {
   private onAvatarClick = event => {};
+
+  private AvatarItem = (props: any) => {
+    const color = getAvatarColor(props.sessionId).color.solid;
+    const avatar = props.name.substr(0, 1).toUpperCase();
+    const { children, theme, ...other } = props;
+
+    return (
+      <AvatarItem
+        badgeColor={color}
+        avatar={avatar}
+        shouldAnimate={props.isInteractive}
+      >
+        <this.props.Avatar {...other} />
+      </AvatarItem>
+    );
+  };
+
   private renderAvatars = state => {
     if (!state.data) {
       return null;
@@ -138,7 +142,7 @@ export default class Avatars extends React.Component<Props, any> {
         src: p.avatar,
         sessionId: p.sessionId,
         size: 'medium',
-        component: Item,
+        component: this.AvatarItem,
       }))
       .sort(p => (p.sessionId === sessionId ? -1 : 1));
 
@@ -148,7 +152,7 @@ export default class Avatars extends React.Component<Props, any> {
 
     return (
       <AvatarContainer>
-        <AvatarGroup
+        <this.props.AvatarGroup
           appearance="stack"
           size="medium"
           data={avatars}
