@@ -19,4 +19,3 @@ export { default as SkeletonContainerHeader } from './SkeletonContainerHeader';
 export { default as SkeletonItem } from './SkeletonItem';
 export { default as SkeletonContainerView } from './SkeletonContainerView';
 export { default as Switcher } from './Switcher';
-export { default as Wordmark } from './Wordmark';

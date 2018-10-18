@@ -24,7 +24,6 @@ import {
   SectionHeading as SectionHeadingComponent,
   Separator,
   Switcher,
-  Wordmark,
 } from '../components/presentational';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
@@ -37,6 +36,7 @@ import type {
   ItemsRendererProps,
   SectionHeadingProps,
   SectionProps,
+  WordmarkProps,
 } from './types';
 
 const iconMap = {
@@ -155,6 +155,22 @@ const ContainerHeader = (props: *) => (
   // the scroll hint.
   <div css={{ paddingBottom: gridSize * 2.5 - 2 }}>
     <ContainerHeaderComponent {...props} />
+  </div>
+);
+
+// Wordmark
+const Wordmark = ({ wordmark: WordmarkLogo }: WordmarkProps) => (
+  <div
+    css={{
+      lineHeight: 0,
+      // -2px here to account for the extra space at the top of a MenuSection
+      // for the scroll hint.
+      paddingBottom: gridSize * 3.5 - 2,
+      paddingLeft: gridSize * 2,
+      paddingTop: gridSize,
+    }}
+  >
+    <WordmarkLogo />
   </div>
 );
 

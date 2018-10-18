@@ -59,3 +59,7 @@ export type ItemsRendererProps = {
   customComponents?: CustomComponents,
   items: ViewData,
 };
+
+export type WordmarkProps = {
+  wordmark: ComponentType<{}>,
+};
