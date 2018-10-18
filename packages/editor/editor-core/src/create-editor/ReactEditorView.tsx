@@ -10,7 +10,10 @@ import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps, EditorConfig, EditorPlugin } from '../types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
-import { pluginKey as editorEnabledPluginKey } from '../plugins/editor-enabled';
+import {
+  pluginKey as editorEnabledPluginKey,
+  EditorEnabledPluginState,
+} from '../plugins/editor-enabled';
 
 import {
   processPluginsList,
@@ -77,9 +80,10 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   private broadcastDisabled = disabled => {
     const editorView = this.view;
     if (editorView) {
+      console.log('Broadcast disabled called, disabled:', disabled);
       const tr = editorView.state.tr.setMeta(editorEnabledPluginKey, {
-        disabled,
-      });
+        editorEnabled: disabled,
+      } as EditorEnabledPluginState);
 
       tr.setMeta('isLocal', true);
       editorView.dispatch(tr);
@@ -92,7 +96,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
       this.props.disabled !== nextProps.disabled &&
       this.props.editorProps.disabled !== nextProps.editorProps.disabled
     ) {
-      this.broadcastDisabled(this.props.disabled);
+      this.broadcastDisabled(nextProps.disabled);
       // Disables the contentEditable attribute of the editor if the editor is disabled
       this.view.setProps({
         editable: state => !nextProps.editorProps.disabled,
