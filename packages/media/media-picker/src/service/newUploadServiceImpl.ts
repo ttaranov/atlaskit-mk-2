@@ -28,13 +28,13 @@ import { UploadParams } from '..';
 import { SmartMediaProgress } from '../domain/progress';
 import { MediaErrorName } from '../domain/error';
 import {
-  MAX_FILE_SIZE_FOR_PREVIEW,
   UploadService,
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './types';
 import { Observable } from 'rxjs/Observable';
 import { LocalFileSource, LocalFileWithSource } from '../service/types';
+import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
@@ -197,10 +197,15 @@ export class NewUploadServiceImpl implements UploadService {
         upfrontId.then(id => {
           if (context && observable) {
             const key = FileStreamCache.createKey(id);
+            const keyWithCollection = FileStreamCache.createKey(id, {
+              collectionName: this.tenantUploadParams.collection,
+            });
+
+            // We want to save the observable without collection too, due consumers using cards without collection.
             fileStreamsCache.set(key, observable);
+            fileStreamsCache.set(keyWithCollection, observable);
           }
         });
-      }
 
         return cancellableFileUpload;
       },
@@ -267,7 +272,14 @@ export class NewUploadServiceImpl implements UploadService {
             preview,
           });
         });
-      });
+      } else {
+        getPreviewFromBlob(file, mediaType).then(preview => {
+          this.emit('file-preview-update', {
+            file: mediaFile,
+            preview,
+          });
+        });
+      }
     });
   }
 

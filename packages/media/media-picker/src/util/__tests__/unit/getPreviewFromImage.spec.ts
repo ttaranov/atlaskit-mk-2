@@ -28,7 +28,7 @@ describe('getPreviewFromImage()', () => {
   it('should not get imagepreview from invalid file', async () => {
     getImageInfo.mockReturnValue(null);
     const preview = (await getPreviewFromImage(file)) as Preview;
-    expect(preview.src).toBe('data:;base64,');
+    expect(preview.file).toBe(file);
     expect(preview).not.toHaveProperty('dimensions');
     expect(preview).not.toHaveProperty('scaleFactor');
   });

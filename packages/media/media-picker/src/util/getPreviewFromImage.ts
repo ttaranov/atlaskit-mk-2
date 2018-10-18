@@ -6,14 +6,13 @@ export async function getPreviewFromImage(
   devicePixelRatio?: number,
 ): Promise<Preview> {
   const fileInfo = await getFileInfo(file);
-  const src = fileInfo.src;
   const imageInfo = await getImageInfo(fileInfo);
   if (imageInfo === null) {
-    return { src };
+    return { file };
   } else {
     const { width, height, scaleFactor } = imageInfo;
     const preview: ImagePreview = {
-      src,
+      file,
       dimensions: {
         width,
         height,
