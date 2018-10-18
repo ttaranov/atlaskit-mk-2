@@ -6,6 +6,8 @@ import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-conte
 
 import ContentNavigation from '../../ContentNavigation';
 import LayoutManager from '../../LayoutManager';
+import ResizeTransition from '../../ResizeTransition';
+
 import { ContainerNavigationMask, NavigationContainer } from '../../primitives';
 import type { LayoutManagerProps } from '../../types';
 
@@ -166,22 +168,38 @@ describe('LayoutManager', () => {
           wrapper.setState({ flyoutIsOpen: false });
           wrapper.update();
 
-          wrapper.instance().onExpandStart(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandStart(node, isAppearing);
           expect(handlers.onExpandStart).toHaveBeenCalledWith(
             node,
             isAppearing,
           );
 
-          wrapper.instance().onExpandEnd(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandEnd(node, isAppearing);
           expect(handlers.onExpandEnd).toHaveBeenCalledWith(node, isAppearing);
 
-          wrapper.instance().onCollapseStart(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseStart(node, isAppearing);
           expect(handlers.onCollapseStart).toHaveBeenCalledWith(
             node,
             isAppearing,
           );
 
-          wrapper.instance().onCollapseEnd(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseEnd(node, isAppearing);
           expect(handlers.onCollapseEnd).toHaveBeenCalledWith(
             node,
             isAppearing,
@@ -192,16 +210,32 @@ describe('LayoutManager', () => {
           wrapper.setState({ flyoutIsOpen: true });
           wrapper.update();
 
-          wrapper.instance().onExpandStart(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandStart(node, isAppearing);
           expect(handlers.onExpandStart).not.toHaveBeenCalled();
 
-          wrapper.instance().onExpandEnd(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onExpandEnd(node, isAppearing);
           expect(handlers.onExpandEnd).not.toHaveBeenCalled();
 
-          wrapper.instance().onCollapseStart(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseStart(node, isAppearing);
           expect(handlers.onCollapseStart).not.toHaveBeenCalled();
 
-          wrapper.instance().onCollapseEnd(node, isAppearing);
+          wrapper
+            .find(ResizeTransition)
+            .first()
+            .props()
+            .onCollapseEnd(node, isAppearing);
           expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
         });
       });
