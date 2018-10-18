@@ -85,9 +85,8 @@ export class FileFetcher {
 
       const fetchFile = async () => {
         try {
-          console.log(2, { id, collection });
           const response = await this.dataloader.load({ id, collection });
-          console.log(3, response);
+
           if (!response) {
             return;
           }
@@ -95,7 +94,7 @@ export class FileFetcher {
           const fileState = mapMediaItemToFileState(id, response);
 
           observer.next(fileState);
-          console.log(fileState.status, { fileState });
+
           if (fileState.status === 'processing') {
             timeoutId = window.setTimeout(fetchFile, POLLING_INTERVAL);
           } else {

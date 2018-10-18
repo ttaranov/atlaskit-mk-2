@@ -266,36 +266,21 @@ describe('Context', () => {
       });
     });
 
-    it.only('should poll for changes and return the latest file state', done => {
+    it('should poll for changes and return the latest file state', done => {
       jest.useFakeTimers();
 
       const context = createContext();
       let getFileCalledTimes = 0;
-      // const response = Promise.resolve({
-      //   data: {
-      //     items: [
-      //       {
-      //         id: '1',
-      //         collection: 'some-collection',
-      //         details: {
-      //           name: 'file-one',
-      //           size: 1,
-      //           processingStatus: 'succeeded',
-      //         },
-      //       },
-      //     ],
-      //   },
-      // });
       const getItems = jest.fn().mockImplementation(() => {
         getFileCalledTimes++;
         const processingStatus =
           getFileCalledTimes === 2 ? 'succeeded' : 'pending';
-        // console.log({processingStatus})
+
         return Promise.resolve({
           data: {
             items: [
               {
-                id: '1',
+                id: '123',
                 details: {
                   name: 'file-one',
                   size: 1,
@@ -309,21 +294,6 @@ describe('Context', () => {
       const fakeStore = {
         getItems,
       };
-      // const getFile = jest.fn().mockImplementation(() => {
-      //   getFileCalledTimes++;
-      //   const processingStatus =
-      //     getFileCalledTimes === 2 ? 'succeeded' : 'pending';
-
-      //   return {
-      //     data: {
-      //       processingStatus,
-      //       id: '1',
-      //       name: 'file-one',
-      //       size: 1,
-      //     },
-      //   };
-      // });
-
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
 
@@ -331,16 +301,13 @@ describe('Context', () => {
       const next = jest.fn();
 
       observer.subscribe({
-        next(state) {
-          console.log('next', state);
-        },
+        next,
         complete() {
-          console.log('complete');
-          // expect(getItems).toHaveBeenCalledTimes(2);
-          // expect(next).toHaveBeenCalledTimes(2);
-          // expect(next.mock.calls[0][0].status).toEqual('processing');
-          // expect(next.mock.calls[1][0].status).toEqual('processed');
-          // done();
+          expect(getItems).toHaveBeenCalledTimes(2);
+          expect(next).toHaveBeenCalledTimes(2);
+          expect(next.mock.calls[0][0].status).toEqual('processing');
+          expect(next.mock.calls[1][0].status).toEqual('processed');
+          done();
         },
       });
 
