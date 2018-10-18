@@ -2,19 +2,26 @@ import * as React from 'react';
 import * as Loadable from 'react-loadable';
 import AvatarType from '@atlaskit/avatar';
 import AvatarGroupType from '@atlaskit/avatar-group';
-import AvatarsType from './avatars';
+import AvatarsType, { Props } from './avatars';
 
-export const AvatarsLoader = Loadable.Map({
+export const AvatarsLoader = Loadable.Map<
+  Partial<Props>,
+  {
+    AvatarUI: typeof AvatarsType;
+    AvatarGroup: typeof AvatarGroupType;
+    Avatar: typeof AvatarType;
+  }
+>({
   loader: {
-    Avatar: (): Promise<typeof AvatarType> =>
+    Avatar: () =>
       import(/* webpackChunkName:"@atlaskit-internal-editor-avatar" */ '@atlaskit/avatar').then(
         module => module.default,
       ),
-    AvatarGroup: (): Promise<typeof AvatarGroupType> =>
+    AvatarGroup: () =>
       import(/* webpackChunkName:"@atlaskit-internal-editor-avatarGroup" */ '@atlaskit/avatar-group').then(
         module => module.default,
       ),
-    AvatarUI: (): Promise<typeof AvatarsType> =>
+    AvatarUI: () =>
       import(/* webpackChunkName:"@atlaskit-internal-editor-avatars" */ './avatars').then(
         module => module.default,
       ),
