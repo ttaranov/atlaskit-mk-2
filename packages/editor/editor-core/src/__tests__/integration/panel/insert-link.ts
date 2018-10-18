@@ -9,7 +9,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Panel: Insert link by typing Markdown',
+  'intert-link Panel: Insert link by typing Markdown',
   { skip: ['edge', 'ie'] },
   async client => {
     const browser = new Page(client);

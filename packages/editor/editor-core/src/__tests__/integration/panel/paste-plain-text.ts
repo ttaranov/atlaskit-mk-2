@@ -12,7 +12,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Panel: Paste plain text',
+  'paste-plain-text.ts Panel: Paste plain text',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);

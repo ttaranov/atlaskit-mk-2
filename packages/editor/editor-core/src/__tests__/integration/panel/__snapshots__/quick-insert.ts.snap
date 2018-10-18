@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Insert via quick insert 1`] = `
+exports[`quick-insert.ts Panel: Insert via quick insert 1`] = `
 Object {
   "content": Array [
     Object {

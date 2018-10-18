@@ -10,7 +10,7 @@ import {
 import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 BrowserTestCase(
-  'Panel: Insert panel into table, add text, change panel type',
+  'inside-table.ts Panel: Insert panel into table, add text, change panel type',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const insertTableMenu = `[aria-label="${

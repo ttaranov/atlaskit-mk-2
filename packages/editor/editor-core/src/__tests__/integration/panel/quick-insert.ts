@@ -8,7 +8,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Panel: Insert via quick insert',
+  'quick-insert.ts Panel: Insert via quick insert',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);

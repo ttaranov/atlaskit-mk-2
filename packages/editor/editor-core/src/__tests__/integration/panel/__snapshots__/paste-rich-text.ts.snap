@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Paste rich text 1`] = `
+exports[`paste-rich-text.ts Panel: Paste rich text 1`] = `
 Object {
   "content": Array [
     Object {

@@ -9,7 +9,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Panel: Change the type to Error',
+  'change-type.ts Panel: Change the type to Error',
   { skip: ['edge', 'ie'] },
   async client => {
     const browser = new Page(client);

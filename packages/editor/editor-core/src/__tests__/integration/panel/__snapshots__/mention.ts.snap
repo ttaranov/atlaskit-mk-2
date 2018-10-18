@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`can insert mention into panel using click 1`] = `
+exports[`mention.ts Panel: Can insert mention using click 1`] = `
 Object {
   "content": Array [
     Object {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Insert via toolbar menu 1`] = `
+exports[`insert-toolbar-menu.ts Panel: Insert via toolbar menu 1`] = `
 Object {
   "content": Array [
     Object {

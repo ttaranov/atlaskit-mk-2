@@ -13,7 +13,7 @@ import {
 
 // Cannot paste rich text in IE/Edge
 BrowserTestCase(
-  'Panel: Paste rich text',
+  'paste-rich-text.ts Panel: Paste rich text',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);

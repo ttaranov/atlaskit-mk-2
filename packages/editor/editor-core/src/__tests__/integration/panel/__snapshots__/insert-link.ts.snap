@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Insert link by typing Markdown 1`] = `
+exports[`intert-link Panel: Insert link by typing Markdown 1`] = `
 Object {
   "content": Array [
     Object {

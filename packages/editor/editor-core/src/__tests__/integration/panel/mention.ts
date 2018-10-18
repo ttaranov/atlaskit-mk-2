@@ -10,7 +10,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Panel: Can insert mention using click',
+  'mention.ts Panel: Can insert mention using click',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);

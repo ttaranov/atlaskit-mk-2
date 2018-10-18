@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Paste plain text 1`] = `
+exports[`paste-plain-text.ts Panel: Paste plain text 1`] = `
 Object {
   "content": Array [
     Object {

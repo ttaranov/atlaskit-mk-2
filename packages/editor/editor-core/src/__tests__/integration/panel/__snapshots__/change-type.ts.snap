@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Changes the type to Error 1`] = `
+exports[`change-type.ts Panel: Change the type to Error 1`] = `
 Object {
   "content": Array [
     Object {

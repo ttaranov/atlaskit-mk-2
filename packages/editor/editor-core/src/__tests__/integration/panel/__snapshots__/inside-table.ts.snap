@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Inserting panel into table, adding text, changing panel type 1`] = `
+exports[`inside-table.ts Panel: Insert panel into table, add text, change panel type 1`] = `
 Object {
   "content": Array [
     Object {
