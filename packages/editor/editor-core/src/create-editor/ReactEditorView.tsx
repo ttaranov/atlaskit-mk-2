@@ -242,6 +242,10 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         eventDispatcher: this.eventDispatcher,
         transformer: this.contentTransformer,
       });
+
+      // Set the state of the EditorDisabled plugin to the current value
+      this.broadcastDisabled(this.props.disabled);
+
       // Force React to re-render so consumers get a reference to the editor view
       this.forceUpdate();
     } else if (this.view && !node) {
