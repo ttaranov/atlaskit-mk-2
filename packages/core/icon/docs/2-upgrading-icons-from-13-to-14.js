@@ -78,7 +78,7 @@ Version 14 of icons resorts our icons into better locations.
 There is a full explanation below, but to start, here are the icons
 that are affected.
 
-There is alos a codemod to help you upgrade located [here](https://bitbucket.org/atlassian/atlaskit-codemods/src/master/src/icon-13-to-14/).
+There is also a codemod to help you upgrade located [here](https://bitbucket.org/atlassian/atlaskit-codemods/src/master/src/icon-13-to-14/).
 
 Quickly, what happened:
 - [Swap the icon \`JiraMajorIcon\` and \`JiraMinorIcon\`](#jiraMajorMinor)
