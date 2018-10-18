@@ -11,6 +11,9 @@ import collabEdit from '../../../../../plugins/collab-edit';
 import { collabEditProvider } from '../../../../../../example-helpers/mock-collab-provider';
 
 import Avatars from '../../../../../plugins/collab-edit/ui/avatars';
+import Avatar from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
+
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 
 describe('collab-edit | Avatars', () => {
@@ -49,7 +52,13 @@ describe('collab-edit | Avatars', () => {
   describe('when inviteToEditHandler is undefined', () => {
     it('should not render inviteToEdit button', () => {
       const { editorView } = editor(doc(p('text')));
-      const node = mount(<Avatars editorView={editorView} />);
+      const node = mount(
+        <Avatars
+          Avatar={Avatar}
+          AvatarGroup={AvatarGroup}
+          editorView={editorView}
+        />,
+      );
       expect(node.find(ToolbarButton).length).toEqual(0);
       node.unmount();
     });
@@ -61,7 +70,12 @@ describe('collab-edit | Avatars', () => {
       setPresence(editorView);
 
       const node = mount(
-        <Avatars editorView={editorView} inviteToEditHandler={() => {}} />,
+        <Avatars
+          Avatar={Avatar}
+          AvatarGroup={AvatarGroup}
+          editorView={editorView}
+          inviteToEditHandler={() => {}}
+        />,
       );
 
       expect(node.find(ToolbarButton).length).toEqual(1);
@@ -75,6 +89,8 @@ describe('collab-edit | Avatars', () => {
         const inviteToEditHandler = jest.fn();
         const node = mount(
           <Avatars
+            Avatar={Avatar}
+            AvatarGroup={AvatarGroup}
             editorView={editorView}
             inviteToEditHandler={inviteToEditHandler}
           />,
@@ -96,6 +112,8 @@ describe('collab-edit | Avatars', () => {
         const inviteToEditHandler = () => {};
         const node = mount(
           <Avatars
+            Avatar={Avatar}
+            AvatarGroup={AvatarGroup}
             editorView={editorView}
             inviteToEditHandler={inviteToEditHandler}
             isInviteToEditButtonSelected={true}
