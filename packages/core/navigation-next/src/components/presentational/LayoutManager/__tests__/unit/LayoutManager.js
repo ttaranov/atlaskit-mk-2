@@ -110,8 +110,10 @@ describe('LayoutManager', () => {
 
       it('should NOT be open when nav is permanently expanded', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
+
         wrapper.find(ContainerNavigationMask).simulate('mouseover');
         defaultProps.navigationUIController.state.isCollapsed = false;
+        wrapper.setProps(defaultProps);
 
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
