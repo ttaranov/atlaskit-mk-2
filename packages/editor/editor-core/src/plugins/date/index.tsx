@@ -27,9 +27,6 @@ export type DateType = {
 };
 
 const datePlugin: EditorPlugin = {
-  init() {
-    DatePicker.preload();
-  },
   nodes() {
     return [{ name: 'date', node: date }];
   },
@@ -38,9 +35,18 @@ const datePlugin: EditorPlugin = {
     return [
       {
         name: 'date',
-        plugin: createDatePlugin,
+        plugin: options => {
+          DatePicker.preload();
+          return createDatePlugin(options);
+        },
       },
-      { name: 'dateKeymap', plugin: ({ schema }) => keymap(schema) },
+      {
+        name: 'dateKeymap',
+        plugin: ({ schema }) => {
+          DatePicker.preload();
+          return keymap(schema);
+        },
+      },
     ];
   },
 
