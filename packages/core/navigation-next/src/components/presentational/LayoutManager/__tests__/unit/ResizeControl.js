@@ -29,8 +29,9 @@ describe('ResizeControlBase', () => {
     navigation: {
       state: {
         isCollapsed: false,
+        productNavWidth: 100,
       },
-      manualResizeStart: Function.prototype,
+      manualResizeStart: jest.fn(),
       toggleCollapse: Function.prototype,
     },
   };
@@ -90,27 +91,73 @@ describe('ResizeControlBase', () => {
   });
 
   describe('When the component is resizing', () => {
+    describe('When isDragging state is falsy', () => {
+      it('should initialize dragging state', () => {
+        const props = cloneDeep(resizeControlProps);
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: true, isDragging: false });
+        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
+
+        wrapper.instance().handleResize({ pageX: 100 });
+        requestAnimationFrame.step();
+
+        expect(wrapper.state('isDragging')).toEqual(true);
+        expect(wrapper.state('didDragOpen')).toEqual(false);
+        expect(wrapper.state('initialWidth')).toEqual(
+          props.navigation.state.productNavWidth,
+        );
+      });
+
+      it('should call navigation.manualResizeStart if isCollapsed is falsy', () => {
+        const props = cloneDeep(resizeControlProps);
+        props.navigation.state.isCollapsed = false;
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: true, isDragging: false });
+        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
+
+        wrapper.instance().handleResize({ pageX: 100 });
+        requestAnimationFrame.step();
+
+        expect(props.navigation.manualResizeStart).toHaveBeenCalledTimes(1);
+        expect(props.navigation.manualResizeStart).toHaveBeenCalledWith(
+          props.navigation.state,
+        );
+      });
+
+      it('should call navigation.manualResizeStart if isCollapsed is truthy', () => {
+        const props = cloneDeep(resizeControlProps);
+        props.navigation.state.isCollapsed = true;
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: true, isDragging: false });
+        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
+
+        wrapper.instance().handleResize({ pageX: 100 });
+        requestAnimationFrame.step();
+
+        expect(props.navigation.manualResizeStart).toHaveBeenCalledTimes(1);
+        expect(props.navigation.manualResizeStart).toHaveBeenCalledWith({
+          productNavWidth: 20,
+          isCollapsed: false,
+        });
+        expect(wrapper.state('didDragOpen')).toEqual(true);
+        expect(wrapper.state('initialWidth')).toEqual(20);
+      });
+    });
     it('should not change width and delta when mouseIsDown is falsy', () => {
-      const props = cloneDeep(resizeControlProps);
+      const props = {
+        ...cloneDeep(resizeControlProps),
+        mutationRefs: [{}, {}],
+      };
       const wrapper = mount(
         <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
       );
       wrapper.setState({ mouseIsDown: false, isDragging: true });
-      const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
-
-      wrapper.instance().handleResize({ pageX: 100 });
-      requestAnimationFrame.step();
-
-      expect(wrapper.state('width')).toEqual(cachedWidth);
-      expect(wrapper.state('delta')).toEqual(cachedDelta);
-    });
-
-    it('should change width and delta when isDragging is falsy', () => {
-      const props = cloneDeep(resizeControlProps);
-      const wrapper = mount(
-        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-      );
-      wrapper.setState({ mouseIsDown: true, isDragging: false });
       const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
 
       wrapper.instance().handleResize({ pageX: 100 });
