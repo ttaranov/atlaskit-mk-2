@@ -13,9 +13,10 @@ import keymap from './keymap';
 import * as Loadable from 'react-loadable';
 
 const DatePicker = Loadable({
-  loader: import(/* webpackChunkName:"@atlaskit-internal-editor-datepicker" */ './ui/DatePicker').then(
-    module => module.default,
-  ),
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-editor-datepicker" */ './ui/DatePicker').then(
+      module => module.default,
+    ),
   loading: () => null,
 });
 
