@@ -6,8 +6,7 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ReactNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-
-import WithPluginState from '../../..//ui/WithPluginState';
+import WithPluginState from '../../../ui/WithPluginState';
 import {
   pluginKey as editorDisabledPluginKey,
   EditorDisabledPluginState,

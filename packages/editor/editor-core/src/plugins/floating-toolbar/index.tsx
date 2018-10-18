@@ -10,6 +10,11 @@ import { Dispatch } from '../../event-dispatcher';
 import { ToolbarLoader } from './ui/ToolbarLoader';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
 
+import {
+  pluginKey as editorDisabledPluginKey,
+  EditorDisabledPluginState,
+} from '../editor-disabled';
+
 const getRelevantConfig = (
   view: EditorView,
   configs: Array<FloatingToolbarConfig>,
@@ -84,45 +89,62 @@ const floatingToolbarPlugin: EditorPlugin = {
           floatingToolbarConfigs,
         }: {
           floatingToolbarConfigs?: Array<FloatingToolbarConfig>;
-        }) => {
-          const relevantConfig =
-            floatingToolbarConfigs &&
-            getRelevantConfig(editorView, floatingToolbarConfigs);
-          if (relevantConfig) {
-            const {
-              title,
-              getDomRef = getDomRefFromSelection,
-              items,
-            } = relevantConfig;
-            const targetRef = getDomRef(editorView);
-            if (targetRef) {
-              return (
-                <Popup
-                  ariaLabel={title}
-                  offset={[0, 12]}
-                  target={targetRef}
-                  alignY="bottom"
-                  alignX="center"
-                  stickToBottom={true}
-                  mountTo={popupsMountPoint}
-                  boundariesElement={popupsBoundariesElement}
-                  scrollableElement={popupsScrollableElement}
-                >
-                  <ToolbarLoader
-                    items={items}
-                    dispatchCommand={fn =>
-                      fn && fn(editorView.state, editorView.dispatch)
-                    }
-                    popupsMountPoint={popupsMountPoint}
-                    popupsBoundariesElement={popupsBoundariesElement}
-                    popupsScrollableElement={popupsScrollableElement}
-                  />
-                </Popup>
+        }) => (
+          <WithPluginState
+            plugins={{
+              editorDisabledPlugin: editorDisabledPluginKey,
+            }}
+            render={({
+              editorDisabledPlugin,
+            }: {
+              editorDisabledPlugin: EditorDisabledPluginState;
+            }) => {
+              const relevantConfig =
+                floatingToolbarConfigs &&
+                getRelevantConfig(editorView, floatingToolbarConfigs);
+              console.log(
+                'RelevantConfig in floating toolbar:',
+                relevantConfig,
               );
-            }
-          }
-          return null;
-        }}
+              if (relevantConfig) {
+                const {
+                  title,
+                  getDomRef = getDomRefFromSelection,
+                  items,
+                } = relevantConfig;
+                const targetRef = getDomRef(editorView);
+                console.log('Target ref in floating toolbar plugin', targetRef);
+
+                if (targetRef && !editorDisabledPlugin.editorDisabled) {
+                  return (
+                    <Popup
+                      ariaLabel={title}
+                      offset={[0, 12]}
+                      target={targetRef}
+                      alignY="bottom"
+                      alignX="center"
+                      stickToBottom={true}
+                      mountTo={popupsMountPoint}
+                      boundariesElement={popupsBoundariesElement}
+                      scrollableElement={popupsScrollableElement}
+                    >
+                      <ToolbarLoader
+                        items={items}
+                        dispatchCommand={fn =>
+                          fn && fn(editorView.state, editorView.dispatch)
+                        }
+                        popupsMountPoint={popupsMountPoint}
+                        popupsBoundariesElement={popupsBoundariesElement}
+                        popupsScrollableElement={popupsScrollableElement}
+                      />
+                    </Popup>
+                  );
+                }
+              }
+              return null;
+            }}
+          />
+        )}
       />
     );
   },
