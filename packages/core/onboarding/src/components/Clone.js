@@ -1,10 +1,12 @@
 // @flow
-import React, { type ComponentType } from 'react';
+import React from 'react';
 import { TargetOverlay, TargetInner } from '../styled/Target';
 
 type Props = {
   /** Whether or not to display a pulse animation around the spotlighted element */
   pulse: boolean,
+  /* An object containining the information used for positioning clone */
+  rect: {},
   /** The name of the SpotlightTarget */
   target?: string,
   /** The spotlight target node */
@@ -15,8 +17,6 @@ type Props = {
   targetOnClick?: ({ event: MouseEvent, target?: string }) => void,
   /** The border-radius of the element being highlighted */
   targetRadius?: number,
-  /** Alternative element to render than the wrapped target */
-  targetReplacement?: ComponentType<*>,
 };
 
 function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
@@ -35,29 +35,20 @@ function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
 const Clone = (props: Props) => {
   const {
     pulse,
+    rect,
     target,
     targetBgColor,
     targetOnClick,
     targetNode,
     targetRadius,
-    targetReplacement: Replacement,
   } = props;
 
   if (!target && !targetNode) {
     const targetText = target ? ` matching "${target}".` : '.';
     throw Error(`Spotlight couldn't find a target${targetText}.`);
   }
-  const { height, left, top, width } = targetNode.getBoundingClientRect();
-  const rect = {
-    height,
-    left: left + window.scrollX,
-    top: top + window.scrollY,
-    width,
-  };
 
-  return Replacement ? (
-    <Replacement {...rect} />
-  ) : (
+  return (
     <TargetInner
       pulse={pulse}
       bgColor={targetBgColor}

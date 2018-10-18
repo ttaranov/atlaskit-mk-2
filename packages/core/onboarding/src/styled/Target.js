@@ -50,5 +50,6 @@ export const TargetOverlay = styled.div`
 
 // exported for consumer
 export const Pulse = styled(Div)`
+  position: absolute;
   ${animation};
 `;

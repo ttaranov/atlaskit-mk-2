@@ -3,6 +3,7 @@ import React from 'react';
 import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
 import ScrollLock from 'react-scrolllock';
+import NodeResovler from 'react-node-resolver';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { Fade } from './Animation';
 import Clone from './Clone';
@@ -11,14 +12,23 @@ import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import { type Props as SpotlightProps } from './Spotlight';
 
 export type Props = SpotlightProps & {
+  /** Called when the component has been mounted */
   onOpened: () => any,
+  /** Called when the component has been unmounted */
   onClosed: () => any,
 };
 
-class SpotlightInner extends React.Component<Props> {
+class SpotlightInner extends React.Component<
+  Props,
+  { replacementElement: HTMLElement | void },
+> {
   static defaultProps = {
     dialogWidth: 400,
     pulse: true,
+  };
+
+  state = {
+    replacementElement: undefined,
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -48,30 +58,50 @@ class SpotlightInner extends React.Component<Props> {
       targetBgColor,
       targetOnClick,
       targetRadius,
-      targetReplacement,
+      targetReplacement: TargetReplacement,
     } = this.props;
+    const { replacementElement } = this.state;
+    const { height, left, top, width } = targetNode.getBoundingClientRect();
+    const rect = {
+      height,
+      left: left + window.scrollX,
+      top: top + window.scrollY,
+      width,
+    };
+
     return (
       <SpotlightTransitionConsumer>
         {({ isOpen, onExited }) => (
           <Portal zIndex={layers.spotlight() + 1}>
-            <Clone
-              pulse={pulse}
-              target={target}
-              targetBgColor={targetBgColor}
-              targetNode={targetNode}
-              targetOnClick={targetOnClick}
-              targetRadius={targetRadius}
-              targetReplacement={targetReplacement}
-            />
-            <Fade in={isOpen} onExited={onExited}>
-              {animationStyles => (
-                <SpotlightDialog
-                  {...this.props}
-                  isOpen={isOpen}
-                  animationStyles={animationStyles}
-                />
-              )}
-            </Fade>
+            {TargetReplacement ? (
+              <NodeResovler
+                innerRef={elem => this.setState({ replacementElement: elem })}
+              >
+                <TargetReplacement {...rect} />
+              </NodeResovler>
+            ) : (
+              <Clone
+                pulse={pulse}
+                target={target}
+                rect={rect}
+                targetBgColor={targetBgColor}
+                targetNode={targetNode}
+                targetOnClick={targetOnClick}
+                targetRadius={targetRadius}
+              />
+            )}
+            {TargetReplacement && !replacementElement ? null : (
+              <Fade in={isOpen} onExited={onExited}>
+                {animationStyles => (
+                  <SpotlightDialog
+                    {...this.props}
+                    targetNode={replacementElement || targetNode}
+                    isOpen={isOpen}
+                    animationStyles={animationStyles}
+                  />
+                )}
+              </Fade>
+            )}
             <ScrollLock />
           </Portal>
         )}
