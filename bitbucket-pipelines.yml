@@ -62,7 +62,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 127
+              - source build/ci-scripts/count-flowfixme.sh 128
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
               # Get the commit that we diverged from master at
               - export DIVERGED_AT=$(git merge-base master HEAD)
@@ -111,8 +111,10 @@ pipelines:
               - cd website
               - WEBSITE_ENV=staging yarn build:no-minimize
               - yarn build:copy
-              - yarn build:zip
-              - WRITE_PERMALINK_TO_FILE='netlify-link.txt'  yarn deploy:staging # this will write a `link.txt` file to disk
+              - set -o pipefail # make sure we fail if the deployment fails
+              # we pipe the output to stdout AND deploy-log.txt so that we can read the live url
+              - yarn deploy:staging | tee deploy-log.txt
+              - cat deploy-log.txt | grep "Live Draft Url:" | sed -e "s/Live Draft Url..//" > netlify-link.txt
               - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
               - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-link.txt
             caches:
@@ -136,7 +138,6 @@ pipelines:
             - cd website
             - WEBSITE_ENV=production yarn build
             - yarn build:copy
-            - yarn build:zip
             - yarn deploy:production
           caches:
             - node
@@ -199,7 +200,10 @@ pipelines:
             - yarn test
             - yarn test:browser:browserstack
             - yarn test:webdriver:browserstack
-            - (cd website && yarn deploy-staging:no-minimize)
+            - cd website
+            # don't worry about deploying, this build will always be run alongside a branch build
+            - yarn build
+
     # We deliberately don't use the cache here as well
 
     run-bundle-analysis:

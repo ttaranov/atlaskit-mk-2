@@ -1,6 +1,5 @@
 //@flow
-import * as colors from '@atlaskit/theme/src/colors';
-import { gridSize, fontSize } from '@atlaskit/theme/src';
+import { colors, gridSize, fontSize } from '@atlaskit/theme';
 import dataUri from './utils/data-uri';
 import evaluateInner from './utils/evaluate-inner';
 

@@ -25,7 +25,7 @@ const createRepoBtn = 'footer > button:nth-child(1)';
 const cancelBtn = 'footer > button:nth-child(2)';
 
 BrowserTestCase(
-  'Create repository form should render without errors',
+  'form.js: Create repository form should render without errors',
   { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated
   async client => {
     const formTest = new Page(client);

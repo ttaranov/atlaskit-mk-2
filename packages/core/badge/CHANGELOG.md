@@ -1,5 +1,8 @@
 # @atlaskit/badge
 
+## 9.2.0
+- [minor] Allow badge to accept strings, so custom number formats can be easily passed in [cc0a1de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc0a1de)
+
 ## 9.1.5
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

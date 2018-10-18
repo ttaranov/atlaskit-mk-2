@@ -4,7 +4,7 @@ import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
 
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `Link:entering link markdown ${editor.name} editor`,
+    `hyperlink-markdown: Link - entering link markdown ${editor.name} editor`,
     {
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },

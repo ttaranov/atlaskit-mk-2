@@ -7,7 +7,7 @@ const messageEditor = getExampleUrl('editor', 'editor-core', 'message');
 const editorSelector = '.ProseMirror';
 
 BrowserTestCase(
-  'user should be able to create link using markdown',
+  'format.ts: user should be able to create link using markdown',
   { skip: ['edge', 'ie'] },
   async client => {
     const sample = new Page(client);
@@ -22,7 +22,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'user should be able to format bold and italics with markdown',
+  'format.ts: user should be able to format bold and italics with markdown',
   { skip: ['edge', 'ie'] },
   async client => {
     const sample = new Page(client);
@@ -40,7 +40,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'user should be able to write inline code',
+  'format.ts: user should be able to write inline code',
   { skip: ['edge', 'ie'] },
   async client => {
     const sample = new Page(client);

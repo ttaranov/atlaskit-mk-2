@@ -24,6 +24,7 @@ import {
   defaultTimes,
   defaultDateFormat,
   defaultTimeFormat,
+  formatDateTimeZoneIntoIso,
 } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -150,14 +151,6 @@ const styles = {
     },
   }),
 };
-
-function formatDateTimeZoneIntoIso(
-  date: string,
-  time: string,
-  zone: string,
-): string {
-  return `${date}T${time}${zone}`;
-}
 
 class DateTimePicker extends Component<Props, State> {
   static defaultProps = {

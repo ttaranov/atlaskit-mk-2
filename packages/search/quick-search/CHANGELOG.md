@@ -1,5 +1,8 @@
 # @atlaskit/quick-search
 
+## 4.2.13
+- [patch] Fixes styling of item captions and subtext [d0d45ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0d45ff)
+
 ## 4.2.12
 - [patch] Fix sub text style. [5bdb0bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bdb0bb)
 

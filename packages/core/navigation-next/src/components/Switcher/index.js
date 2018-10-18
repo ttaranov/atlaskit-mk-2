@@ -1,11 +1,15 @@
 // @flow
 
-import React, { cloneElement, Component } from 'react';
+import React, { cloneElement, PureComponent } from 'react';
+import NodeResolver from 'react-node-resolver';
+import shallowEqualObjects from 'shallow-equal/objects';
 import { components, PopupSelect } from '@atlaskit/select';
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
 import Option from './Option';
+import { UIControllerSubscriber } from '../../ui-controller';
+import { CONTENT_NAV_WIDTH } from '../../common/constants';
 import type { SwitcherProps, SwitcherState } from './types';
 
 const gridSize = gridSizeFn();
@@ -71,16 +75,64 @@ const Footer = ({ text, onClick }: *) => (
   </button>
 );
 
+const defaultComponents = { Control, Option };
+
+const isEmpty = obj => Object.keys(obj).length === 0;
+
 // ==============================
 // Class
 // ==============================
 
-export default class Switcher extends Component<SwitcherProps, SwitcherState> {
-  state = { isOpen: false };
+// internal `navWidth` property isn't part of the public API
+type SwitcherPropsExtended = SwitcherProps & { navWidth: number };
+
+class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
+  state = {
+    isOpen: false,
+    mergedComponents: defaultComponents,
+  };
   selectRef = React.createRef();
+  targetRef: Element;
+  targetWidth = 0;
   static defaultProps = {
     closeMenuOnCreate: true,
-    components: { Control, Option },
+    components: {},
+  };
+  static getDerivedStateFromProps(
+    props: SwitcherPropsExtended,
+    state: SwitcherState,
+  ) {
+    const newState = {};
+
+    // Merge consumer and default components
+    const mergedComponents = { ...defaultComponents, ...props.components };
+    if (!shallowEqualObjects(mergedComponents, state.mergedComponents)) {
+      newState.mergedComponents = mergedComponents;
+    }
+
+    if (!isEmpty(newState)) return newState;
+
+    return null;
+  }
+  componentDidMount() {
+    this.setTargetWidth();
+  }
+  componentDidUpdate({ navWidth }: SwitcherPropsExtended) {
+    // reset the target width if the user has resized the navigation pane
+    if (navWidth !== this.props.navWidth) {
+      this.setTargetWidth();
+    }
+  }
+  getTargetRef = ref => {
+    this.targetRef = ref;
+  };
+  setTargetWidth = () => {
+    // best efforts if target ref fails
+    const defaultWidth = CONTENT_NAV_WIDTH - gridSize * 2;
+
+    this.targetWidth = this.targetRef
+      ? this.targetRef.clientWidth
+      : defaultWidth;
   };
   handleOpen = () => {
     this.setState({ isOpen: true });
@@ -89,8 +141,9 @@ export default class Switcher extends Component<SwitcherProps, SwitcherState> {
     this.setState({ isOpen: false });
   };
   getFooter = () => {
-    const { closeMenuOnCreate, create } = this.props;
+    const { closeMenuOnCreate, create, footer } = this.props;
 
+    if (footer) return footer;
     if (!create) return null;
 
     let onClick = create.onClick;
@@ -107,7 +160,7 @@ export default class Switcher extends Component<SwitcherProps, SwitcherState> {
   };
   render() {
     const { create, options, target, ...props } = this.props;
-    const { isOpen } = this.state;
+    const { isOpen, mergedComponents } = this.state;
 
     return (
       <PopupSelect
@@ -119,11 +172,22 @@ export default class Switcher extends Component<SwitcherProps, SwitcherState> {
         onOpen={this.handleOpen}
         onClose={this.handleClose}
         options={options}
-        maxMenuWidth={238}
-        minMenuWidth={238}
-        target={cloneElement(target, { isSelected: isOpen })}
+        maxMenuWidth={this.targetWidth}
+        minMenuWidth={this.targetWidth}
+        target={
+          <NodeResolver innerRef={this.getTargetRef}>
+            {cloneElement(target, { isSelected: isOpen })}
+          </NodeResolver>
+        }
         {...props}
+        components={mergedComponents}
       />
     );
   }
 }
+
+export default (props: SwitcherProps) => (
+  <UIControllerSubscriber>
+    {({ state }) => <Switcher navWidth={state.productNavWidth} {...props} />}
+  </UIControllerSubscriber>
+);

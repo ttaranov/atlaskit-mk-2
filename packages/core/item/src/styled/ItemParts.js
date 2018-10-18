@@ -1,11 +1,10 @@
 // @flow
 import { type StatelessFunctionalComponent } from 'react';
 import styled, { css } from 'styled-components';
-import { fontSize } from '@atlaskit/theme';
+import { fontSize, fontSizeSmall } from '@atlaskit/theme';
 import {
   getThemeStyle,
   themeNamespace,
-  smallFontSize,
   compactSmallFontSize,
   compactLineHeight,
 } from '../util/theme';
@@ -111,7 +110,9 @@ const getColorStyle = ({ isDisabled, theme }) => {
 };
 
 const getDescriptionFontStyles = ({ isCompact }) => {
-  const descriptionFontSize = isCompact ? compactSmallFontSize : smallFontSize;
+  const descriptionFontSize = isCompact
+    ? compactSmallFontSize
+    : fontSizeSmall();
   const lineHeight = isCompact ? compactLineHeight : 14 / descriptionFontSize;
   return css`
     font-size: ${descriptionFontSize}px;

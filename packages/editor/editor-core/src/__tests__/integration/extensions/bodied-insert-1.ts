@@ -16,7 +16,7 @@ import { messages as BlockTypeMessages } from '../../../plugins/block-type/types
   InsertMessages.decision.defaultMessage,
 ].forEach(node => {
   BrowserTestCase(
-    `Bodied Extension: Insert ${node}`,
+    `bodied-insert-1.ts: Bodied Extension: Insert ${node}`,
     { skip: ['edge', 'ie'] },
     async client => {
       const page = new Page(client);

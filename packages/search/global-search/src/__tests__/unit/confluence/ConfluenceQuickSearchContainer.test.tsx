@@ -184,7 +184,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     );
 
     expect(searchResults.results.people).toEqual([
-      {
+      expect.objectContaining({
         mentionName: 'mentionName',
         presenceMessage: 'presenceMessage',
         analyticsType: 'result-person',
@@ -193,7 +193,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         avatarUrl: 'avatarUrl',
         href: 'href',
         resultId: expect.any(String),
-      },
+      }),
     ]);
   });
 
@@ -212,7 +212,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     );
 
     expect(searchResults.results.people).toEqual([
-      {
+      expect.objectContaining({
         mentionName: 'mentionName',
         presenceMessage: 'presenceMessage',
         analyticsType: 'result-person',
@@ -221,7 +221,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         avatarUrl: 'avatarUrl',
         href: 'href',
         resultId: expect.any(String),
-      },
+      }),
     ]);
   });
 });

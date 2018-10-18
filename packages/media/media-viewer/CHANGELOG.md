@@ -1,5 +1,17 @@
 # @atlaskit/media-viewer
 
+## 24.1.2
+- [patch] use latest onLoad prop in ImageViewer init [de72be8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de72be8)
+
+## 24.1.1
+- [patch] Pass the proper context object when reinitializing the BaseViewer" [215ea6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/215ea6c)
+
+## 24.1.0
+- [minor] Add analytics to MVNG (and reset ImageViewer when collectionName changes) [d60bf6d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d60bf6d)
+
+## 24.0.1
+- [patch] Fix MediaViewer showing the spinner when it should show the error view [914bdb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/914bdb2)
+
 ## 24.0.0
 - [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/media-card@41.0.0

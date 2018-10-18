@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "6.0.3",
+  "version": "6.1.0",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -35,8 +35,9 @@
     "react-fast-compare": "^2.0.1",
     "react-node-resolver": "^1.0.1",
     "react-popper": "^1.0.2",
-    "react-select": "^2.0.0",
-    "react-transition-group": "^2.2.1"
+    "react-select": "^2.1.0",
+    "react-transition-group": "^2.2.1",
+    "shallow-equal": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",

@@ -78,6 +78,7 @@ const iconIds: Array<string> = [
   'documents',
   'download',
   'dropbox',
+  'drag-handler',
   'edit-filled',
   'edit',
   'editor/add',
