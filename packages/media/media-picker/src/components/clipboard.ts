@@ -3,6 +3,7 @@ import { Context } from '@atlaskit/media-core';
 import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { whenDomReady } from '../util/documentReady';
 import { appendTimestamp } from '../util/appendTimestamp';
+import { LocalFileSource, LocalFileWithSource } from '../service/types';
 
 export interface ClipboardConfig extends LocalUploadConfig {}
 
@@ -50,8 +51,14 @@ export class Clipboard extends LocalUploadComponent {
     const { clipboardData } = event as ClipboardEvent;
 
     if (clipboardData && clipboardData.files) {
-      const filesArray = getFilesFromClipboard(clipboardData.files);
-      this.uploadService.addFiles(filesArray);
+      const fileSource =
+        clipboardData.types.length === 1
+          ? LocalFileSource.PastedScreenshot
+          : LocalFileSource.PastedFile;
+      const filesArray: LocalFileWithSource[] = getFilesFromClipboard(
+        clipboardData.files,
+      ).map((file: File) => ({ file, source: fileSource }));
+      this.uploadService.addFilesWithSource(filesArray);
     }
   };
 }
