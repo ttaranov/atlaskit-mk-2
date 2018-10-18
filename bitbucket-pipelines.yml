@@ -45,6 +45,7 @@ pipelines:
         - step:
             name: Building dists
             script:
+              - echo "test"
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - yarn build
@@ -111,7 +112,6 @@ pipelines:
               - cd website
               - WEBSITE_ENV=staging yarn build:no-minimize
               - yarn build:copy
-              - WRITE_PERMALINK_TO_FILE='netlify-link.txt'  yarn deploy:staging
               - set -o pipefail # make sure we fail if the deployment fails
               # we pipe the output to stdout AND deploy-log.txt so that we can read the live url
               - NETLIFY_AUTH_TOKEN="$NETLIFY_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID_STAGING" yarn deploy | tee deploy-log.txt
