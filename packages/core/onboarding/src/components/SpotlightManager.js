@@ -5,6 +5,7 @@ import React, {
   type ElementType,
   type Node,
 } from 'react';
+import memoizeOne from 'memoize-one';
 import Portal from '@atlaskit/portal';
 import { layers } from '@atlaskit/theme';
 
@@ -66,15 +67,17 @@ export default class SpotlightManager extends PureComponent<
     this.setState(state => ({ spotlightCount: state.spotlightCount - 1 }));
   };
 
+  getStateProviderValue = memoizeOne(targets => ({
+    opened: this.spotlightOpen,
+    closed: this.spotlightClose,
+    targets,
+  }));
+
   render() {
     const { blanketIsTinted, children, component: Tag } = this.props;
     return (
       <SpotlightStateProvider
-        value={{
-          opened: this.spotlightOpen,
-          closed: this.spotlightClose,
-          targets: this.state.targets,
-        }}
+        value={this.getStateProviderValue(this.state.targets)}
       >
         <TargetProvider value={this.targetRef}>
           <React.Fragment>

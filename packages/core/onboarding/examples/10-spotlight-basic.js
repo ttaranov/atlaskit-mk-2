@@ -32,6 +32,7 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         dialogPlacement="bottom left"
         heading="Green"
         target="green"
+        key="green"
       >
         <Lorem count={1} />
       </Spotlight>,
@@ -43,6 +44,7 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         dialogPlacement="bottom center"
         heading="Yellow"
         target="yellow"
+        key="yellow"
       >
         <Lorem count={1} />
       </Spotlight>,
@@ -51,6 +53,7 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         dialogPlacement="bottom right"
         heading="Red"
         target="red"
+        key="red"
       >
         <Lorem count={1} />
       </Spotlight>,
