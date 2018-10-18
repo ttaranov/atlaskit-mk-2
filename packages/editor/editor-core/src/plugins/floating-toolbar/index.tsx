@@ -102,10 +102,6 @@ const floatingToolbarPlugin: EditorPlugin = {
               const relevantConfig =
                 floatingToolbarConfigs &&
                 getRelevantConfig(editorView, floatingToolbarConfigs);
-              console.log(
-                'RelevantConfig in floating toolbar:',
-                relevantConfig,
-              );
               if (relevantConfig) {
                 const {
                   title,
@@ -113,7 +109,6 @@ const floatingToolbarPlugin: EditorPlugin = {
                   items,
                 } = relevantConfig;
                 const targetRef = getDomRef(editorView);
-                console.log('Target ref in floating toolbar plugin', targetRef);
 
                 if (targetRef && !editorDisabledPlugin.editorDisabled) {
                   return (
