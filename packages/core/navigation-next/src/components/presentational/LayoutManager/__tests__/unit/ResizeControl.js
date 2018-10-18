@@ -91,7 +91,7 @@ describe('ResizeControlBase', () => {
   });
 
   describe('When the component is resizing', () => {
-    describe('When isDragging state is falsy', () => {
+    describe('When starting to drag', () => {
       it('should initialize dragging state', () => {
         const props = cloneDeep(resizeControlProps);
         const wrapper = mount(
@@ -109,7 +109,7 @@ describe('ResizeControlBase', () => {
         );
       });
 
-      it('should call navigation.manualResizeStart if isCollapsed is falsy', () => {
+      it('should call navigation.manualResizeStart if isCollapsed is false', () => {
         const props = cloneDeep(resizeControlProps);
         props.navigation.state.isCollapsed = false;
         const wrapper = mount(
@@ -126,7 +126,7 @@ describe('ResizeControlBase', () => {
         );
       });
 
-      it('should call navigation.manualResizeStart if isCollapsed is truthy', () => {
+      it('should call navigation.manualResizeStart if isCollapsed is true', () => {
         const props = cloneDeep(resizeControlProps);
         props.navigation.state.isCollapsed = true;
         const wrapper = mount(
@@ -147,7 +147,7 @@ describe('ResizeControlBase', () => {
       });
     });
 
-    it('should not change width and delta when mouseIsDown is falsy', () => {
+    it('should not change width and delta when mouseIsDown is false', () => {
       const props = cloneDeep(resizeControlProps);
       const wrapper = mount(
         <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -162,7 +162,25 @@ describe('ResizeControlBase', () => {
       expect(wrapper.state('delta')).toEqual(cachedDelta);
     });
 
-    describe('When mouseIsdDown and isDragging are truthy', () => {
+    it('should change width and delta when mouseIsDown is true', () => {
+      const props = cloneDeep(resizeControlProps);
+      const wrapper = mount(
+        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+      );
+      wrapper.setState({
+        mouseIsDown: true,
+        isDragging: true,
+        initialWidth: 50,
+      });
+
+      wrapper.instance().handleResize({ pageX: 100 });
+      requestAnimationFrame.step();
+
+      expect(wrapper.state('width')).toEqual(150);
+      expect(wrapper.state('delta')).toEqual(100);
+    });
+
+    describe('When mouseIsdDown and isDragging are true', () => {
       it('should change mutationRef style if new value is different than old value', () => {
         const pageX = 100;
         const mutationRefs = [
