@@ -260,6 +260,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       validationState: 'default',
       spacing: 'default',
       onClickPreventDefault: true,
+      tabSelectsValue: false,
     };
     componentWillReceiveProps(nextProps: Props) {
       this.cacheComponents(nextProps.components);

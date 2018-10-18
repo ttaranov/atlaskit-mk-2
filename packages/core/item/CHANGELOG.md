@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 8.0.11
+- [patch] Consume smallFontSize from @atlaskit/theme [a6f8a43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6f8a43)
+
 ## 8.0.10
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

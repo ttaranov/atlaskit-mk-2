@@ -24,7 +24,6 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);
-
       await insertBlockMenuItem(page, 'Bodied macro (EH)');
 
       if (node.endsWith('list')) {
