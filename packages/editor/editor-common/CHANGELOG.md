@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 20.1.3
+- [patch] ED-5513: render table that respects columns widths except on mobile [716bb9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/716bb9d)
+
 ## 20.1.2
 - [patch] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
 
