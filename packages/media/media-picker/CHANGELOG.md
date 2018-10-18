@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 23.1.0
+- [minor] add scaleFactor to ImagePreview type [605eff0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/605eff0)
+
 ## 23.0.0
 - [major] Add i18n support to MediaPicker [9add3a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9add3a4)
 

@@ -26,6 +26,7 @@ describe('getPreviewMiddleware', () => {
       width: 10,
       height: 10,
     },
+    scaleFactor: 1,
   };
   const setup = () => {
     const store = mockStore();
