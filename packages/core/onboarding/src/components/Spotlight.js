@@ -57,6 +57,10 @@ export type Props = {
 };
 
 class Spotlight extends React.Component<Props> {
+  static defaultProps = {
+    dialogWidth: 400,
+    pulse: true,
+  };
   render() {
     const { targetNode, target, ...rest } = this.props;
     return (

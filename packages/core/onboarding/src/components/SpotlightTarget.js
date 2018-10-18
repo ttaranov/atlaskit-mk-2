@@ -15,11 +15,15 @@ class SpotlightTarget extends Component<Props> {
   render() {
     return (
       <TargetConsumer>
-        {targetRef => (
-          <NodeResolver innerRef={targetRef(this.props.name)}>
-            {this.props.children}
-          </NodeResolver>
-        )}
+        {targetRef =>
+          targetRef ? (
+            <NodeResolver innerRef={targetRef(this.props.name)}>
+              {this.props.children}
+            </NodeResolver>
+          ) : (
+            this.props.children
+          )
+        }
       </TargetConsumer>
     );
   }

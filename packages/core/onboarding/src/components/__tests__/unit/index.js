@@ -48,3 +48,23 @@ test('should spotlight different targets', () => {
   expect(clone).toHaveLength(1);
   expect(ref).toHaveBeenCalledWith(clone.prop('targetNode'));
 });
+
+test('should be able to render a SpotlightTarget without SpotlightManager', () => {
+  expect(() =>
+    mount(
+      <SpotlightTarget name="target">
+        <div>Hi</div>
+      </SpotlightTarget>,
+    ),
+  ).not.toThrowError();
+});
+
+test('should be able to render a Spotlight without SpotlightManager', () => {
+  expect(() =>
+    mount(
+      <Spotlight>
+        <div>Hi</div>
+      </Spotlight>,
+    ),
+  ).not.toThrowError();
+});

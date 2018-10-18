@@ -13,9 +13,7 @@ import Blanket from '../styled/Blanket';
 
 const noop = () => {};
 
-const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext(
-  noop,
-);
+const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext();
 const {
   Consumer: SpotlightStateConsumer,
   Provider: SpotlightStateProvider,
@@ -34,7 +32,6 @@ type Props = {
   component: ElementType,
 };
 
-/* eslint-disable react/no-multi-comp */
 export default class SpotlightManager extends PureComponent<
   Props,
   {
