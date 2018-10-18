@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 6.3.14
+- [patch] Fixing blank state for datetime-picker in Firefox.  [0e6d838](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e6d838)
+
 ## 6.3.13
 - [patch] Updated dependencies [1a752e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a752e6)
   - @atlaskit/popper@0.3.0
