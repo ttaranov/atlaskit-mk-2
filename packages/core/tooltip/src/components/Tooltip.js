@@ -30,7 +30,7 @@ import Position from './Position';
 
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
-type Props = {
+export type Props = {
   /** A single element, either Component or DOM node */
   children: Element<*>,
   /** The content of the tooltip */
