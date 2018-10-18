@@ -7,6 +7,11 @@ export const pluginKey = new PluginKey('editorDisabledPlugin');
 export type EditorDisabledPluginState = {
   editorDisabled: boolean;
 };
+/*
+Stores the state of the editor enabled/disabled for panel and floating
+toolbar to subscribe to through <WithPluginState>. Otherwise the NodeViews
+won't re-render when it changes.
+*/
 
 export function createPlugin(
   dispatch: Dispatch<EditorDisabledPluginState>,
