@@ -110,7 +110,7 @@ const floatingToolbarPlugin: EditorPlugin = {
                 } = relevantConfig;
                 const targetRef = getDomRef(editorView);
 
-                if (targetRef && !editorDisabledPlugin.editorDisabled) {
+                if (targetRef && editorDisabledPlugin.editorDisabled !== true) {
                   return (
                     <Popup
                       ariaLabel={title}

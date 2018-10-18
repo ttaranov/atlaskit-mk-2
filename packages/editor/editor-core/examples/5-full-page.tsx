@@ -126,7 +126,6 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
   }
 
   render() {
-    const disabled = this.state.disabled || this.props.disabled === true;
     return (
       <Wrapper>
         <Content>
@@ -159,7 +158,7 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."
             shouldFocus={false}
-            disabled={disabled}
+            disabled={this.state.disabled || this.props.disabled === true}
             contentComponents={
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda

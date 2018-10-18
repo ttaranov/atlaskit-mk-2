@@ -5,7 +5,7 @@ import { Dispatch } from '../../event-dispatcher';
 export const pluginKey = new PluginKey('editorDisabledPlugin');
 
 export type EditorDisabledPluginState = {
-  editorDisabled: boolean;
+  editorDisabled?: boolean;
 };
 
 /*
@@ -21,7 +21,7 @@ export function createPlugin(
     state: {
       init: () =>
         ({
-          editorDisabled: false,
+          editorDisabled: undefined,
         } as EditorDisabledPluginState),
       apply(tr, oldPluginState: EditorDisabledPluginState) {
         const newPluginState: EditorDisabledPluginState = tr.getMeta(pluginKey);
