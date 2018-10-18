@@ -13,11 +13,7 @@ const IconWrapper = styled.div`
   display: flex;
 `;
 
-const getIconComponent = (contentType?: ContentType) => {
-  if (!contentType) {
-    return null;
-  }
-
+const getIconComponent = (contentType: ContentType) => {
   switch (contentType) {
     case ContentType.JiraIssue:
       return IssueIcon;
@@ -25,11 +21,12 @@ const getIconComponent = (contentType?: ContentType) => {
       return BoardIcon;
     case ContentType.JiraFilter:
       return FilterIcon;
+    default:
+      return null;
   }
-  return null;
 };
 
-export const getDefaultAvatar = (contentType?: ContentType) => {
+export const getDefaultAvatar = (contentType: ContentType) => {
   const IconComponent = getIconComponent(contentType);
   return IconComponent ? (
     <IconWrapper>
