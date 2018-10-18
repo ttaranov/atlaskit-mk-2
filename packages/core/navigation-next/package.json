@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "3.18.0",
+  "version": "3.18.1",
   "description": "The Atlassian navigation component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -21,7 +21,7 @@
     "@atlaskit/analytics-next": "^3.0.10",
     "@atlaskit/avatar": "^14.1.2",
     "@atlaskit/icon": "^14.0.2",
-    "@atlaskit/select": "^6.0.3",
+    "@atlaskit/select": "^6.0.4",
     "@atlaskit/spinner": "^9.0.10",
     "@atlaskit/theme": "^6.1.1",
     "@atlaskit/tooltip": "^12.1.4",
