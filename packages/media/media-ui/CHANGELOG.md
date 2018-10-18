@@ -1,5 +1,8 @@
 # @atlaskit/media-ui
 
+## 6.3.1
+- [patch] parse floating values correctly for scaleFactor from filename [ecc0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecc0068)
+
 ## 6.3.0
 - [minor] Add i18n support to MediaPicker [9add3a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9add3a4)
 
