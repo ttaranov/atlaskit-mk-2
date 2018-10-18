@@ -98,7 +98,6 @@ describe('ResizeControlBase', () => {
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
         wrapper.setState({ mouseIsDown: true, isDragging: false });
-        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
 
         wrapper.instance().handleResize({ pageX: 100 });
         requestAnimationFrame.step();
@@ -117,7 +116,6 @@ describe('ResizeControlBase', () => {
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
         wrapper.setState({ mouseIsDown: true, isDragging: false });
-        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
 
         wrapper.instance().handleResize({ pageX: 100 });
         requestAnimationFrame.step();
@@ -135,7 +133,6 @@ describe('ResizeControlBase', () => {
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
         wrapper.setState({ mouseIsDown: true, isDragging: false });
-        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
 
         wrapper.instance().handleResize({ pageX: 100 });
         requestAnimationFrame.step();
@@ -149,11 +146,9 @@ describe('ResizeControlBase', () => {
         expect(wrapper.state('initialWidth')).toEqual(20);
       });
     });
+
     it('should not change width and delta when mouseIsDown is falsy', () => {
-      const props = {
-        ...cloneDeep(resizeControlProps),
-        mutationRefs: [{}, {}],
-      };
+      const props = cloneDeep(resizeControlProps);
       const wrapper = mount(
         <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
       );
