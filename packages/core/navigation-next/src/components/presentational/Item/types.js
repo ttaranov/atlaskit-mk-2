@@ -23,7 +23,7 @@ export type ItemRenderComponentProps = {
   className: string,
 };
 
-export type ConnectedItemProps = {
+export type ItemBaseProps = {
   /** A component to render after the text. Typically used to render an icon or
    * a badge. This component will be passed the current UI state of the Item. */
   after?: ComponentType<ItemPresentationProps>,
@@ -66,5 +66,5 @@ export type ConnectedItemProps = {
   text: Node,
 };
 
-export type ItemProps = ConnectedItemProps &
+export type ItemProps = ItemBaseProps &
   InteractionState & { theme: ProductTheme };

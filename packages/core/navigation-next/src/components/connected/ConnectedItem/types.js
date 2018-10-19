@@ -1,6 +1,6 @@
 // @flow
 
-import type { ConnectedItemProps as PresentationalItemProps } from '../../presentational/Item/types';
+import type { ItemBaseProps as PresentationalItemProps } from '../../presentational/Item/types';
 
 export type ConnectedItemProps = {
   ...PresentationalItemProps,
