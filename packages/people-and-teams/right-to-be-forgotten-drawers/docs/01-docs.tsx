@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { code, md, Example, Props } from '@atlaskit/docs';
 import SectionMessage from '@atlaskit/section-message';
@@ -44,6 +42,7 @@ import {
 ### Examples
   ${(
     <Example
+      packageName="@atlaskit/right-to-be-forgotten-drawers"
       title="Basic drawer assembly"
       Component={require('../examples/00-BasicDrawerAssembly').default}
       source={require('!!raw-loader!../examples/00-BasicDrawerAssembly')}
@@ -52,6 +51,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/right-to-be-forgotten-drawers"
       title="Delete user drawer"
       Component={require('../examples/01-DeleteUserDrawer').default}
       source={require('!!raw-loader!../examples/01-DeleteUserDrawer')}
@@ -60,6 +60,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/right-to-be-forgotten-drawers"
       title="Single screen drawer"
       Component={require('../examples/02-SingleScreenDrawer').default}
       source={require('!!raw-loader!../examples/02-SingleScreenDrawer')}
