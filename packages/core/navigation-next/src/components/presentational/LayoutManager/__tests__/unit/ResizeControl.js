@@ -32,6 +32,7 @@ describe('ResizeControlBase', () => {
         productNavWidth: 100,
       },
       manualResizeStart: jest.fn(),
+      manualResizeEnd: jest.fn(),
       toggleCollapse: Function.prototype,
     },
   };
@@ -144,6 +145,59 @@ describe('ResizeControlBase', () => {
         });
         expect(wrapper.state('didDragOpen')).toEqual(true);
         expect(wrapper.state('initialWidth')).toEqual(20);
+      });
+    });
+
+    describe('When releasing drag', () => {
+      it('should collapse if dragged below collapse threshold', () => {
+        const props = cloneDeep(resizeControlProps);
+        const state = { delta: -100, isDragging: true, width: 140 };
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState(state);
+
+        wrapper.instance().handleResizeEnd();
+
+        expect(props.navigation.manualResizeEnd).toHaveBeenCalledTimes(1);
+        expect(props.navigation.manualResizeEnd).toHaveBeenCalledWith({
+          productNavWidth: 240,
+          isCollapsed: true,
+        });
+      });
+
+      it('should resize back to default width if dragged above collapse threshold and below default width', () => {
+        const props = cloneDeep(resizeControlProps);
+        const state = { delta: -15, isDragging: true, width: 225 };
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState(state);
+
+        wrapper.instance().handleResizeEnd();
+
+        expect(props.navigation.manualResizeEnd).toHaveBeenCalledTimes(1);
+        expect(props.navigation.manualResizeEnd).toHaveBeenCalledWith({
+          productNavWidth: 240,
+          isCollapsed: false,
+        });
+      });
+
+      it('should resize to greater width if dragged above default width', () => {
+        const props = cloneDeep(resizeControlProps);
+        const state = { delta: 130, isDragging: true, width: 370 };
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState(state);
+
+        wrapper.instance().handleResizeEnd();
+
+        expect(props.navigation.manualResizeEnd).toHaveBeenCalledTimes(1);
+        expect(props.navigation.manualResizeEnd).toHaveBeenCalledWith({
+          productNavWidth: 370,
+          isCollapsed: false,
+        });
       });
     });
 

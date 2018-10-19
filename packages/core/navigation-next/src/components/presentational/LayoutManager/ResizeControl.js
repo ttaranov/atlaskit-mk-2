@@ -17,6 +17,7 @@ import {
   GLOBAL_NAV_WIDTH,
   CONTENT_NAV_WIDTH,
   CONTENT_NAV_WIDTH_COLLAPSED,
+  GLOBAL_NAV_COLLAPSE_THRESHOLD,
 } from '../../../common/constants';
 import { Shadow } from '../../../common/primitives';
 import PropertyToggle from './PropertyToggle';
@@ -323,9 +324,8 @@ class ResizeControl extends PureComponent<Props, State> {
   handleResizeEnd = () => {
     const { navigation, createAnalyticsEvent } = this.props;
     const { delta, didDragOpen, isDragging, width } = this.state;
-
     let publishWidth = width;
-    let shouldCollapse;
+    let shouldCollapse = false;
     const expandThreshold = 24;
 
     const resizerClicked = !isDragging && !this.invalidDragAttempted;
@@ -342,7 +342,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
       if (didDragOpen && delta > expandThreshold) {
         shouldCollapse = false;
-      } else {
+      } else if (width < GLOBAL_NAV_COLLAPSE_THRESHOLD) {
         shouldCollapse = true;
       }
     } else {
@@ -373,6 +373,12 @@ class ResizeControl extends PureComponent<Props, State> {
       productNavWidth: publishWidth,
       isCollapsed: shouldCollapse,
     });
+
+    /* nao testado ainda :)
+    if(width >= collapseThreshold && width < CONTENT_NAV_WIDTH)  {
+      console.log(`snapping back to default ${CONTENT_NAV_WIDTH} width because width ${width} is between ${collapseThreshold} and ${CONTENT_NAV_WIDTH}`);
+      applyMutations(this.props.mutationRefs, CONTENT_NAV_WIDTH);
+    }*/
 
     // cleanup
     window.removeEventListener('mousemove', this.handleResize);
