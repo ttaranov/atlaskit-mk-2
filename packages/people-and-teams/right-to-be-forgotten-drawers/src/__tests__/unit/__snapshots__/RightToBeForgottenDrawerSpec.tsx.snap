@@ -4,7 +4,7 @@ exports[`isOpen snapshot 1`] = `
 <Drawer
   icon={[Function]}
   isOpen={false}
-  onClose={[Function]}
+  onClose={[MockFunction]}
   width="full"
 >
   <styled.div>
@@ -12,7 +12,7 @@ exports[`isOpen snapshot 1`] = `
     <Footer
       currentScreenIdx={0}
       numScreens={3}
-      onCancel={[Function]}
+      onCancel={[MockFunction]}
       onNext={[Function]}
       onPrevious={[Function]}
       secondaryActions={
