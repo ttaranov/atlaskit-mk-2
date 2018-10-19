@@ -1,9 +1,10 @@
 import { pluginKey } from './main';
-import { CardPluginState, Request } from '../types';
+import { CardPluginState, Request, CardAppearance } from '../types';
 import { Command } from '../../../types';
 import { processRawValue } from '../../../utils';
-import { Transaction, EditorState } from 'prosemirror-state';
+import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
 import { resolveCard, queueCards } from './actions';
+import { appearanceForNodeType } from '../utils';
 
 export const replaceQueuedUrlWithCard = (
   url: string,
@@ -108,4 +109,49 @@ export const queueCardsFromChangedTr = (
   });
 
   return queueCards(requests)(tr);
+};
+
+export const changeSelectedCardToLink: Command = (state, dispatch) => {
+  return false;
+};
+
+export const setSelectedCardAppearance: (
+  appearance: CardAppearance,
+) => Command = appearance => (state, dispatch) => {
+  const selectedNode =
+    state.selection instanceof NodeSelection && state.selection.node;
+  if (!selectedNode) {
+    return false;
+  }
+
+  if (appearanceForNodeType(selectedNode.type) === appearance) {
+    return false;
+  }
+
+  const { inlineCard, blockCard } = state.schema.nodes;
+  const pos = state.selection.from;
+
+  if (appearance === 'block' && state.selection.$from.parent.childCount === 1) {
+    const tr = state.tr.replaceRangeWith(
+      pos - 1,
+      pos + selectedNode.nodeSize + 1,
+      blockCard.createChecked(
+        selectedNode.attrs,
+        undefined,
+        selectedNode.marks,
+      ),
+    );
+    dispatch(tr.scrollIntoView());
+    return true;
+  }
+
+  const tr = state.tr.setNodeMarkup(
+    pos,
+    appearance === 'inline' ? inlineCard : blockCard,
+    selectedNode.attrs,
+    selectedNode.marks,
+  );
+  dispatch(tr.scrollIntoView());
+
+  return true;
 };

@@ -21,14 +21,19 @@ class BlockCardNode extends React.PureComponent<Props, {}> {
     const { node, selected } = this.props;
     const { url, data } = node.attrs;
 
+    // render an empty span afterwards to get around Webkit bug
+    // that puts caret in next editable text element
     return (
-      <Card
-        url={url}
-        data={data}
-        appearance="block"
-        isSelected={selected}
-        onClick={this.onClick}
-      />
+      <div>
+        <Card
+          url={url}
+          data={data}
+          appearance="block"
+          isSelected={selected}
+          onClick={this.onClick}
+        />
+        <span contentEditable={true} />
+      </div>
     );
   }
 }
