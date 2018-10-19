@@ -323,11 +323,11 @@ class ResizeControl extends PureComponent<Props, State> {
   });
   handleResizeEnd = () => {
     const { navigation, createAnalyticsEvent } = this.props;
-    const { delta, didDragOpen, isDragging, width } = this.state;
-    let publishWidth = width;
-    let shouldCollapse = false;
+    const { delta, didDragOpen, isDragging, width: currentWidth } = this.state;
     const expandThreshold = 24;
     const resizerClicked = !isDragging && !this.invalidDragAttempted;
+    let publishWidth = currentWidth;
+    let shouldCollapse = false;
 
     // check if the intention was just a click, and toggle
     if (resizerClicked) {
@@ -341,7 +341,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
       if (didDragOpen && delta > expandThreshold) {
         shouldCollapse = false;
-      } else if (width < GLOBAL_NAV_COLLAPSE_THRESHOLD) {
+      } else if (currentWidth < GLOBAL_NAV_COLLAPSE_THRESHOLD) {
         shouldCollapse = true;
       }
     } else {
@@ -373,7 +373,10 @@ class ResizeControl extends PureComponent<Props, State> {
       isCollapsed: shouldCollapse,
     });
 
-    if (width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH) {
+    if (
+      currentWidth >= GLOBAL_NAV_COLLAPSE_THRESHOLD &&
+      currentWidth < CONTENT_NAV_WIDTH
+    ) {
       applyMutations(this.props.mutationRefs, CONTENT_NAV_WIDTH);
     }
 
