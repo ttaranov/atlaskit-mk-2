@@ -7,7 +7,7 @@ export default md`
     <SectionMessage appearance="warning">
       <p>
         <strong>
-          Note: @atlaskit/right-to-be-forgotten-drawers is currently a developer
+          Note: @atlaskit/focused-task-close-account is currently a developer
           preview.
         </strong>
       </p>
@@ -25,7 +25,7 @@ export default md`
 
   By providing the building blocks rather than a single complete solution, a simpler and more flexible API can be provided for adjustments, customizations and data-routing.
 
-  Start by rendering a RightToBeForgottenDrawer then provide it the necessary screens, plugging in data providing callbacks where necessary.
+  Start by rendering a FocusedTaskCloseAccount then provide it the necessary screens, plugging in data providing callbacks where necessary.
 
   For example, to assemble the "Delete user" flow, provide the DeleteUserOverviewScreen and DeleteUserContentPreviewScreen.
 
@@ -33,16 +33,16 @@ export default md`
 
   ${code`
 import {
-  RightToBeForgottenDrawer,
+  FocusedTaskCloseAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
-} from '@atlaskit/right-to-be-forgotten-drawers';
+} from '@atlaskit/focused-task-close-account';
   `}
 
 ### Examples
   ${(
     <Example
-      packageName="@atlaskit/right-to-be-forgotten-drawers"
+      packageName="@atlaskit/focused-task-close-account"
       title="Basic drawer assembly"
       Component={require('../examples/00-BasicDrawerAssembly').default}
       source={require('!!raw-loader!../examples/00-BasicDrawerAssembly')}
@@ -51,7 +51,7 @@ import {
 
   ${(
     <Example
-      packageName="@atlaskit/right-to-be-forgotten-drawers"
+      packageName="@atlaskit/focused-task-close-account"
       title="Delete user drawer"
       Component={require('../examples/01-DeleteUserDrawer').default}
       source={require('!!raw-loader!../examples/01-DeleteUserDrawer')}
@@ -60,7 +60,7 @@ import {
 
   ${(
     <Example
-      packageName="@atlaskit/right-to-be-forgotten-drawers"
+      packageName="@atlaskit/focused-task-close-account"
       title="Single screen drawer"
       Component={require('../examples/02-SingleScreenDrawer').default}
       source={require('!!raw-loader!../examples/02-SingleScreenDrawer')}
@@ -70,7 +70,7 @@ import {
   ${(
     <Props
       heading="Props"
-      props={require('!!extract-react-types-loader!../src/components/RightToBeForgottenDrawer')}
+      props={require('!!extract-react-types-loader!../src/components/FocusedTaskCloseAccount')}
     />
   )}
 

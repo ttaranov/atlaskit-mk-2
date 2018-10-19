@@ -1,6 +1,6 @@
 export {
-  default as RightToBeForgottenDrawer,
-} from './src/components/RightToBeForgottenDrawer';
+  default as FocusedTaskCloseAccount,
+} from './src/components/FocusedTaskCloseAccount';
 export {
   default as DeleteUserOverviewScreen,
 } from './src/components/DeleteUserOverviewScreen';

@@ -5,7 +5,7 @@ import accessibleSites from '../src/mocks/accessibleSites';
 import { catherineHirons } from '../src/mocks/users';
 
 import {
-  RightToBeForgottenDrawer,
+  FocusedTaskCloseAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
 } from '..';
@@ -20,7 +20,7 @@ export default function Example() {
   return (
     <>
       <h1>See code</h1>
-      <RightToBeForgottenDrawer
+      <FocusedTaskCloseAccount
         onClose={() => {}}
         isOpen={false}
         screens={[

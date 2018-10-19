@@ -1,10 +1,12 @@
 {
-  "name": "@atlaskit/right-to-be-forgotten-drawers",
-  "version": "0.0.0",
+  "name": "@atlaskit/focused-task-close-account",
+  "version": "0.0.1",
   "description": "This package contains all of the UI components needed to assemble the focused tasks for deactivating and deleting users' accounts in accordance with the GDPR \"Right to be forgotten\".",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "atlaskit:src": "src/index.js",
+  "main": "dist/es5/index.js",
+  "atlaskit:src": "src/index.ts",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
   "files": [
     "dist"
   ],
@@ -45,6 +47,7 @@
     "right",
     "erasure",
     "forgotten",
+    "focusedTaskCloseAccount",
     "deleteUserDrawer",
     "deactivateUserDrawer"
   ]

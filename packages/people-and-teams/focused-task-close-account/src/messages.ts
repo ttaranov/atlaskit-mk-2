@@ -5,42 +5,42 @@
 
 export const commonMessages = {
   deactivateAccount: {
-    id: 'right-to-be-forgotten.deactivate-account',
+    id: 'focused-task-close-account.deactivate-account',
     defaultMessage: 'Deactivate account',
     description:
       'Text that appears in a button, link or heading for the action of deactivating an account',
   },
 
   deleteAccount: {
-    id: 'right-to-be-forgotten.delete-account',
+    id: 'focused-task-close-account.delete-account',
     defaultMessage: 'Delete account',
     description:
       'Text that appears in a button, link or heading for the action of deleting an account',
   },
 
   learnMore: {
-    id: 'right-to-be-forgotten.learnMore',
+    id: 'focused-task-close-account.learnMore',
     defaultMessage: 'Learn more',
     description:
       'Text for a link to a page where a user can learn more about a particular topic',
   },
 
   cancel: {
-    id: 'right-to-be-forgotten.cancel',
+    id: 'focused-task-close-account.cancel',
     defaultMessage: 'Cancel',
     description:
       'Text for a button for a user to cancel the current task/process',
   },
 
   next: {
-    id: 'right-to-be-forgotten.next',
+    id: 'focused-task-close-account.next',
     defaultMessage: 'Next',
     description:
       'Text for a button for a user to proceed to the next step of a process',
   },
 
   previous: {
-    id: 'right-to-be-forgotten.previous',
+    id: 'focused-task-close-account.previous',
     defaultMessage: 'Previous',
     description:
       'Text for a button for a user to go back to the previous step of a process',
@@ -49,7 +49,7 @@ export const commonMessages = {
 
 export const overviewMessages = {
   heading: {
-    id: 'right-to-be-forgotten.close-account-focused-task.overview.heading',
+    id: 'focused-task-close-account.delete-account.overview.heading',
     defaultMessage: 'What deleting an account means',
     description:
       "Heading for the screen that explains what happens when a user's account is deleted",
@@ -57,7 +57,7 @@ export const overviewMessages = {
 
   warningSectionBody: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.warning-section.body',
+      'focused-task-close-account.delete-account.overview.warning-section.body',
     defaultMessage:
       "You can't undo deleting an account. If you think you'll need the account later, deactivate it instead.",
     description:
@@ -66,14 +66,14 @@ export const overviewMessages = {
 
   paragraphAboutToDeleteAdmin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.about-to-delete.admin',
+      'focused-task-close-account.delete-account.overview.paragraph.about-to-delete.admin',
     defaultMessage: "You're about to delete a user's account, which means:",
     description:
       'A paragraph explaining that the admin is about to delete another user',
   },
   paragraphAboutToDeleteSelf: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.about-to-delete.self',
+      'focused-task-close-account.delete-account.overview.paragraph.about-to-delete.self',
     defaultMessage: "You're about to delete your account, which means:",
     description:
       'A paragraph explaining that user is about to delete their own account',
@@ -81,7 +81,7 @@ export const overviewMessages = {
 
   paragraphLoseAccessAdmin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.loseAccess.admin',
+      'focused-task-close-account.delete-account.overview.paragraph.loseAccess.admin',
     defaultMessage:
       'They will immediately lose access to all Atlassian services. {fullName} currently has access to:',
     description:
@@ -89,7 +89,7 @@ export const overviewMessages = {
   },
   paragraphLoseAccessSelf: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.loseAccess.self',
+      'focused-task-close-account.delete-account.overview.paragraph.loseAccess.self',
     defaultMessage:
       'You will immediately lose access to all Atlassian services. You currently have access to:',
     description:
@@ -98,7 +98,7 @@ export const overviewMessages = {
 
   paragraphLoseAccessFootnoteAdmin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.loseAccess.footnote.admin',
+      'focused-task-close-account.delete-account.overview.paragraph.loseAccess.footnote.admin',
     defaultMessage:
       'They might also have access to other services, such as {atlassianCommunity}',
     description:
@@ -109,7 +109,7 @@ export const overviewMessages = {
   },
   paragraphLoseAccessFootnoteSelf: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.loseAccess.footnote.self',
+      'focused-task-close-account.delete-account.overview.paragraph.loseAccess.footnote.self',
     defaultMessage:
       'You might also have access to other services, such as {atlassianCommunity}',
     description:
@@ -121,7 +121,7 @@ export const overviewMessages = {
 
   paragraphContentCreatedAdmin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.content-created.admin',
+      'focused-task-close-account.delete-account.overview.paragraph.content-created.admin',
     defaultMessage:
       "The content they've created will remain in Atlassian services",
     description:
@@ -129,7 +129,7 @@ export const overviewMessages = {
   },
   paragraphContentCreatedSelf: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.content-created.self',
+      'focused-task-close-account.delete-account.overview.paragraph.content-created.self',
     defaultMessage:
       "The content you've created will remain in Atlassian services",
     description:
@@ -138,7 +138,7 @@ export const overviewMessages = {
 
   inlineDialogContentCreatedAdmin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.inline-dialog.content-created.admin',
+      'focused-task-close-account.delete-account.overview.inline-dialog.content-created.admin',
     defaultMessage:
       "For example, pages, issues, and comments they've created in products.",
     description:
@@ -146,7 +146,7 @@ export const overviewMessages = {
   },
   inlineDialogContentCreatedSelf: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.inline-dialog.content-created.self',
+      'focused-task-close-account.delete-account.overview.inline-dialog.content-created.self',
     defaultMessage:
       "For example, pages, issues, and comments you've created in products.",
     description:
@@ -155,7 +155,7 @@ export const overviewMessages = {
 
   paragraphPersonalDataWillBeDeletedAdmin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.personal-data-will-be-deleted.admin',
+      'focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.admin',
     defaultMessage:
       'Their personal data (their full name, email address, etc) will be deleted from Atlassian sites and products.',
     description:
@@ -163,7 +163,7 @@ export const overviewMessages = {
   },
   paragraphPersonalDataWillBeDeletedSelf: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.personal-data-will-be-deleted.self',
+      'focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.self',
     defaultMessage:
       'Your personal data (full name, email address, etc) will be deleted from Atlassian sites and products.',
     description:
@@ -172,7 +172,7 @@ export const overviewMessages = {
 
   paragraphPersonalDataWillBeDeletedFootnote: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.paragraph.personal-data-will-be-deleted.footnote',
+      'focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.footnote',
     defaultMessage: 'We keep some personal data for legal purposes.',
     description:
       'A note explaining that some personal data is required to be saved from deletion for legal purposes.',
@@ -180,7 +180,7 @@ export const overviewMessages = {
 
   inlineDialogDataWillBeDeletedP1Admin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.inline-dialog.personal-data-will-be-deleted.p1.admin',
+      'focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p1.admin',
     defaultMessage:
       "We keep some personal data for the purposes of legal claims or for other legitimate interests. We might need this data if the user requests a service or we need to comply with a legal obligation. For example, if the user is a billing administrator, we're required to retain their name and purchase history for financial reporting and auditing.",
     description:
@@ -188,7 +188,7 @@ export const overviewMessages = {
   },
   inlineDialogDataWillBeDeletedP1Self: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.inline-dialog.personal-data-will-be-deleted.p1.self',
+      'focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p1.self',
     defaultMessage:
       "We keep some personal data for the purposes of legal claims or for other legitimate interests. We might need this data you request a service or we need to comply with a legal obligation. For example, if you are a billing administrator, we're required to retain your name and purchase history for financial reporting and auditing.",
     description:
@@ -197,7 +197,7 @@ export const overviewMessages = {
 
   inlineDialogDataWillBeDeletedP2Admin: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.inline-dialog.personal-data-will-be-deleted.p2.admin',
+      'focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p2.admin',
     defaultMessage:
       'Users have the right to submit complaints to a supervisory authority.',
     description:
@@ -205,7 +205,7 @@ export const overviewMessages = {
   },
   inlineDialogDataWillBeDeletedP2Self: {
     id:
-      'right-to-be-forgotten.close-account-focused-task.overview.inline-dialog.personal-data-will-be-deleted.p2.self',
+      'focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p2.self',
     defaultMessage:
       'You have the right to submit complaints to a supervisory authority.',
     description:
@@ -215,8 +215,7 @@ export const overviewMessages = {
 
 export const contentPreviewMessages = {
   heading: {
-    id:
-      'right-to-be-forgotten.close-account-focused-task.content-preview.heading',
+    id: 'focused-task-close-account.delete-account.content-preview.heading',
     defaultMessage: 'How users will see this account',
     description:
       'Heading for the screen that explains what other users will see when viewing the deleted/deactivated user',

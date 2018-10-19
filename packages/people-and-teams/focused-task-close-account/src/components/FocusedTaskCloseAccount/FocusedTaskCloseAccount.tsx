@@ -16,7 +16,7 @@ interface Props {
   submitButton: React.ReactNode;
 }
 
-export class RightToBeForgottenDrawer extends React.Component<Props> {
+export class FocusedTaskCloseAccount extends React.Component<Props> {
   state = {
     currentScreenIdx: 0,
   };
@@ -76,4 +76,4 @@ export class RightToBeForgottenDrawer extends React.Component<Props> {
   }
 }
 
-export default RightToBeForgottenDrawer;
+export default FocusedTaskCloseAccount;

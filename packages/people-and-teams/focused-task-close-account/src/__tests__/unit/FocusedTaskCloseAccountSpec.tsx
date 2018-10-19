@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { RightToBeForgottenDrawer } from '../../components/RightToBeForgottenDrawer';
+import { FocusedTaskCloseAccount } from '../../components/FocusedTaskCloseAccount';
 
 const defaultProps = {
   isOpen: false,
@@ -11,7 +11,7 @@ const defaultProps = {
 };
 
 const render = (props = {}) =>
-  shallow(<RightToBeForgottenDrawer {...defaultProps} {...props} />);
+  shallow(<FocusedTaskCloseAccount {...defaultProps} {...props} />);
 
 test('isOpen snapshot', () => {
   expect(render()).toMatchSnapshot();
@@ -23,7 +23,7 @@ describe('nextScreen()', () => {
 
     expect(wrapper.state().currentScreenIdx).toBe(0);
 
-    (wrapper.instance() as RightToBeForgottenDrawer).nextScreen();
+    (wrapper.instance() as FocusedTaskCloseAccount).nextScreen();
     wrapper.update();
 
     expect(wrapper.state().currentScreenIdx).toBe(1);
@@ -35,7 +35,7 @@ describe('nextScreen()', () => {
     const lastScreenIdx = screens.length - 1;
 
     wrapper.setState({ currentScreenIdx: lastScreenIdx });
-    (wrapper.instance() as RightToBeForgottenDrawer).nextScreen();
+    (wrapper.instance() as FocusedTaskCloseAccount).nextScreen();
     wrapper.update();
 
     expect(wrapper.state().currentScreenIdx).toBe(lastScreenIdx);
@@ -49,7 +49,7 @@ describe('previousScreen()', () => {
     const lastScreenIdx = screens.length - 1;
 
     wrapper.setState({ currentScreenIdx: lastScreenIdx });
-    (wrapper.instance() as RightToBeForgottenDrawer).previousScreen();
+    (wrapper.instance() as FocusedTaskCloseAccount).previousScreen();
     wrapper.update();
 
     expect(wrapper.state().currentScreenIdx).toBe(lastScreenIdx - 1);
@@ -57,7 +57,7 @@ describe('previousScreen()', () => {
 
   test('Goes to next screen', () => {
     const wrapper = render();
-    (wrapper.instance() as RightToBeForgottenDrawer).previousScreen();
+    (wrapper.instance() as FocusedTaskCloseAccount).previousScreen();
     wrapper.update();
     expect(wrapper.state().currentScreenIdx).toBe(0);
   });

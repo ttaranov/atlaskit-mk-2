@@ -8,7 +8,7 @@ import accessibleSites from '../src/mocks/accessibleSites';
 import { catherineHirons } from '../src/mocks/users';
 import StatefulInlineDialog from '../src/components/StatefulInlineDialog';
 import {
-  RightToBeForgottenDrawer,
+  FocusedTaskCloseAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
 } from '..';
@@ -72,7 +72,7 @@ export default class DeleteUserDrawerExample extends React.Component {
             />
           </Controls>
           {this.state.isOpen && (
-            <RightToBeForgottenDrawer
+            <FocusedTaskCloseAccount
               onClose={this.closeDrawer}
               isOpen
               screens={[

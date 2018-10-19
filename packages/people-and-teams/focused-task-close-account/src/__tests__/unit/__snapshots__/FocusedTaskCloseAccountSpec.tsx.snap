@@ -23,7 +23,7 @@ exports[`isOpen snapshot 1`] = `
           <FormattedMessage
             defaultMessage="Learn more"
             description="Text for a link to a page where a user can learn more about a particular topic"
-            id="right-to-be-forgotten.learnMore"
+            id="focused-task-close-account.learnMore"
             values={Object {}}
           />
            
