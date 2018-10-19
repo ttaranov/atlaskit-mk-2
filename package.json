@@ -361,6 +361,7 @@
     "lodash.sample": "^4.2.1",
     "lodash.set": "^4.3.2",
     "lodash.truncate": "^4.4.2",
+    "lorem-ipsum": "^1.0.6",
     "lru-fast": "^0.2.2",
     "markdown-it": "^8.4.0",
     "markdown-it-table": "^2.0.4",

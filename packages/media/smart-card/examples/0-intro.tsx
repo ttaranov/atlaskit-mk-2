@@ -6,6 +6,9 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
+import { Checkbox } from '@atlaskit/checkbox';
+import { RadioGroup } from '@atlaskit/radio';
+import urlsJSON from './example-urls.json';
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -16,22 +19,17 @@ const defaultURL = param
   ? param
   : 'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit';
 
-export interface ExampleProps {}
-
-export type AppearanceOption = {
-  label: string;
-  value: CardAppearance;
-};
-
 export interface ExampleState {
-  appearance: AppearanceOption;
+  appearance: CardAppearance;
   url: string;
   isSelected: boolean;
 }
+const ucFirst = (text: string): string =>
+  text[0].toUpperCase() + text.substring(1);
 
-class Example extends React.Component<ExampleProps, ExampleState> {
+class Example extends React.Component<{}, ExampleState> {
   state: ExampleState = {
-    appearance: { label: 'Block', value: 'block' },
+    appearance: 'block',
     url: defaultURL,
     isSelected: false,
   };
@@ -47,15 +45,19 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     this.setState({ url: (event.target as HTMLInputElement).value });
   };
 
-  handleIsSelected = () => {
+  changeUrl = (url: string) => {
+    this.setState({ url });
+  };
+
+  handleIsSelected = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({
-      isSelected: !this.state.isSelected,
+      isSelected: (event.target as HTMLInputElement).checked,
     });
   };
 
-  handleAppearanceChange = (option: AppearanceOption) => {
+  handleAppearanceChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({
-      appearance: option,
+      appearance: (event.target as HTMLInputElement).value as any,
     });
   };
 
@@ -71,7 +73,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     return (
       <Provider>
         <Page>
-          <Grid>
+          {/* <Grid>
             <GridColumn>
               <p>Switch to</p>
               <ul>
@@ -120,24 +122,54 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   </Button>
                 </li>
               </ul>
-              <br />
+            </GridColumn>
+          </Grid> */}
+          <Grid>
+            <GridColumn medium={8}>
+              <Field label="URL">
+                <FieldTextStateless
+                  autoFocus={true}
+                  shouldFitContainer={true}
+                  value={url}
+                  onChange={this.handleUrlChange}
+                />
+              </Field>
+            </GridColumn>
+            <GridColumn medium={2}>
               <Field label="Appearance">
-                <Select
+                <RadioGroup
                   options={[
                     { label: 'Block', value: 'block' },
                     { label: 'Inline', value: 'inline' },
                   ]}
-                  value={appearance}
+                  checkedValue={appearance}
+                  label="Pick a "
                   onChange={this.handleAppearanceChange}
                 />
+                {/* <Select
+                  // options={[
+                  //   { label: 'Block', value: 'block' },
+                  //   { label: 'Inline', value: 'inline' },
+                  // ]}
+                  value={appearance}
+                  onChange={this.handleAppearanceChange}
+                /> */}
               </Field>
-              <br />
-              <Button label="Is selected?" onClick={this.handleIsSelected}>
-                {this.state.isSelected
-                  ? 'Deselect the card'
-                  : 'Make the card selected'}
-              </Button>
-              <br />
+            </GridColumn>
+            <GridColumn medium={2}>
+              <Field label="Selection">
+                <Checkbox
+                  isChecked={isSelected}
+                  onChange={this.handleIsSelected}
+                  label="is selected"
+                  value={true}
+                  name="isSelected"
+                />
+              </Field>
+            </GridColumn>
+          </Grid>
+          {/* <Grid>
+            <GridColumn medium="8">
               <FieldTextStateless
                 autoFocus={true}
                 label="URL"
@@ -146,11 +178,34 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 onChange={this.handleUrlChange}
               />
             </GridColumn>
+          </Grid> */}
+          <Grid>
+            <GridColumn>
+              <br />
+              {this.renderCard(url, isSelected, appearance)}
+            </GridColumn>
           </Grid>
           <Grid>
             <GridColumn>
               <br />
-              {this.renderCard(url, isSelected, appearance.value)}
+              <h3>Example urls:</h3>
+              {urlsJSON.map((example: any) => (
+                <p>
+                  <Button
+                    spacing="compact"
+                    onClick={() => this.changeUrl(example.url)}
+                  >
+                    Try it
+                  </Button>
+                  &nbsp;
+                  <a href={example.url}>
+                    {example.description ||
+                      `${example.provider} ${example.visibility} ${
+                        example.type
+                      }`}
+                  </a>
+                </p>
+              ))}
             </GridColumn>
           </Grid>
         </Page>
