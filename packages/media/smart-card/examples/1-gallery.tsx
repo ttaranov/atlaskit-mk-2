@@ -4,7 +4,7 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import { Provider, Card } from '../src';
 import urlsJSON from './example-urls.json';
 import styled from 'styled-components';
-import lorem from 'lorem-ipsum';
+import * as lorem from 'lorem-ipsum';
 import { colors } from '@atlaskit/theme';
 
 enum GroupingModes {
@@ -121,7 +121,7 @@ class Example extends React.Component<{}, ExampleState> {
   }
 
   renderByGroup(mode: GroupingMode) {
-    let result = [];
+    let result: Array<React.ReactNode> = [];
     const grouped = this.getGroupedUrls(mode);
     const loremText = () =>
       lorem({
@@ -160,7 +160,7 @@ class Example extends React.Component<{}, ExampleState> {
   }
 
   renderButtons(currentMode: GroupingMode) {
-    let result = [];
+    let result: Array<React.ReactNode> = [];
 
     for (let mode in GroupingModes) {
       result.push(
