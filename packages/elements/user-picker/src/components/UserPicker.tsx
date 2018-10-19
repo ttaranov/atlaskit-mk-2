@@ -1,9 +1,7 @@
 import Select from '@atlaskit/select';
 import * as debounce from 'debounce';
 import * as React from 'react';
-import { ControlProps } from 'react-select/lib/components/Control';
-import { InputActionTypes } from 'react-select/lib/types';
-import { LoadOptions, OnChange, User, UserOption } from '../types';
+import { InputActionTypes, LoadOptions, OnChange, User } from '../types';
 import { batchByKey } from './batch';
 import { getComponents } from './components';
 import { getStyles } from './styles';
@@ -21,7 +19,7 @@ export type Props = {
   onChange?: OnChange;
   isMulti?: boolean;
   search?: string;
-  anchor?: React.ComponentType<ControlProps<UserOption>>;
+  anchor?: React.ComponentType<any>;
   open?: boolean;
   isLoading?: boolean;
 };

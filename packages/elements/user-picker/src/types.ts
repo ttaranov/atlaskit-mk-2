@@ -1,5 +1,3 @@
-import { ActionTypes, ValueType } from 'react-select/lib/types';
-
 export interface HighlightRange {
   start: number;
   end: number;
@@ -19,7 +17,16 @@ export interface User {
   lozenge?: string;
 }
 
-export type UserValue = ValueType<User>;
+export type UserValue = User | Array<User> | null | undefined;
+
+export type ActionTypes =
+  | 'select-option'
+  | 'deselect-option'
+  | 'remove-value'
+  | 'pop-value'
+  | 'set-value'
+  | 'clear'
+  | 'create-option';
 
 export type OnChange = (value: UserValue, action: ActionTypes) => void;
 
@@ -36,3 +43,9 @@ export interface LoadOptions {
 }
 
 export type Promisable<T> = T | PromiseLike<T>;
+
+export type InputActionTypes =
+  | 'set-value'
+  | 'input-change'
+  | 'input-blur'
+  | 'menu-close';

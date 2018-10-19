@@ -180,7 +180,7 @@ describe('UserPicker', () => {
       });
     });
 
-    describe.only('onInputChange', () => {
+    describe('onInputChange', () => {
       it('should load users on input change', () => {
         const usersPromise = new Promise<User[]>(resolve =>
           setTimeout(() => resolve(users), 500),

@@ -26,7 +26,6 @@
     "@atlaskit/select": "^6.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/debounce": "^3.0.0",
-    "@types/react-select": "^2.0.5",
     "debounce": "^1.0.0",
     "memoize-one": "^3.0.1"
   },
@@ -48,8 +47,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/util-data-test": "^10.0.17",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-select": "^2.1.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },
   "repository": {
     "type": "git",
