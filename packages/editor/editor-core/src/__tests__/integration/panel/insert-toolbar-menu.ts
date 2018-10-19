@@ -10,7 +10,7 @@ import {
 
 BrowserTestCase(
   'insert-toolbar-menu.ts Panel: Insert via toolbar menu',
-  { skip: ['edge', 'ie'] },
+  { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
 
