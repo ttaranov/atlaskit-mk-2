@@ -142,6 +142,8 @@ export type GlobalNavigationProps = {
   notificationCount?: number,
   /** The text to display in the tooltip for the notifications item. */
   notificationTooltip?: string,
+  /** Notification log provider instance. If not provided it will create a new one by default */
+  notificationLogProvider?: any,
 } & GlobalNavDrawerProps;
 
 export type DrawerName = 'search' | 'notification' | 'starred' | 'create';

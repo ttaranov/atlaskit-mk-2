@@ -74,6 +74,7 @@ class NotificationDrawer extends Component<Props, State> {
           title="Notifications"
           src={drawerUrl}
           onLoad={this.handleIframeLoad}
+          hasIframeLoaded={this.state.hasIframeLoaded}
         />
       </Fragment>
     );

@@ -56,7 +56,7 @@ export default class NotificationIndicator extends Component<Props, State> {
 
   async componentDidMount() {
     this.notificationLogProvider = await this.props.notificationLogProvider;
-    this.refresh('mount');
+    await this.refresh('mount');
     this.updateInterval();
     document.addEventListener('visibilitychange', this.onVisibilityChange);
   }
