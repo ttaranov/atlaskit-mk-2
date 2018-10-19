@@ -20,7 +20,3 @@ export interface ObjectState {
   services: AuthService[];
   data?: { [name: string]: any };
 }
-
-export interface TemporaryResolver {
-  (url: string): Promise<any>;
-}

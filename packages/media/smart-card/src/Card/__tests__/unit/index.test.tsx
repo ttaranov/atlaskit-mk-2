@@ -6,8 +6,8 @@ jest.mock('react-lazily-render', () => {
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Client, ObjectState } from '../../../Client';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
+import { Provider, Client, ResolveResponse, ObjectState } from '../../..';
 import { Card } from '../..';
 import { from } from 'rxjs/observable/from';
 import { CardWithUrl } from '../../types';
@@ -15,7 +15,7 @@ import { CardWithUrl } from '../../types';
 function createClient(consequesntStates?: ObjectState[]): Client {
   const client = new Client();
   jest
-    .spyOn(client, 'fetchData')
+    .spyOn(client, 'startStreaming')
     .mockReturnValue(
       from([
         { status: 'resolving', services: [] } as ObjectState,
@@ -194,7 +194,9 @@ describe('Card', () => {
 
     wrapper.setProps({ url: 'https://www.google.com/' }).update();
 
-    expect(client.fetchData).toHaveBeenCalledWith('https://www.google.com/');
+    expect(client.startStreaming).toHaveBeenCalledWith(
+      'https://www.google.com/',
+    );
 
     expect(wrapper.find(BlockCard.ResolvedView).exists()).toBeTruthy();
   });
@@ -309,14 +311,58 @@ describe('Card', () => {
       />,
     );
 
-    expect(client.fetchData).toHaveBeenCalledTimes(1);
+    expect(client.startStreaming).toHaveBeenCalledTimes(1);
 
     wrapper.setProps({ appearance: 'inline' }).update();
 
-    expect(client.fetchData).toHaveBeenCalledTimes(1);
+    expect(client.startStreaming).toHaveBeenCalledTimes(1);
 
     wrapper.setProps({ appearance: 'block' }).update();
 
-    expect(client.fetchData).toHaveBeenCalledTimes(1);
+    expect(client.startStreaming).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render the data passed by a custom data fetch implementation', async () => {
+    const specialCaseUrl = 'http://some.jira.com/board/ISS-1234';
+
+    const customResponse = {
+      meta: {
+        visibility: 'public',
+        access: 'granted',
+        auth: [],
+        definitionId: 'custom-def',
+      },
+      data: {
+        name: 'Doc 1',
+      },
+    } as ResolveResponse;
+
+    class CustomClient extends Client {
+      fetchData(url: string) {
+        if (url === specialCaseUrl) {
+          return Promise.resolve(customResponse);
+        }
+        return super.fetchData(url);
+      }
+    }
+
+    const wrapper = mount(
+      <Provider client={new CustomClient()}>
+        <Card appearance="block" url={specialCaseUrl} />
+      </Provider>,
+    );
+
+    // need this delay because of the promise within customFetch
+    await new Promise(resolve => setTimeout(resolve, 1));
+    wrapper.update();
+
+    expect(wrapper.find(BlockCard.ResolvedView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        title: {
+          text: 'Doc 1',
+        },
+      }),
+    );
   });
 });
