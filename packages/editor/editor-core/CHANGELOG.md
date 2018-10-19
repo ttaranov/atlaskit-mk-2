@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.0.4
+- [patch] ED-5521: permit undo when pasting macro [c429e3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c429e3c)
+
 ## 87.0.3
 - [patch] ED-5375 Improved typing to reduce noImplictAny errors (not yet enabled) [62da999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62da999)
 
