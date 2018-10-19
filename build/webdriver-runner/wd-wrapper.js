@@ -128,7 +128,17 @@ export default class Page {
   close() {
     return this.browser.close();
   }
-
+  checkConsoleErrors() {
+    if (this.browser.log('browser').value) {
+      this.browser.logs('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Those console errors :${val.message} are displayed`,
+        );
+      });
+    }
+  }
   backspace(selector) {
     this.browser.execute(selector => {
       return document
