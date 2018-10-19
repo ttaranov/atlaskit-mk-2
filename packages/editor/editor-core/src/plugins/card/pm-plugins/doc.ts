@@ -5,6 +5,7 @@ import { processRawValue } from '../../../utils';
 import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
 import { resolveCard, queueCards } from './actions';
 import { appearanceForNodeType } from '../utils';
+import { replaceSelectedNode } from 'prosemirror-utils';
 
 export const replaceQueuedUrlWithCard = (
   url: string,
@@ -112,7 +113,23 @@ export const queueCardsFromChangedTr = (
 };
 
 export const changeSelectedCardToLink: Command = (state, dispatch) => {
-  return false;
+  const selectedNode =
+    state.selection instanceof NodeSelection && state.selection.node;
+  if (!selectedNode) {
+    return false;
+  }
+
+  const { link } = state.schema.marks;
+
+  const tr = state.tr.replaceSelectionWith(
+    state.schema.text(selectedNode.attrs.url, [
+      link.create({ href: selectedNode.attrs.url }),
+    ]),
+    false,
+  );
+
+  dispatch(tr.scrollIntoView());
+  return true;
 };
 
 export const setSelectedCardAppearance: (
