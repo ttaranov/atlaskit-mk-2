@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Emoji: should render emoji inside action 1`] = `
+exports[`emoji-3.ts: should render emoji inside action 1`] = `
 Object {
   "content": Array [
     Object {
@@ -37,7 +37,7 @@ Object {
 }
 `;
 
-exports[`Emoji: should render emoji inside codeblock 1`] = `
+exports[`emoji-3.ts: should render emoji inside codeblock 1`] = `
 Object {
   "content": Array [
     Object {
@@ -58,7 +58,7 @@ Object {
 }
 `;
 
-exports[`Emoji: should select emoji on return 1`] = `
+exports[`emoji-3.ts: should select emoji on return 1`] = `
 Object {
   "content": Array [
     Object {
@@ -83,7 +83,7 @@ Object {
 }
 `;
 
-exports[`Emoji: user can navigate typeahead using keyboard 1`] = `
+exports[`emoji-3.ts: user can navigate typeahead using keyboard 1`] = `
 Object {
   "content": Array [
     Object {

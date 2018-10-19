@@ -30,6 +30,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/reset').default}
       source={require('!!raw-loader!../examples/reset')}
       title="Reset"
@@ -40,6 +41,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/themed-reset').default}
       source={require('!!raw-loader!../examples/themed-reset')}
       title="Themed reset"
@@ -64,6 +66,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/deprecated-theme-provider').default}
       source={require('!!raw-loader!../examples/deprecated-theme-provider')}
       title="DEPRECATED AtlaskitThemeProvider"
@@ -104,6 +107,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/defining-a-theme').default}
       source={require('!!raw-loader!../examples/defining-a-theme')}
       title="Defining a theme"
@@ -116,6 +120,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/composing-themes').default}
       source={require('!!raw-loader!../examples/composing-themes')}
       title="Composing themes"
@@ -128,6 +133,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/pre-defined-themes').default}
       source={require('!!raw-loader!../examples/pre-defined-themes')}
       title="Pre-defined themes"
@@ -138,6 +144,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/pre-defined-themes-composed').default}
       source={require('!!raw-loader!../examples/pre-defined-themes-composed')}
       title="Pre-defined themes (composed)"
@@ -150,6 +157,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/theming-components').default}
       source={require('!!raw-loader!../examples/theming-components')}
       title="Theming components"
@@ -170,6 +178,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/theme"
       Component={require('../examples/colors').default}
       source={require('!!raw-loader!../examples/colors')}
       title="colors"

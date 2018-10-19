@@ -127,11 +127,15 @@ export default class NotificationIndicator extends Component<Props, State> {
     try {
       const count =
         updatingResult.countOverride ||
-        (await this.notificationLogProvider.countUnseenNotifications()).count;
+        (await this.notificationLogProvider.countUnseenNotifications({
+          queryParams: {
+            currentCount: this.state.count,
+          },
+        })).count;
 
       if (
         this.props.onCountUpdated &&
-        (!this.state.count || this.state.count !== count)
+        (this.state.count === null || this.state.count !== count)
       ) {
         this.props.onCountUpdated({
           oldCount: this.state.count || 0,

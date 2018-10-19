@@ -32,6 +32,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/tree"
       Component={require('../examples/5-pure-tree').default}
       title="Basic Drag-n-Drop Tree"
       source={require('!!raw-loader!../examples/5-pure-tree')}

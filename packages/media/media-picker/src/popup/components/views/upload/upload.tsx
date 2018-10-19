@@ -19,7 +19,8 @@ import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-import { InfiniteScroll } from '@atlaskit/media-ui';
+import { FormattedMessage } from 'react-intl';
+import { messages, InfiniteScroll } from '@atlaskit/media-ui';
 import { Browser } from '../../../../components/browser';
 import { isWebGLAvailable } from '../../../tools/webgl';
 import { Dropzone } from './dropzone';
@@ -176,7 +177,9 @@ export class StatelessUploadView extends Component<
 
     return (
       <div>
-        <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
+        <RecentUploadsTitle>
+          <FormattedMessage {...messages.recent_uploads} />
+        </RecentUploadsTitle>
         <CardsWrapper>{cards}</CardsWrapper>
         {this.renderLoadingNextPageView()}
         {isWebGLWarningFlagVisible && this.renderWebGLWarningFlag()}
@@ -193,7 +196,7 @@ export class StatelessUploadView extends Component<
       }
     };
   }
-
+  // TODO [i18n]
   private renderWebGLWarningFlag = (): JSX.Element => (
     <FlagGroup onDismissed={this.onFlagDismissed}>
       <Flag

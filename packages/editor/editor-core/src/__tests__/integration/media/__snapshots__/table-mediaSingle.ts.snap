@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Can insert media single into table 1`] = `
+exports[`table-mediaSingle.ts: Can insert media single into table 1`] = `
 Object {
   "content": Array [
     Object {

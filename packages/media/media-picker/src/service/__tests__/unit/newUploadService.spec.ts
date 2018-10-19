@@ -1,4 +1,5 @@
 jest.mock('../../../util/getPreviewFromBlob');
+jest.mock('../../../util/getPreviewFromImage');
 
 import {
   ContextFactory,
@@ -19,6 +20,7 @@ import { Subscriber } from 'rxjs';
 import { NewUploadServiceImpl } from '../../newUploadServiceImpl';
 import { MediaFile, UploadParams } from '../../..';
 import * as getPreviewModule from '../../../util/getPreviewFromBlob';
+import * as getPreviewFromImage from '../../../util/getPreviewFromImage';
 
 const fileStreamCacheSpy = jest.spyOn(fileStreamsCache, 'set');
 
@@ -120,7 +122,7 @@ describe('UploadService', () => {
       const callback = jest.fn();
       uploadService.on('file-preview-update', callback);
 
-      (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
+      (getPreviewFromImage.getPreviewFromImage as any).mockReturnValue(
         Promise.resolve({ someImagePreview: true }),
       );
 
@@ -139,6 +141,26 @@ describe('UploadService', () => {
         },
         preview: { someImagePreview: true },
       });
+    });
+
+    it('should use getPreviewFromBlob for non-image files when emitting preview', async () => {
+      const { uploadService, filesAddedPromise } = setup();
+      const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
+
+      const callback = jest.fn();
+      uploadService.on('file-preview-update', callback);
+
+      (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
+        Promise.resolve({ someImagePreview: true }),
+      );
+
+      uploadService.addFiles([file as File]);
+      await filesAddedPromise;
+
+      expect(getPreviewModule.getPreviewFromBlob).toHaveBeenCalledWith(
+        file,
+        'video',
+      );
     });
 
     it('should not emit files-added if files is empty list', () => {

@@ -19,7 +19,7 @@ import {
 
 // Cannot paste rich text in IE/Edge
 BrowserTestCase(
-  'task-decision: can paste rich text into a decision',
+  'task-decision-1.ts: can paste rich text into a decision',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);
@@ -42,7 +42,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'task-decision: can paste plain text into a decision',
+  'task-decision-1.ts: can paste plain text into a decision',
   { skip: ['ie', 'safari'] },
   async client => {
     const browser = new Page(client);
@@ -66,7 +66,7 @@ BrowserTestCase(
 // Safari highlights entire text on click
 // IE is generally flaky
 BrowserTestCase(
-  'task-decision: can edit a decision',
+  'task-decision-1.ts: can edit a decision',
   { skip: ['ie', 'safari'] },
   async client => {
     const browser = new Page(client);

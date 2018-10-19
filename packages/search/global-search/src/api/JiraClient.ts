@@ -148,6 +148,7 @@ export default class JiraClientImpl implements JiraClient {
       options,
     );
     return recentItems
+      .filter(group => JiraResponseGroupToContentType.hasOwnProperty(group.id))
       .map(group => this.recentItemGroupToItems(group, searchSessionId))
       .reduce((acc, item) => [...acc, ...item], []);
   }

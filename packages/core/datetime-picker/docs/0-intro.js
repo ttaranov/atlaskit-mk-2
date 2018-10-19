@@ -18,6 +18,7 @@ export default (
 
       ${(
         <Example
+          packageName="@atlaskit/datetime-picker"
           Component={require('../examples/00-basic').default}
           title="Basic"
           source={require('!!raw-loader!../examples/00-basic')}

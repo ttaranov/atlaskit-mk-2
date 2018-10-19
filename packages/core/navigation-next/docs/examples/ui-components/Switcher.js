@@ -9,6 +9,7 @@ import {
   ItemAvatar,
   SectionHeading,
   Switcher,
+  NavigationProvider,
 } from '../../../src';
 
 import { CONTENT_NAV_WIDTH } from '../../../src/common/constants';
@@ -118,17 +119,19 @@ export default class extends React.Component<*, State> {
   render() {
     const { selected } = this.state;
     return (
-      <Wrapper>
-        <Switcher
-          create={this.create()}
-          onChange={this.onChange}
-          options={projects}
-          target={this.target(selected)}
-          value={selected}
-        />
-        <SectionHeading>Section heading</SectionHeading>
-        {items.map(p => <Item key={p.text} {...p} />)}
-      </Wrapper>
+      <NavigationProvider>
+        <Wrapper>
+          <Switcher
+            create={this.create()}
+            onChange={this.onChange}
+            options={projects}
+            target={this.target(selected)}
+            value={selected}
+          />
+          <SectionHeading>Section heading</SectionHeading>
+          {items.map(p => <Item key={p.text} {...p} />)}
+        </Wrapper>
+      </NavigationProvider>
     );
   }
 }

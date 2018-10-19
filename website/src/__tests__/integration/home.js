@@ -11,7 +11,7 @@ const atlaskitLogo = '[alt="Atlaskit logo"]';
 const atlaskitTitle = 'h1';
 
 BrowserTestCase(
-  `The website home page should be displayed without errors`,
+  `home.js: The website home page should be displayed without errors`,
   async client => {
     const homeTest = new Page(client);
     await homeTest.goto(urlHome);

@@ -7,6 +7,8 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { requestUnlinkCloudAccount, startAuth } from '../../actions';
 import { changeCloudAccountFolder } from '../../actions/changeCloudAccountFolder';
 import { changeAccount } from '../../actions/changeAccount';
@@ -139,16 +141,17 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
     );
     const dropdownActionItems = [
       <DropdownItem key="add" onClick={this.onStartAuthHandler(service.name)}>
-        Add account
+        <FormattedMessage {...messages.add_account} />
       </DropdownItem>,
       <DropdownItem
         key="unlink"
         onClick={this.onUnlinkAccountHandler(service.name, service.accountId)}
       >
-        Unlink Account
+        <FormattedMessage {...messages.unlink_account} />
       </DropdownItem>,
     ];
 
+    // TODO [i18n][MS-1031]
     return [
       <DropdownItemGroup key="accounts" title="Accounts">
         {dropdownAccountItems}

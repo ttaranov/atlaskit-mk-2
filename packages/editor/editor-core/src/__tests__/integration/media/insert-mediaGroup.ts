@@ -11,7 +11,7 @@ import {
 
 [comment, message].forEach(editor => {
   BrowserTestCase(
-    `Inserts a media group on ${editor.name}`,
+    `insert-mediaGroup.ts: Inserts a media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const browser = new Page(client);

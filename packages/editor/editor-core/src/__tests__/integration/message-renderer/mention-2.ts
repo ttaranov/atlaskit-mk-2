@@ -18,7 +18,7 @@ import {
 
 // Follow up with browserstack as to why @ is keyed in as 2 on ie
 BrowserTestCase(
-  'Mention: user should see picker if they type "@"',
+  'mention-2.ts: user should see picker if they type "@"',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -32,7 +32,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Mention: text@ should not invoke picker',
+  'mention-2.ts: text@ should not invoke picker',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -44,7 +44,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Mention: user should be able remove mention on backspace',
+  'mention-2.ts: user should be able remove mention on backspace',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -61,7 +61,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Mention: @ <space> should not invoke picker',
+  'mention-2.ts: @ <space> should not invoke picker',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -73,7 +73,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Mention: insert on space if unique exact nickname match, with multiple results',
+  'mention-2.ts: insert on space if unique exact nickname match, with multiple results',
   { skip: ['ie', 'edge'] },
   async client => {
     const browser = new Page(client);
@@ -91,7 +91,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Mention: user should see space after node',
+  'mention-2.ts: user should see space after node',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -105,7 +105,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Mention: escape closes picker',
+  'mention-2.ts: escape closes picker',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);

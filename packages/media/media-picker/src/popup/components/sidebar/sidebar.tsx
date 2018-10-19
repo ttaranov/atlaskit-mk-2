@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import UploadIcon from '@atlaskit/icon/glyph/upload';
 import DropboxIcon from '@atlaskit/icon/glyph/dropbox';
 import GoogleDriveIcon from '@atlaskit/icon/glyph/googledrive';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { State } from '../../domain';
 import SidebarItem from './item/sidebarItem';
 import GiphySidebarItem from './item/giphySidebarItem';
@@ -24,7 +26,7 @@ export class StatelessSidebar extends Component<SidebarProps> {
         <ServiceList>
           <SidebarItem
             serviceName="upload"
-            serviceFullName="Upload"
+            serviceFullName={<FormattedMessage {...messages.upload} />}
             isActive={selected === 'upload'}
           >
             <UploadIcon label="upload" />

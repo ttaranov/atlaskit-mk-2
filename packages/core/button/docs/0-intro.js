@@ -11,6 +11,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/button"
       Component={require('../examples/ButtonAppearances').default}
       title="Your Appearance Options"
       source={require('!!raw-loader!../examples/ButtonAppearances')}
@@ -28,6 +29,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/button"
       Component={require('../examples/ButtonGroupExample').default}
       title="Simple Button Group"
       source={require('!!raw-loader!../examples/ButtonGroupExample')}

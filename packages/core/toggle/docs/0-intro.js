@@ -11,6 +11,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/toggle"
       Component={require('../examples/0-stateful').default}
       title="Basic"
       source={require('!!raw-loader!../examples/0-stateful')}
@@ -22,6 +23,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/toggle"
       Component={require('../examples/1-stateless').default}
       title="Stateless"
       source={require('!!raw-loader!../examples/1-stateless')}

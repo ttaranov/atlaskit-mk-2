@@ -9,6 +9,7 @@ top of the page. It animates its opening and closing, and is not dismissible.
 
 ${(
   <Example
+    packageName="@atlaskit/banner"
     Component={require('../examples/AnimationExample').default}
     title="Simple Example"
     source={require('!!raw-loader!../examples/AnimationExample')}

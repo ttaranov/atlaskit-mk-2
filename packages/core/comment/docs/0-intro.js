@@ -22,6 +22,7 @@ All children components are displayed indented after the comment body, allowing 
 
 ${(
   <Example
+    packageName="@atlaskit/comment"
     Component={require('../examples/01-example-comment').default}
     title="Example Comment"
     source={require('!!raw-loader!../examples/01-example-comment')}
@@ -30,6 +31,7 @@ ${(
 
 ${(
   <Example
+    packageName="@atlaskit/comment"
     Component={require('../examples/02-comment-components').default}
     title="Comment Components"
     source={require('!!raw-loader!../examples/02-comment-components')}
@@ -38,6 +40,7 @@ ${(
 
 ${(
   <Example
+    packageName="@atlaskit/comment"
     Component={require('../examples/03-nested-comments').default}
     title="Nested Comments"
     source={require('!!raw-loader!../examples/03-nested-comments')}
