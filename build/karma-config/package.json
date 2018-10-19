@@ -21,6 +21,6 @@
     "karma-webpack": "^3.0.0",
     "karma": "^1.7.1",
     "mocha": "^3.5.0",
-    "puppeteer": "^1.4.0"
+    "puppeteer": "^1.9.0"
   }
 }

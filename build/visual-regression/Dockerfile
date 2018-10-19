@@ -19,5 +19,5 @@ RUN cd ~/ && yarn add puppeteer
 # Run docker docker build -t atlaskit-vr -f Dockerfile.vr .
 # docker run --rm -v `pwd`:`pwd` -w `pwd` -i -t atlaskit-vr yarn test:vr
 # docker run --rm --add-host=testing.local.com:172.22.33.197 -v `pwd`:`pwd` -w `pwd` \
-# -i -t atlaskit-vr bolt test:vr \
+# -i -t atlaskit-vr yarn add puppeteer &&  bolt test:vr \
 # packages/editor/editor-core/src/__tests__/visual-regression/dynamic-text-sizing.ts

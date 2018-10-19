@@ -6,7 +6,7 @@ import {
   setupMediaMocksProviders,
 } from '../_utils';
 
-describe('Snapshot Test: Media', () => {
+describe.skip('Snapshot Test: Media', () => {
   let page;
   beforeAll(async () => {
     // @ts-ignore

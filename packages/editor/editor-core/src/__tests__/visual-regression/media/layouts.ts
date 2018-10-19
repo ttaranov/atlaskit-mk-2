@@ -14,7 +14,7 @@ const mediaSingleLayouts = {
   'full-width': 'Full width',
 };
 
-describe('Snapshot Test: Media', () => {
+describe.skip('Snapshot Test: Media', () => {
   let page;
   beforeAll(async () => {
     // @ts-ignore

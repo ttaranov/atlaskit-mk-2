@@ -7,7 +7,7 @@ import {
 } from '../_utils';
 import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
-describe('Snapshot Test: Media', () => {
+describe.skip('Snapshot Test: Media', () => {
   ['full-page-with-toolbar', 'comment'].forEach(editor => {
     describe(`${editor} editor`, () => {
       let page;

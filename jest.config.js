@@ -149,7 +149,7 @@ if (config.testMatch.length === 0) {
 }
 
 if (process.env.IMAGE_SNAPSHOT === 'true') {
-  config.globals.__BASEURL__ = 'http://testing.local.com';
+  config.globals.__BASEURL__ = 'http://testing.local.com:9000';
 }
 
 module.exports = config;

@@ -8,5 +8,6 @@ services:
     working_dir: /opt/atlaskit-mk2
     container_name: "dev"
     volumes:
-      - "../../../atlaskit-mk2:/opt/atlaskit-mk2"
-      - /opt/atlaskit-mk2/node_modules
+      - ../../../atlaskit-mk2:/opt/atlaskit-mk2
+    entrypoint:
+      - ls 

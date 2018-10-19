@@ -6,7 +6,7 @@ import {
   editable,
 } from '../_utils';
 
-describe('Snapshot Test: Media', () => {
+describe.skip('Snapshot Test: Media', () => {
   // TODO fix this for fullpage editor mode
   describe.skip('full page editor', () => {
     let page;
