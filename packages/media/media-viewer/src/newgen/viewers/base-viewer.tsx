@@ -20,9 +20,15 @@ export abstract class BaseViewer<
     this.release();
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
+    if (this.needsReset(nextProps, this.props)) {
+      this.release();
+      this.setState(this.initialState);
+    }
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.needsReset(prevProps, this.props)) {
-      this.release();
       this.init();
     }
   }
@@ -37,4 +43,5 @@ export abstract class BaseViewer<
 
   protected abstract init(): void;
   protected abstract release(): void;
+  protected abstract get initialState(): State;
 }
