@@ -68,15 +68,25 @@ export const handlePasteAsPlainText = (slice: Slice, event: ClipboardEvent) => (
   return false;
 };
 
-export const handleMacroAutoConvert = (text: string) => (
+export const handleMacroAutoConvert = (text: string, slice: Slice) => (
   state: EditorState,
   dispatch,
+  view: EditorView,
 ) => {
   const macro = runMacroAutoConvert(state, text);
   if (macro) {
+    const selection = state.tr.selection;
+    const tr = state.tr.replaceSelection(slice);
+    const before = tr.mapping.map(selection.from, -1);
+
+    // insert the text or linkified/md-converted clipboard data
+    dispatch(tr);
+
+    // replace the text with the macro as a separate transaction
+    // so the autoconversion generates 2 undo steps
     dispatch(
-      closeHistory(state.tr)
-        .replaceSelectionWith(macro)
+      closeHistory(view.state.tr)
+        .replaceRangeWith(before, before + slice.size, macro)
         .scrollIntoView(),
     );
   }
