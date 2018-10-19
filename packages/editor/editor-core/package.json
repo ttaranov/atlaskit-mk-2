@@ -120,6 +120,7 @@
     "@atlaskit/media-test-helpers": "^18.2.9",
     "@atlaskit/pubsub": "^3.0.2",
     "@atlaskit/renderer": "^29.0.2",
+    "@atlaskit/section-message": "^1.0.10",
     "@atlaskit/util-data-test": "^10.0.16",
     "@atlaskit/visual-regression": "^0.0.1",
     "@atlaskit/webdriver-runner": "^0.1.0",

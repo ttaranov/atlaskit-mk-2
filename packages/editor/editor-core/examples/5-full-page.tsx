@@ -11,11 +11,14 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
-  cardProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { EmojiProvider } from '@atlaskit/emoji';
+import {
+  editorCardProvider,
+  Provider as SmartCardProvider,
+} from '@atlaskit/smart-card';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
@@ -129,66 +132,68 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
     return (
       <Wrapper>
         <Content>
-          <Editor
-            appearance="full-page"
-            analyticsHandler={analyticsHandler}
-            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-            allowLists={true}
-            allowTextColor={true}
-            allowTables={{
-              advanced: true,
-            }}
-            allowJiraIssue={true}
-            allowUnsupportedContent={true}
-            allowPanel={true}
-            allowExtension={{
-              allowBreakout: true,
-            }}
-            allowRule={true}
-            allowDate={true}
-            allowLayouts={true}
-            allowGapCursor={true}
-            allowTemplatePlaceholders={{ allowInserting: true }}
-            UNSAFE_cards={{
-              provider: Promise.resolve(cardProvider),
-            }}
-            allowStatus={true}
-            {...providers}
-            media={{ provider: mediaProvider, allowMediaSingle: true }}
-            placeholder="Write something..."
-            shouldFocus={false}
-            disabled={this.state.disabled}
-            contentComponents={
-              <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <TitleInput
-                    placeholder="Give this page a title..."
-                    // tslint:disable-next-line:jsx-no-lambda
-                    innerRef={this.handleTitleRef}
-                    onFocus={this.handleTitleOnFocus}
-                    onBlur={this.handleTitleOnBlur}
-                    onKeyDown={(e: KeyboardEvent) =>
-                      this.onKeyPressed(e, actions)
-                    }
-                  />
-                )}
-              />
-            }
-            primaryToolbarComponents={
-              <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />
-            }
-            onSave={SAVE_ACTION}
-            insertMenuItems={customInsertMenuItems}
-            extensionHandlers={extensionHandlers}
-            {...this.props}
-          />
+          <SmartCardProvider>
+            <Editor
+              appearance="full-page"
+              analyticsHandler={analyticsHandler}
+              quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
+              allowCodeBlocks={{ enableKeybindingsForIDE: true }}
+              allowLists={true}
+              allowTextColor={true}
+              allowTables={{
+                advanced: true,
+              }}
+              allowJiraIssue={true}
+              allowUnsupportedContent={true}
+              allowPanel={true}
+              allowExtension={{
+                allowBreakout: true,
+              }}
+              allowRule={true}
+              allowDate={true}
+              allowLayouts={true}
+              allowGapCursor={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
+              UNSAFE_cards={{
+                provider: Promise.resolve(editorCardProvider),
+              }}
+              allowStatus={true}
+              {...providers}
+              media={{ provider: mediaProvider, allowMediaSingle: true }}
+              placeholder="Write something..."
+              shouldFocus={false}
+              disabled={this.state.disabled}
+              contentComponents={
+                <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={actions => (
+                    <TitleInput
+                      placeholder="Give this page a title..."
+                      // tslint:disable-next-line:jsx-no-lambda
+                      innerRef={this.handleTitleRef}
+                      onFocus={this.handleTitleOnFocus}
+                      onBlur={this.handleTitleOnBlur}
+                      onKeyDown={(e: KeyboardEvent) =>
+                        this.onKeyPressed(e, actions)
+                      }
+                    />
+                  )}
+                />
+              }
+              primaryToolbarComponents={
+                <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={actions => (
+                    <SaveAndCancelButtons editorActions={actions} />
+                  )}
+                />
+              }
+              onSave={SAVE_ACTION}
+              insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
+              {...this.props}
+            />
+          </SmartCardProvider>
         </Content>
       </Wrapper>
     );
