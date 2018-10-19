@@ -375,7 +375,7 @@ describe('Card', () => {
   });
 
   describe('Code split loading state', () => {
-    jest.mock('./CardContent', () => null);
+    jest.mock('../CardContent', () => null);
 
     it('should render the block resolving view when resolving', () => {
       const client = createClient([{ status: 'not-found' } as ObjectState]);
