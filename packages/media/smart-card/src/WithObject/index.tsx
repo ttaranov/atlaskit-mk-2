@@ -110,12 +110,15 @@ export interface WithObjectProps {
   children: (props: WithObjectRenderProps) => React.ReactNode;
 }
 
+// TODO: Remove this! This is a temporary workaround for React context not penetrating the <Editor />
+const defaultClient = new Client();
+
 export function WithObject(props: WithObjectProps) {
   const { client: clientFromProps, url, children } = props;
   return (
     <Context.Consumer>
       {clientFromContext => {
-        const client = clientFromProps || clientFromContext;
+        const client = clientFromProps || clientFromContext || defaultClient;
         if (!client) {
           throw new Error(
             '@atlaskit/smart-card: No client provided. Provide a client like <Card client={new Client()} url=""/> or <Provider client={new Client()}><Card url=""/></Provider>.',
