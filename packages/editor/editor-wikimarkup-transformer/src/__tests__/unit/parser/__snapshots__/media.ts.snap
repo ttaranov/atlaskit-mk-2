@@ -34,34 +34,34 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Images and attachments should find absolute URL images and convert it to link 1`] = `
+exports[`JIRA wiki markup - Images and attachments should find absolute URL images and convert it to external media item 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "layout": "center",
+        "width": null,
+      },
       "content": Array [
         Object {
-          "text": "!",
-          "type": "text",
-        },
-        Object {
-          "marks": Array [
-            Object {
-              "attrs": Object {
-                "__confluenceMetadata": null,
-                "href": "http://www.host.com/image.gif",
-              },
-              "type": "link",
-            },
-          ],
-          "text": "http://www.host.com/image.gif",
-          "type": "text",
-        },
-        Object {
-          "text": "!",
-          "type": "text",
+          "attrs": Object {
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "__key": null,
+            "collection": null,
+            "height": 183,
+            "id": "",
+            "occurrenceKey": null,
+            "type": "external",
+            "url": "http://www.host.com/image.gif",
+            "width": 200,
+          },
+          "type": "media",
         },
       ],
-      "type": "paragraph",
+      "type": "mediaSingle",
     },
   ],
   "type": "doc",

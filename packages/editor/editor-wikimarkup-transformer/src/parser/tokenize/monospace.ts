@@ -55,20 +55,26 @@ export function monospace(input: string, schema: Schema): Token {
 
         /**
          * If the closing symbol is followed by a alphanumeric, it's
-         * not a valid formatter
+         * not a valid formatter, and we keep looking for
+         * next valid closing formatter
          */
         if (index < input.length) {
           const charAfterEnd = input.charAt(index);
           if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
-            return fallback();
+            buffer += twoChar;
+            state = processState.BUFFER;
+            continue;
           }
         }
         /**
          * If the closing symbol has an empty space before it,
-         * it's not a valid formatter
+         * it's not a valid formatter, and we keep looking for
+         * next valid closing formatter
          */
         if (buffer.endsWith(' ')) {
-          return fallback();
+          buffer += twoChar;
+          state = processState.BUFFER;
+          continue;
         }
 
         const codeMark = schema.marks.code.create();
