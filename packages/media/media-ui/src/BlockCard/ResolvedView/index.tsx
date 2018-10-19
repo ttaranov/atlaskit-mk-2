@@ -25,7 +25,18 @@ import {
   AlertWrapper,
 } from './styled';
 import Transition from './Transition';
-import { LozengeViewModel } from '../../types';
+
+export interface LozengeViewModel {
+  text: string;
+  appearance?:
+    | 'default'
+    | 'success'
+    | 'removed'
+    | 'inprogress'
+    | 'new'
+    | 'moved'; // defaults to 'default'
+  isBold?: boolean; // defaults to false
+}
 
 export interface ContextViewModel {
   icon?: string;
