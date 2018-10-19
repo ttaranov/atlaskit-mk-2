@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.0.3
+- [patch] ED-5375 Improved typing to reduce noImplictAny errors (not yet enabled) [62da999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62da999)
+
 ## 87.0.2
 - [patch] Async load datepicker [c38e5a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c38e5a5)
 
