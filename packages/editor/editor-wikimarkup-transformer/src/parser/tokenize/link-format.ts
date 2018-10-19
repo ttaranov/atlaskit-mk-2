@@ -5,7 +5,7 @@ import { Token, TokenType, TokenErrCallback } from './';
 import { hasAnyOfMarks } from '../utils/text';
 
 // [http://www.example.com] and [Example|http://www.example.com]
-const LINK_FORMAT_REGEXP = /^\[(?:([^\]\n\|]*)\|)?([^\]\n\|]+)\]/;
+const LINK_FORMAT_REGEXP = /^\[(?:([^\]\n\|]*)\|)?([^\]\n]+)\]/;
 
 export function linkFormat(
   input: string,

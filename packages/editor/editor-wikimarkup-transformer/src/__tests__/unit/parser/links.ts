@@ -52,6 +52,10 @@ describe('JIRA wiki markup - Links', () => {
       '[CS-385] should link text in link format',
       `[https://splunk.paas-inf.net/en-GB/app/search/search?earliest=\-1d&latest=now|https://www.google.com]`,
     ],
+    [
+      '[CS-478] should resolve link with | in the url',
+      `[page|https://hello.atlassian.net/wiki/spaces/Engage/pages/296780133/EP+Chrome+Extension#Set-test-metadata-without-having-to-create-a-message-in-targeting--|-title-=-3rd-Iteration-|-colour-=-Red-|-MAKEITSO-3652]`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {
