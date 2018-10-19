@@ -24,7 +24,12 @@
     "@atlaskit/icon": "^14.0.1",
     "@atlaskit/lozenge": "^6.2.1",
     "@atlaskit/select": "^6.0.2",
-    "@atlaskit/util-shared-styles": "^2.10.3"
+    "@atlaskit/util-shared-styles": "^2.10.3",
+    "@types/debounce": "^3.0.0",
+    "@types/memoize-one": "^3.1.1",
+    "@types/react-select": "^2.0.5",
+    "debounce": "^1.0.0",
+    "memoize-one": "^3.0.1"
   },
   "peerDependencies": {
     "react": "^16.4.0",

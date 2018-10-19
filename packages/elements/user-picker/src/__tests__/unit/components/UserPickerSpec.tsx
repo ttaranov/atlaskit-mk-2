@@ -136,4 +136,92 @@ describe('UserPicker', () => {
       );
     });
   });
+
+  describe('async load', () => {
+    beforeEach(() => jest.useFakeTimers());
+    afterEach(() => jest.useRealTimers());
+
+    it('should load users Async on focus', () => {
+      const usersPromise = new Promise<User[]>(resolve =>
+        setTimeout(() => resolve(users), 500),
+      );
+
+      const loadUsers = jest.fn(() => usersPromise);
+      const component = shallowUserPicker({ loadUsers });
+
+      const select = component.find(Select);
+      select.simulate('focus');
+      jest.runAllTimers();
+
+      expect(loadUsers).toHaveBeenCalled();
+
+      return usersPromise.then(() => {
+        jest.runAllTimers();
+        expect(component.state()).toMatchObject({
+          users,
+        });
+      });
+    });
+
+    it('should load users when picker open', () => {
+      const usersPromise = new Promise<User[]>(resolve =>
+        setTimeout(() => resolve(users), 500),
+      );
+      const loadUsers = jest.fn(() => usersPromise);
+      const component = shallowUserPicker({ loadUsers });
+      component.setProps({ open: true });
+      jest.runAllTimers();
+      expect(loadUsers).toHaveBeenCalled();
+      return usersPromise.then(() => {
+        jest.runAllTimers();
+        expect(component.state()).toMatchObject({
+          users,
+        });
+      });
+    });
+
+    describe.only('onInputChange', () => {
+      it('should load users on input change', () => {
+        const usersPromise = new Promise<User[]>(resolve =>
+          setTimeout(() => resolve(users), 500),
+        );
+        const loadUsers = jest.fn(() => usersPromise);
+        const component = shallowUserPicker({ loadUsers });
+        const select = component.find(Select);
+        select.simulate('inputChange', 'some text', { action: 'input-change' });
+
+        jest.runAllTimers();
+        expect(loadUsers).toHaveBeenCalled();
+        expect(loadUsers).toHaveBeenCalledWith('some text');
+        return usersPromise.then(() => {
+          jest.runAllTimers();
+          expect(component.state()).toMatchObject({
+            users,
+          });
+        });
+      });
+
+      it('should debounce input change events', () => {
+        const usersPromise = new Promise<User[]>(resolve =>
+          setTimeout(() => resolve(users), 500),
+        );
+        const loadUsers = jest.fn(() => usersPromise);
+        const component = shallowUserPicker({ loadUsers });
+        const select = component.find(Select);
+        select.simulate('inputChange', 'some', { action: 'input-change' });
+        jest.runTimersToTime(100);
+        select.simulate('inputChange', 'some text', { action: 'input-change' });
+
+        jest.runAllTimers();
+        expect(loadUsers).toHaveBeenCalledTimes(1);
+        expect(loadUsers).toHaveBeenCalledWith('some text');
+        return usersPromise.then(() => {
+          jest.runAllTimers();
+          expect(component.state()).toMatchObject({
+            users,
+          });
+        });
+      });
+    });
+  });
 });
