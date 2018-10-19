@@ -36,6 +36,7 @@
     "@atlaskit/icon": "^14.0.2",
     "@atlaskit/section-message": "^1.0.10",
     "@atlaskit/toggle": "^5.0.10",
+    "@atlaskit/visual-regression": "^0.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },
