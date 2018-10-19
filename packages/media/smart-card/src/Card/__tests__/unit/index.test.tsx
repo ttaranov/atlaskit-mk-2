@@ -375,7 +375,7 @@ describe('Card', () => {
   });
 
   describe('Code split loading state', () => {
-    before(() => {
+    beforeAll(() => {
       jest.mock('../../CardContent', () => null);
       Card.CardContent = null;
     });
