@@ -1,5 +1,8 @@
 # @atlaskit/util-data-test
 
+## 10.0.18
+- [patch] Tweak emoji tests to work better with newest EmojiOne v4 metadata [c034007](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c034007)
+
 ## 10.0.17
 - [patch] FS-3098 multi user picker [095b3b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095b3b6)
 
