@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.16
+- [patch] Fix common-formater ending symbol behavior and use external media for links in media [b1926a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1926a8)
+
 ## 2.1.15
 - [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
   - @atlaskit/editor-json-transformer@4.0.19
