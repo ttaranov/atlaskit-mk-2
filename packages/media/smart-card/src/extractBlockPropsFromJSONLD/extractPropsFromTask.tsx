@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCard, LozengeViewModel } from '@atlaskit/media-ui';
 import { relativeTime } from '../utils';
 import ChatIcon from '@atlaskit/icon/glyph/comment';
 import { colors } from '@atlaskit/theme';
@@ -81,7 +81,7 @@ export const buildDetailsLozenge = (json: any) => {
       lozenge: {
         text: json.taskStatus.name,
         appearance: 'success',
-      } as BlockCard.LozengeViewModel,
+      } as LozengeViewModel,
     };
   }
   return {};

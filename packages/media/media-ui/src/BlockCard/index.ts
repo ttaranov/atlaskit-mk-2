@@ -5,7 +5,6 @@ export {
 export {
   BlockCardResolvedView,
   BlockCardResolvedViewProps,
-  LozengeViewModel,
 } from './ResolvedView';
 export { BlockCardErroredView, BlockCardErroredViewProps } from './ErroredView';
 export {

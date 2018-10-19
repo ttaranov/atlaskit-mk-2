@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Frame } from '../Frame';
 import Lozenge from '@atlaskit/lozenge';
-import { LozengeViewModel } from '../../types';
+import { LozengeViewModel } from '../../common';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
 import { Title } from './styled';
 import { Icon } from '../Icon';
