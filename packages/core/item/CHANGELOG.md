@@ -1,5 +1,9 @@
 # @atlaskit/item
 
+
+## 8.0.11
+- [patch] [a6f8a43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6f8a43)
+
 ## 8.0.11
 - [patch] Consume smallFontSize from @atlaskit/theme [a6f8a43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6f8a43)
 

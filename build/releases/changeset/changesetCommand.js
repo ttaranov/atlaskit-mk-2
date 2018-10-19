@@ -1,117 +1,62 @@
 /* eslint-disable no-console */
-const { green, red } = require('chalk');
-const boxen = require('boxen');
-const outdent = require('outdent');
+const { green } = require('chalk');
 // TODO: Make these pull from the actual packages once we have a firm repo structure
 const cli = require('@atlaskit/build-utils/cli');
 const git = require('@atlaskit/build-utils/git');
 const logger = require('@atlaskit/build-utils/logger');
+const path = require('path');
 const {
   getChangedPackagesSinceMaster,
 } = require('@atlaskit/build-utils/packages');
+const fs = require('fs-extra');
+
+const writeChangeset = require('./writeChangeset');
 const createChangeset = require('./createChangeset');
-const createChangesetCommit = require('./createChangesetCommit');
+const baseConfig = require('../initialize/initial/config');
+const resolveUserConfig = require('../utils/resolveConfig');
+const getChangesetBase = require('../utils/getChangesetBase');
+const { printIntroBanner, printConfirmationMessage } = require('./messages');
 
 async function run(opts) {
-  printIntroBannerMessage();
+  printIntroBanner();
+  const userConfig = await resolveUserConfig({ cwd: opts.cwd });
+  const userchangesetOptions =
+    userConfig && userConfig.changesetOptions
+      ? userConfig.changesetOptions
+      : {};
+
+  const config = {
+    ...baseConfig.changesetOptions,
+    ...userchangesetOptions,
+    ...opts,
+  };
+  const changesetBase = await getChangesetBase(config.cwd);
+
+  if (!fs.existsSync(changesetBase)) {
+    console.warn(
+      'There is no .changeset folder. If this is the first time `@atlaskit/build-releases` has been run in this project, run `yarn build-releases initialize to get set up. If you expected there to be changesets, you should check git history for when the folder was removed to ensure you do not lose any configuration.',
+    );
+    return;
+  }
+
   const changedPackages = await getChangedPackagesSinceMaster();
   const changePackagesName = changedPackages.map(pkg => pkg.name);
-  const newChangeset = await createChangeset(changePackagesName, opts);
+  const newChangeset = await createChangeset(changePackagesName, config);
+  printConfirmationMessage(newChangeset);
 
-  const changesetCommitStr = createChangesetCommit(newChangeset);
+  const confirmChangeset = await cli.askConfirm(
+    'Is this your desired changeset?',
+  );
 
-  printChangeset(newChangeset);
-
-  const confirmCommit = await cli.askConfirm('Commit this Changeset?');
-
-  if (confirmCommit) {
-    await git.commit(changesetCommitStr);
-    logger.log(green('Changeset committed!'));
-  }
-}
-
-// prettier-ignore
-function printIntroBannerMessage() {
-  const message = outdent`
-    ${red('================ NOTE ================')}
-    We have made some major changes to the release process.
-    Please make sure you ${red('read this before continuing')}.
-
-    You will now ${red('only')} be asked about packages you choose to bump.
-
-    We will patch everything else that needs to be ${red('updated automatically')}.
-
-    For any package you need to release beyond a patch, you should make
-    an explicit changeset for that release.
-    i.e. "summary: bumping major dependency on editor-core"
-
-    For more info, reach out to Fabric Build.
-  `;
-  const prettyMessage = boxen(message, {
-    borderStyle: 'double',
-    align: 'center',
-  });
-  logger.log(prettyMessage);
-}
-// prettier-ignore-end
-
-// NOTE
-// before
-// only
-// updated automatically
-
-function printChangeset(changeset) {
-  function getReleasesOfType(type) {
-    return changeset.releases
-      .filter(release => release.type === type)
-      .map(release => release.name);
-  }
-
-  logger.log('=== Releasing the following packages ===');
-  const majorReleases = getReleasesOfType('major');
-  const minorReleases = getReleasesOfType('minor');
-  const patchReleases = getReleasesOfType('patch');
-  const patchDependents = changeset.dependents
-    .filter(dep => dep.type === 'patch')
-    .map(dep => dep.name);
-  const majorDependents = changeset.dependents
-    .filter(dep => dep.type === 'major')
-    .map(dep => red(dep.name));
-
-  if (majorReleases.length > 0) {
-    logger.log(`${green('[Major]')}\n  ${majorReleases.join(', ')}`);
-  }
-  if (minorReleases.length > 0) {
-    logger.log(`${green('[Minor]')}\n  ${minorReleases.join(', ')}`);
-  }
-  if (patchReleases.length > 0) {
-    logger.log(`${green('[Patch]')}\n  ${patchReleases.join(', ')}`);
-  }
-  if (patchDependents.length > 0) {
-    logger.log(
-      `${green('[Dependents (patch)]')}\n  ${patchDependents.join('\n  ')}`,
-    );
-  }
-  if (majorDependents.length > 0) {
-    logger.log(
-      `${green('[Dependents (major)]')}\n  ${majorDependents.join('\n  ')}`,
-    );
-  }
-  if (changeset.dependents.length > 0) {
-    const message = outdent`
-      ${red('========= NOTE ========')}
-      All dependents that are bumped will be ${red('patch bumped')}.
-      If any of the above need a higher bump than this, you will need to create a ${red(
-        'separate changeset',
-      )} for this
-      Please read the above list ${red(
-        'carefully',
-      )} to make sure you're not missing anything!`;
-    const prettyMessage = boxen(message, {
-      borderStyle: 'double',
-      align: 'center',
-    });
-    logger.log(prettyMessage);
+  if (confirmChangeset) {
+    const changesetID = await writeChangeset(newChangeset, config);
+    if (config.commit) {
+      await git.add(path.resolve(changesetBase, changesetID));
+      await git.commit(`Added new changeset with ID: ${changesetID}`);
+      logger.log(green('Changeset added and committed'));
+    } else {
+      logger.log(green('Changeset added! - you can now commit it'));
+    }
   }
 }
 
