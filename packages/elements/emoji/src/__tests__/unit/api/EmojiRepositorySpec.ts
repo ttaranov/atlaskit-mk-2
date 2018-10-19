@@ -279,19 +279,8 @@ describe('EmojiRepository', () => {
     });
 
     it('returns exact matches first', () => {
-      const emojis = emojiRepository.search(':grin').emojis;
-      const grinEmojis = searchableEmojis
-        .filter(emoji => emoji.shortName.indexOf(':grin') === 0)
-        .sort((e1, e2) => {
-          // If second emoji matches query exactly, bring forward
-          if (e2.shortName === ':grin:' && e1.shortName !== ':grin:') {
-            return 1;
-          }
-          // Leave emojis in current order
-          return 0;
-        });
-
-      checkOrder(grinEmojis, emojis);
+      const firstEmoji = emojiRepository.search(':grin').emojis[0];
+      expect(firstEmoji.shortName).to.equal(':grin:');
     });
 
     it('conflicting shortName matches show in type order Site -> Atlassian -> Standard', () => {

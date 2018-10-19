@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCard, LozengeViewModel } from '@atlaskit/media-ui';
 import { relativeTime } from '../utils';
 import ChatIcon from '@atlaskit/icon/glyph/comment';
 import { colors } from '@atlaskit/theme';
-import { LozengeViewModel } from '../../../media-ui/src/types';
 
 export const buildTitle = (json: any) => {
   let name = json.name && json.name.trim();

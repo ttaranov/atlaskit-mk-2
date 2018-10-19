@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 45.0.2
+- [patch] Tweak emoji tests to work better with newest EmojiOne v4 metadata [c034007](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c034007)
+
 ## 45.0.1
 - [patch] Move canvas-prebuilt to devDep [7c3512e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c3512e)
 

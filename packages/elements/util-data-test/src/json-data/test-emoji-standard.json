@@ -6,34 +6,34 @@
       "fallback": "😀",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 1,
+      "order": 11103,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "searchable": true,
       "shortName": ":grinning:"
     },
     {
       "id": "1f603",
-      "name": "smiling face with open mouth",
+      "name": "grinning face with big eyes",
       "fallback": "😃",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 2,
+      "order": 11104,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "ascii": [
         ":D",
@@ -45,57 +45,57 @@
     },
     {
       "id": "1f604",
-      "name": "smiling face with open mouth & smiling eyes",
+      "name": "grinning face with smiling eyes",
       "fallback": "😄",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 3,
+      "order": 11105,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "searchable": true,
       "shortName": ":smile:"
     },
     {
       "id": "1f601",
-      "name": "grinning face with smiling eyes",
+      "name": "beaming face with smiling eyes",
       "fallback": "😁",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 4,
+      "order": 11106,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "searchable": true,
       "shortName": ":grin:"
     },
     {
       "id": "1f605",
-      "name": "smiling face with open mouth & cold sweat",
+      "name": "grinning face with sweat",
       "fallback": "😅",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 6,
+      "order": 11108,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
         "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 5,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "ascii": [
         "':)",
@@ -114,15 +114,15 @@
       "fallback": "😮",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 52,
+      "order": 11176,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-        "x": 1188,
+        "x": 2376,
         "y": 66,
         "height": 64,
         "width": 64,
-        "xIndex": 18,
-        "yIndex": 1
+        "xIndex": 36,
+        "yIndex": 1,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "ascii": [
         ":-O",
@@ -139,7 +139,7 @@
       "fallback": "👍",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 122,
+      "order": 11239,
       "skinVariations": [
         {
           "id": "1f44d-1f3fb",
@@ -147,15 +147,15 @@
           "fallback": "👍🏻",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 123,
+          "order": 11240,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1518,
+            "x": 1716,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 23,
-            "yIndex": 3
+            "xIndex": 26,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsup::skin-tone-2:"
@@ -166,15 +166,15 @@
           "fallback": "👍🏼",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 124,
+          "order": 11241,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1584,
+            "x": 1782,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 24,
-            "yIndex": 3
+            "xIndex": 27,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsup::skin-tone-3:"
@@ -185,15 +185,15 @@
           "fallback": "👍🏽",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 125,
+          "order": 11242,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1650,
+            "x": 1848,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 25,
-            "yIndex": 3
+            "xIndex": 28,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsup::skin-tone-4:"
@@ -204,15 +204,15 @@
           "fallback": "👍🏾",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 126,
+          "order": 11243,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1716,
+            "x": 1914,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 26,
-            "yIndex": 3
+            "xIndex": 29,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsup::skin-tone-5:"
@@ -223,28 +223,28 @@
           "fallback": "👍🏿",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 127,
+          "order": 11244,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1782,
+            "x": 1980,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 27,
-            "yIndex": 3
+            "xIndex": 30,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsup::skin-tone-6:"
         }
       ],
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-        "x": 1452,
+        "x": 1650,
         "y": 198,
         "height": 64,
         "width": 64,
-        "xIndex": 22,
-        "yIndex": 3
+        "xIndex": 25,
+        "yIndex": 3,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "ascii": [
         "(y)"
@@ -258,7 +258,7 @@
       "fallback": "👎",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 128,
+      "order": 11245,
       "skinVariations": [
         {
           "id": "1f44e-1f3fb",
@@ -266,15 +266,15 @@
           "fallback": "👎🏻",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 129,
+          "order": 11246,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1914,
+            "x": 2112,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 29,
-            "yIndex": 3
+            "xIndex": 32,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsdown::skin-tone-2:"
@@ -285,15 +285,15 @@
           "fallback": "👎🏼",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 130,
+          "order": 11247,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1980,
+            "x": 2178,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 30,
-            "yIndex": 3
+            "xIndex": 33,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsdown::skin-tone-3:"
@@ -304,15 +304,15 @@
           "fallback": "👎🏽",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 131,
+          "order": 11248,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 2046,
+            "x": 2244,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 31,
-            "yIndex": 3
+            "xIndex": 34,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsdown::skin-tone-4:"
@@ -323,15 +323,15 @@
           "fallback": "👎🏾",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 132,
+          "order": 11249,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 2112,
+            "x": 2310,
             "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 32,
-            "yIndex": 3
+            "xIndex": 35,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsdown::skin-tone-5:"
@@ -342,28 +342,28 @@
           "fallback": "👎🏿",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 133,
+          "order": 11250,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 0,
-            "y": 264,
+            "x": 2376,
+            "y": 198,
             "height": 64,
             "width": 64,
-            "xIndex": 0,
-            "yIndex": 4
+            "xIndex": 36,
+            "yIndex": 3,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":thumbsdown::skin-tone-6:"
         }
       ],
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-        "x": 1848,
+        "x": 2046,
         "y": 198,
         "height": 64,
         "width": 64,
-        "xIndex": 28,
-        "yIndex": 3
+        "xIndex": 31,
+        "yIndex": 3,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "searchable": true,
       "shortName": ":thumbsdown:"
@@ -374,7 +374,7 @@
       "fallback": "✋",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 212,
+      "order": 11335,
       "skinVariations": [
         {
           "id": "270b-1f3fb",
@@ -382,15 +382,15 @@
           "fallback": "✋🏻",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 213,
+          "order": 11336,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 924,
+            "x": 726,
             "y": 396,
             "height": 64,
             "width": 64,
-            "xIndex": 14,
-            "yIndex": 6
+            "xIndex": 11,
+            "yIndex": 6,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":raised_hand::skin-tone-2:"
@@ -401,15 +401,15 @@
           "fallback": "✋🏼",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 214,
+          "order": 11337,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 990,
+            "x": 792,
             "y": 396,
             "height": 64,
             "width": 64,
-            "xIndex": 15,
-            "yIndex": 6
+            "xIndex": 12,
+            "yIndex": 6,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":raised_hand::skin-tone-3:"
@@ -420,15 +420,15 @@
           "fallback": "✋🏽",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 215,
+          "order": 11338,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1056,
+            "x": 858,
             "y": 396,
             "height": 64,
             "width": 64,
-            "xIndex": 16,
-            "yIndex": 6
+            "xIndex": 13,
+            "yIndex": 6,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":raised_hand::skin-tone-4:"
@@ -439,15 +439,15 @@
           "fallback": "✋🏾",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 216,
+          "order": 11339,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1122,
+            "x": 924,
             "y": 396,
             "height": 64,
             "width": 64,
-            "xIndex": 17,
-            "yIndex": 6
+            "xIndex": 14,
+            "yIndex": 6,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":raised_hand::skin-tone-5:"
@@ -458,28 +458,28 @@
           "fallback": "✋🏿",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 217,
+          "order": 11340,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1188,
+            "x": 990,
             "y": 396,
             "height": 64,
             "width": 64,
-            "xIndex": 18,
-            "yIndex": 6
+            "xIndex": 15,
+            "yIndex": 6,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": true,
           "shortName": ":raised_hand::skin-tone-6:"
         }
       ],
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-        "x": 858,
+        "x": 660,
         "y": 396,
         "height": 64,
         "width": 64,
-        "xIndex": 13,
-        "yIndex": 6
+        "xIndex": 10,
+        "yIndex": 6,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "searchable": true,
       "shortName": ":raised_hand:"
@@ -490,7 +490,7 @@
       "fallback": "👮",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 391,
+      "order": 11595,
       "skinVariations": [
         {
           "id": "1f46e-1f3fb",
@@ -498,15 +498,15 @@
           "fallback": "👮🏻",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 392,
+          "order": 11596,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1848,
-            "y": 726,
+            "x": 792,
+            "y": 858,
             "height": 64,
             "width": 64,
-            "xIndex": 28,
-            "yIndex": 11
+            "xIndex": 12,
+            "yIndex": 13,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": false,
           "shortName": ":police_officer::skin-tone-2:"
@@ -517,15 +517,15 @@
           "fallback": "👮🏼",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 393,
+          "order": 11597,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1914,
-            "y": 726,
+            "x": 858,
+            "y": 858,
             "height": 64,
             "width": 64,
-            "xIndex": 29,
-            "yIndex": 11
+            "xIndex": 13,
+            "yIndex": 13,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": false,
           "shortName": ":police_officer::skin-tone-3:"
@@ -536,15 +536,15 @@
           "fallback": "👮🏽",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 394,
+          "order": 11598,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 1980,
-            "y": 726,
+            "x": 924,
+            "y": 858,
             "height": 64,
             "width": 64,
-            "xIndex": 30,
-            "yIndex": 11
+            "xIndex": 14,
+            "yIndex": 13,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": false,
           "shortName": ":police_officer::skin-tone-4:"
@@ -555,15 +555,15 @@
           "fallback": "👮🏾",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 395,
+          "order": 11599,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 2046,
-            "y": 726,
+            "x": 990,
+            "y": 858,
             "height": 64,
             "width": 64,
-            "xIndex": 31,
-            "yIndex": 11
+            "xIndex": 15,
+            "yIndex": 13,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": false,
           "shortName": ":police_officer::skin-tone-5:"
@@ -574,28 +574,28 @@
           "fallback": "👮🏿",
           "type": "STANDARD",
           "category": "PEOPLE",
-          "order": 396,
+          "order": 11600,
           "representation": {
-            "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-            "x": 2112,
-            "y": 726,
+            "x": 1056,
+            "y": 858,
             "height": 64,
             "width": 64,
-            "xIndex": 32,
-            "yIndex": 11
+            "xIndex": 16,
+            "yIndex": 13,
+            "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
           },
           "searchable": false,
           "shortName": ":police_officer::skin-tone-6:"
         }
       ],
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-        "x": 1782,
-        "y": 726,
+        "x": 726,
+        "y": 858,
         "height": 64,
         "width": 64,
-        "xIndex": 27,
-        "yIndex": 11
+        "xIndex": 11,
+        "yIndex": 13,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png"
       },
       "searchable": false,
       "shortName": ":police_officer:"
@@ -606,15 +606,15 @@
       "fallback": "🐶",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1012,
+      "order": 20821,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":dog:"
@@ -625,15 +625,15 @@
       "fallback": "🐱",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1013,
+      "order": 20822,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":cat:"
@@ -644,15 +644,15 @@
       "fallback": "🐭",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1014,
+      "order": 20823,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":mouse:"
@@ -663,15 +663,15 @@
       "fallback": "🐹",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1015,
+      "order": 20824,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":hamster:"
@@ -682,15 +682,15 @@
       "fallback": "🐰",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1016,
+      "order": 20825,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 264,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 4,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":rabbit:"
@@ -701,18 +701,37 @@
       "fallback": "🦊",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1017,
+      "order": 20826,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 5,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":fox:"
+    },
+    {
+      "id": "1f99d",
+      "name": "raccoon",
+      "fallback": "🦝",
+      "type": "STANDARD",
+      "category": "NATURE",
+      "order": 20827,
+      "representation": {
+        "x": 396,
+        "y": 0,
+        "height": 64,
+        "width": 64,
+        "xIndex": 6,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
+      },
+      "searchable": true,
+      "shortName": ":raccoon:"
     },
     {
       "id": "1f43b",
@@ -720,15 +739,15 @@
       "fallback": "🐻",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1018,
+      "order": 20828,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
-        "x": 396,
+        "x": 462,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 6,
-        "yIndex": 0
+        "xIndex": 7,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":bear:"
@@ -739,37 +758,18 @@
       "fallback": "🐼",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1019,
+      "order": 20829,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
-        "x": 462,
-        "y": 0,
-        "height": 64,
-        "width": 64,
-        "xIndex": 7,
-        "yIndex": 0
-      },
-      "searchable": true,
-      "shortName": ":panda_face:"
-    },
-    {
-      "id": "1f428",
-      "name": "koala",
-      "fallback": "🐨",
-      "type": "STANDARD",
-      "category": "NATURE",
-      "order": 1020,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
         "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 8,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
-      "shortName": ":koala:"
+      "shortName": ":panda_face:"
     },
     {
       "id": "1f4a5",
@@ -777,15 +777,15 @@
       "fallback": "💥",
       "type": "STANDARD",
       "category": "NATURE",
-      "order": 1147,
+      "order": 20973,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
-        "x": 594,
-        "y": 594,
+        "x": 792,
+        "y": 660,
         "height": 64,
         "width": 64,
-        "xIndex": 9,
-        "yIndex": 9
+        "xIndex": 12,
+        "yIndex": 10,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png"
       },
       "searchable": true,
       "shortName": ":boom:"
@@ -796,15 +796,15 @@
       "fallback": "🍏",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1171,
+      "order": 30998,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":green_apple:"
@@ -815,15 +815,15 @@
       "fallback": "🍎",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1172,
+      "order": 30999,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":apple:"
@@ -834,15 +834,15 @@
       "fallback": "🍐",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1173,
+      "order": 31000,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":pear:"
@@ -853,15 +853,15 @@
       "fallback": "🍊",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1174,
+      "order": 31001,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":tangerine:"
@@ -872,15 +872,15 @@
       "fallback": "🍋",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1175,
+      "order": 31002,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 264,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 4,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":lemon:"
@@ -891,15 +891,15 @@
       "fallback": "🍌",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1176,
+      "order": 31003,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 5,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":banana:"
@@ -910,15 +910,15 @@
       "fallback": "🍉",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1177,
+      "order": 31004,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 396,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 6,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":watermelon:"
@@ -929,15 +929,15 @@
       "fallback": "🍇",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1178,
+      "order": 31005,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 462,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 7,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":grapes:"
@@ -948,15 +948,15 @@
       "fallback": "🍓",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1179,
+      "order": 31006,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 8,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":strawberry:"
@@ -967,15 +967,15 @@
       "fallback": "🍈",
       "type": "STANDARD",
       "category": "FOODS",
-      "order": 1180,
+      "order": 31007,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
         "x": 594,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 9,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png"
       },
       "searchable": true,
       "shortName": ":melon:"
@@ -986,15 +986,15 @@
       "fallback": "⚽",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1257,
+      "order": 40291,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":soccer:"
@@ -1005,15 +1005,15 @@
       "fallback": "🏀",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1258,
+      "order": 40292,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":basketball:"
@@ -1024,15 +1024,15 @@
       "fallback": "🏈",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1259,
+      "order": 40293,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":football:"
@@ -1043,18 +1043,37 @@
       "fallback": "⚾",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1260,
+      "order": 40294,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":baseball:"
+    },
+    {
+      "id": "1f94e",
+      "name": "softball",
+      "fallback": "🥎",
+      "type": "STANDARD",
+      "category": "ACTIVITY",
+      "order": 40295,
+      "representation": {
+        "x": 264,
+        "y": 0,
+        "height": 64,
+        "width": 64,
+        "xIndex": 4,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
+      },
+      "searchable": true,
+      "shortName": ":softball:"
     },
     {
       "id": "1f3be",
@@ -1062,15 +1081,15 @@
       "fallback": "🎾",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1261,
+      "order": 40296,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
-        "x": 264,
+        "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 4,
-        "yIndex": 0
+        "xIndex": 5,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":tennis:"
@@ -1081,15 +1100,15 @@
       "fallback": "🏐",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1262,
+      "order": 40297,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
-        "x": 330,
+        "x": 396,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 5,
-        "yIndex": 0
+        "xIndex": 6,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":volleyball:"
@@ -1100,15 +1119,15 @@
       "fallback": "🏉",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1263,
+      "order": 40298,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
-        "x": 396,
+        "x": 462,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 6,
-        "yIndex": 0
+        "xIndex": 7,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":rugby_football:"
@@ -1119,15 +1138,15 @@
       "fallback": "🎱",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1264,
+      "order": 40299,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
-        "x": 462,
+        "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 7,
-        "yIndex": 0
+        "xIndex": 8,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
       "shortName": ":8ball:"
@@ -1138,37 +1157,18 @@
       "fallback": "🏓",
       "type": "STANDARD",
       "category": "ACTIVITY",
-      "order": 1265,
+      "order": 40300,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
-        "x": 528,
-        "y": 0,
-        "height": 64,
-        "width": 64,
-        "xIndex": 8,
-        "yIndex": 0
-      },
-      "searchable": true,
-      "shortName": ":ping_pong:"
-    },
-    {
-      "id": "1f3f8",
-      "name": "badminton",
-      "fallback": "🏸",
-      "type": "STANDARD",
-      "category": "ACTIVITY",
-      "order": 1266,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
         "x": 594,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 9,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png"
       },
       "searchable": true,
-      "shortName": ":badminton:"
+      "shortName": ":ping_pong:"
     },
     {
       "id": "1f697",
@@ -1176,15 +1176,15 @@
       "fallback": "🚗",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1540,
+      "order": 52431,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":red_car:"
@@ -1195,15 +1195,15 @@
       "fallback": "🚕",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1541,
+      "order": 52432,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":taxi:"
@@ -1214,15 +1214,15 @@
       "fallback": "🚙",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1542,
+      "order": 52433,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":blue_car:"
@@ -1233,15 +1233,15 @@
       "fallback": "🚌",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1543,
+      "order": 52434,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":bus:"
@@ -1252,15 +1252,15 @@
       "fallback": "🚎",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1544,
+      "order": 52435,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 264,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 4,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":trolleybus:"
@@ -1271,15 +1271,15 @@
       "fallback": "🏎",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1545,
+      "order": 52436,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 5,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":race_car:"
@@ -1290,15 +1290,15 @@
       "fallback": "🚓",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1546,
+      "order": 52437,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 396,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 6,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":police_car:"
@@ -1309,15 +1309,15 @@
       "fallback": "🚑",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1547,
+      "order": 52438,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 462,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 7,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":ambulance:"
@@ -1328,15 +1328,15 @@
       "fallback": "🚒",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1548,
+      "order": 52439,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 8,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":fire_engine:"
@@ -1347,15 +1347,15 @@
       "fallback": "🚐",
       "type": "STANDARD",
       "category": "PLACES",
-      "order": 1549,
+      "order": 52440,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
         "x": 594,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 9,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png"
       },
       "searchable": true,
       "shortName": ":minibus:"
@@ -1366,15 +1366,15 @@
       "fallback": "⌚",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1659,
+      "order": 60616,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":watch:"
@@ -1385,15 +1385,15 @@
       "fallback": "📱",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1660,
+      "order": 60617,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":iphone:"
@@ -1404,15 +1404,15 @@
       "fallback": "📲",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1661,
+      "order": 60618,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":calling:"
@@ -1423,15 +1423,15 @@
       "fallback": "💻",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1662,
+      "order": 60619,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":computer:"
@@ -1442,15 +1442,15 @@
       "fallback": "⌨",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1663,
+      "order": 60620,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 264,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 4,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":keyboard:"
@@ -1461,15 +1461,15 @@
       "fallback": "🖥",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1664,
+      "order": 60621,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 5,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":desktop:"
@@ -1480,15 +1480,15 @@
       "fallback": "🖨",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1665,
+      "order": 60622,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 396,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 6,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":printer:"
@@ -1499,15 +1499,15 @@
       "fallback": "🖱",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1666,
+      "order": 60623,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 462,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 7,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":mouse_three_button:"
@@ -1518,15 +1518,15 @@
       "fallback": "🖲",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1667,
+      "order": 60624,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 8,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":trackball:"
@@ -1537,15 +1537,15 @@
       "fallback": "🕹",
       "type": "STANDARD",
       "category": "OBJECTS",
-      "order": 1668,
+      "order": 60625,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
         "x": 594,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 9,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png"
       },
       "searchable": true,
       "shortName": ":joystick:"
@@ -1556,15 +1556,15 @@
       "fallback": "❤",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1842,
+      "order": 70001,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "ascii": [
         "<3"
@@ -1573,20 +1573,39 @@
       "shortName": ":heart:"
     },
     {
-      "id": "1f49b",
-      "name": "yellow heart",
-      "fallback": "💛",
+      "id": "1f9e1",
+      "name": "orange heart",
+      "fallback": "🧡",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1843,
+      "order": 70002,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
+      },
+      "searchable": true,
+      "shortName": ":orange_heart:"
+    },
+    {
+      "id": "1f49b",
+      "name": "yellow heart",
+      "fallback": "💛",
+      "type": "STANDARD",
+      "category": "SYMBOLS",
+      "order": 70003,
+      "representation": {
+        "x": 132,
+        "y": 0,
+        "height": 64,
+        "width": 64,
+        "xIndex": 2,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
       "shortName": ":yellow_heart:"
@@ -1597,15 +1616,15 @@
       "fallback": "💚",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1844,
+      "order": 70004,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 132,
+        "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 2,
-        "yIndex": 0
+        "xIndex": 3,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
       "shortName": ":green_heart:"
@@ -1616,15 +1635,15 @@
       "fallback": "💙",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1845,
+      "order": 70005,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 198,
+        "x": 264,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 3,
-        "yIndex": 0
+        "xIndex": 4,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
       "shortName": ":blue_heart:"
@@ -1635,15 +1654,15 @@
       "fallback": "💜",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1846,
+      "order": 70006,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 264,
+        "x": 330,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 4,
-        "yIndex": 0
+        "xIndex": 5,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
       "shortName": ":purple_heart:"
@@ -1654,15 +1673,15 @@
       "fallback": "🖤",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1847,
+      "order": 70007,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 330,
+        "x": 396,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 5,
-        "yIndex": 0
+        "xIndex": 6,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
       "shortName": ":black_heart:"
@@ -1673,15 +1692,15 @@
       "fallback": "💔",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1848,
+      "order": 70008,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 396,
+        "x": 462,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 6,
-        "yIndex": 0
+        "xIndex": 7,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "ascii": [
         "</3"
@@ -1695,15 +1714,15 @@
       "fallback": "❣",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1849,
+      "order": 70009,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 462,
+        "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 7,
-        "yIndex": 0
+        "xIndex": 8,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
       "shortName": ":heart_exclamation:"
@@ -1714,37 +1733,18 @@
       "fallback": "💕",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 1850,
+      "order": 70010,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "x": 528,
-        "y": 0,
-        "height": 64,
-        "width": 64,
-        "xIndex": 8,
-        "yIndex": 0
-      },
-      "searchable": true,
-      "shortName": ":two_hearts:"
-    },
-    {
-      "id": "1f49e",
-      "name": "revolving hearts",
-      "fallback": "💞",
-      "type": "STANDARD",
-      "category": "SYMBOLS",
-      "order": 1851,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
         "x": 594,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 9,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png"
       },
       "searchable": true,
-      "shortName": ":revolving_hearts:"
+      "shortName": ":two_hearts:"
     },
     {
       "id": "1f3f3",
@@ -1752,15 +1752,15 @@
       "fallback": "🏳",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2115,
+      "order": 82555,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
         "x": 0,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 0,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":flag_white:"
@@ -1771,15 +1771,15 @@
       "fallback": "🏴",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2116,
+      "order": 82556,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
         "x": 66,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 1,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":flag_black:"
@@ -1790,15 +1790,15 @@
       "fallback": "🏁",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2117,
+      "order": 82557,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
         "x": 132,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 2,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":checkered_flag:"
@@ -1809,15 +1809,15 @@
       "fallback": "🚩",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2118,
+      "order": 82558,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
         "x": 198,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 3,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":triangular_flag_on_post:"
@@ -1828,18 +1828,37 @@
       "fallback": "🏳️‍🌈",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2119,
+      "order": 82559,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
         "x": 264,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 4,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":rainbow_flag:"
+    },
+    {
+      "id": "1f3f4-200d-2620-fe0f",
+      "name": "pirate flag",
+      "fallback": "🏴‍☠️",
+      "type": "STANDARD",
+      "category": "FLAGS",
+      "order": 82560,
+      "representation": {
+        "x": 330,
+        "y": 0,
+        "height": 64,
+        "width": 64,
+        "xIndex": 5,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
+      },
+      "searchable": true,
+      "shortName": ":pirate_flag:"
     },
     {
       "id": "1f1e6-1f1eb",
@@ -1847,37 +1866,18 @@
       "fallback": "🇦🇫",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2120,
+      "order": 82561,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
-        "x": 330,
-        "y": 0,
-        "height": 64,
-        "width": 64,
-        "xIndex": 5,
-        "yIndex": 0
-      },
-      "searchable": true,
-      "shortName": ":flag_af:"
-    },
-    {
-      "id": "1f1e6-1f1fd",
-      "name": "Åland Islands",
-      "fallback": "🇦🇽",
-      "type": "STANDARD",
-      "category": "FLAGS",
-      "order": 2121,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
         "x": 396,
         "y": 0,
         "height": 64,
         "width": 64,
         "xIndex": 6,
-        "yIndex": 0
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
-      "shortName": ":flag_ax:"
+      "shortName": ":flag_af:"
     },
     {
       "id": "1f1e6-1f1f1",
@@ -1885,15 +1885,15 @@
       "fallback": "🇦🇱",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2122,
+      "order": 82563,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
-        "x": 462,
+        "x": 528,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 7,
-        "yIndex": 0
+        "xIndex": 8,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":flag_al:"
@@ -1904,15 +1904,15 @@
       "fallback": "🇩🇿",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2123,
+      "order": 82564,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
-        "x": 528,
+        "x": 594,
         "y": 0,
         "height": 64,
         "width": 64,
-        "xIndex": 8,
-        "yIndex": 0
+        "xIndex": 9,
+        "yIndex": 0,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":flag_dz:"
@@ -1923,15 +1923,15 @@
       "fallback": "🇨🇬",
       "type": "STANDARD",
       "category": "FLAGS",
-      "order": 2171,
+      "order": 82612,
       "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
-        "x": 330,
+        "x": 396,
         "y": 198,
         "height": 64,
         "width": 64,
-        "xIndex": 5,
-        "yIndex": 3
+        "xIndex": 6,
+        "yIndex": 3,
+        "spriteRef": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png"
       },
       "searchable": true,
       "shortName": ":flag_cg:"
@@ -1939,61 +1939,61 @@
   ],
   "meta": {
     "spriteSheets": {
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/places.png",
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png",
+        "row": 36,
+        "column": 37,
+        "height": 2376,
+        "width": 2442
+      },
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/objects.png",
+        "row": 14,
+        "column": 15,
+        "height": 924,
+        "width": 990
+      },
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/foods.png",
         "row": 10,
-        "column": 12,
+        "column": 11,
         "height": 660,
+        "width": 726
+      },
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/nature.png",
+        "row": 13,
+        "column": 14,
+        "height": 858,
+        "width": 924
+      },
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/symbols.png",
+        "row": 17,
+        "column": 19,
+        "height": 1122,
+        "width": 1254
+      },
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/activity.png",
+        "row": 18,
+        "column": 19,
+        "height": 1188,
+        "width": 1254
+      },
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/places.png",
+        "row": 11,
+        "column": 12,
+        "height": 726,
         "width": 792
       },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/flags.png",
+      "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png": {
+        "url": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/flags.png",
         "row": 16,
         "column": 17,
         "height": 1056,
         "width": 1122
-      },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/foods.png",
-        "row": 9,
-        "column": 10,
-        "height": 594,
-        "width": 660
-      },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/people.png",
-        "row": 31,
-        "column": 33,
-        "height": 2046,
-        "width": 2178
-      },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/objects.png",
-        "row": 13,
-        "column": 15,
-        "height": 858,
-        "width": 990
-      },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/symbols.png",
-        "row": 17,
-        "column": 18,
-        "height": 1122,
-        "width": 1188
-      },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/activity.png",
-        "row": 16,
-        "column": 18,
-        "height": 1056,
-        "width": 1188
-      },
-      "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png": {
-        "url": "https://pf-emoji-service--cdn.us-east-1.prod.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/64x64/nature.png",
-        "row": 12,
-        "column": 14,
-        "height": 792,
-        "width": 924
       }
     }
   }

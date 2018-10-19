@@ -2,8 +2,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-// TODO: AK-5546: There is an issue with .log
-// import * as assert from 'assert';
 
 const urlOnBoarding = getExampleUrl(
   'core',
@@ -22,15 +20,6 @@ BrowserTestCase(
     await onBoardingTest.click(OnBoardingDefault);
     const menuIsVisible = await onBoardingTest.isVisible(OnBoardingMenuTitle);
     expect(menuIsVisible).toBe(true);
-    // TODO: AK-5546: There is an issue with .log
-    // if (onBoardingTest.log('browser').value) {
-    //   onBoardingTest.log('browser').value.forEach(val => {
-    //     assert.notEqual(
-    //       val.level,
-    //       'SEVERE',
-    //       `Console errors :${val.message} when clicked on the show button`,
-    //     );
-    //   });
-    // }
+    await onBoardingTest.checkConsoleErrors();
   },
 );
