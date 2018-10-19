@@ -23,8 +23,6 @@ export interface ExampleState {
   url: string;
   isSelected: boolean;
 }
-const ucFirst = (text: string): string =>
-  text[0].toUpperCase() + text.substring(1);
 
 class Example extends React.Component<{}, ExampleState> {
   state: ExampleState = {
