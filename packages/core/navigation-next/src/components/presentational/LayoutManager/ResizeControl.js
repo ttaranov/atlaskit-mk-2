@@ -331,7 +331,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
     // check if the intention was just a click, and toggle
     if (resizerClicked) {
-      publishWidth = Math.max(CONTENT_NAV_WIDTH, width);
+      publishWidth = Math.max(CONTENT_NAV_WIDTH, currentWidth);
       this.toggleCollapse('resizerClick');
     }
 

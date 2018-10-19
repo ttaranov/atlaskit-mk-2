@@ -148,6 +148,86 @@ describe('ResizeControlBase', () => {
       });
     });
 
+    describe('When dragging', () => {
+      it('should not change width and delta when mouseIsDown is false', () => {
+        const props = cloneDeep(resizeControlProps);
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: false, isDragging: true });
+        const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
+
+        wrapper.instance().handleResize({ pageX: 100 });
+        requestAnimationFrame.step();
+
+        expect(wrapper.state('width')).toEqual(cachedWidth);
+        expect(wrapper.state('delta')).toEqual(cachedDelta);
+      });
+
+      it('should change width and delta when mouseIsDown is true', () => {
+        const props = cloneDeep(resizeControlProps);
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({
+          mouseIsDown: true,
+          isDragging: true,
+          initialWidth: 50,
+        });
+
+        wrapper.instance().handleResize({ pageX: 100 });
+        requestAnimationFrame.step();
+
+        expect(wrapper.state('width')).toEqual(150);
+        expect(wrapper.state('delta')).toEqual(100);
+      });
+
+      it('should change mutationRef style if new value is different than old value', () => {
+        const pageX = 100;
+        const mutationRefs = [
+          {
+            property: 'padding-left',
+            ref: {
+              style: {
+                getPropertyValue: jest.fn().mockReturnValue('562px'),
+                setProperty: jest.fn(),
+              },
+            },
+          },
+          //not supposed to call setProperty for the ref below
+          {
+            property: 'width',
+            ref: {
+              style: {
+                getPropertyValue: jest.fn().mockReturnValue(`${pageX}px`),
+                setProperty: jest.fn(),
+              },
+            },
+          },
+        ];
+        const props = { ...cloneDeep(resizeControlProps), mutationRefs };
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: true, isDragging: true });
+
+        wrapper.instance().handleResize({ pageX });
+        requestAnimationFrame.step();
+
+        expect(
+          mutationRefs[0].ref.style.getPropertyValue,
+        ).toHaveBeenCalledTimes(1);
+        expect(mutationRefs[0].ref.style.setProperty).toHaveBeenCalledWith(
+          'padding-left',
+          '100px',
+        );
+        expect(
+          mutationRefs[1].ref.style.getPropertyValue,
+        ).toHaveBeenCalledTimes(1);
+        expect(mutationRefs[1].ref.style.setProperty).not.toHaveBeenCalled();
+      });
+    });
+
     describe('When releasing drag', () => {
       it('should collapse if dragged below collapse threshold', () => {
         const props = cloneDeep(resizeControlProps);
@@ -230,86 +310,6 @@ describe('ResizeControlBase', () => {
           productNavWidth: 370,
           isCollapsed: false,
         });
-      });
-    });
-
-    it('should not change width and delta when mouseIsDown is false', () => {
-      const props = cloneDeep(resizeControlProps);
-      const wrapper = mount(
-        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-      );
-      wrapper.setState({ mouseIsDown: false, isDragging: true });
-      const { width: cachedWidth, delta: cachedDelta } = wrapper.state();
-
-      wrapper.instance().handleResize({ pageX: 100 });
-      requestAnimationFrame.step();
-
-      expect(wrapper.state('width')).toEqual(cachedWidth);
-      expect(wrapper.state('delta')).toEqual(cachedDelta);
-    });
-
-    it('should change width and delta when mouseIsDown is true', () => {
-      const props = cloneDeep(resizeControlProps);
-      const wrapper = mount(
-        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-      );
-      wrapper.setState({
-        mouseIsDown: true,
-        isDragging: true,
-        initialWidth: 50,
-      });
-
-      wrapper.instance().handleResize({ pageX: 100 });
-      requestAnimationFrame.step();
-
-      expect(wrapper.state('width')).toEqual(150);
-      expect(wrapper.state('delta')).toEqual(100);
-    });
-
-    describe('When mouseIsdDown and isDragging are true', () => {
-      it('should change mutationRef style if new value is different than old value', () => {
-        const pageX = 100;
-        const mutationRefs = [
-          {
-            property: 'padding-left',
-            ref: {
-              style: {
-                getPropertyValue: jest.fn().mockReturnValue('562px'),
-                setProperty: jest.fn(),
-              },
-            },
-          },
-          //not supposed to call setProperty for the ref below
-          {
-            property: 'width',
-            ref: {
-              style: {
-                getPropertyValue: jest.fn().mockReturnValue(`${pageX}px`),
-                setProperty: jest.fn(),
-              },
-            },
-          },
-        ];
-        const props = { ...cloneDeep(resizeControlProps), mutationRefs };
-        const wrapper = mount(
-          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-        );
-        wrapper.setState({ mouseIsDown: true, isDragging: true });
-
-        wrapper.instance().handleResize({ pageX });
-        requestAnimationFrame.step();
-
-        expect(
-          mutationRefs[0].ref.style.getPropertyValue,
-        ).toHaveBeenCalledTimes(1);
-        expect(mutationRefs[0].ref.style.setProperty).toHaveBeenCalledWith(
-          'padding-left',
-          '100px',
-        );
-        expect(
-          mutationRefs[1].ref.style.getPropertyValue,
-        ).toHaveBeenCalledTimes(1);
-        expect(mutationRefs[1].ref.style.setProperty).not.toHaveBeenCalled();
       });
     });
   });
