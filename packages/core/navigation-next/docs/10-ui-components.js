@@ -15,6 +15,16 @@ ${<Hr />}
 ${<H>BackItem</H>}
 
 BackItem is a pre-configured version of [ConnectedItem](#ConnectedItem) that is used to navigate back to a parent view.
+It's text prop defaults to 'Back' and it's before prop defaults to an ArrowLeftCircle icon.
+
+${(
+      <Example
+        packageName="@atlaskit/navigation-next"
+        Component={require('./examples/ui-components/BackItem').default}
+        title="BackItem"
+        source={require('!!raw-loader!./examples/ui-components/BackItem')}
+      />
+    )}
 
 ${(
       <Props
@@ -97,7 +107,16 @@ ${<Hr />}
 ${<H>GoToItem</H>}
 
 GoToItem is a special [Item](#Item) that when clicked will cause a transition to the view specified by the 'goTo' prop. You will need to ensure that both the view you're
-transitioning from and to use [MenuSection](#MenuSection) with the correct 'parentId' and 'nestedGroupKey' props so that the transition animation works correctly.
+transitioning from and to use the same [MenuSection](#MenuSection) component instance with the correct 'id' and parentId' props so that the transition animation works correctly.
+
+${(
+      <Example
+        packageName="@atlaskit/navigation-next"
+        Component={require('./examples/ui-components/GoToItem').default}
+        title="GoToItem"
+        source={require('!!raw-loader!./examples/ui-components/GoToItem')}
+      />
+    )}
 
 ${(
       <Props
@@ -215,8 +234,9 @@ ${<Hr />}
 
 ${<H>MenuSection</H>}
 
-A section for the main part of your nav view that can be animate into and out of nested views. Applies some minor styling to the standard section component and allows
-scrolling of content when there are too many items to display.
+A section for the main part of your nav view that enables animation into and out of nested views. Applies some minor styling to the standard section component and allows
+scrolling of content when there are too many items to display. If using directly, take care to ensure you share the same MenuSection component across
+views as animation relies on the component remaining mounted for view transitions.
 
 ${(
       <Example
