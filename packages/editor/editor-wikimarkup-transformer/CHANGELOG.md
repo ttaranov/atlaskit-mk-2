@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.17
+- [patch] List item symbol followed by line break is not valid [df6c74a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df6c74a)
+
 ## 2.1.16
 - [patch] Fix common-formater ending symbol behavior and use external media for links in media [b1926a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1926a8)
 
