@@ -57,7 +57,7 @@ export function insertRule(): Command {
   };
 }
 
-export function shouldAppendParagraphAfterBlockNode(state) {
+export function shouldAppendParagraphAfterBlockNode(state: EditorState) {
   return atTheEndOfDoc(state) && atTheBeginningOfBlock(state);
 }
 
@@ -145,7 +145,10 @@ export function createParagraphNear(append: boolean = true): Command {
   };
 }
 
-function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
+function getInsertPosFromTextBlock(
+  state: EditorState,
+  append: boolean,
+): number {
   const { $from, $to } = state.selection;
   let pos;
   if (!append) {
@@ -159,7 +162,7 @@ function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
 function getInsertPosFromNonTextBlock(
   state: EditorState,
   append: boolean,
-): void {
+): number {
   const { $from, $to } = state.selection;
   const nodeAtSelection =
     state.selection instanceof NodeSelection &&
@@ -180,7 +183,7 @@ function getInsertPosFromNonTextBlock(
   return pos;
 }
 
-function topLevelNodeIsEmptyTextBlock(state): boolean {
+function topLevelNodeIsEmptyTextBlock(state: EditorState): boolean {
   const topLevelNode = state.selection.$from.node(1);
   return (
     topLevelNode.isTextblock &&
