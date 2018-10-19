@@ -78,6 +78,11 @@ describe('JIRA wiki markup - Lists', () => {
 *
 *`,
     ],
+    [
+      'should find the full content of a list item properly',
+      `* nested
+       spaces in front of me`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

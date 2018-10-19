@@ -63,18 +63,11 @@ function trimInlineNodes(nodes: PMNode[]) {
 }
 
 export function isNextLineEmpty(input: string) {
-  let index = 0;
-  while (index < input.length) {
-    const length = parseWhitespaceAndNewLine(input);
-
-    if (length === 0) {
-      return false;
-    }
-    if (parseNewlineOnly(input)) {
-      return true;
-    }
-
-    index += length;
+  const trimedLine = input.trim();
+  if (trimedLine.length === 0) {
+    return true;
   }
-  return true;
+  // Check if the rest of the string is line breaks
+  const length = parseNewlineOnly(trimedLine);
+  return length == 0 ? false : true;
 }
