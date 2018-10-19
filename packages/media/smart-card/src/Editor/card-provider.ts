@@ -33,6 +33,7 @@ export class EditorCardProvider implements CardProvider {
         };
       }
     } catch (e) {
+      // tslint:disable-next-line
       console.warn(
         `Error when trying to check Smart Card url "${url} - ${
           e.prototype.name
