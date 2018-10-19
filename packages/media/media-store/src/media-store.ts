@@ -290,13 +290,15 @@ export class MediaStore {
   }
 }
 
+export interface FileItem {
+  id: string;
+  type: 'file';
+  details: MediaCollectionItemFullDetails;
+  collection?: string;
+}
+
 export interface ItemsPayload {
-  items: {
-    id: string;
-    type: 'file';
-    details: MediaCollectionItemFullDetails;
-    collection?: string;
-  }[];
+  items: FileItem[];
 }
 
 export interface GetItemsRequestBody {

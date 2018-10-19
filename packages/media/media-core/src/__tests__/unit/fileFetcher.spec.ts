@@ -1,5 +1,5 @@
-import { MediaStore } from '@atlaskit/media-store';
-import { FileFetcher } from '../../file';
+import { MediaStore, FileItem } from '@atlaskit/media-store';
+import { FileFetcher, getItemsFromKeys } from '../../file';
 
 describe('FileFetcher', () => {
   const setup = () => {
@@ -75,5 +75,152 @@ describe('FileFetcher', () => {
         expect(link.target).toBe('_blank');
       });
     });
+  });
+});
+
+describe('getItemsFromKeys()', () => {
+  const details = {} as any;
+
+  it('should return the same an array with the same length', () => {
+    const keys = [
+      {
+        id: '1',
+      },
+      {
+        id: '2',
+      },
+      {
+        id: '2',
+        collection: 'user-collection',
+      },
+    ];
+    const items: FileItem[] = [
+      {
+        id: '1',
+        type: 'file',
+        details,
+      },
+    ];
+
+    expect(getItemsFromKeys(keys, items)).toHaveLength(keys.length);
+  });
+
+  it('should respect order', () => {
+    const keys = [
+      {
+        id: '1',
+      },
+      {
+        id: '2',
+      },
+      {
+        id: '2',
+        collection: 'user-collection',
+      },
+    ];
+    const items: FileItem[] = [
+      {
+        id: '2',
+        type: 'file',
+        details: {
+          ...details,
+          name: 'file-2',
+        },
+      },
+      {
+        id: '1',
+        type: 'file',
+        details: {
+          ...details,
+          name: 'file-1',
+        },
+      },
+    ];
+
+    const result = getItemsFromKeys(keys, items);
+
+    expect(result[0]).toEqual({
+      name: 'file-1',
+    });
+    expect(result[1]).toEqual({
+      name: 'file-2',
+    });
+    expect(result[2]).toBeUndefined();
+  });
+
+  it('should use collection name to find item', () => {
+    const keys = [
+      {
+        id: '1',
+        collection: 'first-collection',
+      },
+      {
+        id: '1',
+        collection: 'other-collection',
+      },
+      {
+        id: '2',
+        collection: 'user-collection',
+      },
+    ];
+    const items: FileItem[] = [
+      {
+        id: '2',
+        type: 'file',
+        collection: 'user-collection',
+        details: {
+          ...details,
+          name: 'file-2',
+        },
+      },
+      {
+        id: '1',
+        type: 'file',
+        collection: 'first-collection',
+        details: {
+          ...details,
+          name: 'file-1',
+        },
+      },
+    ];
+
+    const result = getItemsFromKeys(keys, items);
+
+    expect(result).toEqual([
+      {
+        name: 'file-1',
+      },
+      undefined,
+      {
+        name: 'file-2',
+      },
+    ]);
+  });
+
+  it('should return undefined for not found files', () => {
+    const keys = [
+      {
+        id: '1',
+        collection: 'a',
+      },
+      {
+        id: '2',
+        collection: 'b',
+      },
+    ];
+    const items: FileItem[] = [
+      {
+        id: '2',
+        type: 'file',
+        details: {
+          ...details,
+          name: 'file-2',
+        },
+      },
+    ];
+
+    const result = getItemsFromKeys(keys, items);
+
+    expect(result).toEqual([undefined, undefined]);
   });
 });

@@ -9,6 +9,7 @@ import {
   UploadController,
   uploadFile,
   MediaCollectionItemFullDetails,
+  FileItem,
 } from '@atlaskit/media-store';
 import {
   FilePreview,
@@ -16,28 +17,50 @@ import {
   GetFileOptions,
   mapMediaItemToFileState,
 } from '../fileState';
-import { fileStreamsCache } from '../context/fileStreamCache';
-import FileStreamCache from '../context/fileStreamCache';
+import { fileStreamsCache, FileStreamCache } from '../context/fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
 const POLLING_INTERVAL = 1000;
 const maxNumberOfItemsPerCall = 100;
+
+export const getItemsFromKeys = (
+  keys: DataloaderKey[],
+  items: FileItem[],
+): DataloaderResult[] => {
+  const itemsByKey: { [id: string]: DataloaderResult } = items.reduce(
+    (prev, next) => {
+      const { id, collection } = next;
+      const key = FileStreamCache.createKey(id, { collectionName: collection });
+
+      prev[key] = next.details;
+
+      return prev;
+    },
+    {},
+  );
+
+  return keys.map(dataloaderKey => {
+    const { id, collection } = dataloaderKey;
+    const key = FileStreamCache.createKey(id, { collectionName: collection });
+
+    return itemsByKey[key];
+  });
+};
+
 interface DataloaderKey {
   id: string;
   collection?: string;
 }
+type DataloaderResult = MediaCollectionItemFullDetails | undefined;
 export class FileFetcher {
-  dataloader: Dataloader<
-    DataloaderKey,
-    MediaCollectionItemFullDetails | undefined
-  >;
+  private readonly dataloader: Dataloader<DataloaderKey, DataloaderResult>;
   constructor(private readonly mediaStore: MediaStore) {
-    this.dataloader = new Dataloader<
-      DataloaderKey,
-      MediaCollectionItemFullDetails | undefined
-    >(this.batchLoadingFunc, {
-      maxBatchSize: maxNumberOfItemsPerCall,
-    });
+    this.dataloader = new Dataloader<DataloaderKey, DataloaderResult>(
+      this.batchLoadingFunc,
+      {
+        maxBatchSize: maxNumberOfItemsPerCall,
+      },
+    );
   }
 
   // TODO: add test to ensure we return the right items
@@ -46,12 +69,7 @@ export class FileFetcher {
     const response = await this.mediaStore.getItems(keys);
     const { items } = response.data;
 
-    return keys.map(key => {
-      const item = items.find(
-        item => item.id === key.id && item.collection === key.collection,
-      );
-      return item && item.details;
-    });
+    return getItemsFromKeys(keys, items);
   };
 
   getFileState(id: string, options?: GetFileOptions): Observable<FileState> {
