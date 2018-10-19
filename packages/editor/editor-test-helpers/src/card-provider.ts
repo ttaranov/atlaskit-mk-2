@@ -49,6 +49,7 @@ export class EditorCardProvider implements CardProvider {
         };
       }
     } catch (e) {
+      // @ts-ignore
       console.warn(
         `Error when trying to check Smart Card url "${url} - ${
           e.prototype.name

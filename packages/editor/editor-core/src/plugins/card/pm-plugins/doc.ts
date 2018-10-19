@@ -5,7 +5,6 @@ import { processRawValue } from '../../../utils';
 import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
 import { resolveCard, queueCards } from './actions';
 import { appearanceForNodeType } from '../utils';
-import { replaceSelectedNode } from 'prosemirror-utils';
 
 export const replaceQueuedUrlWithCard = (
   url: string,
