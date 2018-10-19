@@ -18,8 +18,6 @@ const generator = {
   name: 'My App',
 };
 
-const name = 'My Page';
-
 function mockResolvedFetchCall() {
   fetchMock.mock({
     name: 'resolved',
@@ -35,8 +33,8 @@ function mockResolvedFetchCall() {
         },
         data: {
           '@context': {},
+          name: 'My Page',
           generator,
-          name,
         },
       }),
     },
@@ -59,7 +57,7 @@ function mockForbiddenFetchCall() {
         data: {
           '@context': {},
           generator,
-          name,
+          name: 'My Page',
         },
       }),
     },
@@ -346,5 +344,27 @@ describe('Client', () => {
       },
       { status: 'resolved', definitionId },
     ]);
+  });
+
+  it.only('should not reload card that has already been resolved', async () => {
+    mockResolvedFetchCall();
+
+    const client = new Client();
+    const card1 = {
+      url: 'http://drive.google.com/doc/1',
+      uuid: v4(),
+      definitionId: undefined,
+      updateFn: jest.fn().mockImplementation((state: ObjectState) => {
+        console.log('CARD 1: Received state: ', state);
+        if (state.definitionId) {
+          card1.definitionId = state.definitionId as any;
+          console.log('CARD 1: Received NO definitionId');
+        }
+      }),
+    };
+
+    client.register(card1.url, card1.uuid, card1.updateFn).resolve(card1.uuid);
+
+    expect(card1.updateFn).toHaveBeenCalledTimes(2);
   });
 });
