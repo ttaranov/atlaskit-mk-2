@@ -169,6 +169,26 @@ describe('ResizeControlBase', () => {
       it('should resize back to default width if dragged above collapse threshold and below default width', () => {
         const props = cloneDeep(resizeControlProps);
         const state = { delta: -15, isDragging: true, width: 225 };
+        props.mutationRefs = [
+          {
+            property: 'padding-left',
+            ref: {
+              style: {
+                getPropertyValue: jest.fn(),
+                setProperty: jest.fn(),
+              },
+            },
+          },
+          {
+            property: 'width',
+            ref: {
+              style: {
+                getPropertyValue: jest.fn(),
+                setProperty: jest.fn(),
+              },
+            },
+          },
+        ];
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -181,6 +201,18 @@ describe('ResizeControlBase', () => {
           productNavWidth: 240,
           isCollapsed: false,
         });
+        expect(
+          props.mutationRefs[0].ref.style.getPropertyValue,
+        ).toHaveBeenCalledTimes(1);
+        expect(
+          props.mutationRefs[0].ref.style.setProperty,
+        ).toHaveBeenCalledWith('padding-left', '240px');
+        expect(
+          props.mutationRefs[1].ref.style.getPropertyValue,
+        ).toHaveBeenCalledTimes(1);
+        expect(
+          props.mutationRefs[1].ref.style.setProperty,
+        ).toHaveBeenCalledWith('width', '240px');
       });
 
       it('should resize to greater width if dragged above default width', () => {

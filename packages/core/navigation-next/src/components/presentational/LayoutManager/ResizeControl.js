@@ -327,7 +327,6 @@ class ResizeControl extends PureComponent<Props, State> {
     let publishWidth = width;
     let shouldCollapse = false;
     const expandThreshold = 24;
-
     const resizerClicked = !isDragging && !this.invalidDragAttempted;
 
     // check if the intention was just a click, and toggle
@@ -374,11 +373,9 @@ class ResizeControl extends PureComponent<Props, State> {
       isCollapsed: shouldCollapse,
     });
 
-    /* nao testado ainda :)
-    if(width >= collapseThreshold && width < CONTENT_NAV_WIDTH)  {
-      console.log(`snapping back to default ${CONTENT_NAV_WIDTH} width because width ${width} is between ${collapseThreshold} and ${CONTENT_NAV_WIDTH}`);
+    if (width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH) {
       applyMutations(this.props.mutationRefs, CONTENT_NAV_WIDTH);
-    }*/
+    }
 
     // cleanup
     window.removeEventListener('mousemove', this.handleResize);
