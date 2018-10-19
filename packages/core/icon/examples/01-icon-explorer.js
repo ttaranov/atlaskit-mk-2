@@ -105,7 +105,7 @@ class IconAllExample extends Component<{}, State> {
 
   renderIcons = () => {
     const icons: iconType[] = filterIcons(allIcons, this.state.query);
-    return icons.length > 0 ? (
+    return icons.length ? (
       <IconExplorerGrid>
         {icons.map(icon => (
           <IconExplorerCell {...icon} key={icon.componentName} />
