@@ -2,7 +2,7 @@ import * as React from 'react';
 import LazyRender from 'react-lazily-render';
 import { WithObject } from '../WithObject';
 import { CardProps, CardWithData, CardWithUrl } from './types';
-import { CardContent } from './CardContent';
+import { CardContentLoader } from './CardContentLoader';
 
 export const isCardWithData = (props: CardProps): props is CardWithData =>
   !!(props as CardWithData).data;
@@ -24,7 +24,7 @@ export const renderCardWithURL = ({
       offset={100}
       component={appearance === 'inline' ? 'span' : 'div'}
       placeholder={
-        <CardContent
+        <CardContentLoader
           appearance={appearance}
           state={{
             status: 'resolving',
@@ -40,7 +40,7 @@ export const renderCardWithURL = ({
       content={
         <WithObject client={client} url={url}>
           {({ state, reload }) => (
-            <CardContent
+            <CardContentLoader
               isSelected={isSelected}
               appearance={appearance}
               state={{
@@ -63,7 +63,7 @@ export const renderCardWithData = ({
   isSelected,
   onClick,
 }: CardWithData) => (
-  <CardContent
+  <CardContentLoader
     isSelected={isSelected}
     appearance={appearance}
     state={{
