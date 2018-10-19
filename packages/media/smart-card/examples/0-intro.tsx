@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Field } from '@atlaskit/form';
-import Select from '@atlaskit/select';
 import { FieldTextStateless } from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import { Provider, Card } from '../src';
@@ -73,57 +72,6 @@ class Example extends React.Component<{}, ExampleState> {
     return (
       <Provider>
         <Page>
-          {/* <Grid>
-            <GridColumn>
-              <p>Switch to</p>
-              <ul>
-                <li>
-                  <Button
-                    appearance="link"
-                    spacing="compact"
-                    onClick={this.preventDefaultAndSetUrl(
-                      'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit',
-                    )}
-                  >
-                    Public Google Document
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    appearance="link"
-                    spacing="compact"
-                    onClick={this.preventDefaultAndSetUrl(
-                      'https://docs.google.com/spreadsheets/d/168cPaeXw_2zbo6md4pGUdEmXzRsXRQmNP0712ID2TKA/edit?usp=sharing',
-                    )}
-                  >
-                    Public Google Sheet
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    appearance="link"
-                    spacing="compact"
-                    onClick={this.preventDefaultAndSetUrl(
-                      'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
-                    )}
-                  >
-                    Protected Google Document, anyone in org. can view
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    appearance="link"
-                    spacing="compact"
-                    onClick={this.preventDefaultAndSetUrl(
-                      'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
-                    )}
-                  >
-                    Protected Google Sheet, anyone in org can view
-                  </Button>
-                </li>
-              </ul>
-            </GridColumn>
-          </Grid> */}
           <Grid>
             <GridColumn medium={8}>
               <Field label="URL">
@@ -146,14 +94,6 @@ class Example extends React.Component<{}, ExampleState> {
                   label="Pick a "
                   onChange={this.handleAppearanceChange}
                 />
-                {/* <Select
-                  // options={[
-                  //   { label: 'Block', value: 'block' },
-                  //   { label: 'Inline', value: 'inline' },
-                  // ]}
-                  value={appearance}
-                  onChange={this.handleAppearanceChange}
-                /> */}
               </Field>
             </GridColumn>
             <GridColumn medium={2}>
@@ -168,17 +108,6 @@ class Example extends React.Component<{}, ExampleState> {
               </Field>
             </GridColumn>
           </Grid>
-          {/* <Grid>
-            <GridColumn medium="8">
-              <FieldTextStateless
-                autoFocus={true}
-                label="URL"
-                shouldFitContainer={true}
-                value={url}
-                onChange={this.handleUrlChange}
-              />
-            </GridColumn>
-          </Grid> */}
           <Grid>
             <GridColumn>
               <br />
