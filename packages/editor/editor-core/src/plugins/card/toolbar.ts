@@ -1,4 +1,4 @@
-import { InjectedIntl } from 'react-intl';
+import { InjectedIntl, defineMessages } from 'react-intl';
 import { EditorState, NodeSelection } from 'prosemirror-state';
 import { removeSelectedNode } from 'prosemirror-utils';
 
@@ -8,7 +8,35 @@ import OpenIcon from '@atlaskit/icon/glyph/open';
 import { analyticsService } from '../../analytics';
 import commonMessages from '../../messages';
 import { Command } from '../../../src/types';
-import { FloatingToolbarConfig } from '../../../src/plugins/floating-toolbar/types';
+import {
+  FloatingToolbarConfig,
+  FloatingToolbarItem,
+} from '../../../src/plugins/floating-toolbar/types';
+import { SelectOption } from '../floating-toolbar/ui/Select';
+import {
+  changeSelectedCardToLink,
+  setSelectedCardAppearance,
+} from './pm-plugins/doc';
+import { selectedCardAppearance } from './utils';
+import { CardAppearance } from './types';
+
+export const messages = defineMessages({
+  block: {
+    id: 'fabric.editor.displayBlock',
+    defaultMessage: 'Display as block',
+    description: 'Change the appearance of the card to be a block.',
+  },
+  inline: {
+    id: 'fabric.editor.displayInline',
+    defaultMessage: 'Display as inline',
+    description: 'Change the appearance of the card to be inline.',
+  },
+  link: {
+    id: 'fabric.editor.displayLink',
+    defaultMessage: 'Display as link',
+    description: 'Convert the card to become a regular link.',
+  },
+});
 
 const remove: Command = (state, dispatch) => {
   dispatch(removeSelectedNode(state.tr));
@@ -30,16 +58,46 @@ const visit: Command = state => {
   return false;
 };
 
+const changeAppearance = (selectedOption: SelectOption) => {
+  if (selectedOption.value === 'link') {
+    return changeSelectedCardToLink;
+  } else {
+    return setSelectedCardAppearance(selectedOption.value as CardAppearance);
+  }
+};
+
+const buildDropdown = (
+  state: EditorState,
+  intl: InjectedIntl,
+): FloatingToolbarItem<Command> => {
+  const currentAppearance = selectedCardAppearance(state);
+
+  const options = Object.keys(messages).map(value => ({
+    value,
+    label: intl.formatMessage(messages[value]),
+    selected: currentAppearance === value,
+  }));
+
+  return {
+    type: 'select',
+    options,
+    defaultValue: options.find(option => option.selected),
+    onChange: changeAppearance,
+  };
+};
+
 export const floatingToolbar = (
   state: EditorState,
   intl: InjectedIntl,
 ): FloatingToolbarConfig | undefined => {
-  const { inlineCard } = state.schema.nodes;
+  const { inlineCard, blockCard } = state.schema.nodes;
 
   return {
     title: 'Card floating controls',
-    nodeType: inlineCard,
+    nodeType: [inlineCard, blockCard],
     items: [
+      buildDropdown(state, intl),
+      { type: 'separator' },
       {
         type: 'button',
         icon: OpenIcon,

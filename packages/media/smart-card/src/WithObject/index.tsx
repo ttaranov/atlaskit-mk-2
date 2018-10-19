@@ -2,6 +2,7 @@ import * as React from 'react';
 import Context from '../Context';
 import { Client, ObjectState } from '../Client';
 import { v4 } from 'uuid';
+import { Provider } from '../Provider';
 
 export interface WithObjectRenderProps {
   state: ObjectState;
