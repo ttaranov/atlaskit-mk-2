@@ -16,18 +16,18 @@ export const buildDescription = (json: any) => {
 };
 
 export const buildLink = (json: any) => {
-  const url = json.url && json.url.trim();
+  const url = json['@url'] && json['@url'].trim();
   return url ? { link: url } : {};
 };
 
 export const buildByline = (json: any) => {
   const updatedBy =
-    json.updatedBy && json.updatedBy.name ? 'by ' + json.updatedBy.name : '';
+    json.updatedBy && json.updatedBy.name ? ' by ' + json.updatedBy.name : '';
   if (json.dateCreated || json.updated) {
     return {
       byline: {
         text: json.updated
-          ? `Updated ${relativeTime(json.updated)} ${updatedBy}`
+          ? `Updated ${relativeTime(json.updated)}${updatedBy}`
           : `Created ${relativeTime(json.dateCreated)}`,
       },
     };
@@ -36,7 +36,7 @@ export const buildByline = (json: any) => {
 };
 
 export const buildUser = (json: any) => {
-  if (json.assignedBy) {
+  if (json.assignedBy && (json.assignedBy.image || json.assignedBy.name)) {
     return {
       user: {
         ...(json.assignedBy.image ? { icon: json.assignedBy.image } : {}),
@@ -48,7 +48,7 @@ export const buildUser = (json: any) => {
 };
 
 export const buildUsers = (json: any) => {
-  if (json.assignedTo && Array.isArray(json.assignedTo)) {
+  if (Array.isArray(json.assignedTo) && json.assignedTo.length > 0) {
     return {
       users: json.assignedTo.map((assignee: any) => ({
         icon: assignee.image,
@@ -60,7 +60,7 @@ export const buildUsers = (json: any) => {
 };
 
 export const buildCommentCount = (json: any) => {
-  if (json.commentCount) {
+  if (!isNaN(Number(json.commentCount)) && Number(json.commentCount) > 0) {
     return {
       icon: (
         <ChatIcon
@@ -70,7 +70,7 @@ export const buildCommentCount = (json: any) => {
           primaryColor={colors.N600}
         />
       ),
-      text: `${json.commentCount}`,
+      text: String(json.commentCount),
     };
   }
   return {};
@@ -117,7 +117,9 @@ export const buildContext = (json: any) => {
   return {};
 };
 
-export function extractPropsFromTask(json: any): BlockCard.ResolvedViewProps {
+export function extractBlockViewPropsFromTask(
+  json: any,
+): BlockCard.ResolvedViewProps {
   if (!json) {
     throw new Error('smart-card: data is not parsable JSON-LD.');
   }

@@ -3,7 +3,7 @@ import { genericExtractPropsFromJSONLD } from '../genericExtractPropsFromJSONLD'
 import { extractPropsFromObject } from './extractPropsFromObject';
 import { extractPropsFromDocument } from './extractPropsFromDocument';
 import { extractPropsFromSpreadsheet } from './extractPropsFromSpreadsheet';
-import { extractPropsFromTask } from './extractPropsFromTask';
+import { extractBlockViewPropsFromTask } from './extractPropsFromTask';
 
 const extractorPrioritiesByType = {
   Object: 0,
@@ -20,7 +20,7 @@ const extractorFunctionsByType = {
   'schema:SpreadsheetDigitalDocument': extractPropsFromSpreadsheet,
   Document: extractPropsFromDocument,
   Spreadsheet: extractPropsFromSpreadsheet,
-  'atlassian:Task': extractPropsFromTask,
+  'atlassian:Task': extractBlockViewPropsFromTask,
 };
 
 export function extractBlockPropsFromJSONLD(
