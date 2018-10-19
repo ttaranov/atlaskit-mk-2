@@ -134,7 +134,7 @@ export default class Page {
         assert.notEqual(
           val.level,
           'SEVERE',
-          `Console errors :${val.message} when navigating to the home page`,
+          `Those console errors :${val.message} are displayed`,
         );
       });
     }
