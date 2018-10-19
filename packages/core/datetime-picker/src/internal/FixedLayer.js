@@ -66,7 +66,17 @@ class FixedLayer extends Component<Props> {
           )}
         </Reference>
         <Popper>
-          {({ ref, style, placement, scheduleUpdate }) => {
+          {({
+            ref,
+            style,
+            placement,
+            scheduleUpdate,
+          }: {
+            ref: any,
+            style: any,
+            placement: any,
+            scheduleUpdate: any,
+          }) => {
             this.scheduleUpdate = scheduleUpdate;
 
             return (

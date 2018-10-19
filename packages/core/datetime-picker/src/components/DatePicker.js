@@ -132,6 +132,7 @@ const Menu = ({ innerProps: menuInnerProps, selectProps }: Object) => (
 
 const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
   <FixedLayer
+    inputValue={selectProps.inputValue}
     containerRef={selectProps.calendarContainerRef}
     content={<Menu {...props} selectProps={selectProps} />}
   />
