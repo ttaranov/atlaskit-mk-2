@@ -3,10 +3,6 @@ import {
   createParagraphNodeFromInlineNodes,
   createEmptyParagraphNode,
 } from '../nodes/paragraph';
-import {
-  parseNewlineOnly,
-  parseWhitespaceAndNewLine,
-} from '../tokenize/whitespace';
 
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
   const output: PMNode[] = [];
@@ -63,11 +59,6 @@ function trimInlineNodes(nodes: PMNode[]) {
 }
 
 export function isNextLineEmpty(input: string) {
-  const trimedLine = input.trim();
-  if (trimedLine.length === 0) {
-    return true;
-  }
-  // Check if the rest of the string is line breaks
-  const length = parseNewlineOnly(trimedLine);
-  return length == 0 ? false : true;
+  // Line with only spaces is considered an empty line
+  return input.trim().length === 0 ? true : false;
 }
