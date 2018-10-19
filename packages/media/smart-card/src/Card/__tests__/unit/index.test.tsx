@@ -373,4 +373,32 @@ describe('Card', () => {
       }),
     );
   });
+
+  describe('Code split loading state', () => {
+    jest.mock('./CardContent', () => null);
+
+    it('should render the block resolving view when resolving', () => {
+      const client = createClient([{ status: 'not-found' } as ObjectState]);
+      const wrapper = mount(
+        <Card
+          appearance="block"
+          client={client}
+          url="https://www.atlassian.com/"
+        />,
+      );
+      expect(wrapper.find(BlockCardResolvingView).exists()).toBeTruthy();
+    });
+
+    it('should render the inline resolving view when resolving', () => {
+      const client = createClient([{ status: 'not-found' } as ObjectState]);
+      const wrapper = mount(
+        <Card
+          appearance="inline"
+          client={client}
+          url="https://www.atlassian.com/"
+        />,
+      );
+      expect(wrapper.find(BlockCardResolvingView).exists()).toBeTruthy();
+    });
+  });
 });

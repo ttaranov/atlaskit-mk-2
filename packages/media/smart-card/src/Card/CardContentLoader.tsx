@@ -19,10 +19,12 @@ export class CardContentLoader extends React.Component<CardContentProps> {
 
   componentDidMount() {
     if (!CardContentLoader.CardContent) {
-      import('./CardContent').then(module => {
-        CardContentLoader.CardContent = module.CardContent;
-        this.forceUpdate();
-      });
+      import(/* webpackChunkName:"@atlaskit-internal-smartcard-cardcontent" */ './CardContent').then(
+        module => {
+          CardContentLoader.CardContent = module.CardContent;
+          this.forceUpdate();
+        },
+      );
     }
   }
 
