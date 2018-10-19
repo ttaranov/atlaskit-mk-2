@@ -68,6 +68,11 @@ type PageProps = CollapseListeners & {
 // FIXME: Move to separate file
 // eslint-disable-next-line react/no-multi-comp
 class PageInner extends PureComponent<{ children: Node }> {
+  componentDidMount() {
+    console.log('Page Inner component mounted');
+    // debugger; //eslint-disable-line
+  }
+
   render() {
     return this.props.children;
   }
@@ -75,7 +80,11 @@ class PageInner extends PureComponent<{ children: Node }> {
 
 // FIXME: Move to separate file
 // eslint-disable-next-line react/no-multi-comp
-export class Page extends PureComponent<PageProps> {
+class Page extends PureComponent<PageProps> {
+  componentDidMount() {
+    console.log('Page component mounted');
+    // debugger; //eslint-disable-line
+  }
   render() {
     const {
       flyoutIsOpen,

@@ -40,4 +40,5 @@ export type SectionProps = ConnectedSectionProps & { theme: ProductTheme };
 
 export type SectionState = {
   traversalDirection: 'down' | 'up' | null,
+  isMounted: boolean,
 };

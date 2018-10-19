@@ -17,6 +17,51 @@ import {
   SearchIssuesView,
 } from './shared/routes';
 
+type RightPageContainerProps = {
+  isFlyoutAvailable: boolean,
+  isDebugEnabled: boolean,
+  onDebugToggle: (SyntheticEvent<any>) => void,
+  onFlyoutToggle: (SyntheticEvent<any>) => void,
+};
+class RightPageContainer extends Component<RightPageContainerProps> {
+  componentDidMount() {
+    console.log('RightPageContainer component mounted');
+    // debugger; //eslint-disable-line
+  }
+
+  render() {
+    const {
+      isFlyoutAvailable,
+      onFlyoutToggle,
+      isDebugEnabled,
+      onDebugToggle,
+    } = this.props;
+    return (
+      <div style={{ padding: 40 }}>
+        <Switch>
+          <Route path="/projects/:projectId" component={BacklogView} />
+          <Route path="/projects" component={ProjectsView} />
+          <Route path="/issues/search" component={SearchIssuesView} />
+          <Route path="/" component={DashboardsView} />
+        </Switch>
+
+        <p>
+          The search drawer can be opened via the <kbd>/</kbd> keyboard
+          shortcut.
+        </p>
+        <Label label="Toggle flyout on hover (experimental)" />
+        <ToggleStateless
+          isChecked={isFlyoutAvailable}
+          onChange={onFlyoutToggle}
+        />
+        <Label label="Toggle debug logger" />
+        <ToggleStateless isChecked={isDebugEnabled} onChange={onDebugToggle} />
+      </div>
+    );
+  }
+}
+
+// eslint-disable-next-line react/no-multi-comp
 export default class App extends Component<
   {},
   {
@@ -50,29 +95,12 @@ export default class App extends Component<
             experimental_flyoutOnHover={isFlyoutAvailable}
             globalNavigation={DefaultGlobalNavigation}
           >
-            <div style={{ padding: 40 }}>
-              <Switch>
-                <Route path="/projects/:projectId" component={BacklogView} />
-                <Route path="/projects" component={ProjectsView} />
-                <Route path="/issues/search" component={SearchIssuesView} />
-                <Route path="/" component={DashboardsView} />
-              </Switch>
-
-              <p>
-                The search drawer can be opened via the <kbd>/</kbd> keyboard
-                shortcut.
-              </p>
-              <Label label="Toggle flyout on hover (experimental)" />
-              <ToggleStateless
-                isChecked={isFlyoutAvailable}
-                onChange={this.onFlyoutToggle}
-              />
-              <Label label="Toggle debug logger" />
-              <ToggleStateless
-                isChecked={isDebugEnabled}
-                onChange={this.onDebugToggle}
-              />
-            </div>
+            <RightPageContainer
+              isFlyoutAvailable={isFlyoutAvailable}
+              onFlyoutToggle={this.onFlyoutToggle}
+              isDebugEnabled={isDebugEnabled}
+              onDebugToggle={this.onDebugToggle}
+            />
           </LayoutManagerWithViewController>
         </NavigationProvider>
       </HashRouter>

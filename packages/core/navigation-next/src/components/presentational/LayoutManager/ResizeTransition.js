@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent, type Node } from 'react';
-import { Transition } from 'react-transition-group';
+import Transition from 'react-transition-group/Transition';
 import type { CollapseListener } from './types';
 
 const DURATION = 300;
@@ -52,7 +52,11 @@ type Props = {
   onCollapseEnd: CollapseListener,
 };
 
-export default class ResizeTransition extends PureComponent<Props> {
+type State = {
+  isMounted: boolean,
+};
+
+export default class ResizeTransition extends PureComponent<Props, State> {
   target: HTMLElement;
   static defaultProps = {
     onExpandStart: NOOP,
@@ -60,12 +64,18 @@ export default class ResizeTransition extends PureComponent<Props> {
     onCollapseStart: NOOP,
     onCollapseEnd: NOOP,
   };
+  state = { isMounted: false };
+
   getTarget = (ref: HTMLElement) => {
     this.target = ref;
 
     const { innerRef } = this.props;
     if (innerRef) innerRef(ref);
   };
+
+  componentDidMount() {
+    this.setState({ isMounted: true });
+  }
 
   render() {
     const {
@@ -77,6 +87,7 @@ export default class ResizeTransition extends PureComponent<Props> {
       properties,
       to,
       userIsDragging,
+      in: inProp,
     } = this.props;
 
     return (
@@ -85,8 +96,9 @@ export default class ResizeTransition extends PureComponent<Props> {
         onEntered={onExpandEnd}
         onExiting={onCollapseStart}
         onExited={onCollapseEnd}
-        in={this.props.in}
-        timeout={DURATION}
+        in={inProp}
+        timeout={this.state.isMounted ? DURATION : 0}
+        appear
       >
         {transitionState => {
           // transitions interupt manual resize behaviour
@@ -119,7 +131,11 @@ export default class ResizeTransition extends PureComponent<Props> {
             ...gpuAcceleration,
             ...dynamicProperties[transitionState],
           };
-
+          console.log(
+            'Resize transition state:',
+            transitionState,
+            this.state.isMounted,
+          );
           return this.props.children({
             transitionStyle, // consumers must apply `transitionStyle`
             transitionState, // lets consumers react to the current state
