@@ -32,24 +32,6 @@ const exampleDocument = {
       content: [
         {
           type: 'text',
-          text: 'Paste links to popular services here...',
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: ' ',
-        },
-      ],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
           text: "Here's an example of a block Smart Card:",
           marks: [
             {
@@ -85,8 +67,8 @@ const exampleDocument = {
       content: [
         {
           type: 'text',
-          text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sem turpis, imperdiet quis augue eu, ultricies dictum nulla. Etiam ullamcorper justo diam, quis fringilla tortor ',
+          text: 'Check out this document ',
+          marks: [{ type: 'em' }],
         },
         {
           type: 'inlineCard',
@@ -97,8 +79,8 @@ const exampleDocument = {
         },
         {
           type: 'text',
-          text:
-            ' nullam in maximus lacus. Integer fermentum eros ante, mattis tempor lacus volutpat eget. Pellentesque risus libero, luctus ac ex et, tempus accumsan orci.',
+          text: ' and let me know what you think...',
+          marks: [{ type: 'em' }],
         },
       ],
     },
@@ -107,7 +89,8 @@ const exampleDocument = {
       content: [
         {
           type: 'text',
-          text: 'Here are some example URLs to get you started:',
+          text:
+            'Here are some example URLs to get you started. You can copy and paste them back into the Editor - they will get converted into cards',
           marks: [
             {
               type: 'strong',
@@ -122,7 +105,53 @@ const exampleDocument = {
         {
           type: 'text',
           text:
-            'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
+            'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'https://app.box.com/s/2emx282bjxpzvwa5bcz428u6imbgmasg',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text:
+            'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get%20Started%20with%20Dropbox.pdf?dl=0',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'https://invis.io/P8OKINLRQEH',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'https://1drv.ms/u/s!Agkn_W9yVS7uaT4sLTx8bl2WYrs',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'https://trello.com/c/gfrst89H/4-much-muffins',
         },
       ],
     },
