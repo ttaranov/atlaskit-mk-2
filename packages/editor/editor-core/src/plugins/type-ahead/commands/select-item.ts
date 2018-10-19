@@ -6,7 +6,7 @@ import { Command } from '../../../types';
 import { isChromeWithSelectionBug } from '../../../utils';
 import { pluginKey, ACTIONS } from '../pm-plugins/main';
 import { TypeAheadHandler, TypeAheadItem } from '../types';
-import { findQueryMark } from '../utils/find-query-mark';
+import { findTypeAheadQuery } from '../utils/find-query-mark';
 import { dismissCommand } from './dismiss';
 
 export const selectCurrentItem = (): Command => (state, dispatch) => {
@@ -157,11 +157,9 @@ export const withTypeAheadQueryMarkPosition = (
   state: EditorState,
   cb: (start: number, end: number) => boolean,
 ) => {
-  const { doc } = state;
-  const { typeAheadQuery } = state.schema.marks;
-  const queryMark = findQueryMark(typeAheadQuery, doc, 0, doc.nodeSize - 2);
+  const queryMark = findTypeAheadQuery(state);
 
-  if (!queryMark) {
+  if (!queryMark || queryMark.start === -1) {
     return false;
   }
 

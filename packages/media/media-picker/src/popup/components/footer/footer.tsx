@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { Wrapper, InsertButton, CancelButton } from './styled';
 import { startImport, hidePopup } from '../../actions';
 import { SelectedItem, State } from '../../domain';
@@ -28,7 +30,7 @@ export class Footer extends Component<FooterProps> {
         onClick={onCancel}
         isDisabled={!canCancel}
       >
-        Cancel
+        <FormattedMessage {...messages.cancel} />
       </CancelButton>
     );
   }
@@ -50,6 +52,7 @@ export class Footer extends Component<FooterProps> {
         onClick={onClick}
         isDisabled={!canInsert}
       >
+        {/* TODO [i18n] */}
         {itemCount > 1 ? `Insert  ${itemCount} files` : 'Insert a file'}
       </InsertButton>
     );

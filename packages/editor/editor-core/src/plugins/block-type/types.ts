@@ -164,13 +164,16 @@ export const HEADINGS_BY_LEVEL = TEXT_BLOCK_TYPES.reduce((acc, blockType) => {
   return acc;
 }, {});
 
-export const HEADINGS_BY_NAME = TEXT_BLOCK_TYPES.reduce((acc, blockType) => {
-  if (blockType.level && blockType.nodeName === 'heading') {
-    acc[blockType.name] = blockType;
-  }
+export const HEADINGS_BY_NAME = TEXT_BLOCK_TYPES.reduce(
+  (acc, blockType) => {
+    if (blockType.level && blockType.nodeName === 'heading') {
+      acc[blockType.name] = blockType;
+    }
 
-  return acc;
-}, {});
+    return acc;
+  },
+  {} as { [blockType: string]: BlockType },
+);
 
 export type BlockTypeName =
   | 'normal'

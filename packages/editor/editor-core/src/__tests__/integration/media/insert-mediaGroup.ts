@@ -11,7 +11,7 @@ import {
 
 [comment, message].forEach(editor => {
   BrowserTestCase(
-    `Inserts a media group on ${editor.name}`,
+    `insert-mediaGroup.ts: Inserts a media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const browser = new Page(client);
@@ -28,7 +28,7 @@ import {
       // now we can insert media as necessary
       await insertMedia(browser);
 
-      expect(await browser.isVisible('.image')).toBe(true);
+      expect(await browser.isVisible('.wrapper')).toBe(true);
 
       const doc = await browser.$eval(editable, getDocFromElement);
       expect(doc).toMatchDocSnapshot();

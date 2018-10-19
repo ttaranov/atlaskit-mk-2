@@ -91,6 +91,10 @@ export default class Page {
     return this.browser.addValue(selector, text);
   }
 
+  setValue(selector, text) {
+    return this.browser.setValue(selector, text);
+  }
+
   click(selector) {
     return this.browser.click(selector);
   }

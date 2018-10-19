@@ -1,33 +1,25 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadParams, MediaFile } from '@atlaskit/media-picker';
+import { UploadParams } from '@atlaskit/media-picker';
 
 export type MediaStateStatus =
   | 'unknown'
-  | 'uploading'
-  | 'processing'
   | 'ready'
-  | 'error'
   | 'cancelled'
-  | 'preview';
+  | 'preview'
+  | 'error';
 
 export interface MediaState {
   id: string;
   status?: MediaStateStatus;
-  publicId?: string;
   fileName?: string;
   fileSize?: number;
-  fileType?: string;
   fileMimeType?: string;
-  progress?: number;
-  ready?: boolean;
-  preview?: boolean;
-  thumbnail?: {
-    src: string;
-    dimensions?: {
-      width: number;
-      height: number;
-    };
+  dimensions?: {
+    width: number | undefined;
+    height: number | undefined;
   };
+  fileId: Promise<string>;
+  publicId?: string;
   error?: {
     name: string;
     description: string;
@@ -35,11 +27,11 @@ export interface MediaState {
 }
 
 export interface MediaStateManager {
-  getState(tempId: string): MediaState | undefined;
-  updateState(tempId: string, newState: Partial<MediaState>): void;
-  newState(file: MediaFile, status: string, publicId?: string): MediaState;
-  on(tempId: string, cb: (state: MediaState) => void);
-  off(tempId: string, cb: (state: MediaState) => void): void;
+  getState(id: string): MediaState | undefined;
+  newState(id: string, newState: Partial<MediaState>): MediaState;
+  updateState(id: string, newState: Partial<MediaState>): MediaState;
+  on(id: string, cb: (state: MediaState) => void);
+  off(id: string, cb: (state: MediaState) => void): void;
   destroy(): void;
 }
 

@@ -82,6 +82,7 @@ describe('Media with mock facade', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
+    await provider.viewContext;
 
     expect(spies.popup.onClose).toHaveBeenCalledTimes(1);
     expect(spies.popup.onClose).toHaveBeenCalledWith(
@@ -97,6 +98,7 @@ describe('Media with mock facade', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
+    await provider.viewContext;
 
     pluginState.destroy();
     expect(removeOnCloseListener).toHaveBeenCalledTimes(1);
@@ -110,6 +112,7 @@ describe('Media with mock facade', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
+    await provider.viewContext;
 
     pluginState.showMediaPicker();
     expect(spies.popup.show).toHaveBeenCalledTimes(1);
@@ -125,6 +128,7 @@ describe('Media with mock facade', () => {
 
     const provider = await mediaProvider;
     await provider.uploadContext;
+    await provider.viewContext;
 
     pluginState.showMediaPicker();
     expect(spies.dropzone.activate).toHaveBeenCalledTimes(0);

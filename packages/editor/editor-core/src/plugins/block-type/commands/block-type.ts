@@ -18,7 +18,7 @@ export function setBlockType(name: string): Command {
     }
 
     const headingBlockType = HEADINGS_BY_NAME[name];
-    if (headingBlockType && nodes.heading) {
+    if (headingBlockType && nodes.heading && headingBlockType.level) {
       return setHeading(headingBlockType.level)(state, dispatch);
     }
 

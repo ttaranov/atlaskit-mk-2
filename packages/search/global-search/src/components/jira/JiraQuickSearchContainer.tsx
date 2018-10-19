@@ -211,13 +211,27 @@ export class JiraQuickSearchContainer extends React.Component<
     });
   };
 
+  canSearchUsers = (): Promise<boolean> => {
+    return handlePromiseError(
+      this.props.jiraClient.canSearchUsers(),
+      false,
+      error =>
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'error fetching browse user permission',
+          error,
+        ),
+    );
+  };
+
   getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
     return Promise.all([
       this.getJiraRecentItems(sessionId),
       this.getRecentlyInteractedPeople(),
+      this.canSearchUsers(),
     ])
-      .then(([jiraItems, people]) => {
-        return { ...jiraItems, people };
+      .then(([jiraItems, people, canSearchUsers]) => {
+        return { ...jiraItems, people: canSearchUsers ? people : [] };
       })
       .then(results => ({ results } as ResultsWithTiming));
   };
@@ -250,23 +264,31 @@ export class JiraQuickSearchContainer extends React.Component<
     const mapPromiseToPerformanceTime = (p: Promise<any>) =>
       p.then(() => performanceNow() - startTime);
 
-    return Promise.all<CrossProductSearchResults, Result[], number, number>([
+    return Promise.all<
+      CrossProductSearchResults,
+      Result[],
+      number,
+      number,
+      boolean
+    >([
       crossProductSearchPromise,
       searchPeoplePromise,
       mapPromiseToPerformanceTime(crossProductSearchPromise),
       mapPromiseToPerformanceTime(searchPeoplePromise),
+      this.canSearchUsers(),
     ]).then(
       ([
         xpsearchResults,
         peopleResults,
         crossProductSearchElapsedMs,
         peopleElapsedMs,
+        canSearchPeople,
       ]) => ({
         results: {
           objects: xpsearchResults.results.get(Scope.JiraIssue) || [],
           containers:
             xpsearchResults.results.get(Scope.JiraBoardProjectFilter) || [],
-          people: peopleResults,
+          people: canSearchPeople ? peopleResults : [],
         },
         timings: {
           crossProductSearchElapsedMs,

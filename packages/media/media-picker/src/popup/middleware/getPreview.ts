@@ -1,44 +1,71 @@
 import { Store, Dispatch, Middleware } from 'redux';
-
-import { Fetcher } from '../tools/fetcher/fetcher';
 import { GetPreviewAction, isGetPreviewAction } from '../actions/getPreview';
 import { State } from '../domain';
+import { sendUploadEvent } from '../actions/sendUploadEvent';
 import {
-  sendUploadEvent,
-  SendUploadEventAction,
-} from '../actions/sendUploadEvent';
+  getPreviewFromMetadata,
+  NonImagePreview,
+  Preview,
+} from '../../domain/preview';
 
-export default function(fetcher: Fetcher): Middleware {
+export default function(): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isGetPreviewAction(action)) {
-      getPreview(fetcher, store as any, action);
+      getPreview(store as any, action);
     }
     return next(action);
   };
 }
 
-export function getPreview(
-  fetcher: Fetcher,
+const dispatchPreviewUpdate = (
   store: Store<State>,
-  { uploadId, file, collection }: GetPreviewAction,
-): Promise<SendUploadEventAction> {
-  const { userContext } = store.getState();
+  { uploadId, file }: GetPreviewAction,
+  preview: Preview,
+) => {
+  store.dispatch(
+    sendUploadEvent({
+      event: {
+        name: 'upload-preview-update',
+        data: {
+          file,
+          preview,
+        },
+      },
+      uploadId,
+    }),
+  );
+};
 
-  return userContext.config
-    .authProvider()
-    .then(auth => fetcher.getPreview(auth, file.id, collection))
-    .then(preview =>
-      store.dispatch(
-        sendUploadEvent({
-          event: {
-            name: 'upload-preview-update',
-            data: {
-              file,
-              preview,
-            },
-          },
-          uploadId,
-        }),
-      ),
-    );
+export async function getPreview(
+  store: Store<State>,
+  action: GetPreviewAction,
+) {
+  const { file, collection } = action;
+  const { userContext } = store.getState();
+  const subscription = userContext
+    .getFile(file.id, { collectionName: collection })
+    .subscribe({
+      async next(state) {
+        if (state.status === 'error') {
+          return;
+        }
+
+        const { mediaType } = state;
+        // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
+        setImmediate(() => subscription.unsubscribe());
+
+        if (mediaType === 'image') {
+          const metadata = await userContext.getImageMetadata(file.id, {
+            collection,
+          });
+          const preview = getPreviewFromMetadata(metadata);
+          dispatchPreviewUpdate(store, action, preview);
+        } else {
+          const preview: NonImagePreview = {
+            file: state.preview ? state.preview.blob : undefined,
+          };
+          dispatchPreviewUpdate(store, action, preview);
+        }
+      },
+    });
 }

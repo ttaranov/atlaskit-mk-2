@@ -1,10 +1,8 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-import { imageSnapshotFolder, initEditor, snapshot } from './_utils';
+import { initEditor, snapshot } from './_utils';
 
 describe('Snapshot Test: Dynamic Text Sizing', () => {
   let page;
   beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
     // @ts-ignore
     page = global.page;
     await initEditor(page, 'full-page-with-dynamic-text-sizing');

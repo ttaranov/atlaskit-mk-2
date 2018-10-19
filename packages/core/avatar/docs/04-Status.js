@@ -9,6 +9,7 @@ export default md`
 
 ${(
   <Example
+    packageName="@atlaskit/avatar"
     Component={require('../examples/05-basicStatus').default}
     title="Status"
     source={require('!!raw-loader!../examples/05-basicStatus')}

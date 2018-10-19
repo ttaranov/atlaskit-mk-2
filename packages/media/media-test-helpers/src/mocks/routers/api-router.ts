@@ -126,6 +126,19 @@ export function createApiRouter(): Router<DatabaseSchema> {
     });
   });
 
+  router.get('/file/:fileId/image/metadata', () => {
+    return {
+      metadata: {
+        pending: false,
+        preview: {},
+        original: {
+          height: 4096,
+          width: 4096,
+        },
+      },
+    };
+  });
+
   router.get('/picker/accounts', () => {
     return {
       data: [],

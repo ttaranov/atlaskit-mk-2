@@ -11,6 +11,10 @@ import {
   makeQuickNavSearchData,
 } from './mockData';
 import { jiraRecentResponseWithAttributes } from './jiraRecentResponseDataWithAttributes';
+import {
+  permissionResponseWithoutUserPickerPermission,
+  permissionResponseWithUserPickerPermission,
+} from './jiraPermissionResponse';
 
 type Request = string;
 
@@ -23,6 +27,7 @@ export type MocksConfig = {
   quickNavDelay: number;
   jiraRecentDelay: number;
   peopleSearchDelay: number;
+  canSearchUsers: boolean;
 };
 
 export const ZERO_DELAY_CONFIG: MocksConfig = {
@@ -30,13 +35,15 @@ export const ZERO_DELAY_CONFIG: MocksConfig = {
   quickNavDelay: 0,
   jiraRecentDelay: 0,
   peopleSearchDelay: 0,
+  canSearchUsers: true,
 };
 
-const DEFAULT_MOCKS_CONFIG: MocksConfig = {
+export const DEFAULT_MOCKS_CONFIG: MocksConfig = {
   crossProductSearchDelay: 650,
   quickNavDelay: 500,
   jiraRecentDelay: 500,
   peopleSearchDelay: 500,
+  canSearchUsers: true,
 };
 
 function delay<T>(millis: number, value?: T): Promise<T> {
@@ -96,10 +103,18 @@ function mockPeopleApi(delayMs: number, queryPeopleSearch) {
   );
 }
 
-function mockJiraApi(delayMs: number) {
+function mockJiraApi(delayMs: number, canSearchUsers: boolean) {
   fetchMock.get(
     new RegExp('rest/internal/2/productsearch/recent?'),
     async request => delay(delayMs, jiraRecentResponseWithAttributes),
+  );
+
+  const permissionResponse = canSearchUsers
+    ? permissionResponseWithUserPickerPermission
+    : permissionResponseWithoutUserPickerPermission;
+  fetchMock.get(
+    '/rest/api/2/mypermissions?permissions=USER_PICKER',
+    async request => delay(delayMs, permissionResponse),
   );
 }
 
@@ -120,7 +135,7 @@ export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
     confluenceRecentSpacesResponse,
   });
   mockQuickNavApi(config.quickNavDelay, queryMockQuickNav);
-  mockJiraApi(config.jiraRecentDelay);
+  mockJiraApi(config.jiraRecentDelay, config.canSearchUsers);
 }
 
 export function teardownMocks() {

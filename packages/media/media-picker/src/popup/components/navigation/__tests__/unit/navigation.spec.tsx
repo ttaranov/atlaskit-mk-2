@@ -244,12 +244,12 @@ describe('<Navigation />', () => {
       expect(component.find(DropdownItem).get(1).props.children).toEqual(
         'you@google.com',
       );
-      expect(component.find(DropdownItem).get(2).props.children).toEqual(
-        'Add account',
-      );
-      expect(component.find(DropdownItem).get(3).props.children).toEqual(
-        'Unlink Account',
-      );
+      expect(
+        component.find(DropdownItem).get(2).props.children.props.defaultMessage,
+      ).toEqual('Add account');
+      expect(
+        component.find(DropdownItem).get(3).props.children.props.defaultMessage,
+      ).toEqual('Unlink Account');
     });
 
     it('should retrieve available Dropbox Accounts', () => {
@@ -274,12 +274,12 @@ describe('<Navigation />', () => {
       expect(component.find(DropdownItem).get(1).props.children).toEqual(
         'you@dropbox.com',
       );
-      expect(component.find(DropdownItem).get(2).props.children).toEqual(
-        'Add account',
-      );
-      expect(component.find(DropdownItem).get(3).props.children).toEqual(
-        'Unlink Account',
-      );
+      expect(
+        component.find(DropdownItem).get(2).props.children.props.defaultMessage,
+      ).toEqual('Add account');
+      expect(
+        component.find(DropdownItem).get(3).props.children.props.defaultMessage,
+      ).toEqual('Unlink Account');
     });
 
     it('should switch active account when clicking on inactive one', () => {

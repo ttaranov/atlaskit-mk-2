@@ -87,6 +87,7 @@ export const insertMedia = async (
   // insert it from the picker dialog
   await browser.waitForSelector(insertMediaButton);
   await browser.click(insertMediaButton);
+  await browser.waitFor('.img-wrapper');
 
   // Wait until we have found media-cards for all inserted items.
   const mediaCardCount = get$$Length(existingMediaCards) + filenames.length;
@@ -98,6 +99,9 @@ export const insertMedia = async (
       return get$$Length(mediaCards) === mediaCardCount;
     });
   } else {
+    await browser.evaluate(() => {
+      window.scrollBy(0, window.innerHeight);
+    });
     await browser.waitFor(
       (mediaCardSelector, mediaCardCount) => {
         const mediaCards = document.querySelectorAll(mediaCardSelector);

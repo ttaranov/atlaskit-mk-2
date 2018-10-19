@@ -36,8 +36,6 @@ export function createPlugin(
   schema: Schema,
   editorAppearance?: EditorAppearance,
 ) {
-  let atlassianMarkDownParser: MarkdownTransformer;
-
   const md = MarkdownIt('zero', { html: false });
 
   md.enable([
@@ -53,7 +51,7 @@ export function createPlugin(
   // @see https://product-fabric.atlassian.net/browse/ED-3097
   md.use(linkify);
 
-  atlassianMarkDownParser = new MarkdownTransformer(schema, md);
+  const atlassianMarkDownParser = new MarkdownTransformer(schema, md);
 
   return new Plugin({
     key: stateKey,
@@ -97,9 +95,24 @@ export function createPlugin(
           source: getPasteSource(event),
         });
 
-        // runs macro autoconvert prior to other conversions
-        if (text && !html && handleMacroAutoConvert(text)(state, dispatch)) {
-          return true;
+        let markdownSlice: Slice | undefined;
+        if (text && !html) {
+          const doc = atlassianMarkDownParser.parse(escapeLinks(text));
+          if (doc && doc.content) {
+            markdownSlice = new Slice(
+              doc.content,
+              slice.openStart,
+              slice.openEnd,
+            );
+          }
+
+          // run macro autoconvert prior to other conversions
+          if (
+            markdownSlice &&
+            handleMacroAutoConvert(text, markdownSlice)(state, dispatch, view)
+          ) {
+            return true;
+          }
         }
 
         // If we're in a code block, append the text contents of clipboard inside it
@@ -118,20 +131,14 @@ export function createPlugin(
         }
 
         // If the clipboard only contains plain text, attempt to parse it as Markdown
-        if (text && !html && atlassianMarkDownParser) {
+        if (text && !html && markdownSlice) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
-          const doc = atlassianMarkDownParser.parse(escapeLinks(text));
+          const tr = closeHistory(state.tr);
+          tr.replaceSelection(markdownSlice);
 
-          if (doc && doc.content) {
-            const tr = closeHistory(state.tr);
-            tr.replaceSelection(
-              new Slice(doc.content, slice.openStart, slice.openEnd),
-            );
-
-            queueCardsFromChangedTr(state, tr);
-            dispatch(tr.scrollIntoView());
-            return true;
-          }
+          queueCardsFromChangedTr(state, tr);
+          dispatch(tr.scrollIntoView());
+          return true;
         }
 
         // finally, handle rich-text copy-paste

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Extension: Center Layout 1`] = `
+exports[`layouts.ts: Extension: Center Layout 1`] = `
 Object {
   "content": Array [
     Object {
@@ -30,7 +30,7 @@ Object {
 }
 `;
 
-exports[`Extension: Full width Layout 1`] = `
+exports[`layouts.ts: Extension: Full width Layout 1`] = `
 Object {
   "content": Array [
     Object {
@@ -60,7 +60,7 @@ Object {
 }
 `;
 
-exports[`Extension: Wide Layout 1`] = `
+exports[`layouts.ts: Extension: Wide Layout 1`] = `
 Object {
   "content": Array [
     Object {

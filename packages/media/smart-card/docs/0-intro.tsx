@@ -4,7 +4,10 @@ import { md, Example } from '@atlaskit/docs';
 export default md`
   # @atlaskit/smart-card
 
-  Turns a URL into a card with metadata sourced from the vendor.
+  Turns a URL into a card with metadata sourced from either:
+
+  - a vendor or...
+  - a custom fetch function that can be provided.
 
   ## Installation
 

@@ -1,3 +1,4 @@
+// TODO [i18n]
 export const errorHintRetry = "Try again and we'll give it another shot.";
 export const errorHintCritical =
   'If the problem keeps happening contact support.';
