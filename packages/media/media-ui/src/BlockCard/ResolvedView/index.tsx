@@ -75,7 +75,7 @@ export interface Action {
   handler: (callbacks: ActionHandlerCallbacks) => void;
 }
 
-export interface ResolvedViewProps {
+export interface BlockCardResolvedViewProps {
   context?: ContextViewModel;
   link?: string;
   icon?: IconWithTooltip;
@@ -172,8 +172,8 @@ function clearActionFailureState(): Pick<
   };
 }
 
-export class ResolvedView extends React.Component<
-  ResolvedViewProps,
+export class BlockCardResolvedView extends React.Component<
+  BlockCardResolvedViewProps,
   ResolvedViewState
 > {
   state: ResolvedViewState = {

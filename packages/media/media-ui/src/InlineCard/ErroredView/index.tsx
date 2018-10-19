@@ -6,7 +6,7 @@ import { truncateUrlForErrorView } from '../utils';
 import { Frame } from '../Frame';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
 
-export interface ErroredViewProps {
+export interface InlineCardErroredViewProps {
   url: string;
   message: string;
   onClick?: () => void;
@@ -14,7 +14,9 @@ export interface ErroredViewProps {
   isSelected?: boolean;
 }
 
-export class ErroredView extends React.Component<ErroredViewProps> {
+export class InlineCardErroredView extends React.Component<
+  InlineCardErroredViewProps
+> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { onRetry } = this.props;
     if (onRetry) {

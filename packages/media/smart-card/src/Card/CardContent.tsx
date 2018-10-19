@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { BlockCard, InlineCard } from '@atlaskit/media-ui';
+import {
+  BlockCardResolvingView,
+  BlockCardErroredView,
+  BlockCardUnauthorisedView,
+  BlockCardForbiddenView,
+  BlockCardResolvedView,
+  InlineCardResolvedView,
+  InlineCardResolvingView,
+  InlineCardErroredView,
+  InlineCardForbiddenView,
+} from '@atlaskit/media-ui';
 import { auth } from '@atlaskit/outbound-auth-flow-client';
 import { ObjectState } from '../Client';
 import { extractBlockPropsFromJSONLD } from '../extractBlockPropsFromJSONLD';
@@ -56,7 +66,7 @@ export class CardContent extends React.Component<CardContentProps> {
   renderBlockResolvingState() {
     const { isSelected } = this.props;
     return (
-      <BlockCard.ResolvingView
+      <BlockCardResolvingView
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
       />
@@ -67,7 +77,7 @@ export class CardContent extends React.Component<CardContentProps> {
     const { url } = this;
     const { isSelected } = this.props;
     return (
-      <BlockCard.UnauthorisedView
+      <BlockCardUnauthorisedView
         icon={this.collapsedIcon}
         isSelected={isSelected}
         url={url}
@@ -81,7 +91,7 @@ export class CardContent extends React.Component<CardContentProps> {
     const { url } = this;
     const { isSelected } = this.props;
     return (
-      <BlockCard.ForbiddenView
+      <BlockCardForbiddenView
         url={url}
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
@@ -94,7 +104,7 @@ export class CardContent extends React.Component<CardContentProps> {
     const { url } = this;
     const { isSelected } = this.props;
     return (
-      <BlockCard.ErroredView
+      <BlockCardErroredView
         url={url}
         isSelected={isSelected}
         message="We couldn't find this link"
@@ -107,7 +117,7 @@ export class CardContent extends React.Component<CardContentProps> {
     const { url } = this;
     const { isSelected } = this.props;
     return (
-      <BlockCard.ErroredView
+      <BlockCardErroredView
         url={url}
         isSelected={isSelected}
         message="We couldn't load this link"
@@ -121,7 +131,7 @@ export class CardContent extends React.Component<CardContentProps> {
     const { state, isSelected } = this.props;
     const props = extractBlockPropsFromJSONLD(state.data || {});
     return (
-      <BlockCard.ResolvedView
+      <BlockCardResolvedView
         {...props}
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
@@ -158,7 +168,7 @@ export class CardContent extends React.Component<CardContentProps> {
       props: { isSelected },
     } = this;
     return (
-      <InlineCard.ResolvingView
+      <InlineCardResolvingView
         url={url}
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
@@ -170,7 +180,7 @@ export class CardContent extends React.Component<CardContentProps> {
     const { state, isSelected } = this.props;
     const props = extractInlinePropsFromJSONLD(state.data || {});
     return (
-      <InlineCard.ResolvedView
+      <InlineCardResolvedView
         {...props}
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
@@ -184,7 +194,7 @@ export class CardContent extends React.Component<CardContentProps> {
       props: { isSelected },
     } = this;
     return (
-      <InlineCard.ForbiddenView
+      <InlineCardForbiddenView
         url={url}
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
@@ -199,7 +209,7 @@ export class CardContent extends React.Component<CardContentProps> {
       props: { isSelected },
     } = this;
     return (
-      <InlineCard.ForbiddenView
+      <InlineCardForbiddenView
         url={url}
         isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
@@ -214,7 +224,7 @@ export class CardContent extends React.Component<CardContentProps> {
       props: { isSelected },
     } = this;
     return (
-      <InlineCard.ErroredView
+      <InlineCardErroredView
         url={url}
         isSelected={isSelected}
         message="We couldn't find this link"
@@ -229,7 +239,7 @@ export class CardContent extends React.Component<CardContentProps> {
       props: { isSelected },
     } = this;
     return (
-      <InlineCard.ErroredView
+      <InlineCardErroredView
         url={url}
         isSelected={isSelected}
         message="We couldn't load this link"

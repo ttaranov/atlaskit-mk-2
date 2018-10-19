@@ -2,11 +2,11 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
 import {
-  ResolvingView,
-  ErroredView,
-  UnauthorisedView,
-  ForbiddenView,
-  ResolvedView,
+  BlockCardResolvingView,
+  BlockCardErroredView,
+  BlockCardUnauthorisedView,
+  BlockCardForbiddenView,
+  BlockCardResolvedView,
 } from '../src/BlockCard';
 
 const url = 'https://www.dropbox.com/';
@@ -36,13 +36,13 @@ class Example extends React.Component {
               {this.state.isSelected ? 'Deselect' : 'Make those selected'}
             </Button>
             <h4>Loading</h4>
-            <ResolvingView
+            <BlockCardResolvingView
               isSelected={this.state.isSelected}
               onClick={onClick}
             />
 
             <h4>Errored</h4>
-            <ErroredView
+            <BlockCardErroredView
               url={url}
               isSelected={this.state.isSelected}
               message="We stumbled a bit here."
@@ -51,7 +51,7 @@ class Example extends React.Component {
             />
 
             <h4>Unauthorised</h4>
-            <UnauthorisedView
+            <BlockCardUnauthorisedView
               icon={icon}
               isSelected={this.state.isSelected}
               url={url}
@@ -60,7 +60,7 @@ class Example extends React.Component {
             />
 
             <h4>Forbidden</h4>
-            <ForbiddenView
+            <BlockCardForbiddenView
               url={url}
               isSelected={this.state.isSelected}
               onClick={onClick}
@@ -68,7 +68,7 @@ class Example extends React.Component {
             />
 
             <h4>Resolved</h4>
-            <ResolvedView
+            <BlockCardResolvedView
               context={{
                 text: 'Dropbox',
                 icon: icon,
@@ -83,7 +83,7 @@ class Example extends React.Component {
             />
             <br />
             <br />
-            <ResolvedView
+            <BlockCardResolvedView
               isSelected={this.state.isSelected}
               context={{
                 text: 'Dropbox',

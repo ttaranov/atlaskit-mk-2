@@ -1,5 +1,17 @@
-export { ResolvingView, ResolvingViewProps } from './ResolvingView';
-export { ResolvedView, ResolvedViewProps } from './ResolvedView';
-export { ErroredView, ErroredViewProps } from './ErroredView';
-export { ForbiddenView, ForbiddenViewProps } from './ForbiddenView';
-export { UnauthorisedView, UnauthorisedViewProps } from './UnauthorisedView';
+export {
+  BlockCardResolvingView,
+  BlockCardResolvingViewProps,
+} from './ResolvingView';
+export {
+  BlockCardResolvedView,
+  BlockCardResolvedViewProps,
+} from './ResolvedView';
+export { BlockCardErroredView, BlockCardErroredViewProps } from './ErroredView';
+export {
+  BlockCardForbiddenView,
+  BlockCardForbiddenViewProps,
+} from './ForbiddenView';
+export {
+  BlockCardUnauthorisedView,
+  BlockCardUnauthorisedViewProps,
+} from './UnauthorisedView';

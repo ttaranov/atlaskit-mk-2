@@ -1,6 +1,21 @@
-export { LinkView, LinkViewProps } from './LinkView';
-export { ResolvingView, ResolvingViewProps } from './ResolvingView';
-export { ResolvedView, ResolvedViewProps } from './ResolvedView';
-export { ErroredView, ErroredViewProps } from './ErroredView';
-export { ForbiddenView, ForbiddenViewProps } from './ForbiddenView';
-export { UnauthorizedView, UnauthorizedViewProps } from './UnauthorisedView';
+export { InlineCardLinkView, InlineCardLinkViewProps } from './LinkView';
+export {
+  InlineCardResolvingView,
+  InlineCardResolvingViewProps,
+} from './ResolvingView';
+export {
+  InlineCardResolvedView,
+  InlineCardResolvedViewProps,
+} from './ResolvedView';
+export {
+  InlineCardErroredView,
+  InlineCardErroredViewProps,
+} from './ErroredView';
+export {
+  InlineCardForbiddenView,
+  InlineCardForbiddenViewProps,
+} from './ForbiddenView';
+export {
+  InlineCardUnauthorizedView,
+  InlineCardUnauthorizedViewProps,
+} from './UnauthorisedView';

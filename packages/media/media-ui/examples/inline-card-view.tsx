@@ -2,12 +2,12 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
 import {
-  LinkView,
-  ResolvedView,
-  ResolvingView,
-  ErroredView,
-  ForbiddenView,
-  UnauthorizedView,
+  InlineCardLinkView,
+  InlineCardResolvedView,
+  InlineCardResolvingView,
+  InlineCardErroredView,
+  InlineCardForbiddenView,
+  InlineCardUnauthorizedView,
 } from '../src/InlineCard';
 
 interface Lozenge {
@@ -50,10 +50,10 @@ class Example extends React.Component {
           <GridColumn>
             <h4>Paste link into editor</h4>
             Labore sunt adipisicing esse magna.
-            <LinkView text={url} onClick={onClick} />
+            <InlineCardLinkView text={url} onClick={onClick} />
             <h4>Unauthorised view</h4>
             Labore sunt adipisicing esse magna.
-            <UnauthorizedView
+            <InlineCardUnauthorizedView
               isSelected={this.state.isSelected}
               icon={icon}
               onClick={() => {}}
@@ -64,7 +64,7 @@ class Example extends React.Component {
             />
             <h4>ResolvingView</h4>
             Labore sunt adipisicing esse magna.
-            <ResolvingView
+            <InlineCardResolvingView
               isSelected={this.state.isSelected}
               url={url}
               onClick={onClick}
@@ -72,7 +72,7 @@ class Example extends React.Component {
             Labore sunt adipisicing esse magna.
             <h4>No Permissions View</h4>
             Labore sunt adipisicing esse magna.
-            <ForbiddenView
+            <InlineCardForbiddenView
               isSelected={this.state.isSelected}
               url={url}
               onClick={() => {
@@ -84,7 +84,7 @@ class Example extends React.Component {
             />
             <h4>Errored View</h4>
             Labore sunt adipisicing esse magna.
-            <ErroredView
+            <InlineCardErroredView
               isSelected={this.state.isSelected}
               message="Ooops, something went wrong!"
               url={url}
@@ -96,7 +96,7 @@ class Example extends React.Component {
             Labore sunt adipisicing esse magna.
             <h4>Resolved view</h4>
             Labore sunt adipisicing esse magna.
-            <ResolvedView
+            <InlineCardResolvedView
               isSelected={this.state.isSelected}
               icon={icon}
               title={title}

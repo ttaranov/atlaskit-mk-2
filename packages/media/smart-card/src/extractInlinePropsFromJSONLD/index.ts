@@ -1,4 +1,4 @@
-import { InlineCard } from '@atlaskit/media-ui';
+import { InlineCardResolvedViewProps } from '@atlaskit/media-ui';
 import { genericExtractPropsFromJSONLD } from '../genericExtractPropsFromJSONLD';
 import { extractPropsFromObject } from './extractPropsFromObject';
 
@@ -12,7 +12,7 @@ const extractorFunctionsByType = {
 
 export function extractInlinePropsFromJSONLD(
   json: any,
-): InlineCard.ResolvedViewProps {
+): InlineCardResolvedViewProps {
   return genericExtractPropsFromJSONLD({
     extractorPrioritiesByType: extractorPrioritiesByType,
     extractorFunctionsByType: extractorFunctionsByType,

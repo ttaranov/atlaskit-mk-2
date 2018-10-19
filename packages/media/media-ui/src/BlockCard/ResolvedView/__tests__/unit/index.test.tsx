@@ -3,7 +3,7 @@ import { shallow, mount, ReactWrapper } from 'enzyme';
 import Button from '@atlaskit/button';
 import Avatar from '@atlaskit/avatar';
 import AvatarGroup from '@atlaskit/avatar-group';
-import { ResolvedView, Action } from '../..';
+import { BlockCardResolvedView, Action } from '../..';
 import { ImageIcon } from '../../../../BlockCard/ImageIcon';
 import {
   Title,
@@ -81,7 +81,7 @@ describe('ResolvedView', () => {
 
   it('should render the title', () => {
     const element = shallow(
-      <ResolvedView
+      <BlockCardResolvedView
         title={{
           text: 'Hello World!',
         }}
@@ -97,7 +97,7 @@ describe('ResolvedView', () => {
 
   it('should render the byline', () => {
     const element = shallow(
-      <ResolvedView
+      <BlockCardResolvedView
         byline={{
           text: 'Created by an Alien.',
         }}
@@ -113,7 +113,7 @@ describe('ResolvedView', () => {
 
   it('should render the description when there is a description', () => {
     const element = shallow(
-      <ResolvedView
+      <BlockCardResolvedView
         description={{
           text: 'Your tiny planet is mine!',
         }}
@@ -128,56 +128,56 @@ describe('ResolvedView', () => {
   });
 
   it('should not render the description when there is no description', () => {
-    const element = shallow(<ResolvedView />);
+    const element = shallow(<BlockCardResolvedView />);
     expect(element.find(Description)).toHaveLength(0);
   });
 
   it('should render the icon when there is an icon and no user', () => {
-    const element = shallow(<ResolvedView icon={icon} />);
+    const element = shallow(<BlockCardResolvedView icon={icon} />);
     expect(element.find(ImageIcon)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
   });
 
   it('should render the icon when there is an icon and a user', () => {
-    const element = shallow(<ResolvedView icon={icon} user={user} />);
+    const element = shallow(<BlockCardResolvedView icon={icon} user={user} />);
     expect(element.find(ImageIcon)).toHaveLength(1);
     expect(element.find(Avatar)).toHaveLength(0);
   });
 
   it('should render the user when there is a user and no icon', () => {
-    const element = shallow(<ResolvedView user={user} />);
+    const element = shallow(<BlockCardResolvedView user={user} />);
     expect(element.find(ImageIcon)).toHaveLength(0);
     expect(element.find(Avatar)).toHaveLength(1);
   });
 
   it('it should render a preview when there is a preview', () => {
-    const element = shallow(<ResolvedView preview={preview} />);
+    const element = shallow(<BlockCardResolvedView preview={preview} />);
     expect(element.find(PreviewView)).toHaveLength(1);
   });
 
   it('it should not render a preview when there is no preview', () => {
-    const element = shallow(<ResolvedView preview={preview} />);
+    const element = shallow(<BlockCardResolvedView preview={preview} />);
     expect(element.find(PreviewView)).toHaveLength(1);
   });
 
   it('should render the thumbnail when there is a thumbnail', () => {
-    const element = shallow(<ResolvedView thumbnail={thumbnail} />);
+    const element = shallow(<BlockCardResolvedView thumbnail={thumbnail} />);
     expect(element.find(Thumbnail)).toHaveLength(1);
   });
 
   it('should not render the thumbnail when there is no thumbnail', () => {
-    const element = shallow(<ResolvedView />);
+    const element = shallow(<BlockCardResolvedView />);
     expect(element.find(Thumbnail)).toHaveLength(0);
   });
 
   it('should not render the avatar group when there are no users', () => {
-    const element = shallow(<ResolvedView users={[]} />);
+    const element = shallow(<BlockCardResolvedView users={[]} />);
     expect(element.find(AvatarGroup)).toHaveLength(0);
   });
 
   it('should render the avatar group when there are users', () => {
     const element = shallow(
-      <ResolvedView
+      <BlockCardResolvedView
         users={[
           {
             icon: 'https://www.example.com/',
@@ -203,13 +203,13 @@ describe('ResolvedView', () => {
   });
 
   it('should not render any buttons when there are no actions', () => {
-    const element = shallow(<ResolvedView actions={[]} />);
+    const element = shallow(<BlockCardResolvedView actions={[]} />);
     expect(element.find(Button)).toHaveLength(0);
   });
 
   it('should render 3 buttons when there are more then 3 actions', () => {
     const element = shallow(
-      <ResolvedView
+      <BlockCardResolvedView
         actions={[likeAction, commentAction, reportAction, downloadAction]}
       />,
     );
@@ -219,7 +219,9 @@ describe('ResolvedView', () => {
 
   it('should show the spinner in the button when an action is pending', () => {
     const element = mount(
-      <ResolvedView actions={[pendingAction, successActionWithMessage]} />,
+      <BlockCardResolvedView
+        actions={[pendingAction, successActionWithMessage]}
+      />,
     );
     element
       .find(Button)
@@ -236,7 +238,9 @@ describe('ResolvedView', () => {
 
   it('should disable the button when an action is pending', () => {
     const element = mount(
-      <ResolvedView actions={[pendingAction, successActionWithMessage]} />,
+      <BlockCardResolvedView
+        actions={[pendingAction, successActionWithMessage]}
+      />,
     );
     getActionButtons(element)
       .first()
@@ -249,7 +253,9 @@ describe('ResolvedView', () => {
 
   it('should disable all buttons when an action is failed', () => {
     const element = mount(
-      <ResolvedView actions={[failureAction, successActionWithMessage]} />,
+      <BlockCardResolvedView
+        actions={[failureAction, successActionWithMessage]}
+      />,
     );
     const buttons = getActionButtons(element);
     buttons.first().simulate('click');
@@ -261,7 +267,7 @@ describe('ResolvedView', () => {
 
   it('should render the alert when an action succeeds with a message', () => {
     const element = mount(
-      <ResolvedView actions={[successActionWithMessage]} />,
+      <BlockCardResolvedView actions={[successActionWithMessage]} />,
     );
     getActionButtons(element)
       .first()
@@ -274,7 +280,7 @@ describe('ResolvedView', () => {
 
   it('should not render the alert when an action succeeds without a message', () => {
     const element = mount(
-      <ResolvedView actions={[successActionWithoutMessage]} />,
+      <BlockCardResolvedView actions={[successActionWithoutMessage]} />,
     );
     const buttons = getActionButtons(element);
     buttons.first().simulate('click');
@@ -283,7 +289,7 @@ describe('ResolvedView', () => {
   });
 
   it('should render the alert ResolvedView an action failed', () => {
-    const element = mount(<ResolvedView actions={[failureAction]} />);
+    const element = mount(<BlockCardResolvedView actions={[failureAction]} />);
     const buttons = getActionButtons(element);
     buttons.first().simulate('click');
     element.update();
@@ -294,7 +300,7 @@ describe('ResolvedView', () => {
   it('should not render the alert after 2 seconds when an action succeeds', done => {
     jest.useFakeTimers();
     const element = mount(
-      <ResolvedView actions={[successActionWithMessage]} />,
+      <BlockCardResolvedView actions={[successActionWithMessage]} />,
     );
     const buttons = getActionButtons(element);
     buttons.first().simulate('click');

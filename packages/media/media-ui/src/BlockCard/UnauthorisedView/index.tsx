@@ -5,7 +5,7 @@ import { minWidth, maxWidth } from '../dimensions';
 import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescriptionLayout';
 import { ImageIcon } from '../ImageIcon';
 
-export interface UnauthorisedViewProps {
+export interface BlockCardUnauthorisedViewProps {
   icon?: string;
   url: string;
   onClick?: () => void;
@@ -13,7 +13,9 @@ export interface UnauthorisedViewProps {
   isSelected?: boolean;
 }
 
-export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
+export class BlockCardUnauthorisedView extends React.Component<
+  BlockCardUnauthorisedViewProps
+> {
   handleAuthorise = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { onAuthorise } = this.props;
     if (onAuthorise) {

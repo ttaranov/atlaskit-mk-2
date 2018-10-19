@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import TextField from '@atlaskit/field-text';
-import { ErroredView } from '../src/InlineCard/ErroredView';
+import { InlineCardErroredView } from '../src/InlineCard/ErroredView';
 
 class Example extends React.Component {
   state = {
@@ -28,7 +28,7 @@ class Example extends React.Component {
         </Grid>
         <Grid>
           <GridColumn>
-            <ErroredView
+            <InlineCardErroredView
               url={this.state.url}
               message="Something went wrong here"
               onClick={() => alert('This will have zero effect...')}
@@ -42,7 +42,7 @@ class Example extends React.Component {
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
               in finibus augue. Etiam ut leo justo. Proin consequat lacus id leo{' '}
-              <ErroredView
+              <InlineCardErroredView
                 url={this.state.url}
                 message="Something went wrong here"
                 onClick={() => alert('This will have zero effect...')}
