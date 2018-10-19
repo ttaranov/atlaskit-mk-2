@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import * as React from 'react';
 import SectionMessage from '@atlaskit/section-message';
 
@@ -19,11 +18,7 @@ export default function Example() {
           </a>
         </p>
       </SectionMessage>
-      <FullPageExample
-        defaultValue={exampleDocument}
-        contentComponents={undefined}
-        primaryToolbarComponents={undefined}
-      />
+      <FullPageExample defaultValue={exampleDocument} />
     </div>
   );
 }
@@ -56,6 +51,11 @@ const exampleDocument = {
         {
           type: 'text',
           text: "Here's an example of a block Smart Card:",
+          marks: [
+            {
+              type: 'strong',
+            },
+          ],
         },
       ],
     },
@@ -71,7 +71,12 @@ const exampleDocument = {
       content: [
         {
           type: 'text',
-          text: "And here's an inline card surrounded by text:",
+          text: "Here's an inline card surrounded by text:",
+          marks: [
+            {
+              type: 'strong',
+            },
+          ],
         },
       ],
     },
@@ -94,6 +99,30 @@ const exampleDocument = {
           type: 'text',
           text:
             ' nullam in maximus lacus. Integer fermentum eros ante, mattis tempor lacus volutpat eget. Pellentesque risus libero, luctus ac ex et, tempus accumsan orci.',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Here are some example URLs to get you started:',
+          marks: [
+            {
+              type: 'strong',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text:
+            'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
         },
       ],
     },
