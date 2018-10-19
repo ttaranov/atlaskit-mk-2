@@ -72,6 +72,12 @@ describe('JIRA wiki markup - Lists', () => {
 ** nice nice
 * all good`,
     ],
+    [
+      'should not be a list item if it follows by a line break',
+      `* nested
+*
+*`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {
