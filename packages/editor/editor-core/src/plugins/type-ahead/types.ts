@@ -30,6 +30,7 @@ export type TypeAheadHandler = {
       mode: SelectItemMode;
     },
   ) => Transaction | false;
+  dismiss?: (state: EditorState) => void;
 };
 
 export type TypeAheadItemsLoader = null | {

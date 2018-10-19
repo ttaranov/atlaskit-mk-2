@@ -1,11 +1,17 @@
 import * as React from 'react';
+import * as uuid from 'uuid';
 import { Plugin, PluginKey, StateField } from 'prosemirror-state';
+import {
+  AnalyticsEventPayload,
+  CreateUIAnalyticsEventSignature,
+} from '@atlaskit/analytics-next-types';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import {
   MentionProvider,
   MentionItem,
   isSpecialMention,
   MentionDescription,
+  ELEMENTS_CHANNEL,
 } from '@atlaskit/mention';
 import {
   mention,
@@ -27,128 +33,180 @@ import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { ReactNodeView } from '../../nodeviews';
 import ToolbarMention from './ui/ToolbarMention';
 import mentionNodeView from './nodeviews/mention';
+import {
+  buildTypeAheadInsertedPayload,
+  buildTypeAheadCancelPayload,
+} from './analytics';
 
-const mentionsPlugin: EditorPlugin = {
-  nodes() {
-    return [{ name: 'mention', node: mention }];
-  },
+const mentionsPlugin = (
+  createAnalyticsEvent?: CreateUIAnalyticsEventSignature,
+): EditorPlugin => {
+  let sessionId = uuid();
+  const fireEvent = <T extends AnalyticsEventPayload>(payload: T): void => {
+    if (createAnalyticsEvent) {
+      createAnalyticsEvent(payload).fire(ELEMENTS_CHANNEL);
+    }
+  };
 
-  pmPlugins() {
-    return [
-      {
-        name: 'mention',
-        plugin: ({ providerFactory, dispatch, portalProviderAPI }) =>
-          mentionPluginFactory(dispatch, providerFactory, portalProviderAPI),
-      },
-    ];
-  },
+  return {
+    nodes() {
+      return [{ name: 'mention', node: mention }];
+    },
 
-  secondaryToolbarComponent({ editorView, disabled }) {
-    return (
-      <WithPluginState
-        editorView={editorView}
-        plugins={{
-          typeAheadState: typeAheadPluginKey,
-          mentionState: mentionPluginKey,
-        }}
-        render={({
-          typeAheadState = createInitialPluginState(),
-          mentionState = {},
-        }: {
-          typeAheadState: TypeAheadPluginState;
-          mentionState: MentionPluginState;
-        }) =>
-          !mentionState.provider ? null : (
-            <ToolbarMention
-              editorView={editorView}
-              isDisabled={disabled || !typeAheadState.isAllowed}
-            />
-          )
-        }
-      />
-    );
-  },
+    pmPlugins() {
+      return [
+        {
+          name: 'mention',
+          plugin: ({ providerFactory, dispatch, portalProviderAPI }) =>
+            mentionPluginFactory(dispatch, providerFactory, portalProviderAPI),
+        },
+      ];
+    },
 
-  pluginsOptions: {
-    quickInsert: ({ formatMessage }) => [
-      {
-        title: formatMessage(messages.mention),
-        priority: 400,
-        icon: () => <MentionIcon label={formatMessage(messages.mention)} />,
-        action(insert, state) {
-          const mark = state.schema.mark('typeAheadQuery', {
-            trigger: '@',
-          });
-          const mentionText = state.schema.text('@', [mark]);
-          return insert(mentionText);
+    secondaryToolbarComponent({ editorView, disabled }) {
+      return (
+        <WithPluginState
+          editorView={editorView}
+          plugins={{
+            typeAheadState: typeAheadPluginKey,
+            mentionState: mentionPluginKey,
+          }}
+          render={({
+            typeAheadState = createInitialPluginState(),
+            mentionState = {},
+          }: {
+            typeAheadState: TypeAheadPluginState;
+            mentionState: MentionPluginState;
+          }) =>
+            !mentionState.provider ? null : (
+              <ToolbarMention
+                editorView={editorView}
+                isDisabled={disabled || !typeAheadState.isAllowed}
+              />
+            )
+          }
+        />
+      );
+    },
+
+    pluginsOptions: {
+      quickInsert: ({ formatMessage }) => [
+        {
+          title: formatMessage(messages.mention),
+          priority: 400,
+          icon: () => <MentionIcon label={formatMessage(messages.mention)} />,
+          action(insert, state) {
+            const mark = state.schema.mark('typeAheadQuery', {
+              trigger: '@',
+            });
+            const mentionText = state.schema.text('@', [mark]);
+            return insert(mentionText);
+          },
+        },
+      ],
+      typeAhead: {
+        trigger: '@',
+        // Custom regex must have a capture group around trigger
+        // so it's possible to use it without needing to scan through all triggers again
+        customRegex: '\\(?(@)',
+        getItems(query, state, intl, { prevActive, queryChanged }) {
+          if (!prevActive && queryChanged) {
+            analyticsService.trackEvent(
+              'atlassian.fabric.mention.picker.trigger.shortcut',
+            );
+          }
+
+          const pluginState = getMentionPluginState(state);
+          const mentions =
+            !prevActive && queryChanged ? [] : pluginState.mentions || [];
+
+          if (queryChanged && pluginState.provider) {
+            pluginState.provider.filter(query || '');
+          }
+
+          return mentions.map(mention => ({
+            title: mention.name || '',
+            keywords: [mention.mentionName, mention.nickname],
+            render: ({ isSelected, onClick, onMouseMove }) => (
+              <MentionItem
+                mention={mention}
+                selected={isSelected}
+                onMouseMove={onMouseMove}
+                onSelection={onClick}
+              />
+            ),
+            mention,
+          }));
+        },
+        selectItem(state, item, insert, { mode }) {
+          const pluginState = getMentionPluginState(state);
+          const { id, name, nickname, accessLevel, userType } = item.mention;
+          const renderName = nickname ? nickname : name;
+          const typeAheadPluginState = typeAheadPluginKey.getState(
+            state,
+          ) as TypeAheadPluginState;
+
+          const pickerElapsedTime = typeAheadPluginState.queryStarted
+            ? Date.now() - typeAheadPluginState.queryStarted
+            : 0;
+
+          analyticsService.trackEvent(
+            'atlassian.fabric.mention.picker.insert',
+            {
+              mode,
+              isSpecial: isSpecialMention(item.mention) || false,
+              accessLevel: accessLevel || '',
+              mentionee: id,
+              duration: pickerElapsedTime,
+              queryLength: (typeAheadPluginState.query || '').length,
+              ...(pluginState.contextIdentifier as any),
+            },
+          );
+
+          fireEvent(
+            buildTypeAheadInsertedPayload(
+              pickerElapsedTime,
+              sessionId,
+              mode,
+              item.mention,
+              pluginState.mentions,
+              typeAheadPluginState.query || '',
+            ),
+          );
+
+          sessionId = uuid();
+
+          return insert(
+            state.schema.nodes.mention.createChecked({
+              text: `@${renderName}`,
+              id,
+              accessLevel,
+              userType: userType === 'DEFAULT' ? null : userType,
+            }),
+          );
+        },
+        dismiss(state) {
+          const typeAheadPluginState = typeAheadPluginKey.getState(
+            state,
+          ) as TypeAheadPluginState;
+
+          const pickerElapsedTime = typeAheadPluginState.queryStarted
+            ? Date.now() - typeAheadPluginState.queryStarted
+            : 0;
+
+          fireEvent(
+            buildTypeAheadCancelPayload(
+              pickerElapsedTime,
+              sessionId,
+              typeAheadPluginState.query || '',
+            ),
+          );
+
+          sessionId = uuid();
         },
       },
-    ],
-    typeAhead: {
-      trigger: '@',
-      // Custom regex must have a capture group around trigger
-      // so it's possible to use it without needing to scan through all triggers again
-      customRegex: '\\(?(@)',
-      getItems(query, state, intl, { prevActive, queryChanged }) {
-        if (!prevActive && queryChanged) {
-          analyticsService.trackEvent(
-            'atlassian.fabric.mention.picker.trigger.shortcut',
-          );
-        }
-
-        const pluginState = getPluginState(state);
-        const mentions =
-          !prevActive && queryChanged ? [] : pluginState.mentions || [];
-
-        if (queryChanged && pluginState.provider) {
-          pluginState.provider.filter(query || '');
-        }
-
-        return mentions.map(mention => ({
-          title: mention.name || '',
-          keywords: [mention.mentionName, mention.nickname],
-          render: ({ isSelected, onClick, onMouseMove }) => (
-            <MentionItem
-              mention={mention}
-              selected={isSelected}
-              onMouseMove={onMouseMove}
-              onSelection={onClick}
-            />
-          ),
-          mention,
-        }));
-      },
-      selectItem(state, item, insert, { mode }) {
-        const pluginState = getPluginState(state);
-        const { id, name, nickname, accessLevel, userType } = item.mention;
-        const renderName = nickname ? nickname : name;
-        const typeAheadPluginState = typeAheadPluginKey.getState(
-          state,
-        ) as TypeAheadPluginState;
-
-        analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
-          mode,
-          isSpecial: isSpecialMention(item.mention) || false,
-          accessLevel: accessLevel || '',
-          mentionee: id,
-          duration: typeAheadPluginState.queryStarted
-            ? Date.now() - typeAheadPluginState.queryStarted
-            : 0,
-          queryLength: (typeAheadPluginState.query || '').length,
-          ...(pluginState.contextIdentifier as any),
-        });
-
-        return insert(
-          state.schema.nodes.mention.createChecked({
-            text: `@${renderName}`,
-            id,
-            accessLevel,
-            userType: userType === 'DEFAULT' ? null : userType,
-          }),
-        );
-      },
     },
-  },
+  };
 };
 
 export default mentionsPlugin;
@@ -201,7 +259,7 @@ export const setContext = (context): Command => (state, dispatch) => {
 
 export const mentionPluginKey = new PluginKey('mentionPlugin');
 
-export function getPluginState(state) {
+export function getMentionPluginState(state) {
   return mentionPluginKey.getState(state) as MentionPluginState;
 }
 

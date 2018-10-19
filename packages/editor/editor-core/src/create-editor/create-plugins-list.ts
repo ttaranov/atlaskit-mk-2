@@ -1,3 +1,4 @@
+import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next-types';
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
@@ -48,7 +49,7 @@ import {
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
-export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
+export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
   return [
     pastePlugin,
     basePlugin,
@@ -66,7 +67,10 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
 /**
  * Maps EditorProps to EditorPlugins
  */
-export default function createPluginsList(props: EditorProps): EditorPlugin[] {
+export default function createPluginsList(
+  props: EditorProps,
+  createAnalyticsEvent?: CreateUIAnalyticsEventSignature,
+): EditorPlugin[] {
   const plugins = getDefaultPluginsList(props);
 
   if (props.quickInsert) {
@@ -99,7 +103,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.mentionProvider) {
-    plugins.push(mentionsPlugin);
+    plugins.push(mentionsPlugin(createAnalyticsEvent));
   }
 
   if (props.emojiProvider) {

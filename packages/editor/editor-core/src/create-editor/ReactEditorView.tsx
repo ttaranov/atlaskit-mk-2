@@ -1,13 +1,14 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { intlShape } from 'react-intl';
 
+import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next-types';
+import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EventDispatcher, createDispatch } from '../event-dispatcher';
 import { processRawValue } from '../utils';
 import createPluginList from './create-plugins-list';
-import { EditorState, Transaction, Selection } from 'prosemirror-state';
-import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps, EditorConfig, EditorPlugin } from '../types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
 import {
@@ -20,6 +21,7 @@ import {
 
 export interface EditorViewProps {
   editorProps: EditorProps;
+  createAnalyticsEvent?: CreateUIAnalyticsEventSignature;
   providerFactory: ProviderFactory;
   portalProviderAPI: PortalProviderAPI;
   render?: (
@@ -103,8 +105,11 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   }
 
   // Helper to allow tests to inject plugins directly
-  getPlugins(editorProps: EditorProps): EditorPlugin[] {
-    return createPluginList(editorProps);
+  getPlugins(
+    editorProps: EditorProps,
+    createAnalyticsEvent?: CreateUIAnalyticsEventSignature,
+  ): EditorPlugin[] {
+    return createPluginList(editorProps, createAnalyticsEvent);
   }
 
   createEditorState = (options: {
@@ -127,7 +132,10 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     }
 
     this.config = processPluginsList(
-      this.getPlugins(options.props.editorProps),
+      this.getPlugins(
+        options.props.editorProps,
+        options.props.createAnalyticsEvent,
+      ),
       options.props.editorProps,
     );
     const schema = createSchema(this.config);

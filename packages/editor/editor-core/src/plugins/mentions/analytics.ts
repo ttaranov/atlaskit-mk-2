@@ -3,8 +3,8 @@ import { isSpecialMention, MentionDescription } from '@atlaskit/mention';
 import {
   name as packageName,
   version as packageVersion,
-} from '../../../../package.json';
-import { InsertType } from '../../../analytics/fabric-analytics-helper';
+} from '../../../package.json';
+import { SelectItemMode } from '../type-ahead/commands/select-item.js';
 
 export const buildAnalyticsPayload = (
   actionSubject: string,
@@ -48,8 +48,6 @@ const extractAttributesFromQuery = (query?: string): QueryAttributes => {
 
 export const buildTypeAheadCancelPayload = (
   duration: number,
-  upKeyCount: number,
-  downKeyCount: number,
   sessionId: string,
   query?: string,
 ): GasPayload => {
@@ -61,8 +59,6 @@ export const buildTypeAheadCancelPayload = (
     sessionId,
     {
       duration,
-      downKeyCount,
-      upKeyCount,
       queryLength,
       spaceInQuery,
     },
@@ -82,15 +78,12 @@ const getPosition = (
   return;
 };
 
-const isClicked = (insertType: InsertType) =>
-  insertType === InsertType.SELECTED;
+const isClicked = (insertType: SelectItemMode) => insertType === 'selected';
 
 export const buildTypeAheadInsertedPayload = (
   duration: number,
-  upKeyCount: number,
-  downKeyCount: number,
   sessionId: string,
-  insertType: InsertType,
+  insertType: SelectItemMode,
   mention: MentionDescription,
   mentionList?: MentionDescription[],
   query?: string,
@@ -111,8 +104,6 @@ export const buildTypeAheadInsertedPayload = (
       accessLevel: mention.accessLevel || '',
       userType: mention.userType,
       userId: mention.id,
-      upKeyCount,
-      downKeyCount,
     },
   );
 };

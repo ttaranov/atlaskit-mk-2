@@ -13,13 +13,12 @@ export type SelectItemMode =
   | 'shift-enter'
   | 'enter'
   | 'space'
-  | 'select'
+  | 'selected'
   | 'tab';
 
-export const selectCurrentItem = (mode: SelectItemMode = 'select'): Command => (
-  state,
-  dispatch,
-) => {
+export const selectCurrentItem = (
+  mode: SelectItemMode = 'selected',
+): Command => (state, dispatch) => {
   const { active, currentIndex, items, typeAheadHandler } = pluginKey.getState(
     state,
   );
@@ -41,7 +40,7 @@ export const selectCurrentItem = (mode: SelectItemMode = 'select'): Command => (
 };
 
 export const selectSingleItemOrDismiss = (
-  mode: SelectItemMode = 'select',
+  mode: SelectItemMode = 'selected',
 ): Command => (state, dispatch) => {
   const { active, items, typeAheadHandler } = pluginKey.getState(state);
 
@@ -78,7 +77,7 @@ export const selectByIndex = (index: number): Command => (state, dispatch) => {
 export const selectItem = (
   handler: TypeAheadHandler,
   item: TypeAheadItem,
-  mode: SelectItemMode = 'select',
+  mode: SelectItemMode = 'selected',
 ): Command => (state, dispatch) => {
   return withTypeAheadQueryMarkPosition(state, (start, end) => {
     const insert = (maybeNode?: Node | Object | string) => {

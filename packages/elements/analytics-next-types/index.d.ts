@@ -145,7 +145,7 @@ export interface EventMap<TOwnProps> {
 }
 
 export interface WithAnalyticsEventProps {
-  createAnalyticsEvent: CreateUIAnalyticsEventSignature | void;
+  createAnalyticsEvent?: CreateUIAnalyticsEventSignature;
 }
 
 export type WithAnalyticsEventFunction = <TOwnProps>(

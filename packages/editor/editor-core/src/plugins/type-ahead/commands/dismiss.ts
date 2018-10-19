@@ -1,6 +1,7 @@
 import { Command } from '../../../types';
 import { findTypeAheadQuery } from '../utils/find-query-mark';
 import { analyticsService } from '../../../analytics';
+import { pluginKey } from '../pm-plugins/main';
 
 export const dismissCommand = (): Command => (state, dispatch) => {
   const queryMark = findTypeAheadQuery(state);
@@ -8,6 +9,8 @@ export const dismissCommand = (): Command => (state, dispatch) => {
   if (queryMark === null) {
     return false;
   }
+
+  const { typeAheadHandler } = pluginKey.getState(state);
 
   const { start, end } = queryMark;
   const { schema } = state;
@@ -17,6 +20,10 @@ export const dismissCommand = (): Command => (state, dispatch) => {
   }
 
   analyticsService.trackEvent('atlassian.editor.typeahead.dismiss');
+
+  if (typeAheadHandler.dismiss) {
+    typeAheadHandler.dismiss(state);
+  }
 
   dispatch(
     state.tr.removeMark(start, end, markType).removeStoredMark(markType),
