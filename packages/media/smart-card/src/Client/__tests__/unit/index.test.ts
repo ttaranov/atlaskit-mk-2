@@ -346,25 +346,78 @@ describe('Client', () => {
     ]);
   });
 
-  it.only('should not reload card that has already been resolved', async () => {
+  it('should not reload card that has already been resolved', async () => {
     mockResolvedFetchCall();
 
-    const client = new Client();
     const card1 = {
       url: 'http://drive.google.com/doc/1',
       uuid: v4(),
       definitionId: undefined,
       updateFn: jest.fn().mockImplementation((state: ObjectState) => {
-        console.log('CARD 1: Received state: ', state);
         if (state.definitionId) {
           card1.definitionId = state.definitionId as any;
-          console.log('CARD 1: Received NO definitionId');
         }
       }),
     };
 
-    client.register(card1.url, card1.uuid, card1.updateFn).resolve(card1.uuid);
+    const card2 = {
+      url: 'http://drive.google.com/doc/2',
+      uuid: v4(),
+      definitionId: undefined,
+      updateFn: jest.fn().mockImplementation((state: ObjectState) => {
+        if (state.definitionId) {
+          card1.definitionId = state.definitionId as any;
+        }
+      }),
+    };
+
+    const customFetchMock = jest.fn().mockImplementation((url: string) => {
+      if (url === card1.url) {
+        return Promise.resolve(<ResolveResponse>{
+          meta: {
+            visibility: 'public',
+            access: 'granted',
+            auth: [],
+            definitionId: 'google',
+          },
+          data: {
+            name: 'Doc for Card 1',
+          },
+        });
+      } else if (url === card2.url) {
+        return Promise.resolve(<ResolveResponse>{
+          meta: {
+            visibility: 'public',
+            access: 'granted',
+            auth: [],
+            definitionId: 'google',
+          },
+          data: {
+            name: 'Doc for Card 2',
+          },
+        });
+      }
+    });
+
+    class CustomClient extends Client {
+      fetchData(url: string): Promise<ResolveResponse> {
+        return customFetchMock(url);
+      }
+    }
+
+    const client = new CustomClient();
+
+    client.register(card1.url, card1.uuid, card1.updateFn);
+    client.register(card2.url, card2.uuid, card2.updateFn);
+
+    client.resolve(card1.url);
+    client.resolve(card2.url);
+
+    await new Promise(res => setTimeout(res, 1));
+
+    expect(customFetchMock.mock.calls).toEqual([[card1.url], [card2.url]]);
 
     expect(card1.updateFn).toHaveBeenCalledTimes(2);
+    expect(card2.updateFn).toHaveBeenCalledTimes(2);
   });
 });
