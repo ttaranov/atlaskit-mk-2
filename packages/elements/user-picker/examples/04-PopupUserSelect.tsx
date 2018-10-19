@@ -13,7 +13,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-around;
-  flex-direction: column-reverse;
+  flex-direction: column;
   height: 100%;
 `;
 

@@ -1395,10 +1395,6 @@
   resolved "https://registry.yarnpkg.com/@types/lorem-ipsum/-/lorem-ipsum-1.0.2.tgz#77b11b0284fe315efedb9a31c0f1e1488469d99c"
   integrity sha1-d7EbAoT+MV7+25oxwPHhSIRp2Zw=
 
-"@types/memoize-one@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@types/memoize-one/-/memoize-one-3.1.1.tgz#0e21a1b91dc031fb59c1e1657b807ca9aec77475"
-
 "@types/mocha@^2.2.39":
   version "2.2.44"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.44.tgz#1d4a798e53f35212fd5ad4d04050620171cd5b5e"
