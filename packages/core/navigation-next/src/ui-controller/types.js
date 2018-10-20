@@ -17,8 +17,6 @@ export type InitialUIControllerShape = {
 
 export type UIControllerCacheShape = {
   isCollapsed: boolean,
-  isPeekHinting: boolean,
-  isPeeking: boolean,
   productNavWidth: number,
 };
 
