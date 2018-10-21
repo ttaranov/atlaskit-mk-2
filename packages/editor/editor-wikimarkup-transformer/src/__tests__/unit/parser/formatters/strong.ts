@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect strong mark and ignoring the invalid closing symbol', () => {
+    const wiki = 'This is a *strong*strong* text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a strong mark if surrounded by non-latin characters', () => {
     const wiki = 'This is not a 牛*strong*牛 text';
 
