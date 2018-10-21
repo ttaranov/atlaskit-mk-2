@@ -68,24 +68,19 @@ describe('Rectangle', () => {
 });
 
 describe('Bounds', () => {
-  it('should provide origin and size', () => {
-    const X = 1;
-    const Y = 2;
-    const WIDTH = 3;
-    const HEIGHT = 4;
-    const bounds = new Bounds(X, Y, WIDTH, HEIGHT);
-    expect(bounds.x).toBe(X);
-    expect(bounds.y).toBe(Y);
-    expect(bounds.width).toBe(WIDTH);
-    expect(bounds.height).toBe(HEIGHT);
-    expect(bounds.left).toBe(X);
-    expect(bounds.top).toBe(Y);
-    expect(bounds.right).toBe(X + WIDTH);
-    expect(bounds.bottom).toBe(Y + HEIGHT);
-    expect(bounds.corner).toEqual({ x: X + WIDTH, y: Y + HEIGHT });
+  it('should provide location and size', () => {
+    const bounds = new Bounds(1, 2, 3, 4);
+    expect(bounds.x).toBe(1);
+    expect(bounds.y).toBe(2);
+    expect(bounds.width).toBe(3);
+    expect(bounds.height).toBe(4);
+    expect(bounds.left).toBe(1);
+    expect(bounds.top).toBe(2);
+    expect(bounds.right).toBe(1 + 3);
+    expect(bounds.bottom).toBe(2 + 4);
   });
 
-  it('should provide center point relative to origin', () => {
+  it('should provide center point relative to location', () => {
     const bounds = new Bounds(10, 20, 30, 40);
     const center = bounds.center;
     expect(center.x).toBe(bounds.x + bounds.width * 0.5);
@@ -101,7 +96,7 @@ describe('Bounds', () => {
     expect(clone.height).toBe(bounds.height);
   });
 
-  it('should scale origin and size', () => {
+  it('should scale location and size', () => {
     const bounds = new Bounds(1, 2, 3, 4);
     const scaled = bounds.scaled(0.5);
     expect(scaled.x).toBe(bounds.x * 0.5);

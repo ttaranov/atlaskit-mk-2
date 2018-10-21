@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-import { ComponentClass, ButtonHTMLAttributes } from 'react';
+import {
+  ComponentClass,
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  ImgHTMLAttributes,
+} from 'react';
+import { checkeredBg } from '../src/ImagePlacer/styled';
 
 export const InputWrapper: ComponentClass = styled.div`
   margin: 20px 0;
@@ -50,4 +56,57 @@ export const PreviewImageContainer: ComponentClass = styled.div`
 export const OrientationSelectWrapper: ComponentClass = styled.label`
   margin-bottom: 20px;
   display: block;
+`;
+
+export const ItemViewerContainer: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  position: relative;
+  background-color: red;
+  cursor: move;
+  overflow: visible;
+`;
+
+export const ItemViewerItem: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: absolute;
+  background-color: green;
+  transition: left 0.33s ease-out, top 0.33s ease-out, width 0.33s ease-out,
+    height 0.33s ease-out;
+  opacity: 0.75;
+`;
+
+export const ItemViewerMargin: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: absolute;
+  border: 1px dotted white;
+  left: 0;
+  top: 0;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-width: 1px;
+`;
+
+export const Slider: any = styled.input``;
+
+export const Label: ComponentClass = styled.label`
+  display: block;
+
+  > input {
+    margin-left: 10px;
+  }
+
+  > span {
+    display: inline-block;
+    min-width: 120px;
+    text-align: right;
+  }
+`;
+
+export const ExportedImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+  border: 1px solid #ccc;
+`;
+
+export const ExportedImageWrapper = styled.div`
+  display: inline-block;
+  background: url('${checkeredBg}');
+  margin-top: 20px;
 `;
