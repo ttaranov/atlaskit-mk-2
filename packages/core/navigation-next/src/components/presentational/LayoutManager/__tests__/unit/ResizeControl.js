@@ -91,8 +91,27 @@ describe('ResizeControlBase', () => {
     );
   });
 
-  describe('When the component is resizing', () => {
-    describe('When starting to drag', () => {
+  it('should call navigationExpandedCollapsed with resizerClick trigger when clicking recollapse on resize area', () => {
+    const props = cloneDeep(resizeControlProps);
+    props.navigation.state.isCollapsed = false;
+    const wrapper = mount(
+      <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+    );
+
+    wrapper.instance().handleResizeEnd();
+
+    expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+    expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+      resizeControlProps.createAnalyticsEvent,
+      {
+        trigger: 'resizerClick',
+        isCollapsed: true,
+      },
+    );
+  });
+
+  describe('when the component is resizing', () => {
+    describe('when starting to drag', () => {
       it('should initialize dragging state', () => {
         const props = cloneDeep(resizeControlProps);
         const wrapper = mount(
@@ -148,7 +167,7 @@ describe('ResizeControlBase', () => {
       });
     });
 
-    describe('When dragging', () => {
+    describe('when dragging', () => {
       it('should not change width and delta when mouseIsDown is false', () => {
         const props = cloneDeep(resizeControlProps);
         const wrapper = mount(
@@ -228,7 +247,7 @@ describe('ResizeControlBase', () => {
       });
     });
 
-    describe('When releasing drag', () => {
+    describe('when releasing drag', () => {
       it('should collapse if dragged below collapse threshold', () => {
         const props = cloneDeep(resizeControlProps);
         const state = { delta: -100, isDragging: true, width: 140 };
