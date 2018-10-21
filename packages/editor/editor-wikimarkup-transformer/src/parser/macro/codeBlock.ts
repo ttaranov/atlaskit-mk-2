@@ -34,7 +34,10 @@ export function codeBlockMacro(
   const output: PMNode[] = [];
   const { codeBlock } = schema.nodes;
 
-  const textNode = schema.text(rawContent.replace(/^\s+|\s+$/g, ''));
+  const trimedContent = rawContent.replace(/^\s+|\s+$/g, '');
+  const textNode = trimedContent.length
+    ? schema.text(trimedContent)
+    : undefined;
   if (attrs.title) {
     output.push(title(attrs.title, schema));
   }

@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect subscript mark and ignoring the invalid closing symbol', () => {
+    const wiki = 'This is a ~subscript~subscript~ text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a subscript mark if surrounded by non-latin characters', () => {
     const wiki = 'This is not a 牛~subscript~牛 text';
 

@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.4.0
+- [minor] Client to be extended [039c0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/039c0ad)
+
 ## 8.3.3
 - [patch] Replace @atlassian/outbound-auth-flow-client with @atlaskit/ [faff9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/faff9c1)
 

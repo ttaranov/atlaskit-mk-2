@@ -2,8 +2,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-// TODO: AK-5546: There is an issue with .log
-// import * as assert from 'assert';
 
 const urlDateTimePicker = getExampleUrl('core', 'datetime-picker', 'basic');
 /* Css used for the test */
@@ -33,16 +31,7 @@ BrowserTestCase(
     const previousDate = await dateTimePickerTest.getText(dateValue);
     await dateTimePickerTest.keys(['Backspace']);
     expect(await dateTimePickerTest.getText(dateValue)).not.toBe(previousDate);
-    // TODO: AK-5546: There is an issue with .log
-    // if (dateTimePickerTest.log('browser').value) {
-    //   dateTimePickerTest.log('browser').value.forEach(val => {
-    //     assert.notEqual(
-    //       val.level,
-    //       'SEVERE',
-    //       `Console errors :${val.message} when the input is cleared`,
-    //     );
-    //   });
-    // }
+    await dateTimePickerTest.checkConsoleErrors();
   },
 );
 
@@ -61,16 +50,7 @@ BrowserTestCase(
     await dateTimePickerTest.keys(['ArrowLeft']);
     await dateTimePickerTest.keys(['Enter']);
     expect(await dateTimePickerTest.getText(dateValue)).not.toBe(previousDate);
-    // TODO: AK-5546: There is an issue with .log
-    // if (dateTimePickerTest.log('browser').value) {
-    //   dateTimePickerTest.log('browser').value.forEach(val => {
-    //     assert.notEqual(
-    //       val.level,
-    //       'SEVERE',
-    //       `Console errors :${val.message} when the date is updated`,
-    //     );
-    //   });
-    // }
+    await dateTimePickerTest.checkConsoleErrors();
   },
 );
 
@@ -89,16 +69,7 @@ BrowserTestCase(
     timePicker.keys(['Enter']);
     expect(await timePicker.getText(timeValue)).not.toBe(previousTime);
     expect(await timePicker.getText(timeValue)).toBe('12:45pm');
-    // TODO: AK-5546: There is an issue with .log
-    // if (timePicker.log('browser').value) {
-    //   timePicker.log('browser').value.forEach(val => {
-    //     assert.notEqual(
-    //       val.level,
-    //       'SEVERE',
-    //       `Console errors :${val.message} when the time is updated`,
-    //     );
-    //   });
-    // }
+    await timePicker.checkConsoleErrors();
   },
 );
 
@@ -127,15 +98,6 @@ BrowserTestCase(
     const AfterTime = (await dateTimePickerTest.getText(dateTimeValues))[1];
     expect(AfterDate).not.toBe(previousDate);
     expect(previousTime).toBe(AfterTime);
-    // TODO: AK-5546: There is an issue with .log
-    // if (dateTimePickerTest.log('browser').value) {
-    //   dateTimePickerTest.log('browser').value.forEach(val => {
-    //     assert.notEqual(
-    //       val.level,
-    //       'SEVERE',
-    //       `Console errors :${val.message} when the input is cleared`,
-    //     );
-    //   });
-    // }
+    await dateTimePickerTest.checkConsoleErrors();
   },
 );
