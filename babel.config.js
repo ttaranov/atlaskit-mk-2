@@ -23,6 +23,7 @@ module.exports = {
       plugins: [
         '@babel/transform-runtime',
         ['styled-components', { minify: false }],
+        'transform-dynamic-import',
       ],
       presets: [['@babel/env', { modules: 'commonjs' }]],
       ignore: [
