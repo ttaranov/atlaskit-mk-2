@@ -122,10 +122,10 @@ export class CachingMediaEmoji extends PureComponent<CachingEmojiProps, State> {
     return loadedEmoji;
   }
 
-  private handleLoadError = (emojiId: EmojiId, emoji: EmojiDescription) => {
+  private handleLoadError = (emojiId: EmojiId, emoji?: EmojiDescription) => {
     const { invalidImage } = this.state;
 
-    if (invalidImage) {
+    if (invalidImage || !emoji) {
       // do nothing, bad image
       return;
     }

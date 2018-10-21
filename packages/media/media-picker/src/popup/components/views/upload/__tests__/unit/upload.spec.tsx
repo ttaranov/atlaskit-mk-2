@@ -32,9 +32,10 @@ import { SpinnerWrapper, Wrapper } from '../../styled';
 import { LocalBrowserButton } from '../../../../views/upload/uploadButton';
 import { Browser } from '../../../../../../components/browser';
 
+// TODO: Fix this
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
-);
+) as any;
 
 const createConnectedComponent = (
   state: State,
@@ -349,6 +350,8 @@ describe('<UploadView />', () => {
     });
 
     it('should render loading next page state if next page is being loaded', async () => {
+      // TODO: fix this
+      // @ts-ignore
       const nextItems = new Promise(resolve => setImmediate(resolve));
       const loadNextPage = jest.fn().mockReturnValue(nextItems);
       const context = fakeContext({

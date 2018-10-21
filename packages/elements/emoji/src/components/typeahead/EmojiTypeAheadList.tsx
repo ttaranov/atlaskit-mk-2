@@ -165,10 +165,14 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
 
   private selectIndexOnHover = (
     emojiId: EmojiId,
-    emoji: EmojiDescription,
-    event: MouseEvent<any>,
+    emoji: EmojiDescription | undefined,
+    event?: React.SyntheticEvent<any>,
   ) => {
-    const mousePosition = mouseLocation(event);
+    // TODO: fix this
+    if (!event) {
+      return;
+    }
+    const mousePosition = mouseLocation(event as MouseEvent<any>);
     if (actualMouseMove(this.lastMousePosition, mousePosition)) {
       this.selectByEmojiId(emojiId);
     }

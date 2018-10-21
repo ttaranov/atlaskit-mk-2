@@ -32,5 +32,5 @@ export const onSelection: OnMentionEvent = (mention: MentionDescription) =>
 export const onMentionEvent: MentionEventHandler = (
   mentionId: string,
   text: string,
-  e: React.SyntheticEvent<HTMLSpanElement>,
-) => debug(mentionId, text, e.type);
+  e?: React.SyntheticEvent<HTMLSpanElement>,
+) => debug(mentionId, text, e ? e.type : '');

@@ -211,8 +211,8 @@ function isTool(value: string): value is Tool {
   return tools.some(tool => tool === value);
 }
 
-export default connect<EditorViewStateProps, {}, EditorViewOwnProps>(
-  ({ editorData }: State) => ({
+export default connect<EditorViewStateProps, {}, EditorViewOwnProps, State>(
+  ({ editorData }) => ({
     imageUrl: editorData ? editorData.imageUrl || '' : '',
   }),
 )(EditorView);

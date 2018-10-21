@@ -29,10 +29,10 @@ import { RendererCssClassName } from '../../consts';
 
 export const FullPagePadding = 32;
 
-export interface Props {
+export type Props = {
   appearance?: RendererAppearance;
   theme?: any;
-}
+};
 
 const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
@@ -46,7 +46,13 @@ const tableStyles = ({ appearance }: Props) => {
   return '';
 };
 
-const fullPageStyles = ({ theme, appearance }) => {
+const fullPageStyles = ({
+  theme,
+  appearance,
+}: {
+  appearance?: 'full-page' | 'mobile';
+  theme?: any;
+}) => {
   if (appearance !== 'full-page' && appearance !== 'mobile') {
     return '';
   }
@@ -254,7 +260,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
         /*
         * Only increment the row number if its a standard cell.
         * When we have a header row that should count as the 0th row.
-        */  
+        */
         th:first-child {
           counter-reset: row-number;
         }

@@ -81,8 +81,8 @@ export class StatelessAuth extends Component<AuthProps> {
   private onClick = () => this.props.onStartAuth(this.props.service.name);
 }
 
-export default connect<AuthStateProps, AuthDispatchProps, {}>(
-  (state: State) => ({
+export default connect<AuthStateProps, AuthDispatchProps, {}, State>(
+  state => ({
     service: state.view.service,
   }),
   dispatch => ({

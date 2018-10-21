@@ -266,8 +266,8 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   };
 }
 
-export default connect<GiphyViewStateProps, GiphyViewDispatchProps, {}>(
-  (state: State) => ({
+export default connect<GiphyViewStateProps, GiphyViewDispatchProps, {}, State>(
+  state => ({
     hasError: state.view.hasError,
     isLoading: state.view.isLoading,
     cardModels: state.giphy.imageCardModels,

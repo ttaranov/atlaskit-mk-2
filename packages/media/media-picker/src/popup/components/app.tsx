@@ -309,7 +309,7 @@ const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({
   onDropzoneDropIn: (fileCount: number) => dispatch(dropzoneDropIn(fileCount)),
 });
 
-export default connect<AppStateProps, AppDispatchProps, AppOwnProps>(
+export default connect<AppStateProps, AppDispatchProps, AppOwnProps, State>(
   mapStateToProps,
   mapDispatchToProps,
 )(App);

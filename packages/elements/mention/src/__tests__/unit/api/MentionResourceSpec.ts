@@ -7,7 +7,6 @@ import * as queryString from 'query-string';
 import { MentionDescription } from '../../../types';
 import MentionResource, {
   MentionResourceConfig,
-  MentionStats,
 } from '../../../api/MentionResource';
 import {
   resultC,
@@ -214,18 +213,15 @@ describe('MentionResource', () => {
   describe('#filter', () => {
     it('should add weight based on response order - bootstrap', done => {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe(
-        'test1',
-        (mentions, query: string, stats?: MentionStats) => {
-          for (let i = 0; i < mentions.length; i++) {
-            expect(mentions[i].weight).toBe(i);
-          }
-          expect(stats).toBeDefined();
-          expect(stats!.duration).toBeGreaterThan(0);
-          expect(stats!.remoteSearch).toBeTruthy();
-          done();
-        },
-      );
+      resource.subscribe('test1', (mentions, query, stats) => {
+        for (let i = 0; i < mentions.length; i++) {
+          expect(mentions[i].weight).toBe(i);
+        }
+        expect(stats).toBeDefined();
+        expect(stats!.duration).toBeGreaterThan(0);
+        expect(stats!.remoteSearch).toBeTruthy();
+        done();
+      });
       resource.filter('');
     });
 
@@ -252,40 +248,37 @@ describe('MentionResource', () => {
       const resource = new MentionResource(apiConfig);
       let sequence = 0;
 
-      resource.subscribe(
-        'test1',
-        (mentions, query: string, stats?: MentionStats) => {
-          sequence++;
+      resource.subscribe('test1', (mentions, query, stats) => {
+        sequence++;
 
-          expect(stats).toBeDefined();
+        expect(stats).toBeDefined();
 
-          // 1st: remote search for 'c'
-          // 2nd: local index for 'craig'  => no results
-          // 3rd: remote search for 'craig'
+        // 1st: remote search for 'c'
+        // 2nd: local index for 'craig'  => no results
+        // 3rd: remote search for 'craig'
 
-          if (sequence === 1) {
-            expect(query).toBe('c');
-            expect(mentions).toBe(resultC);
-            expect(stats!.duration).toBeGreaterThan(0);
-            expect(stats!.remoteSearch).toBeTruthy();
-          }
+        if (sequence === 1) {
+          expect(query).toBe('c');
+          expect(mentions).toBe(resultC);
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
+        }
 
-          if (sequence === 2) {
-            expect(query).toBe('craig');
-            expect(mentions).toBe([]);
-            expect(stats!.duration).toBeGreaterThan(0);
-            expect(stats!.remoteSearch).toBeFalsy();
-          }
+        if (sequence === 2) {
+          expect(query).toBe('craig');
+          expect(mentions).toBe([]);
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeFalsy();
+        }
 
-          if (sequence === 3) {
-            expect(query).toBe('craig');
-            expect(mentions).toMatchObject(resultCraig);
-            expect(stats!.duration).toBeGreaterThan(0);
-            expect(stats!.remoteSearch).toBeTruthy();
-            done();
-          }
-        },
-      );
+        if (sequence === 3) {
+          expect(query).toBe('craig');
+          expect(mentions).toMatchObject(resultCraig);
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
+          done();
+        }
+      });
       resource.filter('c');
       setTimeout(() => {
         resource.filter('craig');

@@ -22,8 +22,8 @@ export class Browser extends Component<BrowserProps> {
   }
 }
 
-export default connect<BrowserStateProps, {}, {}>(
-  ({ view: { service } }: State) => ({
+export default connect<BrowserStateProps, {}, {}, State>(
+  ({ view: { service } }) => ({
     service,
   }),
 )(Browser);

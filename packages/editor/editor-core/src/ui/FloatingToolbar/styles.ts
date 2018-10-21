@@ -12,7 +12,7 @@ export const Container: ComponentClass<
   box-sizing: border-box;
   padding: 4px 8px;
   background-color: ${colors.N0};
-  ${({ height }: { height: number | undefined }) =>
+  ${({ height }: { height?: number }) =>
     height
       ? css`
           height: ${height}px;

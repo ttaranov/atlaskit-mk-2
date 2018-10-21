@@ -179,9 +179,13 @@ export default class MentionList extends React.PureComponent<Props, State> {
 
   private selectIndexOnHover = (
     mention: MentionDescription,
-    event: React.MouseEvent<any>,
+    event?: React.SyntheticEvent<any>,
   ) => {
-    const mousePosition = mouseLocation(event);
+    if (!event) {
+      return;
+    }
+
+    const mousePosition = mouseLocation(event as React.MouseEvent<any>);
     if (actualMouseMove(this.lastMousePosition, mousePosition)) {
       this.selectId(mention.id);
     }

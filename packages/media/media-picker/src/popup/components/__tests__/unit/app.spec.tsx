@@ -311,7 +311,10 @@ describe('Connected App', () => {
   const setup = () => {
     const store = mockStore();
     const dispatch = store.dispatch;
-    const ConnectedAppWithStore = getComponentClassWithStore(ConnectedApp);
+    // TODO: Fix this
+    const ConnectedAppWithStore = getComponentClassWithStore(
+      ConnectedApp,
+    ) as any;
     const component = shallow(
       <ConnectedAppWithStore
         store={store}
@@ -381,7 +384,11 @@ describe('Connected App', () => {
       }).getState(),
       applyMiddleware(analyticsProcessing as Middleware),
     );
-    const ConnectedAppWithStore = getComponentClassWithStore(ConnectedApp);
+
+    // TODO: fix this
+    const ConnectedAppWithStore = getComponentClassWithStore(
+      ConnectedApp,
+    ) as any;
     const component = mount(
       <LayerManager>
         <ConnectedAppWithStore store={store} tenantUploadParams={{}} />
@@ -423,7 +430,11 @@ describe('Connected App', () => {
         },
       }).getState(),
     );
-    const ConnectedAppWithStore = getComponentClassWithStore(ConnectedApp);
+
+    // TODO: Fix this
+    const ConnectedAppWithStore = getComponentClassWithStore(
+      ConnectedApp,
+    ) as any;
     const wrapper = mount(
       <LayerManager>
         <ConnectedAppWithStore

@@ -5,7 +5,7 @@ import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { gridSize } from '@atlaskit/theme';
 
 export interface EditorIconWrapperProps {
-  color: string;
+  color?: string;
 }
 
 // tslint:disable-next-line:variable-name

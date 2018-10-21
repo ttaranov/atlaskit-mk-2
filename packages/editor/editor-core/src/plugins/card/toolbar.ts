@@ -11,7 +11,7 @@ import { Command } from '../../../src/types';
 import { FloatingToolbarConfig } from '../../../src/plugins/floating-toolbar/types';
 
 const remove: Command = (state, dispatch) => {
-  dispatch(removeSelectedNode(state.tr));
+  dispatch && dispatch(removeSelectedNode(state.tr));
   analyticsService.trackEvent('atlassian.editor.format.card.delete.button');
   return true;
 };

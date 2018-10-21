@@ -35,12 +35,12 @@ export default class MediaImageLoader {
   }
 
   loadMediaImage(url: string): Promise<DataURL> {
-    let pending = this.pendingRequests.get(url);
-    if (pending !== undefined) {
-      return pending;
+    const maybePending = this.pendingRequests.get(url);
+    if (maybePending !== undefined) {
+      return maybePending;
     }
 
-    pending = new Promise((resolve, reject) => {
+    const pending = new Promise<string>((resolve, reject) => {
       this.mediaImageQueue.push({
         url,
         resolve,
@@ -48,7 +48,7 @@ export default class MediaImageLoader {
       });
       this.processFromQueue();
     })
-      .then((result: string) => {
+      .then(result => {
         this.pendingRequests.delete(url);
         return result;
       })

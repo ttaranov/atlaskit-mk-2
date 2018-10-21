@@ -280,7 +280,7 @@ const getPreqQueryResults = (product: Product) =>
     ? getJiraPreqQueryResults()
     : getConfluencePreQueryResults();
 
-['confluence', 'jira'].forEach((product: Product) => {
+(['confluence', 'jira'] as Array<Product>).forEach((product: Product) => {
   describe(`${product} SearchResultsComponent`, () => {
     let searchResultsComponent;
     let getAdvancedSearchUrlSpy;

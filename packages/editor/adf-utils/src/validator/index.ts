@@ -43,7 +43,7 @@ const isString = (s): s is string =>
 const isPlainObject = x =>
   typeof x === 'object' && x !== null && !Array.isArray(x);
 
-const copy = (source: object, dest: object, key: string) => {
+const copy = <T = object>(source: object, dest: T, key: string) => {
   dest[key] = source[key];
   return dest;
 };
@@ -386,7 +386,7 @@ export function validate(
             newEntity = { type };
             props
               .filter(p => !!validator.props![p])
-              .reduce((acc, p) => copy(entity, acc, p), newEntity);
+              .reduce((acc, p) => copy<Entity>(entity, acc, p), newEntity);
           } else {
             return err(
               VALIDATION_ERRORS.REDUNDANT_PROPERTIES,

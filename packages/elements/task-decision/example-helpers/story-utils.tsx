@@ -75,7 +75,7 @@ export const Item: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   margin: 10px;
 `;
 
-export const dumpRef = (ref: HTMLElement) => {
+export const dumpRef = (ref?: HTMLElement) => {
   // tslint:disable-next-line:no-console
   console.log('Content HTML', ref && ref.outerHTML);
 };

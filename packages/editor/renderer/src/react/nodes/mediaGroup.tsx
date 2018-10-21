@@ -103,7 +103,7 @@ export default class MediaGroup extends PureComponent<
     const { children } = this.props;
     const { animate, offset } = this.state;
     const surroundingItems = React.Children.map(children, child =>
-      this.mapMediaPropsToIdentifier(child.props),
+      this.mapMediaPropsToIdentifier((child as React.ReactElement<any>).props),
     );
 
     return (
@@ -113,7 +113,8 @@ export default class MediaGroup extends PureComponent<
         onSize={this.handleSize}
         onScroll={this.handleScroll}
       >
-        {React.Children.map(children, child => {
+        {React.Children.map(children, rawChild => {
+          const child = rawChild as React.ReactElement<any>;
           switch (child.props.type) {
             case 'file':
               return this.cloneFileCard(child, surroundingItems);

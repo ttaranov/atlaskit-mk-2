@@ -64,6 +64,6 @@ export class StatelessSidebar extends Component<SidebarProps> {
   };
 }
 
-export default connect<SidebarStateProps, undefined, {}>((state: State) => ({
+export default connect<SidebarStateProps, undefined, {}, State>(state => ({
   selected: state.view.service.name,
 }))(StatelessSidebar);

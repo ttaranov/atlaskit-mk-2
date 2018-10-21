@@ -103,7 +103,7 @@ export class Selector extends PureComponent<Props, State> {
   private onEmojiSelected = (
     emojiId: EmojiId,
     emoji: OptionalEmojiDescription,
-    event: SyntheticEvent<any>,
+    event?: SyntheticEvent<any>,
   ) => {
     this.timeouts.push(
       setTimeout(() => this.props.onSelection(emojiId, emoji, event), 250),

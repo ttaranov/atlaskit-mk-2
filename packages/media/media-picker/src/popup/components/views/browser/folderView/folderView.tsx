@@ -273,8 +273,13 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
   }
 }
 
-export default connect<FolderViewerStateProps, FolderViewDispatchProps, {}>(
-  ({ view, accounts, selectedItems }: State) => ({
+export default connect<
+  FolderViewerStateProps,
+  FolderViewDispatchProps,
+  {},
+  State
+>(
+  ({ view, accounts, selectedItems }) => ({
     path: view.path,
     accounts,
     service: view.service,

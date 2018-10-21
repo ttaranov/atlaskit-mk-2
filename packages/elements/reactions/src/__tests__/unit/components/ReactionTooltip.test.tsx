@@ -57,7 +57,7 @@ describe('ReactionTooltip', () => {
     const wrapper = mountReactionTooltip();
 
     expect(wrapper.find(Tooltip).prop('position')).toEqual('bottom');
-    const tooltipContent = mount(wrapper.find(Tooltip).prop('content'));
+    const tooltipContent = mount(wrapper.find(Tooltip).prop('content') as any);
 
     const labels = tooltipContent.find('span');
     expect(labels).toHaveLength(2);
@@ -97,7 +97,7 @@ describe('ReactionTooltip', () => {
       users: reaction.users!.slice(0, 2),
     });
 
-    const tooltipContent = mount(wrapper.find(Tooltip).prop('content'));
+    const tooltipContent = mount(wrapper.find(Tooltip).prop('content') as any);
 
     const labels = tooltipContent.find('span');
     expect(labels).toHaveLength(1);
@@ -112,7 +112,7 @@ describe('ReactionTooltip', () => {
   it('should not render emoji name', () => {
     const wrapper = mountReactionTooltip(reaction, '');
 
-    const tooltipContent = mount(wrapper.find(Tooltip).prop('content'));
+    const tooltipContent = mount(wrapper.find(Tooltip).prop('content') as any);
 
     const labels = tooltipContent.find('span');
     expect(labels).toHaveLength(1);

@@ -174,7 +174,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   }
 
-  onEmojiActive = (emojiId: EmojiId, emoji: EmojiDescription) => {
+  onEmojiActive = (emojiId: EmojiId, emoji?: EmojiDescription) => {
     if (this.state.selectedEmoji !== emoji) {
       this.setState({
         selectedEmoji: emoji,
@@ -187,7 +187,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
-  onCategoryActivated = (category: CategoryId) => {
+  onCategoryActivated = (category: CategoryId | null) => {
     if (this.state.activeCategory !== category) {
       this.setState({
         activeCategory: category,
@@ -195,8 +195,13 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
-  onCategorySelected = (categoryId: CategoryId) => {
+  onCategorySelected = (categoryId: CategoryId | null) => {
     const { emojiProvider } = this.props;
+
+    if (!categoryId) {
+      return;
+    }
+
     emojiProvider.findInCategory(categoryId).then(emojisInCategory => {
       const { disableCategories } = this.state;
       if (!disableCategories) {
@@ -463,7 +468,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
-  private onTriggerDelete = (emojiId: EmojiId, emoji: EmojiDescription) => {
+  private onTriggerDelete = (emojiId: EmojiId, emoji?: EmojiDescription) => {
     this.setState({ emojiToDelete: emoji });
   };
 

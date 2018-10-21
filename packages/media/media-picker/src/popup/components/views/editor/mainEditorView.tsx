@@ -132,10 +132,13 @@ export class MainEditorView extends Component<
   };
 }
 
-export default connect<{}, MainEditorViewDispatchProps, MainEditorViewOwnProps>(
-  ({ editorData }: State) => ({
-    editorData,
-  }),
+export default connect<
+  {},
+  MainEditorViewDispatchProps,
+  MainEditorViewOwnProps,
+  State
+>(
+  ({ editorData }) => ({ editorData }),
   dispatch => ({
     onShowEditorImage: (imageUrl, originalFile) =>
       dispatch(editorShowImage(imageUrl, originalFile)),

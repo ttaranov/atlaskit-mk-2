@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { MouseEvent, PureComponent } from 'react';
+import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
@@ -135,11 +135,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
   }
 
-  private onEmojiMouseEnter = (
-    emojiId: EmojiId,
-    emoji: EmojiDescription,
-    event: MouseEvent<any>,
-  ) => {
+  private onEmojiMouseEnter = (emojiId: EmojiId, emoji?: EmojiDescription) => {
     if (this.props.onEmojiActive) {
       this.props.onEmojiActive(emojiId, emoji);
     }
@@ -307,7 +303,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   ): void => {
     const categoryToGroupMap = emojis.reduce(
       this.groupByCategory(currentUser),
-      {},
+      {} as CategoryKeyToGroup,
     );
 
     this.allEmojiGroups = Object.keys(categoryToGroupMap)
