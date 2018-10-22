@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.5.1
+- [patch] fix cards being reloaded with the same definition id [b4b6a45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b4b6a45)
+
 ## 8.5.0
 - [minor] Added task converter  [8678076](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8678076)
 
