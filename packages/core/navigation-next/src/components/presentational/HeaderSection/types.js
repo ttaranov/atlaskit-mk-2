@@ -3,7 +3,7 @@
 import type { Node } from 'react';
 import type { RenderProvided } from '../Section/types';
 
-// FIXME: Fix extract-react-types to handle TupleTypeAnnotation
+// TODO: Fix extract-react-types to handle TupleTypeAnnotation so we can use this type instead
 // export type HeaderSectionProps = Pick<SectionProps, ['id', 'children']>;
 
 // TODO: Deprecate/remove parentId from HeaderSection

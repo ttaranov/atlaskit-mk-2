@@ -39,6 +39,7 @@ Array [
     id="back-item"
     index={3}
     key="back-item"
+    text="Back"
   />,
   <WithNavigationUI(WithNavigationViewController(GoToItem))
     goTo="view"
@@ -107,6 +108,7 @@ Array [
 
 exports[`navigation-next view renderer MenuSection should render the MenuSection UI component 1`] = `
 <MenuSection
+  alwaysShowScrollHint={false}
   id="menu"
 >
   <unknown />

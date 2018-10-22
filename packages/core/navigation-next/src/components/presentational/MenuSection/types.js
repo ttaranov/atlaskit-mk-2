@@ -3,6 +3,7 @@
 import type { Node } from 'react';
 import type { RenderProvided } from '../Section/types';
 
+// TODO: Fix extract-react-types to handle TupleTypeAnnotation so we can use this type instead
 // export type MenuSectionProps = Pick<
 //   SectionProps,
 //   ['id', 'children', 'parentId', 'alwaysShowScrollHint'],
