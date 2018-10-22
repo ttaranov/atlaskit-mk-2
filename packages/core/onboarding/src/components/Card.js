@@ -12,11 +12,11 @@ import {
 import { ActionItems, ActionItem } from '../styled/Dialog';
 import type { ActionsType } from '../types';
 
-type CardTheme = {
-  container: () => any,
+export type CardTheme = {
+  container: () => Object,
 };
 
-export type Props = {
+type Props = {
   /** Buttons to render in the footer */
   actions?: ActionsType,
   /** An optional element rendered to the left of the footer actions */
@@ -90,8 +90,8 @@ const Card = ({
 }: Props) => {
   const { Header = DefaultHeader, Footer = DefaultFooter } = components;
   return (
-    <Theme values={defaultTheme}>
-      <Theme values={theme}>
+    <Theme theme={defaultTheme}>
+      <Theme theme={theme}>
         {({ container }) => {
           return (
             <Container theme={container} innerRef={innerRef}>

@@ -119,7 +119,7 @@ class SpotlightDialog extends Component<Props, State> {
 
     return (
       <Popper referenceElement={targetNode} placement={translatedPlacement}>
-        {({ ref, style, placement }) => (
+        {({ ref, style }) => (
           <FocusLock enabled={hasFocusLock} returnFocus={false}>
             <SpotlightCard
               ref={ref}
@@ -139,7 +139,6 @@ class SpotlightDialog extends Component<Props, State> {
               }}
               width={dialogWidth}
               heading={heading}
-              data-placement={placement}
             >
               {children}
             </SpotlightCard>

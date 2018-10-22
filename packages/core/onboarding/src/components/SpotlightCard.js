@@ -2,13 +2,9 @@
 import React, { type Node, type ElementType } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { colors } from '@atlaskit/theme';
-import Card from './Card';
+import Card, { type CardTheme } from './Card';
 import { getSpotlightTheme } from './theme';
 import type { ActionsType } from '../types';
-
-type CardTheme = {
-  container: () => any,
-};
 
 type Props = {
   /** Buttons to render in the footer */
