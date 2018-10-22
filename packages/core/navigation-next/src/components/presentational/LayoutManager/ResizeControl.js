@@ -28,6 +28,9 @@ const HANDLE_OFFSET = 4;
 const INNER_WIDTH = 20;
 const OUTER_WIDTH = INNER_WIDTH + HANDLE_OFFSET;
 const HANDLE_WIDTH = 2;
+const shouldResetGrabArea = (width: number) => {
+  return width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH;
+};
 
 const Outer = (props: *) => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
@@ -114,9 +117,9 @@ const Button = ({
   </button>
 );
 
-// tinker with the DOM directly by setting style properties, makes the
-function applyMutations(
-  elements: Array<{ property: string, ref: HTMLElement }>,
+// tinker with the DOM directly by setting style properties, updates the grab bar position by changing padding-left and width.
+function updateResizeAreaPosition(
+  elements: Array<{ property: 'padding-left' | 'width', ref: HTMLElement }>,
   width: number,
 ) {
   elements.forEach(({ property, ref }) => {
@@ -167,7 +170,7 @@ type Props = WithAnalyticsEventsProps & {
   flyoutIsOpen: boolean,
   isDisabled: boolean,
   mouseIsOverNavigation: boolean,
-  mutationRefs: Array<{ ref: HTMLElement, property: string }>,
+  mutationRefs: Array<{ ref: HTMLElement, property: 'padding-left' | 'width' }>,
   navigation: Object,
 };
 type State = {
@@ -234,7 +237,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
   toggleCollapse = (trigger: string) => {
     const { navigation, createAnalyticsEvent } = this.props;
-    const newCollapsedState = !navigation.state.isCollapsed;
+    const newCollapsedState: boolean = !navigation.state.isCollapsed;
     navigation.toggleCollapse();
     navigationExpandedCollapsed(createAnalyticsEvent, {
       trigger,
@@ -310,7 +313,7 @@ class ResizeControl extends PureComponent<Props, State> {
     const width = initialWidth + delta;
 
     // apply updated styles to the applicable DOM nodes
-    applyMutations(mutationRefs, width);
+    updateResizeAreaPosition(mutationRefs, width);
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
     if (event.screenX < window.screenX) {
@@ -338,7 +341,6 @@ class ResizeControl extends PureComponent<Props, State> {
     // prevent the user from creating an unusable width
     if (publishWidth < CONTENT_NAV_WIDTH) {
       publishWidth = CONTENT_NAV_WIDTH;
-
       if (didDragOpen && delta > expandThreshold) {
         shouldCollapse = false;
       } else if (currentWidth < GLOBAL_NAV_COLLAPSE_THRESHOLD) {
@@ -373,11 +375,8 @@ class ResizeControl extends PureComponent<Props, State> {
       isCollapsed: shouldCollapse,
     });
 
-    if (
-      currentWidth >= GLOBAL_NAV_COLLAPSE_THRESHOLD &&
-      currentWidth < CONTENT_NAV_WIDTH
-    ) {
-      applyMutations(this.props.mutationRefs, CONTENT_NAV_WIDTH);
+    if (shouldResetGrabArea(currentWidth)) {
+      updateResizeAreaPosition(this.props.mutationRefs, CONTENT_NAV_WIDTH);
     }
 
     // cleanup

@@ -17,7 +17,7 @@ describe('ResizeControlBase', () => {
     jest.resetModules();
   });
 
-  const resizeControlProps = {
+  const defaultProps = {
     collapseToggleTooltipContent: () => ({ text: '', char: '' }),
     createAnalyticsEvent: (() => ({ fire: Function.prototype }): any),
     expandCollapseAffordanceRef: { current: null },
@@ -39,20 +39,17 @@ describe('ResizeControlBase', () => {
 
   it('should render correctly', () => {
     const wrapper = shallow(
-      <ResizeControlBase {...resizeControlProps}>
-        {() => null}
-      </ResizeControlBase>,
+      <ResizeControlBase {...defaultProps}>{() => null}</ResizeControlBase>,
     );
 
     expect(wrapper).toMatchSnapshot();
   });
 
   it('should call navigationExpandedCollapsed with chevronHover trigger when clicking on chevron while flyout is open', () => {
-    const props = cloneDeep(resizeControlProps);
+    const props = cloneDeep(defaultProps);
     props.navigation.state.isCollapsed = false;
-
     const wrapper = mount(
-      <ResizeControlBase {...resizeControlProps} flyoutIsOpen>
+      <ResizeControlBase {...defaultProps} flyoutIsOpen>
         {() => null}
       </ResizeControlBase>,
     );
@@ -61,7 +58,7 @@ describe('ResizeControlBase', () => {
 
     expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
     expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      resizeControlProps.createAnalyticsEvent,
+      defaultProps.createAnalyticsEvent,
       {
         trigger: 'chevronHover',
         isCollapsed: true,
@@ -70,11 +67,10 @@ describe('ResizeControlBase', () => {
   });
 
   it('should call navigationExpandedCollapsed with chevron trigger when clicking on chevron while flyout is not open', () => {
-    const props = cloneDeep(resizeControlProps);
+    const props = cloneDeep(defaultProps);
     props.navigation.state.isCollapsed = false;
-
     const wrapper = mount(
-      <ResizeControlBase {...resizeControlProps} flyoutIsOpen={false}>
+      <ResizeControlBase {...defaultProps} flyoutIsOpen={false}>
         {() => null}
       </ResizeControlBase>,
     );
@@ -83,7 +79,7 @@ describe('ResizeControlBase', () => {
 
     expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
     expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      resizeControlProps.createAnalyticsEvent,
+      defaultProps.createAnalyticsEvent,
       {
         trigger: 'chevron',
         isCollapsed: true,
@@ -92,7 +88,7 @@ describe('ResizeControlBase', () => {
   });
 
   it('should call navigationExpandedCollapsed with resizerClick trigger when clicking recollapse on resize area', () => {
-    const props = cloneDeep(resizeControlProps);
+    const props = cloneDeep(defaultProps);
     props.navigation.state.isCollapsed = false;
     const wrapper = mount(
       <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -102,7 +98,7 @@ describe('ResizeControlBase', () => {
 
     expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
     expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      resizeControlProps.createAnalyticsEvent,
+      defaultProps.createAnalyticsEvent,
       {
         trigger: 'resizerClick',
         isCollapsed: true,
@@ -113,7 +109,7 @@ describe('ResizeControlBase', () => {
   describe('when the component is resizing', () => {
     describe('when starting to drag', () => {
       it('should initialize dragging state', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -130,7 +126,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should call navigation.manualResizeStart if isCollapsed is false', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         props.navigation.state.isCollapsed = false;
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -147,7 +143,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should call navigation.manualResizeStart if isCollapsed is true', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         props.navigation.state.isCollapsed = true;
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -169,7 +165,7 @@ describe('ResizeControlBase', () => {
 
     describe('when dragging', () => {
       it('should not change width and delta when mouseIsDown is false', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -184,7 +180,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should change width and delta when mouseIsDown is true', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -224,7 +220,7 @@ describe('ResizeControlBase', () => {
             },
           },
         ];
-        const props = { ...cloneDeep(resizeControlProps), mutationRefs };
+        const props = { ...cloneDeep(defaultProps), mutationRefs };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -249,7 +245,7 @@ describe('ResizeControlBase', () => {
 
     describe('when releasing drag', () => {
       it('should collapse if dragged below collapse threshold', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         const state = { delta: -100, isDragging: true, width: 140 };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -266,7 +262,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should resize back to default width if dragged above collapse threshold and below default width', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         const state = { delta: -15, isDragging: true, width: 225 };
         props.mutationRefs = [
           {
@@ -315,7 +311,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should resize to greater width if dragged above default width', () => {
-        const props = cloneDeep(resizeControlProps);
+        const props = cloneDeep(defaultProps);
         const state = { delta: 130, isDragging: true, width: 370 };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
