@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import cloneDeep from 'lodash.clonedeep';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import { ResizeControlBase } from '../../ResizeControl';
 import { navigationExpandedCollapsed } from '../../../../../common/analytics';
@@ -12,44 +11,63 @@ jest.mock('../../../../../common/analytics', () => ({
 }));
 
 describe('ResizeControlBase', () => {
+  let props;
+
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
-  });
-
-  const defaultProps = {
-    collapseToggleTooltipContent: () => ({ text: '', char: '' }),
-    createAnalyticsEvent: (() => ({ fire: Function.prototype }): any),
-    expandCollapseAffordanceRef: { current: null },
-    experimental_flyoutOnHover: false,
-    flyoutIsOpen: false,
-    isDisabled: false,
-    mouseIsOverNavigation: false,
-    mutationRefs: [],
-    navigation: {
-      state: {
-        isCollapsed: false,
-        productNavWidth: 100,
+    props = {
+      collapseToggleTooltipContent: () => ({ text: '', char: '' }),
+      createAnalyticsEvent: (() => ({ fire: Function.prototype }): any),
+      expandCollapseAffordanceRef: { current: null },
+      experimental_flyoutOnHover: false,
+      flyoutIsOpen: false,
+      isDisabled: false,
+      mouseIsOverNavigation: false,
+      mutationRefs: [
+        {
+          property: 'width',
+          ref: {
+            style: {
+              getPropertyValue: Function.prototype,
+              setProperty: Function.prototype,
+            },
+          },
+        },
+        {
+          property: 'padding-left',
+          ref: {
+            style: {
+              getPropertyValue: Function.prototype,
+              setProperty: Function.prototype,
+            },
+          },
+        },
+      ],
+      navigation: {
+        state: {
+          isCollapsed: false,
+          productNavWidth: 100,
+        },
+        manualResizeStart: jest.fn(),
+        manualResizeEnd: jest.fn(),
+        toggleCollapse: Function.prototype,
       },
-      manualResizeStart: jest.fn(),
-      manualResizeEnd: jest.fn(),
-      toggleCollapse: Function.prototype,
-    },
-  };
+    };
+  });
 
   it('should render correctly', () => {
     const wrapper = shallow(
-      <ResizeControlBase {...defaultProps}>{() => null}</ResizeControlBase>,
+      // $FlowFixMe: mutationRefs.ref should be of HTMLElement type
+      <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
     );
 
     expect(wrapper).toMatchSnapshot();
   });
 
   it('should call navigationExpandedCollapsed with chevronHover trigger when clicking on chevron while flyout is open', () => {
-    const props = cloneDeep(defaultProps);
-    props.navigation.state.isCollapsed = false;
     const wrapper = mount(
-      <ResizeControlBase {...defaultProps} flyoutIsOpen>
+      <ResizeControlBase {...props} flyoutIsOpen>
         {() => null}
       </ResizeControlBase>,
     );
@@ -58,7 +76,7 @@ describe('ResizeControlBase', () => {
 
     expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
     expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      defaultProps.createAnalyticsEvent,
+      props.createAnalyticsEvent,
       {
         trigger: 'chevronHover',
         isCollapsed: true,
@@ -67,10 +85,9 @@ describe('ResizeControlBase', () => {
   });
 
   it('should call navigationExpandedCollapsed with chevron trigger when clicking on chevron while flyout is not open', () => {
-    const props = cloneDeep(defaultProps);
     props.navigation.state.isCollapsed = false;
     const wrapper = mount(
-      <ResizeControlBase {...defaultProps} flyoutIsOpen={false}>
+      <ResizeControlBase {...props} flyoutIsOpen={false}>
         {() => null}
       </ResizeControlBase>,
     );
@@ -79,7 +96,7 @@ describe('ResizeControlBase', () => {
 
     expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
     expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      defaultProps.createAnalyticsEvent,
+      props.createAnalyticsEvent,
       {
         trigger: 'chevron',
         isCollapsed: true,
@@ -88,7 +105,6 @@ describe('ResizeControlBase', () => {
   });
 
   it('should call navigationExpandedCollapsed with resizerClick trigger when clicking recollapse on resize area', () => {
-    const props = cloneDeep(defaultProps);
     props.navigation.state.isCollapsed = false;
     const wrapper = mount(
       <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -98,7 +114,7 @@ describe('ResizeControlBase', () => {
 
     expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
     expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      defaultProps.createAnalyticsEvent,
+      props.createAnalyticsEvent,
       {
         trigger: 'resizerClick',
         isCollapsed: true,
@@ -109,7 +125,6 @@ describe('ResizeControlBase', () => {
   describe('when the component is resizing', () => {
     describe('when starting to drag', () => {
       it('should initialize dragging state', () => {
-        const props = cloneDeep(defaultProps);
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -126,7 +141,6 @@ describe('ResizeControlBase', () => {
       });
 
       it('should call navigation.manualResizeStart if isCollapsed is false', () => {
-        const props = cloneDeep(defaultProps);
         props.navigation.state.isCollapsed = false;
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -143,7 +157,6 @@ describe('ResizeControlBase', () => {
       });
 
       it('should call navigation.manualResizeStart if isCollapsed is true', () => {
-        const props = cloneDeep(defaultProps);
         props.navigation.state.isCollapsed = true;
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -165,7 +178,6 @@ describe('ResizeControlBase', () => {
 
     describe('when dragging', () => {
       it('should not change width and delta when mouseIsDown is false', () => {
-        const props = cloneDeep(defaultProps);
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -180,7 +192,6 @@ describe('ResizeControlBase', () => {
       });
 
       it('should change width and delta when mouseIsDown is true', () => {
-        const props = cloneDeep(defaultProps);
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -199,7 +210,7 @@ describe('ResizeControlBase', () => {
 
       it('should change mutationRef style if new value is different than old value', () => {
         const pageX = 100;
-        const mutationRefs = [
+        props.mutationRefs = [
           {
             property: 'padding-left',
             ref: {
@@ -220,7 +231,6 @@ describe('ResizeControlBase', () => {
             },
           },
         ];
-        const props = { ...cloneDeep(defaultProps), mutationRefs };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -230,22 +240,22 @@ describe('ResizeControlBase', () => {
         requestAnimationFrame.step();
 
         expect(
-          mutationRefs[0].ref.style.getPropertyValue,
+          props.mutationRefs[0].ref.style.getPropertyValue,
         ).toHaveBeenCalledTimes(1);
-        expect(mutationRefs[0].ref.style.setProperty).toHaveBeenCalledWith(
-          'padding-left',
-          '100px',
-        );
         expect(
-          mutationRefs[1].ref.style.getPropertyValue,
+          props.mutationRefs[0].ref.style.setProperty,
+        ).toHaveBeenCalledWith('padding-left', '100px');
+        expect(
+          props.mutationRefs[1].ref.style.getPropertyValue,
         ).toHaveBeenCalledTimes(1);
-        expect(mutationRefs[1].ref.style.setProperty).not.toHaveBeenCalled();
+        expect(
+          props.mutationRefs[1].ref.style.setProperty,
+        ).not.toHaveBeenCalled();
       });
     });
 
     describe('when releasing drag', () => {
       it('should collapse if dragged below collapse threshold', () => {
-        const props = cloneDeep(defaultProps);
         const state = { delta: -100, isDragging: true, width: 140 };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
@@ -262,7 +272,6 @@ describe('ResizeControlBase', () => {
       });
 
       it('should resize back to default width if dragged above collapse threshold and below default width', () => {
-        const props = cloneDeep(defaultProps);
         const state = { delta: -15, isDragging: true, width: 225 };
         props.mutationRefs = [
           {
@@ -311,7 +320,6 @@ describe('ResizeControlBase', () => {
       });
 
       it('should resize to greater width if dragged above default width', () => {
-        const props = cloneDeep(defaultProps);
         const state = { delta: 130, isDragging: true, width: 370 };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
