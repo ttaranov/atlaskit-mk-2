@@ -1,5 +1,8 @@
 # @atlaskit/media-ui
 
+## 7.1.0
+- [minor] Added task converter  [8678076](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8678076)
+
 ## 7.0.0
 - [major] Update blockcard and inline card exports to be compatible with tree shaking. Preperation for asyncloading parts of smart card [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
 
