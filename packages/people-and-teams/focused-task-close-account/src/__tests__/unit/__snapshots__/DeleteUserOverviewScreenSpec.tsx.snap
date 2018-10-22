@@ -30,7 +30,7 @@ exports[`DeleteUserOverviewScreen 1`] = `
         values={Object {}}
       />
       <p>
-        <Button
+        <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))
           appearance="link"
           spacing="none"
         >
@@ -40,7 +40,7 @@ exports[`DeleteUserOverviewScreen 1`] = `
             id="focused-task-close-account.deactivate-account"
             values={Object {}}
           />
-        </Button>
+        </ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))>
       </p>
     </SectionMessage>
   </styled.div>

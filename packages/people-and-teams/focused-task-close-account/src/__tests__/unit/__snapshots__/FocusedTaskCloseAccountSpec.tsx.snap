@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`isOpen snapshot 1`] = `
-<Drawer
+<ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(DrawerBase)))
   icon={[Function]}
   isOpen={false}
   onClose={[MockFunction]}
@@ -16,7 +16,7 @@ exports[`isOpen snapshot 1`] = `
       onNext={[Function]}
       onPrevious={[Function]}
       secondaryActions={
-        <Button
+        <ForwardRef
           appearance="subtle-link"
           spacing="none"
         >
@@ -31,7 +31,7 @@ exports[`isOpen snapshot 1`] = `
             label=""
             size="small"
           />
-        </Button>
+        </ForwardRef>
       }
       submitButton={
         <div
@@ -40,5 +40,5 @@ exports[`isOpen snapshot 1`] = `
       }
     />
   </styled.div>
-</Drawer>
+</ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(DrawerBase)))>
 `;
