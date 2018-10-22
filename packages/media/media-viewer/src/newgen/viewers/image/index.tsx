@@ -5,7 +5,7 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { InteractiveImg } from './interactive-img';
-import { AnalyticViewerProps } from '../../analytics';
+import { AnalyticViewerProps } from '../../analytics/item-viewer';
 import { BaseViewer } from '../base-viewer';
 
 export type ObjectUrl = string;
