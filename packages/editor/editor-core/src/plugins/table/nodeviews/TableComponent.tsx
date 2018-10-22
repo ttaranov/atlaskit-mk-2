@@ -1,8 +1,9 @@
 import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
-import { browser } from '@atlaskit/editor-common';
-import { calcTableWidth } from '@atlaskit/editor-common';
+import { Node as PmNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { browser, calcTableWidth } from '@atlaskit/editor-common';
 
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
@@ -24,6 +25,10 @@ import {
 import { WidthPluginState } from '../../width';
 
 export interface ComponentProps extends Props {
+  view: EditorView;
+  node: PmNode;
+  UNSAFE_allowFlexiColumnResizing: boolean;
+  allowColumnResizing: boolean;
   onComponentMount: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { findCellRectClosestToPos, isCellSelection } from 'prosemirror-utils';
+import { findDomRefAtPos } from 'prosemirror-utils';
 import {
   Popup,
   akEditorFloatingOverlapPanelZIndex,
@@ -11,29 +12,25 @@ import { pluginKey } from '../../pm-plugins/main';
 import { PluginConfig } from '../../types';
 import { getSelectionRect } from '../../utils';
 
-const DROPDOWN_OFFSET = contextualMenuTriggerSize + 1;
-const popupMargin = 3;
-
 // offset of the contextual menu dropdown
 const calculateOffset = (targetCellRef, state) => {
   const { tableRef } = pluginKey.getState(state);
-  let top = -DROPDOWN_OFFSET;
+  let top = -contextualMenuTriggerSize;
 
   if (tableRef && targetCellRef) {
     const targetOffset = targetCellRef.getBoundingClientRect();
     const tableOffset = tableRef.getBoundingClientRect();
-    let topDiff = targetOffset.top - tableOffset.top + DROPDOWN_OFFSET;
+    let topDiff = targetOffset.top - tableOffset.top;
     if (topDiff < 200) {
       top -= topDiff + 2;
     }
   }
-  return [DROPDOWN_OFFSET + popupMargin, top];
+  return [1, top];
 };
 
 export interface Props {
   editorView: EditorView;
   isOpen: boolean;
-  targetCellRef?: HTMLElement;
   targetCellPosition?: number;
   mountPoint?: HTMLElement;
   boundariesElement?: HTMLElement;
@@ -42,7 +39,6 @@ export interface Props {
 }
 
 const FloatingContextualMenu = ({
-  targetCellRef,
   mountPoint,
   boundariesElement,
   scrollableElement,
@@ -51,7 +47,7 @@ const FloatingContextualMenu = ({
   targetCellPosition,
   pluginConfig,
 }: Props) => {
-  if (!targetCellRef) {
+  if (!isOpen || !targetCellPosition) {
     return null;
   }
 
@@ -63,18 +59,17 @@ const FloatingContextualMenu = ({
   if (!selectionRect) {
     return null;
   }
-
-  const width = targetCellRef.getBoundingClientRect().width;
+  const domAtPos = editorView.domAtPos.bind(editorView);
+  const targetCellRef = findDomRefAtPos(targetCellPosition, domAtPos);
+  if (!targetCellRef) {
+    return null;
+  }
 
   return (
     <Popup
-      alignX="left"
+      alignX="right"
       alignY="top"
-      offset={[
-        width - contextualMenuTriggerSize - popupMargin,
-        -contextualMenuTriggerSize - popupMargin,
-      ]}
-      target={targetCellRef}
+      target={targetCellRef as HTMLElement}
       mountTo={mountPoint}
       boundariesElement={boundariesElement}
       scrollableElement={scrollableElement}
