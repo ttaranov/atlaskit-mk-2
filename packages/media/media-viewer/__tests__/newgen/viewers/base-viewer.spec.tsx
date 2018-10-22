@@ -23,12 +23,21 @@ function createProps(): BaseProps {
   return { item, context, collectionName };
 }
 
+export type TestState = { a: string };
+
+function createInitialState(): TestState {
+  return {
+    a: 'test',
+  };
+}
+
 function createTestViewer(props: BaseProps) {
   const initSpy = jest.fn();
   const releaseSpy = jest.fn();
-  class TestViewer extends BaseViewer<BaseProps, {}> {
+  class TestViewer extends BaseViewer<BaseProps, TestState> {
+    state = this.initialState;
     protected get initialState() {
-      return {};
+      return createInitialState();
     }
     protected init = initSpy;
     protected release = releaseSpy;
@@ -72,5 +81,12 @@ describe('BaseViewer', () => {
     el.setProps({ collectionName: 'another-collection-name' });
     expect(releaseSpy).toHaveBeenCalledTimes(1);
     expect(initSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('resets the component to the initialState when properties were updated', () => {
+    const { el } = createTestViewer(createProps());
+    el.setState({ a: 'other' });
+    el.setProps({ context: createContext() });
+    expect(el.state()).toMatchObject(createInitialState());
   });
 });
