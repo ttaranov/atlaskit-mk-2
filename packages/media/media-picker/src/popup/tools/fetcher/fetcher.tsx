@@ -12,7 +12,6 @@ import {
 
 import { mapAuthToAuthHeaders } from '../../domain/auth';
 
-const METADATA_POLL_INTERVAL_MS = 2000;
 type Method = 'GET' | 'POST' | 'DELETE';
 
 export interface GiphyImage {
@@ -60,11 +59,6 @@ export interface Fetcher {
     folderId: string,
     cursor?: string,
   ): Promise<ServiceFolder>;
-  pollFile(
-    auth: Auth,
-    fileId: string,
-    collection?: string,
-  ): Promise<FileDetails>;
   getImage(auth: Auth, fileId: string, collection?: string): Promise<Blob>;
   getServiceList(auth: Auth): Promise<ServiceAccountWithType[]>;
   unlinkCloudAccount(auth: Auth, accountId: string): Promise<void>;
@@ -100,40 +94,6 @@ export class MediaApiFetcher implements Fetcher {
       } else {
         return serviceFolder;
       }
-    });
-  }
-
-  // TODO [MS-725]: remove
-  pollFile(
-    auth: Auth,
-    fileId: string,
-    collection?: string,
-  ): Promise<FileDetails> {
-    return new Promise((resolve, reject) => {
-      return this.query<{ data: FileDetails }>(
-        `${fileStoreUrl(auth.baseUrl)}/file/${fileId}`,
-        'GET',
-        {
-          collection,
-        },
-        mapAuthToAuthHeaders(auth),
-      )
-        .then(({ data: file }) => {
-          if (
-            file.processingStatus === 'succeeded' ||
-            file.processingStatus === 'failed'
-          ) {
-            resolve(file);
-          } else {
-            setTimeout(() => {
-              this.pollFile(auth, fileId, collection).then(resolve, reject);
-            }, METADATA_POLL_INTERVAL_MS);
-          }
-        })
-        .catch(() => {
-          // this._handleUploadError('metadata_fetch_fail', JSON.stringify(err));
-          reject('metadata_fetch_fail');
-        });
     });
   }
 
