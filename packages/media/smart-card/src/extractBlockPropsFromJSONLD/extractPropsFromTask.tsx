@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { BlockCard, LozengeViewModel } from '@atlaskit/media-ui';
+import {
+  BlockCardResolvedViewProps,
+  LozengeViewModel,
+} from '@atlaskit/media-ui';
 import { relativeTime } from '../utils';
 import ChatIcon from '@atlaskit/icon/glyph/comment';
 import { colors } from '@atlaskit/theme';
@@ -118,12 +121,12 @@ export const buildContext = (json: any) => {
 
 export function extractBlockViewPropsFromTask(
   json: any,
-): BlockCard.ResolvedViewProps {
+): BlockCardResolvedViewProps {
   if (!json) {
     throw new Error('smart-card: data is not parsable JSON-LD.');
   }
 
-  const props: BlockCard.ResolvedViewProps = {
+  const props: BlockCardResolvedViewProps = {
     ...buildContext(json),
     ...buildTitle(json),
     ...buildDescription(json),
