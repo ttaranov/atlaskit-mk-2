@@ -29,28 +29,32 @@ export function commonFormatter(
   let index = 0;
   let state = processState.START;
   let buffer = '';
+  const openingSymbolLength = opt.opening.length;
+  const closingSymbolLength = opt.closing.length;
 
   while (index < input.length) {
     const char = input.charAt(index);
-    const secChar = input.charAt(index + 1);
     const twoChar = input.substr(index, 2);
+    const charsMatchClosingSymbol = input.substr(index, closingSymbolLength);
 
     switch (state) {
       case processState.START: {
-        if (char !== opt.opening || secChar === ' ') {
+        const charAfterOpening = input.charAt(index + openingSymbolLength);
+        if (!input.startsWith(opt.opening) || charAfterOpening === ' ') {
           // this is not a valid formatter mark
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
         state = processState.BUFFER;
-        break;
+        index += openingSymbolLength;
+        continue;
       }
       case processState.BUFFER: {
         // the linebreak would break the strong marks
         const length = parseNewlineOnly(input.substring(index));
         if (length) {
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
-        if (char === opt.closing) {
+        if (charsMatchClosingSymbol === opt.closing) {
           state = processState.END;
           continue;
         } else if (twoChar === '{{') {
@@ -70,10 +74,10 @@ export function commonFormatter(
         break;
       }
       case processState.END: {
-        index++;
+        index += closingSymbolLength;
         // empty formatter mark is treated as normal text
         if (buffer.length === 0) {
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
 
         /**
@@ -84,7 +88,7 @@ export function commonFormatter(
         if (index < input.length) {
           const charAfterEnd = input.charAt(index);
           if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
-            buffer += char;
+            buffer += charsMatchClosingSymbol;
             state = processState.BUFFER;
             continue;
           }
@@ -95,7 +99,7 @@ export function commonFormatter(
          * next valid closing formatter
          */
         if (buffer.endsWith(' ')) {
-          buffer += char;
+          buffer += charsMatchClosingSymbol;
           state = processState.BUFFER;
           continue;
         }
@@ -111,7 +115,7 @@ export function commonFormatter(
           continue;
         } else {
           // No macro are accepted in formater
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
       }
       case processState.LINK_FORMAT: {
@@ -132,19 +136,19 @@ export function commonFormatter(
           state = processState.BUFFER;
           continue;
         }
-        return fallback(input);
+        return fallback(input, openingSymbolLength);
       }
       default:
     }
     index++;
   }
-  return fallback(input);
+  return fallback(input, openingSymbolLength);
 }
 
-function fallback(input: string): Token {
+function fallback(input: string, length: number): Token {
   return {
     type: 'text',
-    text: input.substr(0, 1),
-    length: 1,
+    text: input.substr(0, length),
+    length: length,
   };
 }
