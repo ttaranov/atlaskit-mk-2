@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.0.5
+- [patch] Fixes cursor position between mention nodes [2748f31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2748f31)
+
 ## 87.0.4
 - [patch] ED-5521: permit undo when pasting macro [c429e3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c429e3c)
 
