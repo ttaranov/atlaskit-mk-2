@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { components } from 'react-select';
 
 import { colors, layers } from '@atlaskit/theme';
@@ -61,7 +61,7 @@ export const DummyControl = (props: *) => (
 );
 // NOTE `props` intentionally omitted from `Fragment`
 // eslint-disable-next-line
-const Menu = ({ key, children, ...props }: *) => (
-  <Fragment key={key}>{children}</Fragment>
+const Menu = ({ key, children, innerProps, ...props }: *) => (
+  <div {...innerProps}>{children}</div>
 );
 export const defaultComponents = { Control, DropdownIndicator, Menu };
