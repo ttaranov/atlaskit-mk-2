@@ -6,6 +6,7 @@ import Button from '@atlaskit/button';
 import { ImageIcon } from '../ImageIcon';
 import LinkGlyph from '@atlaskit/icon/glyph/link';
 import { minWidth, maxWidth } from '../dimensions';
+import { LozengeViewModel } from '../../common';
 import { ExpandedFrame } from '../ExpandedFrame';
 import AlertView from './AlertView';
 import { PreviewView } from './PreviewView';
@@ -25,7 +26,6 @@ import {
   AlertWrapper,
 } from './styled';
 import Transition from './Transition';
-import { LozengeViewModel } from '../../types';
 
 export interface ContextViewModel {
   icon?: string;
@@ -75,7 +75,7 @@ export interface Action {
   handler: (callbacks: ActionHandlerCallbacks) => void;
 }
 
-export interface ResolvedViewProps {
+export interface BlockCardResolvedViewProps {
   context?: ContextViewModel;
   link?: string;
   icon?: IconWithTooltip;
@@ -172,8 +172,8 @@ function clearActionFailureState(): Pick<
   };
 }
 
-export class ResolvedView extends React.Component<
-  ResolvedViewProps,
+export class BlockCardResolvedView extends React.Component<
+  BlockCardResolvedViewProps,
   ResolvedViewState
 > {
   state: ResolvedViewState = {

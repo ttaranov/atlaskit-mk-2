@@ -1,9 +1,9 @@
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCardResolvedViewProps } from '@atlaskit/media-ui';
 import { extractPropsFromDocument } from './extractPropsFromDocument';
 
 export function extractPropsFromSpreadsheet(
   json: any,
-): BlockCard.ResolvedViewProps {
+): BlockCardResolvedViewProps {
   const props = extractPropsFromDocument(json);
 
   props.icon = {

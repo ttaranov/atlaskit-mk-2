@@ -2,6 +2,7 @@ import { LocalUploadComponent } from '../../localUpload';
 import { Auth, ContextFactory } from '@atlaskit/media-core';
 import { NewUploadServiceImpl } from '../../../service/newUploadServiceImpl';
 import { MediaFile } from '../../../domain/file';
+import { SCALE_FACTOR_DEFAULT } from '../../../util/getPreviewFromImage';
 
 describe('MediaLocalUpload', () => {
   const imageFile: MediaFile = {
@@ -68,7 +69,7 @@ describe('MediaLocalUpload', () => {
           width: 100,
           height: 200,
         },
-        scaleFactor: 1,
+        scaleFactor: SCALE_FACTOR_DEFAULT,
       },
     });
 
@@ -79,7 +80,7 @@ describe('MediaLocalUpload', () => {
           width: 100,
           height: 200,
         },
-        scaleFactor: 1,
+        scaleFactor: SCALE_FACTOR_DEFAULT,
       },
     });
   });

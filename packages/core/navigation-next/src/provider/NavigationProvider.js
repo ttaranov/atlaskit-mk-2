@@ -14,7 +14,6 @@ const DEFAULT_UI_STATE = {
   isPeeking: false,
   isCollapsed: false,
   productNavWidth: CONTENT_NAV_WIDTH,
-  isResizing: false,
   isResizeDisabled: false,
 };
 

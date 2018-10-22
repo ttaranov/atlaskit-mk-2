@@ -7,7 +7,7 @@ import Spinner from '@atlaskit/spinner';
 import { Provider } from 'unstated';
 
 import { NavigationProvider, ViewController } from '../../../';
-import BaseItem from '../../../components/Item';
+import BaseItem from '../../../components/presentational/Item';
 import ItemsRenderer, { components } from '../../components';
 
 const { GoToItem, Item } = components;

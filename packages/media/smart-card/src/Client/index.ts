@@ -1,36 +1,95 @@
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 import { merge } from 'rxjs/observable/merge';
-import {
-  ObjectState,
-  ObjectStatus,
-  AuthService,
-  TemporaryResolver,
-} from './types';
-import { createObjectResolverServiceObservable } from './createObjectResolverServiceObservable';
-import { createTemporaryResolverObservable } from './createTemporaryResolverObservable';
-import { filter } from 'rxjs/operators/filter';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import fetch$ from './fetch';
+import { map } from 'rxjs/operators/map';
+import { catchError } from 'rxjs/operators/catchError';
+import { ObjectState, ObjectStatus, AuthService } from './types';
 import { inFisrtArrayButNotInSecond } from './utils';
 
 // TODO: add some form of caching so that urls not currently loaded will still be fast
 
-export interface ClientOptions {
-  serviceUrl?: string;
-  TEMPORARY_resolver?: TemporaryResolver;
-}
+const SERVICE_URL = 'https://api-private.stg.atlassian.com/object-resolver';
 
 export type MapDefinitionIdToUrls = {
   [k: string]: Array<string>;
 };
 
+export type CustomFetch = (url: string) => Promise<ResolveResponse> | null;
+export type CardUpdateCallback = (state: ObjectState) => void;
+
 export type CardRecord = {
   uuid: string;
-  fn: (state: ObjectState) => void;
+  fn: CardUpdateCallback;
 };
 
 // map definition id to trigger update function
 export type MapUrlToCardRecords = {
   [k: string]: Array<CardRecord>;
+};
+
+export type RemoteResourceAuthConfig = {
+  key: string;
+  displayName: string;
+  url: string;
+};
+
+// @see https://product-fabric.atlassian.net/wiki/spaces/CS/pages/279347271/Object+Provider
+export type ResolveResponse = {
+  meta: {
+    visibility: 'public' | 'restricted' | 'other' | 'not_found';
+    access: 'granted' | 'unauthorized' | 'forbidden';
+    auth: RemoteResourceAuthConfig[];
+    definitionId: string;
+  };
+  data?: {
+    [name: string]: any;
+  };
+};
+
+const convertAuthToService = (auth: {
+  key: string;
+  displayName: string;
+  url: string;
+}): AuthService => ({
+  id: auth.key,
+  name: auth.displayName,
+  startAuthUrl: auth.url,
+});
+
+const statusByAccess = (
+  status: ObjectStatus,
+  json: ResolveResponse,
+): ObjectState => ({
+  status: status,
+  definitionId: json.meta.definitionId,
+  services: json.meta.auth.map(convertAuthToService),
+  data: json.data,
+});
+
+const responseToStateMapper = (json: ResolveResponse): ObjectState => {
+  if (json.meta.visibility === 'not_found') {
+    return {
+      status: 'not-found',
+      definitionId: undefined,
+      services: [],
+    };
+  }
+  switch (json.meta.access) {
+    case 'forbidden':
+      return statusByAccess('forbidden', json);
+    case 'unauthorized':
+      return statusByAccess('unauthorized', json);
+    default:
+      return statusByAccess('resolved', json);
+  }
+};
+
+export type Options = {
+  serviceUrl: string;
+  objectUrl: string;
+  definitionId?: string;
 };
 
 /**
@@ -42,7 +101,6 @@ export type MapUrlToCardRecords = {
  * As such, we might have different cards
  * with the same URL (and definitionId, see 1)
  */
-
 export const getUrlsNotTiedToDefinitionId = (
   defIdToUrls: MapDefinitionIdToUrls,
   urlToCardRecords: MapUrlToCardRecords,
@@ -56,41 +114,35 @@ export const getUrlsNotTiedToDefinitionId = (
   );
 };
 
-const onlyPositiveResponses = (e: string): boolean =>
-  ['resolving', 'resolved', 'unauthorized', 'forbidden'].indexOf(e) > -1;
+export interface Client {
+  fetchData(url: string): Promise<ResolveResponse>;
+}
 
-export class Client {
-  static SERVICE_URL = 'https://api-private.stg.atlassian.com/object-resolver'; // TODO: use prod URL here
-
-  private readonly serviceUrl: string;
-  private readonly temporaryResolver?: TemporaryResolver;
+export class Client implements Client {
   private readonly mapDefinitionIdToUrls: MapDefinitionIdToUrls;
   private readonly mapUrlToCardRecords: MapUrlToCardRecords;
 
-  constructor(options: ClientOptions = {}) {
-    const { serviceUrl = Client.SERVICE_URL } = options;
-    this.serviceUrl = serviceUrl;
-    this.temporaryResolver = options.TEMPORARY_resolver;
+  constructor() {
     this.mapDefinitionIdToUrls = {};
     this.mapUrlToCardRecords = {};
   }
 
-  fetchData(url: string): Observable<ObjectState> {
-    const payload = {
-      serviceUrl: this.serviceUrl,
-      objectUrl: url,
-    };
-    if (this.temporaryResolver) {
-      return merge(
-        createTemporaryResolverObservable(url, this.temporaryResolver),
-        createObjectResolverServiceObservable(payload),
-      ).pipe(
-        filter(state => onlyPositiveResponses(state.status)),
-        distinctUntilChanged((p, n) => p.status === n.status),
-      );
-    } else {
-      return createObjectResolverServiceObservable(payload);
-    }
+  fetchData(objectUrl: string): Promise<ResolveResponse> {
+    return fetch$<ResolveResponse>('post', `${SERVICE_URL}/resolve`, {
+      resourceUrl: encodeURI(objectUrl),
+    }).toPromise();
+  }
+
+  startStreaming(objectUrl: string): Observable<ObjectState> {
+    return merge(
+      of({ status: 'resolving', services: [] } as ObjectState),
+      fromPromise(this.fetchData(objectUrl)).pipe(
+        map(responseToStateMapper),
+        catchError(() =>
+          of({ status: 'errored', services: [] } as ObjectState),
+        ),
+      ),
+    );
   }
 
   /**
@@ -104,11 +156,7 @@ export class Client {
    * @param url the url that card holds
    * @param fn the callback that can be called after the data has been resolved for that card.
    */
-  register(
-    url: string,
-    uuid: string,
-    fn: (state: ObjectState) => void,
-  ): Client {
+  register(url: string, uuid: string, fn: CardUpdateCallback): Client {
     this.mapUrlToCardRecords[url] = (
       this.mapUrlToCardRecords[url] || []
     ).concat([{ uuid, fn }]);
@@ -138,11 +186,11 @@ export class Client {
    * @param definitionIdFromCard optional definition id that card already has
    * @param cb optional this is a way to do something only when it is needed.
    */
-  resolve(url: string, definitionIdFromCard?: string, cb?: () => void) {
+  resolve(url: string, definitionIdFromCard?: string, cb?: Function) {
     if (!this.mapUrlToCardRecords[url]) {
       throw new Error('Please, register a smart card before calling get()');
     }
-    this.fetchData(url).subscribe(orsResponse => {
+    this.startStreaming(url).subscribe(orsResponse => {
       // If a card was good (has definitionId) but then fetch errored for it,
       // we need to remove it from the map, so that later on, on retry, we could find cards that need to be updated
       if (definitionIdFromCard && orsResponse.status === 'errored') {

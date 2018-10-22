@@ -2,6 +2,7 @@ import { mockPopupUploadEventEmitter, mockStore } from '../../../mocks';
 import sendUploadEventMiddleware from '../../sendUploadEvent';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 import { MediaError } from '../../../../domain/error';
+import { SCALE_FACTOR_DEFAULT } from '../../../../util/getPreviewFromImage';
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
 // tslint:disable-next-line:no-console
@@ -88,7 +89,7 @@ describe('sendUploadEvent middleware', () => {
         width: 1980,
         height: 1080,
       },
-      scaleFactor: 1,
+      scaleFactor: SCALE_FACTOR_DEFAULT,
     };
 
     sendUploadEventMiddleware(eventEmitter)(store)(next)(

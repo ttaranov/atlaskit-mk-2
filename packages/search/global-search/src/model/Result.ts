@@ -23,8 +23,7 @@ export interface Result {
   containerId?: string;
   // optional id for the experiment that generated this result
   experimentId?: string;
-  // optional string to represent content type
-  contentType?: string;
+  contentType: ContentType;
 }
 /**
  * Map of String keys and Array of results value, but can be empty as well
@@ -87,10 +86,6 @@ export interface PersonResult extends Result {
   resultType: ResultType.PersonResult;
 }
 
-/**
- * An enum to identify the specific type of content each search result is displaying.
- * It is used to select the appropriate icon to display.
- */
 export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',

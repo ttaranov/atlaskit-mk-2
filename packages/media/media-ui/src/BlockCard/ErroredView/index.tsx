@@ -6,7 +6,7 @@ import { CollapsedFrame } from '../CollapsedFrame';
 import { minWidth, maxWidth } from '../dimensions';
 import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescriptionLayout';
 
-export interface ErroredViewProps {
+export interface BlockCardErroredViewProps {
   url: string;
   message: string;
   onClick?: () => void;
@@ -14,7 +14,9 @@ export interface ErroredViewProps {
   isSelected?: boolean;
 }
 
-export class ErroredView extends React.Component<ErroredViewProps> {
+export class BlockCardErroredView extends React.Component<
+  BlockCardErroredViewProps
+> {
   handleRetry = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { onRetry } = this.props;
     if (onRetry) {

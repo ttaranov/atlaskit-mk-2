@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { colors, gridSize, themed } from '@atlaskit/theme';
 import { AkCodeBlock } from '@atlaskit/code';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
+import ErrorBoundary from './ErrorBoundary';
 import replaceSrc from './replaceSrc';
 
 type Props = {
@@ -31,6 +32,11 @@ export default class Example extends React.Component<Props, State> {
 
   toggleSource = () => {
     this.setState({ isSourceVisible: !this.state.isSourceVisible });
+  };
+
+  onError = (error: Error, info: any) => {
+    console.error(error);
+    console.error(info);
   };
 
   render() {
@@ -66,7 +72,9 @@ export default class Example extends React.Component<Props, State> {
           </CodeWrapper>
         ) : null}
         <Showcase>
-          <Component />
+          <ErrorBoundary onError={this.onError}>
+            <Component />
+          </ErrorBoundary>
         </Showcase>
       </Wrapper>
     );

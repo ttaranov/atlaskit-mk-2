@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 29.0.4
+- [patch] ED-5513: render table that respects columns widths except on mobile [716bb9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/716bb9d)
+
 ## 29.0.3
 - [patch] Fix incorrect word-breaking for codeblocks in Safari. FM-1278 [9fef2a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fef2a7)
 

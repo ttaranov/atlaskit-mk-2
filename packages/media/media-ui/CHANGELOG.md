@@ -1,5 +1,14 @@
 # @atlaskit/media-ui
 
+## 7.1.0
+- [minor] Added task converter  [8678076](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8678076)
+
+## 7.0.0
+- [major] Update blockcard and inline card exports to be compatible with tree shaking. Preperation for asyncloading parts of smart card [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+
+## 6.3.1
+- [patch] parse floating values correctly for scaleFactor from filename [ecc0068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecc0068)
+
 ## 6.3.0
 - [minor] Add i18n support to MediaPicker [9add3a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9add3a4)
 

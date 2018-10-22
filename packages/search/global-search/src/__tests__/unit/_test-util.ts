@@ -63,6 +63,7 @@ export function makePersonResult(
   return {
     mentionName: 'mentionName',
     presenceMessage: 'presenceMessage',
+    contentType: ContentType.Person,
     analyticsType: AnalyticsType.ResultPerson,
     resultType: ResultType.PersonResult,
     ...buildMockSearchResultProperties(),

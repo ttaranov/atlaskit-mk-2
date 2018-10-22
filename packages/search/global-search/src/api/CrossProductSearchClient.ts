@@ -3,6 +3,7 @@ import {
   PersonResult,
   ResultType,
   AnalyticsType,
+  ContentType,
 } from '../model/Result';
 import { mapJiraItemToResult } from './JiraItemMapper';
 import { mapConfluenceItemToResult } from './ConfluenceItemMapper';
@@ -181,6 +182,7 @@ function mapPersonItemToResult(item: PersonItem): PersonResult {
     name: item.displayName,
     href: '/people/' + item.userId,
     avatarUrl: item.primaryPhoto,
+    contentType: ContentType.Person,
     analyticsType: AnalyticsType.ResultPerson,
     mentionName: mention,
     presenceMessage: item.title || '',

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCardResolvedViewProps } from '@atlaskit/media-ui';
 import { extractPropsFromObject } from './extractPropsFromObject';
 import { relativeTime } from '../utils';
 import ChatIcon from '@atlaskit/icon/glyph/comment';
@@ -14,7 +14,7 @@ type Person = {
 
 export function extractPropsFromDocument(
   json: any,
-): BlockCard.ResolvedViewProps {
+): BlockCardResolvedViewProps {
   const props = extractPropsFromObject(json);
 
   props.icon = {

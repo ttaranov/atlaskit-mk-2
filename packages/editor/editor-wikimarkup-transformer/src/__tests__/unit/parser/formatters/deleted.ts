@@ -37,6 +37,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect deleted mark and ignoring the invalid closing symbol', () => {
+    const wiki = 'This is a -deleted-deleted- text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a deleted mark surrounded by non-latin characters', () => {
     const wiki = 'This is not a 牛-deleted-牛 text';
 

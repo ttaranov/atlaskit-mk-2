@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 9.0.16
+- [patch] Fix truncation in button [508ca2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/508ca2c)
+
 ## 9.0.15
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 
