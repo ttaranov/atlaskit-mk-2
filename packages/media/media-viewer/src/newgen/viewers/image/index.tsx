@@ -39,7 +39,11 @@ export class ImageViewer extends BaseViewer<
   ImageViewerProps,
   ImageViewerState
 > {
-  state: ImageViewerState = initialState;
+  protected get initialState() {
+    return initialState;
+  }
+
+  state: ImageViewerState = this.initialState;
 
   render() {
     const { onClose } = this.props;
@@ -87,34 +91,33 @@ export class ImageViewer extends BaseViewer<
     // anything.
   }
 
-  protected init({ item: file, context }: ImageViewerProps) {
-    this.setState(initialState, async () => {
-      try {
-        const service = context.getBlobService(this.props.collectionName);
-        // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
-        const item = processedFileStateToMediaItem(file);
-        const { response, cancel } = service.fetchImageBlobCancelable(item, {
-          width: 1920,
-          height: 1080,
-          mode: 'fit',
-          allowAnimated: true,
-        });
-        this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
-        const objectUrl = URL.createObjectURL(await response);
+  protected async init() {
+    const { item: file, context } = this.props;
+    try {
+      const service = context.getBlobService(this.props.collectionName);
+      // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
+      const item = processedFileStateToMediaItem(file);
+      const { response, cancel } = service.fetchImageBlobCancelable(item, {
+        width: 1920,
+        height: 1080,
+        mode: 'fit',
+        allowAnimated: true,
+      });
+      this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
+      const objectUrl = URL.createObjectURL(await response);
+      this.setState({
+        objectUrl: Outcome.successful(objectUrl),
+      });
+    } catch (err) {
+      if (err.message === REQUEST_CANCELLED) {
+        this.preventRaceCondition();
+      } else {
         this.setState({
-          objectUrl: Outcome.successful(objectUrl),
+          objectUrl: Outcome.failed(createError('previewFailed', err, file)),
         });
-      } catch (err) {
-        if (err.message === REQUEST_CANCELLED) {
-          this.preventRaceCondition();
-        } else {
-          this.setState({
-            objectUrl: Outcome.failed(createError('previewFailed', err, file)),
-          });
-          this.props.onLoad({ status: 'error', errorMessage: err.message });
-        }
+        this.props.onLoad({ status: 'error', errorMessage: err.message });
       }
-    });
+    }
   }
 
   protected release() {

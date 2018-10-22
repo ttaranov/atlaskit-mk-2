@@ -13,17 +13,28 @@ export abstract class BaseViewer<
   State
 > extends React.Component<Props, State> {
   componentDidMount() {
-    this.init(this.props);
+    this.init();
   }
 
   componentWillUnmount() {
     this.release();
   }
 
-  componentWillUpdate(nextProps: Props) {
-    if (this.needsReset(this.props, nextProps)) {
+  // NOTE: We've moved parts of the logic to reset a component into this method
+  // to optimise the performance. Resetting the state before the `componentDidUpdate`
+  // lifecycle event allows us avoid one additional render cycle.
+  // However, this lifecycle method might eventually be deprecated, so be careful
+  // when working with it.
+  UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
+    if (this.needsReset(nextProps, this.props)) {
       this.release();
-      this.init(nextProps);
+      this.setState(this.initialState);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.needsReset(prevProps, this.props)) {
+      this.init();
     }
   }
 
@@ -35,6 +46,7 @@ export abstract class BaseViewer<
     );
   }
 
-  protected abstract init(props: Props): void;
+  protected abstract init(): void;
   protected abstract release(): void;
+  protected abstract get initialState(): State;
 }
