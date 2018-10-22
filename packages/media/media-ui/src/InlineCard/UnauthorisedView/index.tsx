@@ -5,7 +5,7 @@ import Button from '@atlaskit/button';
 import { truncateUrlForErrorView } from '../utils';
 import { Frame } from '../Frame';
 
-export interface UnauthorizedViewProps {
+export interface InlineCardUnauthorizedViewProps {
   url: string;
   icon?: string;
   onClick?: () => void;
@@ -13,7 +13,9 @@ export interface UnauthorizedViewProps {
   isSelected?: boolean;
 }
 
-export class UnauthorizedView extends React.Component<UnauthorizedViewProps> {
+export class InlineCardUnauthorizedView extends React.Component<
+  InlineCardUnauthorizedViewProps
+> {
   handleConnectAccount = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { onAuthorise } = this.props;
     if (onAuthorise) {

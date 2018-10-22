@@ -1,4 +1,4 @@
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCardResolvedViewProps } from '@atlaskit/media-ui';
 import { genericExtractPropsFromJSONLD } from '../genericExtractPropsFromJSONLD';
 import { extractPropsFromObject } from './extractPropsFromObject';
 import { extractPropsFromDocument } from './extractPropsFromDocument';
@@ -22,7 +22,7 @@ const extractorFunctionsByType = {
 
 export function extractBlockPropsFromJSONLD(
   json: any,
-): BlockCard.ResolvedViewProps {
+): BlockCardResolvedViewProps {
   return genericExtractPropsFromJSONLD({
     extractorPrioritiesByType: extractorPrioritiesByType,
     extractorFunctionsByType: extractorFunctionsByType,
