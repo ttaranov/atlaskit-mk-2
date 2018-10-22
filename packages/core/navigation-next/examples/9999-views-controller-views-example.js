@@ -18,13 +18,15 @@ import { colors } from '@atlaskit/theme';
 import {
   ContainerHeader,
   GroupHeading,
+  HeaderSection,
   Item,
   ItemAvatar,
   light,
-  Section,
+  MenuSection,
   SectionHeading,
   Separator,
   ThemeProvider,
+  Wordmark,
 } from '../src';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
@@ -66,50 +68,32 @@ export default () => (
     <FlexColumn>
       <h3>Product home view</h3>
       <FakeContentNav>
-        <Section key="header">
-          {({ css }) => (
-            <div css={{ ...css, paddingTop: 20 }}>
-              <div
-                css={{
-                  lineHeight: 0,
-                  paddingBottom: 28,
-                  paddingLeft: 12,
-                  paddingTop: 8,
-                }}
-              >
-                <JiraWordmark />
-              </div>
+        <HeaderSection key="header">
+          {({ className }) => (
+            <div className={className}>
+              <Wordmark wordmark={JiraWordmark} />
             </div>
           )}
-        </Section>
-        <Section key="menu" shouldGrow>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: 12 }}>
+        </HeaderSection>
+        <MenuSection key="menu">
+          {({ className }) => (
+            <div className={className}>
               <Item before={DashboardIcon} text="Dashboards" isSelected />
               <Item before={FolderIcon} text="Projects" />
               <Item before={IssueIcon} text="Issues and filters" />
               <Item before={PortfolioIcon} text="Portfolio" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </FakeContentNav>
     </FlexColumn>
     <FlexColumn>
       <h3>Product issues view</h3>
       <FakeContentNav>
-        <Section key="header">
-          {({ css }) => (
-            <div css={{ ...css, paddingTop: 20 }}>
-              <div
-                css={{
-                  lineHeight: 0,
-                  paddingBottom: 28,
-                  paddingLeft: 12,
-                  paddingTop: 8,
-                }}
-              >
-                <JiraWordmark />
-              </div>
+        <HeaderSection key="header">
+          {({ className }) => (
+            <div className={className}>
+              <Wordmark wordmark={JiraWordmark} />
               <div css={{ paddingBottom: 20 }}>
                 <Item
                   before={() => (
@@ -123,10 +107,10 @@ export default () => (
               </div>
             </div>
           )}
-        </Section>
-        <Section key="menu" shouldGrow alwaysShowScrollHint>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: 12 }}>
+        </HeaderSection>
+        <MenuSection key="menu" alwaysShowScrollHint>
+          {({ className }) => (
+            <div className={className}>
               <SectionHeading>Issues and filters</SectionHeading>
               <Item text="Search issues" />
               <GroupHeading>Other</GroupHeading>
@@ -143,15 +127,15 @@ export default () => (
               <Item text="View all filters" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </FakeContentNav>
     </FlexColumn>
     <FlexColumn>
       <h3>Project backlog view</h3>
       <FakeContentNav isContainer>
-        <Section key="header">
+        <HeaderSection key="header">
           {({ css }) => (
-            <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
+            <div css={{ ...css, paddingBottom: 20 }}>
               <ContainerHeader
                 before={itemState => (
                   <ItemAvatar
@@ -165,10 +149,10 @@ export default () => (
               />
             </div>
           )}
-        </Section>
-        <Section key="menu" shouldGrow>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: 12 }}>
+        </HeaderSection>
+        <MenuSection key="menu">
+          {({ className }) => (
+            <div className={className}>
               <Item before={BacklogIcon} text="Backlog" />
               <Item before={BoardIcon} text="Active sprints" />
               <Item before={GraphLineIcon} text="Reports" />
@@ -179,7 +163,7 @@ export default () => (
               <Item before={ComponentIcon} text="Components" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </FakeContentNav>
     </FlexColumn>
   </div>

@@ -10,13 +10,15 @@ import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import {
   ContainerHeader,
   GroupHeading,
+  HeaderSection,
   Item,
   ItemAvatar,
   LayoutManager,
+  MenuSection,
   NavigationProvider,
-  Section,
   Separator,
   UIControllerSubscriber,
+  Wordmark,
 } from '../src';
 
 const MyGlobalNavigation = () => (
@@ -28,23 +30,14 @@ const MyGlobalNavigation = () => (
 
 const MyProductNavigation = () => (
   <Fragment>
-    <Section>
+    <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <div
-            css={{
-              lineHeight: 0,
-              paddingBottom: 28,
-              paddingLeft: 12,
-              paddingTop: 28,
-            }}
-          >
-            <AtlassianWordmark />
-          </div>
+          <Wordmark wordmark={AtlassianWordmark} />
         </div>
       )}
-    </Section>
-    <Section>
+    </HeaderSection>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item text="Dashboard" />
@@ -55,15 +48,15 @@ const MyProductNavigation = () => (
           <Item text="My plugin" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 
 const MyContainerNavigation = () => (
   <Fragment>
-    <Section>
+    <HeaderSection>
       {({ css }) => (
-        <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
+        <div css={{ ...css, paddingBottom: 20 }}>
           <ContainerHeader
             before={itemState => (
               <ItemAvatar
@@ -77,8 +70,8 @@ const MyContainerNavigation = () => (
           />
         </div>
       )}
-    </Section>
-    <Section>
+    </HeaderSection>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item text="Things in this container" />
@@ -89,7 +82,7 @@ const MyContainerNavigation = () => (
           <Item before={ShortcutIcon} text="Team space" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 
