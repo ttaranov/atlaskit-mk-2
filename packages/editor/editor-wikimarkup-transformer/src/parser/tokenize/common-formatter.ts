@@ -1,6 +1,5 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
-import { parseString } from '../text';
-import { Token, TokenType, TokenErrCallback } from './';
+import { Schema } from 'prosemirror-model';
+import { Token } from './';
 import { macro } from './macro';
 import { linkFormat } from './link-format';
 import { parseNewlineOnly } from './whitespace';
@@ -10,12 +9,8 @@ export interface FormatterOption {
   opening: string;
   /** The closing symbol */
   closing: string;
-  /** TokenType to be ignored when parsing the raw content */
-  ignoreTokenTypes?: TokenType[];
-  /** This function will be called for each content under the formatter */
-  contentDecorator: (pmNode: PMNode) => PMNode;
-  /** Callback when token parse failed */
-  tokenErrCallback?: TokenErrCallback;
+  /** This function will be called with the rawContent */
+  rawContentProcessor: (raw: string, length: number) => Token;
 }
 
 const processState = {
@@ -34,12 +29,6 @@ export function commonFormatter(
   let index = 0;
   let state = processState.START;
   let buffer = '';
-
-  /**
-   * The following token types will be ignored in parsing
-   * the content of a strong mark
-   */
-  const ignoreTokenTypes = opt.ignoreTokenTypes || [];
 
   while (index < input.length) {
     const char = input.charAt(index);
@@ -111,19 +100,7 @@ export function commonFormatter(
           continue;
         }
 
-        const rawContent = parseString(
-          buffer,
-          schema,
-          ignoreTokenTypes,
-          opt.tokenErrCallback,
-        );
-        const decoratedContent = rawContent.map(opt.contentDecorator);
-
-        return {
-          type: 'pmnode',
-          nodes: decoratedContent,
-          length: index,
-        };
+        return opt.rawContentProcessor(buffer, index);
       }
       case processState.INLINE_MACRO: {
         const token = macro(input.substr(index), schema);
