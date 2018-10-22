@@ -13,6 +13,9 @@ import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
 
+import { Label } from '@atlaskit/field-base';
+import { ToggleStateless } from '@atlaskit/toggle';
+
 import {
   ContainerHeader,
   GlobalNav,
@@ -307,6 +310,7 @@ type State = {
   boxWidth: number | 'auto',
   callStack: Array<StatusEvent>,
   resizePending: boolean,
+  isFlyoutAvailable: boolean,
 };
 function makeKey() {
   return Math.random()
@@ -316,7 +320,12 @@ function makeKey() {
 
 // eslint-disable-next-line react/no-multi-comp
 class ExtendingNavSubscriber extends React.Component<*, State> {
-  state = { callStack: [], boxWidth: 'auto', resizePending: false };
+  state = {
+    callStack: [],
+    boxWidth: 'auto',
+    resizePending: false,
+    isFlyoutAvailable: true,
+  };
   componentDidMount() {
     this.updateWidth();
   }
@@ -367,8 +376,13 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
   makePending = () => {
     this.setState({ resizePending: true });
   };
+
+  onFlyoutToggle = () => {
+    this.setState(state => ({ isFlyoutAvailable: !state.isFlyoutAvailable }));
+  };
+
   render() {
-    const { boxWidth, resizePending } = this.state;
+    const { boxWidth, resizePending, isFlyoutAvailable } = this.state;
     const lastTen = this.getStack();
     console.log('navState', this.props.navState);
 
@@ -381,7 +395,7 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
         onCollapseEnd={this.onCollapseEnd}
         onExpandStart={this.onExpandStart}
         onExpandEnd={this.onExpandEnd}
-        experimental_flyoutOnHover
+        experimental_flyoutOnHover={isFlyoutAvailable}
       >
         <CollapseStatusListener
           onResizeEnd={this.onResizeEnd}
@@ -393,6 +407,11 @@ class ExtendingNavSubscriber extends React.Component<*, State> {
         />
         <div>
           <ResizeBox width={boxWidth} pending={resizePending} />
+          <Label label="Toggle flyout on hover (experimental)" />
+          <ToggleStateless
+            isChecked={isFlyoutAvailable}
+            onChange={this.onFlyoutToggle}
+          />
           <Logger>
             <button
               style={{ position: 'absolute', right: 10, top: 10 }}
