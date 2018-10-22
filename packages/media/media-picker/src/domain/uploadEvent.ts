@@ -2,6 +2,7 @@ import { MediaProgress } from './progress';
 import { MediaError } from './error';
 import { Preview } from './preview';
 import { MediaFile, PublicMediaFile } from './file';
+import { ProcessedFileState } from '../../../media-core/src';
 
 export type UploadsStartEventPayload = {
   readonly files: MediaFile[];
@@ -23,6 +24,7 @@ export type UploadProcessingEventPayload = {
 
 export type UploadEndEventPayload = {
   readonly file: PublicMediaFile;
+  readonly state: ProcessedFileState;
 };
 
 export type UploadErrorEventPayload = {

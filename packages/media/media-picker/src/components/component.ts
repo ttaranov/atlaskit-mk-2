@@ -43,8 +43,8 @@ export class UploadComponent<M extends UploadEventPayloadMap>
     this.emit('upload-processing', { file });
   }
 
-  emitUploadEnd(file: PublicMediaFile): void {
-    this.emit('upload-end', { file });
+  emitUploadEnd(file: PublicMediaFile, state: ProcessedFileState): void {
+    this.emit('upload-end', { file, state });
   }
 
   emitUploadError(file: MediaFile, error: MediaError): void {

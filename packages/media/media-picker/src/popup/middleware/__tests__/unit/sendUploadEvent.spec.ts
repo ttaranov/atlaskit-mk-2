@@ -1,3 +1,4 @@
+import { ProcessedFileState } from '@atlaskit/media-core';
 import { mockPopupUploadEventEmitter, mockStore } from '../../../mocks';
 import sendUploadEventMiddleware from '../../sendUploadEvent';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
@@ -134,8 +135,14 @@ describe('sendUploadEvent middleware', () => {
 
   it('should emit upload end event', () => {
     const { eventEmitter, store, next } = setup();
-    const mediaApiData = {
+    const processedState: ProcessedFileState = {
       id: publicFile.publicId,
+      status: 'processed',
+      name: 'some-name',
+      size: 42,
+      artifacts: {},
+      mediaType: 'image',
+      mimeType: 'some-mime-type',
     };
 
     sendUploadEventMiddleware(eventEmitter)(store)(next)(
@@ -144,7 +151,7 @@ describe('sendUploadEvent middleware', () => {
           name: 'upload-end',
           data: {
             file: publicFile,
-            public: mediaApiData,
+            state: processedState,
           },
         },
         uploadId,
@@ -156,7 +163,7 @@ describe('sendUploadEvent middleware', () => {
         ...publicFile,
         id: uploadId,
       },
-      mediaApiData,
+      processedState,
     );
   });
 

@@ -1,6 +1,6 @@
 jest.mock('@atlaskit/media-store');
-import { MediaStore } from '@atlaskit/media-store';
-import { mockStore, mockFetcher } from '../../../mocks';
+import { MediaStore, MediaFile } from '@atlaskit/media-store';
+import { ProcessedFileState } from '@atlaskit/media-core';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 import finalizeUploadMiddleware, { finalizeUpload } from '../../finalizeUpload';
 import { UploadParams } from '../../../../domain/config';
@@ -10,23 +10,51 @@ import {
 } from '../../../actions/finalizeUpload';
 import { Tenant, State } from '../../../domain';
 
+const upfrontId = Promise.resolve('1');
+const file = {
+  id: 'some-file-id',
+  name: 'some-file-name',
+  type: 'some-file-type',
+  creationDate: Date.now(),
+  size: 12345,
+  upfrontId,
+};
+const copiedFile = {
+  ...file,
+  id: 'some-copied-file-id',
+};
+const mediaFile: MediaFile = {
+  id: 'some-copied-file-id',
+  mediaType: 'image',
+  mimeType: 'some-mime-type',
+  name: 'some-file-name',
+  processingStatus: 'succeeded',
+  size: 12345,
+  artifacts: {},
+};
+
+(MediaStore as any).mockImplementation(() => ({
+  copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
+  getFile: () => Promise.resolve({ data: mediaFile }),
+}));
+
+// Do not this import. We want to mock MediaStore before it was used to create contexts
+import { mockStore } from '../../../mocks';
+
 describe('finalizeUploadMiddleware', () => {
   const auth = {
     clientId: 'some-client-id',
     token: 'some-token',
   };
-  const upfrontId = Promise.resolve('1');
-  const file = {
-    id: 'some-file-id',
-    name: 'some-file-name',
-    type: 'some-file-type',
-    creationDate: Date.now(),
-    size: 12345,
-    upfrontId,
-  };
-  const copiedFile = {
-    ...file,
+
+  const copiedState: ProcessedFileState = {
     id: 'some-copied-file-id',
+    status: 'processed',
+    name: file.name,
+    size: file.size,
+    artifacts: {},
+    mediaType: 'image',
+    mimeType: 'some-mime-type',
   };
   const collection = 'some-collection';
   const uploadId = 'some-upload-id';
@@ -52,14 +80,15 @@ describe('finalizeUploadMiddleware', () => {
       Promise.resolve(auth),
     );
 
-    const fetcher = mockFetcher();
+    // Even thought this mocking already been done outside above
+    // we need to do it again because some tests override it and we need to
+    // clean it up before next test.
     (MediaStore as any).mockImplementation(() => ({
       copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
+      getFile: () => Promise.resolve({ data: mediaFile }),
     }));
-    fetcher.pollFile.mockImplementation(() => Promise.resolve(copiedFile));
 
     return {
-      fetcher,
       store,
       next: jest.fn(),
       action: {
@@ -76,43 +105,48 @@ describe('finalizeUploadMiddleware', () => {
   };
 
   it('should do nothing given unknown action', () => {
-    const { fetcher, store, next } = setup();
+    const { store, next } = setup();
     const action = {
       type: 'UNKNOWN',
     };
 
-    finalizeUploadMiddleware(fetcher)(store)(next)(action);
+    finalizeUploadMiddleware()(store)(next)(action);
 
     expect(store.dispatch).not.toBeCalled();
     expect(next).toBeCalledWith(action);
   });
 
   it('should send upload end event with metadata', () => {
-    const { fetcher, store, action } = setup();
+    const { store, action } = setup();
 
-    return finalizeUpload(fetcher, store, action).then(action => {
-      expect(action).toEqual(
-        sendUploadEvent({
-          event: {
-            name: 'upload-end',
-            data: {
-              file: {
-                ...file,
-                publicId: copiedFile.id,
+    return finalizeUpload(store, action).then(
+      action => {
+        expect(action).toEqual(
+          sendUploadEvent({
+            event: {
+              name: 'upload-end',
+              data: {
+                file: {
+                  ...file,
+                  publicId: copiedFile.id,
+                },
+                state: copiedState,
               },
-              public: copiedFile,
             },
-          },
-          uploadId,
-        }),
-      );
-    });
+            uploadId,
+          }),
+        );
+      },
+      error => {
+        expect(error).not.toBeDefined();
+      },
+    );
   });
 
   it('should send upload processing event with metadata', () => {
-    const { fetcher, store, action } = setup();
+    const { store, action } = setup();
 
-    return finalizeUpload(fetcher, store, action).then(() => {
+    return finalizeUpload(store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -131,38 +165,44 @@ describe('finalizeUploadMiddleware', () => {
   });
 
   it('should send upload error event given some error happens', () => {
-    const { fetcher, store, action } = setup();
+    const { store, action } = setup();
     const error = {
       message: 'some-error-message',
     };
 
     (MediaStore as any).mockImplementation(() => ({
+      getFile: () => Promise.resolve({ data: mediaFile }),
       copyFileWithToken: () => Promise.reject(error),
     }));
 
-    return finalizeUpload(fetcher, store, action).then(() => {
-      expect(store.dispatch).toBeCalledWith(
-        sendUploadEvent({
-          event: {
-            name: 'upload-error',
-            data: {
-              file,
-              error: {
-                name: 'object_create_fail',
-                description: error.message,
+    return finalizeUpload(store, action).then(
+      result => {
+        expect(result).not.toBeDefined();
+      },
+      () => {
+        expect(store.dispatch).toBeCalledWith(
+          sendUploadEvent({
+            event: {
+              name: 'upload-error',
+              data: {
+                file,
+                error: {
+                  name: 'object_create_fail',
+                  description: error.message,
+                },
               },
             },
-          },
-          uploadId,
-        }),
-      );
-    });
+            uploadId,
+          }),
+        );
+      },
+    );
   });
 
   it('Should resolve deferred id when the source id is on the store', () => {
     const resolver = jest.fn();
     const rejecter = jest.fn();
-    const { fetcher, store, action } = setup(undefined, {
+    const { store, action } = setup(undefined, {
       deferredIdUpfronts: {
         'some-file-id': {
           resolver,
@@ -171,7 +211,7 @@ describe('finalizeUploadMiddleware', () => {
       },
     });
 
-    return finalizeUpload(fetcher, store, action).then(() => {
+    return finalizeUpload(store, action).then(() => {
       expect(resolver).toHaveBeenCalledTimes(1);
       expect(resolver).toBeCalledWith('some-copied-file-id');
     });

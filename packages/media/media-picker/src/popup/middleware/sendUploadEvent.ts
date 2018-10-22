@@ -33,7 +33,7 @@ export default function(eventEmitter: PopupUploadEventEmitter): Middleware {
         }
         case 'upload-end': {
           const file = copyPublicMediaFileForUpload(event.data.file, uploadId);
-          eventEmitter.emitUploadEnd(file, event.data.public);
+          eventEmitter.emitUploadEnd(file, event.data.state);
           break;
         }
         case 'upload-error': {

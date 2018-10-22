@@ -124,8 +124,14 @@ describe('importFiles middleware', () => {
             ...file,
             publicId: `some-public-id-${index}`,
           },
-          public: {
+          state: {
             id: `some-public-id-${index}`,
+            status: 'processed',
+            name: 'some-name',
+            size: 42,
+            artifacts: {},
+            mediaType: 'image',
+            mimeType: 'some-mime-type',
           },
         },
       };

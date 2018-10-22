@@ -158,6 +158,7 @@ export class NewUploadServiceImpl implements UploadService {
                   ...mediaFile,
                   publicId: state.id,
                 },
+                state,
               });
             }
           },

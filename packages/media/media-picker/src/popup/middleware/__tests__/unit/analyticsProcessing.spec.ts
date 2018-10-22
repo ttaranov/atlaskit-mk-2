@@ -498,8 +498,7 @@ describe('analyticsProcessing middleware', () => {
     const fileAttributes = {
       ...payload.attributes.fileAttributes,
       fileMediatype: 'image',
-      fileState: 'succeeded',
-      fileStatus: 'converted',
+      fileState: 'processed',
     };
     verifyAnalyticsCall(
       fileUploadEnd({
@@ -507,14 +506,14 @@ describe('analyticsProcessing middleware', () => {
           ...testFile1,
           publicId: 'pubid1',
         },
-        public: {
+        state: {
+          status: 'processed',
           id: 'id1',
           name: 'file1',
           size: 1,
-          creationDate: 1,
           mimeType: 'type1',
           mediaType: 'image',
-          processingStatus: 'succeeded',
+          artifacts: {},
         },
       }),
       {
@@ -544,14 +543,14 @@ describe('analyticsProcessing middleware', () => {
                     ...testFile1,
                     publicId: 'pubid1',
                   },
-                  public: {
+                  state: {
+                    status: 'processed',
                     id: 'id1',
                     name: 'file1',
                     size: 1,
-                    creationDate: 1,
-                    mimeType: testFile1.type,
+                    mimeType: 'type1',
                     mediaType: 'image',
-                    processingStatus: 'succeeded',
+                    artifacts: {},
                   },
                 },
                 name: 'upload-end',

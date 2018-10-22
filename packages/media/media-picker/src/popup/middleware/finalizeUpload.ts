@@ -4,7 +4,7 @@ import {
   MediaStoreCopyFileWithTokenBody,
   MediaStoreCopyFileWithTokenParams,
 } from '@atlaskit/media-store';
-import { Context } from '@atlaskit/media-core';
+import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import {
   FinalizeUploadAction,
   isFinalizeUploadAction,
@@ -35,7 +35,7 @@ export function finalizeUpload(
   }: FinalizeUploadAction,
 ) {
   const { userContext, tenantContext } = store.getState();
-  userContext.config
+  return userContext.config
     .authProvider()
     .then(mapAuthToSourceFileOwner)
     .then(owner => {
@@ -55,7 +55,7 @@ export function finalizeUpload(
         occurrenceKey,
       };
 
-      copyFile(copyFileParams);
+      return copyFile(copyFileParams);
     });
 }
 
@@ -117,21 +117,22 @@ async function copyFile({
     );
   };
 
-  const sendUploadEnd = (id: string) => {
+  const sendUploadEnd = (state: ProcessedFileState) => {
     if (deferred) {
       const { resolver } = deferred;
-      resolver(id);
+      resolver(state.id);
     }
 
-    store.dispatch(
+    return store.dispatch(
       sendUploadEvent({
         event: {
           name: 'upload-end',
           data: {
             file: {
               ...file,
-              publicId: id,
+              publicId: state.id,
             },
+            state,
           },
         },
         uploadId,
@@ -139,9 +140,8 @@ async function copyFile({
     );
   };
 
-  return mediaStore
-    .copyFileWithToken(body, params)
-    .then(destinationFile => {
+  return mediaStore.copyFileWithToken(body, params).then(
+    destinationFile => {
       const { id: publicId } = destinationFile.data;
 
       store.dispatch(
@@ -159,35 +159,38 @@ async function copyFile({
         }),
       );
 
-      const subscription = tenantContext.file
-        .getFileState(publicId, {
-          collectionName: tenant.uploadParams.collection,
-        })
-        .subscribe({
-          next: state => {
-            if (state.status === 'processed') {
-              sendUploadEnd(state.id);
-            } else if (
-              state.status === 'failed-processing' ||
-              state.status === 'error'
-            ) {
-              sendUploadError(state);
-            }
-            if (
-              ['processed', 'failed-processing', 'error'].indexOf(
-                state.status,
-              ) > -1
-            ) {
-              // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
-              setImmediate(() => subscription.unsubscribe());
-            }
-          },
-          error: error => {
-            sendUploadError(error);
-          },
-        });
-    })
-    .catch(error => {
-      sendUploadError(error);
-    });
+      return new Promise((resolve, reject) => {
+        const subscription = tenantContext.file
+          .getFileState(publicId, {
+            collectionName: tenant.uploadParams.collection,
+          })
+          .subscribe({
+            next: state => {
+              if (state.status === 'processed') {
+                resolve(sendUploadEnd(state));
+              } else if (
+                state.status === 'failed-processing' ||
+                state.status === 'error'
+              ) {
+                reject(sendUploadError(state));
+              }
+              if (
+                ['processed', 'failed-processing', 'error'].indexOf(
+                  state.status,
+                ) > -1
+              ) {
+                // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
+                setImmediate(() => subscription.unsubscribe());
+              }
+            },
+            error: error => {
+              reject(sendUploadError(error));
+            },
+          });
+      });
+    },
+    error => {
+      throw sendUploadError(error);
+    },
+  );
 }

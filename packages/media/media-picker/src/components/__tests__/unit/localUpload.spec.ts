@@ -1,7 +1,8 @@
+import { Auth, ContextFactory, ProcessedFileState } from '@atlaskit/media-core';
 import { LocalUploadComponent } from '../../localUpload';
-import { Auth, ContextFactory } from '@atlaskit/media-core';
 import { NewUploadServiceImpl } from '../../../service/newUploadServiceImpl';
 import { MediaFile } from '../../../domain/file';
+import { UploadEndEventPayload } from '../../..';
 
 describe('MediaLocalUpload', () => {
   const imagePreviewSrc = 'some-image-src';
@@ -12,6 +13,15 @@ describe('MediaLocalUpload', () => {
     creationDate: Date.now(),
     type: 'image/jpg',
     upfrontId: Promise.resolve('some-public-id'),
+  };
+  const processedState: ProcessedFileState = {
+    id: 'some-copied-file-id',
+    status: 'processed',
+    name: 'some-name',
+    size: 42,
+    artifacts: {},
+    mediaType: 'image',
+    mimeType: 'some-mime-type',
   };
   const setup = (options: { shouldCopyFileToRecents?: boolean } = {}) => {
     const context = ContextFactory.create({
@@ -90,14 +100,15 @@ describe('MediaLocalUpload', () => {
 
     emitUploadServiceEvent('file-converted', {
       file: { ...imageFile, publicId: 'some-id' },
-      public: { id: 'some-id' },
+      state: processedState,
     });
 
     expect(emitter.emit).toHaveBeenCalledTimes(1);
-    expect(emitter.emit).toBeCalledWith('upload-end', {
+    const expectedPayload: UploadEndEventPayload = {
       file: { ...imageFile, publicId: 'some-id' },
-      public: { id: 'some-id' },
-    });
+      state: processedState,
+    };
+    expect(emitter.emit).toBeCalledWith('upload-end', expectedPayload);
   });
 
   it('should use shouldCopyFileToRecents as true by default and pass to upload service', () => {
