@@ -58,7 +58,6 @@ describe('ResizeControlBase', () => {
 
   it('should render correctly', () => {
     const wrapper = shallow(
-      // $FlowFixMe: mutationRefs.ref should be of HTMLElement type
       <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
     );
 

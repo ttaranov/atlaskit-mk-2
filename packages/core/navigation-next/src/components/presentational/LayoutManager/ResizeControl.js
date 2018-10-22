@@ -1,6 +1,12 @@
 // @flow
 
-import React, { PureComponent, Fragment, type Node, type Ref } from 'react';
+import React, {
+  PureComponent,
+  Fragment,
+  type Node,
+  type Ref,
+  type ElementRef,
+} from 'react';
 import raf from 'raf-schd';
 import {
   withAnalyticsEvents,
@@ -119,7 +125,7 @@ const Button = ({
 
 // tinker with the DOM directly by setting style properties, updates the grab bar position by changing padding-left and width.
 function updateResizeAreaPosition(
-  elements: Array<{ property: 'padding-left' | 'width', ref: HTMLElement }>,
+  elements: Array<{ property: 'padding-left' | 'width', ref: ElementRef<*> }>,
   width: number,
 ) {
   elements.forEach(({ property, ref }) => {
@@ -170,7 +176,10 @@ type Props = WithAnalyticsEventsProps & {
   flyoutIsOpen: boolean,
   isDisabled: boolean,
   mouseIsOverNavigation: boolean,
-  mutationRefs: Array<{ ref: HTMLElement, property: 'padding-left' | 'width' }>,
+  mutationRefs: Array<{
+    ref: ElementRef<*>,
+    property: 'padding-left' | 'width',
+  }>,
   navigation: Object,
 };
 type State = {
