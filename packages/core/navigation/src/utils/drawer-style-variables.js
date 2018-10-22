@@ -3,6 +3,7 @@ import { gridSize } from '../shared-variables';
 
 const fullWidth = '100vw';
 const narrowWidth = 45 * gridSize;
+const mediumWidth = 60 * gridSize;
 const wideWidth = 75 * gridSize;
 
 export const boxShadowSpread = gridSize * 4;
@@ -15,6 +16,10 @@ export const widths = {
   narrow: {
     width: `${narrowWidth}px`,
     offScreenTranslateX: `${-narrowWidth - boxShadowSpread}px`,
+  },
+  medium: {
+    width: `${mediumWidth}px`,
+    offScreenTranslateX: `${-mediumWidth - boxShadowSpread}px`,
   },
   wide: {
     width: `${wideWidth}px`,
