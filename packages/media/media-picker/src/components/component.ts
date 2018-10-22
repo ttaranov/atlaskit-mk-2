@@ -1,3 +1,4 @@
+import { ProcessedFileState } from '@atlaskit/media-core';
 import { MediaFile, PublicMediaFile } from '../domain/file';
 import { MediaProgress } from '../domain/progress';
 import { MediaError } from '../domain/error';
@@ -5,7 +6,6 @@ import { Preview } from '../domain/preview';
 
 import { GenericEventEmitter } from '../util/eventEmitter';
 import { UploadEventPayloadMap } from '../domain/uploadEvent';
-import { ProcessedFileState } from '../../../media-core/src/fileState';
 
 export interface UploadEventEmitter {
   emitUploadsStart(files: MediaFile[]): void;
