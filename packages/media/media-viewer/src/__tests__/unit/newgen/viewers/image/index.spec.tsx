@@ -53,7 +53,7 @@ describe('ImageViewer', () => {
 
     await response;
 
-    expect(el.state().objectUrl.data).toBeDefined();
+    expect(el.state().content.data).toBeDefined();
   });
 
   it('shows an error and download button when there is an error with the preview', async () => {
@@ -62,7 +62,7 @@ describe('ImageViewer', () => {
 
     await awaitError(response, 'test_error');
 
-    expect(el.state().objectUrl.err).toBeDefined();
+    expect(el.state().content.err).toBeDefined();
     el.update();
 
     const errorMessage = el.find(ErrorMessage);
@@ -123,7 +123,7 @@ describe('ImageViewer', () => {
     (el as any).instance()['revokeObjectUrl'] = revokeObjectUrl;
 
     await response;
-    expect(el.state().objectUrl.status).toEqual('SUCCESSFUL');
+    expect(el.state().content.status).toEqual('SUCCESSFUL');
 
     const anotherImageItem: ProcessedFileState = {
       id: 'some-other-id',
@@ -138,7 +138,7 @@ describe('ImageViewer', () => {
     el.setProps({ item: anotherImageItem });
     el.update();
     expect(revokeObjectUrl).toHaveBeenCalled();
-    expect(el.state().objectUrl.status).toEqual('PENDING');
+    expect(el.state().content.status).toEqual('PENDING');
   });
 
   it('MSW-720: creates the blobService with collectionName', async () => {
