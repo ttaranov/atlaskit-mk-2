@@ -114,6 +114,20 @@ export const getUrlsNotTiedToDefinitionId = (
   );
 };
 
+const unlinkLinkedCardForDefinitionId = (
+  urlToResolve: string,
+  connectedUrl: string[],
+): string[] => {
+  return connectedUrl.filter(url => url !== urlToResolve);
+};
+
+const linkUrlToDefinitionId = (
+  newUrl: string,
+  mapping: string[] | undefined,
+): string[] => {
+  return (mapping || []).concat([newUrl]);
+};
+
 export interface Client {
   fetchData(url: string): Promise<ResolveResponse>;
 }
@@ -182,22 +196,23 @@ export class Client implements Client {
    *
    * Note: this one really needs to be refactored. It simply does to much...
    *
-   * @param url the url of a remote resoulrce a card wants to be resolved
+   * @param urlToResolve the url of a remote resoulrce a card wants to be resolved
    * @param definitionIdFromCard optional definition id that card already has
    * @param cb optional this is a way to do something only when it is needed.
    */
-  resolve(url: string, definitionIdFromCard?: string, cb?: Function) {
-    if (!this.mapUrlToCardRecords[url]) {
+  resolve(urlToResolve: string, definitionIdFromCard?: string, cb?: Function) {
+    if (!this.mapUrlToCardRecords[urlToResolve]) {
       throw new Error('Please, register a smart card before calling get()');
     }
-    this.startStreaming(url).subscribe(orsResponse => {
+    this.startStreaming(urlToResolve).subscribe(orsResponse => {
       // If a card was good (has definitionId) but then fetch errored for it,
       // we need to remove it from the map, so that later on, on retry, we could find cards that need to be updated
       if (definitionIdFromCard && orsResponse.status === 'errored') {
         this.mapDefinitionIdToUrls[
           definitionIdFromCard
-        ] = this.mapDefinitionIdToUrls[definitionIdFromCard].filter(
-          mappedUrl => mappedUrl !== url,
+        ] = unlinkLinkedCardForDefinitionId(
+          urlToResolve,
+          this.mapDefinitionIdToUrls[definitionIdFromCard],
         );
       }
 
@@ -208,15 +223,20 @@ export class Client implements Client {
         // we can assign the card's url to the definitionId
         // Later we can map this url to find an update function using `mapUrlToUpdateFn`
         if (!definitionIdFromCard) {
-          this.mapDefinitionIdToUrls[orsResponse.definitionId] = (
-            this.mapDefinitionIdToUrls[orsResponse.definitionId] || []
-          ).concat([url]);
+          this.mapDefinitionIdToUrls[
+            orsResponse.definitionId
+          ] = linkUrlToDefinitionId(
+            urlToResolve,
+            this.mapDefinitionIdToUrls[orsResponse.definitionId],
+          );
         }
 
         const urls = this.mapDefinitionIdToUrls[orsResponse.definitionId];
 
-        // among all the urls find the one, for that particular card.
-        urls
+        // try to find all the cards per url to be updated
+        const urlsForDefinitionId = urls.filter(url => url === urlToResolve);
+
+        urlsForDefinitionId
           .map(url => this.mapUrlToCardRecords[url])
           .forEach(recods => recods.forEach(record => record.fn(orsResponse)));
 
@@ -226,7 +246,9 @@ export class Client implements Client {
           return cb();
         }
       } else {
-        this.mapUrlToCardRecords[url].forEach(rec => rec.fn(orsResponse));
+        this.mapUrlToCardRecords[urlToResolve].forEach(rec =>
+          rec.fn(orsResponse),
+        );
       }
     });
   }
