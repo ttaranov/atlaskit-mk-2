@@ -9,31 +9,27 @@ import type { BackItemProps } from './types';
 
 const gridSize = gridSizeFn();
 
-// Extract-react-types looks for the first react class in the file which won't work with SFCs
-// eslint-disable-next-line no-unused-vars
-class FakeClassForDocs extends Component<BackItemProps> {}
+const ArrowLeft = () => (
+  <ArrowLeftCircleIcon primaryColor="currentColor" secondaryColor="inherit" />
+);
 
-const BackItem = ({ before: beforeProp, text, ...props }: BackItemProps) => {
-  let before = beforeProp;
-  if (!before) {
-    before = () => (
-      <ArrowLeftCircleIcon
-        primaryColor="currentColor"
-        secondaryColor="inherit"
-      />
+export default class BackItem extends Component<BackItemProps> {
+  render() {
+    const { before: beforeProp, text, ...props } = this.props;
+    let before = beforeProp;
+    if (!before) {
+      before = ArrowLeft;
+    }
+
+    return (
+      <div css={{ paddingBottom: gridSize * 2 }}>
+        <ConnectedItem
+          {...props}
+          after={null}
+          before={before}
+          text={text || 'Back'}
+        />
+      </div>
     );
   }
-
-  return (
-    <div css={{ paddingBottom: gridSize * 2 }}>
-      <ConnectedItem
-        {...props}
-        after={null}
-        before={before}
-        text={text || 'Back'}
-      />
-    </div>
-  );
-};
-
-export default BackItem;
+}

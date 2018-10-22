@@ -15,7 +15,7 @@ ${<Hr />}
 ${<H>BackItem</H>}
 
 BackItem is a pre-configured version of [ConnectedItem](#ConnectedItem) that is used to navigate back to a parent view.
-It's text prop defaults to 'Back' and it's before prop defaults to an ArrowLeftCircle icon.
+Its text prop defaults to 'Back' and its before prop defaults to an ArrowLeftCircle icon.
 
 ${(
       <Example

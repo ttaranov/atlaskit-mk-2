@@ -78,7 +78,7 @@ class GoToItem extends Component<GoToItemProps> {
         ? generateAfterProp({ goTo, spinnerDelay, navigationViewController })
         : afterProp;
     const props = { ...rest, after };
-    return <ConnectedItem onClick={e => this.handleClick(e)} {...props} />;
+    return <ConnectedItem onClick={this.handleClick} {...props} />;
   }
 }
 

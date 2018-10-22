@@ -262,18 +262,9 @@ Every item in a view must have a \`type\` property. This can be a component, but
 For the most part these built-in types take exactly the same props as their component counterparts, however there are a few differences:
 
 * All items must have an \`id\` property. This ID is used as the React \`key\`, and should be unique within the view so that reducers can accurately select individual items by ID. It is also used to uniquely identify the item for analytics click events.
-* Rather than passing a \`children\` prop to \`'Group'\` and \`'Section'\` types, you should specify their descendants as an array with the \`items\` property. Any item with an \`items\` property will be walked by reducers.
-* The \`'Item'\` type accepts a special \`goTo\` property, which should be a view ID. When an \`'Item'\` with a \`goTo\` is clicked, that view will be activated. It will also render a right-arrow icon when hovered, or a loading spinner when its \`goTo\` property matches the incoming view ID.
+* Rather than passing a \`children\` prop to container types, namely \`'Group'\`, \`'HeaderSection'\`, \`'MenuSection'\` and \`'Section'\`, you should specify their descendants as an array with the \`items\` property. Any item with an \`items\` property will be walked by reducers.
+* The \`'Item'\` type is actually the \`'ConnectedItem'\` UI component instead of the basic \`'Item'\` component. It therefore accepts a special \`goTo\` property, which should be a view ID. When an \`'Item'\` with a \`goTo\` is clicked, that view will be activated. It will also render a right-arrow icon when hovered, or a loading spinner when its \`goTo\` property matches the incoming view ID.
 * The \`'GroupHeading'\` and \`'SectionHeading'\` types accept a \`text\` property instead of \`children\`.
-
-### Special types
-
-The renderer includes some special types for convenience.
-
-* \`'BackItem'\` - A wrapped \`Item\` component which adds the correct iconography and spacing.
-* \`'HeaderSection'\` - A wrapped \`Section\` component which provides the correct spacing.
-* \`'MenuSection'\` - A wrapped \`Section\` component which provides the correct spacing and internal scrolling behaviour.
-* \`'Wordmark'\` - A custom component which accepts a \`wordmark\` prop (expected to be imported from \`@atlaskit/logo\`) which provides the correct spacing.
 
 ${<Hr />}
 

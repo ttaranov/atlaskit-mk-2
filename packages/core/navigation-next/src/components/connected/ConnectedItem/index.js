@@ -26,26 +26,19 @@ export const iconMap = {
   ShipIcon,
 };
 
-// Extract-react-types looks for the first react class in the file which won't work with SFCs
-// eslint-disable-next-line no-unused-vars
-class FakeClassForDocs extends Component<ConnectedItemProps> {}
+export default class ConnectedItem extends Component<ConnectedItemProps> {
+  render() {
+    const { before: beforeProp, icon, ...rest } = this.props;
+    let before = beforeProp;
+    if (!before && typeof icon === 'string' && iconMap[icon]) {
+      before = iconMap[icon];
+    }
 
-const ConnectedItem = ({
-  before: beforeProp,
-  icon,
-  ...rest
-}: ConnectedItemProps) => {
-  let before = beforeProp;
-  if (!before && typeof icon === 'string' && iconMap[icon]) {
-    before = iconMap[icon];
+    const props = { ...rest, before };
+    return props.goTo ? (
+      <GoToItem {...props} />
+    ) : (
+      <PresentationalItem {...props} />
+    );
   }
-
-  const props = { ...rest, before };
-  return props.goTo ? (
-    <GoToItem {...props} />
-  ) : (
-    <PresentationalItem {...props} />
-  );
-};
-
-export default ConnectedItem;
+}
