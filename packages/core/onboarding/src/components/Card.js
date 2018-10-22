@@ -90,7 +90,9 @@ const Card = ({
 }: Props) => {
   const { Header = DefaultHeader, Footer = DefaultFooter } = components;
   return (
+    // $FlowFixMe
     <Theme theme={defaultTheme}>
+      {/* $FlowFixMe */}
       <Theme theme={theme}>
         {({ container }) => {
           return (
