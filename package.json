@@ -105,6 +105,7 @@
     "@types/prop-types": "^15.5.1",
     "@types/react-intl": "^2.3.8",
     "@types/react-syntax-highlighter": "^0.0.3",
+    "@types/uuid-validate": "^0.0.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.2",
@@ -475,6 +476,7 @@
     "url-search-params": "^0.10.0",
     "utf8-string-bytes": "^1.0.3",
     "uuid": "^3.1.0",
+    "uuid-validate": "^0.0.3",
     "video-snapshot": "^1.0.1",
     "webpack-cli": "^3.1.0",
     "xregexp": "^3.2.0"

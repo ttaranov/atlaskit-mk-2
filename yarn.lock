@@ -1331,6 +1331,10 @@
   dependencies:
     source-map "^0.6.1"
 
+"@types/uuid-validate@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@types/uuid-validate/-/uuid-validate-0.0.0.tgz#636ed8b85b318abfccee5dab91b28e93f5e318cf"
+
 "@types/webpack@*":
   version "4.4.11"
   resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.11.tgz#0ca832870d55c4e92498c01d22d00d02b0f62ae9"
@@ -16584,6 +16588,10 @@ utile@0.2.1, utile@0.2.x, utile@~0.2.1:
 utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
+
+uuid-validate@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/uuid-validate/-/uuid-validate-0.0.3.tgz#e30617f75dc742a0e4f95012a11540faf9d39ab4"
 
 uuid@^2.0.1:
   version "2.0.3"

@@ -76,6 +76,19 @@ describe('FileFetcher', () => {
       });
     });
   });
+
+  describe('getFileState()', () => {
+    it('should return an errored observable if we pass an invalid file id', done => {
+      const { fileFetcher } = setup();
+
+      fileFetcher.getFileState('invalid-id').subscribe({
+        error(error) {
+          expect(error).toEqual('invalid-id is not a valid file id');
+          done();
+        },
+      });
+    });
+  });
 });
 
 describe('getItemsFromKeys()', () => {

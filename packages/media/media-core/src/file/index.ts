@@ -11,6 +11,7 @@ import {
   MediaCollectionItemFullDetails,
   FileItem,
 } from '@atlaskit/media-store';
+import * as isValidId from 'uuid-validate';
 import {
   FilePreview,
   FileState,
@@ -28,7 +29,7 @@ export const getItemsFromKeys = (
   items: FileItem[],
 ): DataloaderResult[] => {
   const itemsByKey: { [id: string]: DataloaderResult } = items.reduce(
-    (prev, next) => {
+    (prev: { [id: string]: DataloaderResult }, next) => {
       const { id, collection } = next;
       const key = FileStreamCache.createKey(id, { collectionName: collection });
 
@@ -73,6 +74,12 @@ export class FileFetcher {
   };
 
   getFileState(id: string, options?: GetFileOptions): Observable<FileState> {
+    if (!isValidId(id)) {
+      return Observable.create((observer: Observer<FileState>) => {
+        observer.error(`${id} is not a valid file id`);
+      });
+    }
+
     const key = FileStreamCache.createKey(id, options);
 
     return fileStreamsCache.getOrInsert(key, () => {

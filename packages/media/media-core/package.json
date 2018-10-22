@@ -25,7 +25,8 @@
     "dataloader": "^1.4.0",
     "lru-fast": "^0.2.2",
     "tslib": "^1.8.0",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "uuid-validate": "^0.0.3"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -36,6 +37,7 @@
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/media-card": "^41.0.0",
     "@atlaskit/media-test-helpers": "^18.2.8",
+    "@types/uuid-validate": "^0.0.0",
     "rxjs": "^5.5.0",
     "sinon": "^2.2.0",
     "styled-components": "^3.2.6"
