@@ -186,7 +186,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     });
   };
 
-  createEditorView = node => {
+  createEditorView = (node: HTMLDivElement) => {
     // Creates the editor-view from this.editorState. If an editor has been mounted
     // previously, this will contain the previous state of the editor.
     this.view = new EditorView(
@@ -213,7 +213,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     );
   };
 
-  handleEditorViewRef = node => {
+  handleEditorViewRef = (node: HTMLDivElement) => {
     if (!this.view && node) {
       this.createEditorView(node);
       this.props.onEditorCreated({

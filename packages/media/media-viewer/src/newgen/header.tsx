@@ -26,12 +26,17 @@ import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
 import { createItemDownloader } from './domain/download';
 import { MediaViewerError, createError } from './error';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { createAndFireEventOnMedia } from './analytics/index';
+import { downloadButtonEvent } from './analytics/download';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
   readonly onClose?: () => void;
 };
+
+const downloadIcon = <DownloadIcon label="Download" />;
 
 export type State = {
   item: Outcome<FileState, MediaViewerError>;
@@ -83,35 +88,40 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
+  private renderDownloadButton = (state: FileState) => {
+    const { identifier, context } = this.props;
+    const ev = downloadButtonEvent(state);
+    const DownloadButton = withAnalyticsEvents({
+      onClick: createAndFireEventOnMedia(ev),
+    })(Button);
+    return (
+      <DownloadButton
+        label="Download"
+        appearance="toolbar"
+        onClick={createItemDownloader(
+          state,
+          context,
+          identifier.collectionName,
+        )}
+        iconBefore={downloadIcon}
+      />
+    );
+  };
+
   private renderDownload = () => {
     const { item } = this.state;
-    const { identifier, context } = this.props;
-    const icon = <DownloadIcon label="Download" />;
-
     const disabledDownloadButton = (
       <Button
         label="Download"
         appearance="toolbar"
         isDisabled={true}
-        iconBefore={icon}
+        iconBefore={downloadIcon}
       />
     );
-
     return item.match({
       pending: () => disabledDownloadButton,
       failed: () => disabledDownloadButton,
-      successful: item => (
-        <Button
-          label="Download"
-          appearance="toolbar"
-          onClick={createItemDownloader(
-            item,
-            context,
-            identifier.collectionName,
-          )}
-          iconBefore={icon}
-        />
-      ),
+      successful: item => this.renderDownloadButton(item),
     });
   };
 

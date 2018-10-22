@@ -138,6 +138,16 @@ describe('NotificationIndicator', () => {
     expect(onCountUpdated.called).toEqual(true);
   });
 
+  it('Should call onCountUpdated once after multiple 0 counts', async () => {
+    const onCountUpdated = sinon.spy();
+    await renderNotificationIndicator(returnCount(0), {
+      refreshRate: 1,
+      onCountUpdated,
+    });
+    await timeout(5);
+    expect(onCountUpdated.callCount).toEqual(1);
+  });
+
   it('Should auto refresh when specified', async () => {
     const onCountUpdated = sinon.spy();
     const wrapper = await renderNotificationIndicator(returnCount(1), {

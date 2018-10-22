@@ -10,9 +10,9 @@ export default class UncontrolledExample extends PureComponent<void, State> {
   state = {
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
-  onChange = () => {
+  onChange = (event: SyntheticEvent<*>) => {
     this.setState({
-      onChangeResult: `Checkbox only updates when updating isChecked property`,
+      onChangeResult: `this.state.isChecked: ${event.currentTarget.checked}`,
     });
   };
 
@@ -20,7 +20,6 @@ export default class UncontrolledExample extends PureComponent<void, State> {
     return (
       <div>
         <Checkbox
-          isChecked={false}
           onChange={this.onChange}
           label="Uncontrolled Checkbox"
           value="Uncontrolled Checkbox"

@@ -38,8 +38,16 @@ const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
 };
 
+const tableStyles = ({ appearance }: Props) => {
+  if (appearance === 'mobile') {
+    return 'table-layout: auto';
+  }
+
+  return '';
+};
+
 const fullPageStyles = ({ theme, appearance }) => {
-  if (appearance !== 'full-page') {
+  if (appearance !== 'full-page' && appearance !== 'mobile') {
     return '';
   }
 
@@ -227,6 +235,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     transition: all 0.1s linear;
     overflow-x: auto;
     table {
+      ${tableStyles};
       margin-left: 0;
       margin-right: 0;
     }

@@ -109,11 +109,11 @@ export function parseOtherKeyword(input: string) {
 const leadingKeywordTokenMap = [
   {
     type: TokenType.QUOTE,
-    regex: /^bq\.\s/,
+    regex: /^bq\. /,
   },
   {
     type: TokenType.HEADING,
-    regex: /^h[1|2|3|4|5|6]\.\s/,
+    regex: /^h[1|2|3|4|5|6]\. /,
   },
   {
     type: TokenType.RULER,
@@ -129,7 +129,7 @@ const leadingKeywordTokenMap = [
   },
   {
     type: TokenType.LIST,
-    regex: /^[*\-#]+\s/,
+    regex: /^[*\-#]+ /,
   },
   {
     type: TokenType.TABLE,

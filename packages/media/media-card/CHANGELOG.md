@@ -1,5 +1,11 @@
 # @atlaskit/media-image
 
+## 41.1.2
+- [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+  - @atlaskit/media-test-helpers@18.2.10
+  - @atlaskit/media-ui@7.0.0
+  - @atlaskit/smart-card@8.4.1
+
 ## 41.1.1
 - [patch] Override css rules for an image inside a cart [20a15ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20a15ef)
 

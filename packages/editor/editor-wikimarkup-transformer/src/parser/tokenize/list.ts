@@ -5,7 +5,7 @@ import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType, TokenErrCallback } from './';
 import { parseNewlineOnly } from './whitespace';
 
-const LIST_ITEM_REGEXP = /^ *([*\-#]+)\s(.*)/;
+const LIST_ITEM_REGEXP = /^ *([*\-#]+) (.*)/;
 const NEWLINE = /\r?\n/;
 
 export function list(
@@ -76,7 +76,7 @@ export function list(
       continue;
     }
 
-    if (!isNextLineEmpty(input.substring(index))) {
+    if (!isNextLineEmpty(line)) {
       lineBuffer.push(line);
       index += line.length;
       // Finding the length of the line break at the end of this line

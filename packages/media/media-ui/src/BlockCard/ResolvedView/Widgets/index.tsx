@@ -5,7 +5,7 @@ import Tooltip from '@atlaskit/tooltip';
 import { ImageIcon } from '../../ImageIcon';
 import { DetailViewModel, BadgeViewModel } from '../../ResolvedView';
 import { Wrapper, WidgetWrapper, WidgetDetails, Title, Text } from './styled';
-import { LozengeViewModel } from '../../../types';
+import { LozengeViewModel } from '../../../common';
 
 export interface WidgetsProps {
   details?: DetailViewModel[];

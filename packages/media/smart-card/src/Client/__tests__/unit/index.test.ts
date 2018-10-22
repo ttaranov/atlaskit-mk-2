@@ -1,8 +1,7 @@
 import 'whatwg-fetch';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import * as fetchMock from 'fetch-mock';
-import { Client, ClientOptions } from '../..';
-import { RemoteResourceAuthConfig } from '../../createObjectResolverServiceObservable';
+import { Client, RemoteResourceAuthConfig, ResolveResponse } from '../..';
 import { ObjectState } from '../../types';
 import { v4 } from 'uuid';
 
@@ -19,12 +18,6 @@ const generator = {
   name: 'My App',
 };
 
-const name = 'My Page';
-
-function createClient(options?: ClientOptions) {
-  return new Client(options);
-}
-
 function mockResolvedFetchCall() {
   fetchMock.mock({
     name: 'resolved',
@@ -40,8 +33,8 @@ function mockResolvedFetchCall() {
         },
         data: {
           '@context': {},
+          name: 'My Page',
           generator,
-          name,
         },
       }),
     },
@@ -64,7 +57,7 @@ function mockForbiddenFetchCall() {
         data: {
           '@context': {},
           generator,
-          name,
+          name: 'My Page',
         },
       }),
     },
@@ -160,7 +153,7 @@ describe('Client', () => {
 
     const result = await new Promise(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -186,7 +179,7 @@ describe('Client', () => {
         }
       };
 
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), cardUpdateFn1)
         .register(OBJECT_URL, v4(), cardUpdateFn2)
         .resolve(OBJECT_URL);
@@ -205,7 +198,7 @@ describe('Client', () => {
 
     const result = await new Promise(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -221,7 +214,7 @@ describe('Client', () => {
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -239,7 +232,7 @@ describe('Client', () => {
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -257,7 +250,7 @@ describe('Client', () => {
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -271,7 +264,7 @@ describe('Client', () => {
     mockResolvedFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const client = createClient();
+      const client = new Client();
       const stack: ObjectState[] = [];
       const cardUpdateFn = (s: ObjectState) => {
         stack.push(s);
@@ -293,104 +286,138 @@ describe('Client', () => {
     ]);
   });
 
-  it('should be resolved from the provider when a resolver is provided and the resolver resolves first', async () => {
-    mockResolvedFetchCall();
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: tempResData },
-    ]);
-  });
-
-  it('should switch to default resolver if the temp one failed', async () => {
+  it('should be possible to extend the functionality of the default client', async () => {
     mockResolvedFetchCall();
 
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () =>
-        Promise.reject({ error: new Error('failed for some reason') });
+    const specialCaseUrl = 'http://some.jira.com/board/ISS-1234';
 
-      const mockCardUpdateFunction = onNthState(resolve, 2);
+    const customResponse = {
+      meta: {
+        visibility: 'public',
+        access: 'granted',
+        auth: [],
+        definitionId: 'custom-def',
+      },
+      data: {
+        name: 'Doc 1',
+      },
+    } as ResolveResponse;
 
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
+    const callHistory = await new Promise<ObjectState[]>(resolve => {
+      class CustomClient extends Client {
+        fetchData(url: string) {
+          if (url === specialCaseUrl) {
+            return Promise.resolve(customResponse);
+          }
+          return super.fetchData(url);
+        }
+      }
+      const customClient = new CustomClient();
+      const stack: ObjectState[] = [];
+
+      const callbackForSpecialCase = (s: ObjectState) => {
+        stack.push(s);
+      };
+
+      const callbackForNormalCase = (s: ObjectState) => {
+        stack.push(s);
+        if (stack.length === 4) {
+          resolve(stack);
+        }
+      };
+
+      customClient
+        .register(specialCaseUrl, v4(), callbackForSpecialCase)
+        .register(OBJECT_URL, v4(), callbackForNormalCase);
+
+      customClient.resolve(OBJECT_URL);
+      customClient.resolve(specialCaseUrl);
     });
 
-    expect(result).toMatchObject([
+    expect(callHistory).toMatchObject([
       { status: 'resolving' },
-      { status: 'resolved', data: { name: 'My Page' } },
+      { status: 'resolving' },
+      {
+        status: 'resolved',
+        definitionId: 'custom-def',
+        data: { name: 'Doc 1' },
+      },
+      { status: 'resolved', definitionId },
     ]);
   });
 
-  it('should be resolved from the temp provider when the default resolver errored', async () => {
-    mockErroredFetchCall();
-
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: tempResData },
-    ]);
-  });
-
-  it('should be resolved from the temp provider when the default provider resulted in "not found"', async () => {
-    mockNotFoundFetchCall();
-
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: tempResData },
-    ]);
-  });
-
-  it('should be resolved from the temp provider when the default provider resulted in "not found"', async () => {
+  it('should not reload card that has already been resolved', async () => {
     mockResolvedFetchCall();
 
-    const tempResData = { name: 'From resolver' };
+    const card1 = {
+      url: 'http://drive.google.com/doc/1',
+      uuid: v4(),
+      definitionId: undefined,
+      updateFn: jest.fn().mockImplementation((state: ObjectState) => {
+        if (state.definitionId) {
+          card1.definitionId = state.definitionId as any;
+        }
+      }),
+    };
 
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () =>
-        new Promise(resolve => setTimeout(resolve, 1000, tempResData));
+    const card2 = {
+      url: 'http://drive.google.com/doc/2',
+      uuid: v4(),
+      definitionId: undefined,
+      updateFn: jest.fn().mockImplementation((state: ObjectState) => {
+        if (state.definitionId) {
+          card1.definitionId = state.definitionId as any;
+        }
+      }),
+    };
 
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
+    const customFetchMock = jest.fn().mockImplementation((url: string) => {
+      if (url === card1.url) {
+        return Promise.resolve(<ResolveResponse>{
+          meta: {
+            visibility: 'public',
+            access: 'granted',
+            auth: [],
+            definitionId: 'google',
+          },
+          data: {
+            name: 'Doc for Card 1',
+          },
+        });
+      } else if (url === card2.url) {
+        return Promise.resolve(<ResolveResponse>{
+          meta: {
+            visibility: 'public',
+            access: 'granted',
+            auth: [],
+            definitionId: 'google',
+          },
+          data: {
+            name: 'Doc for Card 2',
+          },
+        });
+      }
     });
 
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: { name: 'My Page' } },
-    ]);
+    class CustomClient extends Client {
+      fetchData(url: string): Promise<ResolveResponse> {
+        return customFetchMock(url);
+      }
+    }
+
+    const client = new CustomClient();
+
+    client.register(card1.url, card1.uuid, card1.updateFn);
+    client.register(card2.url, card2.uuid, card2.updateFn);
+
+    client.resolve(card1.url);
+    client.resolve(card2.url);
+
+    await new Promise(res => setTimeout(res, 1));
+
+    expect(customFetchMock.mock.calls).toEqual([[card1.url], [card2.url]]);
+
+    expect(card1.updateFn).toHaveBeenCalledTimes(2);
+    expect(card2.updateFn).toHaveBeenCalledTimes(2);
   });
 });

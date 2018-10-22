@@ -45,7 +45,7 @@ export default class MobileRenderer extends React.Component<
       return (
         <ReactRenderer
           dataProviders={this.providerFactory}
-          appearance="full-page"
+          appearance="mobile"
           document={this.state.document}
         />
       );
