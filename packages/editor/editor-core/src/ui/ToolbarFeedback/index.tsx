@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 import { Popup } from '@atlaskit/editor-common';
-import Button, { ButtonGroup } from '@atlaskit/button';
+// import Button, { ButtonGroup } from '@atlaskit/button';
 import { FlagGroup } from '@atlaskit/flag';
 import FeedbackCollector, { FeedbackFlag } from '@atlaskit/feedback-collector';
 
@@ -180,9 +180,9 @@ export const getDeviceInfo = (nAgt, nVersion) => {
 type State = { isOpen: boolean; displayFlag: boolean };
 
 const EMBEDDABLE_KEY = 'b76a0ea3-48e9-4cfe-ba43-b004ec935dd0';
-const REQUEST_TYPE_ID = '174';
-const name = 'Feedback Sender';
-const email = 'fsender@atlassian.com';
+const REQUEST_TYPE_ID = '173';
+// const name = 'Feedback Sender';
+// const email = 'fsender@atlassian.com';
 
 export default class ToolbarFeedback extends PureComponent<Props, State> {
   state = { isOpen: false, displayFlag: false };
@@ -199,10 +199,6 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         <ToolbarButton onClick={this.open} selected={false} spacing="compact">
           <ButtonContent>Feedback</ButtonContent>
         </ToolbarButton>
-
-        {/* <Button appearance="primary" onClick={this.open}>
-          Display Feedback
-        </Button> */}
 
         {isOpen && (
           <FeedbackCollector
