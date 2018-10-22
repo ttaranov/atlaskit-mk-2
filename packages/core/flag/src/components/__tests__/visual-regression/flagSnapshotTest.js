@@ -5,11 +5,11 @@ import {
 } from '@atlaskit/visual-regression/helper';
 
 describe('Snapshot Test', () => {
-  it('ButtonAppearances-should match production example', async () => {
+  it('Flag-without-flagGroup-should match production example', async () => {
     const url = getExampleUrl(
       'core',
-      'button',
-      'ButtonAppearances',
+      'flag',
+      'flag-without-flagGroup',
       global.__BASEURL__,
     );
     const image = await takeScreenShot(global.page, url);
