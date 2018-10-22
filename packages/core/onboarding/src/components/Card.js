@@ -1,17 +1,40 @@
 // @flow
 import React, { type Node, type ElementType } from 'react';
 import styled from 'styled-components';
-import { borderRadius, gridSize, math, Theme } from '@atlaskit/theme';
+import Button from '@atlaskit/button';
+import {
+  borderRadius,
+  gridSize,
+  math,
+  Theme,
+  typography,
+} from '@atlaskit/theme';
+import { ActionItems, ActionItem } from '../styled/Dialog';
+import type { ActionsType } from '../types';
 
 type CardTheme = {
   container: () => any,
 };
 
 export type Props = {
-  children: Node,
-  footer?: ElementType,
-  header?: ElementType,
-  image?: ElementType,
+  /** Buttons to render in the footer */
+  actions?: ActionsType,
+  /** An optional element rendered to the left of the footer actions */
+  actionsBeforeElement?: Node,
+  /** The content of the card */
+  children?: Node,
+  /** The container elements rendered by the component */
+  components?: {
+    Header?: ElementType,
+    Footer?: ElementType,
+  },
+  /** The heading to be rendered above the body */
+  heading?: Node,
+  /** An optional element rendered to the right of the heading */
+  headingAfterElement?: Node,
+  /** The image to render above the heading. Can be a url or a Node. */
+  image?: string | Node,
+  /** the theme of the card */
   theme?: CardTheme => CardTheme,
   innerRef?: Function,
 };
@@ -26,6 +49,25 @@ const Body = styled.div`
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 2.5)}px;
 `;
 
+const Heading = styled.h4`
+  ${typography.h600};
+  color: inherit;
+`;
+
+const DefaultHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: ${gridSize}px;
+`;
+
+const DefaultFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: ${gridSize}px;
+`;
+
 const defaultTheme = (theme: CardTheme): CardTheme => ({
   container: () => ({
     overflow: 'auto',
@@ -36,29 +78,54 @@ const defaultTheme = (theme: CardTheme): CardTheme => ({
 });
 
 const Card = ({
+  actions = [],
+  actionsBeforeElement,
   children,
-  footer: Footer,
-  header: Header,
-  image: Image,
-  theme = x => x,
+  components = {},
+  image,
+  heading,
+  headingAfterElement,
+  theme,
   innerRef,
-}: Props) => (
-  <Theme values={defaultTheme}>
-    <Theme values={theme}>
-      {({ container }) => {
-        return (
-          <Container theme={container} innerRef={innerRef}>
-            {Image && <Image />}
-            <Body>
-              {Header && <Header />}
-              {children}
-              {Footer && <Footer />}
-            </Body>
-          </Container>
-        );
-      }}
+}: Props) => {
+  const { Header = DefaultHeader, Footer = DefaultFooter } = components;
+  return (
+    <Theme values={defaultTheme}>
+      <Theme values={theme}>
+        {({ container }) => {
+          return (
+            <Container theme={container} innerRef={innerRef}>
+              {typeof image === 'string' ? <img src={image} alt="" /> : image}
+              <Body>
+                {heading || headingAfterElement ? (
+                  <Header>
+                    <Heading>{heading}</Heading>
+                    {headingAfterElement || <span />}
+                  </Header>
+                ) : null}
+                {children}
+                {actions.length > 0 || actionsBeforeElement ? (
+                  <Footer>
+                    {actionsBeforeElement || <span />}
+                    <ActionItems>
+                      {actions.map(({ text, ...rest }, idx) => (
+                        <ActionItem key={text || idx}>
+                          <Button {...rest}>{text}</Button>
+                        </ActionItem>
+                      ))}
+                    </ActionItems>
+                  </Footer>
+                ) : null}
+              </Body>
+            </Container>
+          );
+        }}
+      </Theme>
     </Theme>
-  </Theme>
-);
+  );
+};
 
-export default Card;
+// $FlowFixMe - flow doesn't know about forwardRef
+export default React.forwardRef((props: Props, ref) => (
+  <Card {...props} innerRef={ref} />
+));

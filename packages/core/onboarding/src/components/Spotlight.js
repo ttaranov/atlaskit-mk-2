@@ -1,10 +1,5 @@
 // @flow
-import React, {
-  type ComponentType,
-  type ElementType,
-  type Element,
-  type Node,
-} from 'react';
+import React, { type ComponentType, type ElementType, type Node } from 'react';
 import SpotlightInner from './SpotlightInner';
 import { SpotlightConsumer } from './SpotlightManager';
 import type { ActionsType } from '../types';
@@ -12,8 +7,8 @@ import type { ActionsType } from '../types';
 export type Props = {
   /** Buttons to render in the footer */
   actions?: ActionsType,
-  /** An optional element rendered beside the footer actions */
-  actionsBeforeElement?: Element<*>,
+  /** An optional node to be rendered beside the footer actions */
+  actionsBeforeElement?: Node,
   /** The elements rendered in the modal */
   children?: Node,
   /** Where the dialog should appear, relative to the contents of the children. */
@@ -65,16 +60,21 @@ class Spotlight extends React.Component<Props> {
     const { targetNode, target, ...rest } = this.props;
     return (
       <SpotlightConsumer>
-        {({ opened, closed, targets }) =>
-          targetNode || targets[target] ? (
+        {({ opened, closed, targets }) => {
+          // use the targetNode prop or try get the target from context targets using name
+          const actualTargetNode =
+            targetNode ||
+            (typeof target === 'string' ? targets[target] : undefined);
+          return actualTargetNode ? (
             <SpotlightInner
               {...rest}
-              targetNode={targetNode || targets[target]}
+              targetNode={actualTargetNode}
+              target={target}
               onOpened={opened}
               onClosed={closed}
             />
-          ) : null
-        }
+          ) : null;
+        }}
       </SpotlightConsumer>
     );
   }

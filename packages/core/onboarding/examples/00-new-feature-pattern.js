@@ -2,7 +2,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import AddIcon from '@atlaskit/icon/glyph/add';
 import {
   Spotlight,
   SpotlightPulse,

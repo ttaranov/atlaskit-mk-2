@@ -15,10 +15,20 @@ import Blanket from '../styled/Blanket';
 const noop = () => {};
 
 const { Consumer: TargetConsumer, Provider: TargetProvider } = createContext();
+
+type SpotlightContext = {
+  opened: () => void,
+  closed: () => void,
+  targets: {
+    [string]: HTMLElement | void,
+  },
+};
 const {
   Consumer: SpotlightStateConsumer,
   Provider: SpotlightStateProvider,
-} = createContext({ opened: noop, closed: noop, targets: {} });
+} = createContext(
+  ({ opened: noop, closed: noop, targets: {} }: SpotlightContext),
+);
 
 export { TargetConsumer };
 
@@ -45,7 +55,7 @@ export default class SpotlightManager extends PureComponent<
   Props,
   {
     spotlightCount: number,
-    targets: { [string]: HTMLElement },
+    targets: { [string]: HTMLElement | void },
   },
 > {
   static defaultProps = {
@@ -83,7 +93,7 @@ export default class SpotlightManager extends PureComponent<
     this.setState(state => ({ spotlightCount: state.spotlightCount - 1 }));
   };
 
-  getStateProviderValue = memoizeOne(targets => ({
+  getStateProviderValue = memoizeOne((targets): SpotlightContext => ({
     opened: this.spotlightOpen,
     closed: this.spotlightClose,
     targets,

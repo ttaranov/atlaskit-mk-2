@@ -122,8 +122,14 @@ class SpotlightDialog extends Component<Props, State> {
         {({ ref, style, placement }) => (
           <FocusLock enabled={hasFocusLock} returnFocus={false}>
             <SpotlightCard
-              innerRef={ref}
-              styles={{ ...style, ...animationStyles }}
+              ref={ref}
+              theme={({ container }) => ({
+                container: () => ({
+                  ...container(),
+                  ...style,
+                  ...animationStyles,
+                }),
+              })}
               actions={actions}
               actionsBeforeElement={actionsBeforeElement}
               image={image && <Image alt={heading} src={image} />}

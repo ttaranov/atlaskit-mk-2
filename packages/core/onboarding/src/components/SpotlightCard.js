@@ -1,9 +1,8 @@
 // @flow
 import React, { type Node, type ElementType } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { colors, typography, gridSize } from '@atlaskit/theme';
+import { ThemeProvider } from 'styled-components';
+import { colors } from '@atlaskit/theme';
 import Card from './Card';
-import SpotlightActions from './SpotlightActions';
 import { getSpotlightTheme } from './theme';
 import type { ActionsType } from '../types';
 
@@ -27,40 +26,22 @@ type Props = {
   heading?: Node,
   /** An optional element rendered to the right of the heading */
   headingAfterElement?: Node,
-  /** An image to render above the heading */
-  image?: Node,
+  /** The image src to render above the heading */
+  image?: string | Node,
   /** Removes elevation styles if set */
   isFlat: boolean,
   /** the theme of the card */
-  theme?: CardTheme => CardTheme,
-  width?: number,
-  styles: Object,
+  theme: CardTheme => CardTheme,
+  /** width of the card in pixels */
+  width: number,
   innerRef?: Function,
 };
-
-const Heading = styled.h4`
-  ${typography.h600};
-  color: inherit;
-`;
-
-const DefaultHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: ${gridSize}px;
-`;
-
-const DefaultFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-top: ${gridSize}px;
-`;
 
 class SpotlightCard extends React.Component<Props> {
   static defaultProps = {
     width: 400,
     isFlat: false,
+    theme: x => x,
     components: {},
   };
   render() {
@@ -74,32 +55,20 @@ class SpotlightCard extends React.Component<Props> {
       headingAfterElement,
       image,
       innerRef,
-      styles,
+      theme,
       width,
     } = this.props;
-    const { Header = DefaultHeader, Footer = DefaultFooter } = components;
     return (
       <ThemeProvider theme={getSpotlightTheme}>
         <Card
-          innerRef={innerRef}
-          header={() =>
-            heading || headingAfterElement ? (
-              <Header>
-                <Heading>{heading}</Heading>
-                {headingAfterElement || <span />}
-              </Header>
-            ) : null
-          }
-          footer={() =>
-            actions || actionsBeforeElement ? (
-              <Footer>
-                {actionsBeforeElement || <span />}
-                <SpotlightActions items={actions || []} />
-              </Footer>
-            ) : null
-          }
-          image={() => image || null}
-          theme={({ container }) => ({
+          ref={innerRef}
+          heading={heading}
+          headingAfterElement={headingAfterElement}
+          actions={actions}
+          actionsBeforeElement={actionsBeforeElement}
+          components={components}
+          image={image}
+          theme={parent => ({
             container: () => ({
               background: colors.P300,
               color: colors.N0,
@@ -107,8 +76,8 @@ class SpotlightCard extends React.Component<Props> {
               boxShadow: !isFlat
                 ? `0 4px 8px -2px ${colors.N50A}, 0 0 1px ${colors.N60A}`
                 : undefined,
-              ...container(),
-              ...styles,
+              ...parent.container(),
+              ...theme(parent).container(),
             }),
           })}
         >
@@ -119,4 +88,7 @@ class SpotlightCard extends React.Component<Props> {
   }
 }
 
-export default SpotlightCard;
+// $FlowFixMe - flow doesn't know about forwardRef
+export default React.forwardRef((props: Props, ref) => (
+  <SpotlightCard {...props} innerRef={ref} />
+));
