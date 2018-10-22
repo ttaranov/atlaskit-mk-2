@@ -1,7 +1,6 @@
 // @flow
 import React, { type Node } from 'react';
 import { Transition } from 'react-transition-group';
-import { layers } from '@atlaskit/theme';
 
 const duration = 100;
 type Props = {

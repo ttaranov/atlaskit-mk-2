@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import Button from '@atlaskit/Button';
+import Button from '@atlaskit/button';
 
 import { Modal } from '../src';
 import welcomeImage from './assets/this-is-new-jira.png';
