@@ -7,6 +7,7 @@ import {
   insertEmoji,
   emojiItem,
   typeahead,
+  highlightEmojiInTypeahead,
 } from './_emoji-helpers';
 
 // safari failure on browserstack
@@ -21,6 +22,11 @@ BrowserTestCase(
     await browser.type(editable, 'smi');
     await browser.waitForSelector(typeahead);
     await browser.type(editable, 'ArrowDown');
+
+    // The typeahead may re-order our results.
+    // Go down 5 items til we find our desired emoji
+    await highlightEmojiInTypeahead(browser, 'smile');
+
     await browser.type(editable, 'Return');
     await browser.waitForSelector(emojiItem('smile'));
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -39,6 +45,11 @@ BrowserTestCase(
     await browser.type(editable, ':');
     await browser.type(editable, 'wink');
     await browser.waitForSelector(typeahead);
+
+    // The typeahead may re-order our results.
+    // Grab the currently selected emoji, to reference in render.
+    await highlightEmojiInTypeahead(browser, 'wink');
+
     await browser.type(editable, 'Return');
     await browser.waitForSelector(emojiItem('wink'));
     const doc = await browser.$eval(editable, getDocFromElement);
