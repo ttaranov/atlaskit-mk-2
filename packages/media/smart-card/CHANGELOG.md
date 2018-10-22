@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.4.1
+- [patch] Update blockcard and inline card exports to be compatible with tree shaking. Preperation for asyncloading parts of smart card [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+
 ## 8.4.0
 - [minor] Client to be extended [039c0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/039c0ad)
 
