@@ -200,9 +200,9 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           <ButtonContent>Feedback</ButtonContent>
         </ToolbarButton>
 
-        <Button appearance="primary" onClick={this.open}>
+        {/* <Button appearance="primary" onClick={this.open}>
           Display Feedback
-        </Button>
+        </Button> */}
 
         {isOpen && (
           <FeedbackCollector
