@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { Node as PMNode } from 'prosemirror-model';
 import { Card } from '@atlaskit/smart-card';
 
@@ -17,11 +18,19 @@ export interface Props {
 class InlineCardNode extends React.PureComponent<Props, {}> {
   onClick = () => {};
 
+  static contextTypes = {
+    contextAdapter: PropTypes.object,
+  };
+
   render() {
     const { node, selected } = this.props;
     const { url, data } = node.attrs;
 
-    return (
+    const cardContext = this.context.contextAdapter
+      ? this.context.contextAdapter.card
+      : undefined;
+
+    const card = (
       <Card
         url={url}
         data={data}
@@ -29,6 +38,14 @@ class InlineCardNode extends React.PureComponent<Props, {}> {
         isSelected={selected}
         onClick={this.onClick}
       />
+    );
+
+    return cardContext ? (
+      <cardContext.Provider value={cardContext.value}>
+        {card}
+      </cardContext.Provider>
+    ) : (
+      card
     );
   }
 }
