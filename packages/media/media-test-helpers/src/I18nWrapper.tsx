@@ -3,6 +3,9 @@ import { Component, ReactElement } from 'react';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { locales, languages } from '@atlaskit/media-ui';
 import LanguagePicker from './LanguagePicker';
+import * as es from 'react-intl/locale-data/es';
+
+addLocaleData(es);
 
 export interface I18NWrapperState {
   locale: string;
@@ -47,10 +50,6 @@ export class I18NWrapper extends Component<I18NWrapperProps, I18NWrapperState> {
   }
 
   private loadLocale = async (locale: string) => {
-    const data = await import(`react-intl/locale-data/${this.getLocalTag(
-      locale,
-    )}`);
-    addLocaleData(data.default);
     this.setState({ locale });
   };
 

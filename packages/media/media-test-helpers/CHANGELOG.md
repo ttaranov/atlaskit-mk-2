@@ -1,5 +1,13 @@
 # @atlaskit/media-test-helpers
 
+## 18.2.10
+- [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+  - @atlaskit/media-card@41.1.2
+  - @atlaskit/media-ui@7.0.0
+
+## 18.2.9
+- [patch] Cleanup media + editor integration 🔥 [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+
 ## 18.2.8
 - [patch] Split Media + Editor cleanup part 1 [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
 

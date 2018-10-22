@@ -19,8 +19,15 @@ import {
   defaultCollectionName,
 } from '../example-helpers';
 import { MediaViewer, MediaViewerItem } from '../src';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 const context = createStorybookContext();
+
+const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
+  const { payload, context } = analyticsEvent;
+  console.log('Received event:', { payload, context });
+};
 
 export type State = {
   selectedItem?: MediaViewerItem;
@@ -93,14 +100,16 @@ export default class Example extends React.Component<{}, State> {
           </ButtonList>
         </Group>
         {this.state.selectedItem && (
-          <MediaViewer
-            featureFlags={{ customVideoPlayer: true }}
-            context={context}
-            selectedItem={this.state.selectedItem}
-            dataSource={{ list: [this.state.selectedItem] }}
-            collectionName={defaultCollectionName}
-            onClose={() => this.setState({ selectedItem: undefined })}
-          />
+          <AnalyticsListener channel="media" onEvent={handleEvent}>
+            <MediaViewer
+              featureFlags={{ customVideoPlayer: true }}
+              context={context}
+              selectedItem={this.state.selectedItem}
+              dataSource={{ list: [this.state.selectedItem] }}
+              collectionName={defaultCollectionName}
+              onClose={() => this.setState({ selectedItem: undefined })}
+            />
+          </AnalyticsListener>
         )}
       </Container>
     );

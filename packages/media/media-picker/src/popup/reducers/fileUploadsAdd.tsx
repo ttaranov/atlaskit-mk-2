@@ -23,7 +23,6 @@ export default function fileUploadsAdd(state: State, action: Action): State {
               upfrontId: file.upfrontId,
               occurrenceKey: file.occurrenceKey,
             },
-            dataURI: '',
           },
           timeStarted: Date.now(),
           progress: 0,

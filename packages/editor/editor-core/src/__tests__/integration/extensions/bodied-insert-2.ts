@@ -17,14 +17,13 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
   'table',
 ].forEach(node => {
   BrowserTestCase(
-    `Bodied Extension: Insert ${node}`,
+    `bodied-insert-2.ts: Bodied Extension: Insert ${node}`,
     { skip: ['edge', 'ie'] },
     async client => {
       const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);
-
       await insertBlockMenuItem(page, 'Bodied macro (EH)');
 
       if (node.endsWith('list')) {

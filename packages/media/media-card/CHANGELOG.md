@@ -1,5 +1,20 @@
 # @atlaskit/media-image
 
+## 41.1.2
+- [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+  - @atlaskit/media-test-helpers@18.2.10
+  - @atlaskit/media-ui@7.0.0
+  - @atlaskit/smart-card@8.4.1
+
+## 41.1.1
+- [patch] Override css rules for an image inside a cart [20a15ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20a15ef)
+
+## 41.1.0
+- [minor] Cleanup media + editor integration 🔥 [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+
+## 41.0.2
+- [patch] Make image in the card non-draggable [615a536](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/615a536)
+
 ## 41.0.1
 - [patch] User img tag in cards instead of div with background [22ae8bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22ae8bb)
 

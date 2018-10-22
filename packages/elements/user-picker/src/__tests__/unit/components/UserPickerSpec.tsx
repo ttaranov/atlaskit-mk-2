@@ -30,8 +30,8 @@ describe('UserPicker', () => {
     const component = shallowUserPicker({ users });
     const select = component.find(Select);
     expect(select.prop('options')).toEqual([
-      { value: users[0], label: 'Jace Beleren' },
-      { value: users[1], label: 'Chandra Nalaar' },
+      { value: 'abc-123', user: users[0], label: 'Jace Beleren' },
+      { value: '123-abc', user: users[1], label: 'Chandra Nalaar' },
     ]);
     const styles: Styles = select.prop('styles');
     expect(styles.menu({})).toMatchObject({
@@ -40,7 +40,16 @@ describe('UserPicker', () => {
 
     expect(styles.control({})).toMatchObject({
       width: 350,
-      height: 60,
+      flexWrap: 'nowrap',
+    });
+
+    expect(styles.input({})).toMatchObject({
+      lineHeight: '44px',
+    });
+
+    expect(styles.valueContainer({})).toMatchObject({
+      flexGrow: 1,
+      overflow: 'hidden',
     });
   });
 
@@ -55,7 +64,7 @@ describe('UserPicker', () => {
 
     expect(styles.control({})).toMatchObject({
       width: 500,
-      height: 60,
+      flexWrap: 'nowrap',
     });
   });
 
@@ -64,7 +73,11 @@ describe('UserPicker', () => {
     const component = shallowUserPicker({ onChange });
 
     const select = component.find(Select);
-    select.simulate('change', { value: users[0] }, { action: 'select-option' });
+    select.simulate(
+      'change',
+      { value: 'abc-123', user: users[0] },
+      { action: 'select-option' },
+    );
 
     expect(onChange).toHaveBeenCalledWith(users[0], 'select-option');
   });
@@ -77,9 +90,50 @@ describe('UserPicker', () => {
 
     expect(
       formatOptionLabel(
-        { value: users[0], label: 'Jace Beleren' },
+        { id: 'abc-123', user: users[0], label: 'Jace Beleren' },
         { context: 'menu' },
       ),
     ).toEqual(<UserPickerItem user={users[0]} context="menu" />);
+  });
+
+  describe('Multiple users select', () => {
+    it('should set isMulti in Select', () => {
+      const component = shallowUserPicker({ users, isMulti: true });
+      const select = component.find(Select);
+      expect(select.prop('isMulti')).toBeTruthy();
+
+      const styles: Styles = select.prop('styles');
+      expect(styles.multiValue({})).toMatchObject({
+        borderRadius: 24,
+      });
+
+      expect(styles.multiValueRemove({})).toMatchObject({
+        backgroundColor: 'transparent',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+      });
+    });
+
+    it('should call onChange with an array of users', () => {
+      const onChange = jest.fn();
+      const component = shallowUserPicker({ users, isMulti: true, onChange });
+
+      component
+        .find(Select)
+        .simulate(
+          'change',
+          [
+            { value: 'abc-123', user: users[0] },
+            { value: '123-abc', user: users[1] },
+          ],
+          { action: 'select-option' },
+        );
+
+      expect(onChange).toHaveBeenCalledWith(
+        [users[0], users[1]],
+        'select-option',
+      );
+    });
   });
 });

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import AkButton from '@atlaskit/button';
 import DropboxIcon from '@atlaskit/icon/glyph/dropbox';
 import GoogledriveIcon from '@atlaskit/icon/glyph/googledrive';
-
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { startAuth } from '../../../../actions';
 import { ServiceAccountLink, ServiceName, State } from '../../../../domain';
 import {
@@ -51,11 +52,12 @@ export class StatelessAuth extends Component<AuthProps> {
     }
 
     const { name, icon } = details;
-    const btnLabel = `Connect to ${name}`;
 
     return (
       <ConnectWrapper>
-        <Title>Upload a file from {name}</Title>
+        <Title>
+          <FormattedMessage {...messages.upload_file_from} values={{ name }} />
+        </Title>
         <IconWrapper>{icon}</IconWrapper>
         <ButtonWrapper>
           <AkButton
@@ -63,11 +65,14 @@ export class StatelessAuth extends Component<AuthProps> {
             className="connectBtn"
             onClick={this.onClick}
           >
-            {btnLabel}
+            <FormattedMessage {...messages.connect_to} values={{ name }} />
           </AkButton>
         </ButtonWrapper>
         <TextDescription>
-          We'll open a new page to help you<br /> connect your {name} account
+          <FormattedMessage
+            {...messages.connect_account_description}
+            values={{ name }}
+          />
         </TextDescription>
       </ConnectWrapper>
     );

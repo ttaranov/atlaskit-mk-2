@@ -66,14 +66,16 @@ export const insertMedia = async (
     insertBlockMessages.filesAndImages.defaultMessage
   }"]`;
   const insertMediaButton = '.e2e-insert-button';
-  const mediaCardSelector = `${editable} .media-card`;
+  const mediaCardSelector = `${editable} .img-wrapper`;
 
   const existingMediaCards = await browser.$$(mediaCardSelector);
 
   await browser.click(openMediaPopup);
 
   // wait for media item, and select it
-  await browser.waitForSelector('.e2e-recent-upload-card .media-card');
+  await browser.waitForSelector(
+    '.e2e-recent-upload-card [aria-label="one.svg"]',
+  );
   if (filenames) {
     for (const filename of filenames) {
       const selector = fileSelector.replace('%s', filename);
@@ -85,6 +87,7 @@ export const insertMedia = async (
   // insert it from the picker dialog
   await browser.waitForSelector(insertMediaButton);
   await browser.click(insertMediaButton);
+  await browser.waitFor('.img-wrapper');
 
   // Wait until we have found media-cards for all inserted items.
   const mediaCardCount = get$$Length(existingMediaCards) + filenames.length;
@@ -96,6 +99,9 @@ export const insertMedia = async (
       return get$$Length(mediaCards) === mediaCardCount;
     });
   } else {
+    await browser.evaluate(() => {
+      window.scrollBy(0, window.innerHeight);
+    });
     await browser.waitFor(
       (mediaCardSelector, mediaCardCount) => {
         const mediaCards = document.querySelectorAll(mediaCardSelector);

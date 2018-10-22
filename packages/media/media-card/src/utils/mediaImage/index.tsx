@@ -233,6 +233,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
     return (
       <ImageComponent
+        draggable={false}
         style={style}
         onLoad={this.onImageLoad}
         innerRef={this.imageRef}

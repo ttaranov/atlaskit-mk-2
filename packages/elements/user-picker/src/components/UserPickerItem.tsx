@@ -10,10 +10,15 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 `;
 
 const AvatarItemWrapper = styled.div`
   overflow: hidden;
+
+  & > span {
+    box-sizing: border-box;
+  }
 `;
 
 const LozengeWrapper = styled.div`

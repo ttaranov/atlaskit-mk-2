@@ -30,7 +30,7 @@ describe('Drawer Transitions', () => {
       const { transitionStyles } = wrapper.find('TransitionHandler').props();
 
       expect(transitionStyles).toMatchObject({
-        entered: { transform: 'translate3d(0,0,0)' },
+        entered: { transform: null },
         exited: { transform: 'translate3d(-100%,0,0)' },
       });
     });

@@ -17,6 +17,7 @@ import {
   type PopperChildrenProps,
 } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
+import shallowEqualObjects from 'shallow-equal/objects';
 
 import { colors } from '@atlaskit/theme';
 
@@ -44,7 +45,11 @@ type Props = {
   styles: Object,
   target: ElementType<*>,
 };
-type State = { isOpen: boolean };
+type State = {
+  isOpen: boolean,
+  mergedComponents: Object,
+  mergedPopperProps: PopperPropsNoChildren,
+};
 
 // ==============================
 // Class
@@ -54,17 +59,27 @@ const defaultStyles = {
   groupHeading: provided => ({ ...provided, color: colors.N80 }),
 };
 
+const defaultPopperProps = {
+  modifiers: { offset: { offset: `0, 8` } },
+  placement: 'bottom-start',
+};
+
+const isEmpty = obj => Object.keys(obj).length === 0;
+
 export default class PopupSelect extends PureComponent<Props, State> {
-  components: Object;
   focusTrap: Object;
   menuRef: HTMLElement;
-  popperProps: PopperPropsNoChildren;
   selectRef: ElementRef<*>;
   targetRef: HTMLElement;
+  state = {
+    isOpen: false,
+    mergedComponents: defaultComponents,
+    mergedPopperProps: defaultPopperProps,
+  };
 
   static defaultProps = {
     closeMenuOnSelect: true,
-    components: defaultComponents,
+    components: {},
     maxMenuHeight: 300,
     maxMenuWidth: 440,
     minMenuWidth: 220,
@@ -72,35 +87,29 @@ export default class PopupSelect extends PureComponent<Props, State> {
     searchThreshold: 5,
     styles: {},
   };
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const newState = {};
 
-  constructor(props: Props) {
-    super(props);
-    this.cacheComponents(props.components);
-    this.state = { isOpen: false };
-  }
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.components !== this.props.components) {
-      this.cacheComponents(nextProps.components);
+    // Merge consumer and default popper props
+    const mergedPopperProps = { ...defaultPopperProps, ...props.popperProps };
+    if (!shallowEqualObjects(mergedPopperProps, state.mergedPopperProps)) {
+      newState.mergedPopperProps = mergedPopperProps;
     }
+
+    // Merge consumer and default components
+    const mergedComponents = { ...defaultComponents, ...props.components };
+    if (!shallowEqualObjects(mergedComponents, state.mergedComponents)) {
+      newState.mergedComponents = mergedComponents;
+    }
+
+    if (!isEmpty(newState)) return newState;
+
+    return null;
   }
-  cacheComponents = (components?: {}) => {
-    this.components = {
-      ...defaultComponents,
-      ...components,
-    };
-  };
+
   componentDidMount() {
-    this.mergePopperProps();
-
     if (typeof window === 'undefined') return;
-    window.addEventListener('click', this.handleClick, true);
-  }
-  // TODO work around this before react@17
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.popperProps !== this.props.popperProps) {
-      this.mergePopperProps();
-    }
+    window.addEventListener('click', this.handleClick);
   }
   componentWillUnmount() {
     if (typeof window === 'undefined') return;
@@ -212,20 +221,12 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
     return count;
   };
-  mergePopperProps = () => {
-    const defaults = {
-      modifiers: { offset: { offset: `0, 8` } },
-      placement: 'bottom-start',
-    };
-
-    this.popperProps = Object.assign({}, defaults, this.props.popperProps);
-  };
   getMaxHeight = () => {
     const { maxMenuHeight } = this.props;
 
     if (!this.selectRef) return maxMenuHeight;
 
-    // subtract the control height to maintain continuity
+    // subtract the control height to maintain consistency
     const showSearchControl = this.showSearchControl();
     const offsetHeight = showSearchControl
       ? this.selectRef.select.controlRef.offsetHeight
@@ -246,15 +247,18 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
   renderSelect = () => {
     const { footer, maxMenuWidth, minMenuWidth, target, ...props } = this.props;
-    const { isOpen } = this.state;
-    const { components } = this;
+    const { isOpen, mergedComponents, mergedPopperProps } = this.state;
     const showSearchControl = this.showSearchControl();
     const portalDestination = document.body;
+    const components = {
+      ...mergedComponents,
+      Control: showSearchControl ? mergedComponents.Control : DummyControl,
+    };
 
     if (!portalDestination || !isOpen) return null;
 
     const popper = (
-      <Popper {...this.popperProps}>
+      <Popper {...mergedPopperProps}>
         {({ placement, ref, style }) => {
           return (
             <NodeResolver innerRef={this.resolveMenuRef(ref)}>
@@ -274,12 +278,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
                   {...props}
                   styles={{ ...defaultStyles, ...props.styles }}
                   maxMenuHeight={this.getMaxHeight()}
-                  components={{
-                    ...components,
-                    Control: showSearchControl
-                      ? components.Control
-                      : DummyControl,
-                  }}
+                  components={components}
                   onChange={this.handleSelectChange}
                 />
                 {footer}
@@ -290,7 +289,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
       </Popper>
     );
 
-    return this.popperProps.positionFixed
+    return mergedPopperProps.positionFixed
       ? popper
       : createPortal(popper, portalDestination);
   };

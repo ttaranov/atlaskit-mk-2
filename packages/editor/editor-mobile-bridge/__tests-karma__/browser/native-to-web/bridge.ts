@@ -14,7 +14,7 @@ describe('NativeToWebBridge', () => {
     content: [{ type: 'paragraph', content: [{ type: 'text', text: 'test' }] }],
   };
   let editor;
-  beforeEach(() => {
+  beforeEach(async () => {
     editor = mount(mobileEditor({}));
   });
 
@@ -76,7 +76,7 @@ describe('insert media', () => {
           {
             type: 'media',
             attrs: {
-              id: 'e94c3f67-5ac3-42b2-bf6a-ce35bb787894',
+              id: '116ba70f-9e28-41a1-ac81-6cdaef0665a0',
               collection: 'MediaServicesSample',
               type: 'file',
             },
@@ -108,19 +108,11 @@ describe('insert media', () => {
 
 function sendSampleMediaEvents() {
   bridge.onMediaPicked(
-    'uploads-start',
-    '{"files":[{"id":"116ba70f-9e28-41a1-ac81-6cdaef0665a0","name":"IMG_20180406_001117.jpg","type":"file"}]}',
-  );
-  bridge.onMediaPicked(
-    'upload-status-update',
-    '{"file":{"id":"116ba70f-9e28-41a1-ac81-6cdaef0665a0","name":"IMG_20180406_001117.jpg","type":"file"},"progress":{"absolute":0.0,"max":100,"portion":0}}',
-  );
-  bridge.onMediaPicked(
-    'upload-processing',
-    '{"file":{"id":"116ba70f-9e28-41a1-ac81-6cdaef0665a0","name":"IMG_20180406_001117.jpg","type":"file","publicId":"e94c3f67-5ac3-42b2-bf6a-ce35bb787894"}}',
+    'upload-preview-update',
+    '{"file":{"id":"116ba70f-9e28-41a1-ac81-6cdaef0665a0","name":"IMG_20180406_001117.jpg","type":"file"},"public":{}}',
   );
   bridge.onMediaPicked(
     'upload-end',
-    '{"file":{"id":"e94c3f67-5ac3-42b2-bf6a-ce35bb787894","name":"IMG_20180406_001117.jpg","type":"file","publicId":"e94c3f67-5ac3-42b2-bf6a-ce35bb787894"},"public":{}}',
+    '{"file":{"id":"116ba70f-9e28-41a1-ac81-6cdaef0665a0","name":"IMG_20180406_001117.jpg","type":"file","publicId":"e94c3f67-5ac3-42b2-bf6a-ce35bb787894"},"public":{}}',
   );
 }

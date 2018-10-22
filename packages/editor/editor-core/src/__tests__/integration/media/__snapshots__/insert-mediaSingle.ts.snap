@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Inserts a media single on fullpage 1`] = `
+exports[`insert-mediaSingle.ts: Inserts a media single on fullpage 1`] = `
 Object {
   "content": Array [
     Object {
@@ -24,7 +24,7 @@ Object {
             "__fileMimeType": "image/svg+xml",
             "__fileName": "example.png",
             "__fileSize": 235,
-            "__key": "temporary:1234-5678-abcd-efgh",
+            "__key": "1234-5678-abcd-efgh",
             "collection": "MediaServicesSample",
             "height": 4096,
             "id": "1234-5678-abcd-efgh",

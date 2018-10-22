@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Bred',
   'fabric.editor.layoutFullWidth': 'Full bredd',
   'fabric.editor.remove': 'Ta bort',
+  'fabric.editor.visit': 'Öppna länk i nytt fönster',
   'fabric.editor.normal': 'Normal text',
   'fabric.editor.heading1': 'Rubrik 1',
   'fabric.editor.heading2': 'Rubrik 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Text att visa',
   'fabric.editor.linkPlaceholderWithSearch':
     'Klistra in länk eller sök senaste visade',
+  'fabric.editor.action': 'Uppgift',
   'fabric.editor.link': 'Länk',
   'fabric.editor.filesAndImages': 'Filer och bilder',
   'fabric.editor.image': 'Bild',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Tre kolumner',
   'fabric.editor.unorderedList': 'Punktlista',
   'fabric.editor.orderedList': 'Numrerad lista',
-  'fabric.editor.action': 'Uppgift',
   'fabric.editor.lists': 'Listor',
   'fabric.editor.wrapLeft': 'Radbyte vänster',
   'fabric.editor.wrapRight': 'Radbyte höger',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Infoga rad',
   'fabric.editor.removeRows':
     '{0, plural, one{Ta bort rad} other{Ta bort rader}}',
+  'fabric.editor.decisionPlaceholder': 'Lägg till ett beslut ...',
+  'fabric.editor.taskPlaceholder':
+    'Skriv din åtgärd och använd @ för att tilldela någon.',
   'fabric.editor.textColor': 'Textfärg',
   'fabric.editor.underline': 'Understruken',
   'fabric.editor.strike': 'Genomstrykning',

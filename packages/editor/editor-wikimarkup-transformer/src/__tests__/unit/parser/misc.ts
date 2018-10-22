@@ -19,6 +19,11 @@ describe('JIRA wiki markup - Misc', () => {
       'should escape monospace text',
       'this is a \\{{normal text}}, not a monospaced',
     ],
+    [
+      '[CS-480] this is not a list',
+      `-
+this is not a list`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

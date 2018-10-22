@@ -6,7 +6,7 @@ import { EditorPlugin } from '../../types';
 import * as keymaps from '../../keymaps';
 import { analyticsService } from '../../analytics';
 import WithPluginState from '../../ui/WithPluginState';
-import HelpDialog from './ui';
+import { HelpDialogLoader } from './ui/HelpDialogLoader';
 import { pluginKey as quickInsertPluginKey } from '../quick-insert';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
@@ -67,7 +67,7 @@ const helpDialog: EditorPlugin = {
           quickInsert: quickInsertPluginKey,
         }}
         render={({ helpDialog = {} as any, quickInsert }) => (
-          <HelpDialog
+          <HelpDialogLoader
             appearance={appearance}
             editorView={editorView}
             isVisible={helpDialog.isVisible}

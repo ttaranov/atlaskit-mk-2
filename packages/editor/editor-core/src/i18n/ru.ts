@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Шире обычного',
   'fabric.editor.layoutFullWidth': 'В полную ширину',
   'fabric.editor.remove': 'Удалить',
+  'fabric.editor.visit': 'Открыть ссылку в новом окне',
   'fabric.editor.normal': 'Обычный текст',
   'fabric.editor.heading1': 'Заголовок 1',
   'fabric.editor.heading2': 'Заголовок 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Текст ссылки',
   'fabric.editor.linkPlaceholderWithSearch':
     'Вставьте ссылку или выполните поиск по недавно просмотренным страницам',
+  'fabric.editor.action': 'Задание',
   'fabric.editor.link': 'Ссылка',
   'fabric.editor.filesAndImages': 'Файлы и изображения',
   'fabric.editor.image': 'Изображение',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Три столбца',
   'fabric.editor.unorderedList': 'Маркированный список',
   'fabric.editor.orderedList': 'Нумерованный список',
-  'fabric.editor.action': 'Задание',
   'fabric.editor.lists': 'Списки',
   'fabric.editor.wrapLeft': 'Заверстать влево',
   'fabric.editor.wrapRight': 'Заверстать вправо',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Вставить строку',
   'fabric.editor.removeRows':
     '{0, plural, one{Удалить строку} few{Удалить строки} many{Удалить строки} other{Удалить строки}}',
+  'fabric.editor.decisionPlaceholder': 'Добавьте решение…',
+  'fabric.editor.taskPlaceholder':
+    'Введите задание и отметьте исполнителя с помощью значка @.',
   'fabric.editor.textColor': 'Цвет текста',
   'fabric.editor.underline': 'Подчеркивание',
   'fabric.editor.strike': 'Зачеркнутый текст',

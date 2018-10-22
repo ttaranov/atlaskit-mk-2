@@ -30,6 +30,8 @@ const naturalSizeRectangle = (el: HTMLImageElement): Rectangle => {
 export type Props = {
   src: string;
   onClose?: () => void;
+  onLoad: () => void;
+  onError: () => void;
 };
 
 export type State = {
@@ -91,6 +93,7 @@ export class InteractiveImg extends React.Component<Props, State> {
           src={src}
           style={imgStyle}
           onLoad={this.onImgLoad}
+          onError={this.onError}
           onMouseDown={this.startDragging}
         />
         {/*
@@ -115,6 +118,11 @@ export class InteractiveImg extends React.Component<Props, State> {
         zoomLevel: new ZoomLevel(camera.scaleDownToFit),
       });
     }
+    this.props.onLoad();
+  };
+
+  private onError = () => {
+    this.props.onError();
   };
 
   private onResize = () => {

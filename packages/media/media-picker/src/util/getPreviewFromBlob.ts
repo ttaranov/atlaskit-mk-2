@@ -1,6 +1,5 @@
 import { MediaType } from '@atlaskit/media-core';
 import { Preview } from '../domain/preview';
-import { fileToBase64 } from '../popup/tools/fileToBase64';
 import { ImagePreview } from '../index';
 
 export const getPreviewFromBlob = (
@@ -8,23 +7,20 @@ export const getPreviewFromBlob = (
   mediaType: MediaType,
 ): Promise<Preview> =>
   new Promise((resolve, reject) => {
-    fileToBase64(file)
-      .then(src => {
-        if (mediaType === 'image') {
-          const img = new Image();
-          img.src = src;
+    const src = URL.createObjectURL(file);
 
-          img.onload = () => {
-            const { src } = img;
-            const dimensions = { width: img.width, height: img.height };
+    if (mediaType === 'image') {
+      const img = new Image();
+      img.src = src;
 
-            resolve({ src, dimensions } as ImagePreview);
-          };
+      img.onload = () => {
+        const dimensions = { width: img.width, height: img.height };
 
-          img.onerror = reject;
-        } else {
-          resolve({ src });
-        }
-      })
-      .catch(reject);
+        URL.revokeObjectURL(src);
+        resolve({ file, dimensions } as ImagePreview);
+      };
+      img.onerror = reject;
+    } else {
+      resolve({ file });
+    }
   });

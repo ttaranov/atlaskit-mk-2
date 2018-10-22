@@ -34,18 +34,30 @@ export function heading(
     tokenErrCallback,
   );
 
-  const headingNode = schema.nodes.heading.createChecked(
-    {
-      level,
-    },
-    content,
-  );
+  try {
+    const headingNode = schema.nodes.heading.createChecked(
+      {
+        level,
+      },
+      content,
+    );
 
-  return {
-    type: 'pmnode',
-    nodes: [headingNode],
-    length: match[0].length,
-  };
+    return {
+      type: 'pmnode',
+      nodes: [headingNode],
+      length: match[0].length,
+    };
+  } catch (err) {
+    /**
+     * If the heading fails to rendering, we want to skip the text
+     * "h1."
+     */
+    return {
+      type: 'text',
+      text: '',
+      length: 4,
+    };
+  }
 }
 
 function fallback(input: string): Token {

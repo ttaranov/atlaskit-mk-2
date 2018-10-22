@@ -20,23 +20,56 @@ describe('NavigationNext UI Controller: UIController', () => {
     cacheController.set.mockRestore();
   });
 
-  it('should add the default state if a cache controller was not passed', () => {
-    const uiController = new UIController(initialState, false);
-    expect(uiController.state).toEqual({
-      isCollapsed: true,
-      isPeekHinting: true,
-      isPeeking: true,
-      isResizeDisabled: false,
-      isResizing: false,
-      productNavWidth: 100,
+  describe('Caching the UI state', () => {
+    it('should add the default state if a cache controller was not passed', () => {
+      const uiController = new UIController(initialState, false);
+      expect(uiController.state).toEqual({
+        isCollapsed: true,
+        isPeekHinting: true,
+        isPeeking: true,
+        isResizeDisabled: false,
+        isResizing: false,
+        productNavWidth: 100,
+      });
     });
-  });
 
-  it('should add the cache controller functions into the controller', () => {
-    const uiController = new UIController(initialState, cacheController);
+    it('should add the cache controller functions into the controller', () => {
+      const uiController = new UIController(initialState, cacheController);
 
-    expect(uiController.getCache === cacheController.get).toBe(true);
-    expect(uiController.setCache === cacheController.set).toBe(true);
+      expect(uiController.getCache === cacheController.get).toBe(true);
+      expect(uiController.setCache === cacheController.set).toBe(true);
+    });
+
+    it('should store the collapsed state and the width of the navigation in the cache', () => {
+      const uiController = new UIController(initialState, cacheController);
+      uiController.storeState(uiController.state);
+
+      const { isCollapsed, productNavWidth } = initialState;
+      expect(cacheController.set).toHaveBeenCalledWith({
+        isCollapsed,
+        productNavWidth,
+      });
+    });
+
+    it('should retrieve the collapsed state and the width of the navigation from the cache', () => {
+      const mockCache = {
+        get: () => ({
+          isCollapsed: false,
+          productNavWidth: 200,
+          // Although this function returns a value for isResizing, it should be
+          // ignored
+          isResizing: true,
+        }),
+        set: () => {},
+      };
+
+      const uiController = new UIController({}, mockCache);
+      expect(uiController.state).toMatchObject({
+        isCollapsed: false,
+        productNavWidth: 200,
+        isResizing: false,
+      });
+    });
   });
 
   it('should toggle collapse state if `toggleCollapse` is called', () => {

@@ -1,8 +1,7 @@
 import 'whatwg-fetch';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import * as fetchMock from 'fetch-mock';
-import { Client, ClientOptions } from '../..';
-import { RemoteResourceAuthConfig } from '../../createObjectResolverServiceObservable';
+import { Client, RemoteResourceAuthConfig, ResolveResponse } from '../..';
 import { ObjectState } from '../../types';
 import { v4 } from 'uuid';
 
@@ -20,10 +19,6 @@ const generator = {
 };
 
 const name = 'My Page';
-
-function createClient(options?: ClientOptions) {
-  return new Client(options);
-}
 
 function mockResolvedFetchCall() {
   fetchMock.mock({
@@ -160,7 +155,7 @@ describe('Client', () => {
 
     const result = await new Promise(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -186,7 +181,7 @@ describe('Client', () => {
         }
       };
 
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), cardUpdateFn1)
         .register(OBJECT_URL, v4(), cardUpdateFn2)
         .resolve(OBJECT_URL);
@@ -205,7 +200,7 @@ describe('Client', () => {
 
     const result = await new Promise(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -221,7 +216,7 @@ describe('Client', () => {
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -239,7 +234,7 @@ describe('Client', () => {
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -257,7 +252,7 @@ describe('Client', () => {
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient()
+      new Client()
         .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .resolve(OBJECT_URL);
     });
@@ -271,7 +266,7 @@ describe('Client', () => {
     mockResolvedFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const client = createClient();
+      const client = new Client();
       const stack: ObjectState[] = [];
       const cardUpdateFn = (s: ObjectState) => {
         stack.push(s);
@@ -293,104 +288,63 @@ describe('Client', () => {
     ]);
   });
 
-  it('should be resolved from the provider when a resolver is provided and the resolver resolves first', async () => {
-    mockResolvedFetchCall();
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: tempResData },
-    ]);
-  });
-
-  it('should switch to default resolver if the temp one failed', async () => {
+  it('should be possible to extend the functionality of the default client', async () => {
     mockResolvedFetchCall();
 
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () =>
-        Promise.reject({ error: new Error('failed for some reason') });
+    const specialCaseUrl = 'http://some.jira.com/board/ISS-1234';
 
-      const mockCardUpdateFunction = onNthState(resolve, 2);
+    const customResponse = {
+      meta: {
+        visibility: 'public',
+        access: 'granted',
+        auth: [],
+        definitionId: 'custom-def',
+      },
+      data: {
+        name: 'Doc 1',
+      },
+    } as ResolveResponse;
 
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
+    const callHistory = await new Promise<ObjectState[]>(resolve => {
+      class CustomClient extends Client {
+        fetchData(url: string) {
+          if (url === specialCaseUrl) {
+            return Promise.resolve(customResponse);
+          }
+          return super.fetchData(url);
+        }
+      }
+      const customClient = new CustomClient();
+      const stack: ObjectState[] = [];
+
+      const callbackForSpecialCase = (s: ObjectState) => {
+        stack.push(s);
+      };
+
+      const callbackForNormalCase = (s: ObjectState) => {
+        stack.push(s);
+        if (stack.length === 4) {
+          resolve(stack);
+        }
+      };
+
+      customClient
+        .register(specialCaseUrl, v4(), callbackForSpecialCase)
+        .register(OBJECT_URL, v4(), callbackForNormalCase);
+
+      customClient.resolve(OBJECT_URL);
+      customClient.resolve(specialCaseUrl);
     });
 
-    expect(result).toMatchObject([
+    expect(callHistory).toMatchObject([
       { status: 'resolving' },
-      { status: 'resolved', data: { name: 'My Page' } },
-    ]);
-  });
-
-  it('should be resolved from the temp provider when the default resolver errored', async () => {
-    mockErroredFetchCall();
-
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
       { status: 'resolving' },
-      { status: 'resolved', data: tempResData },
-    ]);
-  });
-
-  it('should be resolved from the temp provider when the default provider resulted in "not found"', async () => {
-    mockNotFoundFetchCall();
-
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: tempResData },
-    ]);
-  });
-
-  it('should be resolved from the temp provider when the default provider resulted in "not found"', async () => {
-    mockResolvedFetchCall();
-
-    const tempResData = { name: 'From resolver' };
-
-    const result = await new Promise<ObjectState[]>(resolve => {
-      const TEMPORARY_resolver = () =>
-        new Promise(resolve => setTimeout(resolve, 1000, tempResData));
-
-      const mockCardUpdateFunction = onNthState(resolve, 2);
-
-      createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
-        .resolve(OBJECT_URL);
-    });
-
-    expect(result).toMatchObject([
-      { status: 'resolving' },
-      { status: 'resolved', data: { name: 'My Page' } },
+      {
+        status: 'resolved',
+        definitionId: 'custom-def',
+        data: { name: 'Doc 1' },
+      },
+      { status: 'resolved', definitionId },
     ]);
   });
 });

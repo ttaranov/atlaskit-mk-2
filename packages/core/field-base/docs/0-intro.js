@@ -23,6 +23,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/field-base"
       Component={require('../examples/00-basic-example').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic-example')}
@@ -31,6 +32,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/field-base"
       Component={require('../examples/01-stateless-example').default}
       title="With Stateless FieldBase"
       source={require('!!raw-loader!../examples/01-stateless-example')}
@@ -39,6 +41,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/field-base"
       Component={require('../examples/02-label-example').default}
       title="With Label"
       source={require('!!raw-loader!../examples/02-label-example')}

@@ -1,7 +1,5 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import { TableSharedCssClassName as SharedClassName } from '@atlaskit/editor-common';
 import {
-  imageSnapshotFolder,
   initEditor,
   clearEditor,
   selectByTextAndClick,
@@ -87,11 +85,8 @@ const getSelectorForCell = ({
   return `${rowSelector} > ${cellType}:nth-child(${cell})`;
 };
 
-describe('Snapshot Test: table', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
+// TODO renable after splitting and fix flaky tests
+describe.skip('Snapshot Test: table', () => {
   ['full-page', 'comment'].forEach(appearance => {
     let page;
 

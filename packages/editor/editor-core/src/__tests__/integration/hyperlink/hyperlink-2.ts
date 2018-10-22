@@ -14,7 +14,7 @@ const copyAsHTMLButton = '#copy-as-html';
 // broken on firefox - https://product-fabric.atlassian.net/browse/ED-4337
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `Link: paste link and add text, paste link into list for ${
+    `hyperlink-2.ts: Link - paste link and add text, paste link into list for ${
       editor.name
     } editor`,
     { skip: ['edge', 'ie', 'safari'] },

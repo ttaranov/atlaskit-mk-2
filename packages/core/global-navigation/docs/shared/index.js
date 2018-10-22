@@ -9,6 +9,7 @@ import { colors } from '@atlaskit/theme';
  */
 export const IframeExample = ({ source, title, url }: *) => (
   <Example
+    packageName="@atlaskit/global-navigation"
     Component={() => (
       <iframe
         src={url}

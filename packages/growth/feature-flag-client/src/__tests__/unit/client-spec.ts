@@ -40,7 +40,7 @@ describe('Feature Flag Client', () => {
         'my.second.flag': {
           value: 'experiment',
           explanation: {
-            reason: 'RULE_MATCH',
+            kind: 'RULE_MATCH',
             ruleId: '111-bbbbb-ccc',
           },
         },
@@ -117,8 +117,9 @@ describe('Feature Flag Client', () => {
             'my.variation.flag': {
               value: 'experiment',
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
+                ruleIndex: 1,
               },
             },
           },
@@ -167,8 +168,9 @@ describe('Feature Flag Client', () => {
             'my.detailed.boolean.flag': {
               value: false,
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
+                ruleIndex: 1,
               },
             },
           },
@@ -198,7 +200,7 @@ describe('Feature Flag Client', () => {
             'my.detailed.boolean.flag': {
               value: false,
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },
@@ -262,7 +264,7 @@ describe('Feature Flag Client', () => {
             'my.variation.a': {
               value: 'variation-a',
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },
@@ -302,7 +304,7 @@ describe('Feature Flag Client', () => {
             'my.variation.a': {
               value: 'variation-a',
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },
@@ -325,7 +327,7 @@ describe('Feature Flag Client', () => {
             'my.experiment': {
               value: 'experiment',
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },
@@ -376,7 +378,7 @@ describe('Feature Flag Client', () => {
             'my.experiment': {
               value: 'experiment',
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },
@@ -452,7 +454,7 @@ describe('Feature Flag Client', () => {
             'my.experiment': {
               value: 'experiment',
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },
@@ -473,7 +475,7 @@ describe('Feature Flag Client', () => {
                 footer: 'black',
               },
               explanation: {
-                reason: 'RULE_MATCH',
+                kind: 'RULE_MATCH',
                 ruleId: '111-bbbbb-ccc',
               },
             },

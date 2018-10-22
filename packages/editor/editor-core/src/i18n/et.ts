@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Lai',
   'fabric.editor.layoutFullWidth': 'Kogu laius',
   'fabric.editor.remove': 'Eemalda',
+  'fabric.editor.visit': 'Ava link uues aknas',
   'fabric.editor.normal': 'Tavaline tekst',
   'fabric.editor.heading1': '1. pealkiri',
   'fabric.editor.heading2': '2. pealkiri',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Kuvatav tekst',
   'fabric.editor.linkPlaceholderWithSearch':
     'Kleebi link või otsi hiljuti vaadatud',
+  'fabric.editor.action': 'Toimingu kirje',
   'fabric.editor.link': 'Viide',
   'fabric.editor.filesAndImages': 'Failid ja pildid',
   'fabric.editor.image': 'Pilt',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Kolm veergu',
   'fabric.editor.unorderedList': 'Täpploend',
   'fabric.editor.orderedList': 'Nummerdatud loend',
-  'fabric.editor.action': 'Toimingu kirje',
   'fabric.editor.lists': 'Nimekirjad',
   'fabric.editor.wrapLeft': 'Aseta vasakule',
   'fabric.editor.wrapRight': 'Aseta paremale',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Sisesta rida',
   'fabric.editor.removeRows':
     '{0, plural, one{Eemalda rida} other{Eemalda read}}',
+  'fabric.editor.decisionPlaceholder': 'Lisa otsus…',
+  'fabric.editor.taskPlaceholder':
+    "Sisesta oma toiming, kasuta kellelegi määramiseks märki '@'.",
   'fabric.editor.textColor': 'Teksti värv',
   'fabric.editor.underline': 'Jooni alla',
   'fabric.editor.strike': 'Läbikriipsutatud',

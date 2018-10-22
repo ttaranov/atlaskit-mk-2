@@ -1,5 +1,11 @@
 # @atlaskit/portal
 
+## 0.0.12
+- [patch] fixes problem with the DOM container for portal not creating a new stacking context [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
+
+## 0.0.11
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 0.0.10
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

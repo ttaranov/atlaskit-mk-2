@@ -22,8 +22,15 @@ import { MediaViewer } from '../src';
 import { videoFileId } from '@atlaskit/media-test-helpers';
 import { MediaViewerItem } from '../src';
 import { MediaViewerDataSource } from '..';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 const context = createStorybookContext();
+
+const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
+  const { payload, context } = analyticsEvent;
+  console.log('Received event:', { payload, context });
+};
 
 export type State = {
   selected?: {
@@ -192,14 +199,16 @@ export default class Example extends React.Component<{}, State> {
         </Group>
 
         {this.state.selected && (
-          <MediaViewer
-            context={context}
-            selectedItem={this.state.selected.identifier}
-            dataSource={this.state.selected.dataSource}
-            collectionName={defaultCollectionName}
-            onClose={this.onClose}
-            pageSize={5}
-          />
+          <AnalyticsListener channel="media" onEvent={handleEvent}>
+            <MediaViewer
+              context={context}
+              selectedItem={this.state.selected.identifier}
+              dataSource={this.state.selected.dataSource}
+              collectionName={defaultCollectionName}
+              onClose={this.onClose}
+              pageSize={5}
+            />
+          </AnalyticsListener>
         )}
       </Container>
     );

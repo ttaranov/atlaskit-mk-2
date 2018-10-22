@@ -6,8 +6,8 @@ import { colors } from '@atlaskit/theme';
 
 export const mediaStyles = css`
   .ProseMirror {
-    ${mediaSingleSharedStyle} & [layout='full-width'] div.media-single,
-    & [layout='wide'] div.media-single {
+    ${mediaSingleSharedStyle} & [layout='full-width'] .media-single,
+    & [layout='wide'] .media-single {
       margin-left: 50%;
       transform: translateX(-50%);
     }

@@ -1,5 +1,36 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.19
+- [patch] Fix link format with | in url [d4a84b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a84b3)
+
+## 2.1.18
+- [patch] space in list item content doesn't matter [d56abbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d56abbd)
+
+## 2.1.17
+- [patch] List item symbol followed by line break is not valid [df6c74a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df6c74a)
+
+## 2.1.16
+- [patch] Fix common-formater ending symbol behavior and use external media for links in media [b1926a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1926a8)
+
+## 2.1.15
+- [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+  - @atlaskit/editor-json-transformer@4.0.19
+  - @atlaskit/editor-test-helpers@6.2.8
+  - @atlaskit/editor-core@87.0.0
+  - @atlaskit/editor-common@20.1.2
+
+## 2.1.14
+- [patch] Ignore heading text when fails [d2ac796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ac796)
+
+## 2.1.13
+- [patch] common formater can be valid if surrounded by non alphanumeric characters [5576cc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5576cc2)
+
+## 2.1.12
+- [patch] list items should allow leading spaces [2aad896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2aad896)
+
+## 2.1.11
+- [patch] Adds escape for macro, mention and media [8a89d20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a89d20)
+
 ## 2.1.10
 - [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/editor-common@20.0.0

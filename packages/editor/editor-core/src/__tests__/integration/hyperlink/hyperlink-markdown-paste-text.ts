@@ -12,7 +12,9 @@ import {
 
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `Link: link markdown with pasting link text ${editor.name} editor`,
+    `hyperlink-markdown-paste-text.ts: Link - link markdown with pasting link text ${
+      editor.name
+    } editor`,
     {
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },

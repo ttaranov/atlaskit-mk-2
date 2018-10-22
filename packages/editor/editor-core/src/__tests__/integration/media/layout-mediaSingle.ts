@@ -10,7 +10,7 @@ import {
 import commonMessages from '../../../messages';
 
 BrowserTestCase(
-  'Can change media single to full-width layout on fullpage',
+  'layout-mediaSingle.ts: Can change media single to full-width layout on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);

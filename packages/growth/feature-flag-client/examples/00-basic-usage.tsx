@@ -11,7 +11,7 @@ const client = new FeatureFlagClient({
     'my.experiment': {
       value: 'experiment',
       explanation: {
-        reason: 'RULE_MATCH',
+        kind: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
       },
     },
@@ -24,14 +24,14 @@ const client = new FeatureFlagClient({
         footer: 'black',
       },
       explanation: {
-        reason: 'RULE_MATCH',
+        kind: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
       },
     },
     'my.detailed.boolean.flag': {
       value: false,
       explanation: {
-        reason: 'RULE_MATCH',
+        kind: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
       },
     },

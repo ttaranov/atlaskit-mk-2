@@ -15,6 +15,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/spinner"
       Component={require('../examples/0-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/0-basic')}
@@ -23,6 +24,7 @@ export default md`
   
   ${(
     <Example
+      packageName="@atlaskit/spinner"
       Component={require('../examples/1-usage').default}
       title="Animation Options"
       source={require('!!raw-loader!../examples/1-usage')}

@@ -60,3 +60,33 @@ test('should use DOM ordering to stack sibiling portals', () => {
   expect(zIndex(front)).toEqual(zIndex(back));
   expect(back.nextSibling).toBe(front);
 });
+
+test('should create a new stacking context', () => {
+  wrapper = mount(
+    <App>
+      <Portal>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+  const container = document.querySelector('body > .atlaskit-portal-container');
+  expect(container && container.style.getPropertyValue('display')).toBe('flex');
+});
+
+test('should clean up elements after unmount', () => {
+  const Wrapper = ({ renderPortal }: { renderPortal: boolean }) => (
+    <App>
+      {renderPortal && (
+        <Portal zIndex={500}>
+          <div>Hi</div>
+        </Portal>
+      )}
+    </App>
+  );
+  wrapper = mount(<Wrapper renderPortal />);
+  wrapper.setProps({ renderPortal: false });
+  const parent = document.querySelector('.atlaskit-portal-container');
+  expect(parent).toBeNull();
+  const portal = document.querySelector('.atlaskit-portal');
+  expect(portal).toBeNull();
+});

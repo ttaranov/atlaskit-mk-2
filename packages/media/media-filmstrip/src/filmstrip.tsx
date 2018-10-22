@@ -9,6 +9,7 @@ import {
   CardEvent,
   OnSelectChangeFunc,
   OnLoadingChangeFunc,
+  defaultImageCardDimensions,
 } from '@atlaskit/media-card';
 import { Context } from '@atlaskit/media-core';
 import { FilmstripView } from './filmstripView';
@@ -50,7 +51,14 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
     const cards = items.map(item => {
       const key = generateIdentifierKey(item.identifier);
 
-      return <Card key={key} context={context} {...item} />;
+      return (
+        <Card
+          key={key}
+          context={context}
+          dimensions={defaultImageCardDimensions}
+          {...item}
+        />
+      );
     });
 
     return cards;

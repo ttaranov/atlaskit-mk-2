@@ -129,8 +129,12 @@ class Tooltip extends Component<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     const scrollOptions = { capture: true, passive: true };
     if (!prevState.isVisible && this.state.isVisible) {
+      if (this.props.onShow) this.props.onShow();
+
       window.addEventListener('scroll', this.handleWindowScroll, scrollOptions);
     } else if (prevState.isVisible && !this.state.isVisible) {
+      if (this.props.onHide) this.props.onHide();
+
       window.removeEventListener(
         'scroll',
         this.handleWindowScroll,
@@ -177,9 +181,6 @@ class Tooltip extends Component<Props, State> {
           everBeenVisible: true,
           immediatelyShow,
         });
-        if (this.props.onShow) {
-          this.props.onShow();
-        }
       }, this.props.delay);
     }
   };
@@ -190,9 +191,6 @@ class Tooltip extends Component<Props, State> {
     if (this.state.isVisible) {
       this.cancelPendingSetState = hideTooltip(immediatelyHide => {
         this.setState({ isVisible: false, immediatelyHide });
-        if (this.props.onHide) {
-          this.props.onHide();
-        }
       }, this.props.delay);
     }
   };

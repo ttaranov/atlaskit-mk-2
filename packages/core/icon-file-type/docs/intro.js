@@ -46,6 +46,7 @@ ${<PitchSentence />}
 
 ${(
   <Example
+    packageName="@atlaskit/icon-file-type"
     Component={require('../examples/icon-explorer').default}
     title="Icon Explorer"
     source={require('!!raw-loader!../examples/icon-explorer')}

@@ -3,9 +3,9 @@ import { LocalUploadComponent } from '../../localUpload';
 import { NewUploadServiceImpl } from '../../../service/newUploadServiceImpl';
 import { MediaFile } from '../../../domain/file';
 import { UploadEndEventPayload } from '../../..';
+import { SCALE_FACTOR_DEFAULT } from '../../../util/getPreviewFromImage';
 
 describe('MediaLocalUpload', () => {
-  const imagePreviewSrc = 'some-image-src';
   const imageFile: MediaFile = {
     id: 'some-id',
     name: 'some-name',
@@ -79,18 +79,18 @@ describe('MediaLocalUpload', () => {
           width: 100,
           height: 200,
         },
-        src: imagePreviewSrc,
+        scaleFactor: SCALE_FACTOR_DEFAULT,
       },
     });
 
     expect(emitter.emit).toBeCalledWith('upload-preview-update', {
       file: expect.objectContaining(imageFile),
       preview: {
-        src: imagePreviewSrc,
         dimensions: {
           width: 100,
           height: 200,
         },
+        scaleFactor: SCALE_FACTOR_DEFAULT,
       },
     });
   });

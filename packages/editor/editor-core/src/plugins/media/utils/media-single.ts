@@ -1,6 +1,5 @@
 import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { ImagePreview } from '@atlaskit/media-picker';
 
 import { isImage } from '../../../utils';
 import {
@@ -12,7 +11,7 @@ import { MediaState } from '../types';
 import { safeInsert } from 'prosemirror-utils';
 
 export interface MediaSingleState extends MediaState {
-  thumbnail: ImagePreview;
+  dimensions: { width: number; height: number };
 }
 
 export const insertMediaAsMediaSingle = (
@@ -71,10 +70,10 @@ export const insertMediaSingleNode = (
 export const createMediaSingleNode = (schema: Schema, collection: string) => (
   mediaState: MediaSingleState,
 ) => {
-  const { id, thumbnail } = mediaState;
-  const { width, height } = (thumbnail && thumbnail.dimensions) || {
-    width: undefined,
+  const { id, dimensions } = mediaState;
+  const { width, height } = dimensions || {
     height: undefined,
+    width: undefined,
   };
   const { media, mediaSingle } = schema.nodes;
 

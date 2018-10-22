@@ -1,58 +1,51 @@
-'use strict';
+"use strict";
+
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
-var _createClass3 = _interopRequireDefault(_createClass2);
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+var _react = _interopRequireWildcard(require("react"));
 
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+var _Skeleton = _interopRequireDefault(require("../styled/Skeleton"));
 
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Skeleton = require('../styled/Skeleton');
-
-var _Skeleton2 = _interopRequireDefault(_Skeleton);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Skeleton = function (_Component) {
-  (0, _inherits3.default)(Skeleton, _Component);
+var Skeleton =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(Skeleton, _Component);
 
   function Skeleton() {
-    (0, _classCallCheck3.default)(this, Skeleton);
-    return (0, _possibleConstructorReturn3.default)(this, (Skeleton.__proto__ || (0, _getPrototypeOf2.default)(Skeleton)).apply(this, arguments));
+    (0, _classCallCheck2.default)(this, Skeleton);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(Skeleton).apply(this, arguments));
   }
 
-  (0, _createClass3.default)(Skeleton, [{
-    key: 'render',
+  (0, _createClass2.default)(Skeleton, [{
+    key: "render",
     value: function render() {
-      return _react2.default.createElement(_Skeleton2.default, this.props);
+      return _react.default.createElement(_Skeleton.default, this.props);
     }
   }]);
   return Skeleton;
 }(_react.Component);
 
-Skeleton.defaultProps = {
+exports.default = Skeleton;
+(0, _defineProperty2.default)(Skeleton, "defaultProps", {
   size: 'medium',
   weight: 'normal'
-};
-exports.default = Skeleton;
+});

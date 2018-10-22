@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Link:create link using toolbar,unlinkify comment editor 1`] = `
+exports[`hyperlink-1.ts: Link:create link using toolbar,unlinkify comment editor 1`] = `
 Object {
   "content": Array [
     Object {
@@ -35,7 +35,7 @@ Object {
 }
 `;
 
-exports[`Link:create link using toolbar,unlinkify fullpage editor 1`] = `
+exports[`hyperlink-1.ts: Link:create link using toolbar,unlinkify fullpage editor 1`] = `
 Object {
   "content": Array [
     Object {

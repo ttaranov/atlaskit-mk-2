@@ -9,7 +9,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  'Inserts a media single on fullpage',
+  'insert-mediaSingle.ts: Inserts a media single on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const browser = new Page(client);

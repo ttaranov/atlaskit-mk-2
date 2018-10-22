@@ -11,7 +11,9 @@ const linkToolbar = '[placeholder="Paste link or search recently viewed"]';
 // Floating toolbar is not showin up on IE and edge
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `Link:create link using toolbar,unlinkify ${editor.name} editor`,
+    `hyperlink-1.ts: Link:create link using toolbar,unlinkify ${
+      editor.name
+    } editor`,
     {
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },

@@ -110,6 +110,7 @@ describe(name, () => {
         'document',
         'documents',
         'download',
+        'drag-handler',
         'dropbox',
         'edit-filled',
         'edit',

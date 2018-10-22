@@ -91,6 +91,10 @@ export default class Page {
     return this.browser.addValue(selector, text);
   }
 
+  setValue(selector, text) {
+    return this.browser.setValue(selector, text);
+  }
+
   click(selector) {
     return this.browser.click(selector);
   }
@@ -108,6 +112,10 @@ export default class Page {
     return this.browser.getCssProperty(selector, cssProperty);
   }
 
+  getLocation(selector, property) {
+    return this.browser.getLocation(selector, property);
+  }
+
   url() {
     return this.browser.getUrl();
   }
@@ -120,7 +128,17 @@ export default class Page {
   close() {
     return this.browser.close();
   }
-
+  checkConsoleErrors() {
+    if (this.browser.log('browser').value) {
+      this.browser.logs('browser').value.forEach(val => {
+        assert.notEqual(
+          val.level,
+          'SEVERE',
+          `Those console errors :${val.message} are displayed`,
+        );
+      });
+    }
+  }
   backspace(selector) {
     this.browser.execute(selector => {
       return document

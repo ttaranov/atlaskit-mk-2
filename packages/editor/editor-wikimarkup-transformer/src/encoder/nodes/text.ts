@@ -26,8 +26,11 @@ const markEncoderMapping = new Map([
   ['code', code],
 ]);
 
-export const text: NodeEncoder = (node: PMNode): string => {
-  let result = node.text!;
+export const text: NodeEncoder = (node: PMNode, parent?: PMNode): string => {
+  let result =
+    parent && parent.type.name === 'codeBlock'
+      ? node.text!
+      : escapingWikiFormatter(node.text!);
   markEncoderMapping.forEach((encoder, markName) => {
     const mark = node.marks.find(m => m.type.name === markName);
     if (mark) {
@@ -37,3 +40,7 @@ export const text: NodeEncoder = (node: PMNode): string => {
 
   return result;
 };
+
+function escapingWikiFormatter(text: string) {
+  return text.replace(/[{\\![]/g, '\\$&');
+}

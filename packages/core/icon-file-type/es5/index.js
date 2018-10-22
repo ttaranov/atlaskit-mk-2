@@ -1,25 +1,23 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _Icon = require('./components/Icon');
-
-Object.defineProperty(exports, 'default', {
+Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Icon).default;
+    return _Icon.default;
+  }
+});
+Object.defineProperty(exports, "iconInfo", {
+  enumerable: true,
+  get: function get() {
+    return _icons.default;
   }
 });
 
-var _icons = require('../utils/icons');
+var _Icon = _interopRequireDefault(require("./components/Icon"));
 
-Object.defineProperty(exports, 'iconInfo', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_icons).default;
-  }
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _icons = _interopRequireDefault(require("../utils/icons"));

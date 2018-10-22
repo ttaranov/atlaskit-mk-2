@@ -8,10 +8,7 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import {
-  MediaSingleLayout,
-  akEditorFullPageMaxWidth,
-} from '@atlaskit/editor-common';
+import { MediaSingleLayout } from '@atlaskit/editor-common';
 import { colors } from '@atlaskit/theme';
 
 import commonMessages from '../../../../messages';
@@ -35,14 +32,11 @@ export const messages = defineMessages({
 });
 
 export interface Props {
-  pluginState: MediaPluginState;
-}
-
-export interface State {
   target?: HTMLElement;
   layout?: MediaSingleLayout;
   allowBreakout: boolean;
   allowLayout: boolean;
+  pluginState: MediaPluginState;
 }
 
 const icons = {
@@ -96,20 +90,7 @@ const ToolbarButtonDestructive = styled(ToolbarButton)`
   }
 `;
 
-class MediaSingleEdit extends React.Component<
-  Props & InjectedIntlProps,
-  State
-> {
-  state: State = { layout: 'center', allowBreakout: true, allowLayout: true };
-
-  componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-  }
-
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-  }
-
+class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
   render() {
     const { formatMessage } = this.props.intl;
     const {
@@ -117,7 +98,7 @@ class MediaSingleEdit extends React.Component<
       layout: selectedLayout,
       allowBreakout,
       allowLayout,
-    } = this.state;
+    } = this.props;
     if (
       target &&
       !closestElement(target, 'li') &&
@@ -172,18 +153,6 @@ class MediaSingleEdit extends React.Component<
   private handleChangeLayout(layout: MediaSingleLayout) {
     this.props.pluginState.align(layout);
   }
-
-  private handlePluginStateChange = (pluginState: MediaPluginState) => {
-    const { element: target, layout } = pluginState;
-    const node = pluginState.selectedMediaNode();
-    const allowBreakout = !!(
-      node &&
-      node.attrs &&
-      node.attrs.width > akEditorFullPageMaxWidth
-    );
-    const allowLayout = !!pluginState.isLayoutSupported();
-    this.setState({ target, layout, allowBreakout, allowLayout });
-  };
 }
 
 export default injectIntl(MediaSingleEdit);

@@ -1,12 +1,18 @@
 // @flow
 import React from 'react';
 import { md, Props } from '@atlaskit/docs';
-
-// AkCollapseOverflow
-// AkCollapseOverflowItem
-// AkCollapseOverflowItemGroup
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
+  ${(
+    <SectionMessage appearance="error">
+      <p>
+        <strong>Note: @atlaskit/navigation is now deprecated.</strong>
+      </p>
+      <p>We recommend upgrading to @atlaskit/navigation-next</p>
+    </SectionMessage>
+  )}
+
   The components provided here are designed to be used within the container
   navigation to ensure the correct stylistic behaviour for items within them.
 

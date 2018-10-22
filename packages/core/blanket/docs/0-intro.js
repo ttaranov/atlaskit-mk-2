@@ -21,6 +21,7 @@ import Blanket from '@atlaskit/blanket';
 
   ${(
     <Example
+      packageName="@atlaskit/blanket"
       Component={require('../examples/00-basic-usage').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic-usage')}
@@ -29,6 +30,7 @@ import Blanket from '@atlaskit/blanket';
 
   ${(
     <Example
+      packageName="@atlaskit/blanket"
       Component={require('../examples/01-click-through').default}
       title="With click through enabled"
       source={require('!!raw-loader!../examples/01-click-through')}

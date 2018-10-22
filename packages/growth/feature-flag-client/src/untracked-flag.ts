@@ -1,4 +1,4 @@
-import { Flag, SimpleFlag } from './types';
+import { Flag, FlagShape } from './types';
 
 import { isBoolean, isObject, isOneOf, isString } from './lib';
 
@@ -6,7 +6,7 @@ export default class UntrackedFlag implements Flag {
   flagKey: string;
   value: string | boolean | object;
 
-  constructor(flagKey: string, flag: SimpleFlag) {
+  constructor(flagKey: string, flag: FlagShape) {
     this.flagKey = flagKey;
     this.value = flag.value;
   }

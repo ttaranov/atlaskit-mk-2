@@ -7,6 +7,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/profilecard"
       Component={require('../examples/01-profilecard').default}
       title="Profilecard"
       source={require('!!raw-loader!../examples/01-profilecard')}
@@ -15,6 +16,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/profilecard"
       Component={require('../examples/02-profilecard-resourced').default}
       title="ProfilecardResourced"
       source={require('!!raw-loader!../examples/02-profilecard-resourced')}

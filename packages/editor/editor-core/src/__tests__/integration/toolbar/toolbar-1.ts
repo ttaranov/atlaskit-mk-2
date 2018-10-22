@@ -10,7 +10,7 @@ const input = 'helloworld ';
 // https://product-fabric.atlassian.net/browse/ED-4531
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `Toolbar: should be able to select normal text, bold, italics, underline style for ${
+    `toolbar-1.ts: should be able to select normal text, bold, italics, underline style for ${
       editor.name
     } editor`,
     { skip: ['ie', 'safari', 'edge'] },

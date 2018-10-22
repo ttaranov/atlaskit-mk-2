@@ -3,7 +3,7 @@
 import React, { Fragment } from 'react';
 import { components } from 'react-select';
 
-import { colors } from '@atlaskit/theme';
+import { colors, layers } from '@atlaskit/theme';
 import SearchIcon from '@atlaskit/icon/glyph/editor/search';
 
 // ==============================
@@ -22,7 +22,7 @@ export const MenuDialog = ({ maxWidth, minWidth, ...props }: MenuProps) => {
         boxShadow: `0 0 0 1px ${shadow}, 0 4px 11px ${shadow}`,
         maxWidth,
         minWidth,
-        zIndex: 2,
+        zIndex: layers.layer(),
       }}
       {...props}
     />

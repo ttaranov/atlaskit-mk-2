@@ -110,6 +110,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     });
 
     newPopup.on('uploads-start', this.onUploadsStart);
+    newPopup.on('upload-preview-update', this.onUploadPreview);
     newPopup.on('upload-status-update', this.onUploadStatusUpdate);
     newPopup.on('upload-processing', this.onUploadProcessing);
     newPopup.on('upload-end', this.onUploadEnd);
@@ -183,6 +184,19 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
         events: [
           ...this.state.events,
           { eventName: 'upload-processing', data },
+        ],
+      });
+    }
+  };
+
+  onUploadPreview = (data: UploadPreviewUpdateEventPayload) => {
+    const preview = data.preview;
+
+    if (preview) {
+      this.setState({
+        events: [
+          ...this.state.events,
+          { eventName: 'upload-preview-update', data },
         ],
       });
     }

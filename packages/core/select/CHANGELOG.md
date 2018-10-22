@@ -1,5 +1,14 @@
 # @atlaskit/select
 
+## 6.1.0
+- [minor] Change tabSelectsValue to default to false in @atlaskit/select, bumped react-select dep to 2.1.0, see release logs for details https://github.com/JedWatson/react-select/releases/tag/2.1.0 [dd4cbea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd4cbea)
+
+## 6.0.4
+- [patch] fix issues with PopupSelect and NavigationSwitcher [b4e19c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b4e19c3)
+
+## 6.0.3
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 6.0.2
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8

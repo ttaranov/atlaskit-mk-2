@@ -17,6 +17,12 @@ describe('JIRA wiki markup - Lists', () => {
 - types`,
     ],
     [
+      'should find unordered lists where items start with spaces',
+      `- different
+       - bullet
+       - types`,
+    ],
+    [
       'should be able to create nested list with -',
       `- different
 -- bullet
@@ -65,6 +71,17 @@ describe('JIRA wiki markup - Lists', () => {
 ** media group [^file.pdf] here
 ** nice nice
 * all good`,
+    ],
+    [
+      'should not be a list item if it follows by a line break',
+      `* nested
+*
+*`,
+    ],
+    [
+      'should find the full content of a list item properly',
+      `* nested
+       spaces in front of me`,
     ],
   ];
 

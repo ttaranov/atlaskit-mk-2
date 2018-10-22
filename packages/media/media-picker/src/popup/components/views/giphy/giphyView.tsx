@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import * as debounce from 'lodash.debounce';
-
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { CardView } from '@atlaskit/media-card';
-
 import { BricksLayout } from './bricksGrid';
 import { fileClick } from '../../../actions/fileClick';
 import { setUpfrontIdDeferred } from '../../../actions/setUpfrontIdDeferred';
@@ -90,7 +90,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
         <Title>GIPHY</Title>
         <FieldText
           label=""
-          placeholder="Search all the GIFs!"
+          placeholder="Search all the GIFs!" // TODO [i18n][MS-1031]
           onChange={this.searchChangeHandler}
           shouldFitContainer={true}
           value={query}
@@ -118,9 +118,15 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     return (
       <WarningContainer>
         <WarningIconWrapper>{errorIcon}</WarningIconWrapper>
-        <WarningHeading>Ouch! We could not retrieve any GIFs</WarningHeading>
-        <WarningSuggestion>Check your network connection</WarningSuggestion>
-        <Button onClick={this.handleRetryButtonClick}>Try again</Button>
+        <WarningHeading>
+          <FormattedMessage {...messages.cant_retrieve_gifs} />
+        </WarningHeading>
+        <WarningSuggestion>
+          <FormattedMessage {...messages.check_your_network} />
+        </WarningSuggestion>
+        <Button onClick={this.handleRetryButtonClick}>
+          <FormattedMessage {...messages.try_again} />
+        </Button>
       </WarningContainer>
     );
   };
@@ -132,9 +138,14 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     return (
       <WarningContainer>
         <WarningImage src="https://media1.giphy.com/media/10YK5Hh53nC3dK/200w.gif" />
-        <WarningHeading>Hello? Was it me you're looking for?</WarningHeading>
+        <WarningHeading>
+          <FormattedMessage {...messages.no_gifs_found} />
+        </WarningHeading>
         <WarningSuggestion>
-          We couldn't find anything for "{query}"
+          <FormattedMessage
+            {...messages.no_gifs_found_suggestion}
+            values={{ query }}
+          />
         </WarningSuggestion>
       </WarningContainer>
     );
@@ -214,29 +225,11 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
           isDisabled={isLoading}
           iconAfter={iconAfter}
         >
-          Load more GIFs
+          <FormattedMessage {...messages.load_more_gifs} />
         </Button>
       </ButtonContainer>
     );
   };
-
-  // private scaleThumbnailGif = ({
-  //   width,
-  //   height,
-  // }: {
-  //   width: number;
-  //   height: number;
-  // }) => {
-  //   const desiredWith = Math.floor(
-  //     (CONTAINER_WIDTH - GAP_SIZE * (NUMBER_OF_COLUMNS - 1)) /
-  //       NUMBER_OF_COLUMNS,
-  //   );
-  //
-  //   return {
-  //     width: desiredWith,
-  //     height: Math.round(desiredWith / width * height),
-  //   };
-  // };
 
   private createSearchChangeHandler = () => {
     const { onSearchQueryChange } = this.props;

@@ -3,7 +3,7 @@ import { parseString } from '../text';
 import { Token, TokenType, TokenErrCallback } from './';
 import { macro } from './macro';
 import { linkFormat } from './link-format';
-import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 export interface FormatterOption {
   /** The opening symbol */
@@ -88,21 +88,27 @@ export function commonFormatter(
         }
 
         /**
-         * If the closing symbol is not at the end of the line and
-         * has not a following space, it's not a valid formatter
+         * If the closing symbol is followed by a alphanumeric, it's
+         * not a valid formatter, and we keep looking for
+         * next valid closing formatter
          */
         if (index < input.length) {
-          const length = parseWhitespaceAndNewLine(input.substring(index));
-          if (length === 0) {
-            return fallback(input);
+          const charAfterEnd = input.charAt(index);
+          if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
+            buffer += char;
+            state = processState.BUFFER;
+            continue;
           }
         }
         /**
          * If the closing symbol has an empty space before it,
-         * it's not a valid formatter
+         * it's not a valid formatter, and we keep looking for
+         * next valid closing formatter
          */
         if (buffer.endsWith(' ')) {
-          return fallback(input);
+          buffer += char;
+          state = processState.BUFFER;
+          continue;
         }
 
         const rawContent = parseString(

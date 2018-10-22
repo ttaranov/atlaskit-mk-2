@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 3.0.10
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 3.0.9
 - [patch] adds missing babel-runtime dependency to package json [93b031a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93b031a)
 

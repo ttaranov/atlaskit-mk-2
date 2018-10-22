@@ -65,7 +65,6 @@ describe('fileUploadsAdd() reducer', () => {
           upfrontId,
           occurrenceKey,
         },
-        dataURI: '',
       },
       progress: 0,
       timeStarted: MOCK_TIMESTAMP,

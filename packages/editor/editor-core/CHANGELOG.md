@@ -1,5 +1,50 @@
 # @atlaskit/editor-core
 
+## 87.0.4
+- [patch] ED-5521: permit undo when pasting macro [c429e3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c429e3c)
+
+## 87.0.3
+- [patch] ED-5375 Improved typing to reduce noImplictAny errors (not yet enabled) [62da999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62da999)
+
+## 87.0.2
+- [patch] Async load datepicker [c38e5a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c38e5a5)
+
+## 87.0.1
+- [patch] Updated dependencies [9add3a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9add3a4)
+  - @atlaskit/media-picker@23.0.0
+
+## 87.0.0
+- [major] Media refactor and fileID upfront [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+- [patch] Updated dependencies [2f9d14d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f9d14d)
+  - @atlaskit/media-card@41.1.0
+  - @atlaskit/media-picker@22.0.0
+  - @atlaskit/media-filmstrip@17.0.1
+  - @atlaskit/media-test-helpers@18.2.9
+
+## 86.0.10
+- [patch] Show color and initial of collab-participants in overflow menu [900ccb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/900ccb8)
+
+## 86.0.9
+- [patch] Lock typeahead to cursor position [81e28c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/81e28c8)
+
+## 86.0.8
+- [patch] New translations (Task & Decisions) [03addbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03addbd)
+
+## 86.0.7
+- [patch] ED-5410: handle rows/columns cutting [b792d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b792d04)
+
+## 86.0.6
+- [patch] Scroll selection into view when navigating with arrows [01edbc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01edbc7)
+
+## 86.0.5
+- [patch] Fix race condition in size detector that sometimes leads to width being always 0 [ce97910](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce97910)
+
+## 86.0.4
+- [patch] Change breakpoints for dynamic text sizing [f660016](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f660016)
+
+## 86.0.3
+- [patch] Async load the help dialog. The help dialog shouldn't be on the critical path to rendering as it's infrequently used. It's also the only consumer of ak/modal-dialog(9kb gzipped) [5d6333d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d6333d)
+
 ## 86.0.2
 - [patch] ED-5533: fix insert line decorations on merged cells [d421f39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d421f39)
 

@@ -55,6 +55,7 @@ ${code`
 
   ${(
     <Example
+      packageName="@atlaskit/badge"
       Component={require('../examples/0-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/0-basic')}

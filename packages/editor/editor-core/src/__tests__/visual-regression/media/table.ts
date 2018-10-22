@@ -1,7 +1,4 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
-  imageSnapshotFolder,
   initEditor,
   snapshot,
   insertMedia,
@@ -11,10 +8,6 @@ import {
 import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 describe('Snapshot Test: Media', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   ['full-page-with-toolbar', 'comment'].forEach(editor => {
     describe(`${editor} editor`, () => {
       let page;

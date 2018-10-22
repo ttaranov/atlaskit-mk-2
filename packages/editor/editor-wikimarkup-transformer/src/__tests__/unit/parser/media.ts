@@ -4,7 +4,7 @@ describe('JIRA wiki markup - Images and attachments', () => {
   const testCases: Array<[string, string]> = [
     ['should find images in the text', '!image.png!'],
     [
-      'should find absolute URL images and convert it to link',
+      'should find absolute URL images and convert it to external media item',
       '!http://www.host.com/image.gif!',
     ],
     [

@@ -14,6 +14,7 @@ export default (
 
       ${(
         <Example
+          packageName="@atlaskit/dynamic-table"
           Component={require('../examples/0-stateful').default}
           title="Stateful"
           source={require('!!raw-loader!../examples/0-stateful')}
@@ -22,6 +23,7 @@ export default (
 
       ${(
         <Example
+          packageName="@atlaskit/dynamic-table"
           Component={require('../examples/1-stateless').default}
           title="Stateless"
           source={require('!!raw-loader!../examples/1-stateless')}

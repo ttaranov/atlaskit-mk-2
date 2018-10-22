@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Toolbar: should be able to select Clear Formatting on toolbar for comment editor 1`] = `
+exports[`toolbar-3.ts: should be able to select Clear Formatting on toolbar for comment editor 1`] = `
 Object {
   "content": Array [
     Object {
@@ -26,7 +26,7 @@ Object {
 }
 `;
 
-exports[`Toolbar: should be able to select Clear Formatting on toolbar for fullpage editor 1`] = `
+exports[`toolbar-3.ts: should be able to select Clear Formatting on toolbar for fullpage editor 1`] = `
 Object {
   "content": Array [
     Object {

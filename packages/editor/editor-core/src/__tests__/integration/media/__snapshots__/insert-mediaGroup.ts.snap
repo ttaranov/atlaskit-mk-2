@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Inserts a media group on comment 1`] = `
+exports[`insert-mediaGroup.ts: Inserts a media group on comment 1`] = `
 Object {
   "content": Array [
     Object {
@@ -20,14 +20,14 @@ Object {
             "__fileMimeType": "image/svg+xml",
             "__fileName": "example.png",
             "__fileSize": 235,
-            "__key": "temporary:1234-5678-abcd-efgh",
+            "__key": "1234-5678-abcd-efgh",
             "collection": "MediaServicesSample",
-            "height": 4096,
+            "height": null,
             "id": "1234-5678-abcd-efgh",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": 4096,
+            "width": null,
           },
           "type": "media",
         },
@@ -42,7 +42,7 @@ Object {
 }
 `;
 
-exports[`Inserts a media group on message 1`] = `
+exports[`insert-mediaGroup.ts: Inserts a media group on message 1`] = `
 Object {
   "content": Array [
     Object {
@@ -62,14 +62,14 @@ Object {
             "__fileMimeType": "image/svg+xml",
             "__fileName": "example.png",
             "__fileSize": 235,
-            "__key": "temporary:1234-5678-abcd-efgh",
+            "__key": "1234-5678-abcd-efgh",
             "collection": "MediaServicesSample",
-            "height": 4096,
+            "height": null,
             "id": "1234-5678-abcd-efgh",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": 4096,
+            "width": null,
           },
           "type": "media",
         },
