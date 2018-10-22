@@ -97,10 +97,10 @@ export default class PopupSelect extends PureComponent<Props, State> {
     }
 
     // Merge consumer and default components
-    const mergedComponents = { ...defaultComponents, ...props.components };
-    if (!shallowEqualObjects(mergedComponents, state.mergedComponents)) {
-      newState.mergedComponents = mergedComponents;
-    }
+    // const mergedComponents = { ...defaultComponents, ...props.components };
+    // if (!shallowEqualObjects(mergedComponents, state.mergedComponents)) {
+    //   newState.mergedComponents = mergedComponents;
+    // }
 
     if (!isEmpty(newState)) return newState;
 
@@ -288,7 +288,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
         }}
       </Popper>
     );
-
     return mergedPopperProps.positionFixed
       ? popper
       : createPortal(popper, portalDestination);
@@ -296,7 +295,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
   render() {
     const { target } = this.props;
-
     return (
       <Manager>
         <Reference>
