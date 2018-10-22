@@ -4513,6 +4513,12 @@ css-box-model@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/css-box-model/-/css-box-model-1.0.0.tgz#60142814f2b25be00c4aac65ea1a55a531b18922"
 
+css-box-model@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/css-box-model/-/css-box-model-1.1.0.tgz#a667444ea059f50f8118cf680a0fdcf309b56be4"
+  dependencies:
+    tiny-invariant "^1.0.1"
+
 css-color-keywords@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/css-color-keywords/-/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
@@ -12279,9 +12285,9 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.6.tgz#5da781b082a82f2dd2a99fbf808b68acc14f77fb"
+prosemirror-utils@^0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.7.tgz#2a54de0883a609442b83fe5c076073b828c58f19"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.6.0:
   version "1.6.0"
@@ -12627,18 +12633,18 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-beautiful-dnd-next@10.0.0-alpha.1:
-  version "10.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/react-beautiful-dnd-next/-/react-beautiful-dnd-next-10.0.0-alpha.1.tgz#a840e92f969effd26dd193f5ad228b5805a0af8b"
+react-beautiful-dnd-next@10.0.0-alpha.4:
+  version "10.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/react-beautiful-dnd-next/-/react-beautiful-dnd-next-10.0.0-alpha.4.tgz#2da208aa48b3e656fe4dadfaabba314d2ba0e73a"
   dependencies:
     "@babel/runtime-corejs2" "^7.0.0"
-    css-box-model "^1.0.0"
+    css-box-model "^1.1.0"
     memoize-one "^4.0.2"
     prop-types "^15.6.1"
     raf-schd "^4.0.0"
     react-redux "^5.0.7"
     redux "^4.0.0"
-    tiny-invariant "^1.0.0"
+    tiny-invariant "^1.0.1"
 
 react-beautiful-dnd@^9.0.0:
   version "9.0.0"
@@ -15276,7 +15282,7 @@ tiny-invariant@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-0.0.3.tgz#4c7283c950e290889e9e94f64d3586ec9156cf44"
 
-tiny-invariant@^1.0.0:
+tiny-invariant@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.0.1.tgz#54700d039a0384ef2e83afd0e81af84c6d67b140"
 
