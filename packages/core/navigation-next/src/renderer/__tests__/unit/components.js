@@ -38,7 +38,9 @@ describe('navigation-next view renderer', () => {
         <HeaderSection
           id="header"
           items={[{ type: 'Wordmark', wordmark: JiraWordmark, id: 'wordmark' }]}
-        />,
+        >
+          {({ className }) => <div className={className} />}
+        </HeaderSection>,
       );
 
       expect(wrapper.find(HeaderSectionComponent)).toHaveLength(1);
@@ -55,7 +57,9 @@ describe('navigation-next view renderer', () => {
           customComponents={customComponents}
           id="header"
           items={items}
-        />,
+        >
+          {({ className }) => <div className={className} />}
+        </HeaderSection>,
       );
 
       expect(wrapper.find(ItemsRenderer)).toHaveLength(1);
@@ -76,7 +80,9 @@ describe('navigation-next view renderer', () => {
             { type: 'Item', text: 'Active sprints', id: 'active-sprints' },
             { type: 'Item', text: 'Issues', id: 'issues' },
           ]}
-        />,
+        >
+          {({ className }) => <div className={className} />}
+        </MenuSection>,
       );
 
       expect(wrapper.find(MenuSectionComponent)).toHaveLength(1);
@@ -96,7 +102,9 @@ describe('navigation-next view renderer', () => {
           parentId="foo"
           nestedGroupKey="menu"
           alwaysShowScrollHint
-        />,
+        >
+          {({ className }) => <div className={className} />}
+        </MenuSection>,
       );
 
       expect(wrapper.find(MenuSectionComponent).props()).toEqual({
@@ -119,7 +127,9 @@ describe('navigation-next view renderer', () => {
           customComponents={customComponents}
           id="menu"
           items={items}
-        />,
+        >
+          {({ className }) => <div className={className} />}
+        </MenuSection>,
       );
 
       expect(wrapper.find(ItemsRenderer)).toHaveLength(1);

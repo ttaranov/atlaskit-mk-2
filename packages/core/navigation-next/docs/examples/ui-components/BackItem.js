@@ -84,7 +84,7 @@ const ProductNavigation = ({
   navigationViewController: ViewController,
 }) => {
   const CurrentMenu = activeView ? VIEWS[activeView.id] : Noop;
-  const id = activeView && activeView.id;
+  const id = (activeView && activeView.id) || undefined;
   const parentId =
     activeView && activeView.id === 'issues' ? 'root' : undefined;
 

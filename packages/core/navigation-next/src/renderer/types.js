@@ -38,7 +38,9 @@ export type SectionProps = SharedGroupTypeProps & {
 };
 
 export type HeaderSectionProps = SharedGroupTypeProps &
-  ElementConfig<typeof HeaderSection>;
+  ElementConfig<typeof HeaderSection> & {
+    nestedGroupKey?: string,
+  };
 
 export type MenuSectionProps = SharedGroupTypeProps &
   ElementConfig<typeof MenuSection> & {

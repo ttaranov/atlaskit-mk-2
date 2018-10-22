@@ -14,6 +14,9 @@ const ArrowLeft = () => (
 );
 
 export default class BackItem extends Component<BackItemProps> {
+  static defaultProps = {
+    text: 'Back',
+  };
   render() {
     const { before: beforeProp, text, ...props } = this.props;
     let before = beforeProp;
@@ -23,12 +26,7 @@ export default class BackItem extends Component<BackItemProps> {
 
     return (
       <div css={{ paddingBottom: gridSize * 2 }}>
-        <ConnectedItem
-          {...props}
-          after={null}
-          before={before}
-          text={text || 'Back'}
-        />
+        <ConnectedItem {...props} after={null} before={before} text={text} />
       </div>
     );
   }
