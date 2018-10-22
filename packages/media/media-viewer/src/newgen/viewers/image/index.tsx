@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Context, ProcessedFileState, MediaItem } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
-import { Spinner } from '../../loading';
-import { ErrorMessage, createError, MediaViewerError } from '../../error';
-import { renderDownloadButton } from '../../domain/download';
+import { createError, MediaViewerError } from '../../error';
 import { InteractiveImg } from './interactive-img';
 import { AnalyticViewerProps } from '../../analytics/item-viewer';
 import { BaseViewer } from '../base-viewer';
@@ -30,43 +28,6 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
 export class ImageViewer extends BaseViewer<ObjectUrl, ImageViewerProps> {
   protected get initialState() {
     return { content: Outcome.pending<ObjectUrl, MediaViewerError>() };
-  }
-
-  render() {
-    const { onClose } = this.props;
-    return this.state.content.match({
-      pending: () => <Spinner />,
-      successful: content => (
-        <InteractiveImg
-          onLoad={this.onLoad}
-          onError={this.onError}
-          src={content}
-          onClose={onClose}
-        />
-      ),
-      failed: err => (
-        <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton()}
-        </ErrorMessage>
-      ),
-    });
-  }
-
-  private onLoad = () => {
-    this.props.onLoad({ status: 'success' });
-  };
-
-  private onError = () => {
-    this.props.onLoad({
-      status: 'error',
-      errorMessage: 'Interactive-img render failed',
-    });
-  };
-
-  private renderDownloadButton() {
-    const { item, context, collectionName } = this.props;
-    return renderDownloadButton(item, context, collectionName);
   }
 
   private cancelImageFetch?: () => void;
@@ -121,4 +82,27 @@ export class ImageViewer extends BaseViewer<ObjectUrl, ImageViewerProps> {
   public revokeObjectUrl(objectUrl: string) {
     URL.revokeObjectURL(objectUrl);
   }
+
+  protected renderSuccessful(content: ObjectUrl) {
+    const { onClose } = this.props;
+    return (
+      <InteractiveImg
+        onLoad={this.onLoad}
+        onError={this.onError}
+        src={content}
+        onClose={onClose}
+      />
+    );
+  }
+
+  private onLoad = () => {
+    this.props.onLoad({ status: 'success' });
+  };
+
+  private onError = () => {
+    this.props.onLoad({
+      status: 'error',
+      errorMessage: 'Interactive-img render failed',
+    });
+  };
 }
