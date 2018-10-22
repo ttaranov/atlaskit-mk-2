@@ -62,4 +62,19 @@ export class EditorCardProvider implements CardProvider {
   }
 }
 
-export const cardProvider = new EditorCardProvider();
+export class EditorExampleCardProvider implements CardProvider {
+  cardProvider = new EditorCardProvider();
+  mockProvider = new CardMockProvider();
+
+  atlassianUrl = new RegExp('^https?://([a-z_-]*.)?atlassian.com');
+
+  async resolve(url: string, appearance: CardAppearance): Promise<any> {
+    if (url.match(this.atlassianUrl)) {
+      return await this.mockProvider.resolve(url, appearance);
+    } else {
+      return await this.cardProvider.resolve(url, appearance);
+    }
+  }
+}
+
+export const cardProvider = new EditorExampleCardProvider();
