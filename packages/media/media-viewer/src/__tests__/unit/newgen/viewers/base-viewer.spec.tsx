@@ -35,7 +35,6 @@ function createTestViewer(props: BaseProps) {
   const initSpy = jest.fn();
   const releaseSpy = jest.fn();
   class TestViewer extends BaseViewer<BaseProps, TestState> {
-    state = this.initialState;
     protected get initialState() {
       return createInitialState();
     }
@@ -81,6 +80,11 @@ describe('BaseViewer', () => {
     el.setProps({ collectionName: 'another-collection-name' });
     expect(releaseSpy).toHaveBeenCalledTimes(1);
     expect(initSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('sets the initialState when component is mounted', () => {
+    const { el } = createTestViewer(createProps());
+    expect(el.state()).toMatchObject(createInitialState());
   });
 
   it('resets the component to the initialState when properties were updated', () => {

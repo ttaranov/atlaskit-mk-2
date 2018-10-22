@@ -43,8 +43,6 @@ export class ImageViewer extends BaseViewer<
     return initialState;
   }
 
-  state: ImageViewerState = this.initialState;
-
   render() {
     const { onClose } = this.props;
     return this.state.objectUrl.match({

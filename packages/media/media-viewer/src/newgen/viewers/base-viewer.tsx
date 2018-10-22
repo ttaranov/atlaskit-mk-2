@@ -12,6 +12,8 @@ export abstract class BaseViewer<
   Props extends BaseProps,
   State
 > extends React.Component<Props, State> {
+  state = this.initialState;
+
   componentDidMount() {
     this.init();
   }
