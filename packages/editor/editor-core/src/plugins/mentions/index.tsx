@@ -43,6 +43,10 @@ const mentionsPlugin = (
 ): EditorPlugin => {
   let sessionId = uuid();
   const fireEvent = <T extends AnalyticsEventPayload>(payload: T): void => {
+    // console.log('fire', {
+    //   payload,
+    //   createAnalyticsEvent: !!createAnalyticsEvent,
+    // });
     if (createAnalyticsEvent) {
       createAnalyticsEvent(payload).fire(ELEMENTS_CHANNEL);
     }

@@ -10,8 +10,6 @@ export const dismissCommand = (): Command => (state, dispatch) => {
     return false;
   }
 
-  const { typeAheadHandler } = pluginKey.getState(state);
-
   const { start, end } = queryMark;
   const { schema } = state;
   const markType = schema.marks.typeAheadQuery;
@@ -21,7 +19,8 @@ export const dismissCommand = (): Command => (state, dispatch) => {
 
   analyticsService.trackEvent('atlassian.editor.typeahead.dismiss');
 
-  if (typeAheadHandler.dismiss) {
+  const { typeAheadHandler } = pluginKey.getState(state);
+  if (typeAheadHandler && typeAheadHandler.dismiss) {
     typeAheadHandler.dismiss(state);
   }
 
