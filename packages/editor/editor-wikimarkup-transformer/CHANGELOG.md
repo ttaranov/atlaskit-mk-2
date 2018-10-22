@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.19
+- [patch] Fix link format with | in url [d4a84b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a84b3)
+
 ## 2.1.18
 - [patch] space in list item content doesn't matter [d56abbd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d56abbd)
 
