@@ -1,6 +1,8 @@
-import { validate } from '../../../validator';
+import { validator } from '../../../validator';
 
 describe('validate', () => {
+  const validate = validator();
+
   it('should throw when required attrs are missing', () => {
     const run = () => {
       validate({
@@ -187,5 +189,71 @@ describe('validate', () => {
 
     expect(run).not.toThrowError();
     expect(invalidDoc).toMatchSnapshot();
+  });
+});
+
+describe('validator', () => {
+  it('should take custom list of nodes', () => {
+    const validate = validator(['doc']);
+
+    const invalidNode = {
+      type: 'paragraph',
+      content: [],
+    };
+    const invalidDoc = {
+      version: 1,
+      type: 'doc',
+      content: [invalidNode],
+    };
+
+    const run = () => {
+      const result = validate(invalidDoc, x => {
+        expect(x).not.toBe(invalidNode);
+        expect(x).toEqual(invalidNode);
+        return {
+          type: 'unknown',
+          attrs: {
+            originalNode: x,
+          },
+        };
+      });
+      expect(result.entity).toMatchSnapshot();
+    };
+
+    expect(run).not.toThrowError();
+  });
+
+  it('should take custom list of marks', () => {
+    const validate = validator(undefined, []);
+
+    const invalidMark = { type: 'bold' };
+
+    const invalidDoc = {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'hello',
+              marks: [invalidMark],
+            },
+          ],
+        },
+      ],
+    };
+
+    const run = () => {
+      const result = validate(invalidDoc, x => {
+        expect(x).not.toBe(invalidMark);
+        expect(x).toEqual(invalidMark);
+        return x;
+      });
+      expect(result.entity).toMatchSnapshot();
+    };
+
+    expect(run).not.toThrowError();
   });
 });

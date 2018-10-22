@@ -6,6 +6,9 @@ import { Inline } from './doc';
  */
 export interface ParagraphDefinition {
   type: 'paragraph';
+  /**
+   * @allowUnsupportedInline true
+   */
   content: Array<Inline>;
 }
 

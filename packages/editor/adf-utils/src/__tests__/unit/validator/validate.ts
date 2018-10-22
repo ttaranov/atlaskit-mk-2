@@ -1,5 +1,7 @@
 import * as fs from 'fs';
-import { validate } from '../../../validator';
+import { validator } from '../../../validator';
+
+const validate = validator();
 
 declare var __dirname: string;
 const BASE_DIR = `${__dirname}/../../../../../editor-common/src/__tests__/unit/json-schema/v1-reference`;
@@ -35,7 +37,7 @@ describe('validate', () => {
 
   const invalid = readFilesSync(`${BASE_DIR}/invalid`);
   invalid.forEach(file => {
-    it(`does not validate '${file.name}`, () => {
+    it(`does not validate '${file.name}'`, () => {
       const run = () => {
         validate(file.data);
       };
