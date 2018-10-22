@@ -22,7 +22,7 @@ export function table(
   for (const line of input.split(NEWLINE)) {
     const match = line.match(TABLE_REGEXP);
 
-    if (!match && !isNextLineEmpty(input.substring(index))) {
+    if (!match && !isNextLineEmpty(line)) {
       lineBuffer.push(line);
       index += line.length;
       // Finding the length of the line break
@@ -44,7 +44,7 @@ export function table(
       lineBuffer = [];
     }
 
-    if (isNextLineEmpty(input.substring(index))) {
+    if (isNextLineEmpty(line)) {
       break;
     }
 

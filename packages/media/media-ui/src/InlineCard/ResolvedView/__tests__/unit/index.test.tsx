@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import Lozenge from '@atlaskit/lozenge';
-import { ResolvedView } from '../../index';
+import { InlineCardResolvedView } from '../../index';
 import { Icon } from '../../../../InlineCard/Icon';
 
 describe('ResolvedView', () => {
   it('should render the title', () => {
-    const element = mount(<ResolvedView title="some text content" />);
+    const element = mount(<InlineCardResolvedView title="some text content" />);
     expect(element.text()).toContain('some text content');
   });
 
   it('should render an icon when one is provided', () => {
     const element = mount(
-      <ResolvedView icon="some-link-to-icon" title="some text content" />,
+      <InlineCardResolvedView
+        icon="some-link-to-icon"
+        title="some text content"
+      />,
     );
     expect(element.find(Icon)).toHaveLength(1);
     expect(element.find(Icon).props()).toEqual(
@@ -23,7 +26,7 @@ describe('ResolvedView', () => {
   });
 
   it('should not render an icon when one is not provided', () => {
-    const element = mount(<ResolvedView title="some text content" />);
+    const element = mount(<InlineCardResolvedView title="some text content" />);
     expect(element.find(Icon)).toHaveLength(0);
   });
 
@@ -34,7 +37,7 @@ describe('ResolvedView', () => {
       appearance: 'inprogress' as 'inprogress',
     };
     const element = shallow(
-      <ResolvedView title="some text content" lozenge={lozenge} />,
+      <InlineCardResolvedView title="some text content" lozenge={lozenge} />,
     );
     expect(element.find(Lozenge)).toHaveLength(1);
     expect(element.find(Lozenge).props()).toEqual(
@@ -47,7 +50,9 @@ describe('ResolvedView', () => {
   });
 
   it('should not render a lozenge when one is not provided', () => {
-    const element = shallow(<ResolvedView title="some text content" />);
+    const element = shallow(
+      <InlineCardResolvedView title="some text content" />,
+    );
     expect(element.find(Lozenge)).toHaveLength(0);
   });
 });

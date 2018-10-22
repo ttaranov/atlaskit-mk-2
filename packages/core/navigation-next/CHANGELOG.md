@@ -1,5 +1,11 @@
 # @atlaskit/navigation-next
 
+## 3.18.4
+- [patch] Fix LayoutManager's onExpandStart, onExpandEnd, onCollapseStart and onCollapseEnd callbacks being called when the flyout opens or closes. [7b78219](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b78219)
+
+## 3.18.3
+- [patch] Make nav bar snap to default width if not moved below collapsing threshold [9617164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9617164)
+
 ## 3.18.2
 - [patch] stop isResizing state being cached in localStorage. fixes bug where the nav becomes uninteractive if the user refreshes the page mid-drag [67a8d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67a8d0e)
 

@@ -76,7 +76,7 @@ export function list(
       continue;
     }
 
-    if (!isNextLineEmpty(input.substring(index))) {
+    if (!isNextLineEmpty(line)) {
       lineBuffer.push(line);
       index += line.length;
       // Finding the length of the line break at the end of this line

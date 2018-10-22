@@ -31,8 +31,6 @@ export type CheckboxIconProps = {
 export type CheckboxProps = {
   /** Sets whether the checkbox begins checked. */
   defaultChecked: boolean,
-  /** Associated form id  */
-  form?: boolean,
   /** id assigned to input */
   id?: boolean,
   /** Callback to receive a reference.  */
