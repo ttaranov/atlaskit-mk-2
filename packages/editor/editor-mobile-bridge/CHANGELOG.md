@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.0.3
+- [patch] Fixed rendering media in the renderer. FM-1280 [00aaf8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00aaf8e)
+
 ## 5.0.2
 - [patch] Fixes rendering elements on iOS before scrolling ends. FM-1277 [9d3029b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d3029b)
 
