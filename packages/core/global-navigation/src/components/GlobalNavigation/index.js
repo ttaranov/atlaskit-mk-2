@@ -4,11 +4,6 @@ import React, { Component, Fragment } from 'react';
 import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
-import { NotificationIndicator } from '@atlaskit/notification-indicator';
-import {
-  // NotificationLogProvider,
-  NotificationLogClient,
-} from '@atlaskit/notification-log-client';
 import Drawer from '@atlaskit/drawer';
 import {
   name as packageName,
@@ -20,7 +15,6 @@ import ItemComponent from '../ItemComponent';
 import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
 import { notificationIntegration } from '../../platform-integration';
-import NotificationDrawerContents from '../../platform-integration/notification/components/NotificationDrawerContents';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -54,8 +48,6 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
-
-const externalContentUrl = '//www.atlassian.com';
 
 const localStorage = typeof window === 'object' ? window.localStorage : {};
 
@@ -128,11 +120,6 @@ export default class GlobalNavigation
       this.onNotificationBadgeCountUpdated,
       this.onNotificationBadgeCountUpdating,
     );
-
-    // TODO: Specific logic for Notification component
-    // should be revisited
-    this.NotificationDrawer = this.getNotificationDrawerContent();
-    this.NotificationBadge = this.getNotificationBadgeIndicator();
   }
 
   componentDidUpdate(
@@ -161,8 +148,6 @@ export default class GlobalNavigation
       }
     });
 
-    console.log('Checking props', this.props);
-
     const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
     if (
@@ -172,7 +157,6 @@ export default class GlobalNavigation
       prevProps.product !== product ||
       !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount
     ) {
-      console.log('Updating the notification integration');
       const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
 
       this.notificationIntegrationInstance = notificationIntegration(
@@ -184,9 +168,6 @@ export default class GlobalNavigation
         this.onNotificationBadgeCountUpdated,
         this.onNotificationBadgeCountUpdating,
       );
-
-      this.NotificationDrawer = this.getNotificationDrawerContent();
-      this.NotificationBadge = this.getNotificationBadgeIndicator();
     }
   }
 
@@ -211,7 +192,6 @@ export default class GlobalNavigation
   };
 
   onNotificationBadgeCountUpdated = (param: { newCount?: number } = {}) => {
-    console.log('Changed state count');
     const { newCount = 0 } = param;
     this.updateLocalStorageCount(newCount);
     this.setState({
@@ -315,63 +295,18 @@ export default class GlobalNavigation
     }
   };
 
-  getNotificationBadgeIndicator = () => {
-    const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
-    const {
-      fabricNotificationLogUrl,
-      cloudId,
-      notificationLogProvider: NotificationLogProviderProps,
-    } = this.props;
-
-    let notificationClient;
-    if (NotificationLogProviderProps) {
-      notificationClient = NotificationLogProviderProps;
-    } else {
-      notificationClient = new NotificationLogClient(
-        fabricNotificationLogUrl,
-        cloudId,
-      );
-    }
-    const NotificationBadger = () => (
-      <NotificationIndicator
-        notificationLogProvider={Promise.resolve(notificationClient)}
-        refreshRate={refreshRate}
-        onCountUpdated={this.onNotificationBadgeCountUpdated}
-        onCountUpdating={this.onNotificationBadgeCountUpdating}
-      />
-    );
-    return NotificationBadger;
-  };
-
-  getNotificationDrawerContent = () => {
-    const { locale, product } = this.props;
-
-    const NotificationDrawer = () => (
-      <NotificationDrawerContents
-        externalContentUrl={externalContentUrl}
-        locale={locale}
-        product={product}
-      />
-    );
-    return NotificationDrawer;
-  };
-
   constructNavItems = () => {
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
     const { badge } = this.notificationIntegrationInstance;
-    console.log('Getting the badge from notification integration');
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
         ? {
+            ...(item === 'notification' ? { badge } : {}),
             ...defaultConfig[item],
             ...productConfig[item],
-            ...(item === 'notification' ? { badge } : {}),
-            ...(item === 'notification'
-              ? { badge: this.NotificationBadge }
-              : {}),
           }
         : null),
     }));
@@ -410,7 +345,8 @@ export default class GlobalNavigation
           {this.drawers.map(drawer => {
             const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
             const DrawerContents =
-              drawer === 'notification'
+              drawer === 'notification' &&
+              !this.props[`${drawer}DrawerContents`]
                 ? notificationDrawerContents
                 : this.props[`${drawer}DrawerContents`];
             const shouldUnmountOnExit = this.props[

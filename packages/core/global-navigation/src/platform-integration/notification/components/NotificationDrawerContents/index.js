@@ -60,7 +60,6 @@ class NotificationDrawer extends Component<Props, State> {
       ? addParamToUrl(externalContentUrl, 'product', product)
       : drawerUrl;
 
-    console.log(externalContent, spinnerWrapper);
     return (
       <Fragment>
         {!this.state.hasIframeLoaded && (
@@ -74,7 +73,6 @@ class NotificationDrawer extends Component<Props, State> {
           title="Notifications"
           src={drawerUrl}
           onLoad={this.handleIframeLoad}
-          hasIframeLoaded={this.state.hasIframeLoaded}
         />
       </Fragment>
     );
