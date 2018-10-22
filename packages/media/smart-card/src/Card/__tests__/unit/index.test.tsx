@@ -6,11 +6,19 @@ jest.mock('react-lazily-render', () => {
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { Provider, Client, ResolveResponse, ObjectState } from '../../..';
 import { Card } from '../..';
 import { from } from 'rxjs/observable/from';
 import { CardWithUrl } from '../../types';
+import {
+  BlockCardResolvingView,
+  BlockCardErroredView,
+  BlockCardForbiddenView,
+  BlockCardUnauthorisedView,
+  BlockCardResolvedView,
+  InlineCardResolvedView,
+  InlineCardResolvingView,
+} from '@atlaskit/media-ui';
 
 function createClient(consequesntStates?: ObjectState[]): Client {
   const client = new Client();
@@ -44,7 +52,7 @@ describe('Card', () => {
         url="https://www.atlassian.com/"
       />,
     );
-    expect(wrapper.find(BlockCard.ResolvingView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardResolvingView).exists()).toBeTruthy();
   });
 
   it('should render the errored view when errored', async () => {
@@ -60,7 +68,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardErroredView).exists()).toBeTruthy();
   });
 
   it('should render the errored view when not-found', async () => {
@@ -76,7 +84,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardErroredView).exists()).toBeTruthy();
   });
 
   it('should render the forbidden view when forbidden', async () => {
@@ -92,7 +100,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ForbiddenView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardForbiddenView).exists()).toBeTruthy();
   });
 
   // LB: Should we skip
@@ -109,7 +117,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.UnauthorisedView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardUnauthorisedView).exists()).toBeTruthy();
   });
 
   it('should render the resolved view when resolved', async () => {
@@ -127,7 +135,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
+    expect(wrapper.find(BlockCardResolvedView)).toHaveLength(1);
   });
 
   it('should be able to be selected when inline and resolved', async () => {
@@ -146,7 +154,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(InlineCardResolvedView).props()).toEqual(
       expect.objectContaining({
         isSelected: true,
       }),
@@ -169,7 +177,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(BlockCardResolvedView).props()).toEqual(
       expect.objectContaining({
         isSelected: true,
       }),
@@ -190,7 +198,7 @@ describe('Card', () => {
     );
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvedView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardResolvedView).exists()).toBeTruthy();
 
     wrapper.setProps({ url: 'https://www.google.com/' }).update();
 
@@ -198,7 +206,7 @@ describe('Card', () => {
       'https://www.google.com/',
     );
 
-    expect(wrapper.find(BlockCard.ResolvedView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardResolvedView).exists()).toBeTruthy();
   });
 
   it('should extract view props from data', async () => {
@@ -225,7 +233,7 @@ describe('Card', () => {
     client.resolve('https://www.atlassian.com/');
 
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(BlockCardResolvedView).props()).toEqual(
       expect.objectContaining({
         title: { text: 'The best of EAC' },
         description: {
@@ -241,8 +249,8 @@ describe('Card', () => {
       <Card appearance="block" data={{ name: 'foobar' }} />,
     );
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
-    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(BlockCardResolvedView)).toHaveLength(1);
+    expect(wrapper.find(BlockCardResolvedView).props()).toEqual(
       expect.objectContaining({
         title: { text: 'foobar' },
       }),
@@ -259,7 +267,7 @@ describe('Card', () => {
       />,
     );
     wrapper.update();
-    expect(wrapper.find(InlineCard.ResolvingView)).toHaveLength(1);
+    expect(wrapper.find(InlineCardResolvingView)).toHaveLength(1);
   });
 
   it('should render the block view with props when the appearance is inline and the object is resolving', async () => {
@@ -272,7 +280,7 @@ describe('Card', () => {
       />,
     );
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvingView)).toHaveLength(1);
+    expect(wrapper.find(BlockCardResolvingView)).toHaveLength(1);
   });
 
   it('should render the inline view with props when the appearance is inline', async () => {
@@ -280,8 +288,8 @@ describe('Card', () => {
       <Card appearance="inline" data={{ name: 'foobar' }} />,
     );
     wrapper.update();
-    expect(wrapper.find(InlineCard.ResolvedView)).toHaveLength(1);
-    expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(InlineCardResolvedView)).toHaveLength(1);
+    expect(wrapper.find(InlineCardResolvedView).props()).toEqual(
       expect.objectContaining({
         title: 'foobar',
       }),
@@ -293,8 +301,8 @@ describe('Card', () => {
       <Card appearance="block" data={{ name: 'foobar' }} />,
     );
     wrapper.update();
-    expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
-    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(BlockCardResolvedView)).toHaveLength(1);
+    expect(wrapper.find(BlockCardResolvedView).props()).toEqual(
       expect.objectContaining({
         title: { text: 'foobar' },
       }),
@@ -356,8 +364,8 @@ describe('Card', () => {
     await new Promise(resolve => setTimeout(resolve, 1));
     wrapper.update();
 
-    expect(wrapper.find(BlockCard.ResolvedView).exists()).toBeTruthy();
-    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+    expect(wrapper.find(BlockCardResolvedView).exists()).toBeTruthy();
+    expect(wrapper.find(BlockCardResolvedView).props()).toEqual(
       expect.objectContaining({
         title: {
           text: 'Doc 1',

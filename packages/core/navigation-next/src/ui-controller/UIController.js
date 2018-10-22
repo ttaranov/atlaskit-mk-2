@@ -42,7 +42,12 @@ export default class UIController extends Container<UIControllerShape>
     let cachedState = {};
     if (cache) {
       const { get, set } = cache;
-      cachedState = get();
+      const retrievedCache = get();
+
+      if (retrievedCache) {
+        const { isCollapsed, productNavWidth } = retrievedCache;
+        cachedState = { isCollapsed, productNavWidth };
+      }
 
       this.getCache = get;
       this.setCache = set;
@@ -68,8 +73,10 @@ export default class UIController extends Container<UIControllerShape>
 
   storeState = (state: Object) => {
     this.setState(state);
-    const { isResizeDisabled, ...cachedState } = this.state;
-    if (this.setCache) this.setCache(cachedState);
+    const { isCollapsed, productNavWidth } = this.state;
+    if (this.setCache) {
+      this.setCache({ isCollapsed, productNavWidth });
+    }
   };
 
   // ==============================

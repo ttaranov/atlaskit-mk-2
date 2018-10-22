@@ -18,13 +18,13 @@ import { renderDownloadButton } from './domain/download';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import {
-  channel,
   ViewerLoadPayload,
   itemViewerErrorEvent,
   itemViewerCommencedEvent,
   itemViewerLoadedEvent,
   mediaViewerModalScreenEvent,
-} from './analytics';
+} from './analytics/item-viewer';
+import { channel } from './analytics/index';
 import {
   GasPayload,
   GasScreenEventPayload,

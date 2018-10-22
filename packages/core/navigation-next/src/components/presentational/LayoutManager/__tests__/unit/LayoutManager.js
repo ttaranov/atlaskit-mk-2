@@ -5,7 +5,9 @@ import { mount, shallow } from 'enzyme';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import ContentNavigation from '../../ContentNavigation';
-import LayoutManager from '../../LayoutManager';
+import LayoutManager, { Page } from '../../LayoutManager';
+import ResizeTransition from '../../ResizeTransition';
+
 import { ContainerNavigationMask, NavigationContainer } from '../../primitives';
 import type { LayoutManagerProps } from '../../types';
 
@@ -91,7 +93,7 @@ describe('LayoutManager', () => {
         expect(wrapper.find(ContentNavigation).prop('isVisible')).toBe(true);
       });
 
-      it('should NOT display ContentNavigation flyout is closed', () => {
+      it('should NOT display ContentNavigation when flyout is closed', () => {
         const wrapper = mount(<LayoutManager {...defaultProps} />);
 
         wrapper.setState({ flyoutIsOpen: false });
@@ -145,6 +147,50 @@ describe('LayoutManager', () => {
         wrapper.update();
         expect(wrapper.find(NavigationContainer).prop('onMouseOut')).toBeNull();
       });
+
+      describe('Expand/collapse callbacks', () => {
+        let handlers;
+        beforeEach(() => {
+          handlers = {
+            onExpandStart: jest.fn(),
+            onExpandEnd: jest.fn(),
+            onCollapseStart: jest.fn(),
+            onCollapseEnd: jest.fn(),
+          };
+        });
+
+        it('should NOT be called when flyout opens', () => {
+          const wrapper = mount(
+            <LayoutManager {...defaultProps} {...handlers} />,
+          );
+
+          wrapper.setState({ flyoutIsOpen: true });
+          wrapper.update();
+          jest.runAllTimers();
+
+          Object.keys(handlers).forEach(propName => {
+            expect(handlers[propName]).not.toHaveBeenCalled();
+          });
+        });
+
+        it('should NOT be called when flyout closes', () => {
+          const wrapper = mount(
+            <LayoutManager {...defaultProps} {...handlers} />,
+          );
+
+          wrapper.setState({ flyoutIsOpen: true });
+          wrapper.update();
+          jest.runAllTimers();
+
+          wrapper.setState({ flyoutIsOpen: false });
+          wrapper.update();
+          jest.runAllTimers();
+
+          Object.keys(handlers).forEach(propName => {
+            expect(handlers[propName]).not.toHaveBeenCalled();
+          });
+        });
+      });
     });
 
     describe('when experimental_flyoutOnHover is not set', () => {
@@ -186,6 +232,91 @@ describe('LayoutManager', () => {
         wrapper.find(NavigationContainer).simulate('mouseover');
         expect(wrapper.state('flyoutIsOpen')).toBe(false);
       });
+    });
+  });
+
+  describe('collapse & expand callbacks', () => {
+    let handlers;
+
+    beforeEach(() => {
+      handlers = {
+        onExpandStart: jest.fn(),
+        onExpandEnd: jest.fn(),
+        onCollapseStart: jest.fn(),
+        onCollapseEnd: jest.fn(),
+      };
+    });
+
+    it('should be attached to the Page transition component', () => {
+      const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+      expect(
+        wrapper
+          .find(Page)
+          .find(ResizeTransition)
+          .props(),
+      ).toEqual(expect.objectContaining(handlers));
+    });
+
+    it('should NOT be attached to the Nav transition component', () => {
+      const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+      expect(
+        wrapper
+          .find(ResizeTransition)
+          .first()
+          .props(),
+      ).not.toEqual(expect.objectContaining(handlers));
+    });
+
+    it('should call onExpandStart when nav starts to permanently expand', () => {
+      defaultProps.navigationUIController.state.isCollapsed = true;
+      const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+
+      expect(handlers.onExpandStart).not.toHaveBeenCalled();
+
+      defaultProps.navigationUIController.state.isCollapsed = false;
+      wrapper.setProps(defaultProps);
+
+      expect(handlers.onExpandStart).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onExpandEnd when nav completes permanently expanding', () => {
+      defaultProps.navigationUIController.state.isCollapsed = true;
+      const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+
+      defaultProps.navigationUIController.state.isCollapsed = false;
+      wrapper.setProps(defaultProps);
+
+      jest.advanceTimersByTime(299);
+      expect(handlers.onExpandEnd).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(1);
+      expect(handlers.onExpandEnd).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onCollapseStart when nav starts to permanently collapse', () => {
+      defaultProps.navigationUIController.state.isCollapsed = false;
+      const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+
+      expect(handlers.onCollapseStart).not.toHaveBeenCalled();
+
+      defaultProps.navigationUIController.state.isCollapsed = true;
+      wrapper.setProps(defaultProps);
+
+      expect(handlers.onCollapseStart).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onCollapseEnd when nav completes permanently collapsing', () => {
+      defaultProps.navigationUIController.state.isCollapsed = false;
+      const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
+
+      defaultProps.navigationUIController.state.isCollapsed = true;
+      wrapper.setProps(defaultProps);
+
+      jest.advanceTimersByTime(299);
+      expect(handlers.onCollapseEnd).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(1);
+      expect(handlers.onCollapseEnd).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "45.0.1",
+  "version": "45.0.2",
   "config": {
     "access": "public"
   },
@@ -62,10 +62,10 @@
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/media-core": "^24.3.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.16",
+    "@atlaskit/util-data-test": "^10.0.18",
     "@types/chai": "^4.0.4",
-    "chai": "^4.1.2",
     "canvas-prebuilt": "^2.0.0-alpha.14",
+    "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "es6-promise": "^4.0.5",

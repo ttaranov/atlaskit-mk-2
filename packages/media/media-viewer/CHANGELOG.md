@@ -1,5 +1,17 @@
 # @atlaskit/media-viewer
 
+## 24.1.5
+- [patch] Add analytics for the header download button [4e8cacc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8cacc)
+
+## 24.1.4
+- [patch] MS-1032: get rid of risky lifecycle hooks in ImageViewer [0795871](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0795871)
+
+## 24.1.3
+- [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+  - @atlaskit/media-card@41.1.2
+  - @atlaskit/media-test-helpers@18.2.10
+  - @atlaskit/media-ui@7.0.0
+
 ## 24.1.2
 - [patch] use latest onLoad prop in ImageViewer init [de72be8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de72be8)
 
