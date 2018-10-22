@@ -2,7 +2,9 @@ import * as React from 'react';
 import * as deepEqual from 'deep-equal';
 import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../domain';
-import { MediaViewerError } from '../error';
+import { ErrorMessage, MediaViewerError } from '../error';
+import { Spinner } from '../loading';
+import { renderDownloadButton } from '../domain/download';
 
 export type BaseProps = {
   context: Context;
@@ -47,6 +49,24 @@ export abstract class BaseViewer<
     }
   }
 
+  render() {
+    return this.state.content.match({
+      pending: () => <Spinner />,
+      successful: content => this.renderSuccessful(content),
+      failed: err => (
+        <ErrorMessage error={err}>
+          <p>Try downloading the file to view it.</p>
+          {this.renderDownloadButton()}
+        </ErrorMessage>
+      ),
+    });
+  }
+
+  private renderDownloadButton() {
+    const { item, context, collectionName } = this.props;
+    return renderDownloadButton(item, context, collectionName);
+  }
+
   protected needsReset(propsA: Props, propsB: Props) {
     return (
       !deepEqual(propsA.item, propsB.item) ||
@@ -58,4 +78,5 @@ export abstract class BaseViewer<
   protected abstract init(): void;
   protected abstract release(): void;
   protected abstract get initialState(): State;
+  protected abstract renderSuccessful(content: Content): React.ReactNode;
 }
