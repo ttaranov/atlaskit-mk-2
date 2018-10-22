@@ -27,6 +27,9 @@ function createTestViewer(props: BaseProps) {
   const initSpy = jest.fn();
   const releaseSpy = jest.fn();
   class TestViewer extends BaseViewer<BaseProps, {}> {
+    protected get initialState() {
+      return {};
+    }
     protected init = initSpy;
     protected release = releaseSpy;
     render() {
