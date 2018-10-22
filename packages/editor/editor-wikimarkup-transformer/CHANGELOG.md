@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.20
+- [patch] Make common-formatter more generic for citation and monospace [c727890](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c727890)
+
 ## 2.1.19
 - [patch] Fix link format with | in url [d4a84b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4a84b3)
 
