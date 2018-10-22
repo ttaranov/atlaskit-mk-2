@@ -3,6 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import Item from '../../../Item';
 import ContainerHeader from '../../';
 import ItemAvatar from '../../../ItemAvatar/index';
 
@@ -14,14 +15,14 @@ const commonProps = {
 describe('ContainerHeader', () => {
   it('should add the given props through the children component', () => {
     const wrapper = mount(<ContainerHeader {...commonProps} />);
-    expect(wrapper.find('ConnectedItem').props()).toMatchObject({
+    expect(wrapper.find(Item).props()).toMatchObject({
       ...commonProps,
     });
   });
 
   it('should have a connected item component with default spacing', () => {
     const wrapper = mount(<ContainerHeader {...commonProps} />);
-    expect(wrapper.find('ConnectedItem').props().spacing).toEqual('default');
+    expect(wrapper.find(Item).props().spacing).toEqual('default');
   });
 
   it('should render the given connected item passed as a `before` prop', () => {

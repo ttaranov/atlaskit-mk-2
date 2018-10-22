@@ -36,8 +36,7 @@ const ConnectedItem = ({
   ...rest
 }: ConnectedItemProps) => {
   let before = beforeProp;
-  // $FlowFixMe
-  if (!before && icon && iconMap[icon]) {
+  if (!before && typeof icon === 'string' && iconMap[icon]) {
     before = iconMap[icon];
   }
 

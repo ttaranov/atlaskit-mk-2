@@ -30,10 +30,21 @@ Array [
     items={Array []}
     key="menuSection"
   />,
-  <Item
+  <ConnectedItem
     id="item"
     index={2}
     key="item"
+  />,
+  <BackItem
+    id="back-item"
+    index={3}
+    key="back-item"
+  />,
+  <WithNavigationUI(WithNavigationViewController(GoToItem))
+    goTo="view"
+    id="goto-item"
+    index={4}
+    key="goto-item"
   />,
   <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(InlineCustom)))
     components={
@@ -60,7 +71,7 @@ Array [
       }
     }
     id="inlineCustom"
-    index={3}
+    index={5}
     key="inlineCustom"
   />,
   <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Corgie)))
@@ -88,7 +99,7 @@ Array [
       }
     }
     id="corgie"
-    index={4}
+    index={6}
     key="corgie"
   />,
 ]
