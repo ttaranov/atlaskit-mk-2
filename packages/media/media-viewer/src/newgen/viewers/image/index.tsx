@@ -18,14 +18,6 @@ export type ImageViewerProps = AnalyticViewerProps & {
   onClose?: () => void;
 };
 
-export type ImageViewerState = {
-  objectUrl: Outcome<ObjectUrl, MediaViewerError>;
-};
-
-const initialState: ImageViewerState = {
-  objectUrl: Outcome.pending(),
-};
-
 function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   return {
     type: 'file',
@@ -35,25 +27,20 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   };
 }
 
-export class ImageViewer extends BaseViewer<
-  ImageViewerProps,
-  ImageViewerState
-> {
+export class ImageViewer extends BaseViewer<ObjectUrl, ImageViewerProps> {
   protected get initialState() {
-    return initialState;
+    return { content: Outcome.pending<ObjectUrl, MediaViewerError>() };
   }
-
-  state: ImageViewerState = this.initialState;
 
   render() {
     const { onClose } = this.props;
-    return this.state.objectUrl.match({
+    return this.state.content.match({
       pending: () => <Spinner />,
-      successful: objectUrl => (
+      successful: content => (
         <InteractiveImg
           onLoad={this.onLoad}
           onError={this.onError}
-          src={objectUrl}
+          src={content}
           onClose={onClose}
         />
       ),
@@ -106,14 +93,14 @@ export class ImageViewer extends BaseViewer<
       this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
       const objectUrl = URL.createObjectURL(await response);
       this.setState({
-        objectUrl: Outcome.successful(objectUrl),
+        content: Outcome.successful(objectUrl),
       });
     } catch (err) {
       if (err.message === REQUEST_CANCELLED) {
         this.preventRaceCondition();
       } else {
         this.setState({
-          objectUrl: Outcome.failed(createError('previewFailed', err, file)),
+          content: Outcome.failed(createError('previewFailed', err, file)),
         });
         this.props.onLoad({ status: 'error', errorMessage: err.message });
       }
@@ -125,7 +112,7 @@ export class ImageViewer extends BaseViewer<
       this.cancelImageFetch();
     }
 
-    this.state.objectUrl.whenSuccessful(objectUrl => {
+    this.state.content.whenSuccessful(objectUrl => {
       this.revokeObjectUrl(objectUrl);
     });
   }

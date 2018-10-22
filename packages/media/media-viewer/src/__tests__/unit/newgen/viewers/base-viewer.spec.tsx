@@ -3,6 +3,8 @@ import { mount } from 'enzyme';
 import { ProcessedFileState } from '@atlaskit/media-core';
 import { BaseProps, BaseViewer } from '../../../../newgen/viewers/base-viewer';
 import { createContext } from '../../_stubs';
+import { Outcome } from '../../../../newgen/domain';
+import { MediaViewerError } from '../../../../newgen/error';
 
 function createItem(): ProcessedFileState {
   return {
@@ -23,19 +25,16 @@ function createProps(): BaseProps {
   return { item, context, collectionName };
 }
 
-export type TestState = { a: string };
-
-function createInitialState(): TestState {
+function createInitialState() {
   return {
-    a: 'test',
+    content: Outcome.pending<string, MediaViewerError>(),
   };
 }
 
 function createTestViewer(props: BaseProps) {
   const initSpy = jest.fn();
   const releaseSpy = jest.fn();
-  class TestViewer extends BaseViewer<BaseProps, TestState> {
-    state = this.initialState;
+  class TestViewer extends BaseViewer<string, BaseProps> {
     protected get initialState() {
       return createInitialState();
     }
@@ -83,9 +82,14 @@ describe('BaseViewer', () => {
     expect(initSpy).toHaveBeenCalledTimes(2);
   });
 
+  it('sets the initialState when component is mounted', () => {
+    const { el } = createTestViewer(createProps());
+    expect(el.state()).toMatchObject(createInitialState());
+  });
+
   it('resets the component to the initialState when properties were updated', () => {
     const { el } = createTestViewer(createProps());
-    el.setState({ a: 'other' });
+    el.setState({ content: Outcome.successful('test') });
     el.setProps({ context: createContext() });
     expect(el.state()).toMatchObject(createInitialState());
   });

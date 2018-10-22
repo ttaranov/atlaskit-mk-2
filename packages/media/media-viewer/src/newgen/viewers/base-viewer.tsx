@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as deepEqual from 'deep-equal';
 import { Context, ProcessedFileState } from '@atlaskit/media-core';
+import { Outcome } from '../domain';
+import { MediaViewerError } from '../error';
 
 export type BaseProps = {
   context: Context;
@@ -8,10 +10,17 @@ export type BaseProps = {
   collectionName?: string;
 };
 
+export type BaseState<Content> = {
+  content: Outcome<Content, MediaViewerError>;
+};
+
 export abstract class BaseViewer<
+  Content,
   Props extends BaseProps,
-  State
+  State extends BaseState<Content> = BaseState<Content>
 > extends React.Component<Props, State> {
+  state = this.initialState;
+
   componentDidMount() {
     this.init();
   }
