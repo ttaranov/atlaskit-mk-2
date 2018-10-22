@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.1.4
+- [patch] MS-1032: get rid of risky lifecycle hooks in ImageViewer [0795871](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0795871)
+
 ## 24.1.3
 - [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
   - @atlaskit/media-card@41.1.2
