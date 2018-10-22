@@ -5,8 +5,8 @@ import { UserPicker } from '../src/components/UserPicker';
 
 function getUsers(search?: string): (User | Promise<User[]>)[] {
   return [
-    { id: 'unassign', nickname: 'Unsassign' },
-    { id: 'assing-me', nickname: 'Assign to me' },
+    { id: 'unassign', nickname: 'Unassigned' },
+    { id: 'assign-me', nickname: 'Assign to me' },
     new Promise<User[]>(resolve => {
       setTimeout(() => resolve(exampleUsers), 1000);
     }),
