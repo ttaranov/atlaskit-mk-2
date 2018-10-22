@@ -179,8 +179,8 @@ export const getDeviceInfo = (nAgt, nVersion) => {
 
 type State = { isOpen: boolean; displayFlag: boolean };
 
-const EMBEDDABLE_KEY = 'your_jsd_embeddable_key';
-const REQUEST_TYPE_ID = 'your_jsd_request_type_id';
+const EMBEDDABLE_KEY = 'b76a0ea3-48e9-4cfe-ba43-b004ec935dd0';
+const REQUEST_TYPE_ID = '174';
 const name = 'Feedback Sender';
 const email = 'fsender@atlassian.com';
 
@@ -208,8 +208,8 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           <FeedbackCollector
             onClose={this.close}
             onSubmit={this.displayFlag}
-            email={email}
-            name={name}
+            // email={email}
+            // name={name}
             requestTypeId={REQUEST_TYPE_ID}
             embeddableKey={EMBEDDABLE_KEY}
           />
