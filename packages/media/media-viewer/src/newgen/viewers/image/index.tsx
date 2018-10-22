@@ -18,14 +18,6 @@ export type ImageViewerProps = AnalyticViewerProps & {
   onClose?: () => void;
 };
 
-export type ImageViewerState = {
-  content: Outcome<ObjectUrl, MediaViewerError>;
-};
-
-const initialState: ImageViewerState = {
-  content: Outcome.pending(),
-};
-
 function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   return {
     type: 'file',
@@ -35,12 +27,9 @@ function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
   };
 }
 
-export class ImageViewer extends BaseViewer<
-  ImageViewerProps,
-  ImageViewerState
-> {
+export class ImageViewer extends BaseViewer<ObjectUrl, ImageViewerProps> {
   protected get initialState() {
-    return initialState;
+    return { content: Outcome.pending<ObjectUrl, MediaViewerError>() };
   }
 
   render() {
