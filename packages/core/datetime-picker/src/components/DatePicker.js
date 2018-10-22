@@ -91,23 +91,7 @@ type State = {
 
 function isoToObj(iso: string) {
   const parsed = parse(iso);
-  const [year, month, date] = iso.split('-');
   if (!isValid(parsed)) return {};
-
-  const lastDayInMonth = getDaysInMonth(
-    new Date(parseInt(year, 10), parseInt(month, 10) - 1),
-  );
-
-  if (parseInt(lastDayInMonth, 10) < parseInt(date, 10)) {
-    const newIso = `${year}-${month}-${lastDayInMonth}`;
-    const newparsed = parse(newIso);
-    return {
-      day: newparsed.getDate(),
-      month: newparsed.getMonth() + 1,
-      year: newparsed.getFullYear(),
-    };
-  }
-
   return {
     day: parsed.getDate(),
     month: parsed.getMonth() + 1,
@@ -217,7 +201,18 @@ class DatePicker extends Component<Props, State> {
   };
 
   onCalendarChange = ({ iso }: { iso: string }) => {
-    this.setState({ view: iso });
+    const [year, month, date] = iso.split('-');
+    let newIso = iso;
+
+    const lastDayInMonth = getDaysInMonth(
+      new Date(parseInt(year, 10), parseInt(month, 10) - 1),
+    );
+
+    if (parseInt(lastDayInMonth, 10) < parseInt(date, 10)) {
+      newIso = `${year}-${month}-${lastDayInMonth}`;
+    }
+
+    this.setState({ view: newIso });
   };
 
   onCalendarSelect = ({ iso: value }: { iso: string }) => {
