@@ -29,7 +29,7 @@ type Props = {
   blanketIsTinted?: boolean,
   /* Typically the app, or a section of the app */
   children: Node,
-  /* Replaces the wrapping fragment with component **Deprecated** */
+  /* Deprecated - Replaces the wrapping fragment with component */
   component?: ElementType,
 };
 
@@ -51,6 +51,15 @@ export default class SpotlightManager extends PureComponent<
   static defaultProps = {
     blanketIsTinted: true,
   };
+
+  componentDidMount() {
+    if (this.props.component) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Atlaskit: The SpotlightManager 'component' prop is deprecated. Please wrap the SpotlightManager in the component instead.`,
+      );
+    }
+  }
 
   state = {
     spotlightCount: 0,

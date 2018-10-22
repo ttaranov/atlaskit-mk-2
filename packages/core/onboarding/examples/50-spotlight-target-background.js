@@ -67,29 +67,31 @@ export default class SpotlightTargetBackgroundExample extends Component<
   }
   render() {
     return (
-      <SpotlightManager component={Wrapper}>
-        <HighlightGroup>
-          <SpotlightTarget name="without">
-            <Highlight bg="transparent" color="red">
-              No Target BG
-            </Highlight>
-          </SpotlightTarget>
-          <SpotlightTarget name="with">
-            <Highlight bg="transparent" color="green">
-              White Target BG
-            </Highlight>
-          </SpotlightTarget>
-        </HighlightGroup>
+      <Wrapper>
+        <SpotlightManager>
+          <HighlightGroup>
+            <SpotlightTarget name="without">
+              <Highlight bg="transparent" color="red">
+                No Target BG
+              </Highlight>
+            </SpotlightTarget>
+            <SpotlightTarget name="with">
+              <Highlight bg="transparent" color="green">
+                White Target BG
+              </Highlight>
+            </SpotlightTarget>
+          </HighlightGroup>
 
-        <p style={{ marginBottom: '1em' }}>
-          Sometimes your target relies on an ancestor&apos;s background color,
-          which is lost when the blanket is applied. Pass any color value to{' '}
-          <Code>targetBgColor</Code> to fix this.
-        </p>
-        <button onClick={this.start}>Start</button>
+          <p style={{ marginBottom: '1em' }}>
+            Sometimes your target relies on an ancestor&apos;s background color,
+            which is lost when the blanket is applied. Pass any color value to{' '}
+            <Code>targetBgColor</Code> to fix this.
+          </p>
+          <button onClick={this.start}>Start</button>
 
-        {this.renderActiveSpotlight()}
-      </SpotlightManager>
+          {this.renderActiveSpotlight()}
+        </SpotlightManager>
+      </Wrapper>
     );
   }
 }
