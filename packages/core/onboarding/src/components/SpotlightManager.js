@@ -63,11 +63,13 @@ export default class SpotlightManager extends PureComponent<
   };
 
   componentDidMount() {
-    if (this.props.component) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `Atlaskit: The SpotlightManager 'component' prop is deprecated. Please wrap the SpotlightManager in the component instead.`,
-      );
+    if (process.env.NODE_ENV !== 'production') {
+      if (this.props.component) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Atlaskit: The SpotlightManager 'component' prop is deprecated. Please wrap the SpotlightManager in the component instead.`,
+        );
+      }
     }
   }
 

@@ -93,14 +93,6 @@ class SpotlightDialog extends Component<Props, State> {
     } = this.props;
     const { hasFocusLock } = this.state;
 
-    // warn consumers when they provide conflicting props
-    if (header && image) {
-      console.warn('Please provide "header" OR "image", not both.'); // eslint-disable-line no-console
-    }
-    if (footer && actions) {
-      console.warn('Please provide "footer" OR "actions", not both.'); // eslint-disable-line no-console
-    }
-
     const translatedPlacement: Placement | void = dialogPlacement
       ? {
           'top left': 'top-start',
