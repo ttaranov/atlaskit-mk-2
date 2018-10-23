@@ -9,7 +9,7 @@ NOTE: All drawers mirror each other in design, with the only difference
 being the offset.
 */
 export default class CustomDrawer extends PureComponent<
-  DrawerProps & { width: 'narrow' | 'wide' | 'full' },
+  DrawerProps & { width: 'narrow' | 'medium' | 'wide' | 'full' },
 > {
   static defaultProps = {
     width: 'wide',
