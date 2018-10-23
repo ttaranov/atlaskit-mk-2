@@ -36,3 +36,6 @@ website/dist.zip
 # A file we use for pushing secrets to micros, just in case
 secrets.json
 .vs/slnx.sqlite
+
+#ignore image snapshot diff files
+__diff_output__/

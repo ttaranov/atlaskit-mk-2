@@ -12,7 +12,6 @@ const glob = require('glob');
 * and run and wait for visual-regression tests complete
 */
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
-const isLocalRun = process.env.RUN_LOCAL_ONLY === 'true';
 const watch = process.env.WATCH ? '--watch' : '';
 const updateSnapshot = process.env.IMAGE_SNAPSHOT ? '--u' : '';
 
@@ -56,10 +55,8 @@ function runCommand(cmd, resolve, reject) {
 
 async function main() {
   let serverAlreadyRunning = await isReachable('http://localhost:9000');
-  if (!serverAlreadyRunning || !process.env.IMAGE_SNAPSHOT) {
-  }
 
-  if (isLocalRun && !updateSnapshot && !serverAlreadyRunning) {
+  if (!serverAlreadyRunning) {
     // Overriding the env variable to start the correct packages
     process.env.VISUAL_REGRESSION = 'true';
     await webpack.startDevServer();
@@ -67,7 +64,7 @@ async function main() {
 
   const { code, signal } = await runTests();
 
-  if (isLocalRun && serverAlreadyRunning) {
+  if (!serverAlreadyRunning) {
     webpack.stopDevServer();
   }
   process.exit(code);
