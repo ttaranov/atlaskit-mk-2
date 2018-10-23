@@ -1,4 +1,4 @@
-import { fileStateToFileGasPayload } from '../../../src/newgen/analytics/index';
+import { fileStateToFileGasPayload } from '../../../../newgen/analytics/index';
 import {
   ProcessedFileState,
   ProcessingFileState,
