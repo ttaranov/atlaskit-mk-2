@@ -3,8 +3,10 @@
   "version": "4.2.13",
   "description": "A quick-search component",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
   "atlaskit:src": "src/index.js",
   "files": [
     "dist"

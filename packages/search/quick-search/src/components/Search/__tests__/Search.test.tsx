@@ -1,12 +1,7 @@
-// @flow
 import { mount } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 import FieldBase from '@atlaskit/field-base';
 import Search from '../Search';
-
-const describe = window.describe;
-const it = window.it;
-const expect = window.expect;
 
 describe('Search', () => {
   const isInputFocused = wrapper =>

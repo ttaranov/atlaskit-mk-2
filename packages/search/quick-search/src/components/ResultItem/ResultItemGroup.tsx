@@ -1,17 +1,16 @@
-// @flow
-import React, { Component, type Node } from 'react';
+import * as React from 'react';
 import { ItemGroup } from '@atlaskit/item';
 import { ResultItemGroupTitle, ResultItemGroupHeader } from './styled';
 
 type Props = {
   /** Text to appear as heading above group. Will be auto-capitalised. */
-  title: string,
+  title: React.ReactNode;
   /** React Elements to be displayed within the group. This should generally be
    a collection of ResultItems. */
-  children?: Node,
+  children?: React.ReactNode;
 };
 
-export default class ResultItemGroup extends Component<Props> {
+export default class ResultItemGroup extends React.Component<Props> {
   render() {
     const { title, children } = this.props;
 

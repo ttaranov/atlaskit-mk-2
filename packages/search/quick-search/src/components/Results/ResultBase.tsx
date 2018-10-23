@@ -1,16 +1,23 @@
-// @flow
-import React, { PureComponent, type Component } from 'react';
+import * as React from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
-import type { AnalyticsData, ResultType as Props, Context } from './types';
+import { AnalyticsData, ResultType as Props } from './types';
 import { ResultContext, SelectedResultIdContext } from '../context';
+import { Context } from './types';
 
 const BASE_RESULT_TYPE = 'base';
 
 interface HasAnalyticsData {
   getAnalyticsData(): AnalyticsData;
 }
-export type ResultBaseType = Component<Props> & HasAnalyticsData;
+
+export type ResultBaseType = React.Component<Props> & HasAnalyticsData;
+
+// context is an optional prop but the component provides a defaultProp. However, TS still complains
+// when you don't pass it. There doesn't seem to be a better way of declaring optional default props.
+type DefaultProps = {
+  context: Context;
+};
 
 // ==========================================================================================
 // This class enforces a standard set of props and behaviour for all result types to support.
@@ -18,26 +25,17 @@ export type ResultBaseType = Component<Props> & HasAnalyticsData;
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-// context is an optional prop but the component provides a defaultProp. However, flow type still complains
-// when you don't pass it. There doesn't seem to be a better way of declaring optional default props.
-// See: https://github.com/facebook/flow/issues/1660
-type DefaultProps = {
-  context: Context,
-};
-
-class ResultBase extends PureComponent<DefaultProps & Props>
+class ResultBase extends React.PureComponent<DefaultProps & Props>
   implements HasAnalyticsData {
-  static defaultProps = {
-    isCompact: false,
-    isSelected: false,
+  static defaultProps: Partial<Props> = {
     onClick: () => {},
     type: BASE_RESULT_TYPE,
     context: {
-      registerResult: Function.prototype,
-      unregisterResult: Function.prototype,
-      onMouseEnter: Function.prototype,
-      onMouseLeave: Function.prototype,
-      sendAnalytics: Function.prototype,
+      registerResult: result => {},
+      unregisterResult: result => {},
+      onMouseEnter: resultData => {},
+      onMouseLeave: () => {},
+      sendAnalytics: (string, data) => {},
       getIndex: () => null,
     },
     analyticsData: {},
@@ -61,7 +59,7 @@ class ResultBase extends PureComponent<DefaultProps & Props>
     context.unregisterResult(this);
   }
 
-  getAnalyticsData() {
+  getAnalyticsData(): AnalyticsData {
     const { resultId, analyticsData, type, context } = this.props;
     return {
       index: context.getIndex(resultId),
@@ -71,15 +69,20 @@ class ResultBase extends PureComponent<DefaultProps & Props>
     };
   }
 
-  handleClick = (e: ?MouseEvent) => {
-    const { onClick, resultId, type } = this.props;
+  handleClick = (e?: MouseEvent) => {
+    const { onClick, resultId, type, context } = this.props;
 
-    this.props.context.sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
-      ...this.getAnalyticsData(),
-      method: 'click',
-      newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
-    });
-    onClick({ resultId, type });
+    if (context.sendAnalytics) {
+      context.sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
+        ...this.getAnalyticsData(),
+        method: 'click',
+        newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
+      });
+    }
+
+    if (onClick) {
+      onClick({ resultId, type });
+    }
   };
 
   handleMouseEnter = () => {
@@ -111,7 +114,7 @@ class ResultBase extends PureComponent<DefaultProps & Props>
             href={href}
             target={target}
             icon={icon}
-            isCompact={isCompact}
+            isCompact={!!isCompact}
             isSelected={resultId === selectedResultId}
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}

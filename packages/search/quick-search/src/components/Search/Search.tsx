@@ -1,5 +1,4 @@
-// @flow
-import React, { PureComponent, type Node } from 'react';
+import * as React from 'react';
 import FieldBase from '@atlaskit/field-base';
 import {
   SearchBox,
@@ -12,28 +11,28 @@ const controlKeys = ['ArrowUp', 'ArrowDown', 'Enter'];
 
 type Props = {
   /** The elements to render as options to search from. */
-  children?: Node,
+  children?: React.ReactNode;
   /** Set whether the loading state should be shown. */
-  isLoading: boolean,
+  isLoading?: boolean;
   /** Function to be called when the search input loses focus. */
-  onBlur: (event: Event) => mixed,
+  onBlur?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
   /** Function to be called when a input action occurs (native `oninput` event). */
-  onInput?: (event: SyntheticInputEvent<any>) => mixed,
+  onInput?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
   /** Function to be called when the user hits the escape key.  */
-  onKeyDown?: (event: Event) => mixed,
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Placeholder text for search field. */
-  placeholder: string,
+  placeholder?: string;
   /** Current value of search field. */
-  value?: string,
+  value?: string;
 };
 
 type State = {
   /** Current value of search field. */
-  value?: string,
+  value?: string;
 };
 
-export default class Search extends PureComponent<Props, State> {
-  static defaultProps = {
+export default class Search extends React.PureComponent<Props, State> {
+  static defaultProps: Partial<Props> = {
     isLoading: false,
     onBlur: () => {},
     placeholder: 'Search',
@@ -43,7 +42,7 @@ export default class Search extends PureComponent<Props, State> {
     value: this.props.value,
   };
 
-  onInputKeyDown = (event: KeyboardEvent) => {
+  onInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { onKeyDown } = this.props;
     if (controlKeys.indexOf(event.key) === -1) {
       return;
@@ -61,13 +60,13 @@ export default class Search extends PureComponent<Props, State> {
       onInput(event);
     }
   };
-  onSearchBoxMouseDown: mixed;
+  onSearchBoxMouseDown: any;
 
   setInputRef = (ref: any) => {
     this.inputRef = ref;
   };
 
-  inputRef: mixed;
+  inputRef: any;
   props: Props;
 
   render() {

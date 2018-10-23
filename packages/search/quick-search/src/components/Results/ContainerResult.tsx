@@ -1,9 +1,8 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
-import type { ContainerResultType as Props } from './types';
+import { ContainerResultType as Props } from './types';
 
 const CONTAINER_RESULT_TYPE = 'container';
 
@@ -15,11 +14,8 @@ const CONTAINER_RESULT_TYPE = 'container';
 /**
  * Generic result type for Atlassian containers.
  */
-export default class ContainerResult extends PureComponent<Props> {
-  static defaultProps = {
-    isCompact: false,
-    isSelected: false,
-    onClick: () => {},
+export default class ContainerResult extends React.PureComponent<Props> {
+  static defaultProps: Partial<Props> = {
     type: CONTAINER_RESULT_TYPE,
   };
 

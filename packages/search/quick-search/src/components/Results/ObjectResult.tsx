@@ -1,9 +1,8 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
-import type { ObjectResultType as Props } from './types';
+import { ObjectResultType as Props } from './types';
 
 const OBJECT_RESULT_TYPE = 'object';
 
@@ -15,11 +14,8 @@ const OBJECT_RESULT_TYPE = 'object';
 /**
  * Generic result type for Atlassian objects.
  */
-export default class ObjectResult extends PureComponent<Props> {
-  static defaultProps = {
-    isCompact: false,
-    isSelected: false,
-    onClick: () => {},
+export default class ObjectResult extends React.PureComponent<Props> {
+  static defaultProps: Partial<Props> = {
     type: OBJECT_RESULT_TYPE,
   };
 

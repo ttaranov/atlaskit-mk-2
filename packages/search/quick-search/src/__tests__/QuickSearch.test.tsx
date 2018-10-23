@@ -1,7 +1,6 @@
-// @flow
+import * as React from 'react';
 import { mount } from 'enzyme';
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { QuickSearch, ResultItemGroup, PersonResult } from '..';
 import AkSearch from '../components/Search/Search';
 import ResultItem from '../components/ResultItem/ResultItem';
@@ -21,15 +20,32 @@ const isInputFocused = wrapper =>
 
 describe('<QuickSearch />', () => {
   const onAnalyticsEventSpy = jest.fn();
-  const onClickSpy: Object = jest.fn();
+  const onClickSpy = jest.fn();
 
   const exampleChildren = [
     <ResultItemGroup key={0} title="test group 1">
-      <PersonResult key={1} resultId="1" name="one" onClick={onClickSpy} />
-      <PersonResult key={2} resultId="2" name="two" onClick={onClickSpy} />
+      <PersonResult
+        key={1}
+        resultId="1"
+        name="one"
+        onClick={onClickSpy}
+        type="person"
+      />
+      <PersonResult
+        key={2}
+        resultId="2"
+        name="two"
+        onClick={onClickSpy}
+        type="person"
+      />
     </ResultItemGroup>,
     <ResultItemGroup key={1} title="test group 2">
-      <PersonResult resultId="3" name="three" onClick={onClickSpy} />
+      <PersonResult
+        resultId="3"
+        name="three"
+        onClick={onClickSpy}
+        type="person"
+      />
     </ResultItemGroup>,
   ];
 
@@ -37,7 +53,7 @@ describe('<QuickSearch />', () => {
   let searchInput;
   let onSearchSubmitSpy: Object;
 
-  const render = props => {
+  const render = (props?: any) => {
     onSearchSubmitSpy = jest.fn();
     wrapper = mount(
       <QuickSearch
@@ -56,7 +72,7 @@ describe('<QuickSearch />', () => {
   };
 
   beforeEach(() => {
-    render();
+    render({});
   });
 
   afterEach(() => {
@@ -91,7 +107,7 @@ describe('<QuickSearch />', () => {
       return calls[calls.length - 1];
     };
 
-    const expectEventFiredLastToBe = (name, partialPayload) => {
+    const expectEventFiredLastToBe = (name: string, partialPayload?: any) => {
       expect(getLastEventFired()[0]).toBe(name);
       if (partialPayload) {
         expect(getLastEventFired()[1]).toMatchObject(partialPayload);
@@ -309,7 +325,7 @@ describe('<QuickSearch />', () => {
         wrapper.setProps({
           children: (
             <ResultItemGroup title="test group 2">
-              <PersonResult resultId="b" name="test" href={url} />
+              <PersonResult resultId="b" name="test" href={url} type="person" />
             </ResultItemGroup>
           ),
           selectedResultId: 'b',
@@ -324,12 +340,14 @@ describe('<QuickSearch />', () => {
 
     it('should trigger the onClick handler with the same parameters when a result is submitted via keyboards as when clicked', () => {
       searchInput.simulate('keydown', { key: 'Enter' });
+      // @ts-ignore - args property not recognised
       const paramsKeyboard = onClickSpy.args;
       onClickSpy.mockClear();
       wrapper
         .find(ResultItem)
         .at(0)
         .simulate('click');
+      // @ts-ignore - args property not recognised
       expect(onClickSpy.args).toEqual(paramsKeyboard);
     });
 
@@ -359,8 +377,8 @@ describe('<QuickSearch />', () => {
     it('should remove any selection when query changes', () => {
       const newChildren = (
         <ResultItemGroup title="test group 2">
-          <PersonResult key={1} resultId="4" name="four" />
-          <PersonResult key={2} resultId="5" name="five" />
+          <PersonResult key={1} resultId="4" name="four" type="person" />
+          <PersonResult key={2} resultId="5" name="five" type="person" />
         </ResultItemGroup>
       );
       wrapper.setProps({ children: newChildren });

@@ -1,10 +1,9 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
 
-import type { PersonResultType as Props } from './types';
+import { PersonResultType as Props } from './types';
 
 const PERSON_RESULT_TYPE = 'person';
 
@@ -13,12 +12,9 @@ const PERSON_RESULT_TYPE = 'person';
 // add it to ResultBase instead
 // ===================================================================
 
-export default class PersonResult extends PureComponent<Props> {
-  static defaultProps = {
-    isCompact: false,
-    isSelected: false,
+export default class PersonResult extends React.PureComponent<Props> {
+  static defaultProps: Partial<Props> = {
     mentionPrefix: '@',
-    onClick: () => {},
     presenceState: null, // No presence indicator by default
     type: PERSON_RESULT_TYPE,
   };
@@ -26,7 +22,7 @@ export default class PersonResult extends PureComponent<Props> {
   getMention = () =>
     this.props.mentionName
       ? `${this.props.mentionPrefix}${this.props.mentionName}`
-      : null;
+      : undefined;
 
   getAvatar = () => {
     if (this.props.avatar) {

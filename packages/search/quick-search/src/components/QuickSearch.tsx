@@ -1,10 +1,8 @@
-// @flow
-import React, { Component, type ComponentType, type Ref } from 'react';
-import { withAnalytics } from '@atlaskit/analytics';
-
-import type { ResultData, Context } from './Results/types';
+import * as React from 'react';
+import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
+import { ResultData, Context } from './Results/types';
 import AkSearch from './Search/Search';
-import { type ResultBaseType } from './Results/ResultBase';
+import { ResultBaseType } from './Results/ResultBase';
 import { ResultContext, SelectedResultIdContext } from './context';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
@@ -73,53 +71,54 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
   return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + arrayLength;
 };
 
-type Props = {
+export type Props = {
   /** Search results in the form of ResultItemGroups containing Result components */
-  children: Node,
+  children: React.ReactNode;
   /** Set search loading state */
-  isLoading: boolean,
+  isLoading?: boolean;
   /** onBlur callback for search input */
-  onSearchBlur: (event: Event) => mixed,
+  onSearchBlur?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
   /** onInput callback for search input */
-  onSearchInput?: (event: SyntheticInputEvent<any>) => mixed,
+  onSearchInput?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
   /** onKeyDown callback for search input */
-  onSearchKeyDown: (event: Event) => mixed,
+  onSearchKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Called when the user submits the search form without selecting a result */
-  onSearchSubmit: (event: Event) => void,
+  onSearchSubmit?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
   /** Placeholder text for search input field */
-  placeholder: string,
+  placeholder?: string;
   /** Value of the search input field */
-  value: string,
+  value?: string;
   /** Corresponds to the `resultId` of the selected result */
-  selectedResultId: number | string,
+  selectedResultId?: number | string;
   // Internal: injected by withAnalytics(). Fire a private analytics event
-  firePrivateAnalyticsEvent: (eventName: string, eventData?: {}) => {},
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   /** React component to be used for rendering links */
-  linkComponent?: ComponentType<*>,
+  linkComponent?: React.ComponentType;
 };
 
-type State = {
-  selectedResultId: number | string | null,
-  context: Context,
+export type State = {
+  selectedResultId: number | string | null;
+  context: Context;
 };
 
-export class QuickSearch extends Component<Props, State> {
+export class QuickSearch extends React.Component<Props, State> {
   static defaultProps = {
     children: [],
-    firePrivateAnalyticsEvent: Function.prototype,
+    firePrivateAnalyticsEvent: (_: any) => {},
     isLoading: false,
-    onSearchBlur: Function.prototype,
-    onSearchKeyDown: Function.prototype,
-    onSearchSubmit: Function.prototype,
+    onSearchBlur: (_: any) => {},
+    onSearchKeyDown: (_: any) => {},
+    onSearchSubmit: (_: any) => {},
     placeholder: 'Search',
     value: '',
   };
 
-  inputSearchRef: Ref<*>;
+  inputSearchRef: React.Ref<HTMLInputElement>;
   flatResults: Array<ResultBaseType> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
   lastKeyPressed: string = '';
+
   constructor(props: Props) {
     super(props);
 
@@ -141,11 +140,17 @@ export class QuickSearch extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_OPEN);
+    const { firePrivateAnalyticsEvent } = this.props;
+    if (firePrivateAnalyticsEvent) {
+      firePrivateAnalyticsEvent(QS_ANALYTICS_EV_OPEN, {});
+    }
   }
 
   componentWillUnmount() {
-    this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_CLOSE);
+    const { firePrivateAnalyticsEvent } = this.props;
+    if (firePrivateAnalyticsEvent) {
+      firePrivateAnalyticsEvent(QS_ANALYTICS_EV_CLOSE, {});
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -188,7 +193,10 @@ export class QuickSearch extends Component<Props, State> {
       nextProps.value
     ) {
       this.hasSearchQueryEventFired = true;
-      this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_QUERY_ENTERED);
+      const { firePrivateAnalyticsEvent } = this.props;
+      if (firePrivateAnalyticsEvent) {
+        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_QUERY_ENTERED, {});
+      }
     }
   }
 
@@ -291,8 +299,8 @@ export class QuickSearch extends Component<Props, State> {
   /**
    * Clear result selection when search input is blurred
    */
-  handleSearchBlur = (event: Event) => {
-    this.props.onSearchBlur(event);
+  handleSearchBlur = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    this.props.onSearchBlur!(event);
     this.setState({ selectedResultId: null });
   };
 
@@ -302,9 +310,9 @@ export class QuickSearch extends Component<Props, State> {
    * Down - Select next result
    * Enter - Submit selected result
    */
-  handleSearchKeyDown = (event: Event | KeyboardEvent) => {
+  handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { firePrivateAnalyticsEvent } = this.props;
-    this.props.onSearchKeyDown(event);
+    this.props.onSearchKeyDown!(event);
 
     // Capture whether users are using keyboard controls
     if (
@@ -331,7 +339,7 @@ export class QuickSearch extends Component<Props, State> {
             method: 'shortcut',
           });
         }
-        this.props.onSearchSubmit(event);
+        this.props.onSearchSubmit!(event);
       } else {
         event.preventDefault(); // Don't fire submit event from input
         const result = getResultById(
@@ -376,8 +384,10 @@ export class QuickSearch extends Component<Props, State> {
   focusSearchInput = () => {
     if (
       this.inputSearchRef &&
+      // @ts-ignore unchecked
       typeof this.inputSearchRef.focus === 'function'
     ) {
+      // @ts-ignore unchecked
       this.inputSearchRef.focus();
     }
   };
@@ -409,4 +419,6 @@ export class QuickSearch extends Component<Props, State> {
  * `withAnalytics` - Injects analytics firing methods that are picked up by
  * @atlaskit/analytics/AnalyticsListener.
  */
-export default decorateWithAnalyticsData(withAnalytics(QuickSearch));
+export default decorateWithAnalyticsData(
+  withAnalytics<typeof QuickSearch>(QuickSearch, {}, {}),
+);

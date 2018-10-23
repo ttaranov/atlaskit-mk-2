@@ -1,4 +1,3 @@
-// @flow
 import * as resultTypes from './components/Results';
 
 /*

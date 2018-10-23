@@ -1,4 +1,3 @@
-// @flow
 import styled, { css } from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
 
@@ -27,7 +26,6 @@ export const SearchInner = styled.div`
 
 export const getPlaceholderStyle = (style: any) => css`
   &::-webkit-input-placeholder {
-    /* WebKit, Blink, Edge */
     ${style};
   }
   &::-moz-placeholder {
@@ -47,6 +45,7 @@ export const getPlaceholderStyle = (style: any) => css`
     ${style};
   }
 `;
+
 export const getPlaceholderColor = css`
   color: ${colors.placeholderText};
 `;

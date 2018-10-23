@@ -1,4 +1,3 @@
-// @flow
 import styled from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
 
@@ -14,7 +13,10 @@ export const ResultItemGroupTitle = styled.div`
   font-weight: 600;
 `;
 
-export const ResultItemAfter = styled.div`
+export const ResultItemAfter =
+  styled.div <
+  { shouldTakeSpace: boolean } >
+  `
   min-width: ${({ shouldTakeSpace }) => (shouldTakeSpace ? '24px' : 0)};
 `;
 

@@ -1,5 +1,4 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
 import ObjectResult from '../ObjectResult';
@@ -45,7 +44,7 @@ describe('Object Result', () => {
   it('should render `name` prop', () => {
     const name = "Phillip Jacobs' Personal Space";
     resultWrapper.setProps({ name });
-    expect(resultWrapper.text()).toEqual(expect.stringContaining(name));
+    expect(resultWrapper.text()).toEqual(name);
   });
 
   it('should render lock icon on private room results', () => {
@@ -71,10 +70,12 @@ describe('Object Result', () => {
   it('should render the `containerName` prop if no objectKey provided', () => {
     resultWrapper.setProps({ containerName: 'Burger Sling' });
     expect(resultWrapper.text()).toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining('Burger Sling'),
     );
 
     expect(resultWrapper.text()).not.toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining('· Burger Sling'),
     );
   });
@@ -85,6 +86,7 @@ describe('Object Result', () => {
       containerName: 'Burger Sling',
     });
     expect(resultWrapper.text()).toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining('KFC-11 · Burger Sling'),
     );
   });

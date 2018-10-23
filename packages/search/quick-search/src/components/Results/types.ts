@@ -1,117 +1,112 @@
-// @flow
-import type { Node, Element, ComponentType } from 'react';
+import { ComponentType, ReactNode } from 'react';
+import { FireAnalyticsEvent } from '@atlaskit/analytics';
 
-export type AnalyticsData = {
-  [key: string]: string | number,
-};
+export type AnalyticsData = Object;
 
 // The data that's passed to the Click and MouseEnter events
-export type ResultData = {|
-  resultId: string | number,
-  type: string,
-|};
+export type ResultData = {
+  resultId: string | number;
+  type: string;
+};
 
 type CommonResultProps = {
   /** Content to be shown after the main content. Shown to the right of content
    (or to the left in RTL mode). */
-  elemAfter?: Node,
+  elemAfter?: ReactNode;
   /** Location to link out to on click. */
-  href?: string,
+  href?: string;
   /** Target to open the link in. */
-  target?: string,
+  target?: string;
   /** Reduces padding and font size. */
-  isCompact: boolean,
-  /** Set whether the item should be highlighted as selected. Selected items have
-   a different background color. */
-  isSelected: boolean,
+  isCompact?: boolean;
   /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
-  onClick: (resultData: ResultData) => mixed,
+  onClick?: (resultData: ResultData) => any;
   /** Unique ID of the result. This is passed as a parameter to certain callbacks */
-  resultId: string | number,
+  resultId: string | number;
   /** Type of the result. This is passed as a parameter to certain callbacks. */
-  type: string,
+  type: string;
+  /** key/value pairs of attributes to be send in analytics events. */
+  analyticsData?: AnalyticsData;
 };
 
 export type Context = {
   /** Register itself as keyboard navigation target */
-  registerResult: (result: any) => void,
+  registerResult: (result: any) => void;
   /** Unregister itself as keyboard navigation target */
-  unregisterResult: (result: any) => void,
+  unregisterResult: (result: any) => void;
   /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
-  onMouseEnter: (resultData: ResultData) => void,
+  onMouseEnter: (resultData: ResultData) => void;
   /** Standard onMouseLeave event. */
-  onMouseLeave: () => void,
+  onMouseLeave: () => void;
   /** Fires an analytics event */
-  sendAnalytics: (string, AnalyticsData) => mixed,
+  sendAnalytics?: FireAnalyticsEvent;
   /** get the index of the search result in the list of */
-  getIndex: (string | number) => number | null,
+  getIndex: (resultId: string | number) => number | null;
   /** React component to be used for rendering links */
-  linkComponent?: ComponentType<*>,
+  linkComponent?: ComponentType;
 };
 
 export type ResultType = CommonResultProps & {
   /** Text to appear to the right of the text. It has a lower font-weight. */
-  caption?: string,
+  caption?: string;
   /** React element to appear to the left of the text. */
-  icon?: Node,
+  icon?: ReactNode;
   /** Text to be shown alongside the main `text`. */
-  subText?: string,
+  subText?: string;
   /** Main text to be displayed as the item. */
-  text: Element<any> | string,
+  text: ReactNode;
   /** The context provided by QuickSearch. */
-  context?: Context,
-  /** key/value pairs of attributes to be send in analytics events. */
-  analyticsData?: AnalyticsData,
+  context?: Context;
 };
 
 export type ContainerResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon, overriden by avatar prop */
-  avatarUrl?: string,
+  avatarUrl?: string;
   /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
-  avatar?: Node,
+  avatar?: ReactNode;
   /** Text to appear to the right of the text. It has a lower font-weight. */
-  caption?: string,
+  caption?: string;
   /** Set whether to display a lock on the result's icon */
-  isPrivate?: boolean,
+  isPrivate?: boolean;
   /** Name of the container. Provides the main text to be displayed as the item. */
-  name: Element<any> | string,
+  name: ReactNode;
   /** Text to be shown alongside the main `text`. */
-  subText?: string,
+  subText?: string;
 };
 
 export type ObjectResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon */
-  avatarUrl?: string,
+  avatarUrl?: string;
   /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
-  avatar?: Node,
+  avatar?: ReactNode;
   /** Text to appear to the right of the text. It has a lower font-weight. */
-  caption?: string,
+  caption?: string;
   /** Name of the container to which the object belongs. Displayed alongside the name */
-  containerName?: string,
+  containerName?: string;
   /** Set whether to display a lock on the result's icon */
-  isPrivate?: boolean,
+  isPrivate?: boolean;
   /** Name of the object. Provides the main text to be displayed as the item.. */
-  name: Element<any> | string,
+  name: ReactNode;
   /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
-  objectKey?: string,
+  objectKey?: string;
 };
 
 export type PersonResultType = CommonResultProps & {
   /** Src URL of the image to be used as the result's icon */
-  avatarUrl?: string,
+  avatarUrl?: string;
   /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */
-  avatar?: Node,
+  avatar?: ReactNode;
   /** React element to appear to the left of the text. */
-  icon?: Node,
+  icon?: ReactNode;
   /** A user's custom handle. Appears to the right of their `name`. It has a lower
    font-weight. */
-  mentionName?: string,
+  mentionName?: string;
   /** A character with which to prefix the `mentionName`. Defaults to '@' */
-  mentionPrefix: string,
+  mentionPrefix?: string;
   /** Name of the object. Provides the main text to be displayed as the item.. */
-  name: Element<any> | string,
+  name: ReactNode;
   /** Text to be shown alongside the main `text`. */
-  presenceMessage?: string,
+  presenceMessage?: string;
   /** Sets the appearance of the presence indicator */
-  presenceState: 'online' | 'busy' | 'offline' | null,
+  presenceState?: 'online' | 'busy' | 'offline' | null;
 };

@@ -1,6 +1,5 @@
-// @flow
+import * as React from 'react';
 import { mount } from 'enzyme';
-import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import ContainerResult from '../ContainerResult';
 
@@ -40,6 +39,7 @@ describe('Container Result', () => {
   it('should render `name` prop', () => {
     const name = "Phillip Jacobs' Personal Space";
     resultWrapper.setProps({ name });
+    // @ts-ignore - jest type def out of date. stringContaining missing
     expect(resultWrapper.text()).toEqual(expect.stringContaining(name));
   });
 

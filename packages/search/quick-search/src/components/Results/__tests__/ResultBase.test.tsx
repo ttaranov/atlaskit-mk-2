@@ -1,8 +1,7 @@
-// @flow
 import { mount } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 import ResultBase from '../ResultBase';
-import { type Context } from '../types';
+import { Context } from '../types';
 
 describe('Result Base', () => {
   let resultWrapper;

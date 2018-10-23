@@ -1,6 +1,5 @@
-// @flow
 import { mount } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 import PersonResult from '../PersonResult';
 
@@ -43,6 +42,7 @@ describe('Person Result', () => {
   it('should render `name` prop', () => {
     const name = 'Charlie Atlas';
     personResultWrapper.setProps({ name });
+    // @ts-ignore - jest type def out of date. stringContaining missing
     expect(personResultWrapper.text()).toEqual(expect.stringContaining(name));
   });
 
@@ -50,6 +50,7 @@ describe('Person Result', () => {
     const mentionName = 'atlassian';
     personResultWrapper.setProps({ mentionName });
     expect(personResultWrapper.text()).toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining(`@${mentionName}`),
     );
   });
@@ -59,6 +60,7 @@ describe('Person Result', () => {
     const mentionPrefix = '[at]';
     personResultWrapper.setProps({ mentionName, mentionPrefix });
     expect(personResultWrapper.text()).toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining(`${mentionPrefix}${mentionName}`),
     );
   });
@@ -67,6 +69,7 @@ describe('Person Result', () => {
     const mentionPrefix = '[at]';
     personResultWrapper.setProps({ mentionPrefix });
     expect(personResultWrapper.text()).not.toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining(mentionPrefix),
     );
   });
@@ -75,6 +78,7 @@ describe('Person Result', () => {
     const presenceMessage = "Gone fishin'";
     personResultWrapper.setProps({ presenceMessage });
     expect(personResultWrapper.text()).toEqual(
+      // @ts-ignore - jest type def out of date. stringContaining missing
       expect.stringContaining(presenceMessage),
     );
   });
