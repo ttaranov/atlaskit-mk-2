@@ -10,17 +10,14 @@ import {
 import { channel } from '../analytics';
 import { Identifier } from '../domain';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next-types';
 import { MediaViewerError } from '../error';
 
 const downloadIcon = <DownloadIcon label="Download" />;
 
 const DownloadButton = withAnalyticsEvents({
-  onClick: (createEvent: CreateUIAnalyticsEventSignature) => {
-    const ev = createEvent({});
-    const payload = ev.context[0].downloadEvent;
-    ev.update(payload);
+  onClick: (createEvent: CreateUIAnalyticsEventSignature, props: any) => {
+    const ev = createEvent(props.analyticsPayload);
     ev.fire(channel);
   },
 })(Button);
@@ -44,15 +41,14 @@ export const renderErrorViewDownloadButton = (
   const downloadEvent = downloadErrorButtonEvent(state, err);
   return (
     <DownloadButtonWrapper>
-      <AnalyticsContext data={{ downloadEvent }}>
-        <DownloadButton
-          appearance="primary"
-          label="Download"
-          onClick={createItemDownloader(state, context, collectionName)}
-        >
-          Download
-        </DownloadButton>
-      </AnalyticsContext>
+      <DownloadButton
+        analyticsPayload={downloadEvent}
+        appearance="primary"
+        label="Download"
+        onClick={createItemDownloader(state, context, collectionName)}
+      >
+        Download
+      </DownloadButton>
     </DownloadButtonWrapper>
   );
 };
@@ -64,18 +60,13 @@ export const renderToolbarDownloadButton = (
 ) => {
   const downloadEvent = downloadButtonEvent(state);
   return (
-    <AnalyticsContext data={{ downloadEvent }}>
-      <DownloadButton
-        label="Download"
-        appearance="toolbar"
-        onClick={createItemDownloader(
-          state,
-          context,
-          identifier.collectionName,
-        )}
-        iconBefore={downloadIcon}
-      />
-    </AnalyticsContext>
+    <DownloadButton
+      analyticsPayload={downloadEvent}
+      label="Download"
+      appearance="toolbar"
+      onClick={createItemDownloader(state, context, identifier.collectionName)}
+      iconBefore={downloadIcon}
+    />
   );
 };
 
