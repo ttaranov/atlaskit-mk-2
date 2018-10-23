@@ -20,6 +20,14 @@ type Props = {
   inputValue: string,
 };
 
+/* eslint-disable react/no-unused-prop-types */
+type PopperProps = {
+  ref: (?HTMLElement) => void,
+  style: any,
+  placement: {},
+  scheduleUpdate: () => void,
+};
+
 /**
  * This component renders layered content with fixed positioning.
  * Scroll is locked outside the layer to prevent the layered content from detaching from the
@@ -28,8 +36,8 @@ type Props = {
  * TODO: Fix a bug in layer/popper.js where auto flip isn't occuring when it should because of vertical scroll distance incorrectly
  * making the library think the component is further up the page than it is.
  */
-class FixedLayer extends Component<Props> {
-  scheduleUpdate: () => {};
+export default class FixedLayer extends Component<Props> {
+  scheduleUpdate: () => void = () => {};
 
   componentDidUpdate(prevProps: any) {
     if (prevProps.inputValue !== this.props.inputValue) {
@@ -66,17 +74,7 @@ class FixedLayer extends Component<Props> {
           )}
         </Reference>
         <Popper>
-          {({
-            ref,
-            style,
-            placement,
-            scheduleUpdate,
-          }: {
-            ref: any,
-            style: any,
-            placement: any,
-            scheduleUpdate: any,
-          }) => {
+          {({ ref, style, placement, scheduleUpdate }: PopperProps) => {
             this.scheduleUpdate = scheduleUpdate;
 
             return (
@@ -94,5 +92,3 @@ class FixedLayer extends Component<Props> {
     );
   }
 }
-
-export default FixedLayer;
