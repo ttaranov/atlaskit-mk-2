@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 29.1.0
+- [minor] Don't open external links in new window [2bb95c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2bb95c0)
+
 ## 29.0.6
 - [patch] Inline code should wrap [f1d9a54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1d9a54)
 
