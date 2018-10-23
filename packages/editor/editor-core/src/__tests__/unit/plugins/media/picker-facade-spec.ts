@@ -97,10 +97,10 @@ describe('Media PickerFacade', () => {
     expect(eventName).toBe('upload-preview-update');
   }
 
-  function triggerEnd(payload?: Partial<MediaState>) {
+  function triggerProcessing(payload?: Partial<MediaState>) {
     const [eventName, cb] = spies.on.mock.calls[1];
     cb(endPayload);
-    expect(eventName).toBe('upload-end');
+    expect(eventName).toBe('upload-processing');
   }
 
   const pickerTypes: Array<PickerType> = [
@@ -159,7 +159,7 @@ describe('Media PickerFacade', () => {
           pickerType === 'dropzone' ? 5 : 3,
         );
         expect(spies.on).toHaveBeenCalledWith('upload-preview-update', fn);
-        expect(spies.on).toHaveBeenCalledWith('upload-end', fn);
+        expect(spies.on).toHaveBeenCalledWith('upload-processing', fn);
 
         if (pickerType === 'dropzone') {
           expect(spies.on).toHaveBeenCalledWith('drag-enter', fn);
@@ -175,7 +175,9 @@ describe('Media PickerFacade', () => {
         expect(spies.removeAllListeners).toHaveBeenCalledWith(
           'upload-preview-update',
         );
-        expect(spies.removeAllListeners).toHaveBeenCalledWith('upload-end');
+        expect(spies.removeAllListeners).toHaveBeenCalledWith(
+          'upload-processing',
+        );
         if (pickerType === 'dropzone') {
           expect(spies.removeAllListeners).toHaveBeenCalledWith('drag-enter');
           expect(spies.removeAllListeners).toHaveBeenCalledWith('drag-leave');
@@ -201,7 +203,7 @@ describe('Media PickerFacade', () => {
         });
 
         it('for upload end', () => {
-          triggerEnd();
+          triggerProcessing();
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith({
             status: 'ready',

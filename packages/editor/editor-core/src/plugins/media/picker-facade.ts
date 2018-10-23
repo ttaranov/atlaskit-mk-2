@@ -59,7 +59,7 @@ export default class PickerFacade {
     }
 
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
-    picker.on('upload-end', this.handleUploadEnd);
+    picker.on('upload-processing', this.handleUploadProcessing);
     picker.on('upload-error', this.handleUploadError);
 
     if (picker instanceof Dropzone) {
@@ -84,7 +84,7 @@ export default class PickerFacade {
     }
 
     (picker as any).removeAllListeners('upload-preview-update');
-    (picker as any).removeAllListeners('upload-end');
+    (picker as any).removeAllListeners('upload-processing');
     (picker as any).removeAllListeners('upload-error');
 
     if (picker instanceof Dropzone) {
@@ -233,7 +233,7 @@ export default class PickerFacade {
     this.onStartListeners.forEach(cb => cb.call(cb, [states]));
   };
 
-  private handleUploadEnd = (event: UploadEndEventPayload) => {
+  private handleUploadProcessing = (event: UploadEndEventPayload) => {
     const { file } = event;
 
     this.stateManager.updateState(file.id, {
