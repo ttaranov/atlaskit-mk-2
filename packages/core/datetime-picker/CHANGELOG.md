@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 6.3.16
+- [patch] Datetime Picker modal sticks to bottom, if needed [0149735](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0149735)
+
 ## 6.3.15
 - [patch] Added logic to onCalendarChange for impossibly large dates. These dates now get converted to the last day of the month, as opposed to default js behaviour. '2018-02-31' now converts to '2018-02-28' as opposed to '2018-03-02' [4b23458](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b23458)
 
