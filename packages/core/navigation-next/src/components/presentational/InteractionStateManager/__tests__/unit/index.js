@@ -16,8 +16,8 @@ describe('InteractionStateManager', () => {
         )}
       </InteractionStateManager>,
     );
-
-    expect(wrapper.find('.children').text()).toBe('');
+    expect(wrapper.find('.active')).toHaveLength(0);
+    expect(wrapper.find('.hover')).toHaveLength(0);
   });
 
   it('should change hover state when mouse is over the element', () => {
