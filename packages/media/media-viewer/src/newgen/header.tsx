@@ -23,7 +23,10 @@ import {
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
 import { MediaViewerError, createError } from './error';
-import { ToolbarDownloadButton, DisabledDownloadButton } from './download';
+import {
+  ToolbarDownloadButton,
+  DisabledToolbarDownloadButton,
+} from './download';
 
 export type Props = {
   readonly identifier: Identifier;
@@ -85,8 +88,8 @@ export default class Header extends React.Component<Props, State> {
     const { item } = this.state;
     const { identifier, context } = this.props;
     return item.match({
-      pending: () => DisabledDownloadButton,
-      failed: () => DisabledDownloadButton,
+      pending: () => DisabledToolbarDownloadButton,
+      failed: () => DisabledToolbarDownloadButton,
       successful: item => (
         <ToolbarDownloadButton
           state={item}

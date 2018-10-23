@@ -84,7 +84,7 @@ export const ToolbarDownloadButton = (props: ToolbarDownloadButtonProps) => {
   );
 };
 
-export const DisabledDownloadButton = (
+export const DisabledToolbarDownloadButton = (
   <Button
     label="Download"
     appearance="toolbar"
