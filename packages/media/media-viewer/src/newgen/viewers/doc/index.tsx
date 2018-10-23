@@ -23,11 +23,11 @@ export type Props = {
 };
 
 export type State = {
-  src: Outcome<string, MediaViewerError>;
+  content: Outcome<string, MediaViewerError>;
 };
 
 const initialState: State = {
-  src: Outcome.pending(),
+  content: Outcome.pending(),
 };
 
 export class DocViewer extends React.Component<Props, State> {
@@ -48,7 +48,7 @@ export class DocViewer extends React.Component<Props, State> {
     const pdfArtifactUrl = getArtifactUrl(item.artifacts, 'document.pdf');
     if (!pdfArtifactUrl) {
       this.setState({
-        src: Outcome.failed(
+        content: Outcome.failed(
           createError('noPDFArtifactsFound', undefined, item),
         ),
       });
@@ -61,11 +61,11 @@ export class DocViewer extends React.Component<Props, State> {
         collectionName,
       );
       this.setState({
-        src: Outcome.successful(src),
+        content: Outcome.successful(src),
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', err, item)),
+        content: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }
@@ -88,9 +88,9 @@ export class DocViewer extends React.Component<Props, State> {
       return <Spinner />;
     }
 
-    return this.state.src.match({
+    return this.state.content.match({
       pending: () => <Spinner />,
-      successful: src => <PDFComponent src={src} onClose={onClose} />,
+      successful: content => <PDFComponent src={content} onClose={onClose} />,
       failed: err => (
         <ErrorMessage error={err}>
           <p>Try downloading the file to view it.</p>
