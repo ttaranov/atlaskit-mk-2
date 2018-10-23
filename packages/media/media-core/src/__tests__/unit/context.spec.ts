@@ -1,3 +1,4 @@
+import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import {
@@ -220,13 +221,15 @@ describe('Context', () => {
   });
 
   describe('.file.getFileState()', () => {
+    const id = uuid.v4();
+
     it('should fetch the file if it doesnt exist locally', done => {
       const context = createContext();
       const response = Promise.resolve({
         data: {
           items: [
             {
-              id: '1',
+              id,
               collection: 'some-collection',
               details: {
                 name: 'file-one',
@@ -243,7 +246,7 @@ describe('Context', () => {
       };
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
-      const observer = context.file.getFileState('1', {
+      const observer = context.file.getFileState(id, {
         collectionName: 'some-collection',
       });
 
@@ -251,10 +254,10 @@ describe('Context', () => {
         next(state) {
           expect(getItems).toHaveBeenCalledTimes(1);
           expect(getItems).lastCalledWith([
-            { id: '1', collection: 'some-collection' },
+            { id, collection: 'some-collection' },
           ]);
           expect(state).toEqual({
-            id: '1',
+            id,
             status: 'processed',
             name: 'file-one',
             size: 1,
@@ -279,7 +282,7 @@ describe('Context', () => {
           data: {
             items: [
               {
-                id: '123',
+                id,
                 details: {
                   name: 'file-one',
                   size: 1,
@@ -296,7 +299,7 @@ describe('Context', () => {
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
 
-      const observer = context.file.getFileState('123');
+      const observer = context.file.getFileState(id);
       const next = jest.fn();
 
       observer.subscribe({
@@ -316,13 +319,13 @@ describe('Context', () => {
     it('should pass options down', () => {
       const context = createContext();
 
-      context.file.getFileState('1', {
+      context.file.getFileState(id, {
         collectionName: 'my-collection',
         occurrenceKey: 'some-occurrenceKey',
       });
 
       expect(getOrInsertSpy).toHaveBeenLastCalledWith(
-        '1-my-collection-some-occurrenceKey',
+        `${id}-my-collection-some-occurrenceKey`,
         expect.anything(),
       );
     });
@@ -339,7 +342,7 @@ describe('Context', () => {
       };
       (context as any).mediaStore = { getFile };
       uploadFileMock.mockImplementation((_, __, callbacks) => {
-        callbacks.onId('1');
+        callbacks.onId(id);
         return { deferredFileId };
       });
 
