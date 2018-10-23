@@ -6,7 +6,6 @@ import {
   ProcessedFileState,
 } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
-import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'deep-equal';
 import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
@@ -24,19 +23,17 @@ import {
 } from './styled';
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
-import { createItemDownloader } from './domain/download';
 import { MediaViewerError, createError } from './error';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { createAndFireEventOnMedia } from './analytics/index';
-import { downloadButtonEvent } from './analytics/download';
+import {
+  renderToolbarDownloadButton,
+  disabledDownloadButton,
+} from './domain/download';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
   readonly onClose?: () => void;
 };
-
-const downloadIcon = <DownloadIcon label="Download" />;
 
 export type State = {
   item: Outcome<FileState, MediaViewerError>;
@@ -88,40 +85,14 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
-  private renderDownloadButton = (state: FileState) => {
-    const { identifier, context } = this.props;
-    const ev = downloadButtonEvent(state);
-    const DownloadButton = withAnalyticsEvents({
-      onClick: createAndFireEventOnMedia(ev),
-    })(Button);
-    return (
-      <DownloadButton
-        label="Download"
-        appearance="toolbar"
-        onClick={createItemDownloader(
-          state,
-          context,
-          identifier.collectionName,
-        )}
-        iconBefore={downloadIcon}
-      />
-    );
-  };
-
   private renderDownload = () => {
     const { item } = this.state;
-    const disabledDownloadButton = (
-      <Button
-        label="Download"
-        appearance="toolbar"
-        isDisabled={true}
-        iconBefore={downloadIcon}
-      />
-    );
+    const { identifier, context } = this.props;
     return item.match({
       pending: () => disabledDownloadButton,
       failed: () => disabledDownloadButton,
-      successful: item => this.renderDownloadButton(item),
+      successful: item =>
+        renderToolbarDownloadButton(item, identifier, context),
     });
   };
 
