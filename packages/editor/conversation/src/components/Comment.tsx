@@ -226,6 +226,12 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
+  private handleCommentEditorChange = (value: any) => {
+    const { comment } = this.props;
+
+    this.dispatch('onEditorChange', value, comment.commentId);
+  };
+
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
@@ -344,6 +350,7 @@ export default class Comment extends React.Component<Props, State> {
           onCancel={this.onCancelEdit}
           onClose={onEditorClose}
           onOpen={onEditorOpen}
+          onChange={this.handleCommentEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -381,6 +388,7 @@ export default class Comment extends React.Component<Props, State> {
       disableScrollTo,
       onEditorClose,
       onEditorOpen,
+      onEditorChange,
       sendAnalyticsEvent,
     } = this.props;
 
@@ -399,6 +407,7 @@ export default class Comment extends React.Component<Props, State> {
         onDeleteComment={onDeleteComment}
         onEditorClose={onEditorClose}
         onEditorOpen={onEditorOpen}
+        onEditorChange={onEditorChange}
         onRevertComment={onRevertComment}
         onHighlightComment={onHighlightComment}
         onRetry={onRetry}
@@ -438,6 +447,7 @@ export default class Comment extends React.Component<Props, State> {
         dataProviders={dataProviders}
         onOpen={onEditorOpen}
         onClose={onEditorClose}
+        onChange={this.handleCommentEditorChange}
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
