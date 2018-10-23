@@ -33,6 +33,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/onboarding"
       Component={require('../examples/00-different-spotlights').default}
       title="Spotlight Cards"
       source={require('!!raw-loader!../examples/00-different-spotlights')}
@@ -52,6 +53,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/onboarding"
       Component={require('../examples/99-modal-basic').default}
       title="Benefits Modal"
       source={require('!!raw-loader!../examples/99-modal-basic')}
