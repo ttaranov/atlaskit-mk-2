@@ -10,6 +10,10 @@ import { createContext } from '../_stubs';
 import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { MediaViewerError } from '../../../newgen/error';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../../package.json';
 
 describe('download', () => {
   const processingFailedState: ProcessingFailedState = {
@@ -93,8 +97,8 @@ describe('download', () => {
           fileProcessingStatus: 'failed-processing',
           fileSize: 42,
           fileSupported: true,
-          packageName: '@atlaskit/media-viewer',
-          packageVersion: '24.1.8',
+          packageName,
+          packageVersion,
         },
         eventType: 'ui',
       });
@@ -157,8 +161,8 @@ describe('download', () => {
         fileProcessingStatus: 'failed-processing',
         fileSize: 42,
         fileSupported: true,
-        packageName: '@atlaskit/media-viewer',
-        packageVersion: '24.1.8',
+        packageName,
+        packageVersion,
       },
       eventType: 'ui',
     });
