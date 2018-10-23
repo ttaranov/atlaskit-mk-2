@@ -20,7 +20,7 @@ import {
 const getResultIdByIndex = (array: ResultBaseType[], index: number | null) => {
   if (
     array &&
-    index != null &&
+    index !== null &&
     array[index] &&
     array[index].props &&
     array[index].props.resultId
@@ -71,7 +71,7 @@ const adjustIndex = (
   }
 
   // If nothing is selected, select the element on the end
-  if (currentIndex == null) {
+  if (currentIndex === null) {
     return adjustment > 0 ? 0 : arrayLength - 1;
   }
   // Adjust current index, wrapping around if necessary
@@ -272,12 +272,12 @@ export class QuickSearch extends React.Component<Props, State> {
   };
 
   /**
-    * Callback for unregister results in flatResults
-    * It will reconcile a list of results for keyboard navigation after every update.
-    1. Component starts with an empty list of results
-    2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
-    3. All ResultBase components call registerResult() in order to register itself in quick search
-    4. All ResultBase components call unregisterResult() in order to unregister itself in quick search
+   * Callback for unregister results in flatResults
+   * It will reconcile a list of results for keyboard navigation after every update.
+   * 1. Component starts with an empty list of results
+   * 2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
+   * 3. All ResultBase components call registerResult() in order to register itself in quick search
+   * 4. All ResultBase components call unregisterResult() in order to unregister itself in quick search
    */
   handleUnregisterResult = (result: ResultBaseType) => {
     const resultIndex = getResultIndexById(

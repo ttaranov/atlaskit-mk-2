@@ -15,21 +15,17 @@ const Item = withItemClick(withItemFocus(baseItem));
 type Props = {
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string;
-  /** Location to link out to on click. This is passed down to the custom link
-   component if one is provided. */
+  /** Location to link out to on click. This is passed down to the custom link component if one is provided. */
   href?: string;
   /** Target frame for item `href` link to be aimed at. */
   target?: string;
-  /** React element to appear to the left of the text. This should be an
-   @atlaskit/icon component. */
+  /** React element to appear to the left of the text. This should be an @atlaskit/icon component. */
   icon?: React.ReactNode;
   /** Makes the navigation item appear with reduced padding and font size. */
   isCompact?: boolean;
-  /** Set whether the item should be highlighted as selected. Selected items have
-   a different background color. */
+  /** Set whether the item should be highlighted as selected. Selected items have a different background color. */
   isSelected?: boolean;
-  /** Function to be called on click. This is passed down to a custom link component,
-   if one is provided.  */
+  /** Function to be called on click. This is passed down to a custom link component, if one is provided.  */
   onClick?(e: MouseEvent): void;
   /** Standard onmouseenter event */
   onMouseEnter?: (e: MouseEvent) => void;
@@ -37,8 +33,7 @@ type Props = {
   onMouseLeave?: (e: MouseEvent) => void;
   /** Text to be shown alongside the main `text`. */
   subText?: string;
-  /** Main text to be displayed as the item. Accepts a react component but in most
-   cases this should just be a string. */
+  /** Main text to be displayed as the item. Accepts a react component but in most cases this should just be a string. */
   text?: React.ReactNode;
   /** React component to be placed to the right of the main text. */
   textAfter?: React.ReactNode;

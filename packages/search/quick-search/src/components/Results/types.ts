@@ -16,8 +16,7 @@ export type ResultData = {
 };
 
 type CommonResultProps = {
-  /** Content to be shown after the main content. Shown to the right of content
-   (or to the left in RTL mode). */
+  /** Content to be shown after the main content. Shown to the right of content (or to the left in RTL mode). */
   elemAfter?: ReactNode;
   /** Location to link out to on click. */
   href?: string;
@@ -104,8 +103,7 @@ export type PersonResultType = CommonResultProps & {
   avatar?: ReactNode;
   /** React element to appear to the left of the text. */
   icon?: ReactNode;
-  /** A user's custom handle. Appears to the right of their `name`. It has a lower
-   font-weight. */
+  /** A user's custom handle. Appears to the right of their `name`. It has a lower font-weight. */
   mentionName?: string;
   /** A character with which to prefix the `mentionName`. Defaults to '@' */
   mentionPrefix?: string;
