@@ -5,6 +5,7 @@ import { ContainerResult, ResultItemGroup } from '../src';
 
 const defaultProps = {
   resultId: 'result_id',
+  type: 'container',
 };
 
 const dummyAvatarComponent = (
@@ -27,7 +28,6 @@ export default class extends React.Component {
             avatarUrl={getContainerAvatarUrl(3)}
             name="Cargo boxes"
             subText="They're big!"
-            type="container"
           />
           <ContainerResult
             {...defaultProps}

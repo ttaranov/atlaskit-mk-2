@@ -90,7 +90,7 @@ export function randomConfluenceIconUrl() {
 
 function randomPresenceState() {
   const states = ['online', 'offline', 'busy'];
-  return pickRandom(states);
+  return pickRandom(states) as 'online' | 'offline' | 'busy';
 }
 
 export const getPersonAvatarUrl = (identity: string) =>
@@ -109,7 +109,7 @@ function randomIssueKey() {
 }
 
 export function objectData(n: number): ObjectResultType[] {
-  const items = [];
+  const items: ObjectResultType[] = [];
 
   for (let i = 0; i < n; i++) {
     const provider = randomProduct();
@@ -132,7 +132,7 @@ export function objectData(n: number): ObjectResultType[] {
 }
 
 export function containerData(n: number): ContainerResultType[] {
-  const items = [];
+  const items: ContainerResultType[] = [];
 
   for (let i = 0; i < n; i++) {
     items.push({
@@ -147,7 +147,7 @@ export function containerData(n: number): ContainerResultType[] {
 }
 
 export function personData(n: number): PersonResultType[] {
-  const items = [];
+  const items: PersonResultType[] = [];
 
   for (let i = 0; i < n; i++) {
     items.push({

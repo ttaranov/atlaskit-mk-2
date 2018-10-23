@@ -5,6 +5,7 @@ import { ObjectResult, ResultItemGroup } from '../src';
 
 const defaultProps = {
   resultId: 'result_id',
+  type: 'object',
 };
 
 const dummyAvatarComponent = (

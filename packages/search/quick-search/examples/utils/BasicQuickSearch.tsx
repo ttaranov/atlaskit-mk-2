@@ -71,20 +71,17 @@ type Store = {
 };
 const store: Store = {};
 
-type BasicQuickSearchProp = {
-  fakeNetworkLatency: number;
+type Props = {
+  fakeNetworkLatency?: number;
 };
 
-type BasicQuickSearchState = {
+type State = {
   query: string;
   results: DataShape[];
   isLoading: boolean;
 };
 
-export default class BasicQuickSearch extends React.Component<
-  BasicQuickSearchProp,
-  BasicQuickSearchState
-> {
+export default class BasicQuickSearch extends React.Component<Props, State> {
   static defaultProps = {
     fakeNetworkLatency: 0,
   };
@@ -95,7 +92,7 @@ export default class BasicQuickSearch extends React.Component<
     isLoading: false,
   };
 
-  searchTimeoutId: NodeJS.Timer;
+  searchTimeoutId: any;
 
   setQuery(query: string) {
     store.query = query;

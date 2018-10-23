@@ -39,6 +39,7 @@ export default class extends React.Component {
                         indexWithinSection: 0,
                         custom: 'foo',
                       }}
+                      type="object"
                     />
                     <ObjectResult
                       resultId="2"
@@ -48,6 +49,7 @@ export default class extends React.Component {
                       analyticsData={{
                         indexWithinSection: 1,
                       }}
+                      type="object"
                     />
                   </ResultItemGroup>
                   <ResultItemGroup title="Containers">
@@ -57,6 +59,7 @@ export default class extends React.Component {
                       name="Prank schedule: April 2017"
                       containerName="The Scream Team"
                       isPrivate
+                      type="object"
                     />
                   </ResultItemGroup>
                 </div>

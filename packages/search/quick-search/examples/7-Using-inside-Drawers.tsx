@@ -63,7 +63,7 @@ export default class IssueUsingDrawers extends React.Component<any, State> {
     const Wrapper = this.state.shouldRenderNewDrawer ? Drawer : AkSearchDrawer;
 
     return (
-      <div css={{ padding: '2rem' }}>
+      <div style={{ padding: '2rem' }}>
         <Wrapper
           onClose={this.closeDrawer}
           onBackButton={this.closeDrawer}
@@ -78,7 +78,7 @@ export default class IssueUsingDrawers extends React.Component<any, State> {
         <button type="button" onClick={this.openDrawer}>
           Open drawer
         </button>
-        <div css={{ marginTop: '2rem' }}>
+        <div style={{ marginTop: '2rem' }}>
           <label htmlFor="wrapper-checkbox">
             <input
               id="wrapper-checkbox"
@@ -88,7 +88,7 @@ export default class IssueUsingDrawers extends React.Component<any, State> {
             />
             Use new Drawer component
           </label>
-          <div css={{ display: 'block', paddingTop: '1rem' }}>
+          <div style={{ display: 'block', paddingTop: '1rem' }}>
             Quick search is wrapped using drawer component from{' '}
             <strong>{`${
               this.state.shouldRenderNewDrawer
@@ -98,7 +98,7 @@ export default class IssueUsingDrawers extends React.Component<any, State> {
           </div>
         </div>
         {this.state.shouldRenderNewDrawer && (
-          <div css={{ marginTop: '2rem' }}>
+          <div style={{ marginTop: '2rem' }}>
             <label htmlFor="checkbox">
               <input
                 id="checkbox"
@@ -108,7 +108,7 @@ export default class IssueUsingDrawers extends React.Component<any, State> {
               />
               Toggle remounting of drawer contents on exit
             </label>
-            <div css={{ display: 'block', paddingTop: '1rem' }}>
+            <div style={{ display: 'block', paddingTop: '1rem' }}>
               Contents of the drawer will be{' '}
               <strong>{`${
                 this.state.shouldUnmountOnExit ? 'discarded' : 'retained'

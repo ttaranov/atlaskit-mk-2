@@ -9,6 +9,7 @@ const ResultWrapperStateless = () => (
     avatarUrl={randomConfluenceIconUrl()}
     name="Yeah, I cut my dev loop in half, but you'll never guess what happened next!"
     containerName="Buzzfluence"
+    type="object"
   />
 );
 
@@ -25,6 +26,7 @@ class ResultWrapperClass extends React.Component {
         name="Prank schedule: April 2017"
         containerName="The Scream Team"
         isPrivate
+        type="object"
       />
     );
   }
@@ -52,6 +54,7 @@ export default class extends React.Component {
                       avatarUrl={randomJiraIconUrl()}
                       objectKey="AK-007"
                       containerName="Search'n'Smarts"
+                      type="object"
                     />
                   </span>
 
