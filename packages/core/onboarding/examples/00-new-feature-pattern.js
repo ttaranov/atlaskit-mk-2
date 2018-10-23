@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
+import { borderRadius } from '@atlaskit/theme';
 import {
   Spotlight,
   SpotlightPulse,
@@ -9,6 +10,11 @@ import {
   SpotlightTarget,
   SpotlightTransition,
 } from '../src';
+
+const Pulse = styled(SpotlightPulse)`
+  position: static;
+  border-radius: ${borderRadius}px;
+`;
 
 const Wrapper = styled.div`
   align-items: center;
@@ -29,7 +35,7 @@ class NewFeature extends React.Component<{}, { spotlightVisible: boolean }> {
         <SpotlightManager blanketIsTinted={false}>
           <ButtonGroup>
             <SpotlightTarget name="button">
-              <SpotlightPulse>
+              <Pulse>
                 <Button
                   onClick={() =>
                     this.setState({ spotlightVisible: !spotlightVisible })
@@ -37,7 +43,7 @@ class NewFeature extends React.Component<{}, { spotlightVisible: boolean }> {
                 >
                   I am a new feature
                 </Button>
-              </SpotlightPulse>
+              </Pulse>
             </SpotlightTarget>
             <Button>Another element</Button>
           </ButtonGroup>
