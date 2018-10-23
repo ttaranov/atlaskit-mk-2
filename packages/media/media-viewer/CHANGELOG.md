@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.1.6
+- [patch] Make AudioViewer inherit from BaseViewer [5f7e58b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f7e58b)
+
 ## 24.1.5
 - [patch] Add analytics for the header download button [4e8cacc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8cacc)
 
