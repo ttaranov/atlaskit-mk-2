@@ -102,6 +102,10 @@ function forceColumnWidths(
     return tr;
   }
 
+  if (getPresetLayout(node) === presetLayout) {
+    return tr;
+  }
+
   return tr.replaceWith(
     pos + 1,
     pos + node.nodeSize - 1,
@@ -114,7 +118,7 @@ export function forceSectionToPresetLayout(
   node: Node,
   pos: number,
   presetLayout: PresetLayout,
-): Transaction | undefined {
+): Transaction {
   const tr = forceColumnStructure(state, node, pos, presetLayout);
 
   // save the selection here, since forcing column widths causes a change over the

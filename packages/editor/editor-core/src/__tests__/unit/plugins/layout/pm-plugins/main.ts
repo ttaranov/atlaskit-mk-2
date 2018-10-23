@@ -282,8 +282,8 @@ describe('layout', () => {
         const pos = 0;
         const node = document.nodeAt(pos) as Node;
         expect(
-          forceSectionToPresetLayout(state, node, pos, layoutType),
-        ).toBeUndefined();
+          forceSectionToPresetLayout(state, node, pos, layoutType).docChanged,
+        ).toBe(false);
       });
     });
     ['three_equal'].forEach((layoutType: PresetLayout) => {
@@ -299,8 +299,8 @@ describe('layout', () => {
         const pos = 0;
         const node = document.nodeAt(pos) as Node;
         expect(
-          forceSectionToPresetLayout(state, node, pos, layoutType)!,
-        ).toBeUndefined();
+          forceSectionToPresetLayout(state, node, pos, layoutType).docChanged,
+        ).toBe(false);
       });
 
       it(`should add a third column when layout is ${layoutType}`, () => {
