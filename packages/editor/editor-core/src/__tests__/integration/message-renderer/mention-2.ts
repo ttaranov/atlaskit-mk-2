@@ -1,13 +1,13 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import { getDocFromElement } from '../_helpers';
 import {
-  getDocFromElement,
+  messageEditor,
   editable,
+  picker,
   insertMention,
-  mentionPicker,
-} from '../_helpers';
-
-import { messageEditor, lozenge } from './_message-renderer-helpers';
+  lozenge,
+} from './_mention-helpers';
 
 /*
  * Safari does not understand webdriver keyboard actions so a
@@ -38,7 +38,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'test@');
-    expect(await browser.isExisting(mentionPicker)).toBe(false);
+    expect(await browser.isExisting(picker)).toBe(false);
   },
 );
 
@@ -67,25 +67,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@ Carolyn');
-    expect(await browser.isExisting(mentionPicker)).toBe(false);
-  },
-);
-
-BrowserTestCase(
-  'mention-2.ts: insert on space if unique exact nickname match, with multiple results',
-  { skip: ['ie', 'edge'] },
-  async client => {
-    const browser = new Page(client);
-    await browser.goto(messageEditor);
-    await browser.waitForSelector(editable);
-    await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
-    await browser.type(editable, 'penelope');
-    await browser.isVisible('[data-mention-name=pgill]');
-    await browser.isVisible('[data-mention-name=plim]');
-    await browser.type(editable, ' some');
-    await browser.type(editable, ' text');
-    expect(await browser.isExisting('span=@penelope')).toBe(true);
+    expect(await browser.isExisting(picker)).toBe(false);
   },
 );
 
@@ -111,8 +93,8 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
+    await browser.waitForSelector(picker);
     await browser.type(editable, 'Escape');
-    expect(await browser.isExisting(mentionPicker)).toBe(false);
+    expect(await browser.isExisting(picker)).toBe(false);
   },
 );

@@ -42,7 +42,7 @@ describe('@atlaskit/editore-core/utils', () => {
         codeBlockPlugin(),
         panelPlugin,
         listPlugin,
-        mentionsPlugin,
+        mentionsPlugin(),
         tasksAndDecisionsPlugin,
       ],
     });

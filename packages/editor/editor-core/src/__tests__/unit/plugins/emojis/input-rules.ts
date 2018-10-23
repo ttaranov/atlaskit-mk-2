@@ -24,7 +24,7 @@ describe('emojis - input rules', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [emojiPlugin, codeBlockPlugin(), mentionsPlugin],
+      editorPlugins: [emojiPlugin, codeBlockPlugin(), mentionsPlugin()],
       providerFactory,
       pluginKey: emojiPluginKey,
     });

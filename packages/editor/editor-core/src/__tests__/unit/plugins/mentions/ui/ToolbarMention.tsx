@@ -10,7 +10,7 @@ describe('ToolbarMention', () => {
   const editor = (doc: any, analyticsHandler = () => {}) =>
     createEditor({
       doc,
-      editorPlugins: [mentionsPlugin],
+      editorPlugins: [mentionsPlugin()],
       editorProps: { analyticsHandler },
     });
 

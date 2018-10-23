@@ -28,7 +28,7 @@ describe('media-files', () => {
       doc,
       editorPlugins: [
         mediaPlugin(),
-        mentionsPlugin,
+        mentionsPlugin(),
         codeBlockPlugin(),
         rulePlugin,
         panelPlugin,

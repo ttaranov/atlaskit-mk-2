@@ -32,7 +32,11 @@ describe('tasks and decisions - keymaps', () => {
   const editorFactory = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [tablesPlugin(), tasksAndDecisionsPlugin, mentionsPlugin],
+      editorPlugins: [
+        tablesPlugin(),
+        tasksAndDecisionsPlugin,
+        mentionsPlugin(),
+      ],
     });
 
   const scenarios = [

@@ -25,7 +25,7 @@ describe('media-common', () => {
   const editor = (doc: any, uploadErrorHandler?: () => void) =>
     createEditor({
       doc,
-      editorPlugins: [mediaPlugin(), mentionsPlugin, rulePlugin],
+      editorPlugins: [mediaPlugin(), mentionsPlugin(), rulePlugin],
     });
 
   describe('removeMediaNode', () => {

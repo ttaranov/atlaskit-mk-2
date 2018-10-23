@@ -62,7 +62,7 @@ describe('JSONTransformer:', () => {
         doc,
         editorPlugins: [
           emojiPlugin,
-          mentionsPlugin,
+          mentionsPlugin(),
           codeBlockPlugin(),
           mediaPlugin(),
           textColorPlugin,
