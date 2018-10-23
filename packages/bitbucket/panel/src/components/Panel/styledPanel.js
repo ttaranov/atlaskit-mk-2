@@ -12,11 +12,17 @@ export const PanelWrapper = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  line-height: 0;
-  position: absolute;
   left: 0;
+  line-height: 0;
   opacity: ${({ isHidden }) => (isHidden ? 0 : 1)};
+  position: absolute;
   ${transition};
+
+  /* IE 11 needs these vertical positioning rules - the flexbox
+  behavior for absolute-positioned children is not up to spec.
+  https://googlechrome.github.io/samples/css-flexbox-abspos/ */
+  top: 50%;
+  transform: translateY(-50%);
 
   button {
     pointer-events: none;
@@ -24,17 +30,17 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const PanelHeader = withFocusWithin(styled.div`
+  align-items: center;
   background-color: ${props => props.isFocused && colors.N20};
   border-radius: ${borderRadius}px;
   display: flex;
-  align-items: center;
   left: -${gridSize() * 3}px;
-  margin-top: ${gridSize() * 2}px;
   margin-bottom: ${gridSize()}px;
+  margin-top: ${gridSize() * 2}px;
   padding: 2px 0 2px ${gridSize() * 3}px;
   position: relative;
-  width: 100%;
   ${transition};
+  width: 100%;
 
   ${ButtonWrapper} {
     opacity: ${props => props.isFocused && 1};
