@@ -67,7 +67,9 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .mentionView-content-wrap,
   .inlineExtensionView-content-wrap,
   .emojiView-content-wrap,
-  .dateView-content-wrap {
+  .dateView-content-wrap,
+  .inlineCardView-content-wrap,
+  .blockCardView-content-wrap {
     display: inline-block;
   }
 
