@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.0.6
+- [patch] ED-5564 Fix wrong ADF for code block when language is selected [5db3cfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5db3cfe)
+
 ## 87.0.5
 - [patch] Fixes cursor position between mention nodes [2748f31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2748f31)
 
