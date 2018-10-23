@@ -17,7 +17,7 @@ import {
   changeSelectedCardToLink,
   setSelectedCardAppearance,
 } from './pm-plugins/doc';
-import { selectedCardAppearance } from './utils';
+import { appearanceForNodeType } from './utils';
 import { CardAppearance } from './types';
 
 export const messages = defineMessages({
@@ -70,18 +70,31 @@ const buildDropdown = (
   state: EditorState,
   intl: InjectedIntl,
 ): FloatingToolbarItem<Command> => {
-  const currentAppearance = selectedCardAppearance(state);
+  const selectedCard =
+    state.selection instanceof NodeSelection && state.selection.node;
+  const options: SelectOption[] = [];
 
-  const options = Object.keys(messages).map(value => ({
-    value,
-    label: intl.formatMessage(messages[value]),
-    selected: currentAppearance === value,
-  }));
+  if (selectedCard) {
+    const currentAppearance = appearanceForNodeType(selectedCard.type);
+
+    ['block', 'inline', 'link'].forEach(value => {
+      // don't allow conversion to link if it has no url attached
+      if (value === 'link' && !selectedCard.attrs.url) {
+        return;
+      }
+
+      options.push({
+        value,
+        label: intl.formatMessage(messages[value]),
+        selected: currentAppearance === value,
+      });
+    });
+  }
 
   return {
     type: 'select',
     options,
-    defaultValue: options.find(option => option.selected),
+    defaultValue: options.find(option => !!option.selected),
     onChange: changeAppearance,
   };
 };
