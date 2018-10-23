@@ -31,7 +31,6 @@ const borderRadius = p =>
 
 export const Div = styled.div`
   ${backgroundColor} ${borderRadius};
-  z-index: ${layers.spotlight};
 `;
 
 // fixed position holds the target in place if overflow/scroll is necessary
@@ -51,5 +50,6 @@ export const TargetOverlay = styled.div`
 // exported for consumer
 export const Pulse = styled(Div)`
   position: absolute;
+  z-index: ${layers.spotlight};
   ${animation};
 `;
