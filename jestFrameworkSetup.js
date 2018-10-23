@@ -20,6 +20,11 @@ if (!global.WEBSITE_ENV) {
   global.WEBSITE_ENV = 'local';
 }
 
+// Node promise rejection are now logged for debbugging
+process.on('unhandledRejection', reason => {
+  console.log('REJECTION', reason);
+});
+
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.
