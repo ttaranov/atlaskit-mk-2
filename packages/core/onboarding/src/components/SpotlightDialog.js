@@ -21,6 +21,7 @@ import {
 import type { ActionsType } from '../types';
 import { Image } from '../styled/Dialog';
 import SpotlightCard from './SpotlightCard';
+import ValueChanged from './ValueChanged';
 
 type Props = {
   /** Buttons to render in the footer */
@@ -119,30 +120,32 @@ class SpotlightDialog extends Component<Props, State> {
 
     return (
       <Popper referenceElement={targetNode} placement={translatedPlacement}>
-        {({ ref, style }) => (
-          <FocusLock enabled={hasFocusLock} returnFocus={false}>
-            <SpotlightCard
-              ref={ref}
-              theme={({ container }) => ({
-                container: () => ({
-                  ...container(),
-                  ...style,
-                  ...animationStyles,
-                }),
-              })}
-              actions={actions}
-              actionsBeforeElement={actionsBeforeElement}
-              image={image && <Image alt={heading} src={image} />}
-              components={{
-                Header: header,
-                Footer: footer,
-              }}
-              width={dialogWidth}
-              heading={heading}
-            >
-              {children}
-            </SpotlightCard>
-          </FocusLock>
+        {({ ref, style, scheduleUpdate }) => (
+          <ValueChanged value={dialogWidth} onChange={scheduleUpdate}>
+            <FocusLock enabled={hasFocusLock} returnFocus={false}>
+              <SpotlightCard
+                ref={ref}
+                theme={({ container }) => ({
+                  container: () => ({
+                    ...container(),
+                    ...style,
+                    ...animationStyles,
+                    width: `${dialogWidth}px`,
+                  }),
+                })}
+                actions={actions}
+                actionsBeforeElement={actionsBeforeElement}
+                image={image && <Image alt={heading} src={image} />}
+                components={{
+                  Header: header,
+                  Footer: footer,
+                }}
+                heading={heading}
+              >
+                {children}
+              </SpotlightCard>
+            </FocusLock>
+          </ValueChanged>
         )}
       </Popper>
     );
