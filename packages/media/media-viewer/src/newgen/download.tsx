@@ -32,20 +32,28 @@ export const createItemDownloader = (
   return context.file.downloadBinary(id, name, collectionName);
 };
 
-export const renderErrorViewDownloadButton = (
-  state: FileState,
-  context: Context,
-  err: MediaViewerError,
-  collectionName?: string,
+export type ErrorViewDownloadButtonProps = {
+  state: FileState;
+  context: Context;
+  err: MediaViewerError;
+  collectionName?: string;
+};
+
+export const ErrorViewDownloadButton = (
+  props: ErrorViewDownloadButtonProps,
 ) => {
-  const downloadEvent = downloadErrorButtonEvent(state, err);
+  const downloadEvent = downloadErrorButtonEvent(props.state, props.err);
   return (
     <DownloadButtonWrapper>
       <DownloadButton
         analyticsPayload={downloadEvent}
         appearance="primary"
         label="Download"
-        onClick={createItemDownloader(state, context, collectionName)}
+        onClick={createItemDownloader(
+          props.state,
+          props.context,
+          props.collectionName,
+        )}
       >
         Download
       </DownloadButton>
@@ -53,24 +61,30 @@ export const renderErrorViewDownloadButton = (
   );
 };
 
-export const renderToolbarDownloadButton = (
-  state: FileState,
-  identifier: Identifier,
-  context: Context,
-) => {
-  const downloadEvent = downloadButtonEvent(state);
+export type ToolbarDownloadButtonProps = {
+  state: FileState;
+  identifier: Identifier;
+  context: Context;
+};
+
+export const ToolbarDownloadButton = (props: ToolbarDownloadButtonProps) => {
+  const downloadEvent = downloadButtonEvent(props.state);
   return (
     <DownloadButton
       analyticsPayload={downloadEvent}
       label="Download"
       appearance="toolbar"
-      onClick={createItemDownloader(state, context, identifier.collectionName)}
+      onClick={createItemDownloader(
+        props.state,
+        props.context,
+        props.identifier.collectionName,
+      )}
       iconBefore={downloadIcon}
     />
   );
 };
 
-export const disabledDownloadButton = (
+export const DisabledDownloadButton = (
   <Button
     label="Download"
     appearance="toolbar"

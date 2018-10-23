@@ -2,10 +2,11 @@ import { mount } from 'enzyme';
 import { ErrorFileState, ProcessingFailedState } from '@atlaskit/media-core';
 import {
   createItemDownloader,
-  renderToolbarDownloadButton,
+  ToolbarDownloadButton,
   DownloadButton,
 } from '../../../newgen/download';
 import { createContext } from '../_stubs';
+import * as React from 'react';
 
 describe('download', () => {
   const processingFailedState: ProcessingFailedState = {
@@ -57,19 +58,19 @@ describe('download', () => {
     );
   });
 
-  it.only('should download binary when toolbar button is clicked', () => {
+  it('should download binary when toolbar button is clicked', () => {
     const context = createContext({});
     const component = mount(
-      renderToolbarDownloadButton(
-        processingFailedState,
-        {
+      <ToolbarDownloadButton
+        state={processingFailedState}
+        identifier={{
           id: 'my-id',
           type: 'file',
           occurrenceKey: 'my-occurrenceKey',
           collectionName: 'some-collection-name',
-        },
-        context,
-      ),
+        }}
+        context={context}
+      />,
     );
     component.find(DownloadButton).simulate('click');
     expect(context.file.downloadBinary).toHaveBeenCalledWith(
