@@ -16,7 +16,9 @@ export default {
       'decisionList',
       'taskList',
       'extension',
+      'blockCard',
     ],
   ],
   minItems: 1,
+  allowUnsupportedBlock: true,
 };

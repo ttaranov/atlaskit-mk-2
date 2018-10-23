@@ -116,6 +116,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
       allowLists: {},
       allowHelpDialog: {},
       allowGapCursor: {},
+      allowUnsupportedContent: {
+        message: 'Deprecated. Defaults to true.',
+        type: 'removed',
+      },
     };
 
     Object.keys(deprecatedProperties).forEach(property => {
@@ -134,7 +138,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     if (!props.hasOwnProperty('appearance')) {
       // tslint:disable-next-line:no-console
       console.warn(
-        `The default appearence is changing from "message" to "comment", to main current behaviour use <Editor appearance="message" />. [Will be changed in editor-core@${nextVersion}]`,
+        `The default appearance is changing from "message" to "comment", to main current behaviour use <Editor appearance="message" />. [Will be changed in editor-core@${nextVersion}]`,
       );
     }
 

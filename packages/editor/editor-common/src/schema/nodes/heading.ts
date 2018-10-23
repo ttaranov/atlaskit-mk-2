@@ -7,7 +7,7 @@ import { Inline } from './doc';
 export interface HeadingDefinition {
   type: 'heading';
   /**
-   * @minItems 0
+   * @allowUnsupportedInline true
    */
   content: Array<Inline>;
   attrs: {

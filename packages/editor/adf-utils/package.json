@@ -6,7 +6,7 @@
   "atlaskit:src": "src/index.ts",
   "sideEffects": false,
   "scripts": {
-    "generate:spec": "rm -rf ./src/validator/specs/ && ../json-schema-generator/bin.js --outDir=./src/validator/specs/ --mode=Spec ./src/validator/entry.ts"
+    "generate:spec": "rm -rf ./src/validator/specs/ && ../json-schema-generator/bin.js --outDir=./src/validator/specs/ --mode=Spec --stage=0 ./src/validator/entry.ts"
   },
   "files": [
     "dist",

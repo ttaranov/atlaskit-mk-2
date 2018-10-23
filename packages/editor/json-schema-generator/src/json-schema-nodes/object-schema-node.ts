@@ -30,7 +30,7 @@ export default class ObjectSchemaNode extends SchemaNodeWithValidators<
   }
 
   toJSON(): object {
-    const obj: any = { type: 'object' };
+    const obj: object = { type: 'object' };
     return Object.keys(this.properties).reduce((obj, key) => {
       const { value, required } = this.properties[key];
       obj['properties'] = obj['properties'] || {};

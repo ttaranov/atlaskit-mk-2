@@ -49,7 +49,7 @@ export default class EditorActions implements EditorActionsOptions {
     return this.editorView;
   }
 
-  _privateGetEventDispathcer(): EventDispatcher | undefined {
+  _privateGetEventDispatcher(): EventDispatcher | undefined {
     return this.eventDispatcher;
   }
 
@@ -128,14 +128,13 @@ export default class EditorActions implements EditorActionsOptions {
     return true;
   }
 
-  getValue(): Promise<any | undefined> {
-    return getEditorValueWithMedia(this.editorView).then(doc => {
-      const processedDoc = preprocessDoc(this.editorView!.state.schema, doc);
-      if (this.contentTransformer && processedDoc) {
-        return this.contentTransformer.encode(processedDoc);
-      }
-      return processedDoc ? toJSON(processedDoc) : processedDoc;
-    });
+  async getValue(): Promise<any | undefined> {
+    const doc = await getEditorValueWithMedia(this.editorView);
+    const processedDoc = preprocessDoc(this.editorView!.state.schema, doc);
+    if (this.contentTransformer && processedDoc) {
+      return this.contentTransformer.encode(processedDoc);
+    }
+    return processedDoc ? toJSON(processedDoc) : processedDoc;
   }
 
   replaceDocument(rawValue: any, shouldScrollToBottom = true): boolean {

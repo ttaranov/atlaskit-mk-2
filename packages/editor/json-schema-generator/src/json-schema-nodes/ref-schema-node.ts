@@ -2,18 +2,15 @@ import SchemaNode from './schema-node';
 import { getPmName } from '../utils';
 
 export default class RefSchemaNode extends SchemaNode {
-  path: string;
-
-  constructor(path: string) {
-    super();
-    this.path = path;
+  constructor(protected name: string) {
+    super('object');
   }
 
   toJSON(): object {
-    return { $ref: `#/definitions/${this.path}` };
+    return { $ref: `#/definitions/${this.name}` };
   }
 
   toSpec() {
-    return getPmName(this.path);
+    return getPmName(this.name);
   }
 }

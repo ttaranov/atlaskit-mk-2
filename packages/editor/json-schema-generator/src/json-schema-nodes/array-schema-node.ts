@@ -42,6 +42,14 @@ export default class ArraySchemaNode extends SchemaNodeWithValidators<
     const items = this.items.map(item => item.toSpec());
     const obj = { type: 'array', items };
 
-    return this.mergeValidationInfo(['minItems', 'maxItems'], obj);
+    return this.mergeValidationInfo(
+      [
+        'minItems',
+        'maxItems',
+        'allowUnsupportedBlock',
+        'allowUnsupportedInline',
+      ],
+      obj,
+    );
   }
 }
