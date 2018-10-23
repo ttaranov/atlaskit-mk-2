@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.1.0
+- [minor] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
+
 ## 87.0.6
 - [patch] ED-5564 Fix wrong ADF for code block when language is selected [5db3cfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5db3cfe)
 
