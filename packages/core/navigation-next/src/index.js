@@ -48,8 +48,12 @@ export {
 export {
   default as SkeletonContainerView,
 } from './components/presentational/SkeletonContainerView';
-export { default as SortableSection } from './components/SortableSection';
-export { default as SortableItem } from './components/SortableItem';
+export {
+  default as SortableSection,
+} from './components/presentational/SortableSection';
+export {
+  default as SortableItem,
+} from './components/presentational/SortableItem';
 export { default as Switcher } from './components/presentational/Switcher';
 export { default as Wordmark } from './components/presentational/Wordmark';
 

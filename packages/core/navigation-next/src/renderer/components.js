@@ -13,7 +13,7 @@ import MenuSectionComponent from '../components/presentational/MenuSection';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
 import Separator from '../components/presentational/Separator';
-import SortableSectionComponent from '../components/SortableSection';
+import SortableSectionComponent from '../components/presentational/SortableSection';
 import Switcher from '../components/presentational/Switcher';
 import Wordmark from '../components/presentational/Wordmark';
 

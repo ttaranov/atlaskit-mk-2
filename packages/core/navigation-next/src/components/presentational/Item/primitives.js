@@ -4,7 +4,7 @@ import React, { PureComponent, type ElementType, type Ref } from 'react';
 import { css } from 'emotion';
 
 import { styleReducerNoOp, withContentTheme } from '../../../theme';
-import type { ItemProps } from './types';
+import type { ItemPrimitiveProps } from './types';
 
 const isString = x => typeof x === 'string';
 
@@ -29,7 +29,20 @@ const ComponentSwitch = ({
   return <ElementOrComponent ref={ref} {...draggableProps} {...props} />;
 };
 
-class ItemPrimitive extends PureComponent<ItemProps> {
+const getItemComponentProps = (props: ItemPrimitiveProps) => {
+  const {
+    createAnalyticsEvent,
+    isActive,
+    isHover,
+    isSelected,
+    theme,
+    ...componentProps
+  } = props;
+
+  return componentProps;
+};
+
+class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   static defaultProps = {
     draggableProps: {},
     isActive: false,
@@ -40,6 +53,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     styles: styleReducerNoOp,
     text: '',
   };
+
   render() {
     const {
       after: After,
@@ -79,7 +93,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
 
     if (CustomComponent) {
       itemComponent = CustomComponent;
-      itemProps = this.props;
+      itemProps = getItemComponentProps(this.props);
     } else if (href) {
       itemComponent = 'a';
       itemProps = { href, onClick, target, draggableProps, innerRef };

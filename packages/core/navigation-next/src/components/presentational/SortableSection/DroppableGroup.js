@@ -3,7 +3,7 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { Group } from '../../';
+import Group from '../Group';
 
 export const DroppableGroup = ({
   children,

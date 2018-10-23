@@ -3,7 +3,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { SortableItem } from '../../';
+import SortableItem from '../SortableItem';
 
 export const DraggableItem = ({ draggableId, index, item }: *) => (
   <Draggable
@@ -18,7 +18,7 @@ export const DraggableItem = ({ draggableId, index, item }: *) => (
       };
 
       // disable onClick if the intention was drag
-      const onClick = draggableSnapshot.isDragging ? null : item.onClick;
+      const onClick = draggableSnapshot.isDragging ? undefined : item.onClick;
 
       return (
         <SortableItem

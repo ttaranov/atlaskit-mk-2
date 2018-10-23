@@ -9,7 +9,7 @@ import {
 } from 'react-beautiful-dnd';
 
 import type { GroupType, SortableSectionProps } from './types';
-import Section, { getSectionDefaultProps } from '../Section';
+import Section from '../Section';
 
 import { DraggableItem } from './DraggableItem';
 import { DroppableGroup } from './DroppableGroup';
@@ -17,7 +17,6 @@ import { DroppableGroup } from './DroppableGroup';
 const pluck = (arr, key, val) => arr.find(x => x[key] === val);
 
 export default class SortableSection extends Component<SortableSectionProps> {
-  static defaultProps = getSectionDefaultProps();
   onDragStart = (start: DragStart, provided: HookProvided) => {
     // avoid unintentional interaction with other elements
     if (document && document.body && document.body.style) {

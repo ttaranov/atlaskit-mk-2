@@ -4,7 +4,7 @@ import React from 'react';
 import { colors } from '@atlaskit/theme';
 
 import type { ItemProps } from '../Item/types';
-import { Item } from '../../';
+import Item from '../Item';
 
 // The sortable item cannot be a `<button />` because rbdnd will use it as a
 // placeholder and we have no way of removing the browser's default button
@@ -26,7 +26,7 @@ const Div = ({
   styles,
   subText,
   ...props
-}: *) => <div ref={innerRef} {...props} />;
+}: any) => <div ref={innerRef} {...props} />;
 
 const getStyles = (provided, { isDragging }, theme) => {
   let bg = provided.itemBase.backgroundColor;
@@ -52,7 +52,7 @@ const getStyles = (provided, { isDragging }, theme) => {
 };
 
 const SortableItem = (props: ItemProps) => (
-  <Item component={Div} styles={getStyles} {...props} />
+  <Item styles={getStyles} {...props} component={Div} />
 );
 
 export default SortableItem;

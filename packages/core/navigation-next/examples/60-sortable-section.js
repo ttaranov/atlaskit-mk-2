@@ -7,7 +7,7 @@ import { SortableSection } from '../src';
 import type {
   GroupsType,
   ItemsType,
-} from '../src/components/SortableSection/types';
+} from '../src/components/presentational/SortableSection/types';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const SectionWrapper = (props: *) => (
@@ -25,14 +25,23 @@ const SectionWrapper = (props: *) => (
 );
 
 const DEFAULT_ITEMS = {
-  dashboards: { text: 'Dashboards' },
-  projects: { text: 'Projects' },
-  settings: { text: 'Settings' },
-  backlog: { text: 'Backlog' },
-  'active-sprint': { text: 'Active Sprint' },
-  'issues-and-filters': { text: 'Issues and filters' },
-  reports: { text: 'Reports' },
-  'viewed-recently': { text: 'Viewed Recently' },
+  dashboards: { text: 'Dashboards', onClick: () => console.log('dashboards') },
+  projects: { text: 'Projects', onClick: () => console.log('projectcs') },
+  settings: { text: 'Settings', onClick: () => console.log('settings') },
+  backlog: { text: 'Backlog', onClick: () => console.log('backlog') },
+  'active-sprint': {
+    text: 'Active Sprint',
+    onClick: () => console.log('active-sprint'),
+  },
+  'issues-and-filters': {
+    text: 'Issues and filters',
+    onClick: () => console.log('issues-and-filters'),
+  },
+  reports: { text: 'Reports', onClick: () => console.log('reports') },
+  'viewed-recently': {
+    text: 'Viewed Recently',
+    onClick: () => console.log('viewed-recently'),
+  },
 };
 function getDefaultItems() {
   return DEFAULT_ITEMS;

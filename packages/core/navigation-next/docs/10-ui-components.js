@@ -289,6 +289,7 @@ Adds the ability to drag-and-drop items within a section.
 
 ${(
       <Example
+        packageName="@atlaskit/navigation-next"
         Component={require('../examples/60-sortable-section').default}
         title="SortableSection"
         source={require('!!raw-loader!../examples/60-sortable-section')}
@@ -298,7 +299,7 @@ ${(
 ${(
       <Props
         heading="SortableSection props"
-        props={require('!!extract-react-types-loader!../src/components/SortableSection')}
+        props={require('!!extract-react-types-loader!../src/components/presentational/SortableSection')}
       />
     )}
 

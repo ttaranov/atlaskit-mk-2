@@ -1,6 +1,6 @@
 // @flow
 
-import type { Node } from 'react';
+import type { Node, ElementConfig } from 'react';
 import type {
   DropResult,
   OnDragEndHook,
@@ -8,7 +8,8 @@ import type {
   OnDragUpdateHook,
 } from 'react-beautiful-dnd';
 
-import type { SectionProps, SectionChildren } from '../Section/types';
+import Section from '../Section';
+import type { SectionChildren } from '../Section/types';
 import type { GroupProps } from '../Group/types';
 import type { ItemProps } from '../Item/types';
 
@@ -22,7 +23,7 @@ export type ItemsType = {
 export type GroupsType = Array<GroupType>;
 
 type SectionPropsNoChildren = $Diff<
-  SectionProps,
+  ElementConfig<typeof Section>,
   { children: SectionChildren },
 >;
 

@@ -2,7 +2,7 @@
 
 import type { ComponentType, ElementConfig } from 'react';
 
-import type { SortableSectionProps as SortableSectionPropsBase } from '../components/SortableSection/types';
+import type { SortableSectionProps as SortableSectionPropsBase } from '../components/presentational/SortableSection/types';
 import { HeaderSection, MenuSection } from '../';
 import type { ViewData } from '../../src/view-controller/types';
 

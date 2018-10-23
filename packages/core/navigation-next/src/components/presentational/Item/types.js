@@ -2,6 +2,7 @@
 
 import type { ComponentType, Node, Ref } from 'react';
 import type { DraggableProps } from 'react-beautiful-dnd';
+import type { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 import type { StyleReducer, ProductTheme } from '../../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
@@ -21,11 +22,6 @@ export type ItemPresentationProps = {
   spacing: Spacing,
 };
 
-export type ItemRenderComponentProps = {
-  children: Node,
-  className: string,
-};
-
 export type ItemBaseProps = {
   /** A component to render after the text. Typically used to render an icon or
    * a badge. This component will be passed the current UI state of the Item. */
@@ -34,11 +30,6 @@ export type ItemBaseProps = {
    * an avatar. This component will be passed the current UI state of the Item.
    * */
   before?: ComponentType<ItemPresentationProps>,
-  /** A custom component to render instead of the default wrapper component.
-   * Could used to render a router Link, for example. The component will be
-   * provided with a className and children, which should be passed on to the
-   * element you render. */
-  component?: ComponentType<ItemRenderComponentProps>,
   /** Properties exclusive to Items within a SortableSection. */
   draggableProps?: DraggableProps,
   /** An href which this Item links to. If this prop is provided the Item will
@@ -73,5 +64,19 @@ export type ItemBaseProps = {
   text: Node,
 };
 
-export type ItemProps = ItemBaseProps &
+export type ItemRenderComponentProps = ItemBaseProps & {
+  children: Node,
+  className: string,
+};
+
+export type ItemProps = ItemBaseProps & {
+  /** A custom component to render instead of the default wrapper component.
+   * Could used to render a router Link, for example. The component will be
+   * provided with a className, children and onClick props, which should be passed on to the
+   * element you render. */
+  component?: ComponentType<ItemRenderComponentProps>,
+};
+
+export type ItemPrimitiveProps = ItemProps &
+  WithAnalyticsEventsProps &
   InteractionState & { theme: ProductTheme };
