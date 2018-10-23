@@ -3,6 +3,12 @@ import { FireAnalyticsEvent } from '@atlaskit/analytics';
 
 export type AnalyticsData = Object;
 
+export interface HasAnalyticsData {
+  getAnalyticsData(): AnalyticsData;
+}
+
+export type ResultBaseType = React.Component<ResultType> & HasAnalyticsData;
+
 // The data that's passed to the Click and MouseEnter events
 export type ResultData = {
   resultId: string | number;
@@ -20,7 +26,7 @@ type CommonResultProps = {
   /** Reduces padding and font size. */
   isCompact?: boolean;
   /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
-  onClick?: (resultData: ResultData) => any;
+  onClick?: (resultData: ResultData) => void;
   /** Unique ID of the result. This is passed as a parameter to certain callbacks */
   resultId: string | number;
   /** Type of the result. This is passed as a parameter to certain callbacks. */
@@ -31,9 +37,9 @@ type CommonResultProps = {
 
 export type Context = {
   /** Register itself as keyboard navigation target */
-  registerResult: (result: any) => void;
+  registerResult: (result: ResultBaseType) => void;
   /** Unregister itself as keyboard navigation target */
-  unregisterResult: (result: any) => void;
+  unregisterResult: (result: ResultBaseType) => void;
   /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
   onMouseEnter: (resultData: ResultData) => void;
   /** Standard onMouseLeave event. */

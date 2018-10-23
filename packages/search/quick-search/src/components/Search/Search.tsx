@@ -53,30 +53,27 @@ export default class Search extends React.PureComponent<Props, State> {
     event.stopPropagation();
   };
 
-  onInput = (event: any) => {
+  onInput = (event: React.FormEvent<HTMLInputElement>) => {
     const { onInput } = this.props;
-    this.setState({ value: event.target.value });
+    this.setState({ value: event.currentTarget.value });
     if (onInput) {
       onInput(event);
     }
   };
-  onSearchBoxMouseDown: any;
 
-  setInputRef = (ref: any) => {
+  setInputRef = (ref: React.Ref<any>) => {
     this.inputRef = ref;
   };
 
-  inputRef: any;
-  props: Props;
+  inputRef: React.Ref<any>;
 
   render() {
     const { children, onBlur, placeholder, isLoading } = this.props;
-
     const { value } = this.state;
 
     return (
       <SearchInner>
-        <SearchBox onMouseDown={this.onSearchBoxMouseDown}>
+        <SearchBox>
           <FieldBase
             appearance="none"
             isFitContainerWidthEnabled

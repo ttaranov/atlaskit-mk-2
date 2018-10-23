@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
-import { ResultData, Context } from './Results/types';
+import { ResultData, Context, ResultBaseType } from './Results/types';
 import AkSearch from './Search/Search';
-import { ResultBaseType } from './Results/ResultBase';
 import { ResultContext, SelectedResultIdContext } from './context';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
@@ -18,7 +17,7 @@ import {
  * Get the result ID of a result by its index in the flatResults array
  * Returns null for a failed index or if resultId is empty|undefined
  */
-const getResultIdByIndex = (array: Array<any>, index: number | null) => {
+const getResultIdByIndex = (array: ResultBaseType[], index: number | null) => {
   if (
     array &&
     index != null &&
@@ -35,7 +34,7 @@ const getResultIdByIndex = (array: Array<any>, index: number | null) => {
  * Find a result in the flatResults array by its ID
  * Returns the result object or null
  */
-const getResultById = (array, id) =>
+const getResultById = (array: ResultBaseType[], id: string | number | null) =>
   (array &&
     array.find(result => result.props && result.props.resultId === id)) ||
   null;
@@ -44,16 +43,26 @@ const getResultById = (array, id) =>
  * Get a result's index in the flatResults array by its ID
  * Returns a numeric index or null
  */
-const getResultIndexById = (array, id) => {
+const getResultIndexById = (
+  array: ResultBaseType[],
+  id: string | number | null,
+) => {
   if (!array) {
     return null;
   }
   const result = getResultById(array, id);
+  if (!result) {
+    return null;
+  }
   const index = array.indexOf(result);
   return index >= 0 ? index : null;
 };
 
-const adjustIndex = (arrayLength, currentIndex, adjustment) => {
+const adjustIndex = (
+  arrayLength: number,
+  currentIndex: number | null,
+  adjustment: number,
+) => {
   if (arrayLength === 0) {
     return null;
   }

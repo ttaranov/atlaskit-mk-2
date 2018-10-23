@@ -1,17 +1,11 @@
 import * as React from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
-import { AnalyticsData, ResultType as Props } from './types';
+import { AnalyticsData, ResultType as Props, HasAnalyticsData } from './types';
 import { ResultContext, SelectedResultIdContext } from '../context';
 import { Context } from './types';
 
 const BASE_RESULT_TYPE = 'base';
-
-interface HasAnalyticsData {
-  getAnalyticsData(): AnalyticsData;
-}
-
-export type ResultBaseType = React.Component<Props> & HasAnalyticsData;
 
 // context is an optional prop but the component provides a defaultProp. However, TS still complains
 // when you don't pass it. There doesn't seem to be a better way of declaring optional default props.
