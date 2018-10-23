@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 29.0.5
+- [patch] Fix label for panels [621bf75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/621bf75)
+
 ## 29.0.4
 - [patch] ED-5513: render table that respects columns widths except on mobile [716bb9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/716bb9d)
 
