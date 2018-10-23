@@ -104,3 +104,13 @@ export function parseTime(timeString: string): Date | typeof NaN {
   dateTime.setSeconds(0, 0);
   return dateTime;
 }
+
+export function formatDateTimeZoneIntoIso(
+  date: string,
+  time: string,
+  zone: string,
+): string {
+  // If no 'date' then return an empty string otherwise
+  //  Firefox defaults to the beginning of epoch time.
+  return date ? `${date}T${time}${zone}` : '';
+}

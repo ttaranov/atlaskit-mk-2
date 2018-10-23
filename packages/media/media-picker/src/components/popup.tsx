@@ -105,14 +105,16 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     dispatch(showPopup());
   }
 
-  public cancel(uniqueIdentifier?: string): void {
-    if (uniqueIdentifier === undefined) {
-      // TODO Make popup able to accept undefined and cancel all the inflight uploads (MSW-691)
-      throw new Error(
-        "Popup doesn't support canceling without a unique identifier",
-      );
+  public async cancel(
+    uniqueIdentifier?: string | Promise<string>,
+  ): Promise<void> {
+    if (!uniqueIdentifier) {
+      return;
     }
-    this.store.dispatch(cancelUpload({ tenantUploadId: uniqueIdentifier }));
+
+    this.store.dispatch(
+      cancelUpload({ tenantUploadId: await uniqueIdentifier }),
+    );
   }
 
   public teardown(): void {

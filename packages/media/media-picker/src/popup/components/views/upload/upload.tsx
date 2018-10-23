@@ -19,7 +19,8 @@ import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-import { InfiniteScroll } from '@atlaskit/media-ui';
+import { FormattedMessage } from 'react-intl';
+import { messages, InfiniteScroll } from '@atlaskit/media-ui';
 import { Browser } from '../../../../components/browser';
 import { isWebGLAvailable } from '../../../tools/webgl';
 import { Dropzone } from './dropzone';
@@ -176,7 +177,9 @@ export class StatelessUploadView extends Component<
 
     return (
       <div>
-        <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
+        <RecentUploadsTitle>
+          <FormattedMessage {...messages.recent_uploads} />
+        </RecentUploadsTitle>
         <CardsWrapper>{cards}</CardsWrapper>
         {this.renderLoadingNextPageView()}
         {isWebGLWarningFlagVisible && this.renderWebGLWarningFlag()}
@@ -193,7 +196,7 @@ export class StatelessUploadView extends Component<
       }
     };
   }
-
+  // TODO [i18n]
   private renderWebGLWarningFlag = (): JSX.Element => (
     <FlagGroup onDismissed={this.onFlagDismissed}>
       <Flag
@@ -220,7 +223,7 @@ export class StatelessUploadView extends Component<
   }
 
   private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
-    const { uploads, onFileClick, onEditorShowImage, context } = this.props;
+    const { uploads, onFileClick, context } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
       return uploads[b].index - uploads[a].index;
@@ -233,7 +236,6 @@ export class StatelessUploadView extends Component<
     return itemsKeys.map(key => {
       const item = this.props.uploads[key];
       const { file } = item;
-      const { dataURI } = file;
       const mediaType = getMediaTypeFromMimeType(file.metadata.mimeType);
       const fileMetadata: LocalUploadFileMetadata = {
         ...file.metadata,
@@ -242,17 +244,7 @@ export class StatelessUploadView extends Component<
       const { id } = fileMetadata;
       const selected = selectedUploadIds.indexOf(id) > -1;
       const onClick = () => onFileClick(fileMetadata, 'upload');
-      const actions: CardAction[] = [];
-
-      if (mediaType === 'image' && dataURI) {
-        actions.push(
-          createEditCardAction(
-            this.onAnnotateActionClick(() =>
-              onEditorShowImage(fileMetadata, dataURI),
-            ),
-          ),
-        );
-      }
+      const actions: CardAction[] = []; // TODO [MS-1017]: allow file annotation for uploading files
       const { upfrontId } = file.metadata;
       const identifier: FileIdentifier = {
         id: upfrontId,

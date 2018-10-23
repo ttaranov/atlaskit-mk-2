@@ -22,6 +22,7 @@ import {
 import {
   UploadEndEventPayload,
   UploadsStartEventPayload,
+  UploadPreviewUpdateEventPayload,
 } from '../src/domain/uploadEvent';
 
 const context = createUploadContext();
@@ -30,6 +31,13 @@ const popup = MediaPicker('popup', context, {
   uploadParams: {
     collection: defaultMediaPickerCollectionName,
   },
+});
+
+popup.on('upload-preview-update', (event: UploadPreviewUpdateEventPayload) => {
+  const { file, preview } = event;
+
+  console.log('upload-preview-update file', file);
+  console.log('upload-preview-update preview', preview);
 });
 
 popup.show();

@@ -27,3 +27,7 @@ export type ExperimentEnrollmentConfig = {
 export type ExposureDetails = EnrollmentDetails & {
   experimentKey: ExperimentKey,
 };
+
+export type ResolverPromises = {
+  [ExperimentKey]: Promise<EnrollmentDetails>,
+};

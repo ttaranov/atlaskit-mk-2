@@ -528,7 +528,6 @@ describe('analyticsProcessing middleware', () => {
         uploads: {
           id1: {
             file: {
-              dataURI: '',
               metadata: {
                 id: 'id1',
                 name: 'file1',
@@ -599,7 +598,6 @@ describe('analyticsProcessing middleware', () => {
         uploads: {
           id1: {
             file: {
-              dataURI: '',
               metadata: {
                 id: 'id1',
                 name: 'file1',

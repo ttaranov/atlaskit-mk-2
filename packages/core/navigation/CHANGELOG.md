@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 33.2.1
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 33.2.0
 - [minor] Fire navigationItem clicked event on navigation channel for global item clicks if an id prop is provided [480d00b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/480d00b)
 - [minor] Fire expand/collapse analytics on navigation channel [6e90e67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e90e67)

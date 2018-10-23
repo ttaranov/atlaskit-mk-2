@@ -1,5 +1,20 @@
 # @atlaskit/conversation
 
+## 11.0.2
+- [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
+  - @atlaskit/comment@6.0.23
+  - @atlaskit/editor-core@87.0.0
+  - @atlaskit/editor-common@20.1.2
+
+## 11.0.1
+- [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/editor-common@20.0.0
+  - @atlaskit/editor-core@86.0.0
+  - @atlaskit/renderer@29.0.0
+  - @atlaskit/comment@6.0.21
+  - @atlaskit/reactions@15.0.1
+  - @atlaskit/util-data-test@10.0.16
+
 ## 11.0.0
 - [major] Fix reactions. Remove context and receive store as a prop. [b1de9c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1de9c8)
 

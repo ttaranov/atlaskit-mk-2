@@ -19,13 +19,14 @@ import mediaPlugin from '../../../../plugins/media';
 
 const createMediaState = (
   id: string,
-  status: MediaStateStatus = 'uploading',
+  status: MediaStateStatus = 'preview',
   width = 100,
   height = 200,
 ): MediaState => ({
   id,
-  status: 'uploading',
-  thumbnail: { dimensions: { width, height }, src: '' },
+  status: 'preview',
+  dimensions: { width, height },
+  fileId: Promise.resolve('hello'),
 });
 
 describe('media-single', () => {

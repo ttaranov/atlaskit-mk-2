@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Emoji: should be able to click on the emoji button and select emoji 1`] = `
+exports[`emoji-1.ts: should be able to click on the emoji button and select emoji 1`] = `
 Object {
   "content": Array [
     Object {
@@ -25,7 +25,7 @@ Object {
 }
 `;
 
-exports[`Emoji: should be able to navigate between emojis 1`] = `
+exports[`emoji-1.ts: should be able to navigate between emojis 1`] = `
 Object {
   "content": Array [
     Object {
@@ -66,32 +66,7 @@ Object {
 }
 `;
 
-exports[`Emoji: should be able to see emoji if typed the name in full 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "id": "1f600",
-            "shortName": ":grinning:",
-            "text": "😀",
-          },
-          "type": "emoji",
-        },
-        Object {
-          "text": " ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Emoji: should close emoji picker on Escape 1`] = `
+exports[`emoji-1.ts: should close emoji picker on Escape 1`] = `
 Object {
   "content": Array [
     Object {
@@ -108,7 +83,7 @@ Object {
 }
 `;
 
-exports[`Emoji: should convert :) to emoji 1`] = `
+exports[`emoji-1.ts: should convert :) to emoji 1`] = `
 Object {
   "content": Array [
     Object {
@@ -140,7 +115,32 @@ Object {
 }
 `;
 
-exports[`user should not be able to see emoji inside inline code 1`] = `
+exports[`emoji-1.ts:should be able to see emoji if typed the name in full 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "id": "1f600",
+            "shortName": ":grinning:",
+            "text": "😀",
+          },
+          "type": "emoji",
+        },
+        Object {
+          "text": " ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`should not be able to see emoji inside inline code user should not be able to see emoji inside inline code 1`] = `
 Object {
   "content": Array [
     Object {

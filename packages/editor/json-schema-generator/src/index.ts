@@ -247,9 +247,13 @@ export default (
             const isRequired =
               (prop.getFlags() & ts.SymbolFlags.Optional) === 0;
             const validators = getTags(prop.getJsDocTags());
-            const node = getSchemaNodeFromType(propType, validators);
-            if (node) {
-              obj.addProperty(name, node, isRequired);
+            if (!shouldExclude(validators['stage'])) {
+              // Remove it from validators otherwise it will end up as a property in ADF
+              delete validators['stage'];
+              const node = getSchemaNodeFromType(propType, validators);
+              if (node) {
+                obj.addProperty(name, node, isRequired);
+              }
             }
           }
         });

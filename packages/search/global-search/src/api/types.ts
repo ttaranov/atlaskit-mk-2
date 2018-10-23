@@ -1,5 +1,3 @@
-import { ContentType } from '../model/Result';
-
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
   ConfluencePageBlogAttachment = 'confluence.page,blogpost,attachment',
@@ -87,5 +85,5 @@ export interface JiraResultQueryParams {
   searchSessionId: string;
   searchContainerId?: string;
   searchObjectId?: string;
-  searchContentType?: ContentType;
+  searchContentType?: 'issue' | 'board' | 'project' | 'filter';
 }

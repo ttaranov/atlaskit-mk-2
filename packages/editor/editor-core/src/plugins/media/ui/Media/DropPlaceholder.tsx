@@ -4,7 +4,7 @@ import { colors, borderRadius } from '@atlaskit/theme';
 import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
 import { hexToRgba } from '@atlaskit/editor-common';
 
-import { MEDIA_HEIGHT, FILE_WIDTH } from './MediaComponent';
+import { MEDIA_HEIGHT, FILE_WIDTH } from '../../nodeviews/media';
 
 const IconWrapper = styled.div`
   color: ${hexToRgba(colors.B400, 0.4) || colors.B400};

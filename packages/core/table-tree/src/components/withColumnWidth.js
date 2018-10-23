@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { type CSSWidth } from '../types';
 
 type Props = {
-  children: Node,
+  children: Node, // eslint-disable-line react/no-unused-prop-types
   width?: CSSWidth,
   columnIndex: number,
 };

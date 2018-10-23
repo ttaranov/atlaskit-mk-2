@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Bred',
   'fabric.editor.layoutFullWidth': 'Fuld bredde',
   'fabric.editor.remove': 'Fjern',
+  'fabric.editor.visit': 'Open link in a new window',
   'fabric.editor.normal': 'Normal tekst',
   'fabric.editor.heading1': 'Overskrift 1',
   'fabric.editor.heading2': 'Overskrift 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Vist tekst',
   'fabric.editor.linkPlaceholderWithSearch':
     'Indsæt link, eller søg efter senest viste',
+  'fabric.editor.action': 'Handlingsgenstand',
   'fabric.editor.link': 'Link',
   'fabric.editor.filesAndImages': 'Filer og billeder',
   'fabric.editor.image': 'Billeder',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Tre kolonner',
   'fabric.editor.unorderedList': 'Punktopstilling',
   'fabric.editor.orderedList': 'Nummereret liste',
-  'fabric.editor.action': 'Handlingsgenstand',
   'fabric.editor.lists': 'Liste',
   'fabric.editor.wrapLeft': 'Skub til venstre',
   'fabric.editor.wrapRight': 'Skub til højre',
@@ -77,6 +78,9 @@ export default {
   'fabric.editor.insertRow': 'Indsæt række',
   'fabric.editor.removeRows':
     '{0, plural, one{Fjern række} other{Fjern rækker}}',
+  'fabric.editor.decisionPlaceholder': 'Add a decision…',
+  'fabric.editor.taskPlaceholder':
+    "Type your action, use '@' to assign to someone.",
   'fabric.editor.textColor': 'Tekstfarve',
   'fabric.editor.underline': 'Understreget',
   'fabric.editor.strike': 'Gennemstreget',

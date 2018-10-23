@@ -1,5 +1,8 @@
 # @atlaskit/media-store
 
+## 8.2.0
+- [minor] Split Media + Editor cleanup part 1 [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+
 ## 8.1.1
 - [patch] Fix bug with download binary [71ebe0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71ebe0b)
 

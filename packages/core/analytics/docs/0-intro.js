@@ -59,6 +59,7 @@ import {
 
   ${(
     <Example
+      packageName="@atlaskit/analytics"
       Component={require('../examples/01-basic-example').default}
       title="Basic usage"
       source={require('!!raw-loader!../examples/01-basic-example')}

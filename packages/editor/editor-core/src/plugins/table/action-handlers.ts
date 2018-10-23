@@ -6,7 +6,7 @@ import { Dispatch } from '../../event-dispatcher';
 import { pluginKey, defaultTableSelection } from './pm-plugins/main';
 import { TablePluginState, TableCssClassName as ClassName } from './types';
 import { closestElement } from '../../utils';
-import { findControlsHoverDecoration, findInsertLineDecoration } from './utils';
+import { findControlsHoverDecoration } from './utils';
 
 const processDecorations = (
   state: EditorState,
@@ -168,14 +168,9 @@ export const handleDocChanged = (tr: Transaction) => (
 ): TablePluginState => {
   const table = findTable(tr.selection);
   const tableNode = table ? table.node : undefined;
-  const { decorationSet, insertLineIndex } = pluginState;
+  const { decorationSet } = pluginState;
   const hoverDecoration = findControlsHoverDecoration(decorationSet);
-  const insertLineDecoration = findInsertLineDecoration(decorationSet);
-  if (
-    pluginState.tableNode !== tableNode ||
-    hoverDecoration.length ||
-    insertLineDecoration.length
-  ) {
+  if (pluginState.tableNode !== tableNode || hoverDecoration.length) {
     const { decorationSet } = pluginState;
     const nextPluginState = {
       ...pluginState,
@@ -184,13 +179,6 @@ export const handleDocChanged = (tr: Transaction) => (
       decorationSet: decorationSet.remove(hoverDecoration),
       tableNode,
     };
-    // remap insert decoration when inserting a column or row so that it doesn't blink when recreated
-    if (insertLineIndex) {
-      nextPluginState.decorationSet = nextPluginState.decorationSet.map(
-        tr.mapping,
-        tr.doc,
-      );
-    }
     dispatch(pluginKey, nextPluginState);
     return nextPluginState;
   }
@@ -229,39 +217,24 @@ export const handleToggleContextualMenu = (isContextualMenuOpen: boolean) => (
   return nextPluginState;
 };
 
-export const handleShowInsertLine = (
-  decorations: Decoration[],
-  insertLineIndex: number,
-) => (
-  state: EditorState,
-  pluginState: TablePluginState,
-  dispatch: Dispatch,
-): TablePluginState => {
+export const handleShowInsertColumnButton = (
+  insertColumnButtonIndex?: number,
+) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const nextPluginState = {
     ...pluginState,
-    insertLineIndex,
-    decorationSet: processDecorations(
-      state,
-      pluginState.decorationSet,
-      decorations,
-      findInsertLineDecoration,
-    ),
+    insertColumnButtonIndex,
   };
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;
 };
 
-export const handleHideInsertLine = (
+export const handleShowInsertRowButton = (insertRowButtonIndex?: number) => (
   pluginState: TablePluginState,
   dispatch: Dispatch,
 ): TablePluginState => {
-  const { decorationSet } = pluginState;
   const nextPluginState = {
     ...pluginState,
-    decorationSet: decorationSet.remove(
-      findInsertLineDecoration(decorationSet),
-    ),
-    insertLineIndex: undefined,
+    insertRowButtonIndex,
   };
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;

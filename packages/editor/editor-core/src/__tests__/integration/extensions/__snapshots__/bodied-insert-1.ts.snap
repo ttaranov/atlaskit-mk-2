@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bodied Extension: Insert Code block 1`] = `
+exports[`bodied-insert-1.ts: Bodied Extension: Insert Code block 1`] = `
 Object {
   "content": Array [
     Object {
@@ -39,7 +39,7 @@ Object {
 }
 `;
 
-exports[`Bodied Extension: Insert Decision 1`] = `
+exports[`bodied-insert-1.ts: Bodied Extension: Insert Decision 1`] = `
 Object {
   "content": Array [
     Object {
@@ -86,7 +86,7 @@ Object {
 }
 `;
 
-exports[`Bodied Extension: Insert Panel 1`] = `
+exports[`bodied-insert-1.ts: Bodied Extension: Insert Panel 1`] = `
 Object {
   "content": Array [
     Object {

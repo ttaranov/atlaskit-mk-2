@@ -41,18 +41,6 @@ exports[`FileCardView should render correct background based on mediaType" 1`] =
   border-radius: 3px;
 }
 
-.c0 .wrapper .img-wrapper img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  max-height: 100%;
-  max-width: 100%;
-  display: block;
-}
-
 <styled.div
   className="c0"
   mediaType="image"
@@ -98,18 +86,6 @@ exports[`FileCardView should render correct background based on mediaType" 2`] =
   display: block;
   overflow: hidden;
   border-radius: 3px;
-}
-
-.c0 .wrapper .img-wrapper img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
-  max-height: 100%;
-  max-width: 100%;
-  display: block;
 }
 
 <styled.div

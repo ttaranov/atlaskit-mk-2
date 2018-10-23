@@ -1,5 +1,36 @@
 # @atlaskit/media-viewer
 
+## 24.1.5
+- [patch] Add analytics for the header download button [4e8cacc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8cacc)
+
+## 24.1.4
+- [patch] MS-1032: get rid of risky lifecycle hooks in ImageViewer [0795871](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0795871)
+
+## 24.1.3
+- [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
+  - @atlaskit/media-card@41.1.2
+  - @atlaskit/media-test-helpers@18.2.10
+  - @atlaskit/media-ui@7.0.0
+
+## 24.1.2
+- [patch] use latest onLoad prop in ImageViewer init [de72be8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de72be8)
+
+## 24.1.1
+- [patch] Pass the proper context object when reinitializing the BaseViewer" [215ea6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/215ea6c)
+
+## 24.1.0
+- [minor] Add analytics to MVNG (and reset ImageViewer when collectionName changes) [d60bf6d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d60bf6d)
+
+## 24.0.1
+- [patch] Fix MediaViewer showing the spinner when it should show the error view [914bdb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/914bdb2)
+
+## 24.0.0
+- [major] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
+  - @atlaskit/media-card@41.0.0
+  - @atlaskit/media-core@24.3.0
+  - @atlaskit/media-store@8.2.0
+  - @atlaskit/media-test-helpers@18.2.8
+
 ## 23.0.2
 - [patch] Updated dependencies [6e510d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e510d8)
   - @atlaskit/media-core@24.2.2

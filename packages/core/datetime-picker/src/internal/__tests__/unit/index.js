@@ -12,6 +12,7 @@ import {
   ClearIndicator,
   defaultTimes,
   DropdownIndicator,
+  formatDateTimeZoneIntoIso,
   parseDateIntoStateValues,
 } from '../..';
 
@@ -218,4 +219,29 @@ test('DateTimePicker, custom parseValue', () => {
   expect(dateTimePickerState.dateValue).toEqual('2018-05-02');
   expect(dateTimePickerState.timeValue).toEqual('08:00');
   expect(dateTimePickerState.zoneValue).toEqual('+0800');
+});
+
+test('DateTimePicker, formatDateTimeZoneIntoIso returns empty value if there is no date', () => {
+  const date = '';
+  const time = '11:30';
+  const zone = '+1100';
+  const value = formatDateTimeZoneIntoIso(date, time, zone);
+  expect(value).toEqual('');
+});
+
+test('DateTimePicker, formatDateTimeZoneIntoIso returns Iso string value if date', () => {
+  const date = '2018-10-18';
+  const time = '11:30';
+  const zone = '+1100';
+  const value = formatDateTimeZoneIntoIso(date, time, zone);
+  expect(value).toEqual('2018-10-18T11:30+1100');
+});
+
+test('DatePicker, onCalendarChange if the iso date is greater than the last day of the month, focus the last day of the month instead', () => {
+  const date = '2018-02-31';
+  const fallbackDate = '2018-02-28';
+  const datePickerWrapper = mount(<DatePicker />);
+  datePickerWrapper.instance().onCalendarChange({ iso: date });
+  datePickerWrapper.update();
+  expect(datePickerWrapper.instance().state.view).toEqual(fallbackDate);
 });

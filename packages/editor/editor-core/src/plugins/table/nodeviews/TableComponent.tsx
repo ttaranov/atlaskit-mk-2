@@ -128,12 +128,13 @@ class TableComponent extends React.Component<ComponentProps> {
       isTableInDanger,
       dangerColumns,
       dangerRows,
+      insertColumnButtonIndex,
+      insertRowButtonIndex,
     } = getPluginState(view.state);
 
     const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
     const { scroll } = this.state;
-    const showInsertButton = typeof pluginState.insertLineIndex !== 'undefined';
 
     const rowControls = [
       <div
@@ -156,7 +157,8 @@ class TableComponent extends React.Component<ComponentProps> {
           // pass `selection` and `tableHeight` to control re-render
           selection={view.state.selection}
           tableHeight={tableRef ? tableRef.offsetHeight : undefined}
-          showInsertButton={showInsertButton}
+          insertColumnButtonIndex={insertColumnButtonIndex}
+          insertRowButtonIndex={insertRowButtonIndex}
         />
       </div>,
     ];
@@ -173,7 +175,7 @@ class TableComponent extends React.Component<ComponentProps> {
           // pass `selection` and `numberOfColumns` to control re-render
           selection={view.state.selection}
           numberOfColumns={node.firstChild!.childCount}
-          showInsertButton={showInsertButton}
+          insertColumnButtonIndex={insertColumnButtonIndex}
         />
       </div>,
     ];

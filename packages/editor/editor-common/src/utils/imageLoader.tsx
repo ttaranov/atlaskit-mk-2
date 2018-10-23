@@ -17,7 +17,7 @@ export type ImageStatus = 'complete' | 'loading' | 'error';
 
 export const withImageLoader = <P extends any>(
   Wrapped: ComponentType<P & ImageLoaderProps>,
-) =>
+): React.ComponentClass<P & ImageLoaderProps> =>
   class WithImageLoader extends Component<
     P & ImageLoaderProps,
     ImageLoaderState

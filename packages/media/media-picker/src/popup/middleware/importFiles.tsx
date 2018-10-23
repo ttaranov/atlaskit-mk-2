@@ -20,7 +20,9 @@ import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 import { setUpfrontIdDeferred } from '../actions/setUpfrontIdDeferred';
+import { WsNotifyMetadata } from '../tools/websocket/wsMessageData';
 
+import { getPreviewFromMetadata } from '../../domain/preview';
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
   publicId: string;
@@ -199,19 +201,38 @@ export const importFilesFromRemoteService = (
     // We asociate the temporary file.id with the uploadId
     store.dispatch(setUpfrontIdDeferred(uploadId, resolver, rejecter));
   }
-
   const uploadActivity = new RemoteUploadActivity(
     uploadId,
     (event, payload) => {
-      // TODO figure out the difference between this uploadId and the last MSW-405
-      const { uploadId } = payload;
-      const newFile: MediaFile = {
-        ...file,
-        id: uploadId,
-        creationDate: Date.now(),
-      };
+      if (event === 'NotifyMetadata') {
+        const preview = getPreviewFromMetadata(
+          (payload as WsNotifyMetadata).metadata,
+        );
 
-      store.dispatch(handleCloudFetchingEvent(newFile, event, payload));
+        // TODO [MS-1011]: store preview url in context cache
+        store.dispatch(
+          sendUploadEvent({
+            event: {
+              name: 'upload-preview-update',
+              data: {
+                file,
+                preview,
+              },
+            },
+            uploadId,
+          }),
+        );
+      } else {
+        // TODO figure out the difference between this uploadId and the last MSW-405
+        const { uploadId: newUploadId } = payload;
+        const newFile: MediaFile = {
+          ...file,
+          id: newUploadId,
+          creationDate: Date.now(),
+        };
+
+        store.dispatch(handleCloudFetchingEvent(newFile, event, payload));
+      }
     },
   );
 

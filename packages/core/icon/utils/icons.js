@@ -86,6 +86,7 @@ import DocumentFilledIcon from '../glyph/document-filled';
 import DocumentIcon from '../glyph/document';
 import DocumentsIcon from '../glyph/documents';
 import DownloadIcon from '../glyph/download';
+import DragHandlerIcon from '../glyph/drag-handler';
 import DropboxIcon from '../glyph/dropbox';
 import EditFilledIcon from '../glyph/edit-filled';
 import EditIcon from '../glyph/edit';
@@ -814,6 +815,12 @@ export default {
     component: DownloadIcon,
     componentName: 'DownloadIcon',
     package: '@atlaskit/icon/glyph/download',
+  },
+  'drag-handler': {
+    keywords: ['drag-handler', 'draghandler', 'icon', 'core'],
+    component: DragHandlerIcon,
+    componentName: 'DragHandlerIcon',
+    package: '@atlaskit/icon/glyph/drag-handler',
   },
   dropbox: {
     keywords: ['dropbox', 'icon', 'core'],

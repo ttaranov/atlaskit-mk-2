@@ -1,38 +1,65 @@
 // @flow
 
-/** Components */
-export { default as ContainerHeader } from './components/ContainerHeader';
-export { default as GlobalItem } from './components/GlobalItem';
+/** Presentational Components */
+export {
+  default as ContainerHeader,
+} from './components/presentational/ContainerHeader';
+export { default as GlobalItem } from './components/presentational/GlobalItem';
 export {
   default as GlobalItemPrimitive,
-} from './components/GlobalItem/primitives';
-export { default as GlobalNav } from './components/GlobalNav';
-export { default as Group } from './components/Group';
-export { default as GroupHeading } from './components/GroupHeading';
-export { default as Item } from './components/Item';
-export { default as ItemPrimitive } from './components/Item/primitives';
-export { default as ItemAvatar } from './components/ItemAvatar';
-export { default as PeekToggleItem } from './components/PeekToggleItem';
-export { default as LayoutManager } from './components/LayoutManager';
-export { default as SortableSection } from './components/SortableSection';
-export { default as SortableItem } from './components/SortableItem';
+} from './components/presentational/GlobalItem/primitives';
+
+export { default as GlobalNav } from './components/presentational/GlobalNav';
+export { default as Group } from './components/presentational/Group';
 export {
-  default as LayoutManagerWithViewController,
-} from './components/LayoutManagerWithViewController';
+  default as GroupHeading,
+} from './components/presentational/GroupHeading';
+export {
+  default as HeaderSection,
+} from './components/presentational/HeaderSection';
+export { default as Item } from './components/presentational/Item';
+export {
+  default as ItemPrimitive,
+} from './components/presentational/Item/primitives';
+export { default as ItemAvatar } from './components/presentational/ItemAvatar';
+export {
+  default as LayoutManager,
+} from './components/presentational/LayoutManager';
+export {
+  default as MenuSection,
+} from './components/presentational/MenuSection';
+export {
+  default as PeekToggleItem,
+} from './components/presentational/PeekToggleItem';
 export {
   default as ScrollableSectionInner,
-} from './components/ScrollableSectionInner';
-export { default as Section } from './components/Section';
-export { default as SectionHeading } from './components/SectionHeading';
-export { default as Separator } from './components/Separator';
+} from './components/presentational/ScrollableSectionInner';
+export { default as Section } from './components/presentational/Section';
+export {
+  default as SectionHeading,
+} from './components/presentational/SectionHeading';
+export { default as Separator } from './components/presentational/Separator';
 export {
   default as SkeletonContainerHeader,
-} from './components/SkeletonContainerHeader';
-export { default as SkeletonItem } from './components/SkeletonItem';
+} from './components/presentational/SkeletonContainerHeader';
+export {
+  default as SkeletonItem,
+} from './components/presentational/SkeletonItem';
 export {
   default as SkeletonContainerView,
-} from './components/SkeletonContainerView';
-export { default as Switcher } from './components/Switcher';
+} from './components/presentational/SkeletonContainerView';
+export { default as SortableSection } from './components/SortableSection';
+export { default as SortableItem } from './components/SortableItem';
+export { default as Switcher } from './components/presentational/Switcher';
+export { default as Wordmark } from './components/presentational/Wordmark';
+
+/** Connected components */
+export { default as BackItem } from './components/connected/BackItem';
+export { default as ConnectedItem } from './components/connected/ConnectedItem';
+export { default as GoToItem } from './components/connected/GoToItem';
+export {
+  default as LayoutManagerWithViewController,
+} from './components/connected/LayoutManagerWithViewController';
 
 /** State */
 export { NavigationProvider } from './provider';
@@ -57,5 +84,5 @@ export { dark, light, settings, modeGenerator, ThemeProvider } from './theme';
 /** Types */
 export {
   ExternalGlobalItemProps as GlobalItemProps,
-} from './components/GlobalItem/types';
+} from './components/presentational/GlobalItem/types';
 export { GlobalTheme } from './theme';

@@ -15,9 +15,7 @@ export default class ControlledExample extends PureComponent<void, State> {
   onChange = (event: any) => {
     this.setState({
       isChecked: !this.state.isChecked,
-      onChangeResult: `onChange Event with target.checked: ${
-        event.target.checked
-      }`,
+      onChangeResult: `this.props.isChecked: ${event.target.checked}`,
     });
   };
 

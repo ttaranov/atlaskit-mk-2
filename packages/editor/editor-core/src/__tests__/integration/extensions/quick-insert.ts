@@ -10,7 +10,7 @@ import {
 } from '../_helpers';
 
 BrowserTestCase(
-  `Extension: Quick Insert`,
+  `quick-insert.ts: Extension: Quick Insert`,
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
     const page = new Page(client);

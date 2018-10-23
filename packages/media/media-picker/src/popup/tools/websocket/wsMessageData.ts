@@ -1,3 +1,5 @@
+import { ImageMetadata } from '@atlaskit/media-store';
+
 export interface WsErrorData {
   type: 'Error';
   error: 'ServerError' | 'RemoteUploadFail' | 'NoUserFound';
@@ -17,6 +19,7 @@ export interface WsUploadMessageData {
     | 'RemoteUploadStart'
     | 'RemoteUploadProgress'
     | 'RemoteUploadEnd'
+    | 'NotifyMetadata'
     | 'Error';
   uploadId: string;
   // Alternative backend schema for error activities
@@ -54,6 +57,11 @@ export interface WsRemoteUploadEndData extends WsUploadMessageData {
   fileId: string;
 }
 
+export interface WsNotifyMetadata extends WsUploadMessageData {
+  type: 'NotifyMetadata';
+  metadata: ImageMetadata;
+}
+
 export type WsMessageData = WsUploadMessageData | WsErrorData;
 
 export const isRemoteUploadStartData = (
@@ -82,6 +90,12 @@ export const isRemoteUploadErrorData = (
   data: WsUploadMessageData,
 ): data is WsRemoteUploadFailData => {
   return isErrorData(data) && data.error === 'RemoteUploadFail';
+};
+
+export const isNotifyMetadata = (
+  data: WsUploadMessageData,
+): data is WsNotifyMetadata => {
+  return data.type === 'NotifyMetadata';
 };
 
 export const isServerError = (

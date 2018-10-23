@@ -1,7 +1,4 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
-  imageSnapshotFolder,
   initEditor,
   snapshot,
   insertMedia,
@@ -10,10 +7,6 @@ import {
 } from '../_utils';
 
 describe('Snapshot Test: Media', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   let page;
   beforeAll(async () => {
     // @ts-ignore
@@ -35,8 +28,8 @@ describe('Snapshot Test: Media', () => {
     // @ts-ignore
     expect(image).toMatchProdImageSnapshot();
   });
-
-  describe('Lists', async () => {
+  // TODO: AK-5551
+  describe.skip('Lists', async () => {
     it('can insert a media single inside a bullet list', async () => {
       // type some text
       await page.click(editable);

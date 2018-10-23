@@ -36,6 +36,7 @@ import {
   SendUploadEventAction,
   SendUploadEventActionPayload,
 } from '../../../actions/sendUploadEvent';
+import { SCALE_FACTOR_DEFAULT } from '../../../../util/getPreviewFromImage';
 
 describe('importFiles middleware', () => {
   const todayDate = Date.now();
@@ -112,7 +113,7 @@ describe('importFiles middleware', () => {
               width: 10,
               height: 10,
             },
-            src: 'blob',
+            scaleFactor: SCALE_FACTOR_DEFAULT,
           },
         },
       };
@@ -135,7 +136,6 @@ describe('importFiles middleware', () => {
           metadata: {
             ...makeFileData(index),
           },
-          dataURI: '',
         },
         events: [
           // uploads-event won't be part of events list. See fileUploadsAdd.tsx

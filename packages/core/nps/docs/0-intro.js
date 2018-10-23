@@ -15,6 +15,7 @@ import NPSCollector, { NPS } from '@atlaskit/nps';
 
   ${(
     <Example
+      packageName="@atlaskit/nps"
       Component={require('../examples/00-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic')}
@@ -25,6 +26,7 @@ import NPSCollector, { NPS } from '@atlaskit/nps';
 
   ${(
     <Example
+      packageName="@atlaskit/nps"
       Component={require('../examples/01-basic-more-config').default}
       title="Usage with more props"
       source={require('!!raw-loader!../examples/01-basic-more-config')}
@@ -35,6 +37,7 @@ import NPSCollector, { NPS } from '@atlaskit/nps';
 
   ${(
     <Example
+      packageName="@atlaskit/nps"
       Component={require('../examples/02-advanced').default}
       title="Advanced"
       source={require('!!raw-loader!../examples/02-advanced')}

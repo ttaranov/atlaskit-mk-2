@@ -33,16 +33,14 @@ Representing a view as a Javascript array makes them really easy to work with. L
 ${code`// Component representation
 const componentView = (
   <Fragment>
-    <Section key="header">
+    <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <div css={{ padding: '16px 0' }}>
-            <JiraWordmark />
-          </div>
+          <Wordmark wordmark={JiraWordmark} />
         </div>
       )}
-    </Section>
-    <Section key="menu">
+    </HeaderSection>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item before={DashboardIcon} text="Dashboards" />
@@ -51,7 +49,7 @@ const componentView = (
           <Item before={PortfolioIcon} text="Portfolio" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 
@@ -99,7 +97,7 @@ In this model a view is represented as an array of items. Each item in this arra
 
 A few things to note:
 
-* Some \`type\`s are built into the package (such as, 'Item' and 'HeaderSection') and these types can be provided as a string. In the above example the Jira wordmark component isn't built into \`navigation-next\`, so we have to provide a component as the type.
+* Some \`type\`s are built into the package (such as, 'Item' and 'HeaderSection') and these types can be provided as a string. If you need your own custom behaviour or presentation, you can provide your own component as the type instead.
 * A view is expected to be an array of Sections. Sections should not be nested. As well as the generic \`Section\` component, the renderer includes two pre-configured Section components - \`HeaderSection\` and \`MenuSection\` - which we recommend using to get the correct spacing and scrolling behaviour in your navigation.
 * You can find a complete [list of the in-built item types here](/packages/core/navigation-next/docs/state-controllers#built-in-view-item-types).
 

@@ -9,7 +9,7 @@ import { transitionDurationMs, transitionTimingFunction } from '../constants';
 // Transitions
 // ------------------------------
 
-type Styles = { [string]: string | number };
+type Styles = { [string]: string | number | null };
 type TransitionProps = {
   children?: Node,
   component?: ComponentType<*> | string,
@@ -95,7 +95,8 @@ export const Slide = ({
       transform: 'translate3d(-100%,0,0)',
     }}
     transitionStyles={{
-      entered: { transform: 'translate3d(0,0,0)' },
+      // Unset transform so we do not create a new stacking context for fixed-position children - NAV-159
+      entered: { transform: null },
       exited: { transform: 'translate3d(-100%,0,0)' },
     }}
     transitionProps={{

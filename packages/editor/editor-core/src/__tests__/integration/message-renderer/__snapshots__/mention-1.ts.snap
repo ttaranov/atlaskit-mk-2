@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Mention: user can navigate picker using keyboard 1`] = `
+exports[`mention-1.ts: user can navigate picker using keyboard 1`] = `
 Object {
   "content": Array [
     Object {
@@ -26,7 +26,7 @@ Object {
 }
 `;
 
-exports[`Mention: user can see mention inside action 1`] = `
+exports[`mention-1.ts: user can see mention inside action 1`] = `
 Object {
   "content": Array [
     Object {
@@ -64,7 +64,7 @@ Object {
 }
 `;
 
-exports[`Mention: user can see mention inside blockquote 1`] = `
+exports[`mention-1.ts: user can see mention inside blockquote 1`] = `
 Object {
   "content": Array [
     Object {
@@ -99,7 +99,7 @@ Object {
 }
 `;
 
-exports[`Mention: user can see mention inside bulletList 1`] = `
+exports[`mention-1.ts: user can see mention inside bulletList 1`] = `
 Object {
   "content": Array [
     Object {
@@ -139,7 +139,7 @@ Object {
 }
 `;
 
-exports[`Mention: user can see mention inside decision 1`] = `
+exports[`mention-1.ts: user can see mention inside decision 1`] = `
 Object {
   "content": Array [
     Object {
@@ -177,7 +177,7 @@ Object {
 }
 `;
 
-exports[`Mention: user can see mention inside orderedList 1`] = `
+exports[`mention-1.ts: user can see mention inside orderedList 1`] = `
 Object {
   "content": Array [
     Object {

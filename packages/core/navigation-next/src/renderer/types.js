@@ -1,32 +1,14 @@
 // @flow
 
-import type { ComponentType, Node } from 'react';
+import type { ComponentType, ElementConfig } from 'react';
 
-import { UIController, ViewController } from '../';
 import type { SortableSectionProps as SortableSectionPropsBase } from '../components/SortableSection/types';
+import { HeaderSection, MenuSection } from '../';
 import type { ViewData } from '../../src/view-controller/types';
 
 /**
  * Components
  */
-export type ItemProps = {
-  after?: ?ComponentType<*>,
-  before?: ComponentType<*>,
-  href?: string,
-  icon?: string,
-  id: string,
-  goTo?: string,
-  text: Node,
-};
-
-export type GoToItemProps = {
-  ...ItemProps,
-  after?: ?ComponentType<*>,
-  goTo: string,
-  navigationUIController: UIController,
-  navigationViewController: ViewController,
-  spinnerDelay: number,
-};
 
 export type GroupHeadingProps = {
   text: string,
@@ -50,10 +32,10 @@ export type GroupProps = SharedGroupTypeProps & {
 };
 
 export type SectionProps = SharedGroupTypeProps & {
-  alwaysShowScrollHint: boolean,
-  nestedGroupKey: string,
-  parentId: string | null,
-  shouldGrow: boolean,
+  alwaysShowScrollHint?: boolean,
+  nestedGroupKey?: string,
+  parentId?: string | null,
+  shouldGrow?: boolean,
 };
 
 export type SortableSectionProps = SharedGroupTypeProps &
@@ -61,11 +43,17 @@ export type SortableSectionProps = SharedGroupTypeProps &
     nestedGroupKey: string,
   };
 
+export type HeaderSectionProps = SharedGroupTypeProps &
+  ElementConfig<typeof HeaderSection> & {
+    nestedGroupKey?: string,
+  };
+
+export type MenuSectionProps = SharedGroupTypeProps &
+  ElementConfig<typeof MenuSection> & {
+    nestedGroupKey?: string,
+  };
+
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,
   items: ViewData,
-};
-
-export type WordmarkProps = {
-  wordmark: ComponentType<{}>,
 };

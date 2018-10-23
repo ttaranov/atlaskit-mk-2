@@ -4,13 +4,15 @@ import Spinner from '@atlaskit/spinner';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
 import { SpinnerWrapper } from './styled';
 
-export interface ResolvingViewProps {
+export interface InlineCardResolvingViewProps {
   url: string;
   onClick?: () => void;
   isSelected?: boolean;
 }
 
-export class ResolvingView extends React.Component<ResolvingViewProps> {
+export class InlineCardResolvingView extends React.Component<
+  InlineCardResolvingViewProps
+> {
   render() {
     const { url, onClick, isSelected } = this.props;
     return (

@@ -1,21 +1,16 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
-import { parseString } from '../text';
-import { Token, TokenType, TokenErrCallback } from './';
+import { Schema } from 'prosemirror-model';
+import { Token } from './';
 import { macro } from './macro';
 import { linkFormat } from './link-format';
-import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 export interface FormatterOption {
   /** The opening symbol */
   opening: string;
   /** The closing symbol */
   closing: string;
-  /** TokenType to be ignored when parsing the raw content */
-  ignoreTokenTypes?: TokenType[];
-  /** This function will be called for each content under the formatter */
-  contentDecorator: (pmNode: PMNode) => PMNode;
-  /** Callback when token parse failed */
-  tokenErrCallback?: TokenErrCallback;
+  /** This function will be called with the rawContent */
+  rawContentProcessor: (raw: string, length: number) => Token;
 }
 
 const processState = {
@@ -34,34 +29,32 @@ export function commonFormatter(
   let index = 0;
   let state = processState.START;
   let buffer = '';
-
-  /**
-   * The following token types will be ignored in parsing
-   * the content of a strong mark
-   */
-  const ignoreTokenTypes = opt.ignoreTokenTypes || [];
+  const openingSymbolLength = opt.opening.length;
+  const closingSymbolLength = opt.closing.length;
 
   while (index < input.length) {
     const char = input.charAt(index);
-    const secChar = input.charAt(index + 1);
     const twoChar = input.substr(index, 2);
+    const charsMatchClosingSymbol = input.substr(index, closingSymbolLength);
 
     switch (state) {
       case processState.START: {
-        if (char !== opt.opening || secChar === ' ') {
+        const charAfterOpening = input.charAt(index + openingSymbolLength);
+        if (!input.startsWith(opt.opening) || charAfterOpening === ' ') {
           // this is not a valid formatter mark
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
         state = processState.BUFFER;
-        break;
+        index += openingSymbolLength;
+        continue;
       }
       case processState.BUFFER: {
         // the linebreak would break the strong marks
         const length = parseNewlineOnly(input.substring(index));
         if (length) {
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
-        if (char === opt.closing) {
+        if (charsMatchClosingSymbol === opt.closing) {
           state = processState.END;
           continue;
         } else if (twoChar === '{{') {
@@ -81,43 +74,37 @@ export function commonFormatter(
         break;
       }
       case processState.END: {
-        index++;
+        index += closingSymbolLength;
         // empty formatter mark is treated as normal text
         if (buffer.length === 0) {
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
 
         /**
-         * If the closing symbol is not at the end of the line and
-         * has not a following space, it's not a valid formatter
+         * If the closing symbol is followed by a alphanumeric, it's
+         * not a valid formatter, and we keep looking for
+         * next valid closing formatter
          */
         if (index < input.length) {
-          const length = parseWhitespaceAndNewLine(input.substring(index));
-          if (length === 0) {
-            return fallback(input);
+          const charAfterEnd = input.charAt(index);
+          if (/[a-zA-Z0-9]|[^\u0000-\u007F]/.test(charAfterEnd)) {
+            buffer += charsMatchClosingSymbol;
+            state = processState.BUFFER;
+            continue;
           }
         }
         /**
          * If the closing symbol has an empty space before it,
-         * it's not a valid formatter
+         * it's not a valid formatter, and we keep looking for
+         * next valid closing formatter
          */
         if (buffer.endsWith(' ')) {
-          return fallback(input);
+          buffer += charsMatchClosingSymbol;
+          state = processState.BUFFER;
+          continue;
         }
 
-        const rawContent = parseString(
-          buffer,
-          schema,
-          ignoreTokenTypes,
-          opt.tokenErrCallback,
-        );
-        const decoratedContent = rawContent.map(opt.contentDecorator);
-
-        return {
-          type: 'pmnode',
-          nodes: decoratedContent,
-          length: index,
-        };
+        return opt.rawContentProcessor(buffer, index);
       }
       case processState.INLINE_MACRO: {
         const token = macro(input.substr(index), schema);
@@ -128,7 +115,7 @@ export function commonFormatter(
           continue;
         } else {
           // No macro are accepted in formater
-          return fallback(input);
+          return fallback(input, openingSymbolLength);
         }
       }
       case processState.LINK_FORMAT: {
@@ -149,19 +136,19 @@ export function commonFormatter(
           state = processState.BUFFER;
           continue;
         }
-        return fallback(input);
+        return fallback(input, openingSymbolLength);
       }
       default:
     }
     index++;
   }
-  return fallback(input);
+  return fallback(input, openingSymbolLength);
 }
 
-function fallback(input: string): Token {
+function fallback(input: string, length: number): Token {
   return {
     type: 'text',
-    text: input.substr(0, 1),
-    length: 1,
+    text: input.substr(0, length),
+    length: length,
   };
 }

@@ -1,5 +1,8 @@
 # @atlaskit/feature-flag-client
 
+## 1.1.0
+- [minor] Expect "kind" instead of "reason" from products [5930bab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5930bab)
+
 ## 1.0.5
 - [patch] MEP-211: Supporting "value" attribute [8c0ddfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ddfc)
 

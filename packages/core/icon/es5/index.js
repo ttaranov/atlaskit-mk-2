@@ -1,24 +1,29 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Skeleton = exports.size = undefined;
-
-var _Skeleton = require('./components/Skeleton');
-
-Object.defineProperty(exports, 'Skeleton', {
+Object.defineProperty(exports, "size", {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Skeleton).default;
+    return _Icon.size;
   }
 });
+Object.defineProperty(exports, "Skeleton", {
+  enumerable: true,
+  get: function get() {
+    return _Skeleton.default;
+  }
+});
+exports.default = void 0;
 
-var _Icon = require('./components/Icon');
+var _Icon = _interopRequireWildcard(require("./components/Icon"));
 
-var _Icon2 = _interopRequireDefault(_Icon);
+var _Skeleton = _interopRequireDefault(require("./components/Skeleton"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _Icon2.default;
-exports.size = _Icon.size;
+var _default = _Icon.default;
+exports.default = _default;

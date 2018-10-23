@@ -1,20 +1,52 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { TableCssClassName as ClassName } from '../../types';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
+import { akEditorTableNumberColumnWidth } from '@atlaskit/editor-common';
+import { TableCssClassName as ClassName } from '../../types';
+import { tableToolbarSize } from '../styles';
 import tableMessages from '../messages';
+import { closestElement } from '../../../../utils/';
 
 export interface ButtonProps {
   type: 'row' | 'column';
+  tableRef: HTMLElement;
   index: number;
-  showInsertButton?: boolean;
+  showInsertButton: boolean;
   onMouseDown: (event: SyntheticEvent<HTMLButtonElement>) => void;
 }
+
+const getInsertLineheight = (tableRef: HTMLElement) => {
+  return tableRef.offsetHeight + tableToolbarSize;
+};
+
+const getToolbarSize = (tableRef: HTMLElement): number => {
+  const parent = closestElement(tableRef, `.${ClassName.TABLE_CONTAINER}`);
+  if (parent) {
+    return parent.querySelector(`.${ClassName.NUMBERED_COLUMN}`)
+      ? tableToolbarSize + akEditorTableNumberColumnWidth - 1
+      : tableToolbarSize;
+  }
+
+  return tableToolbarSize;
+};
+
+const getInsertLineWidth = (tableRef: HTMLElement) => {
+  const { parentElement, offsetWidth } = tableRef;
+  const parentOffsetWidth = parentElement!.offsetWidth;
+  const { scrollLeft } = parentElement!;
+  const diff = offsetWidth - parentOffsetWidth;
+  const toolbarSize = getToolbarSize(tableRef);
+  return Math.min(
+    offsetWidth + toolbarSize,
+    parentOffsetWidth + toolbarSize - Math.max(scrollLeft - diff, 0),
+  );
+};
 
 const InsertButton = ({
   onMouseDown,
   index,
+  tableRef,
   showInsertButton,
   type,
   intl: { formatMessage },
@@ -46,9 +78,14 @@ const InsertButton = ({
             </span>
           </button>
         </div>
-        {type === 'row' && (
-          <div className={ClassName.ROW_INSERT_LINE_OVERLAY} />
-        )}
+        <div
+          className={ClassName.CONTROLS_INSERT_LINE}
+          style={
+            type === 'row'
+              ? { width: getInsertLineWidth(tableRef) }
+              : { height: getInsertLineheight(tableRef) }
+          }
+        />
       </>
     )}
     <div className={ClassName.CONTROLS_INSERT_MARKER} />

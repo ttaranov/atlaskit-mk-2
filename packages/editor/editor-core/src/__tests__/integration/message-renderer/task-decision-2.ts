@@ -19,7 +19,7 @@ import { insertMentionUsingClick } from './_mention-helpers';
 
 // Cannot paste rich text in IE/Edge
 BrowserTestCase(
-  'task-decision: can paste rich text into an action',
+  'task-decision-2.ts: can paste rich text into an action',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);
@@ -42,7 +42,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'task-decision: can paste plain text into an action',
+  'task-decision-2.ts: can paste plain text into an action',
   { skip: ['ie', 'safari'] },
   async client => {
     const browser = new Page(client);
@@ -66,14 +66,14 @@ BrowserTestCase(
 // Safari highlights entire text on clic
 // IE is generally flaky
 BrowserTestCase(
-  'task-decision: can edit an action',
-  { skip: ['ie', 'safari'] },
+  'task-decision-2.ts: can edit an action',
+  { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadActionButton);
-    await browser.waitForSelector('ol');
-    await browser.click('ol');
+    await browser.waitForSelector('ol span + div');
+    await browser.click('ol span + div');
     await browser.type(editable, ' has been edited');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
@@ -81,7 +81,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'task-decision: can insert mention into an action using click',
+  'task-decision-2.ts: can insert mention into an action using click',
   { skip: ['ie', 'safari'] },
   async client => {
     const browser = new Page(client);

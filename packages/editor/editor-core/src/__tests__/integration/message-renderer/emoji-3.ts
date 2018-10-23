@@ -7,11 +7,12 @@ import {
   insertEmoji,
   emojiItem,
   typeahead,
+  highlightEmojiInTypeahead,
 } from './_emoji-helpers';
 
 // safari failure on browserstack
 BrowserTestCase(
-  'Emoji: user can navigate typeahead using keyboard',
+  'emoji-3.ts: user can navigate typeahead using keyboard',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -21,6 +22,11 @@ BrowserTestCase(
     await browser.type(editable, 'smi');
     await browser.waitForSelector(typeahead);
     await browser.type(editable, 'ArrowDown');
+
+    // The typeahead may re-order our results.
+    // Go down 5 items til we find our desired emoji
+    await highlightEmojiInTypeahead(browser, 'smile');
+
     await browser.type(editable, 'Return');
     await browser.waitForSelector(emojiItem('smile'));
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -30,7 +36,7 @@ BrowserTestCase(
 
 // issue with safari on browserstack works on local
 BrowserTestCase(
-  'Emoji: should select emoji on return',
+  'emoji-3.ts: should select emoji on return',
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
@@ -39,6 +45,11 @@ BrowserTestCase(
     await browser.type(editable, ':');
     await browser.type(editable, 'wink');
     await browser.waitForSelector(typeahead);
+
+    // The typeahead may re-order our results.
+    // Grab the currently selected emoji, to reference in render.
+    await highlightEmojiInTypeahead(browser, 'wink');
+
     await browser.type(editable, 'Return');
     await browser.waitForSelector(emojiItem('wink'));
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -47,7 +58,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: should render emoji inside codeblock',
+  'emoji-3.ts: should render emoji inside codeblock',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -63,7 +74,7 @@ BrowserTestCase(
 
 // BUG on IE
 BrowserTestCase(
-  'Emoji: should render emoji inside action',
+  'emoji-3.ts: should render emoji inside action',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -78,7 +89,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: should not show typeahead with text: ',
+  'emoji-3.ts: should not show typeahead with text: ',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
@@ -90,7 +101,7 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'Emoji: ":<space>" does not show the picker',
+  'emoji-3.ts: ":<space>" does not show the picker',
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);

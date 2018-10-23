@@ -10,6 +10,7 @@ import {
   MediaApiConfig,
   UploadController,
   MediaStoreGetFileImageParams,
+  ImageMetadata,
 } from '@atlaskit/media-store';
 import { CollectionFetcher } from '../collection';
 import {
@@ -75,6 +76,10 @@ export interface Context {
   ): Observable<FileState>;
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
+  getImageMetadata(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<ImageMetadata>;
 
   readonly collection: CollectionFetcher;
   readonly file: FileFetcher;
@@ -221,6 +226,13 @@ class ContextImpl implements Context {
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob> {
     return this.mediaStore.getImage(id, params);
+  }
+
+  async getImageMetadata(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<ImageMetadata> {
+    return (await this.mediaStore.getImageMetadata(id, params)).metadata;
   }
 
   private get apiConfig(): MediaApiConfig {

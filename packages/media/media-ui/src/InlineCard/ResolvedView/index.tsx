@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Frame } from '../Frame';
 import Lozenge from '@atlaskit/lozenge';
-import { LozengeViewModel } from '../../types';
+import { LozengeViewModel } from '../../common';
 import { IconAndTitleLayout } from '../IconAndTitleLayout';
 import { Title } from './styled';
 import { Icon } from '../Icon';
 
-export interface ResolvedViewProps {
+export interface InlineCardResolvedViewProps {
   icon?: string;
   title: string;
   lozenge?: LozengeViewModel;
@@ -14,7 +14,9 @@ export interface ResolvedViewProps {
   onClick?: () => void;
 }
 
-export class ResolvedView extends React.Component<ResolvedViewProps> {
+export class InlineCardResolvedView extends React.Component<
+  InlineCardResolvedViewProps
+> {
   renderIcon() {
     const { icon } = this.props;
     if (!icon) {

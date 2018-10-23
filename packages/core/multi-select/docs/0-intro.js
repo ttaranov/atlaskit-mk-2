@@ -22,6 +22,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/multi-select"
       Component={require('../examples/00-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic')}
@@ -30,6 +31,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/multi-select"
       Component={require('../examples/01-groupless').default}
       title="Appearance"
       source={require('!!raw-loader!../examples/01-groupless')}
@@ -38,6 +40,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/multi-select"
       Component={require('../examples/02-stateless').default}
       title="Custom"
       source={require('!!raw-loader!../examples/02-stateless')}

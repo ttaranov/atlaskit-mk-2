@@ -1,4 +1,5 @@
 import { MarkType, Node } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
 
 export function findQueryMark(
   mark: MarkType,
@@ -17,4 +18,11 @@ export function findQueryMark(
   });
 
   return queryMark;
+}
+
+export function findTypeAheadQuery(state: EditorState) {
+  const { doc, schema } = state;
+  const { typeAheadQuery } = schema.marks;
+  const { from, to } = state.selection;
+  return findQueryMark(typeAheadQuery, doc, from - 1, to);
 }

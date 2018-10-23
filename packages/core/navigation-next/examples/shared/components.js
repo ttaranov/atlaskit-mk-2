@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Drawer from '@atlaskit/drawer';
 import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
-import { GlobalNav, ItemAvatar } from '../../src';
+import { GlobalNav, ContainerHeader, ItemAvatar, Switcher } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
 // ==============================
@@ -60,16 +60,16 @@ export const SearchDrawer = ({ children, isOpen, onClose }: *) => (
 const SwitcherBefore = itemState => (
   <ItemAvatar itemState={itemState} appearance="square" size="large" />
 );
-class Switcher extends PureComponent<*, *> {
+class ProjectSwitcherBase extends PureComponent<*, *> {
   state = {
     selected: this.props.defaultSelected,
   };
   getTarget = () => {
-    const { components: C, isSelected } = this.props;
+    const { isSelected } = this.props;
     const { selected } = this.state;
 
     return (
-      <C.ContainerHeader
+      <ContainerHeader
         before={SwitcherBefore}
         after={ChevronDown}
         text={selected.text}
@@ -85,29 +85,32 @@ class Switcher extends PureComponent<*, *> {
     this.setState({ selected });
   };
   render() {
-    const { components: C, options } = this.props;
+    const { options } = this.props;
     const { selected } = this.state;
+
     return (
-      <C.Switcher
-        onChange={this.onSwitch}
-        create={{
-          onClick: () => {
-            // eslint-disable-next-line
-            const boardName = window.prompt(
-              'What would you like to call your new board?',
-            );
-            if (boardName && boardName.length)
-              console.log(`You created the board "${boardName}"`);
-          },
-          text: 'Create board',
-        }}
-        options={options}
-        isMulti={false}
-        hideSelectedOptions
-        target={this.getTarget()}
-        value={selected}
-      />
+      <div style={{ paddingBottom: 20 }}>
+        <Switcher
+          onChange={this.onSwitch}
+          create={{
+            onClick: () => {
+              // eslint-disable-next-line
+              const boardName = window.prompt(
+                'What would you like to call your new board?',
+              );
+              if (boardName && boardName.length)
+                console.log(`You created the board "${boardName}"`);
+            },
+            text: 'Create board',
+          }}
+          options={options}
+          isMulti={false}
+          hideSelectedOptions
+          target={this.getTarget()}
+          value={selected}
+        />
+      </div>
     );
   }
 }
-export const ProjectSwitcher = withRouter(Switcher);
+export const ProjectSwitcher = withRouter(ProjectSwitcherBase);

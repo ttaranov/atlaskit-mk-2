@@ -34,6 +34,7 @@ export {
   UploadEndEventPayload,
   UploadErrorEventPayload,
   UploadEventPayloadMap,
+  isImagePreview,
 } from './domain/uploadEvent';
 
 export { MediaFile, PublicMediaFile } from './domain/file';

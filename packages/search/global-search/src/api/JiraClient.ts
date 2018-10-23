@@ -10,8 +10,12 @@ import {
   ContentType,
 } from '../model/Result';
 import { addJiraResultQueryParams } from './JiraItemMapper';
+import { JiraResultQueryParams } from './types';
 
 const RECENT_ITEMS_PATH: string = 'rest/internal/2/productsearch/recent';
+const PERMISSIONS_PATH: string =
+  'rest/api/2/mypermissions?permissions=USER_PICKER';
+
 export type RecentItemsCounts = {
   issues?: number;
   boards?: number;
@@ -39,6 +43,8 @@ export interface JiraClient {
     searchSessionId: string,
     recentItemCounts?: RecentItemsCounts,
   ): Promise<JiraResult[]>;
+
+  canSearchUsers(): Promise<boolean>;
 }
 
 enum JiraResponseGroup {
@@ -91,10 +97,19 @@ type JiraRecentItem = {
     | JiraRecentFilterAttributes;
 };
 
+type JiraMyPermissionsResponse = {
+  permissions: {
+    USER_PICKER?: {
+      havePermission: boolean;
+    };
+  };
+};
+
 export default class JiraClientImpl implements JiraClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
   private addSessionIdToJiraResult;
+  private canSearchUsersCache: boolean | undefined;
 
   constructor(
     url: string,
@@ -133,8 +148,29 @@ export default class JiraClientImpl implements JiraClient {
       options,
     );
     return recentItems
+      .filter(group => JiraResponseGroupToContentType.hasOwnProperty(group.id))
       .map(group => this.recentItemGroupToItems(group, searchSessionId))
       .reduce((acc, item) => [...acc, ...item], []);
+  }
+
+  public async canSearchUsers(): Promise<boolean> {
+    if (typeof this.canSearchUsersCache === 'boolean') {
+      return Promise.resolve(this.canSearchUsersCache);
+    }
+
+    const options: RequestServiceOptions = {
+      path: PERMISSIONS_PATH,
+    };
+
+    const permissionsResponse: JiraMyPermissionsResponse = await utils.requestService<
+      JiraMyPermissionsResponse
+    >(this.serviceConfig, options);
+
+    this.canSearchUsersCache = permissionsResponse.permissions.USER_PICKER
+      ? permissionsResponse.permissions.USER_PICKER.havePermission
+      : false;
+
+    return this.canSearchUsersCache;
   }
 
   private recentItemGroupToItems(
@@ -158,7 +194,10 @@ export default class JiraClientImpl implements JiraClient {
       ? addJiraResultQueryParams(item.url, {
           searchSessionId,
           searchContainerId: containerId,
-          searchContentType: contentType,
+          searchContentType: contentType.replace(
+            'jira-',
+            '',
+          ) as JiraResultQueryParams['searchContentType'],
           searchObjectId: resultId,
         })
       : item.url;

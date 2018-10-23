@@ -40,7 +40,6 @@ export default class Popup extends React.Component<Props, State> {
   scrollElement: undefined | false | HTMLElement;
   static defaultProps = {
     offset: [0, 0],
-    boundariesElement: document.body,
   };
 
   state: State = {
@@ -73,7 +72,7 @@ export default class Popup extends React.Component<Props, State> {
 
     const placement = calculatePlacement(
       target,
-      boundariesElement!,
+      boundariesElement || document.body,
       fitWidth,
       fitHeight,
       alignX,

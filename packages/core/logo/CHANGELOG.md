@@ -1,5 +1,8 @@
 # @atlaskit/logo
 
+## 9.2.3
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 9.2.2
 - [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
   - @atlaskit/select@6.0.0

@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Breitt',
   'fabric.editor.layoutFullWidth': 'Full breidd',
   'fabric.editor.remove': 'Fjarlægja',
+  'fabric.editor.visit': 'Opna tengil í nýjum glugga',
   'fabric.editor.normal': 'Eðlilegur texti',
   'fabric.editor.heading1': 'Fyrirsögn 1',
   'fabric.editor.heading2': 'Fyrirsögn 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Texti til að birta',
   'fabric.editor.linkPlaceholderWithSearch':
     'Límdu tengil eða leitaðu í „nýlega skoðað”',
+  'fabric.editor.action': 'Aðgerð atriði',
   'fabric.editor.link': 'Tengja',
   'fabric.editor.filesAndImages': 'Skrár & myndir',
   'fabric.editor.image': 'Mynd',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Þrír dálkar',
   'fabric.editor.unorderedList': 'Bullet listi',
   'fabric.editor.orderedList': 'Númeraður listi',
-  'fabric.editor.action': 'Aðgerð atriði',
   'fabric.editor.lists': 'Lists',
   'fabric.editor.wrapLeft': 'Vinstriskrið',
   'fabric.editor.wrapRight': 'Hægriskrið',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Setja röð inn',
   'fabric.editor.removeRows':
     '{0, plural, one{Fjarlægja röð} other{Fjarlægja raðir}}',
+  'fabric.editor.decisionPlaceholder': 'Bæta við ákvörðun...',
+  'fabric.editor.taskPlaceholder':
+    "Sláðu inn aðgerðina þína, notaðu '@' til að úthluta einhverjum.",
   'fabric.editor.textColor': 'Textalitur',
   'fabric.editor.underline': 'Undirstrika',
   'fabric.editor.strike': 'Gegnumstrikun',

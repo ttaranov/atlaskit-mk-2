@@ -26,6 +26,7 @@ Feedback collector is a wrapper around feedback form component that collects cus
 
 ${(
   <Example
+    packageName="@atlaskit/feedback-collector"
     Component={require('../examples/02-feedback-collector').default}
     title="As a button"
     source={require('!!raw-loader!../examples/02-feedback-collector')}
@@ -46,6 +47,7 @@ It is not tied to any particular feedback collector.
 
 ${(
   <Example
+    packageName="@atlaskit/feedback-collector"
     Component={require('../examples/01-feedback-form').default}
     title="As a button"
     source={require('!!raw-loader!../examples/01-feedback-form')}

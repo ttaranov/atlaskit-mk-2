@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Breite',
   'fabric.editor.layoutFullWidth': 'Volle Breite',
   'fabric.editor.remove': 'Entfernen',
+  'fabric.editor.visit': 'Link in neuem Fenster öffnen',
   'fabric.editor.normal': 'Normaler Text',
   'fabric.editor.heading1': 'Überschrift 1',
   'fabric.editor.heading2': 'Überschrift 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Text zum Anzeigen',
   'fabric.editor.linkPlaceholderWithSearch':
     'Link einfügen oder suche kürzlich angesehene',
+  'fabric.editor.action': 'Aufgelistete Aufgabe',
   'fabric.editor.link': 'Link',
   'fabric.editor.filesAndImages': 'Dateien und Bilder',
   'fabric.editor.image': 'Bild',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Drei Spalten',
   'fabric.editor.unorderedList': 'Aufzählung',
   'fabric.editor.orderedList': 'Nummerierte Liste',
-  'fabric.editor.action': 'Aufgelistete Aufgabe',
   'fabric.editor.lists': 'Listen',
   'fabric.editor.wrapLeft': 'Links umwickeln',
   'fabric.editor.wrapRight': 'Rechts umwickeln',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Zeile einfügen',
   'fabric.editor.removeRows':
     '{0, plural, one{Zeile entfernen} other{Zeilen entfernen}}',
+  'fabric.editor.decisionPlaceholder': 'Entscheidung hinzufügen …',
+  'fabric.editor.taskPlaceholder':
+    'Geben Sie Ihre Aktion ein und weisen Sie sie mithilfe von „@” jemandem zu.',
   'fabric.editor.textColor': 'Textfarbe',
   'fabric.editor.underline': 'Unterstrichen',
   'fabric.editor.strike': 'Durchgestrichen',

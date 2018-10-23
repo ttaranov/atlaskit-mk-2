@@ -3,9 +3,9 @@
 import type {
   GlobalItemPresentationProps,
   GlobalItemStyles,
-} from '../components/GlobalItem/types';
-import type { ItemPresentationProps } from '../components/Item/types';
-import type { SectionPresentationProps } from '../components/Section/types';
+} from '../components/presentational/GlobalItem/types';
+import type { ItemPresentationProps } from '../components/presentational/Item/types';
+import type { SectionPresentationProps } from '../components/presentational/Section/types';
 
 /**
  * Types

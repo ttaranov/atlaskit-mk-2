@@ -15,6 +15,7 @@ export default md`
   ## Examples
   ${(
     <Example
+      packageName="@atlaskit/table-tree"
       Component={
         require('../examples/render-prop-async-with-update-items').default
       }
@@ -28,6 +29,7 @@ export default md`
   
   ${(
     <Example
+      packageName="@atlaskit/table-tree"
       Component={require('../examples/render-prop-no-headers').default}
       source={require('!!raw-loader!../examples/render-prop-no-headers')}
       title="No headers"

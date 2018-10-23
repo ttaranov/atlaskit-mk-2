@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { changeService } from '../../../actions';
 import { ServiceName as ServiceNameDomain } from '../../../domain';
@@ -7,7 +7,7 @@ import { Wrapper, ServiceIcon, ServiceName } from './styled';
 
 export interface SidebarItemOwnProps {
   readonly serviceName: ServiceNameDomain;
-  readonly serviceFullName: string;
+  readonly serviceFullName: ReactNode;
   readonly isActive: boolean;
 }
 

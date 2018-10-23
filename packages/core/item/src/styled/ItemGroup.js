@@ -1,12 +1,8 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import {
-  getThemeStyle,
-  gridSize,
-  smallFontSize,
-  themeNamespace,
-} from '../util/theme';
+import { fontSizeSmall } from '@atlaskit/theme';
+import { getThemeStyle, gridSize, themeNamespace } from '../util/theme';
 
 const getPadding = ({ isCompact, theme }): Array<any> => {
   const paddingType = isCompact ? 'compact' : 'default';
@@ -39,7 +35,7 @@ GroupTitleAfter.displayName = 'ItemGroupTitleAfter';
 
 const GroupTitleText = styled.div`
   flex: 1 1 auto;
-  font-size: ${smallFontSize}px;
+  font-size: ${fontSizeSmall}px;
   line-height: 1;
   text-transform: uppercase;
   /* Required for children to truncate */

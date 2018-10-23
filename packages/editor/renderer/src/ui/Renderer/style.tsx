@@ -38,8 +38,16 @@ const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
 };
 
+const tableStyles = ({ appearance }: Props) => {
+  if (appearance === 'mobile') {
+    return 'table-layout: auto';
+  }
+
+  return '';
+};
+
 const fullPageStyles = ({ theme, appearance }) => {
-  if (appearance !== 'full-page') {
+  if (appearance !== 'full-page' && appearance !== 'mobile') {
     return '';
   }
 
@@ -227,6 +235,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     transition: all 0.1s linear;
     overflow-x: auto;
     table {
+      ${tableStyles};
       margin-left: 0;
       margin-right: 0;
     }
@@ -234,31 +243,33 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     table[data-number-column='true'] {
       counter-reset: row-number;
 
-      /*
-       * Only increment the row number if its a standard cell.
-       * When we have a header row that should count as the 0th row.
-       */
-      tr > td:first-of-type {
-        counter-increment: row-number;
-      }
-
       /**
        * Don't show the row increment on header rows.
        */
-      tr:first-of-type {
-        th:first-of-type::before {
+      tr:first-child {
+        th:first-child::before {
           content: '';
+        }
+
+        /*
+        * Only increment the row number if its a standard cell.
+        * When we have a header row that should count as the 0th row.
+        */  
+        th:first-child {
+          counter-reset: row-number;
         }
       }
 
-      tr td:first-of-type,
-      tr th:first-of-type {
+      tr td:first-child,
+      tr th:first-child {
+        counter-increment: row-number;
         position: relative;
+        font-weight: normal;
         padding-left: ${akEditorTableNumberColumnWidth + 10}px;
       }
 
-      tr td:first-of-type::before,
-      tr th:first-of-type::before {
+      tr td:first-child::before,
+      tr th:first-child::before {
         content: counter(row-number);
         display: table-cell;
         box-sizing: border-box;
@@ -289,6 +300,12 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     /* stylelint-enable */
 
     grid-template-columns: minmax(0, 1fr);
+
+    /*
+     * The overall renderer has word-wrap: break; which causes issues with
+     * code block line numbers in Safari / iOS.
+     */
+    word-wrap: normal;
 
     & > span {
       /* stylelint-disable value-no-vendor-prefix */

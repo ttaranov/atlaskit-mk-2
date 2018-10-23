@@ -10,6 +10,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/item"
       Component={require('../examples/00-basic').default}
       title="Basic"
       source={require('!!raw-loader!../examples/00-basic')}

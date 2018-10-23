@@ -1684,8 +1684,7 @@
             "$ref": "#/definitions/codeBlock_node"
           }
         ]
-      },
-      "minItems": 0
+      }
     },
     "table_cell_content": {
       "type": "array",

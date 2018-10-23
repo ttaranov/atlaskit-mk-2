@@ -9,6 +9,7 @@ const meow = require('meow');
 const browserstack = require('./utils/browserstack');
 const selenium = require('./utils/selenium');
 const webpack = require('./utils/webpack');
+const reportTestFailures = require('./reporting');
 
 /*
  * function main() to
@@ -45,6 +46,7 @@ async function runJest(testPaths) {
       _: testPaths || cli.input,
       maxWorkers,
       watch: !!process.env.WATCH,
+      passWithNoTests: true,
       updateSnapshot: cli.flags.updateSnapshot,
     },
     [process.cwd()],
@@ -58,8 +60,7 @@ async function rerunFailedTests(result) {
     .map(testResult => testResult.testFilePath);
 
   if (!failingTestPaths.length) {
-    getExitCode(result);
-    return;
+    return getExitCode(result);
   }
 
   console.log(
@@ -75,7 +76,7 @@ async function rerunFailedTests(result) {
     'test-reports/junit-rerun.xml',
   );
   const results = await runJest(failingTestPaths);
-  return results;
+  return getExitCode(results);
 }
 
 function runTestsWithRetry() {
@@ -84,7 +85,9 @@ function runTestsWithRetry() {
     try {
       const results = await runJest();
       code = getExitCode(results);
-      if (code !== 0 && isBrowserStack) {
+      // Only retry and report results in CI.
+      if (code !== 0 && process.env.CI) {
+        reportTestFailures(results);
         code = await rerunFailedTests(results);
       }
     } catch (err) {

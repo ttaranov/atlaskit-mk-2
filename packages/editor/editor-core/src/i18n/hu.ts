@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Széles',
   'fabric.editor.layoutFullWidth': 'Teljes szélesség',
   'fabric.editor.remove': 'Eltávolítás',
+  'fabric.editor.visit': 'Hivatkozás megnyitása új ablakban',
   'fabric.editor.normal': 'Normál szöveg',
   'fabric.editor.heading1': '1. szintű címsor',
   'fabric.editor.heading2': '2. szintű címsor',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Megjelenítendő szöveg',
   'fabric.editor.linkPlaceholderWithSearch':
     'Hivatkozás beillesztése vagy keresés a legutóbb megtekintett lapokon',
+  'fabric.editor.action': 'Teendő',
   'fabric.editor.link': 'Hivatkozás',
   'fabric.editor.filesAndImages': 'Fájlok és képek',
   'fabric.editor.image': 'Kép',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Három oszlop',
   'fabric.editor.unorderedList': 'Listajeles lista',
   'fabric.editor.orderedList': 'Számozott lista',
-  'fabric.editor.action': 'Teendő',
   'fabric.editor.lists': 'Listák',
   'fabric.editor.wrapLeft': 'Balra igazítás',
   'fabric.editor.wrapRight': 'Jobbra igazítás',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Sor beszúrása',
   'fabric.editor.removeRows':
     '{0, plural, one{Sor eltávolítása} other{Sorok eltávolítása}}',
+  'fabric.editor.decisionPlaceholder': 'Döntés hozzáadása...',
+  'fabric.editor.taskPlaceholder':
+    'Írja be a műveletet. Az „@” jellel hozzárendelheti valakihez.',
   'fabric.editor.textColor': 'Szövegszín',
   'fabric.editor.underline': 'Aláhúzott',
   'fabric.editor.strike': 'Áthúzott',

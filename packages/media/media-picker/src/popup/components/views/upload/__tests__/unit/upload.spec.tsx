@@ -5,7 +5,6 @@ import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { Card } from '@atlaskit/media-card';
 import { MediaCollectionItem } from '@atlaskit/media-store';
-import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Context } from '@atlaskit/media-core';
 import { State, SelectedItem, LocalUpload } from '../../../../../domain';
@@ -212,7 +211,6 @@ describe('<UploadView />', () => {
               mimeType: 'image/png',
               upfrontId,
             },
-            dataURI: 'some-data-uri',
           },
           index: 0,
           events: [],
@@ -303,22 +301,6 @@ describe('<UploadView />', () => {
 
     expect(root.find(FlagGroup)).toHaveLength(1);
     expect(isWebGLAvailable).toHaveBeenCalled();
-  });
-
-  it('should render annotate card action with annotate icon', async () => {
-    const { component } = createConnectedComponent(state);
-    expect(
-      component
-        .find(Card)
-        .first()
-        .props().actions,
-    ).toContainEqual({
-      label: 'Annotate',
-      icon: expect.objectContaining({
-        type: AnnotateIcon,
-      }),
-      handler: expect.any(Function),
-    });
   });
 
   it('should set deferred upfront id when clicking on a card', () => {

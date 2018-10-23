@@ -23,6 +23,7 @@ import Flag, { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
 
   ${(
     <Example
+      packageName="@atlaskit/flag"
       Component={require('../examples/01-flag-without-flagGroup').default}
       title="Flag Component"
       source={require('!!raw-loader!../examples/01-flag-without-flagGroup')}
@@ -31,6 +32,7 @@ import Flag, { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
 
   ${(
     <Example
+      packageName="@atlaskit/flag"
       Component={require('../examples/11-bold-flag-component').default}
       title="Flag Component"
       source={require('!!raw-loader!../examples/11-bold-flag-component')}
@@ -39,6 +41,7 @@ import Flag, { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
 
   ${(
     <Example
+      packageName="@atlaskit/flag"
       Component={require('../examples/12-flag-group').default}
       title="Flag Component"
       source={require('!!raw-loader!../examples/12-flag-group')}

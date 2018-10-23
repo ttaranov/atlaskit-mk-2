@@ -63,6 +63,7 @@ export interface ProcessingFailedState {
   artifacts: Object;
   mediaType: MediaType;
   mimeType: string;
+  preview?: FilePreview;
 }
 export interface ErrorFileState {
   status: 'error';

@@ -8,7 +8,12 @@ import { Dispatch } from '../../../event-dispatcher';
 import TableNodeView from '../nodeviews/table';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { setTargetCell, setTableRef, clearHoverSelection } from '../actions';
+import {
+  setTargetCell,
+  setTableRef,
+  clearHoverSelection,
+  handleCut,
+} from '../actions';
 import {
   handleSetFocus,
   handleSetTableRef,
@@ -21,8 +26,8 @@ import {
   handleDocChanged,
   handleSelectionChanged,
   handleToggleContextualMenu,
-  handleShowInsertLine,
-  handleHideInsertLine,
+  handleShowInsertColumnButton,
+  handleShowInsertRowButton,
 } from '../action-handlers';
 import {
   handleMouseOver,
@@ -44,6 +49,8 @@ export const defaultTableSelection = {
   dangerRows: [],
   isTableInDanger: false,
   isTableHovered: false,
+  insertColumnButtonIndex: undefined,
+  insertRowButtonIndex: undefined,
 };
 
 export enum ACTIONS {
@@ -56,9 +63,8 @@ export enum ACTIONS {
   HOVER_ROWS,
   HOVER_TABLE,
   TOGGLE_CONTEXTUAL_MENU,
-  SHOW_COLUMN_INSERT_LINE,
-  SHOW_ROW_INSERT_LINE,
-  HIDE_INSERT_LINE,
+  SHOW_INSERT_COLUMN_BUTTON,
+  SHOW_INSERT_ROW_BUTTON,
 }
 
 export const createPlugin = (
@@ -94,8 +100,8 @@ export const createPlugin = (
           dangerRows,
           isTableInDanger,
           isContextualMenuOpen,
-          insertLineDecoration,
-          insertLineIndex,
+          insertColumnButtonIndex,
+          insertRowButtonIndex,
         } = data;
 
         let pluginState = { ..._pluginState };
@@ -153,16 +159,17 @@ export const createPlugin = (
               dispatch,
             );
 
-          case ACTIONS.SHOW_COLUMN_INSERT_LINE:
-          case ACTIONS.SHOW_ROW_INSERT_LINE:
-            return handleShowInsertLine(insertLineDecoration, insertLineIndex)(
-              state,
+          case ACTIONS.SHOW_INSERT_COLUMN_BUTTON:
+            return handleShowInsertColumnButton(insertColumnButtonIndex)(
               pluginState,
               dispatch,
             );
 
-          case ACTIONS.HIDE_INSERT_LINE:
-            return handleHideInsertLine(pluginState, dispatch);
+          case ACTIONS.SHOW_INSERT_ROW_BUTTON:
+            return handleShowInsertRowButton(insertRowButtonIndex)(
+              pluginState,
+              dispatch,
+            );
 
           default:
             break;
@@ -178,6 +185,16 @@ export const createPlugin = (
       },
     },
     key: pluginKey,
+    appendTransaction: (
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ) => {
+      const tr = transactions.find(tr => tr.getMeta('uiEvent') === 'cut');
+      if (tr) {
+        return handleCut(tr, oldState, newState);
+      }
+    },
     view: (editorView: EditorView) => {
       const domAtPos = editorView.domAtPos.bind(editorView);
 

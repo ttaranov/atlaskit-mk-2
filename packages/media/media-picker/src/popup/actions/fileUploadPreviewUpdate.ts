@@ -11,7 +11,7 @@ export const FILE_PREVIEW_UPDATE = 'FILE_PREVIEW_UPDATE';
 export interface FileUploadPreviewUpdateAction extends Action {
   readonly type: 'FILE_PREVIEW_UPDATE';
   readonly file: MediaFile;
-  readonly preview: string | null;
+  readonly preview?: Blob;
   readonly originalEvent: UploadPreviewUpdateEvent;
 }
 
@@ -27,7 +27,7 @@ export function fileUploadPreviewUpdate(
   return {
     type: FILE_PREVIEW_UPDATE,
     file: payload.file,
-    preview: payload.preview.src,
+    preview: payload.preview.file,
     originalEvent: {
       name: 'upload-preview-update',
       data: payload,

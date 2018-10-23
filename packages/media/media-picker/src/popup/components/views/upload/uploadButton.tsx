@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import Button from '@atlaskit/button';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { startFileBrowser } from '../../../actions/startFileBrowser';
 import { Browser } from '../../../../components/browser';
 import { State } from '../../../domain';
@@ -35,7 +37,7 @@ export class LocalBrowserButton extends React.Component<Props> {
         onClick={this.onUploadClick}
         isDisabled={!mpBrowser}
       >
-        Upload a file
+        <FormattedMessage {...messages.upload_file} />
       </Button>
     );
   }

@@ -1,11 +1,11 @@
 import { Node as PmNode } from 'prosemirror-model';
-import { TableCellContent } from './doc';
 import { colors } from '@atlaskit/theme';
 import { hexToRgba, isHex } from '../../utils';
 import {
   akEditorTableCellBackgroundOpacity,
   akEditorTableNumberColumnWidth,
 } from '../../styles';
+import { TableCellContent } from './doc';
 
 const {
   N20,
@@ -189,9 +189,6 @@ export interface TableCell {
 export interface TableHeader {
   type: 'tableHeader';
   attrs?: CellAttributes;
-  /**
-   * @minItems 1
-   */
   content: TableCellContent;
 }
 

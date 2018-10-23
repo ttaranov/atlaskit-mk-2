@@ -45,8 +45,6 @@ import {
   getSelectionRect,
   isHeaderRowSelected,
   isIsolating,
-  createColumnInsertLineDecoration,
-  createRowInsertLineDecoration,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
@@ -744,75 +742,72 @@ export const selectRow = (row: number): Command => (
   return true;
 };
 
-export const showColumnInsertLine = (columnIndex: number): Command => (
+export const showInsertColumnButton = (columnIndex: number): Command => (
   state,
   dispatch,
 ) => {
-  const table = findTable(state.selection);
-  if (table) {
-    const cells = getCellsInColumn(Math.max(columnIndex - 1, 0))(
-      state.selection,
-    );
-    if (cells) {
-      dispatch(
-        state.tr
-          .setMeta(pluginKey, {
-            action: ACTIONS.SHOW_COLUMN_INSERT_LINE,
-            data: {
-              insertLineDecoration: createColumnInsertLineDecoration(
-                cells,
-                columnIndex,
-              ),
-              insertLineIndex: columnIndex,
-            },
-          })
-          .setMeta('addToHistory', false),
-      );
-      return true;
-    }
-  }
-  return false;
-};
-
-export const showRowInsertLine = (rowIndex: number): Command => (
-  state,
-  dispatch,
-) => {
-  const table = findTable(state.selection);
-  if (table) {
-    const cells = getCellsInRow(Math.max(rowIndex - 1, 0))(state.selection);
-    if (cells) {
-      dispatch(
-        state.tr
-          .setMeta(pluginKey, {
-            action: ACTIONS.SHOW_ROW_INSERT_LINE,
-            data: {
-              insertLineDecoration: createRowInsertLineDecoration(
-                cells,
-                rowIndex,
-              ),
-              insertLineIndex: rowIndex,
-            },
-          })
-          .setMeta('addToHistory', false),
-      );
-      return true;
-    }
-  }
-  return false;
-};
-
-export const hideInsertLine: Command = (state, dispatch) => {
-  const table = findTable(state.selection);
-  if (table) {
+  const { insertColumnButtonIndex } = getPluginState(state);
+  if (typeof insertColumnButtonIndex !== 'number') {
     dispatch(
       state.tr
         .setMeta(pluginKey, {
-          action: ACTIONS.HIDE_INSERT_LINE,
+          action: ACTIONS.SHOW_INSERT_COLUMN_BUTTON,
+          data: {
+            insertColumnButtonIndex: columnIndex,
+          },
         })
         .setMeta('addToHistory', false),
     );
     return true;
   }
   return false;
+};
+
+export const showInsertRowButton = (rowIndex: number): Command => (
+  state,
+  dispatch,
+) => {
+  const { insertRowButtonIndex } = getPluginState(state);
+  if (typeof insertRowButtonIndex !== 'number') {
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.SHOW_INSERT_ROW_BUTTON,
+          data: {
+            insertRowButtonIndex: rowIndex,
+          },
+        })
+        .setMeta('addToHistory', false),
+    );
+    return true;
+  }
+  return false;
+};
+
+export const handleCut = (
+  oldTr: Transaction,
+  oldState: EditorState,
+  newState: EditorState,
+): Transaction => {
+  const oldSelection = oldState.tr.selection;
+  let { tr } = newState;
+  if (oldSelection instanceof CellSelection) {
+    const $anchorCell = oldTr.doc.resolve(
+      oldTr.mapping.map(oldSelection.$anchorCell.pos),
+    );
+    const $headCell = oldTr.doc.resolve(
+      oldTr.mapping.map(oldSelection.$headCell.pos),
+    );
+    tr.setSelection(new CellSelection($anchorCell, $headCell) as any);
+
+    if (tr.selection instanceof CellSelection) {
+      if (tr.selection.isRowSelection()) {
+        tr = removeSelectedRows(tr);
+      } else if (tr.selection.isColSelection()) {
+        tr = removeSelectedColumns(tr);
+      }
+    }
+  }
+
+  return tr;
 };

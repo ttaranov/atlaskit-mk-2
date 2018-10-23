@@ -1,24 +1,31 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
-import { mediaSingle, media } from '@atlaskit/editor-test-helpers';
+import {
+  mediaSingle,
+  media,
+  randomId,
+  storyMediaProviderFactory,
+} from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 import {
   stateKey as mediaStateKey,
   DefaultMediaStateManager,
 } from '../../../../../../plugins/media/pm-plugins/main';
-import MediaSingle from '../../../../../../plugins/media/nodeviews/media-single';
+import MediaSingle from '../../../../../../plugins/media/nodeviews/mediaSingle';
+import Media from '../../../../../../plugins/media/nodeviews/media';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
-interface MediaProps {
-  node: PMNode;
-}
+const stateManager = new DefaultMediaStateManager();
+const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
-class Media extends React.Component<MediaProps, {}> {
-  render() {
-    return null;
-  }
-}
+const getFreshMediaProvider = () =>
+  storyMediaProviderFactory({
+    collectionName: testCollectionName,
+    stateManager,
+
+    includeUserAuthProvider: true,
+  });
 
 describe('nodeviews/mediaSingle', () => {
   let pluginState;
@@ -34,36 +41,23 @@ describe('nodeviews/mediaSingle', () => {
   })();
 
   beforeEach(() => {
+    const mediaProvider = getFreshMediaProvider();
+    const providerFactory = ProviderFactory.create({ mediaProvider });
     pluginState = {
       getMediaNodeStateStatus: (id: string) => 'ready',
       getMediaNodeState: (id: string) => {
         return { state: 'ready' };
       },
+      options: {
+        allowResizing: false,
+        providerFactory: providerFactory,
+      },
+      handleMediaNodeMount: () => {},
     };
+
     pluginState.stateManager = stateManager;
+
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
-  });
-
-  it('sets child to isMediaSingle to be true', () => {
-    const getPos = jest.fn();
-    const view = {} as EditorView;
-    const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
-
-    const wrapper = shallow(
-      <MediaSingle
-        view={view}
-        node={mediaSingleNode(defaultSchema)}
-        containerWidth={680}
-        lineLength={680}
-        getPos={getPos}
-        appearance="full-page"
-      >
-        <Media node={mediaNode(defaultSchema)} />
-      </MediaSingle>,
-    );
-
-    const child = wrapper.childAt(0);
-    expect(child && child.props().isMediaSingle).toBe(true);
   });
 
   it('notifies plugin if node layout is updated', () => {
@@ -81,13 +75,11 @@ describe('nodeviews/mediaSingle', () => {
       <MediaSingle
         view={view}
         node={mediaSingleNode(defaultSchema)}
-        containerWidth={680}
         lineLength={680}
         getPos={getPos}
-        appearance="full-page"
-      >
-        <Media node={mediaNode(defaultSchema)} />
-      </MediaSingle>,
+        width={123}
+        selected={() => 1}
+      />,
     );
 
     wrapper.setProps({ node: updatedMediaSingleNode });
@@ -100,21 +92,18 @@ describe('nodeviews/mediaSingle', () => {
     const view = {} as EditorView;
     const mediaSingleNode = mediaSingle()(externalMediaNode);
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <MediaSingle
         view={view}
         node={mediaSingleNode(defaultSchema)}
-        containerWidth={680}
         lineLength={680}
         getPos={getPos}
-        appearance="full-page"
-      >
-        <Media node={externalMediaNode(defaultSchema)} />
-      </MediaSingle>,
+        width={123}
+        selected={() => 1}
+      />,
     );
 
-    const child = wrapper.childAt(0);
-    expect(child && child.props().onExternalImageLoaded).toBeDefined();
+    expect(wrapper.find(Media).props().onExternalImageLoaded).toBeDefined();
   });
 
   afterEach(() => {

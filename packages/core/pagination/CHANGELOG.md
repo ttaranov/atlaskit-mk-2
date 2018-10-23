@@ -1,5 +1,11 @@
 # @atlaskit/pagination
 
+## 8.0.5
+- [patch] Fix for pagination in IE [bd9046e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd9046e)
+
+## 8.0.4
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 8.0.3
 - [patch] Fix styling of button rendering icon in IE [b4c5b87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b4c5b87)
 

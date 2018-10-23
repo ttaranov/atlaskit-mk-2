@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`isOpen snapshot 1`] = `
+<ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(DrawerBase)))
+  icon={[Function]}
+  isOpen={false}
+  onClose={[MockFunction]}
+  width="full"
+>
+  <styled.div>
+    a
+    <Footer
+      currentScreenIdx={0}
+      numScreens={3}
+      onCancel={[MockFunction]}
+      onNext={[Function]}
+      onPrevious={[Function]}
+      secondaryActions={
+        <ForwardRef
+          appearance="subtle-link"
+          spacing="none"
+        >
+          <FormattedMessage
+            defaultMessage="Learn more"
+            description="Text for a link to a page where a user can learn more about a particular topic"
+            id="focused-task-close-account.learnMore"
+            values={Object {}}
+          />
+           
+          <ShortcutIcon
+            label=""
+            size="small"
+          />
+        </ForwardRef>
+      }
+      submitButton={
+        <div
+          id="submit"
+        />
+      }
+    />
+  </styled.div>
+</ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(DrawerBase)))>
+`;

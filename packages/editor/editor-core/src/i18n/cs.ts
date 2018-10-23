@@ -4,6 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Na šířku',
   'fabric.editor.layoutFullWidth': 'Celá šířka',
   'fabric.editor.remove': 'Odebrat',
+  'fabric.editor.visit': 'Otevřít odkaz v novém okně',
   'fabric.editor.normal': 'Standardní text',
   'fabric.editor.heading1': 'Nadpis 1',
   'fabric.editor.heading2': 'Nadpis 2',
@@ -35,6 +36,7 @@ export default {
   'fabric.editor.linkTextPlaceholder': 'Text k zobrazení',
   'fabric.editor.linkPlaceholderWithSearch':
     'Vložte odkaz nebo hledejte v naposledy zobrazených',
+  'fabric.editor.action': 'Aktuální úkol',
   'fabric.editor.link': 'Odkaz',
   'fabric.editor.filesAndImages': 'Soubory a obrázky',
   'fabric.editor.image': 'Obrázek',
@@ -52,7 +54,6 @@ export default {
   'fabric.editor.threeColumns': 'Tři sloupce',
   'fabric.editor.unorderedList': 'Seznam s odrážkami',
   'fabric.editor.orderedList': 'Číslovaný seznam',
-  'fabric.editor.action': 'Aktuální úkol',
   'fabric.editor.lists': 'Seznamy',
   'fabric.editor.wrapLeft': 'Sbalit vpravo',
   'fabric.editor.wrapRight': 'Sbalit vlevo',
@@ -78,6 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Vložit řádek ',
   'fabric.editor.removeRows':
     '{0, plural, one{Odstranit řádek} few{Odstranit řádky} many{Odstranit řádků} other{Odstranit řádky}}',
+  'fabric.editor.decisionPlaceholder': 'Přidat rozhodnutí...',
+  'fabric.editor.taskPlaceholder':
+    'Napište svou akci a použitím „@“ ji někomu přidělte.',
   'fabric.editor.textColor': 'Barva textu',
   'fabric.editor.underline': 'Podtržení',
   'fabric.editor.strike': 'Přeškrtnutí',

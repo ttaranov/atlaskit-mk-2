@@ -1,36 +1,36 @@
-import { MediaState, MediaStateManager, MediaStateStatus } from './types';
+import { MediaState, MediaStateManager } from './types';
 import { EventDispatcher } from '../../event-dispatcher';
-import { MediaFile } from '@atlaskit/media-picker';
 
 export default class DefaultMediaStateManager extends EventDispatcher
   implements MediaStateManager {
   private state = new Map<string, MediaState>();
 
-  getState(tempId: string): MediaState | undefined {
-    return this.state.get(tempId);
+  getState(id: string): MediaState | undefined {
+    return id ? this.state.get(id) : undefined;
   }
 
-  newState(file: MediaFile, status: MediaStateStatus, publicId?: string) {
-    const getState = this.state.get(`temporary:${file.id}`);
-    const newPublicId = publicId ? { publicId } : {};
-    return {
-      ...getState,
-      id: `temporary:${file.id}`,
-      fileName: file.name,
-      fileSize: file.size,
-      fileMimeType: file.type,
-      status,
-      ...newPublicId,
-    };
+  getAllState() {
+    return this.state;
   }
 
-  updateState(tempId: string, newState: Partial<MediaState>) {
+  newState(id: string, newState: Partial<MediaState>) {
     const state = {
-      ...(this.state.get(tempId) || {}),
+      ...(this.state.get(id) || {}),
       ...newState,
+      id,
     } as MediaState;
+    this.state.set(id, state);
+    return state;
+  }
 
-    this.state.set(tempId, state);
-    this.emit(tempId, state);
+  updateState(id: string, newState: Partial<MediaState>) {
+    const state = this.newState(id, newState);
+    this.emit(id, state);
+    return state;
+  }
+
+  destroy() {
+    this.state.clear();
+    super.destroy();
   }
 }

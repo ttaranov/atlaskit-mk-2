@@ -1,5 +1,11 @@
 # @atlaskit/checkbox
 
+## 5.0.5
+- [patch] Upgrade guide & minor flow type fixes [0be287d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0be287d)
+
+## 5.0.4
+- [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
+
 ## 5.0.3
 - [patch] Fixed bug where checkbox would use state isChecked value when passing false to isChecked as props [eaf8d16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eaf8d16)
 

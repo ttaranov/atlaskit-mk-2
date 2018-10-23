@@ -7,6 +7,7 @@
 const inputChunks: any[] = [];
 
 const reservedEmojis = new Map([
+  // :grin: used to test exact match ranking
   // :smiley: used to test ascii representations
   // :thumbsup: has skin variations need for testing
   // :thumbsdown: used to verify order against :thumbsup:
@@ -26,7 +27,7 @@ const reservedEmojis = new Map([
       ':sweat_smile:',
     ],
   ],
-  ['FLAGS', [':flag_black:', ':flag_cg:']],
+  ['FLAGS', [':flag_black:', ':flag_cg:', ':flag_al:', ':flag_dz:']],
   // :heart: and :green_heart: are used to test sorting by usage
   ['SYMBOLS', [':heart:', ':green_heart:']],
   // :boom: is used for testing duplicate shortName between standard and atlassian

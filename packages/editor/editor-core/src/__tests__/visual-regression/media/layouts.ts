@@ -1,7 +1,4 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
 import {
-  imageSnapshotFolder,
   initEditor,
   snapshot,
   insertMedia,
@@ -10,18 +7,14 @@ import {
 } from '../_utils';
 
 const mediaSingleLayouts = {
-  center: 'Align center',
-  'wrap-left': 'Align left',
-  'wrap-right': 'Align right',
+  center: 'Center',
+  'wrap-left': 'Wrap left',
+  'wrap-right': 'Wrap right',
   wide: 'Wide',
   'full-width': 'Full width',
 };
 
 describe('Snapshot Test: Media', () => {
-  beforeAll(async () => {
-    removeOldProdSnapshots(imageSnapshotFolder);
-  });
-
   let page;
   beforeAll(async () => {
     // @ts-ignore
@@ -29,8 +22,8 @@ describe('Snapshot Test: Media', () => {
     await initEditor(page, 'full-page-with-toolbar');
     await setupMediaMocksProviders(page);
   });
-
-  describe('Layouts', async () => {
+  // TODO: AK-5551
+  describe.skip('Layouts', async () => {
     it('can switch layouts on media', async () => {
       // type some text
       await page.click(editable);
@@ -45,9 +38,7 @@ describe('Snapshot Test: Media', () => {
 
       // change layouts
       for (const layout of Object.keys(mediaSingleLayouts)) {
-        const layoutButton = `[aria-label="Change layout to ${
-          mediaSingleLayouts[layout]
-        }"]`;
+        const layoutButton = `[aria-label="${mediaSingleLayouts[layout]}"]`;
         await page.waitForSelector(layoutButton);
         await page.click(layoutButton);
 
@@ -78,10 +69,7 @@ describe('Snapshot Test: Media', () => {
 
       // change layouts
       for (const layout of Object.keys(mediaSingleLayouts)) {
-        const layoutButton = `[aria-label="Change layout to ${
-          mediaSingleLayouts[layout]
-        }"]`;
-
+        const layoutButton = `[aria-label="${mediaSingleLayouts[layout]}"]`;
         await page.waitForSelector(layoutButton);
         await page.click(layoutButton);
 

@@ -94,7 +94,7 @@ const mapJiraItemToResultV2 = (
     searchSessionId,
     searchContainerId: attributes.containerId,
     searchObjectId: id,
-    searchContentType: contentType,
+    searchContentType: attributes['@type'],
   };
 
   const href = addSessionIdToJiraResult

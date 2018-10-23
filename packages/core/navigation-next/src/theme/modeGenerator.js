@@ -4,15 +4,15 @@
 // We should update to chromatism@3.0.0 once @atlassian/navigation package is deprecated.
 import chromatism from 'chromatism';
 
-import globalItemStyles from '../components/GlobalItem/styles';
-import globalNavStyles from '../components/GlobalNav/styles';
-import contentNavStyles from '../components/ContentNavigation/styles';
-import itemStyles from '../components/Item/styles';
-import headingStyles from '../components/GroupHeading/styles';
-import separatorStyles from '../components/Separator/styles';
-import scrollHintStyles from '../components/ScrollableSectionInner/styles';
-import sectionStyles from '../components/Section/styles';
-import skeletonItemStyles from '../components/SkeletonItem/styles';
+import globalItemStyles from '../components/presentational/GlobalItem/styles';
+import globalNavStyles from '../components/presentational/GlobalNav/styles';
+import contentNavStyles from '../components/presentational/LayoutManager/ContentNavigation/styles';
+import itemStyles from '../components/presentational/Item/styles';
+import headingStyles from '../components/presentational/GroupHeading/styles';
+import separatorStyles from '../components/presentational/Separator/styles';
+import scrollHintStyles from '../components/presentational/ScrollableSectionInner/styles';
+import sectionStyles from '../components/presentational/Section/styles';
+import skeletonItemStyles from '../components/presentational/SkeletonItem/styles';
 
 import type { Mode, ContextColors } from './types';
 

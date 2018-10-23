@@ -54,10 +54,18 @@ export class UploadPreviews extends React.Component<
 
   private setupMediaPickerEventListeners() {
     const picker = this.props.picker;
+    const { previewsData } = this.state;
 
     picker.on('uploads-start', this.onUploadsStart);
     picker.on('upload-error', data => {
       console.log('upload error:', data);
+    });
+    picker.on('upload-preview-update', async data => {
+      const currentItem = previewsData[previewsData.length - 1];
+      currentItem.preview = data.preview;
+      this.setState({
+        previewsData: [...previewsData],
+      });
     });
   }
 
@@ -68,6 +76,7 @@ export class UploadPreviews extends React.Component<
         key={`${index}`}
         fileId={previewsData.fileId}
         upfrontId={previewsData.upfrontId}
+        preview={previewsData.preview}
       />
     ));
   };

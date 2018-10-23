@@ -54,7 +54,7 @@ it('should pass the correct properties to ObjectResult for Jira results', () => 
 
   expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
     href: 'href',
-    resultId: 'resultId',
+    resultId: 'jira-issue-resultId',
     type: 'result-jira',
     objectKey: 'objectKey',
     avatarUrl: 'avatarUrl',
@@ -79,7 +79,7 @@ it('should pass the correct properties to PersonResult for people results', () =
 
   expect(wrapper.find(PersonResultComponent).props()).toMatchObject({
     href: 'href',
-    resultId: 'resultId',
+    resultId: 'person-resultId',
     type: 'result-person',
     avatarUrl: 'avatarUrl',
     name: 'name',
@@ -104,11 +104,10 @@ it('should pass the correct properties to ObjectResult for Confluence results', 
 
   expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
     href: 'href',
-    resultId: 'resultId',
+    resultId: 'confluence-page-resultId',
     type: 'result-confluence',
     name: 'name',
     containerName: 'containerName',
-    contentType: ContentType.ConfluencePage,
     analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 
@@ -133,7 +132,7 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
 
   expect(wrapper.find(ContainerResultComponent).props()).toMatchObject({
     href: 'href',
-    resultId: 'resultId',
+    resultId: 'confluence-space-resultId',
     type: 'result-confluence',
     avatarUrl: 'avatarUrl',
     name: 'name',
@@ -166,9 +165,9 @@ it('should avoid duplicate result keys', () => {
   const objectKey = wrapper.find(ObjectResultComponent).key();
   const personKey = wrapper.find(PersonResultComponent).key();
 
-  expect(containerKey).toBe('confluence-space-resultId-1');
-  expect(objectKey).toBe('confluence-page-resultId-2');
-  expect(personKey).toBe('result-resultId-3');
+  expect(containerKey).toBe('confluence-space-resultId');
+  expect(objectKey).toBe('confluence-page-resultId');
+  expect(personKey).toBe('person-resultId');
 });
 
 describe('Jira Avatar default Icons', () => {

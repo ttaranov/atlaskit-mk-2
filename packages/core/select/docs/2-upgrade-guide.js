@@ -55,6 +55,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/05-validation').default}
       source={require('!!raw-loader!../examples/05-validation')}
       title="validation example"
@@ -95,6 +96,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/18-element-before').default}
       source={require('!!raw-loader!../examples/18-element-before')}
       title="Element Before example"
@@ -114,6 +116,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/19-tooltip').default}
       source={require('!!raw-loader!../examples/19-tooltip')}
       title="Tooltip example"
@@ -140,6 +143,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/20-filterValues').default}
       source={require('!!raw-loader!../examples/20-filterValues')}
       title="FilterValues example"
@@ -154,6 +158,7 @@ export default md`
 
   ${(
     <Example
+      packageName="@atlaskit/select"
       Component={require('../examples/21-options-with-description').default}
       source={require('!!raw-loader!../examples/21-options-with-description')}
       title="options with description example"
