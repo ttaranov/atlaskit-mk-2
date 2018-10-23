@@ -54,7 +54,7 @@ export const TriggerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
 export const MenuWrapper: ComponentClass<HTMLAttributes<{}>> = Wrapper;
 
-export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
+export const ButtonContent: ComponentClass = styled.span`
   display: flex;
   width: 80px;
   height: 24px;
