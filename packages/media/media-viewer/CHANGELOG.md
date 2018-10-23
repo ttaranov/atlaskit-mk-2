@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 24.1.7
+- [patch] Make VideoViewer inherit from BaseViewer [2faedda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2faedda)
+
 ## 24.1.6
 - [patch] Make AudioViewer inherit from BaseViewer [5f7e58b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f7e58b)
 
