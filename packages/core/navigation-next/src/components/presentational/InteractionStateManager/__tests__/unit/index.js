@@ -59,6 +59,7 @@ describe('InteractionStateManager', () => {
       isHover: true,
       isActive: true,
     });
+    expect(preventDefault).toHaveBeenCalledTimes(1);
   });
 
   it('should return to hover state after the element is clicked', () => {
@@ -82,5 +83,6 @@ describe('InteractionStateManager', () => {
       isHover: true,
       isActive: false,
     });
+    expect(preventDefault).toHaveBeenCalledTimes(2);
   });
 });
