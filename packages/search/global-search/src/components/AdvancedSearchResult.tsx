@@ -13,7 +13,7 @@ export interface Props {
   isSelected?: boolean; // injected by quick-search
   showKeyboardLozenge?: boolean;
   target?: string;
-  analyticsData?: any;
+  analyticsData?: object;
   isCompact?: boolean;
 }
 
