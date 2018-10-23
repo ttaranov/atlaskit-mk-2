@@ -32,11 +32,11 @@ describe('Renderer - React/Marks/Link', () => {
     mark.unmount();
   });
 
-  it('should set target to _blank by default', () => {
+  it('should not set target by default', () => {
     const mark = mount(
       <Link href="https://www.atlassian.com">This is a link</Link>,
     );
-    expect(mark.find('a').props()).to.have.property('target', '_blank');
+    expect(mark.find('a').props()).to.have.property('target', undefined);
     mark.unmount();
   });
 
