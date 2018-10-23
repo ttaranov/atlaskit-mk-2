@@ -1,5 +1,4 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 import { randomJiraIconUrl, randomConfluenceIconUrl } from './utils/mockData';
 import { ObjectResult, ResultItemGroup } from '../src';
@@ -12,7 +11,7 @@ const dummyAvatarComponent = (
   <Avatar src={randomConfluenceIconUrl()} appearance="square" />
 );
 
-export default class extends Component<*> {
+export default class extends React.Component {
   render() {
     return (
       <div>

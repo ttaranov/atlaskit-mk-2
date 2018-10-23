@@ -77,13 +77,13 @@ export type Props = {
   /** Set search loading state */
   isLoading?: boolean;
   /** onBlur callback for search input */
-  onSearchBlur?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
+  onSearchBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   /** onInput callback for search input */
-  onSearchInput?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
+  onSearchInput?: (event: React.FormEvent<HTMLInputElement>) => void;
   /** onKeyDown callback for search input */
   onSearchKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Called when the user submits the search form without selecting a result */
-  onSearchSubmit?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
+  onSearchSubmit?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Placeholder text for search input field */
   placeholder?: string;
   /** Value of the search input field */
@@ -299,7 +299,7 @@ export class QuickSearch extends React.Component<Props, State> {
   /**
    * Clear result selection when search input is blurred
    */
-  handleSearchBlur = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  handleSearchBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     this.props.onSearchBlur!(event);
     this.setState({ selectedResultId: null });
   };

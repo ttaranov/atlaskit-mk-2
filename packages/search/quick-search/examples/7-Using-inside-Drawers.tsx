@@ -1,25 +1,20 @@
-// @flow
-
 // About the issue:
 // > If you use the old drawer and add it into the new one it will work properly
 // > but using @atlaskit/drawer it's not working properly
 
-import React, { Component } from 'react';
+import * as React from 'react';
 import { AkSearchDrawer } from '@atlaskit/navigation';
 import Drawer from '@atlaskit/drawer';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import BasicQuickSearch from './utils/BasicQuickSearch';
 
-type IssueWithDrawerState = {
-  isDrawerOpen: boolean,
-  shouldUnmountOnExit: boolean,
-  shouldRenderNewDrawer: boolean,
+type State = {
+  isDrawerOpen: boolean;
+  shouldUnmountOnExit: boolean;
+  shouldRenderNewDrawer: boolean;
 };
 
-export default class IssueUsingDrawers extends Component<
-  *,
-  IssueWithDrawerState,
-> {
+export default class IssueUsingDrawers extends React.Component<any, State> {
   state = {
     isDrawerOpen: false,
     shouldUnmountOnExit: true,
@@ -88,7 +83,7 @@ export default class IssueUsingDrawers extends Component<
             <input
               id="wrapper-checkbox"
               type="checkbox"
-              value={this.state.shouldRenderNewDrawer}
+              value={this.state.shouldRenderNewDrawer + ''}
               onChange={this.toggleWrapper}
             />
             Use new Drawer component
@@ -108,7 +103,7 @@ export default class IssueUsingDrawers extends Component<
               <input
                 id="checkbox"
                 type="checkbox"
-                value={this.state.shouldUnmountOnExit}
+                value={this.state.shouldUnmountOnExit + ''}
                 onChange={this.toggleUnmountBehaviour}
               />
               Toggle remounting of drawer contents on exit

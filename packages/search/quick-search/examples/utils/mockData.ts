@@ -1,11 +1,9 @@
-// @flow
 import uuid from 'uuid/v1';
-
 import {
-  type ObjectItemShape,
-  type PersonItemShape,
-  type ContainerItemShape,
-} from './types';
+  ObjectResultType,
+  ContainerResultType,
+  PersonResultType,
+} from '../../src/components/Results/types';
 
 function pickRandom<T>(array: Array<T>): T {
   return array[Math.floor(Math.random() * array.length)];
@@ -110,7 +108,7 @@ function randomIssueKey() {
   return `${pickRandom(keys)}-${Math.floor(Math.random() * 1001)}`;
 }
 
-export function objectData(n: number): ObjectItemShape[] {
+export function objectData(n: number): ObjectResultType[] {
   const items = [];
 
   for (let i = 0; i < n; i++) {
@@ -133,7 +131,7 @@ export function objectData(n: number): ObjectItemShape[] {
   return items;
 }
 
-export function containerData(n: number): ContainerItemShape[] {
+export function containerData(n: number): ContainerResultType[] {
   const items = [];
 
   for (let i = 0; i < n; i++) {
@@ -148,7 +146,7 @@ export function containerData(n: number): ContainerItemShape[] {
   return items;
 }
 
-export function personData(n: number): PersonItemShape[] {
+export function personData(n: number): PersonResultType[] {
   const items = [];
 
   for (let i = 0; i < n; i++) {

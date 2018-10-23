@@ -1,6 +1,4 @@
-// @flow
-import React, { Component } from 'react';
-
+import * as React from 'react';
 import { objectData, personData, containerData } from './mockData';
 import {
   QuickSearch,
@@ -11,8 +9,8 @@ import {
 } from '../../src';
 
 type DataShape = {
-  title: string,
-  items: Array<any>,
+  title: string;
+  items: Array<any>;
 };
 
 const data: DataShape[] = [
@@ -68,21 +66,24 @@ function searchData(query: string): DataShape[] {
 }
 
 // a little fake store for holding the query after a component unmounts
-const store = {};
+type Store = {
+  query?: string;
+};
+const store: Store = {};
 
 type BasicQuickSearchProp = {
-  fakeNetworkLatency: number,
+  fakeNetworkLatency: number;
 };
 
 type BasicQuickSearchState = {
-  query: string,
-  results: DataShape[],
-  isLoading: boolean,
+  query: string;
+  results: DataShape[];
+  isLoading: boolean;
 };
 
-export default class BasicQuickSearch extends Component<
+export default class BasicQuickSearch extends React.Component<
   BasicQuickSearchProp,
-  BasicQuickSearchState,
+  BasicQuickSearchState
 > {
   static defaultProps = {
     fakeNetworkLatency: 0,
@@ -94,7 +95,7 @@ export default class BasicQuickSearch extends Component<
     isLoading: false,
   };
 
-  searchTimeoutId: ?TimeoutID;
+  searchTimeoutId: NodeJS.Timer;
 
   setQuery(query: string) {
     store.query = query;
@@ -120,24 +121,15 @@ export default class BasicQuickSearch extends Component<
     }, this.props.fakeNetworkLatency);
   };
 
-  quickSearchInnerRef: mixed;
-
-  setQuickSearchRef = (ref: any) => {
-    if (ref) {
-      this.quickSearchInnerRef = ref;
-    }
-  };
-
   render() {
     return (
       <QuickSearch
         isLoading={this.state.isLoading}
-        onSearchInput={({ target }) => {
-          this.search(target.value);
+        onSearchInput={event => {
+          this.search(event.currentTarget.value);
         }}
         onSearchSubmit={() => console.log('onSearchSubmit', this.state.query)}
         value={this.state.query}
-        innerRef={this.setQuickSearchRef}
       >
         <div style={{ paddingLeft: '10px' }}>
           {mapResultsDataToComponents(this.state.results)}

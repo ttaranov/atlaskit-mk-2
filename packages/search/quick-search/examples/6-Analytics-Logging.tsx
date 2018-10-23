@@ -1,11 +1,10 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics';
 import Navigation, { AkSearchDrawer } from '@atlaskit/navigation';
 import { randomJiraIconUrl, randomConfluenceIconUrl } from './utils/mockData';
 import { QuickSearch, ResultItemGroup, ObjectResult } from '../src';
 
-export default class extends Component<*> {
+export default class extends React.Component {
   onEvent = (eventName: string, eventData: Object) => {
     const event = {
       name: eventName,

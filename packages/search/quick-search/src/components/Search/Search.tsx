@@ -15,9 +15,9 @@ type Props = {
   /** Set whether the loading state should be shown. */
   isLoading?: boolean;
   /** Function to be called when the search input loses focus. */
-  onBlur?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   /** Function to be called when a input action occurs (native `oninput` event). */
-  onInput?: (event: React.SyntheticEvent<HTMLInputElement>) => void;
+  onInput?: (event: React.FormEvent<HTMLInputElement>) => void;
   /** Function to be called when the user hits the escape key.  */
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Placeholder text for search field. */

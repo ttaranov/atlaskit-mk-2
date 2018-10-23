@@ -1,5 +1,4 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import Navigation, { AkSearchDrawer } from '@atlaskit/navigation';
 import { randomJiraIconUrl, randomConfluenceIconUrl } from './utils/mockData';
 import { QuickSearch, ResultItemGroup, ObjectResult } from '../src';
@@ -13,7 +12,7 @@ const ResultWrapperStateless = () => (
   />
 );
 
-class ResultWrapperClass extends Component<*> {
+class ResultWrapperClass extends React.Component {
   static defaultProps = {
     resultId: '3',
   };
@@ -31,8 +30,7 @@ class ResultWrapperClass extends Component<*> {
   }
 }
 
-// eslint-disable-next-line
-export default class extends Component<*> {
+export default class extends React.Component {
   render() {
     return (
       <Navigation
