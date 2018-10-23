@@ -24,8 +24,8 @@
     "@atlaskit/icon": "^14.0.1",
     "@atlaskit/lozenge": "^6.2.1",
     "@atlaskit/select": "^6.0.2",
-    "@types/debounce": "^3.0.0",
-    "debounce": "^1.0.0",
+    "@types/lodash.debounce": "^4.0.4",
+    "lodash.debounce": "^4.0.8",
     "memoize-one": "^3.0.1"
   },
   "peerDependencies": {

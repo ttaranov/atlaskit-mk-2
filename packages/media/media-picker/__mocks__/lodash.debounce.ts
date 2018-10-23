@@ -1,1 +1,3 @@
-module.exports = fn => fn;
+const debounceMock = jest.fn(fn => fn);
+
+module.exports = debounceMock;

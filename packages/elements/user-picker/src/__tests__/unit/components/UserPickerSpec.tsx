@@ -1,5 +1,6 @@
 import Select from '@atlaskit/select';
 import { shallow } from 'enzyme';
+import * as debounce from 'lodash.debounce';
 import * as React from 'react';
 import { Props, UserPicker } from '../../../components/UserPicker';
 import UserPickerItem from '../../../components/UserPickerItem';
@@ -189,7 +190,6 @@ describe('UserPicker', () => {
         const component = shallowUserPicker({ loadUsers });
         const select = component.find(Select);
         select.simulate('inputChange', 'some text', { action: 'input-change' });
-
         jest.runAllTimers();
         expect(loadUsers).toHaveBeenCalled();
         expect(loadUsers).toHaveBeenCalledWith('some text');
@@ -206,21 +206,9 @@ describe('UserPicker', () => {
           setTimeout(() => resolve(users), 500),
         );
         const loadUsers = jest.fn(() => usersPromise);
-        const component = shallowUserPicker({ loadUsers });
-        const select = component.find(Select);
-        select.simulate('inputChange', 'some', { action: 'input-change' });
-        jest.runTimersToTime(100);
-        select.simulate('inputChange', 'some text', { action: 'input-change' });
+        shallowUserPicker({ loadUsers });
 
-        jest.runAllTimers();
-        expect(loadUsers).toHaveBeenCalledTimes(1);
-        expect(loadUsers).toHaveBeenCalledWith('some text');
-        return usersPromise.then(() => {
-          jest.runAllTimers();
-          expect(component.state()).toMatchObject({
-            users,
-          });
-        });
+        expect(debounce).toHaveBeenCalledWith(expect.any(Function), 200);
       });
     });
   });

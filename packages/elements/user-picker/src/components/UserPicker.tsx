@@ -1,5 +1,5 @@
 import Select from '@atlaskit/select';
-import * as debounce from 'debounce';
+import * as debounce from 'lodash.debounce';
 import * as React from 'react';
 import { InputActionTypes, LoadOptions, OnChange, User } from '../types';
 import { batchByKey } from './batch';
