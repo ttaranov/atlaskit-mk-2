@@ -5,19 +5,22 @@ import React from 'react';
 import InteractionStateManager from '../../index';
 
 describe('InteractionStateManager', () => {
-  it('should use the default values by default', () => {
+  it('should pass the default state values to children', () => {
     const wrapper = mount(
       <InteractionStateManager>
-        {({ isActive, isHover }) => (
+        {({ isActive, isHover, isFocused }) => (
           <div className="children">
             {isActive && <span className="active" />}
             {isHover && <span className="hover" />}
+            {isFocused && <span className="focus" />}
           </div>
         )}
       </InteractionStateManager>,
     );
+
     expect(wrapper.find('.active')).toHaveLength(0);
     expect(wrapper.find('.hover')).toHaveLength(0);
+    expect(wrapper.find('.focus')).toHaveLength(0);
   });
 
   it('should change hover state when mouse is over the element', () => {
@@ -37,6 +40,7 @@ describe('InteractionStateManager', () => {
     expect(wrapper.state()).toEqual({
       isHover: true,
       isActive: false,
+      isFocused: false,
     });
   });
 
@@ -58,6 +62,7 @@ describe('InteractionStateManager', () => {
     expect(wrapper.state()).toEqual({
       isHover: true,
       isActive: true,
+      isFocused: false,
     });
     expect(preventDefault).toHaveBeenCalledTimes(1);
   });
@@ -82,7 +87,40 @@ describe('InteractionStateManager', () => {
     expect(wrapper.state()).toEqual({
       isHover: true,
       isActive: false,
+      isFocused: false,
     });
     expect(preventDefault).toHaveBeenCalledTimes(2);
+  });
+
+  it('should change focus state when the element is focused', () => {
+    const wrapper = mount(
+      <InteractionStateManager>
+        {() => <div>Focus</div>}
+      </InteractionStateManager>,
+    );
+
+    wrapper.simulate('focus');
+
+    expect(wrapper.state()).toEqual({
+      isHover: false,
+      isActive: false,
+      isFocused: true,
+    });
+  });
+
+  it('should change focus state when the element is blurred', () => {
+    const wrapper = mount(
+      <InteractionStateManager>
+        {() => <div>Focus</div>}
+      </InteractionStateManager>,
+    );
+
+    wrapper.simulate('focus');
+
+    expect(wrapper.state()).toEqual({
+      isHover: false,
+      isActive: false,
+      isFocused: true,
+    });
   });
 });
