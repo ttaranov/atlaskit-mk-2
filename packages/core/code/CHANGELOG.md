@@ -1,5 +1,8 @@
 # @atlaskit/code
 
+## 8.0.12
+- [patch] Inline code should wrap [f1d9a54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1d9a54)
+
 ## 8.0.11
 - [patch] Fix webpack 3 support for page & code [03af95e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03af95e)
 

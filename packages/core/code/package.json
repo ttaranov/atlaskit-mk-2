@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "8.0.11",
+  "version": "8.0.12",
   "config": {
     "access": "public"
   },

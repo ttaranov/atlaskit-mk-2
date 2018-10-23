@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 29.0.6
+- [patch] Inline code should wrap [f1d9a54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1d9a54)
+
 ## 29.0.5
 - [patch] Fix label for panels [621bf75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/621bf75)
 
