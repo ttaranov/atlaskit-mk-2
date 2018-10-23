@@ -49,12 +49,12 @@ describe('DocViewer', () => {
     constructAuthTokenUrlSpy.mockClear();
   });
 
-  it('assigns a document src when successful', async () => {
+  it('assigns a document content when successful', async () => {
     const fetchPromise = Promise.resolve();
     const { el } = createFixture(fetchPromise, item);
     await (el as any).instance()['init']();
 
-    expect(el.state().src.status).toEqual('SUCCESSFUL');
+    expect(el.state().content.status).toEqual('SUCCESSFUL');
   });
 
   it('shows an indicator while loading', async () => {
@@ -71,9 +71,9 @@ describe('DocViewer', () => {
 
     await (el as any).instance()['init']();
 
-    const { src } = el.state();
-    expect(src.status).toEqual('FAILED');
-    expect(src.err).toEqual(
+    const { content } = el.state();
+    expect(content.status).toEqual('FAILED');
+    expect(content.err).toEqual(
       createError('noPDFArtifactsFound', undefined, itemWithNoArtifacts),
     );
 
