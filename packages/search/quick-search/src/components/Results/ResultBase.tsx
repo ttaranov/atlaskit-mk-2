@@ -108,7 +108,7 @@ class ResultBase extends React.PureComponent<DefaultProps & Props>
             href={href}
             target={target}
             icon={icon}
-            isCompact={!!isCompact}
+            isCompact={isCompact}
             isSelected={resultId === selectedResultId}
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}
