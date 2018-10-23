@@ -92,7 +92,7 @@ describe('InteractionStateManager', () => {
     expect(preventDefault).toHaveBeenCalledTimes(2);
   });
 
-  it('should change focus state when the element is focused', () => {
+  it('should change isFocused state when the element is focused or blurred', () => {
     const wrapper = mount(
       <InteractionStateManager>
         {() => <div>Focus</div>}
@@ -100,27 +100,17 @@ describe('InteractionStateManager', () => {
     );
 
     wrapper.simulate('focus');
-
     expect(wrapper.state()).toEqual({
       isHover: false,
       isActive: false,
       isFocused: true,
     });
-  });
 
-  it('should change focus state when the element is blurred', () => {
-    const wrapper = mount(
-      <InteractionStateManager>
-        {() => <div>Focus</div>}
-      </InteractionStateManager>,
-    );
-
-    wrapper.simulate('focus');
-
+    wrapper.simulate('blur');
     expect(wrapper.state()).toEqual({
       isHover: false,
       isActive: false,
-      isFocused: true,
+      isFocused: false,
     });
   });
 });

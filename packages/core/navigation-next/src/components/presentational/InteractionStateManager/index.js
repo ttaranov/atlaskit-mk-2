@@ -38,6 +38,10 @@ export default class InteractionStateManager extends Component<
     this.setState({ isFocused: true });
   };
 
+  onBlur = (e: SyntheticFocusEvent<HTMLDivElement>) => {
+    this.setState({ isFocused: false });
+  };
+
   render() {
     const { styles } = this.props;
     return (
@@ -47,6 +51,7 @@ export default class InteractionStateManager extends Component<
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
         onFocus={this.onFocus}
+        onBlur={this.onBlur}
         role="presentation"
         css={{
           width: '100%',
