@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { Context, FileState, isErrorFileState } from '@atlaskit/media-core';
-import { DownloadButtonWrapper } from '../styled';
+import { DownloadButtonWrapper } from './styled';
 import Button from '@atlaskit/button';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
   downloadButtonEvent,
   downloadErrorButtonEvent,
-} from '../analytics/download';
-import { channel } from '../analytics';
-import { Identifier } from '../domain';
+} from './analytics/download';
+import { channel } from './analytics';
+import { Identifier } from './domain';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next-types';
-import { MediaViewerError } from '../error';
+import { MediaViewerError } from './error';
 
 const downloadIcon = <DownloadIcon label="Download" />;
 
-const DownloadButton = withAnalyticsEvents({
+export const DownloadButton = withAnalyticsEvents({
   onClick: (createEvent: CreateUIAnalyticsEventSignature, props: any) => {
     const ev = createEvent(props.analyticsPayload);
     ev.fire(channel);

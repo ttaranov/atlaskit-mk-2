@@ -1,11 +1,11 @@
-import { shallow } from 'enzyme';
-import Button from '@atlaskit/button';
+import { mount } from 'enzyme';
 import { ErrorFileState, ProcessingFailedState } from '@atlaskit/media-core';
 import {
   createItemDownloader,
-  renderDownloadButton,
-} from '../../../../newgen/domain/download';
-import { createContext } from '../../_stubs';
+  renderToolbarDownloadButton,
+  DownloadButton,
+} from '../../../newgen/download';
+import { createContext } from '../_stubs';
 
 describe('download', () => {
   const processingFailedState: ProcessingFailedState = {
@@ -57,16 +57,21 @@ describe('download', () => {
     );
   });
 
-  it('should download binary when button is clicked', () => {
+  it.only('should download binary when toolbar button is clicked', () => {
     const context = createContext({});
-    const component = shallow(
-      renderDownloadButton(
+    const component = mount(
+      renderToolbarDownloadButton(
         processingFailedState,
+        {
+          id: 'my-id',
+          type: 'file',
+          occurrenceKey: 'my-occurrenceKey',
+          collectionName: 'some-collection-name',
+        },
         context,
-        'some-collection-name',
       ),
     );
-    component.find(Button).simulate('click');
+    component.find(DownloadButton).simulate('click');
     expect(context.file.downloadBinary).toHaveBeenCalledWith(
       'some-id',
       'some-name',

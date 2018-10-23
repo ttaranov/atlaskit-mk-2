@@ -14,7 +14,7 @@ import {
   MediaViewerError,
   ErrorName,
 } from './error';
-import { renderErrorViewDownloadButton } from './domain/download';
+import { renderErrorViewDownloadButton } from './download';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import {

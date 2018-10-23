@@ -4,7 +4,7 @@ import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../domain';
 import { ErrorMessage, MediaViewerError } from '../error';
 import { Spinner } from '../loading';
-import { renderErrorViewDownloadButton } from '../domain/download';
+import { renderErrorViewDownloadButton } from '../download';
 
 export type BaseProps = {
   context: Context;

@@ -5,7 +5,6 @@ import {
   MediaType,
   ProcessedFileState,
 } from '@atlaskit/media-core';
-import Button from '@atlaskit/button';
 import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'deep-equal';
 import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
@@ -27,7 +26,7 @@ import { MediaViewerError, createError } from './error';
 import {
   renderToolbarDownloadButton,
   disabledDownloadButton,
-} from './domain/download';
+} from './download';
 
 export type Props = {
   readonly identifier: Identifier;
