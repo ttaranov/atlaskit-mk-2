@@ -5,6 +5,7 @@ import RendererBridgeImpl from './implementation';
 import { ReactRenderer } from '@atlaskit/renderer';
 import MediaProvider from '../providers/mediaProvider';
 import MentionProvider from '../providers/mediaProvider';
+import EmojiProvider from '../providers/emojiProvider';
 import { eventDispatcher } from './dispatcher';
 
 export interface MobileRendererState {
@@ -29,6 +30,7 @@ export default class MobileRenderer extends React.Component<
     this.providerFactory = ProviderFactory.create({
       mediaProvider: MediaProvider,
       mentionProvider: MentionProvider,
+      emojiProvider: EmojiProvider,
     });
   }
 
