@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 
 export const layoutSection: NodeSpec = {
-  content: 'layoutColumn+',
+  content: 'layoutColumn{2,3}',
   isolating: true,
   parseDOM: [
     {

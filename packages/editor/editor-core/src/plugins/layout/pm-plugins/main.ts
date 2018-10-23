@@ -1,4 +1,4 @@
-import { Node } from 'prosemirror-model';
+import { Node, Slice } from 'prosemirror-model';
 import {
   PluginKey,
   Plugin,
@@ -10,11 +10,13 @@ import { keydownHandler } from 'prosemirror-keymap';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { filter } from '../../../utils/commands';
 import { Command } from '../../../commands';
-import { fixColumnSizes, Change } from '../actions';
+import { fixColumnSizes } from '../actions';
 
 export type LayoutState = {
   pos: number | null;
 };
+
+type Change = { from: number; to: number; slice: Slice };
 
 const isWholeSelectionInsideLayoutColumn = (state: EditorState): boolean => {
   // Since findParentNodeOfType doesn't check if selection.to shares the parent, we do this check ourselves

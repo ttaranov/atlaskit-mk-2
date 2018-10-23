@@ -8,21 +8,13 @@ import { isEmptyDocument, getStepRange } from '../../utils';
 
 export type PresetLayout = 'two_equal' | 'three_equal';
 
-const PresetLayoutFilters = (
-  widths: number[],
-): { [key in PresetLayout]: boolean } => {
-  return {
-    two_equal: widths.length === 2 && widths.every(width => width === 50),
-    three_equal:
-      widths.length === 3 &&
-      widths.every(width => Number(width.toFixed(2)) === 33.33),
-  };
-};
-
-export const getPresetLayout = (section: Node) => {
+export const getPresetLayout = (section: Node): PresetLayout | undefined => {
   const widths = mapChildren(section, column => column.attrs.width);
-  const matchingFilters = PresetLayoutFilters(widths);
-  return Object.keys(matchingFilters).find(name => matchingFilters[name]);
+  if (widths.length === 2 && widths.every(width => width === 50)) {
+    return 'two_equal';
+  } else if (widths.every(width => Number(width.toFixed(2)) === 33.33)) {
+    return 'three_equal';
+  }
 };
 
 export const createDefaultLayoutSection = (state: EditorState) => {
@@ -47,11 +39,12 @@ function forceColumnStructure(
   node: Node,
   pos: number,
   presetLayout: PresetLayout,
-): Transaction | undefined {
+): Transaction {
   const tr = state.tr;
+  const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
+
   if (presetLayout === 'two_equal' && node.childCount === 3) {
     const thirdColumn = node.content.child(2);
-    const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
     const thirdColumnPos =
       insideRightEdgeOfLayoutSection - thirdColumn.nodeSize;
     if (isEmptyDocument(thirdColumn)) {
@@ -70,11 +63,7 @@ function forceColumnStructure(
         Slice.empty,
       );
     }
-  } else if (
-    (presetLayout === 'three_equal' && node.childCount === 2) ||
-    node.childCount < 2
-  ) {
-    const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
+  } else if (presetLayout === 'three_equal' && node.childCount === 2) {
     tr.replaceWith(
       tr.mapping.map(insideRightEdgeOfLayoutSection),
       tr.mapping.map(insideRightEdgeOfLayoutSection),
@@ -82,7 +71,7 @@ function forceColumnStructure(
     );
   }
 
-  return tr.docChanged ? tr : undefined;
+  return tr;
 }
 
 function equalColumnWidth(node: Node, schema: Schema, width: number): Fragment {
@@ -128,16 +117,14 @@ export function forceSectionToPresetLayout(
 ): Transaction | undefined {
   const tr = forceColumnStructure(state, node, pos, presetLayout);
 
-  if (tr) {
-    // save the selection here, since forcing column widths causes a change over the
-    // entire layoutSection, which remaps selection to the end. not remapping here
-    // is safe because the structure is no longer changing.
-    const selection = tr.selection;
+  // save the selection here, since forcing column widths causes a change over the
+  // entire layoutSection, which remaps selection to the end. not remapping here
+  // is safe because the structure is no longer changing.
+  const selection = tr.selection;
 
-    return forceColumnWidths(state, tr, pos, presetLayout).setSelection(
-      selection,
-    );
-  }
+  return forceColumnWidths(state, tr, pos, presetLayout).setSelection(
+    selection,
+  );
 }
 
 export const setPresetLayout = (layout: PresetLayout): Command => (
@@ -162,7 +149,6 @@ export const setPresetLayout = (layout: PresetLayout): Command => (
   return false;
 };
 
-export type Change = { from: number; to: number; slice: Slice };
 export const fixColumnSizes = (changedTr: Transaction, state: EditorState) => {
   const { layoutSection } = state.schema.nodes;
   let change;
