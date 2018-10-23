@@ -68,6 +68,7 @@ interface Global {
   isSearchDrawerControlled?: boolean;
   isNotificationDrawerControlled?: boolean;
   isStarredDrawerControlled?: boolean;
+  isNotificationInbuilt: boolean;
 }
 
 // $FlowFixMe Flow has a bug with indexer properties in interfaces. https://github.com/facebook/flow/issues/6321
@@ -76,8 +77,6 @@ export default class GlobalNavigation
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
   notificationIntegrationInstance: NotificationIntegration;
-  NotificationDrawer: any;
-  NotificationBadge: any;
 
   constructor(props: GlobalNavigationProps) {
     super(props);
@@ -120,6 +119,8 @@ export default class GlobalNavigation
       this.onNotificationBadgeCountUpdated,
       this.onNotificationBadgeCountUpdating,
     );
+    this.isNotificationInbuilt = !!this.notificationIntegrationInstance
+      .notificationDrawerContents;
   }
 
   componentDidUpdate(
@@ -168,6 +169,8 @@ export default class GlobalNavigation
         this.onNotificationBadgeCountUpdated,
         this.onNotificationBadgeCountUpdating,
       );
+      this.isNotificationInbuilt = !!this.notificationIntegrationInstance
+        .notificationDrawerContents;
     }
   }
 
@@ -242,7 +245,7 @@ export default class GlobalNavigation
       onOpenCallback = this.props[`on${capitalisedDrawerName}Open`];
     }
 
-    if (drawerName === 'notification') {
+    if (drawerName === 'notification' && this.isNotificationInbuilt) {
       onOpenCallback = this.notificationIntegrationInstance
         .onNotificationDrawerOpen;
     }
@@ -273,7 +276,7 @@ export default class GlobalNavigation
       onCloseCallback = this.props[`on${capitalisedDrawerName}Close`];
     }
 
-    if (drawerName === 'notification') {
+    if (drawerName === 'notification' && this.isNotificationInbuilt) {
       onCloseCallback = this.notificationIntegrationInstance
         .onNotificationDrawerClose;
     }
@@ -296,7 +299,11 @@ export default class GlobalNavigation
   };
 
   constructNavItems = () => {
-    const productConfig = generateProductConfig(this.props, this.openDrawer);
+    const productConfig = generateProductConfig(
+      this.props,
+      this.openDrawer,
+      this.isNotificationInbuilt,
+    );
     const defaultConfig = generateDefaultConfig();
 
     const { badge } = this.notificationIntegrationInstance;
@@ -304,7 +311,9 @@ export default class GlobalNavigation
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
         ? {
-            ...(item === 'notification' ? { badge } : {}),
+            ...(item === 'notification' && this.isNotificationInbuilt
+              ? { badge }
+              : {}),
             ...defaultConfig[item],
             ...productConfig[item],
           }

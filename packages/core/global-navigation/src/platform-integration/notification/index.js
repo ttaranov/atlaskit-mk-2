@@ -17,34 +17,38 @@ const notificationIntegration = (
   refreshRate?: number,
   onCountUpdated: Function,
   onCountUpdating: Function,
-) => ({
-  badge: () => {
-    console.log('Incoming refresh rate: ', refreshRate);
-
-    return (
-      <NotificationIndicator
-        notificationLogProvider={
-          new NotificationLogClient(fabricNotificationLogUrl, cloudId)
-        }
-        refreshRate={refreshRate}
-        onCountUpdated={onCountUpdated}
-        onCountUpdating={onCountUpdating}
-      />
-    );
-  },
-  notificationDrawerContents: () => (
-    <NotificationDrawerContents
-      externalContentUrl={CONTENT_URL}
-      locale={locale}
-      product={product}
-    />
-  ),
-  onNotificationDrawerOpen: () => {
-    // clear notification badge count here
-  },
-  onNotificationDrawerClose: () => {
-    // optional call back to do stuff when the iframe closes
-  },
-});
+) =>
+  fabricNotificationLogUrl && cloudId
+    ? {
+        badge: () => (
+          <NotificationIndicator
+            notificationLogProvider={
+              new NotificationLogClient(fabricNotificationLogUrl, cloudId)
+            }
+            refreshRate={refreshRate}
+            onCountUpdated={onCountUpdated}
+            onCountUpdating={onCountUpdating}
+          />
+        ),
+        notificationDrawerContents: () => (
+          <NotificationDrawerContents
+            externalContentUrl={CONTENT_URL}
+            locale={locale}
+            product={product}
+          />
+        ),
+        onNotificationDrawerOpen: () => {
+          // clear notification badge count here
+        },
+        onNotificationDrawerClose: () => {
+          // optional call back to do stuff when the iframe closes
+        },
+      }
+    : {
+        badge: null,
+        notificationDrawerContents: null,
+        onNotificationDrawerOpen: Function.prototype,
+        onNotificationDrawerClose: Function.prototype,
+      };
 
 export default notificationIntegration;

@@ -2,6 +2,7 @@
 
 import React, { type StatelessFunctionalComponent } from 'react';
 import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
+import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
 import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import type {
@@ -10,6 +11,7 @@ import type {
 } from '../components/GlobalNavigation/types';
 import type { ProductConfigShape } from './types';
 
+const MAX_NOTIFICATIONS_COUNT = 9;
 const isNotEmpty = obj => {
   const values = Object.values(obj);
   return !!(
@@ -121,9 +123,41 @@ function profileConfigFactory(
   };
 }
 
+function notificationBadge(notificationCount) {
+  return {
+    badge: notificationCount
+      ? () => (
+          <Badge
+            max={MAX_NOTIFICATIONS_COUNT}
+            appearance="important"
+            value={notificationCount}
+          />
+        )
+      : null,
+  };
+}
+
+function notificationConfigFactory(
+  notificationTooltip,
+  notificationCount,
+  notificationDrawerContents,
+  onNotificationClick,
+  isNotificationInbuilt,
+  openDrawer,
+) {
+  return isNotificationInbuilt
+    ? configFactory(openDrawer, notificationTooltip)
+    : configFactory(
+        onNotificationClick || (notificationDrawerContents && openDrawer),
+        notificationTooltip,
+        notificationBadge(notificationCount),
+      );
+}
+
 export default function generateProductConfig(
   props: GlobalNavigationProps,
   openDrawer: DrawerName => () => void,
+  isNotificationInbuilt: boolean,
 ): ProductConfigShape {
   const {
     onProductClick,
@@ -144,8 +178,9 @@ export default function generateProductConfig(
     starredDrawerContents,
 
     notificationTooltip,
-    fabricNotificationLogUrl,
-    cloudId,
+    notificationCount,
+    notificationDrawerContents,
+    onNotificationClick,
 
     appSwitcherComponent,
     appSwitcherTooltip,
@@ -176,10 +211,13 @@ export default function generateProductConfig(
       onStarredClick || (starredDrawerContents && openDrawer('starred')),
       starredTooltip,
     ),
-    notification: configFactory(
-      ((fabricNotificationLogUrl || cloudId) && openDrawer('notification')) ||
-        (() => {}),
+    notification: notificationConfigFactory(
       notificationTooltip,
+      notificationCount,
+      notificationDrawerContents,
+      onNotificationClick,
+      isNotificationInbuilt,
+      openDrawer('notification'),
     ),
     help: helpConfigFactory(helpItems, helpTooltip),
     profile: profileConfigFactory(
