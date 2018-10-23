@@ -16,3 +16,36 @@ export interface User {
   highlight?: Highlight;
   lozenge?: string;
 }
+
+export type UserValue = User | Array<User> | null | undefined;
+
+export type ActionTypes =
+  | 'select-option'
+  | 'deselect-option'
+  | 'remove-value'
+  | 'pop-value'
+  | 'set-value'
+  | 'clear'
+  | 'create-option';
+
+export type OnChange = (value: UserValue, action: ActionTypes) => void;
+
+export type UserOption = {
+  label: string;
+  value: string;
+  user: User;
+};
+
+export interface LoadOptions {
+  (searchText?: string):
+    | Promisable<User | User[]>
+    | Iterable<Promisable<User[] | User> | User | User[]>;
+}
+
+export type Promisable<T> = T | PromiseLike<T>;
+
+export type InputActionTypes =
+  | 'set-value'
+  | 'input-change'
+  | 'input-blur'
+  | 'menu-close';
