@@ -122,7 +122,7 @@ export class QuickSearch extends React.Component<Props, State> {
     value: '',
   };
 
-  inputSearchRef: React.Ref<HTMLInputElement>;
+  inputSearchRef: React.Ref<any>;
   flatResults: Array<ResultBaseType> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
