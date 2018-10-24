@@ -115,6 +115,16 @@ describe('FieldTextStateless', () => {
       });
     });
 
+    describe('isMonospaced prop', () => {
+      it('should render an input with an isMonospaced prop', () => {
+        expect(
+          shallow(<FieldTextStateless label="" isMonospaced />)
+            .find(Input)
+            .props().isMonospaced,
+        ).toBe(true);
+      });
+    });
+
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
