@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.1.3
+- [patch] [f271431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f271431):
+
+  ED-5179: fix context menu when table has scroll
+
 ## 87.1.2
 - [patch] Fix floating number validation [ea027b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea027b8)
 
