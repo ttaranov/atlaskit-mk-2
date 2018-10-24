@@ -9,8 +9,9 @@ export async function readImageMetaTags(
   const type = file.type;
   try {
     if (type === ImageType.PNG) {
-      const xmpMetaData = await readPNGXMPMetaData(file);
-      return parseXMPMetaData(xmpMetaData);
+      const { iTXt, pHYs } = await readPNGXMPMetaData(file);
+      const xmpMetaData = { ...parseXMPMetaData(iTXt), ...pHYs };
+      return xmpMetaData;
     } else if (file.type === ImageType.JPEG) {
       return await readJPEGExifMetaData(file);
     }

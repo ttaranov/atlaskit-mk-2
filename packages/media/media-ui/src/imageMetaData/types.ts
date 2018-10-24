@@ -1,5 +1,8 @@
 export type ImageMetaDataTags = {
-  [key: string]: string;
+  Orientation?: string;
+  PixelPerUnitX?: number;
+  PixelPerUnitY?: number;
+  [key: string]: string | number | undefined;
 };
 
 export type ImageMetaData = {

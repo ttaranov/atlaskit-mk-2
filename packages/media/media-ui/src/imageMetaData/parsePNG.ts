@@ -3,7 +3,12 @@ import { fileToArrayBuffer } from '../util';
 let pngChunksExtract: any;
 let utf8ByteArrayToString: any;
 
-export async function readPNGXMPMetaData(file: File): Promise<string> {
+export async function readPNGXMPMetaData(
+  file: File,
+): Promise<{
+  iTXt: string;
+  pHYs: { PixelPerUnitX?: number; PixelPerUnitY?: number };
+}> {
   // load 3rd party libs async on demand
   pngChunksExtract =
     pngChunksExtract || (await import('png-chunks-extract')).default;
@@ -13,8 +18,46 @@ export async function readPNGXMPMetaData(file: File): Promise<string> {
 
   const buffer = await fileToArrayBuffer(file);
   const chunks = pngChunksExtract(buffer);
-  // due to the format, the 4th index of the chunks contains the useful XMP/XML string data of metatags
-  return chunks[3] && chunks[3].data
-    ? utf8ByteArrayToString(chunks[3].data)
-    : '';
+
+  let iTXt = '';
+  let pHYs = {};
+  /**
+   * http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.Summary-of-standard-chunks
+   * Order of every chunk is not guaranteed.
+   * And both iTXt and pHYs are Ancillary chunks.
+   */
+  for (let i = 0; i < chunks.length; ++i) {
+    const chunk = chunks[i];
+
+    // Must be last
+    if (chunk.name === 'IEND') {
+      break;
+    }
+
+    /**
+     * http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.Anc-text
+     * iTXt contains the useful XMP/XML string data of meta tags
+     */
+    if (chunk.name === 'iTXt') {
+      iTXt = utf8ByteArrayToString(chunk.data);
+    }
+    /**
+     * http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.pHYs
+     * Pixels per unit, X axis: 4 bytes (unsigned integer)
+     * Pixels per unit, Y axis: 4 bytes (unsigned integer)
+     * Unit specifier:          1 byte  (0: unit is unknown 1: unit is the meter)
+     */
+    if (chunk.name === 'pHYs') {
+      const dv = new DataView(chunk.data.buffer);
+      const unitSpecifier = dv.getUint8(8);
+      // meter
+      if (unitSpecifier === 1) {
+        const PixelPerUnitX = dv.getUint32(0);
+        const PixelPerUnitY = dv.getUint32(4);
+        pHYs = { PixelPerUnitX, PixelPerUnitY };
+      }
+    }
+  }
+
+  return { iTXt, pHYs };
 }
