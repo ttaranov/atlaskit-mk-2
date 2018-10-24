@@ -146,7 +146,9 @@ function notificationConfigFactory(
   openDrawer,
 ) {
   return isNotificationInbuilt
-    ? configFactory(openDrawer, notificationTooltip)
+    ? // No need to pass a badge because the badge is rendered by NotificationIndicator
+      // at components/GlobalNavigation/index.js:316
+      configFactory(openDrawer, notificationTooltip)
     : configFactory(
         onNotificationClick || (notificationDrawerContents && openDrawer),
         notificationTooltip,
