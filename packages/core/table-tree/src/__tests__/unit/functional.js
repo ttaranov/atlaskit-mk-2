@@ -398,11 +398,7 @@ function createTreeHarness(treeWrapper) {
 
   const expandChevron = rowIndex => row(rowIndex).find('ChevronRightIcon');
 
-  const collapseChevron = rowIndex => {
-    const rowItem = row(rowIndex);
-
-    return rowItem.find('ChevronDownIcon');
-  };
+  const collapseChevron = rowIndex => row(rowIndex).find('ChevronDownIcon');
 
   return {
     header,
