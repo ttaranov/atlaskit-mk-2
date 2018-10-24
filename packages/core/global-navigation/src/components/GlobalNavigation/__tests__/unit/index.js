@@ -10,7 +10,6 @@ import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
 import GlobalNavigation from '../../index';
 import ScreenTracker from '../../../ScreenTracker';
-import { NotificationLogClient } from '@atlaskit/notification-log-client';
 
 const DrawerContents = () => <div>drawer</div>;
 const EmojiAtlassianIcon = () => <button>EmojiAtlassianIcon</button>;
