@@ -30,58 +30,53 @@ describe('<ItemPrimitive/>', () => {
     expect(props.theme.mode.item).toHaveBeenCalledTimes(1);
   });
 
-  describe('when "CustomComponent" is present', () => {
-    it('should render that component', () => {
-      const props = {
-        isFocused: false,
-        theme: {
-          context: 'default',
-          mode: ({
-            item: jest.fn().mockReturnValue({
-              default: {},
-            }),
-          }: any),
-        },
-        component: TestComponent,
-      };
+  it('should render component prop if present', () => {
+    const props = {
+      isFocused: false,
+      theme: {
+        context: 'default',
+        mode: ({
+          item: jest.fn().mockReturnValue({
+            default: {},
+          }),
+        }: any),
+      },
+      component: TestComponent,
+    };
 
-      const wrapper = mount(<ItemPrimitive {...props} />);
+    const wrapper = mount(<ItemPrimitive {...props} />);
 
-      expect(wrapper.find(TestComponent).length).toBe(1);
-    });
-
-    it('should pass all props and innerRef as ref to that component', () => {
-      const props = {
-        isFocused: false,
-        theme: {
-          context: 'default',
-          mode: ({
-            item: jest.fn().mockReturnValue({
-              default: {},
-            }),
-          }: any),
-        },
-        component: TestComponent,
-        //apparently functional components shouldn't be allowed to have innerRefs, check this later
-        innerRef: undefined,
-      };
-
-      const wrapper = mount(<ItemPrimitive {...props} />);
-      const componentWrapper = wrapper.find(TestComponent);
-
-      expect(componentWrapper.props()).toEqual(expect.objectContaining(props));
-      expect(componentWrapper.prop('ref')).toEqual(props.innerRef);
-    });
+    expect(wrapper.find(TestComponent).length).toBe(1);
   });
 
-  describe('when "component" is not present', () => {
-    xit('should render a div', () => {});
+  it('should pass all props and innerRef as ref prop to component if present', () => {
+    const props = {
+      isFocused: false,
+      theme: {
+        context: 'default',
+        mode: ({
+          item: jest.fn().mockReturnValue({
+            default: {},
+          }),
+        }: any),
+      },
+      component: TestComponent,
+      //apparently functional components shouldn't be allowed to have innerRefs, check this later
+      innerRef: undefined,
+    };
+
+    const wrapper = mount(<ItemPrimitive {...props} />);
+    const componentWrapper = wrapper.find(TestComponent);
+
+    expect(componentWrapper.props()).toEqual(expect.objectContaining(props));
+    expect(componentWrapper.prop('ref')).toEqual(props.innerRef);
   });
-  xit('should always render a <ComponentSwitch/>', () => {});
+
+  xit('should render a div if component is not present', () => {});
 
   // it should fetch component style |done|
   // if CustomComponent is present send it in "as" prop to <ComponentSwitch/> |done|
-  // if CustomComponent is present send this.props to <ComponentSwitch/>
+  // if CustomComponent is present send this.props to <ComponentSwitch/> |done|
 
   // if href is present send it in "as" prop to <ComponentSwitch/>
   // if onclick is present send it in "as" prop to <ComponentSwitch/>
