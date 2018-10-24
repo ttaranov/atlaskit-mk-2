@@ -37,7 +37,7 @@ interface ValidatorSpec {
 const isDefined = x => x != null;
 
 const isNumber = (x): x is number =>
-  typeof x === 'number' && isFinite(x) && Math.floor(x) === x;
+  typeof x === 'number' && !isNaN(x) && isFinite(x);
 
 const isBoolean = (x): x is boolean =>
   x === true || x === false || toString.call(x) === '[object Boolean]';
