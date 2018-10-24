@@ -126,6 +126,10 @@ class Tooltip extends Component<Props, State> {
     everBeenVisible: false,
   };
 
+  componentWillUnmount() {
+    this.cancelPendingSetState();
+  }
+
   componentDidUpdate(prevProps: Props, prevState: State) {
     const scrollOptions = { capture: true, passive: true };
     if (!prevState.isVisible && this.state.isVisible) {
