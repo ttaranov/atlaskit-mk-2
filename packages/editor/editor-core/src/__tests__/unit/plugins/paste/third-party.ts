@@ -8,6 +8,8 @@ import googleTextHTML from './__third-party__/google-docs/text/html';
 import googleTextPlain from './__third-party__/google-docs/text/plain';
 import msWordTextHTML from './__third-party__/microsoft-word/text/html';
 import msWordTextPlain from './__third-party__/microsoft-word/text/plain';
+import reactSyntaxHighlighterHTML from './__third-party__/react-syntax-highlighter/text/html';
+
 import { toJSON } from '../../../../utils';
 import {
   createEditor,
@@ -70,6 +72,14 @@ describe('paste plugin: third-party', () => {
     dispatchPasteEvent(editorView, {
       html: msWordTextHTML,
       plain: msWordTextPlain,
+    });
+    expect(toJSON(editorView.state.doc)).toMatchDocSnapshot();
+  });
+
+  it('should handle pasting content using react-syntax-highlighter', () => {
+    const { editorView } = editor(doc(p('')));
+    dispatchPasteEvent(editorView, {
+      html: reactSyntaxHighlighterHTML,
     });
     expect(toJSON(editorView.state.doc)).toMatchDocSnapshot();
   });
