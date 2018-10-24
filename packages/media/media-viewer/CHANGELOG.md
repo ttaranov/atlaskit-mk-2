@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 24.1.9
+- [patch] [a787ee9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a787ee9):
+
+  Add analytics for downloads
+
 ## 24.1.8
 - [patch] Make DocViewer inherit from BaseViewer [a2ee570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2ee570)
 
