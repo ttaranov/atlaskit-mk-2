@@ -1,6 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/bitbucket-releases-addon", "type": "minor" }
-  ],
-  "dependents": []
-}
