@@ -36,6 +36,7 @@ import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
 
 import { WithCardViewAnalyticsContext } from './withCardViewAnalyticsContext';
+import { getCssFromImageOrientation } from '@atlaskit/media-ui';
 
 export interface CardViewOwnProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -52,6 +53,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly dataURI?: string;
   readonly progress?: number;
   readonly disableOverlay?: boolean;
+  readonly previewOrientation?: number;
 }
 
 export interface CardViewState {
@@ -140,7 +142,12 @@ export class CardViewBase extends React.Component<
 
   render() {
     const { onClick, onMouseEnter } = this;
-    const { dimensions, appearance, mediaItemType } = this.props;
+    const {
+      dimensions,
+      appearance,
+      mediaItemType,
+      previewOrientation,
+    } = this.props;
     const isFileLikeIdentifier =
       mediaItemType === 'file' || mediaItemType === 'external-image';
     const wrapperDimensions = dimensions
@@ -149,6 +156,7 @@ export class CardViewBase extends React.Component<
         ? getDefaultCardDimensions(appearance)
         : undefined;
     let card;
+    let styles;
 
     if (mediaItemType === 'link') {
       card = this.renderLink();
@@ -156,8 +164,18 @@ export class CardViewBase extends React.Component<
       card = this.renderFile();
     }
 
+    if (previewOrientation && previewOrientation > 1) {
+      const transform = getCssFromImageOrientation(previewOrientation);
+      console.log(transform);
+      styles = {
+        transform,
+      };
+    }
+
     return (
       <Wrapper
+        // TODO: move styles into internal component containing the img tag
+        style={styles}
         mediaItemType={mediaItemType}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
