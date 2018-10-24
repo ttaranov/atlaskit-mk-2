@@ -36,8 +36,6 @@ export interface Props extends SharedProps {
   conversation?: ConversationType;
   containerId: string;
   showBeforeUnloadWarning?: boolean;
-  onEditorOpen?: () => void;
-  onEditorClose?: () => void;
 
   // Dispatch
   onCreateConversation?: (
@@ -131,6 +129,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
         onRevertComment={onRevertComment}
         onEditorOpen={this.onEditorOpen}
         onEditorClose={this.onEditorClose}
+        onEditorChange={this.handleEditorChange}
         onHighlightComment={onHighlightComment}
         onRetry={this.onRetry(comment.document)}
         onCancel={onCancel}
@@ -188,6 +187,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
           onCancel={this.onCancel}
           onOpen={this.onOpen}
           onClose={this.onEditorClose}
+          onChange={this.handleEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -273,6 +273,15 @@ export default class Conversation extends React.PureComponent<Props, State> {
     this.setState({
       openEditorCount: this.state.openEditorCount + 1,
     });
+  };
+
+  private handleEditorChange = (value: any, commentId?: string) => {
+    const { id, localId, containerId, onEditorChange, meta } = this.props;
+
+    if (onEditorChange) {
+      const isLocal = !id;
+      onEditorChange(isLocal, value, localId!, commentId, containerId, meta);
+    }
   };
 
   componentDidUpdate() {

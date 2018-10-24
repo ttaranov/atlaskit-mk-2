@@ -169,7 +169,6 @@ export default (
     const nodeName = typeIdToDefName.get(typeId)!;
     if (typeIdToDefName.has(typeId)) {
       // Found a $ref
-      // TODO: Fix any
       jsonSchema.markAsUsed(nodeName);
       return new RefSchemaNode(nodeName);
     } else if (isStringType(type)) {

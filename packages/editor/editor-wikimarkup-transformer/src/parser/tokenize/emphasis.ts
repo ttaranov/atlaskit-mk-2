@@ -1,9 +1,14 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
 import { hasAnyOfMarks } from '../utils/text';
 import { commonFormatter } from './common-formatter';
+import { parseString } from '../text';
 
-export function emphasis(input: string, schema: Schema): Token {
+export function emphasis(
+  input: string,
+  schema: Schema,
+  tokenErrCallback: TokenErrCallback,
+): Token {
   /**
    * The following token types will be ignored in parsing
    * the content of a  mark
@@ -23,10 +28,25 @@ export function emphasis(input: string, schema: Schema): Token {
     return n;
   };
 
+  const rawContentProcessor = (raw: string, length: number): Token => {
+    const content = parseString(
+      raw,
+      schema,
+      ignoreTokenTypes,
+      tokenErrCallback,
+    );
+    const decoratedContent = content.map(contentDecorator);
+
+    return {
+      type: 'pmnode',
+      nodes: decoratedContent,
+      length,
+    };
+  };
+
   return commonFormatter(input, schema, {
     opening: '_',
     closing: '_',
-    ignoreTokenTypes,
-    contentDecorator,
+    rawContentProcessor,
   });
 }

@@ -26,16 +26,21 @@ export type JSONDocNode = {
   content: JSONNode[];
 };
 
-const isCodeBlock = (node: PMNode) => node.type.name === 'codeBlock';
-const isMediaNode = (node: PMNode) => node.type.name === 'media';
-const isMediaSingleNode = (node: PMNode) => node.type.name === 'mediaSingle';
-const isMentionNode = (node: PMNode) => node.type.name === 'mention';
-const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
-const isHeading = (node: PMNode) => node.type.name === 'heading';
-const isTable = (node: PMNode) => node.type.name === 'table';
-const isTableCell = (node: PMNode) => node.type.name === 'tableCell';
-const isTableHeader = (node: PMNode) => node.type.name === 'tableHeader';
-const isLinkMark = (mark: PMMark) => mark.type.name === 'link';
+const isType = (type: string) => (node: PMNode | PMMark) =>
+  node.type.name === type;
+
+const isCodeBlock = isType('codeBlock');
+const isMediaNode = isType('media');
+const isMediaSingleNode = isType('mediaSingle');
+const isMentionNode = isType('mention');
+const isParagraph = isType('paragraph');
+const isHeading = isType('heading');
+const isTable = isType('table');
+const isTableCell = isType('tableCell');
+const isTableHeader = isType('tableHeader');
+const isLinkMark = isType('link');
+const isUnsupportedNode = (node: PMNode) =>
+  isType('unsupportedBlock')(node) || isType('unsupportedInline')(node);
 
 const filterNull = subject => {
   return Object.keys(subject).reduce((acc, key) => {
@@ -55,7 +60,9 @@ const filterNull = subject => {
 
 const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
-  if (isMediaNode(node)) {
+  if (isUnsupportedNode(node)) {
+    return node.attrs.originalValue;
+  } else if (isMediaNode(node)) {
     obj.attrs = mediaToJSON(node).attrs;
   } else if (isMediaSingleNode(node)) {
     obj.attrs = mediaSingleToJSON(node).attrs;

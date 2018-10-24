@@ -19,7 +19,6 @@ import {
 } from '../../../../plugins/code-block/actions';
 import { setTextSelection } from '../../../../utils';
 import codeBlockPlugin from '../../../../plugins/code-block';
-import { SelectOption } from '../../../../plugins/floating-toolbar/ui/Select';
 
 describe('code-block', () => {
   const event = createEvent('event');
@@ -106,10 +105,7 @@ describe('code-block', () => {
           const { pluginState, editorView } = editor(
             doc(code_block()('text{<>}')),
           );
-          const language: SelectOption = {
-            value: 'someValue',
-            label: 'someLabel',
-          };
+          const language = 'someLanguage';
           changeLanguage(language)(editorView.state, editorView.dispatch);
           setTimeout(() => {
             expect(pluginState.language).toEqual(language);

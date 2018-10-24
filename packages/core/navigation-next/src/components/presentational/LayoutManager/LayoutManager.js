@@ -30,7 +30,7 @@ import {
   NavigationContainer,
   PageWrapper,
 } from './primitives';
-import type { LayoutManagerProps } from './types';
+import type { LayoutManagerProps, CollapseListeners } from './types';
 
 import {
   CONTENT_NAV_WIDTH_COLLAPSED,
@@ -56,7 +56,7 @@ function defaultTooltipContent(isCollapsed: boolean) {
     : { text: 'Collapse', char: '[' };
 }
 
-type PageProps = {
+type PageProps = CollapseListeners & {
   children: Node,
   flyoutIsOpen: boolean,
   innerRef: Ref<'div'>,
@@ -65,6 +65,7 @@ type PageProps = {
   productNavWidth: number,
 };
 
+// FIXME: Move to separate file
 // eslint-disable-next-line react/no-multi-comp
 class PageInner extends PureComponent<{ children: Node }> {
   render() {
@@ -72,8 +73,9 @@ class PageInner extends PureComponent<{ children: Node }> {
   }
 }
 
+// FIXME: Move to separate file
 // eslint-disable-next-line react/no-multi-comp
-class Page extends PureComponent<PageProps> {
+export class Page extends PureComponent<PageProps> {
   render() {
     const {
       flyoutIsOpen,
@@ -81,6 +83,10 @@ class Page extends PureComponent<PageProps> {
       isResizing,
       isCollapsed,
       productNavWidth,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
     } = this.props;
     return (
       <ResizeTransition
@@ -90,6 +96,12 @@ class Page extends PureComponent<PageProps> {
         properties={['paddingLeft']}
         to={[flyoutIsOpen ? CONTENT_NAV_WIDTH_FLYOUT : productNavWidth]}
         userIsDragging={isResizing}
+        /* Attach expand/collapse callbacks to the page resize transition to ensure they are only
+         * called when the nav is permanently expanded/collapsed, i.e. when page content position changes. */
+        onExpandStart={onExpandStart}
+        onExpandEnd={onExpandEnd}
+        onCollapseStart={onCollapseStart}
+        onCollapseEnd={onCollapseEnd}
       >
         {({ transitionStyle, transitionState }) => (
           <PageWrapper
@@ -272,14 +284,7 @@ export default class LayoutManager extends Component<
   };
 
   renderNavigation = () => {
-    const {
-      navigationUIController,
-      onExpandStart,
-      onExpandEnd,
-      onCollapseStart,
-      onCollapseEnd,
-      experimental_flyoutOnHover,
-    } = this.props;
+    const { navigationUIController, experimental_flyoutOnHover } = this.props;
     const { flyoutIsOpen, mouseIsOverNavigation } = this.state;
     const {
       isCollapsed,
@@ -308,10 +313,6 @@ export default class LayoutManager extends Component<
           userIsDragging={isResizing}
           // only apply listeners to the NAV resize transition
           productNavWidth={productNavWidth}
-          onExpandStart={onExpandStart}
-          onExpandEnd={onExpandEnd}
-          onCollapseStart={onCollapseStart}
-          onCollapseEnd={onCollapseEnd}
         >
           {({ transitionStyle, transitionState }) => {
             const onMouseOut =
@@ -370,7 +371,13 @@ export default class LayoutManager extends Component<
   };
 
   render() {
-    const { navigationUIController } = this.props;
+    const {
+      navigationUIController,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
+    } = this.props;
     const { flyoutIsOpen } = this.state;
     const {
       isResizing,
@@ -387,6 +394,10 @@ export default class LayoutManager extends Component<
           isResizing={isResizing}
           isCollapsed={isCollapsed}
           productNavWidth={productNavWidth}
+          onExpandStart={onExpandStart}
+          onExpandEnd={onExpandEnd}
+          onCollapseStart={onCollapseStart}
+          onCollapseEnd={onCollapseEnd}
         >
           {this.props.children}
         </Page>

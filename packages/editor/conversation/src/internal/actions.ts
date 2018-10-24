@@ -108,3 +108,22 @@ export const createConversation = (
     onSuccess(conversationId);
   }
 };
+
+export const saveDraft = (
+  isLocal: boolean,
+  value: any,
+  conversationId: string,
+  commentId: string | undefined,
+  containerId: string,
+  meta: any,
+  provider: ResourceProvider,
+) => async () => {
+  provider.saveDraft(
+    isLocal,
+    value,
+    conversationId,
+    commentId,
+    containerId,
+    meta,
+  );
+};

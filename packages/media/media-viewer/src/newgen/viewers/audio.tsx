@@ -3,7 +3,6 @@ import { ProcessedFileState, Context } from '@atlaskit/media-core';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
 import { constructAuthTokenUrl } from '../utils';
 import { Outcome } from '../domain';
-import { Spinner } from '../loading';
 import {
   AudioPlayer,
   AudioCover,
@@ -11,9 +10,9 @@ import {
   DefaultCoverWrapper,
   blanketColor,
 } from '../styled';
-import { ErrorMessage, createError, MediaViewerError } from '../error';
-import { renderDownloadButton } from '../domain/download';
+import { createError, MediaViewerError } from '../error';
 import { getArtifactUrl } from '@atlaskit/media-store';
+import { BaseState, BaseViewer } from './base-viewer';
 
 export type Props = Readonly<{
   item: ProcessedFileState;
@@ -22,8 +21,7 @@ export type Props = Readonly<{
   previewCount: number;
 }>;
 
-export type State = {
-  src: Outcome<string, MediaViewerError>;
+export type State = BaseState<string> & {
   coverUrl?: string;
 };
 
@@ -40,24 +38,11 @@ const getCoverUrl = (
 ): Promise<string> =>
   constructAuthTokenUrl(`/file/${item.id}/image`, context, collectionName);
 
-export class AudioViewer extends React.Component<Props, State> {
-  state: State = { src: Outcome.pending() };
-
-  componentDidMount() {
-    this.init();
-  }
-
-  render() {
-    return this.state.src.match({
-      pending: () => <Spinner />,
-      successful: src => this.renderPlayer(src),
-      failed: err => (
-        <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton()}
-        </ErrorMessage>
-      ),
-    });
+export class AudioViewer extends BaseViewer<string, Props, State> {
+  protected get initialState() {
+    return {
+      content: Outcome.pending<string, MediaViewerError>(),
+    };
   }
 
   private renderCover = () => {
@@ -79,7 +64,7 @@ export class AudioViewer extends React.Component<Props, State> {
     audioElement.setAttribute('controlsList', 'nodownload');
   };
 
-  private renderPlayer = (src: string) => {
+  protected renderSuccessful(src: string) {
     const { previewCount } = this.props;
     return (
       <AudioPlayer>
@@ -93,7 +78,7 @@ export class AudioViewer extends React.Component<Props, State> {
         />
       </AudioPlayer>
     );
-  };
+  }
 
   private loadCover = (coverUrl: string) => {
     return new Promise(async (resolve, reject) => {
@@ -115,7 +100,7 @@ export class AudioViewer extends React.Component<Props, State> {
     } catch (e) {}
   };
 
-  private async init() {
+  protected async init() {
     const { context, item, collectionName } = this.props;
     const audioUrl = getArtifactUrl(item.artifacts, 'audio.mp3');
     try {
@@ -124,19 +109,15 @@ export class AudioViewer extends React.Component<Props, State> {
       }
       this.setCoverUrl();
       this.setState({
-        src: Outcome.successful(
+        content: Outcome.successful(
           await constructAuthTokenUrl(audioUrl, context, collectionName),
         ),
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', err, item)),
+        content: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }
-
-  private renderDownloadButton() {
-    const { item, context, collectionName } = this.props;
-    return renderDownloadButton(item, context, collectionName);
-  }
+  protected release() {}
 }

@@ -207,5 +207,54 @@ describe(name, () => {
         ).toBeUndefined();
       });
     });
+
+    describe('Unsupported', () => {
+      it('should wrap unsupported block nodes', () => {
+        const result = processRawValue(schema, {
+          type: 'doc',
+          content: [{ type: 'x' }],
+        });
+
+        expect(result).toBeDefined();
+        expect(result!.toJSON()).toEqual({
+          type: 'doc',
+          content: [
+            {
+              type: 'unsupportedBlock',
+              attrs: { originalValue: { type: 'x' } },
+            },
+          ],
+        });
+      });
+
+      it('should wrap unsupported inline nodes', () => {
+        const result = processRawValue(schema, {
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [{ type: 'text', text: 'hello' }, { type: 'x' }],
+            },
+          ],
+        });
+
+        expect(result).toBeDefined();
+        expect(result!.toJSON()).toEqual({
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                { type: 'text', text: 'hello' },
+                {
+                  type: 'unsupportedInline',
+                  attrs: { originalValue: { type: 'x' } },
+                },
+              ],
+            },
+          ],
+        });
+      });
+    });
   });
 });

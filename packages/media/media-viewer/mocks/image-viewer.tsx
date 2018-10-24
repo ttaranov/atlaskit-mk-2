@@ -3,7 +3,7 @@ import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import {
   AnalyticViewerProps,
   ViewerLoadPayload,
-} from '../src/newgen/analytics';
+} from '../src/newgen/analytics/item-viewer';
 
 let _payload: ViewerLoadPayload = { status: 'success' };
 export const setViewerPayload = (payload: ViewerLoadPayload) => {

@@ -1,4 +1,4 @@
-import { HTMLAttributes, ComponentClass } from 'react';
+import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -60,7 +60,8 @@ const fullPageStyles = ({ theme, appearance }) => {
   `;
 };
 
-export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+// prettier-ignore
+export const Wrapper = styled.div<Props & HTMLAttributes<{}>>`
   ${fullPageStyles}
 
   font-size: ${editorFontSize}px;

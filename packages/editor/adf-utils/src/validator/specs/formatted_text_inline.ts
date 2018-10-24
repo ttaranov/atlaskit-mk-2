@@ -6,12 +6,12 @@ export default [
         type: 'array',
         items: [
           [
-            'em',
-            'strike',
-            'strong',
-            'underline',
             'link',
+            'em',
+            'strong',
+            'strike',
             'subsup',
+            'underline',
             'textColor',
             'action',
           ],

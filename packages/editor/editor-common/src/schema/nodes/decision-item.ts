@@ -7,6 +7,9 @@ import { uuid } from '../../utils';
  */
 export interface DecisionItemDefinition {
   type: 'decisionItem';
+  /**
+   * @allowUnsupportedInline true
+   */
   content: Array<Inline>;
   attrs: {
     localId: string;

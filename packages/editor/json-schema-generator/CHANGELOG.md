@@ -1,5 +1,8 @@
 # @atlaskit/json-schema-generator
 
+## 1.2.0
+- [minor] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
+
 ## 1.1.3
 - [patch] ED-5529 Fix JSON Schema [d286ab3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d286ab3)
 

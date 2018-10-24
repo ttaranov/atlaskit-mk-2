@@ -59,6 +59,7 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
     textFormattingPlugin(props.textFormatting || {}),
     widthPlugin,
     typeAheadPlugin,
+    unsupportedContentPlugin,
   ];
 }
 
@@ -144,10 +145,6 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowJiraIssue) {
     plugins.push(jiraIssuePlugin);
-  }
-
-  if (props.allowUnsupportedContent) {
-    plugins.push(unsupportedContentPlugin);
   }
 
   if (props.allowPanel) {

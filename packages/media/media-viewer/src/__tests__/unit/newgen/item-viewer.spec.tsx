@@ -350,6 +350,11 @@ describe('<ItemViewer />', () => {
   });
 
   describe('Analytics', () => {
+    const analyticsBaseAttributes = {
+      componentName: 'media-viewer',
+      packageName,
+      packageVersion,
+    };
     it('should trigger the screen event when the preview commences', () => {
       const context = makeFakeContext(
         Observable.of({
@@ -364,10 +369,8 @@ describe('<ItemViewer />', () => {
       );
       expect(createAnalyticsEventSpy).toHaveBeenCalledWith({
         attributes: {
-          componentName: 'media-viewer',
           fileId: 'some-id',
-          packageName: '@atlaskit/media-viewer',
-          packageVersion,
+          ...analyticsBaseAttributes,
         },
         eventType: 'screen',
         name: 'mediaViewerModal',
@@ -392,9 +395,7 @@ describe('<ItemViewer />', () => {
         actionSubjectId: 'some-id',
         attributes: {
           fileId: 'some-id',
-          packageName,
-          packageVersion,
-          componentName: 'media-viewer',
+          ...analyticsBaseAttributes,
         },
         eventType: 'operational',
       });
@@ -415,9 +416,7 @@ describe('<ItemViewer />', () => {
         actionSubjectId: 'some-id',
         attributes: {
           fileId: 'some-id',
-          packageName,
-          packageVersion,
-          componentName: 'media-viewer',
+          ...analyticsBaseAttributes,
         },
         eventType: 'operational',
       });
@@ -429,9 +428,7 @@ describe('<ItemViewer />', () => {
           failReason: 'Metadata fetching failed',
           fileId: 'some-id',
           status: 'fail',
-          packageName,
-          packageVersion,
-          componentName: 'media-viewer',
+          ...analyticsBaseAttributes,
         },
         eventType: 'operational',
       });
@@ -463,9 +460,7 @@ describe('<ItemViewer />', () => {
           fileMediatype: 'image',
           fileSize: undefined,
           status: 'fail',
-          packageName,
-          packageVersion,
-          componentName: 'media-viewer',
+          ...analyticsBaseAttributes,
         },
         eventType: 'operational',
       });
@@ -492,9 +487,7 @@ describe('<ItemViewer />', () => {
           fileMediatype: 'image',
           fileSize: undefined,
           status: 'success',
-          packageName,
-          packageVersion,
-          componentName: 'media-viewer',
+          ...analyticsBaseAttributes,
         },
         eventType: 'operational',
       });

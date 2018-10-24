@@ -71,6 +71,6 @@ export default class Panel extends PureComponent<Props, {}> {
     const { panelType } = this.props;
     // tslint:disable-next-line:variable-name
     const Icon = config[panelType].icon;
-    return <Icon label={`Panel {panelType}`} />;
+    return <Icon label={`Panel ${panelType}`} />;
   }
 }
