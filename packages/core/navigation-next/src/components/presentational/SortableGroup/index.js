@@ -4,18 +4,22 @@ import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
 import Group from '../Group';
+import type { SortableGroupProps } from './types';
 
-export const DroppableGroup = ({
+const defaultStyles = {
+  minHeight: 64,
+};
+
+const SortableGroup = ({
   children,
-  droppableId,
-  groupProps,
   innerStyle,
-}: *) => (
-  <Droppable droppableId={droppableId}>
+  ...groupProps
+}: SortableGroupProps) => (
+  <Droppable droppableId={groupProps.id}>
     {droppableProvided => (
       <div
         ref={droppableProvided.innerRef}
-        style={innerStyle}
+        style={{ ...defaultStyles, ...innerStyle }}
         {...droppableProvided.droppableProps}
       >
         <Group {...groupProps}>
@@ -26,3 +30,5 @@ export const DroppableGroup = ({
     )}
   </Droppable>
 );
+
+export default SortableGroup;

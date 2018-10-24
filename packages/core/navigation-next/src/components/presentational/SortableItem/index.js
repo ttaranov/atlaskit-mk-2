@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { colors } from '@atlaskit/theme';
+import { Draggable } from 'react-beautiful-dnd';
 
-import type { ItemProps } from '../Item/types';
 import Item from '../Item';
+import type { SortableItemProps } from './types';
 
 // The sortable item cannot be a `<button />` because rbdnd will use it as a
 // placeholder and we have no way of removing the browser's default button
@@ -51,8 +52,36 @@ const getStyles = (provided, { isDragging }, theme) => {
   };
 };
 
-const SortableItem = (props: ItemProps) => (
-  <Item styles={getStyles} {...props} component={Div} />
+const SortableItem = ({ index, ...itemProps }: SortableItemProps) => (
+  <Draggable
+    draggableId={itemProps.id}
+    index={index}
+    disableInteractiveElementBlocking
+  >
+    {(draggableProvided, draggableSnapshot) => {
+      const draggableProps = {
+        ...draggableProvided.draggableProps,
+        ...draggableProvided.dragHandleProps,
+      };
+
+      // disable onClick if the intention was drag
+      const onClick = draggableSnapshot.isDragging
+        ? undefined
+        : itemProps.onClick;
+
+      return (
+        <Item
+          draggableProps={draggableProps}
+          innerRef={draggableProvided.innerRef}
+          isDragging={draggableSnapshot.isDragging}
+          styles={getStyles}
+          {...itemProps}
+          onClick={onClick}
+          component={Div}
+        />
+      );
+    }}
+  </Draggable>
 );
 
 export default SortableItem;
