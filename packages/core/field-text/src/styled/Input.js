@@ -44,7 +44,7 @@ const InputElement = styled.input`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-family: inherit;
+  font-family: ${p => (p.isMonospaced ? 'monospace' : 'inherit')};
   font-size: ${fontSize}px;
   min-width: 0;
   outline: none;

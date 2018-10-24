@@ -59,7 +59,7 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-family: inherit;
+  font-family: ${p => (p.isMonospaced ? 'monospace' : 'inherit')};
   font-size: ${fontSize}px;
   line-height: ${20 / fontSize()};
   min-width: 0;
