@@ -253,9 +253,7 @@ describe('Context', () => {
       observer.subscribe({
         next(state) {
           expect(getItems).toHaveBeenCalledTimes(1);
-          expect(getItems).lastCalledWith([
-            { id, collection: 'some-collection' },
-          ]);
+          expect(getItems).lastCalledWith([id], 'some-collection');
           expect(state).toEqual({
             id,
             status: 'processed',

@@ -1,14 +1,44 @@
 import { MediaStore, FileItem } from '@atlaskit/media-store';
+import * as uuid from 'uuid';
 import { FileFetcher, getItemsFromKeys } from '../../file';
 
 describe('FileFetcher', () => {
   const setup = () => {
-    const mediaStore: MediaStore = {
+    const items = [
+      {
+        id: uuid(),
+        collection: 'collection-1',
+        details: {
+          name: 'file-1',
+        },
+      },
+      {
+        id: uuid(),
+        collection: 'collection-1',
+        details: {
+          name: 'file-2',
+        },
+      },
+      {
+        id: uuid(),
+        collection: 'collection-2',
+        details: {
+          name: 'file-3',
+        },
+      },
+    ];
+    const itemsResponse = Promise.resolve({
+      data: {
+        items,
+      },
+    });
+    const mediaStore = {
       getFileBinaryURL: jest.fn(),
+      getItems: jest.fn().mockReturnValue(itemsResponse),
     } as any;
     const fileFetcher = new FileFetcher(mediaStore);
 
-    return { fileFetcher, mediaStore };
+    return { fileFetcher, mediaStore, items, itemsResponse };
   };
 
   describe('downloadBinary()', () => {
@@ -86,6 +116,50 @@ describe('FileFetcher', () => {
           expect(error).toEqual('invalid-id is not a valid file id');
           done();
         },
+      });
+    });
+
+    it('should split calls to /items by collection name', done => {
+      const { fileFetcher, mediaStore, items } = setup();
+
+      fileFetcher
+        .getFileState(items[0].id, { collectionName: items[0].collection })
+        .subscribe();
+      fileFetcher
+        .getFileState(items[1].id, { collectionName: items[1].collection })
+        .subscribe();
+      fileFetcher
+        .getFileState(items[2].id, { collectionName: items[2].collection })
+        .subscribe();
+
+      setImmediate(() => {
+        expect(mediaStore.getItems).toHaveBeenCalledTimes(2);
+        expect(mediaStore.getItems.mock.calls[0]).toEqual([
+          [items[0].id, items[1].id],
+          'collection-1',
+        ]);
+        expect(mediaStore.getItems.mock.calls[1]).toEqual([
+          [items[2].id],
+          'collection-2',
+        ]);
+        done();
+      });
+    });
+
+    it('should group ids without collection in the same call to /items', done => {
+      const { fileFetcher, mediaStore, items } = setup();
+
+      fileFetcher.getFileState(items[0].id).subscribe();
+      fileFetcher.getFileState(items[1].id).subscribe();
+      fileFetcher.getFileState(items[2].id).subscribe();
+
+      setImmediate(() => {
+        expect(mediaStore.getItems).toHaveBeenCalledTimes(1);
+        expect(mediaStore.getItems.mock.calls[0]).toEqual([
+          [items[0].id, items[1].id, items[2].id],
+          undefined,
+        ]);
+        done();
       });
     });
   });

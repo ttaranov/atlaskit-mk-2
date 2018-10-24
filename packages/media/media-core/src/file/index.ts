@@ -92,6 +92,7 @@ export class FileFetcher {
           fileIds,
           collectionName,
         );
+
         items.push(...response.data.items);
       }),
     );
@@ -136,7 +137,6 @@ export class FileFetcher {
           }
 
           const fileState = mapMediaItemToFileState(id, response);
-
           observer.next(fileState);
 
           if (fileState.status === 'processing') {
