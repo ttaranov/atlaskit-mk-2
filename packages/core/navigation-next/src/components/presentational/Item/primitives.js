@@ -19,10 +19,12 @@ const ComponentSwitch = ({ as, innerRef, ...rest }: SwitchProps) => {
 };
 
 class ItemPrimitive extends PureComponent<ItemProps> {
+  //needed change here?
   static defaultProps = {
     isActive: false,
     isHover: false,
     isSelected: false,
+    // isFocused: false,
     spacing: 'default',
     styles: styleReducerNoOp,
     text: '',
@@ -36,6 +38,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
       innerRef,
       isHover,
       isSelected,
+      isFocused,
       spacing,
       subText,
       text,
@@ -47,10 +50,14 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     } = this.props;
 
     const { mode, context } = theme;
-    const presentationProps = { isActive, isHover, isSelected, spacing };
+    const presentationProps = {
+      isActive,
+      isHover,
+      isSelected,
+      /*isFocused,*/ spacing,
+    };
     const defaultStyles = mode.item(presentationProps)[context];
     const styles = styleReducer(defaultStyles, presentationProps, theme);
-
     // base element switch
 
     let itemComponent = 'div';
@@ -92,4 +99,5 @@ class ItemPrimitive extends PureComponent<ItemProps> {
   }
 }
 
+export { ItemPrimitive };
 export default withContentTheme(ItemPrimitive);
