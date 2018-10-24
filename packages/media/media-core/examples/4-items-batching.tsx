@@ -24,12 +24,25 @@ class Example extends Component<{}, ExampleState> {
   };
 
   componentDidMount() {
-    this.fetchItem(animatedFileId.id, animatedFileId.collectionName); // Item from a different collection
-    this.fetchItem(imageFileId.id, imageFileId.collectionName); // Normal case
-    this.fetchItem(genericFileId.id, genericFileId.collectionName); // Normal case
-    this.fetchItem(imageFileId.id, imageFileId.collectionName); // Calling the first item again
+    // Items from collection number 1
+    this.fetchItem(imageFileId.id, imageFileId.collectionName);
+    this.fetchItem(genericFileId.id, genericFileId.collectionName);
+    this.fetchItem(imageFileId.id, imageFileId.collectionName); // Calling the first item again (we won't be requesting it twice)
+
+    // Items coming another collection:
+    this.fetchItem(animatedFileId.id, animatedFileId.collectionName);
+
+    // No collection:
     this.fetchItem(imageFileId.id); // Calling first item without collection on pourpuse
+
+    // This is an invalid item it won't show in the payload. It will be ignored in the backend.
     this.fetchItem(uuid(), defaultCollectionName); // No existing item
+
+    // What's going to happen:
+    // We will be doing three requests to /items:
+    //  - one for collection 1 (returning 3 items)
+    //  - another with collection 2 (returning 1 item)
+    //  - another for the other item without collection.
   }
 
   fetchItem(id: string, collectionName?: string) {
@@ -77,8 +90,11 @@ class Example extends Component<{}, ExampleState> {
     return (
       <div>
         <h1>
-          Demonstrates that we batch calls to /items endpoint for file metadata
+          Demonstrates that we batch calls to /items endpoint for file metadata.
         </h1>
+        <p>
+          Please refer to the comments on the code to understand this example
+        </p>
         <button onClick={this.fetchFirstItem}>Fetch first item</button>
         <button onClick={this.fetchNewItem}>Fetch new item</button>
         {this.renderFileState()}
