@@ -38,6 +38,7 @@ export interface CollectionCacheEntry {
   isLoadingNextPage: boolean;
   nextInclusiveStartKey?: string;
 }
+
 export type CollectionCache = {
   [collectionName: string]: CollectionCacheEntry;
 };
@@ -100,6 +101,13 @@ export class CollectionFetcher {
     });
   }
 
+  private removeFromCache(id: string, collectionName: string) {
+    const keyOptions = { collectionName };
+
+    const key = FileStreamCache.createKey(id, keyOptions);
+    fileStreamsCache.remove(key);
+  }
+
   getItems(
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
@@ -130,6 +138,15 @@ export class CollectionFetcher {
       });
 
     return subject;
+  }
+
+  async removeFile(id: string, collectionName: string, occurrenceKey?: string) {
+    await this.mediaStore.removeCollectionFile(
+      id,
+      collectionName,
+      occurrenceKey,
+    );
+    this.removeFromCache(id, collectionName);
   }
 
   async loadNextPage(

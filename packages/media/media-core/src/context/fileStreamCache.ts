@@ -45,6 +45,10 @@ export class FileStreamCache {
     this.fileStreams.removeAll();
   }
 
+  remove(id: string) {
+    this.fileStreams.remove(id);
+  }
+
   get size(): number {
     return this.fileStreams.size;
   }

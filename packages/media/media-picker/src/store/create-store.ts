@@ -30,6 +30,7 @@ import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
 import { PopupConfig, PopupUploadEventEmitter } from '../components/popup';
 import analyticsProcessing from '../popup/middleware/analyticsProcessing';
+import { removeFileFromRecents } from '../popup/middleware/removeFileFromRecents';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
@@ -75,6 +76,7 @@ export default (
         searchGiphy(fetcher) as Middleware,
         hidePopupMiddleware(eventEmitter) as Middleware,
         sendUploadEventMiddleware(eventEmitter),
+        removeFileFromRecents as Middleware,
       ),
     ),
   );

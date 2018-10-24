@@ -18,6 +18,7 @@ import {
 import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
+import TrashIcon from '@atlaskit/icon/glyph/trash';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
 import { FormattedMessage } from 'react-intl';
 import { messages, InfiniteScroll } from '@atlaskit/media-ui';
@@ -37,7 +38,7 @@ import {
   SelectedItem,
   State,
 } from '../../../domain';
-import { menuEdit } from '../editor/phrases';
+import { menuDelete, menuEdit } from '../editor/phrases';
 import {
   Wrapper,
   SpinnerWrapper,
@@ -47,12 +48,21 @@ import {
   CardWrapper,
 } from './styled';
 import { RECENTS_COLLECTION } from '../../../config';
+import { removeFileFromRecents } from '../../../actions/removeFileFromRecents';
 
 const createEditCardAction = (handler: CardEventHandler): CardAction => {
   return {
     label: menuEdit,
     handler,
-    icon: <AnnotateIcon label={menuEdit} size="small" />,
+    icon: <AnnotateIcon label={menuEdit} size="medium" />,
+  };
+};
+
+const createDeleteCardAction = (handler: CardEventHandler): CardAction => {
+  return {
+    label: menuDelete,
+    handler,
+    icon: <TrashIcon label={menuDelete} size="medium" />,
   };
 };
 
@@ -86,6 +96,7 @@ export interface UploadViewDispatchProps {
     resolver: (id: string) => void,
     rejecter: Function,
   ) => void;
+  readonly removeFileFromRecents: (id: string, occurrenceKey?: string) => void;
 }
 
 export type UploadViewProps = UploadViewOwnProps &
@@ -223,7 +234,7 @@ export class StatelessUploadView extends Component<
   }
 
   private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
-    const { uploads, onFileClick, context } = this.props;
+    const { uploads, onFileClick, removeFileFromRecents, context } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
       return uploads[b].index - uploads[a].index;
@@ -241,10 +252,12 @@ export class StatelessUploadView extends Component<
         ...file.metadata,
         mimeType: mediaType,
       };
-      const { id } = fileMetadata;
+      const { id, occurrenceKey } = fileMetadata;
       const selected = selectedUploadIds.indexOf(id) > -1;
       const onClick = () => onFileClick(fileMetadata, 'upload');
-      const actions: CardAction[] = []; // TODO [MS-1017]: allow file annotation for uploading files
+      const actions: CardAction[] = [
+        createDeleteCardAction(() => removeFileFromRecents(id, occurrenceKey)),
+      ]; // TODO [MS-1017]: allow file annotation for uploading files
       const { upfrontId } = file.metadata;
       const identifier: FileIdentifier = {
         id: upfrontId,
@@ -277,6 +290,7 @@ export class StatelessUploadView extends Component<
       onFileClick,
       onEditRemoteImage,
       setUpfrontIdDeferred,
+      removeFileFromRecents,
     } = this.props;
     const { items } = recents;
     const selectedRecentFiles = selectedItems
@@ -326,10 +340,12 @@ export class StatelessUploadView extends Component<
     return items.map(item => {
       const { id, occurrenceKey, details } = item;
       const selected = selectedRecentFiles.indexOf(id) > -1;
-      const actions: CardAction[] = [];
+      const actions: CardAction[] = [
+        createDeleteCardAction(() => removeFileFromRecents(id, occurrenceKey)),
+      ];
 
       if ((details as FileDetails).mediaType === 'image') {
-        actions.push(createEditCardAction(editHandler));
+        actions.unshift(createEditCardAction(editHandler));
       }
 
       return {
@@ -402,6 +418,8 @@ const mapDispatchToProps = (
     dispatch(editRemoteImage(file, collectionName)),
   setUpfrontIdDeferred: (id, resolver, rejecter) =>
     dispatch(setUpfrontIdDeferred(id, resolver, rejecter)),
+  removeFileFromRecents: (id, occurrenceKey) =>
+    dispatch(removeFileFromRecents(id, occurrenceKey)),
 });
 
 export default connect<

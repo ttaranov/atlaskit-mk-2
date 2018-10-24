@@ -38,6 +38,7 @@ import hidePopup from './hidePopup';
 import startApp from './startApp';
 import setUpfrontIdDeferred from './setUpfrontIdDeferred';
 import saveCollectionItemsSubscription from './saveCollectionItemsSubscription';
+import removeFileFromRecents from './removeFileFromRecents';
 
 const reducers = combineReducers([
   fileClick,
@@ -59,6 +60,7 @@ const reducers = combineReducers([
   fileUploadEnd,
   setEventProxy,
   removeEventProxy,
+  removeFileFromRecents,
   resetView,
   editorClose,
   editorShowError,

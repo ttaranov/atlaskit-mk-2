@@ -14,3 +14,4 @@ export const buttonCancel = 'Cancel';
 export const buttonSave = 'Save';
 
 export const menuEdit = 'Annotate';
+export const menuDelete = 'Delete';

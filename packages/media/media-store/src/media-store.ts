@@ -100,6 +100,35 @@ export class MediaStore {
     };
   }
 
+  async removeCollectionFile(
+    id: string,
+    collectionName: string,
+    occurrenceKey?: string,
+  ): Promise<void> {
+    const body = {
+      actions: [
+        {
+          action: 'remove',
+          item: {
+            type: 'file',
+            id,
+            occurrenceKey,
+          },
+        },
+      ],
+    };
+
+    await this.request(`/collection/${collectionName}`, {
+      method: 'PUT',
+      authContext: { collectionName },
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
   createUpload(
     createUpTo: number = 1,
   ): Promise<MediaStoreResponse<MediaUpload[]>> {
