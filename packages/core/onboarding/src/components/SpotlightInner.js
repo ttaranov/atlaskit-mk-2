@@ -30,6 +30,10 @@ class SpotlightInner extends React.Component<
   };
 
   state = {
+    // This is only used when targetReplacement is specified.
+    // In this case, we have to render the targetReplacement component,
+    // get a dom reference from that component, then render again passing
+    // that reference into SpotlightDialog (Popper).
     replacementElement: undefined,
   };
 
@@ -66,8 +70,8 @@ class SpotlightInner extends React.Component<
     const { height, left, top, width } = targetNode.getBoundingClientRect();
     const rect = {
       height,
-      left: left + window.scrollX,
-      top: top + window.scrollY,
+      left: left + window.pageXOffset,
+      top: top + window.pageYOffset,
       width,
     };
 

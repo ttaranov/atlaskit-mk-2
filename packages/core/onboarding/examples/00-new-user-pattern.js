@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { ProgressDots } from '@atlaskit/progress-indicator';
+import { gridSize } from '@atlaskit/theme';
 import { SpotlightCard } from '../src';
 
 const Wrapper = styled.div`
@@ -20,11 +21,11 @@ const Heading = styled.div`
 `;
 
 const Tagline = styled.p`
-  padding-bottom: 12px;
+  padding-bottom: ${gridSize() * 2}px;
 `;
 
 const Option = styled.div`
-  padding: 4px;
+  padding: ${gridSize() / 2}px;
 `;
 
 class NewUser extends React.Component<{}> {

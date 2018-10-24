@@ -70,7 +70,7 @@ class SpotlightCard extends React.Component<Props> {
               color: colors.N0,
               width: `${Math.min(Math.max(width, 160), 600)}px`,
               boxShadow: !isFlat
-                ? `0 4px 8px -2px ${colors.N50A}, 0 0 1px ${colors.N60A}`
+                ? `0 4px 8px -2px ${colors.N50A}, 0 0 1px ${colors.N60A}` // AK-5598
                 : undefined,
               ...parent.container(),
               ...theme(parent).container(),

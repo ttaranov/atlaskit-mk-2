@@ -64,7 +64,7 @@ const DefaultHeader = styled.div`
 const DefaultFooter = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   padding-top: ${gridSize}px;
 `;
 
@@ -102,12 +102,14 @@ const Card = ({
                 {heading || headingAfterElement ? (
                   <Header>
                     <Heading>{heading}</Heading>
+                    {/* Always need an element so space-between alignment works */}
                     {headingAfterElement || <span />}
                   </Header>
                 ) : null}
                 {children}
                 {actions.length > 0 || actionsBeforeElement ? (
                   <Footer>
+                    {/* Always need an element so space-between alignment works */}
                     {actionsBeforeElement || <span />}
                     <ActionItems>
                       {actions.map(({ text, ...rest }, idx) => (
