@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 87.1.2
+- [patch] Fix floating number validation [ea027b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea027b8)
+
 ## 87.1.1
 - [patch] ED-5439: add block smart cards, toolbar switcher [5f8bdfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f8bdfe)
 
