@@ -1,5 +1,12 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.0.4
+- [patch] [e5e040c"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5e040c"
+d):
+
+  - Fixes passing null to renderer before we have content. ED-5587
+
 ## 5.0.3
 - [patch] Fixed rendering media in the renderer. FM-1280 [00aaf8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/00aaf8e)
 
