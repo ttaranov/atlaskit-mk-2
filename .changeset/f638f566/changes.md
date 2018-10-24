@@ -1,1 +1,0 @@
-- Fixes layering of blanket and spotlight components in IE11 and Edge
