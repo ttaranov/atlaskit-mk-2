@@ -11,6 +11,7 @@
     "type": "jwt"
   },
   "contexts": [
+    "variableNew",
     "account"
   ],
   "modules": {
