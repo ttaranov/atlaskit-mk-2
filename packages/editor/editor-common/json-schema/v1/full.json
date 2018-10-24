@@ -374,220 +374,6 @@
       ],
       "additionalProperties": false
     },
-    "em_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "em"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "code_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "code"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "strike_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "strike"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "strong_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "strong"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "underline_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "underline"
-          ]
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "link_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "link"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "href": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            },
-            "collection": {
-              "type": "string"
-            },
-            "occurrenceKey": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "href"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
-    "subsup_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "subsup"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "enum": [
-                "sub",
-                "sup"
-              ]
-            }
-          },
-          "required": [
-            "type"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
-    "textColor_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "textColor"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "color": {
-              "type": "string",
-              "pattern": "^#[0-9a-f]{6}$"
-            }
-          },
-          "required": [
-            "color"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
-    "action_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "action"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "key": {
-              "type": "string"
-            },
-            "target": {
-              "type": "object",
-              "properties": {
-                "receiver": {
-                  "type": "string"
-                },
-                "key": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "key"
-              ]
-            },
-            "parameters": {}
-          },
-          "required": [
-            "title",
-            "target"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
     "hardBreak_node": {
       "type": "object",
       "properties": {
@@ -1509,6 +1295,220 @@
           },
           "required": [
             "text"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "em_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "em"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "code_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "code"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "strike_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "strike"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "strong_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "strong"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "underline_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "underline"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "link_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "link"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "collection": {
+              "type": "string"
+            },
+            "occurrenceKey": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "href"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "subsup_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "subsup"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "sub",
+                "sup"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "textColor_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "textColor"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-f]{6}$"
+            }
+          },
+          "required": [
+            "color"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "action_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "action"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "target": {
+              "type": "object",
+              "properties": {
+                "receiver": {
+                  "type": "string"
+                },
+                "key": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "key"
+              ]
+            },
+            "parameters": {}
+          },
+          "required": [
+            "title",
+            "target"
           ],
           "additionalProperties": false
         }

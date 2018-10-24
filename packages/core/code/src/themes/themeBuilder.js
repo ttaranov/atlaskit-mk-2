@@ -206,6 +206,7 @@ const inlineCodeStyle = (theme: Theme) => ({
     ...codeStyle(theme),
     padding: '2px 4px',
     display: 'inline',
+    whiteSpace: 'pre-wrap',
   },
   ...sharedCodeStyle(theme),
 });

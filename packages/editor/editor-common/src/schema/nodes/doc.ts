@@ -42,6 +42,7 @@ import { ActionDefinition as Action } from '../marks/action';
 
 /**
  * @name top_level_node
+ * @allowUnsupportedBlock true
  */
 export type TopLevel = Array<
   | Panel
@@ -66,6 +67,7 @@ export type TopLevel = Array<
 /**
  * @name table_cell_content
  * @minItems 1
+ * @allowUnsupportedBlock true
  */
 export type TableCellContent = Array<
   | Panel
@@ -89,6 +91,7 @@ export type TableCellContent = Array<
 /**
  * @name extension_content
  * @minItems 1
+ * @allowUnsupportedBlock true
  */
 export type ExtensionContent = Array<
   | Panel

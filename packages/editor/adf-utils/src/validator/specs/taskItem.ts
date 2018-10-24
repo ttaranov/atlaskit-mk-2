@@ -1,7 +1,7 @@
 export default {
   props: {
     type: { type: 'enum', values: ['taskItem'] },
-    content: { type: 'array', items: ['inline'] },
+    content: { type: 'array', items: ['inline'], allowUnsupportedInline: true },
     attrs: {
       props: {
         localId: { type: 'string' },

@@ -35,20 +35,21 @@
       border: 0;
     }
 
-    html,
-    body, {
-      height: 100%;
-      width: 100%;
-
-      /**
-      The following is required to fix the elements disappearing bug on WebViews
-      https://stackoverflow.com/questions/9807620/ipad-safari-scrolling-causes-html-elements-to-disappear-and-reappear-with-a-dela/21024100
+    /**
+      * The following is required to fix the elements disappearing bug on WebViews 
+      * @see https://stackoverflow.com/a/26682113
       */
-
-      transform: translate3d(0, 0, 0);
+    *:not(html) {
       -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
       perspective: 1000;
       -webkit-perspective: 1000;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
       -webkit-overflow-scrolling : touch !important;
       overflow: auto !important;
     }

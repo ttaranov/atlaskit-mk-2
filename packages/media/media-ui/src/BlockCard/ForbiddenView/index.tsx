@@ -7,14 +7,16 @@ import { minWidth, maxWidth } from '../dimensions';
 import { CollapsedIconTitleDescriptionLayout } from '../CollapsedIconTitleDescriptionLayout';
 import { IconBackground } from './styled';
 
-export interface ForbiddenViewProps {
+export interface BlockCardForbiddenViewProps {
   url: string;
   onClick?: () => void;
   onAuthorise?: () => void;
   isSelected?: boolean;
 }
 
-export class ForbiddenView extends React.Component<ForbiddenViewProps> {
+export class BlockCardForbiddenView extends React.Component<
+  BlockCardForbiddenViewProps
+> {
   handleAuthorise = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { onAuthorise } = this.props;
     if (onAuthorise) {

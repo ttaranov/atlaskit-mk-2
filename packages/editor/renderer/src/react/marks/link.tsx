@@ -15,7 +15,7 @@ const StyledAnchor = styled.a`
 export default function Link(
   props: { children?: any; href: string; target?: string } & React.Props<any>,
 ) {
-  const { href, target = '_blank' } = props;
+  const { href, target } = props;
 
   const anchorProps: any = {
     href,

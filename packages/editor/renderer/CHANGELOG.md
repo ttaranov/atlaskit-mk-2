@@ -1,5 +1,17 @@
 # @atlaskit/renderer
 
+## 29.2.0
+- [minor] Don't open external links in new window [2bb95c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2bb95c0)
+
+## 29.1.0
+- This versions seems to have not published correctly, so we are republishing at 29.2.0
+
+## 29.0.6
+- [patch] Inline code should wrap [f1d9a54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1d9a54)
+
+## 29.0.5
+- [patch] Fix label for panels [621bf75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/621bf75)
+
 ## 29.0.4
 - [patch] ED-5513: render table that respects columns widths except on mobile [716bb9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/716bb9d)
 

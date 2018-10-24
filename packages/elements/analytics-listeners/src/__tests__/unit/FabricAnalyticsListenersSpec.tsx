@@ -29,6 +29,7 @@ const AtlaskitIncorrectEventType = IncorrectEventType(FabricChannel.atlaskit);
 
 describe('<FabricAnalyticsListeners />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
+  let originalConsoleError;
 
   beforeEach(() => {
     analyticsWebClientMock = {
@@ -37,6 +38,12 @@ describe('<FabricAnalyticsListeners />', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
+    originalConsoleError = global.console.error;
+    global.console.error = jest.fn();
+  });
+
+  afterEach(() => {
+    global.console.error = originalConsoleError;
   });
 
   describe('FabricAnalyticsListener', () => {
@@ -53,8 +60,6 @@ describe('<FabricAnalyticsListeners />', () => {
     });
 
     it('should log an error when an invalid event type is captured and error logging is enabled', () => {
-      const originalConsoleError = global.console.error;
-      global.console.error = jest.fn();
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners
@@ -71,8 +76,6 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
       expect(global.console.error).toHaveBeenCalledTimes(1);
-
-      global.console.error = originalConsoleError;
     });
 
     it('should render all listeners', () => {

@@ -11,12 +11,13 @@ import {
   GlobalNav,
   LayoutManager,
   NavigationProvider,
-  Section,
+  MenuSection,
   SkeletonContainerView,
   light,
   dark,
   settings,
   ContainerHeader,
+  HeaderSection,
   ItemAvatar,
   Item,
   ThemeProvider,
@@ -44,12 +45,11 @@ export default class Example extends Component<{}, State> {
   renderNavigation = () => {
     return (
       <Fragment>
-        <Section>
+        <HeaderSection>
           {({ css }) => (
             <div
               css={{
                 ...css,
-                paddingTop: gridSize * 2.5,
                 paddingBottom: gridSize * 2.5,
               }}
             >
@@ -66,17 +66,17 @@ export default class Example extends Component<{}, State> {
               />
             </div>
           )}
-        </Section>
-        <Section>
-          {({ css }) => (
-            <div css={css}>
+        </HeaderSection>
+        <MenuSection>
+          {({ className }) => (
+            <div className={className}>
               <Item before={DashboardIcon} text="Dashboards" />
               <Item before={BacklogIcon} text="Backlog" />
               <Item before={IssuesIcon} text="Issues and filters" />
               <Item before={ReportsIcon} text="Reports" />
             </div>
           )}
-        </Section>
+        </MenuSection>
       </Fragment>
     );
   };

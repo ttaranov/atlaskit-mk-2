@@ -7,6 +7,9 @@ import { uuid } from '../../utils';
  */
 export interface TaskItemDefinition {
   type: 'taskItem';
+  /**
+   * @allowUnsupportedInline true
+   */
   content: Array<Inline>;
   attrs: {
     localId: string;

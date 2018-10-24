@@ -156,4 +156,3 @@ describe('getButtonGroupProps > ', () => {
     expect(cmp.find(Button).prop('appearance')).toBe('warning');
   });
 });
-/* eslint-disable jest/no-disabled-tests */

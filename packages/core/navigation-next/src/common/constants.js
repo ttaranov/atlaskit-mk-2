@@ -9,3 +9,4 @@ export const CONTENT_NAV_WIDTH = 240;
 export const CONTENT_NAV_WIDTH_FLYOUT = 232;
 export const CONTENT_NAV_WIDTH_COLLAPSED = 20;
 export const GLOBAL_NAV_WIDTH = 64;
+export const GLOBAL_NAV_COLLAPSE_THRESHOLD = 200;

@@ -36,12 +36,16 @@ it('should focus button', () => {
 
 it('should focus what is returned by the function', () => {
   const ref = React.createRef();
+  /* eslint-disable */
   mount(
-    <FocusLock autoFocus={() => ref.current}>
+    <FocusLock>
       <button>Button 1</button>
-      <button ref={ref}>Button 2</button>
+      <button autoFocus ref={ref}>
+        Button 2
+      </button>
     </FocusLock>,
   );
+  /* eslint-enable */
   expect(textContent(document.activeElement)).toBe('Button 2');
 });
 
