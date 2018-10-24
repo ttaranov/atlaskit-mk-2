@@ -40,7 +40,7 @@ function getFullDiffStat(user, repo, hash, page, allValues = []) {
         ...res.values,
       ]);
     }
-    return allValues;
+    return [...allValues, ...res.values];
   });
 }
 
