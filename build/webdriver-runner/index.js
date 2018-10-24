@@ -7,7 +7,7 @@ const jest = require('jest');
 const meow = require('meow');
 
 const browserstack = require('./utils/browserstack');
-const selenium = require('./utils/selenium');
+const local = require('./utils/chromeDriver');
 const webpack = require('./utils/webpack');
 const reportTestFailures = require('./reporting');
 
@@ -114,7 +114,7 @@ async function main() {
 
   isBrowserStack
     ? await browserstack.startBrowserStack()
-    : await selenium.startSelenium();
+    : await local.startChromeServer();
 
   const code = await runTestsWithRetry();
 
@@ -123,7 +123,7 @@ async function main() {
     webpack.stopDevServer();
   }
 
-  isBrowserStack ? browserstack.stopBrowserStack() : selenium.stopSelenium();
+  isBrowserStack ? browserstack.stopBrowserStack() : local.stopChromeServer();
   process.exit(code);
 }
 

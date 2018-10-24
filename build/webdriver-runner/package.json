@@ -13,5 +13,9 @@
     "node-fetch": "^2.2.0",
     "selenium-standalone": "^6.12.0",
     "webdriverio": "^4.10.1"
+  },
+  "devDependencies": {
+    "chromedriver": "^2.43.0",
+    "wdio-chromedriver-service": "^0.1.3"
   }
 }
