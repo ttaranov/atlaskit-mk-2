@@ -30,18 +30,12 @@ const borderRadius = p =>
     : null;
 
 export const Div = styled.div`
-  ${backgroundColor} ${borderRadius} position: absolute;
-  z-index: ${layers.spotlight};
-`;
-
-// absolute position anchors the Popper.js dialog
-export const TargetOuter = styled.div`
-  position: absolute;
+  ${backgroundColor} ${borderRadius};
 `;
 
 // fixed position holds the target in place if overflow/scroll is necessary
 export const TargetInner = styled(Div)`
-  ${animationWithCheck} position: fixed;
+  ${animationWithCheck} position: absolute;
 `;
 
 export const TargetOverlay = styled.div`
@@ -55,5 +49,7 @@ export const TargetOverlay = styled.div`
 
 // exported for consumer
 export const Pulse = styled(Div)`
+  position: absolute;
+  z-index: ${layers.spotlight};
   ${animation};
 `;
