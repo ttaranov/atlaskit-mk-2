@@ -6,6 +6,7 @@ import {
   genericFileId,
   gifFileId,
   defaultCollectionName,
+  animatedFileId,
 } from '@atlaskit/media-test-helpers';
 import * as uuid from 'uuid';
 import { FileState } from '../src';
@@ -23,6 +24,7 @@ class Example extends Component<{}, ExampleState> {
   };
 
   componentDidMount() {
+    this.fetchItem(animatedFileId.id, animatedFileId.collectionName); // Item from a different collection
     this.fetchItem(imageFileId.id, imageFileId.collectionName); // Normal case
     this.fetchItem(genericFileId.id, genericFileId.collectionName); // Normal case
     this.fetchItem(imageFileId.id, imageFileId.collectionName); // Calling the first item again

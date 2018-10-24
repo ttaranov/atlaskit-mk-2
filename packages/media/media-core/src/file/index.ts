@@ -66,8 +66,35 @@ export class FileFetcher {
 
   // Returns an array of the same length as the keys filled with file items
   batchLoadingFunc = async (keys: DataloaderKey[]) => {
-    const response = await this.mediaStore.getItems(keys);
-    const { items } = response.data;
+    const nonCollectionName = '__media-single-file-collection__';
+    const fileIdsByCollection = keys.reduce(
+      (prev: { [collectionName: string]: string[] }, next) => {
+        const collectionName = next.collection || nonCollectionName;
+        const fileIds = prev[collectionName] || [];
+
+        fileIds.push(next.id);
+        prev[collectionName] = fileIds;
+
+        return prev;
+      },
+      {} as { [collectionName: string]: string[] },
+    );
+    const items: FileItem[] = [];
+
+    await Promise.all(
+      Object.keys(fileIdsByCollection).map(async collectionNameKey => {
+        const fileIds = fileIdsByCollection[collectionNameKey];
+        const collectionName =
+          collectionNameKey === nonCollectionName
+            ? undefined
+            : collectionNameKey;
+        const response = await this.mediaStore.getItems(
+          fileIds,
+          collectionName,
+        );
+        items.push(...response.data.items);
+      }),
+    );
 
     return getItemsFromKeys(keys, items);
   };

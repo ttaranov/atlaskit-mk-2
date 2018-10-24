@@ -24,16 +24,10 @@ class Example extends Component<{}, ExampleState> {
   };
 
   async componentDidMount() {
-    const response = await store.getItems([
-      {
-        id: imageFileId.id,
-        collection: imageFileId.collectionName,
-      },
-      {
-        id: audioFileId.id,
-        collection: audioFileId.collectionName,
-      },
-    ]);
+    const response = await store.getItems(
+      [imageFileId.id, audioFileId.id],
+      imageFileId.collectionName,
+    );
 
     this.setState({
       payload: response.data,

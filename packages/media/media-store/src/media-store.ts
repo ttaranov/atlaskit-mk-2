@@ -220,18 +220,20 @@ export class MediaStore {
   };
 
   getItems = (
-    body: GetItemsRequestBody[],
+    ids: string[],
+    collectionName?: string,
   ): Promise<MediaStoreResponse<ItemsPayload>> => {
-    const descriptors = body.map(({ id, collection }) => ({
+    const descriptors = ids.map(id => ({
       type: 'file',
       id,
-      collection,
+      collection: collectionName,
     }));
 
     return this.request('/items', {
       method: 'POST',
       body: JSON.stringify({ descriptors }),
       headers: jsonHeaders,
+      authContext: { collectionName },
     }).then(mapResponseToJson);
   };
 
@@ -299,11 +301,6 @@ export interface FileItem {
 
 export interface ItemsPayload {
   items: FileItem[];
-}
-
-export interface GetItemsRequestBody {
-  id: string;
-  collection?: string;
 }
 
 export type ImageMetadataArtifact = {

@@ -13,7 +13,6 @@ import {
 import {
   MediaStoreGetFileParams,
   EmptyFile,
-  GetItemsRequestBody,
   ItemsPayload,
   ImageMetadata,
 } from '../../media-store';
@@ -535,15 +534,7 @@ describe('MediaStore', () => {
 
     describe('getItems', () => {
       it('should POST to /items endpoint with correct options', () => {
-        const items: GetItemsRequestBody[] = [
-          {
-            id: '1',
-            collection: 'collection-1',
-          },
-          {
-            id: '2',
-          },
-        ];
+        const items = ['1', '2'];
         const data: ItemsPayload[] = [
           {
             items: [
@@ -571,7 +562,7 @@ describe('MediaStore', () => {
           status: 200,
         });
 
-        return mediaStore.getItems(items).then(response => {
+        return mediaStore.getItems(items, 'collection-1').then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/items`);
           expect(fetchMock.lastOptions()).toEqual({
@@ -592,6 +583,7 @@ describe('MediaStore', () => {
                 {
                   type: 'file',
                   id: '2',
+                  collection: 'collection-1',
                 },
               ],
             }),
