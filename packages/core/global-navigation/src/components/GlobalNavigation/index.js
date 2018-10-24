@@ -77,6 +77,7 @@ export default class GlobalNavigation
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
   notificationIntegrationInstance: NotificationIntegration;
+  isNotificationInbuilt = false;
 
   constructor(props: GlobalNavigationProps) {
     super(props);
@@ -158,7 +159,7 @@ export default class GlobalNavigation
       prevProps.product !== product ||
       !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount
     ) {
-      const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
+      const refreshRate = this.state.notificationBadgeCount ? 180000 : 60000;
 
       this.notificationIntegrationInstance = notificationIntegration(
         fabricNotificationLogUrl,

@@ -10,6 +10,7 @@ import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
 import GlobalNavigation from '../../index';
 import ScreenTracker from '../../../ScreenTracker';
+import { NotificationLogClient } from '@atlaskit/notification-log-client';
 
 const DrawerContents = () => <div>drawer</div>;
 const EmojiAtlassianIcon = () => <button>EmojiAtlassianIcon</button>;
@@ -147,7 +148,7 @@ describe('GlobalNavigation', () => {
           ).toBeTruthy();
         });
 
-        describe('uncontrolled', () => {
+        describe('Uncontrolled', () => {
           it(`should open "${name}" drawer when "${name}" icon is clicked`, () => {
             // Testing XDrawerContents positive
             const props = {
@@ -474,6 +475,115 @@ describe('GlobalNavigation', () => {
       );
       expect(wrapper.find('Badge').exists()).toBeFalsy();
     });
+  });
+
+  describe('Inbuilt Notification', () => {
+    const fabricNotificationLogUrl = '/gateway/api/notification-log/';
+    const cloudId = 'DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b';
+    it('should not render when either fabricID or fabricNotificationLogUrl are missing', () => {
+      const wrapper = mount(<GlobalNavigation product="jira" locale="en" />);
+
+      const icon = wrapper.find('NotificationIcon');
+      expect(icon.exists()).toBeFalsy();
+    });
+
+    it('should render the notification icon when both fabricID and fabricNotificationLogUrl are present', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+      const icon = wrapper.find('NotificationIcon');
+      expect(icon.exists()).toBeTruthy();
+    });
+
+    it('should render tooltip passed from the product', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+          notificationTooltip="Notification tooltip from product"
+        />,
+      );
+
+      expect(
+        wrapper
+          .find('NotificationIcon')
+          .parents('Tooltip')
+          .props().content,
+      ).toBe('Notification tooltip from product');
+      expect(wrapper.find('NotificationIcon').props().label).toBe(
+        'Notification tooltip from product',
+      );
+    });
+
+    it('should open notification drawer when clicked', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+      const icon = wrapper.find('NotificationIcon');
+      icon.simulate('click');
+
+      expect(wrapper.find('NotificationDrawer').exists()).toBeTruthy();
+    });
+
+    it('should render the iframe with the correct url', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+      const icon = wrapper.find('NotificationIcon');
+      icon.simulate('click');
+
+      expect(
+        wrapper
+          .find('NotificationDrawer')
+          .children('iframe')
+          .props()
+          .src.endsWith('/home/notificationsDrawer/iframe.html?product=jira'),
+      ).toBeTruthy();
+    });
+
+    it('should not render iframe in drawer when notificationDrawerContents is passed', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+          notificationDrawerContents={DrawerContents}
+        />,
+      );
+      const icon = wrapper.find('NotificationIcon');
+      icon.simulate('click');
+
+      expect(wrapper.find(DrawerContents).exists()).toBeTruthy();
+      expect(
+        wrapper
+          .find(DrawerContents)
+          .children('iframe')
+          .exists(),
+      ).toBeFalsy();
+    });
+    // it('should show badge using NotificationLogClient calls');
+    // it('should show "9+" when notificationCount is more than 10');
+    // it('should not show a badge when notificationCount is 0');
+    // it('should poll for notification every 180 seconds when there is no badge');
+    // it('should poll for notification every 60 seconds when there is a badge');
   });
 
   describe('AppSwitcher', () => {

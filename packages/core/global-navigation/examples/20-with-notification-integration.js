@@ -35,7 +35,6 @@ class Global extends Component<*, *> {
         productHref="#"
         fabricNotificationLogUrl={fabricNotificationLogUrl}
         cloudId={cloudId}
-        notificationLogProvider={this.notificationClient}
       />
     );
   }

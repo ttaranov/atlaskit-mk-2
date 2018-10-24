@@ -6,8 +6,7 @@ import { NotificationLogClient } from '@atlaskit/notification-log-client';
 
 import NotificationDrawerContents from './components/NotificationDrawerContents';
 
-export const CONTENT_URL =
-  'http://localhost:3000/notificationsDrawer/iframe.html';
+export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 
 const notificationIntegration = (
   fabricNotificationLogUrl?: string,
@@ -15,8 +14,8 @@ const notificationIntegration = (
   locale?: string,
   product?: string,
   refreshRate?: number,
-  onCountUpdated: Function,
-  onCountUpdating: Function,
+  onCountUpdated: () => void,
+  onCountUpdating: () => void,
 ) =>
   fabricNotificationLogUrl && cloudId
     ? {
