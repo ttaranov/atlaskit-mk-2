@@ -37,7 +37,8 @@ export type Props = Readonly<{
   showControls?: () => void;
   onClose?: () => void;
   previewCount: number;
-}>;
+}> &
+  WithAnalyticsEventProps;
 
 export type State = {
   item: Outcome<FileState, MediaViewerError>;
@@ -46,18 +47,21 @@ export type State = {
 const initialState: State = {
   item: Outcome.pending(),
 };
-export class ItemViewerBase extends React.Component<
-  Props & WithAnalyticsEventProps,
-  State
-> {
+export class ItemViewerBase extends React.Component<Props, State> {
   state: State = initialState;
 
   private subscription?: Subscription;
 
-  componentWillUpdate(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
-      this.init(nextProps);
+      this.setState(initialState);
+    }
+  }
+
+  componentDidUpdate(oldProps: Props) {
+    if (this.needsReset(oldProps, this.props)) {
+      this.init(this.props);
     }
   }
 
@@ -173,35 +177,28 @@ export class ItemViewerBase extends React.Component<
   }
 
   private init(props: Props) {
-    this.setState(initialState, () => {
-      // Loading the file after rendering the inital state prevent the following bugs:
-      // MS-803
-      // MS-823
-      // MS-822
-      // Once these issues have been fixed, we can make this sequence synchronous
-      const { context, identifier } = props;
-      this.fireAnalytics(itemViewerCommencedEvent(identifier.id));
-      this.fireAnalytics(mediaViewerModalScreenEvent(identifier.id));
-      this.subscription = context.file
-        .getFileState(identifier.id, {
-          collectionName: identifier.collectionName,
-        })
-        .subscribe({
-          next: file => {
-            this.setState({
-              item: Outcome.successful(file),
-            });
-          },
-          error: err => {
-            this.setState({
-              item: Outcome.failed(createError('metadataFailed', err)),
-            });
-            this.fireAnalytics(
-              itemViewerErrorEvent(identifier.id, 'Metadata fetching failed'),
-            );
-          },
-        });
-    });
+    const { context, identifier } = props;
+    this.fireAnalytics(itemViewerCommencedEvent(identifier.id));
+    this.fireAnalytics(mediaViewerModalScreenEvent(identifier.id));
+    this.subscription = context.file
+      .getFileState(identifier.id, {
+        collectionName: identifier.collectionName,
+      })
+      .subscribe({
+        next: file => {
+          this.setState({
+            item: Outcome.successful(file),
+          });
+        },
+        error: err => {
+          this.setState({
+            item: Outcome.failed(createError('metadataFailed', err)),
+          });
+          this.fireAnalytics(
+            itemViewerErrorEvent(identifier.id, 'Metadata fetching failed'),
+          );
+        },
+      });
   }
 
   private fireAnalytics = (payload: GasPayload | GasScreenEventPayload) => {
