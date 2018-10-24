@@ -1,5 +1,8 @@
 # @atlaskit/onboarding
 
+## 6.1.0
+- [minor] Creates new SpotlightCard component. Internal refactor of Spotlight components. Spotlight state managed through context rather than local variable. [f9ba552](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9ba552)
+
 ## 6.0.4
 - [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
   - @atlaskit/modal-dialog@7.0.4
