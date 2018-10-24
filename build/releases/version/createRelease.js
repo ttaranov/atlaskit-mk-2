@@ -36,7 +36,7 @@ const flattenChangesets = require('./flattenChangesets');
 */
 
 function getCurrentVersion(packageName, allPackages) {
-  const pkg = allPackages.find(pkg => pkg.name === packageName);
+  const pkg = allPackages.find(p => p.name === packageName);
   // When changeset contains deleted package returning null as its version
   return pkg ? pkg.config.version : null;
 }

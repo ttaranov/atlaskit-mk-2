@@ -87,10 +87,7 @@
       "packages/*/*",
       "patterns",
       "website"
-    ],
-    "releases": {
-      "baseCommitUrl": "https://bitbucket.org/atlassian/atlaskit-mk-2/commits"
-    }
+    ]
   },
   "devDependencies": {
     "@atlaskit/app-switcher": "^8.0.1",
