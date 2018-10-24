@@ -1,5 +1,10 @@
 // @flow
-import React, { Component, type Element, type ChildrenArray } from 'react';
+import React, {
+  Component,
+  type Element,
+  type ChildrenArray,
+  type Node,
+} from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -20,6 +25,8 @@ type Props = {
   hasChildren: boolean,
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
+
+  renderChildren?: () => Node,
 
   /** Unique, stable ID for the row. Can be used for accessibility, caching etc. */
   itemId: string,
@@ -52,24 +59,36 @@ type Props = {
   items?: LoadableItems,
 };
 
-class Row extends Component<Props> {
-  componentDidUpdate(prevProps: Props) {
-    const isExpandChanged =
-      Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);
-    if (!isExpandChanged || !this.props.data) {
-      return;
+type State = {
+  isExpanded: boolean,
+};
+
+class Row extends Component<Props, State> {
+  state = { isExpanded: this.props.isExpanded || false };
+
+  onExpandToggle = () => {
+    const { onExpandToggle } = this.props;
+    const { isExpanded } = this.state;
+
+    this.setState({ isExpanded: !isExpanded });
+
+    if (onExpandToggle) {
+      onExpandToggle();
     }
 
-    if (this.props.isExpanded && this.props.onExpand) {
-      this.props.onExpand(this.props.data);
-    } else if (!this.props.isExpanded && this.props.onCollapse) {
-      this.props.onCollapse(this.props.data);
+    if (this.props.data) {
+      if (isExpanded && this.props.onCollapse) {
+        this.props.onCollapse(this.props.data);
+      } else if (!this.props.isExpanded && this.props.onExpand) {
+        this.props.onExpand(this.props.data);
+      }
     }
-  }
+  };
 
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
     const props = this.props;
-    const { hasChildren, depth, isExpanded = false } = props;
+    const { isExpanded } = this.state;
+    const { hasChildren, depth } = props;
     const isFirstCell = cellIndex === 0;
     const indentLevel = isFirstCell ? depth : 0;
     let cellContent = cell.props.children || [];
@@ -80,7 +99,7 @@ class Row extends Component<Props> {
           expandLabel={props.expandLabel}
           collapseLabel={props.collapseLabel}
           isExpanded={isExpanded}
-          onExpandToggle={props.onExpandToggle}
+          onExpandToggle={this.onExpandToggle}
           ariaControls={toItemId(props.itemId)}
         />,
       ].concat(cellContent);
@@ -97,7 +116,8 @@ class Row extends Component<Props> {
   }
 
   render() {
-    const { hasChildren, isExpanded, depth } = this.props;
+    const { hasChildren, depth, renderChildren } = this.props;
+    const { isExpanded } = this.state;
     const ariaAttrs = {};
     if (hasChildren) {
       ariaAttrs['aria-expanded'] = isExpanded;
@@ -106,11 +126,14 @@ class Row extends Component<Props> {
       ariaAttrs['aria-level'] = depth;
     }
     return (
-      <TreeRowContainer role={'row'} {...ariaAttrs}>
-        {React.Children.map(this.props.children, (cell, index) =>
-          this.renderCell(cell, index),
-        )}
-      </TreeRowContainer>
+      <div>
+        <TreeRowContainer role={'row'} {...ariaAttrs}>
+          {React.Children.map(this.props.children, (cell, index) =>
+            this.renderCell(cell, index),
+          )}
+        </TreeRowContainer>
+        {hasChildren && isExpanded && renderChildren && renderChildren()}
+      </div>
     );
   }
 }
