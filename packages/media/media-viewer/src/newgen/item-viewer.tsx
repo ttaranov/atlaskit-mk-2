@@ -14,7 +14,7 @@ import {
   MediaViewerError,
   ErrorName,
 } from './error';
-import { renderDownloadButton } from './domain/download';
+import { ErrorViewDownloadButton } from './download';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import {
@@ -129,10 +129,11 @@ export class ItemViewerBase extends React.Component<
 
   private renderError(errorName: ErrorName, file?: FileState) {
     if (file) {
+      const err = createError(errorName, undefined, file);
       return (
-        <ErrorMessage error={createError(errorName, undefined, file)}>
+        <ErrorMessage error={err}>
           <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton(file)}
+          {this.renderDownloadButton(file, err)}
         </ErrorMessage>
       );
     } else {
@@ -159,9 +160,16 @@ export class ItemViewerBase extends React.Component<
     });
   }
 
-  private renderDownloadButton(file: FileState) {
+  private renderDownloadButton(state: FileState, err: MediaViewerError) {
     const { context, identifier } = this.props;
-    return renderDownloadButton(file, context, identifier.collectionName);
+    return (
+      <ErrorViewDownloadButton
+        state={state}
+        context={context}
+        err={err}
+        collectionName={identifier.collectionName}
+      />
+    );
   }
 
   private init(props: Props) {

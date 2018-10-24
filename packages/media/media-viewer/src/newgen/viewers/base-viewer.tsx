@@ -4,7 +4,7 @@ import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../domain';
 import { ErrorMessage, MediaViewerError } from '../error';
 import { Spinner } from '../loading';
-import { renderDownloadButton } from '../domain/download';
+import { ErrorViewDownloadButton } from '../download';
 
 export type BaseProps = {
   context: Context;
@@ -56,15 +56,22 @@ export abstract class BaseViewer<
       failed: err => (
         <ErrorMessage error={err}>
           <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton()}
+          {this.renderDownloadButton(err)}
         </ErrorMessage>
       ),
     });
   }
 
-  private renderDownloadButton() {
+  private renderDownloadButton(err: MediaViewerError) {
     const { item, context, collectionName } = this.props;
-    return renderDownloadButton(item, context, collectionName);
+    return (
+      <ErrorViewDownloadButton
+        state={item}
+        context={context}
+        err={err}
+        collectionName={collectionName}
+      />
+    );
   }
 
   protected needsReset(propsA: Props, propsB: Props) {
