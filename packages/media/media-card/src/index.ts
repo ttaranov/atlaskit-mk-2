@@ -152,6 +152,7 @@ export interface CardProps extends SharedCardProps, CardEventProps {
 export interface CardState {
   status: CardStatus;
   isCardVisible: boolean;
+  previewOrientation: number;
   metadata?: MediaItemDetails;
   dataURI?: string;
   progress?: number;

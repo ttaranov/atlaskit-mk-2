@@ -133,3 +133,5 @@ export async function readImageMetaData(
   };
   return data;
 }
+
+export * from './getCssFromImageOrientation';
