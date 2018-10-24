@@ -27,8 +27,6 @@ type Props = {
   /** One or more Cell elements that will form this row of data. */
   children: Node | ChildrenArray<Element<*>>,
 
-  renderChildren?: () => Node,
-
   /** Unique, stable ID for the row. Can be used for accessibility, caching etc. */
   itemId: string,
 
@@ -58,6 +56,9 @@ type Props = {
 
   /** Array of object of the children of expended parent item */
   items?: LoadableItems,
+
+  /** Passed implicitly. Method retrieves children of the row. */
+  renderChildren?: () => Node,
 };
 
 type State = {
