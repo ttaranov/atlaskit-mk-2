@@ -23,8 +23,8 @@ const FormHeaderTitle = styled.h1`
 /**
  * Provide a styled container for form header title.
  */
-const FormHeaderDescription = styled.span`
-  font-size: ${fontSize()};
+const FormHeaderDescription = styled.div`
+  font-size: ${fontSize()}px;
   margin-top: 8px;
 `;
 
