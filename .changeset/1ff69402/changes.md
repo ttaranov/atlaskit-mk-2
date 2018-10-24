@@ -1,0 +1,1 @@
+- Fixes passing null to renderer before we have content. ED-5587
