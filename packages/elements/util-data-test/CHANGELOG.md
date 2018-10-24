@@ -1,5 +1,8 @@
 # @atlaskit/util-data-test
 
+## 10.0.19
+- [patch] FS-3012 add async functionality to user-picker [832fdc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/832fdc1)
+
 ## 10.0.18
 - [patch] Tweak emoji tests to work better with newest EmojiOne v4 metadata [c034007](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c034007)
 

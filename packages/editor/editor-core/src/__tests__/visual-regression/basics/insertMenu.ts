@@ -8,7 +8,8 @@ import {
 } from '../_utils';
 
 // add some comments to run test
-describe('Snapshot Test: For all insertMenu items', () => {
+// TODO: ED-5551 - Unskip when cleaning tests
+describe.skip('Snapshot Test: For all insertMenu items', () => {
   setTests('insertMenu');
   Object.keys(testsByAppearance).forEach(appearance => {
     const tests = testsByAppearance[appearance];

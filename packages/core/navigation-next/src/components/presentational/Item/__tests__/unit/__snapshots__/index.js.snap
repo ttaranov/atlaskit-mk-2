@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Item ConnectedItem should render an InteractionStateManager 1`] = `
+exports[`Item ItemBase should render an InteractionStateManager 1`] = `
 <InteractionStateManager
   isSelected={false}
   spacing="default"
@@ -11,7 +11,7 @@ exports[`Item ConnectedItem should render an InteractionStateManager 1`] = `
 </InteractionStateManager>
 `;
 
-exports[`Item ConnectedItem should render the Item primitive 1`] = `
+exports[`Item ItemBase should render the Item primitive 1`] = `
 <WithTheme(ItemPrimitive)
   isActive={false}
   isHover={false}
@@ -30,7 +30,7 @@ exports[`Item should render correctly 1`] = `
     }
   }
 >
-  <ForwardRef(WithAnalyticsEvents(ConnectedItem))
+  <ForwardRef(WithAnalyticsEvents(Item))
     text="My item"
   />
 </AnalyticsContext>

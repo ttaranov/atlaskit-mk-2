@@ -40,7 +40,7 @@ export default class FieldGroup extends Component<FieldGroupProps, State> {
     const { label, layout, name } = this.props;
 
     return (
-      <FieldGroupWrapper legend={label} layout={layout} name={name}>
+      <FieldGroupWrapper label={label} layout={layout} name={name}>
         {this.renderChildren()}
       </FieldGroupWrapper>
     );

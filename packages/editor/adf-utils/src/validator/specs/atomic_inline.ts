@@ -4,5 +4,7 @@ export default [
   'mention',
   'emoji',
   'date',
+  'status',
   'placeholder',
+  'inlineCard',
 ];

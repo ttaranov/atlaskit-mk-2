@@ -57,6 +57,14 @@ export interface ResourceProvider {
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId'>>;
   updateUser(user?: User): Promise<User | undefined>;
+  saveDraft(
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
+  );
 }
 
 const getHighlightedComment = () => {
@@ -172,6 +180,17 @@ export class AbstractConversationResource implements ResourceProvider {
    */
   async updateUser(user?: User): Promise<User | undefined> {
     return Promise.reject('Not implemented');
+  }
+
+  saveDraft(
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
+  ) {
+    // Nothing to see here..
   }
 }
 

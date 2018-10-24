@@ -15,6 +15,7 @@ import {
   createConversation,
   HIGHLIGHT_COMMENT,
   SuccessHandler,
+  saveDraft,
 } from '../internal/actions';
 import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
@@ -113,6 +114,27 @@ const mapDispatchToProps = (
       ),
     );
   },
+
+  onEditorChange(
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
+  ) {
+    dispatch(
+      saveDraft(
+        isLocal,
+        value,
+        conversationId,
+        commentId,
+        containerId,
+        meta,
+        provider,
+      ),
+    );
+  },
 });
 
 const ResourcedConversation = withAnalyticsEvents()(
@@ -132,6 +154,7 @@ export interface ContainerProps {
   showBeforeUnloadWarning?: boolean;
   onEditorOpen?: () => void;
   onEditorClose?: () => void;
+  onEditorChange?: () => void;
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
   disableScrollTo?: boolean;

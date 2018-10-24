@@ -1,5 +1,8 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
+import { typography } from '@atlaskit/theme';
+import Field from './Field';
 import type { FieldGroupProps } from '../FieldGroup';
 // import { gridSize, fontSize, colors, themed } from '@atlaskit/theme';
 
@@ -8,20 +11,28 @@ import type { FieldGroupProps } from '../FieldGroup';
  *
  */
 
-const FieldGroupWrapper = (props: FieldGroupProps) => {
-  // TODO: Once AK is using styled components 2+ the inline styles can be replaced with SCs
-  // and setting attributess us styled.fieldset.attrs({})
-  const style = {
-    display: 'flex',
-    flexDirection: props.layout,
-    marginTop: '16px',
-  };
+const FieldSet = styled.fieldset`
+  display: flex;
+  flex-direction: ${p => p.layout};
+  margin-top: 8px;
 
+  > ${Field} {
+    margin-top: 0;
+  }
+
+  > legend {
+    ${typography.h200()} display: inline-block;
+    margin: 0 0 4px 0;
+    padding: 0;
+  }
+`;
+
+const FieldGroupWrapper = (props: FieldGroupProps) => {
   return (
-    <fieldset style={style}>
+    <FieldSet layout={props.layout}>
+      {props.label && <legend>{props.label}</legend>}
       {props.children}
-      <legend>{props.label}</legend>
-    </fieldset>
+    </FieldSet>
   );
 };
 

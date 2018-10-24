@@ -5,11 +5,13 @@ import GlobalNavigation from '@atlaskit/global-navigation';
 import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
 import {
   GroupHeading,
+  HeaderSection,
   Item,
   LayoutManager,
+  MenuSection,
   NavigationProvider,
-  Section,
   Separator,
+  Wordmark,
 } from '../src';
 
 const MyGlobalNavigation = () => (
@@ -21,23 +23,14 @@ const MyGlobalNavigation = () => (
 
 const MyProductNavigation = () => (
   <Fragment>
-    <Section>
+    <HeaderSection>
       {({ className }) => (
         <div className={className}>
-          <div
-            css={{
-              lineHeight: 0,
-              paddingBottom: 28,
-              paddingLeft: 12,
-              paddingTop: 28,
-            }}
-          >
-            <AtlassianWordmark />
-          </div>
+          <Wordmark wordmark={AtlassianWordmark} />
         </div>
       )}
-    </Section>
-    <Section>
+    </HeaderSection>
+    <MenuSection>
       {({ className }) => (
         <div className={className}>
           <Item text="Dashboard" />
@@ -48,7 +41,7 @@ const MyProductNavigation = () => (
           <Item text="My plugin" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </Fragment>
 );
 

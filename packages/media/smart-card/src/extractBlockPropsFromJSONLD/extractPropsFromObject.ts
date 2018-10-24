@@ -1,11 +1,11 @@
-import { BlockCard } from '@atlaskit/media-ui';
+import { BlockCardResolvedViewProps } from '@atlaskit/media-ui';
 
-export function extractPropsFromObject(json: any): BlockCard.ResolvedViewProps {
+export function extractPropsFromObject(json: any): BlockCardResolvedViewProps {
   if (!json) {
     throw new Error('smart-card: data is not parsable JSON-LD.');
   }
 
-  const props: BlockCard.ResolvedViewProps = {
+  const props: BlockCardResolvedViewProps = {
     title: {
       text: typeof json.name === 'string' ? json.name : '',
     },

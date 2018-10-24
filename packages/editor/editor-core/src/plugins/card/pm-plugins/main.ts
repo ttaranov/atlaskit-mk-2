@@ -3,9 +3,10 @@ import { CardProvider, CardPluginState, Request } from '../types';
 import reducer from './reducers';
 import { EditorView } from 'prosemirror-view';
 import { setProvider, resolveCard } from './actions';
-import { ReactNodeView } from '../../../nodeviews';
 import inlineCardNodeView from '../nodeviews/inlineCard';
+import blockCardNodeView from '../nodeviews/blockCard';
 import { replaceQueuedUrlWithCard } from './doc';
+import { CardNodeView } from '../nodeviews';
 
 export const pluginKey = new PluginKey('cardPlugin');
 
@@ -25,13 +26,22 @@ const handleRejected = (view: EditorView, request: Request) => rejected => {
 };
 
 export const resolveWithProvider = (
-  view,
+  view: EditorView,
   outstandingRequests,
   provider,
-  request,
+  request: Request,
 ) => {
+  const $pos = view.state.doc.resolve(request.pos);
+  const { parent } = $pos;
+  const isBlock =
+    parent.type.name === 'paragraph' &&
+    parent.childCount === 1 &&
+    parent.firstChild!.type.isText &&
+    parent.firstChild!.text === request.url &&
+    $pos.node($pos.depth - 1).type.name === 'doc';
+
   outstandingRequests[request.url] = provider
-    .resolve(request.url, 'inline')
+    .resolve(request.url, isBlock ? 'block' : 'inline')
     .then(resolvedCard => {
       delete outstandingRequests[request.url];
       return resolvedCard;
@@ -97,21 +107,19 @@ export const createPlugin = ({
 
           if (currentState && currentState.provider) {
             // find requests in this state that weren't in the old one
-            // FIXME: doesn't do what I want it to
             const newRequests = oldState
               ? currentState.requests.filter(
-                  req => oldState.requests.indexOf(req) === -1,
+                  req =>
+                    !oldState.requests.find(
+                      oldReq =>
+                        oldReq.url === req.url && oldReq.pos === req.pos,
+                    ),
                 )
               : currentState.requests;
 
             // ask the CardProvider to resolve all new requests
             const { provider } = currentState;
             newRequests.forEach(request => {
-              if (outstandingRequests[request.url]) {
-                // already have a promise outstanding for this request; don't re-request
-                return;
-              }
-
               resolveWithProvider(view, outstandingRequests, provider, request);
             });
           }
@@ -130,8 +138,15 @@ export const createPlugin = ({
 
     props: {
       nodeViews: {
-        inlineCard: ReactNodeView.fromComponent(
+        inlineCard: CardNodeView.fromComponent(
           inlineCardNodeView,
+          portalProviderAPI,
+          {
+            providerFactory,
+          },
+        ),
+        blockCard: CardNodeView.fromComponent(
+          blockCardNodeView,
           portalProviderAPI,
           {
             providerFactory,

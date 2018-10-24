@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 11.1.0
+- [minor] adds a new saveDraft abstract method on the ConversationResource which will be implemented in Bitbucket to enable storing of comment drafts in localStorage [66e2375](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66e2375)
+
 ## 11.0.2
 - [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
   - @atlaskit/comment@6.0.23

@@ -9,7 +9,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid, parse, getDaysInMonth } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
@@ -91,13 +91,12 @@ type State = {
 
 function isoToObj(iso: string) {
   const parsed = parse(iso);
-  return isValid(parsed)
-    ? {
-        day: parsed.getDate(),
-        month: parsed.getMonth() + 1,
-        year: parsed.getFullYear(),
-      }
-    : {};
+  if (!isValid(parsed)) return {};
+  return {
+    day: parsed.getDate(),
+    month: parsed.getMonth() + 1,
+    year: parsed.getFullYear(),
+  };
 }
 
 const arrowKeys = {
@@ -132,6 +131,7 @@ const Menu = ({ innerProps: menuInnerProps, selectProps }: Object) => (
 
 const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
   <FixedLayer
+    inputValue={selectProps.inputValue}
     containerRef={selectProps.calendarContainerRef}
     content={<Menu {...props} selectProps={selectProps} />}
   />
@@ -202,7 +202,18 @@ class DatePicker extends Component<Props, State> {
   };
 
   onCalendarChange = ({ iso }: { iso: string }) => {
-    this.setState({ view: iso });
+    const [year, month, date] = iso.split('-');
+    let newIso = iso;
+
+    const lastDayInMonth = getDaysInMonth(
+      new Date(parseInt(year, 10), parseInt(month, 10) - 1),
+    );
+
+    if (parseInt(lastDayInMonth, 10) < parseInt(date, 10)) {
+      newIso = `${year}-${month}-${lastDayInMonth}`;
+    }
+
+    this.setState({ view: newIso });
   };
 
   onCalendarSelect = ({ iso: value }: { iso: string }) => {

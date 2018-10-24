@@ -4,12 +4,14 @@ import { CollapsedFrame } from '../CollapsedFrame';
 import { minWidth, maxWidth } from '../dimensions';
 import { SingleLineLayout } from '../SingleLineLayout';
 
-export interface ResolvingViewProps {
+export interface BlockCardResolvingViewProps {
   onClick?: () => void;
   isSelected?: boolean;
 }
 
-export class ResolvingView extends React.Component<ResolvingViewProps> {
+export class BlockCardResolvingView extends React.Component<
+  BlockCardResolvingViewProps
+> {
   render() {
     const { onClick, isSelected } = this.props;
     return (
