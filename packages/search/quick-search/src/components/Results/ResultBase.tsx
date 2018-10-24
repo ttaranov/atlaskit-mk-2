@@ -1,29 +1,37 @@
 import * as React from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
-import { AnalyticsData, ResultType as Props, HasAnalyticsData } from './types';
-import { ResultContext, SelectedResultIdContext } from '../context';
-import { Context } from './types';
+import { AnalyticsData, CommonResultProps } from './types';
+import {
+  ResultContext,
+  SelectedResultIdContext,
+  ResultContextType,
+} from '../context';
 
-const BASE_RESULT_TYPE = 'base';
+export type Props = CommonResultProps & {
+  /** Type of the result. This is passed as a parameter to certain callbacks. */
+  type: string;
+  /** Main text to be displayed as the item. */
+  text: React.ReactNode;
+  /** Text to be shown alongside the main `text`. */
+  subText?: string;
+  /** Text to appear to the right of the text. It has a lower font-weight. */
+  caption?: string;
+  /** React element to appear to the left of the text. */
+  icon?: React.ReactNode;
+  /** The context provided by QuickSearch. */
+  context?: ResultContextType;
+};
 
 // context is an optional prop but the component provides a defaultProp. However, TS still complains
 // when you don't pass it. There doesn't seem to be a better way of declaring optional default props.
 type DefaultProps = {
-  context: Context;
+  context: ResultContextType;
 };
 
-// ==========================================================================================
-// This class enforces a standard set of props and behaviour for all result types to support.
-// All "-Result" components (PersonResult, ContainerResult, ObjectResult, etc.) should extend
-// this class to ensure consideration of these props.
-// ==========================================================================================
-
-class ResultBase extends React.PureComponent<DefaultProps & Props>
-  implements HasAnalyticsData {
+export class ResultBase extends React.PureComponent<DefaultProps & Props> {
   static defaultProps: Partial<Props> = {
-    onClick: () => {},
-    type: BASE_RESULT_TYPE,
+    type: 'base',
     context: {
       registerResult: result => {},
       unregisterResult: result => {},
@@ -53,7 +61,7 @@ class ResultBase extends React.PureComponent<DefaultProps & Props>
     context.unregisterResult(this);
   }
 
-  getAnalyticsData(): AnalyticsData {
+  public getAnalyticsData(): AnalyticsData {
     const { resultId, analyticsData, type, context } = this.props;
     return {
       index: context.getIndex(resultId),

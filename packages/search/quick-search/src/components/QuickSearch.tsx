@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
-import { ResultData, Context, ResultBaseType } from './Results/types';
+import { ResultData, SelectedResultId, ResultId } from './Results/types';
 import AkSearch from './Search/Search';
-import { ResultContext, SelectedResultIdContext } from './context';
+import {
+  ResultContext,
+  SelectedResultIdContext,
+  ResultContextType,
+} from './context';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
 import {
@@ -12,12 +16,13 @@ import {
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
 } from './constants';
+import { ResultBase } from './Results/ResultBase';
 
 /**
  * Get the result ID of a result by its index in the flatResults array
  * Returns null for a failed index or if resultId is empty|undefined
  */
-const getResultIdByIndex = (array: ResultBaseType[], index: number | null) => {
+const getResultIdByIndex = (array: ResultBase[], index: number | null) => {
   if (
     array &&
     index !== null &&
@@ -34,7 +39,7 @@ const getResultIdByIndex = (array: ResultBaseType[], index: number | null) => {
  * Find a result in the flatResults array by its ID
  * Returns the result object or null
  */
-const getResultById = (array: ResultBaseType[], id: string | number | null) =>
+const getResultById = (array: ResultBase[], id: SelectedResultId) =>
   (array &&
     array.find(result => result.props && result.props.resultId === id)) ||
   null;
@@ -43,10 +48,7 @@ const getResultById = (array: ResultBaseType[], id: string | number | null) =>
  * Get a result's index in the flatResults array by its ID
  * Returns a numeric index or null
  */
-const getResultIndexById = (
-  array: ResultBaseType[],
-  id: string | number | null,
-) => {
+const getResultIndexById = (array: ResultBase[], id: SelectedResultId) => {
   if (!array) {
     return null;
   }
@@ -98,7 +100,7 @@ export type Props = {
   /** Value of the search input field */
   value?: string;
   /** Corresponds to the `resultId` of the selected result */
-  selectedResultId?: number | string;
+  selectedResultId?: SelectedResultId;
   // Internal: injected by withAnalytics(). Fire a private analytics event
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   /** React component to be used for rendering links */
@@ -106,8 +108,8 @@ export type Props = {
 };
 
 export type State = {
-  selectedResultId: number | string | null;
-  context: Context;
+  selectedResultId: SelectedResultId;
+  context: ResultContextType;
 };
 
 export class QuickSearch extends React.Component<Props, State> {
@@ -123,7 +125,7 @@ export class QuickSearch extends React.Component<Props, State> {
   };
 
   inputSearchRef: React.Ref<any>;
-  flatResults: Array<ResultBaseType> = [];
+  flatResults: Array<ResultBase> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
   lastKeyPressed: string = '';
@@ -140,7 +142,7 @@ export class QuickSearch extends React.Component<Props, State> {
         onMouseEnter: this.handleResultMouseEnter,
         onMouseLeave: this.handleResultMouseLeave,
         sendAnalytics: this.props.firePrivateAnalyticsEvent,
-        getIndex: (resultId: string | number) => {
+        getIndex: (resultId: ResultId) => {
           return getResultIndexById(this.flatResults, resultId);
         },
         linkComponent: this.props.linkComponent,
@@ -209,7 +211,7 @@ export class QuickSearch extends React.Component<Props, State> {
     }
   }
 
-  fireKeyboardControlEvent(selectedResultId: number | string | null) {
+  fireKeyboardControlEvent(selectedResultId: SelectedResultId) {
     const { firePrivateAnalyticsEvent } = this.props;
     if (firePrivateAnalyticsEvent) {
       const result = getResultById(this.flatResults, selectedResultId);
@@ -265,7 +267,7 @@ export class QuickSearch extends React.Component<Props, State> {
   /**
    * Callback for register results in flatResults
    */
-  handleRegisterResult = (result: ResultBaseType) => {
+  handleRegisterResult = (result: ResultBase) => {
     if (!getResultById(this.flatResults, result.props.resultId)) {
       this.flatResults.push(result);
     }
@@ -279,7 +281,7 @@ export class QuickSearch extends React.Component<Props, State> {
    * 3. All ResultBase components call registerResult() in order to register itself in quick search
    * 4. All ResultBase components call unregisterResult() in order to unregister itself in quick search
    */
-  handleUnregisterResult = (result: ResultBaseType) => {
+  handleUnregisterResult = (result: ResultBase) => {
     const resultIndex = getResultIndexById(
       this.flatResults,
       result.props.resultId,

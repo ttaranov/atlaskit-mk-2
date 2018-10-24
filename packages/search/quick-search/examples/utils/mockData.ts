@@ -1,9 +1,7 @@
 import uuid from 'uuid/v1';
-import {
-  ObjectResultType,
-  ContainerResultType,
-  PersonResultType,
-} from '../../src/components/Results/types';
+import { Props as ObjectResultProps } from '../../src/components/Results/ObjectResult';
+import { Props as ContainerResultProps } from '../../src/components/Results/ContainerResult';
+import { Props as PersonResultProps } from '../../src/components/Results/PersonResult';
 
 function pickRandom<T>(array: Array<T>): T {
   return array[Math.floor(Math.random() * array.length)];
@@ -108,8 +106,8 @@ function randomIssueKey() {
   return `${pickRandom(keys)}-${Math.floor(Math.random() * 1001)}`;
 }
 
-export function objectData(n: number): ObjectResultType[] {
-  const items: ObjectResultType[] = [];
+export function objectData(n: number): ObjectResultProps[] {
+  const items: ObjectResultProps[] = [];
 
   for (let i = 0; i < n; i++) {
     const provider = randomProduct();
@@ -119,7 +117,6 @@ export function objectData(n: number): ObjectResultType[] {
 
     items.push({
       resultId: uuid(),
-      type: 'object',
       name: getMockCatchPhrase(),
       containerName: getMockCompanyName(),
       avatarUrl: iconUrl,
@@ -131,13 +128,12 @@ export function objectData(n: number): ObjectResultType[] {
   return items;
 }
 
-export function containerData(n: number): ContainerResultType[] {
-  const items: ContainerResultType[] = [];
+export function containerData(n: number): ContainerResultProps[] {
+  const items: ContainerResultProps[] = [];
 
   for (let i = 0; i < n; i++) {
     items.push({
       resultId: uuid(),
-      type: 'container',
       name: getMockCompanyName(),
       avatarUrl: getContainerAvatarUrl(i),
     });
@@ -146,13 +142,12 @@ export function containerData(n: number): ContainerResultType[] {
   return items;
 }
 
-export function personData(n: number): PersonResultType[] {
-  const items: PersonResultType[] = [];
+export function personData(n: number): PersonResultProps[] {
+  const items: PersonResultProps[] = [];
 
   for (let i = 0; i < n; i++) {
     items.push({
       resultId: uuid(),
-      type: 'person',
       name: getMockName(),
       avatarUrl: getMockAvatarUrl(),
       presenceState: randomPresenceState(),

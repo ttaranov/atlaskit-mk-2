@@ -2,21 +2,25 @@ import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
+import { CommonResultProps } from './types';
 
-import { PersonResultType as Props } from './types';
-
-const PERSON_RESULT_TYPE = 'person';
-
-// ===================================================================
-// If adding a prop or feature that may be useful to all result types,
-// add it to ResultBase instead
-// ===================================================================
+export type Props = CommonResultProps & {
+  /** Name of the container. Provides the main text to be displayed as the item. */
+  name: React.ReactNode;
+  /** A user's custom handle. Appears to the right of their `name`. It has a lower font-weight. */
+  mentionName?: string;
+  /** A character with which to prefix the `mentionName`. Defaults to '@' */
+  mentionPrefix?: string;
+  /** Text to be shown alongside the main `text`. */
+  presenceMessage?: string;
+  /** Sets the appearance of the presence indicator */
+  presenceState?: 'online' | 'busy' | 'offline' | null;
+};
 
 export default class PersonResult extends React.PureComponent<Props> {
   static defaultProps: Partial<Props> = {
     mentionPrefix: '@',
     presenceState: null, // No presence indicator by default
-    type: PERSON_RESULT_TYPE,
   };
 
   getMention = () =>
@@ -39,14 +43,15 @@ export default class PersonResult extends React.PureComponent<Props> {
   };
 
   render() {
-    const { name, presenceMessage, ...resultBaseProps } = this.props;
+    const { resultId, name, presenceMessage } = this.props;
     return (
       <ResultBase
-        {...resultBaseProps}
+        type="person"
+        resultId={resultId}
+        text={name}
+        subText={presenceMessage}
         caption={this.getMention()}
         icon={this.getAvatar()}
-        subText={presenceMessage}
-        text={name}
       />
     );
   }

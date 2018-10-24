@@ -24,28 +24,11 @@ describe('<QuickSearch />', () => {
 
   const exampleChildren = [
     <ResultItemGroup key={0} title="test group 1">
-      <PersonResult
-        key={1}
-        resultId="1"
-        name="one"
-        onClick={onClickSpy}
-        type="person"
-      />
-      <PersonResult
-        key={2}
-        resultId="2"
-        name="two"
-        onClick={onClickSpy}
-        type="person"
-      />
+      <PersonResult key={1} resultId="1" name="one" onClick={onClickSpy} />
+      <PersonResult key={2} resultId="2" name="two" onClick={onClickSpy} />
     </ResultItemGroup>,
     <ResultItemGroup key={1} title="test group 2">
-      <PersonResult
-        resultId="3"
-        name="three"
-        onClick={onClickSpy}
-        type="person"
-      />
+      <PersonResult resultId="3" name="three" onClick={onClickSpy} />
     </ResultItemGroup>,
   ];
 
@@ -323,11 +306,7 @@ describe('<QuickSearch />', () => {
       try {
         const url = 'http://www.atlassian.com';
         wrapper.setProps({
-          children: (
-            <ResultItemGroup title="test group 2">
-              <PersonResult resultId="b" name="test" href={url} type="person" />
-            </ResultItemGroup>
-          ),
+          children: <ResultItemGroup title="test group 2" />,
           selectedResultId: 'b',
         });
         searchInput.simulate('keydown', { key: 'Enter' });
@@ -375,12 +354,7 @@ describe('<QuickSearch />', () => {
     });
 
     it('should remove any selection when query changes', () => {
-      const newChildren = (
-        <ResultItemGroup title="test group 2">
-          <PersonResult key={1} resultId="4" name="four" type="person" />
-          <PersonResult key={2} resultId="5" name="five" type="person" />
-        </ResultItemGroup>
-      );
+      const newChildren = <ResultItemGroup title="test group 2" />;
       wrapper.setProps({ children: newChildren });
       wrapper.update();
       expect(

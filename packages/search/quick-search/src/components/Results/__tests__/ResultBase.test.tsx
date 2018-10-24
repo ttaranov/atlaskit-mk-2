@@ -1,12 +1,12 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import ResultBase from '../ResultBase';
-import { Context } from '../types';
+import { ResultContextType } from '../../context';
 
 describe('Result Base', () => {
   let resultWrapper;
   beforeEach(() => {
-    const context: Context = {
+    const context: ResultContextType = {
       registerResult: () => {},
       unregisterResult: () => {},
       onMouseEnter: () => {},

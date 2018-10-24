@@ -9,7 +9,7 @@ describe('Person Result', () => {
   let personResultWrapper;
   beforeEach(() => {
     personResultWrapper = mount(
-      <PersonResult resultId="testPerson" type="person" name="test" />,
+      <PersonResult resultId="testPerson" name="test" />,
     );
   });
 

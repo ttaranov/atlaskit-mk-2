@@ -1,24 +1,25 @@
 import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
-
 import ResultBase from './ResultBase';
-import { ObjectResultType as Props } from './types';
+import { CommonResultProps } from './types';
 
-const OBJECT_RESULT_TYPE = 'object';
-
-// ===================================================================
-// If adding a prop or feature that may be useful to all result types,
-// add it to ResultBase instead
-// ===================================================================
+export type Props = CommonResultProps & {
+  /** Name of the container. Provides the main text to be displayed as the item. */
+  name: React.ReactNode;
+  /** Text to appear to the right of the text. It has a lower font-weight. */
+  caption?: string;
+  /** Name of the container to which the object belongs. Displayed alongside the name */
+  containerName?: string;
+  /** Set whether to display a lock on the result's icon */
+  isPrivate?: boolean;
+  /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
+  objectKey?: string;
+};
 
 /**
  * Generic result type for Atlassian objects.
  */
 export default class ObjectResult extends React.PureComponent<Props> {
-  static defaultProps: Partial<Props> = {
-    type: OBJECT_RESULT_TYPE,
-  };
-
   getAvatar = () => {
     if (this.props.avatar) {
       return this.props.avatar;
@@ -45,13 +46,15 @@ export default class ObjectResult extends React.PureComponent<Props> {
   }
 
   render() {
-    const { containerName, objectKey, name, ...resultBaseProps } = this.props;
+    const { resultId, name, caption } = this.props;
     return (
       <ResultBase
-        {...resultBaseProps}
-        icon={this.getAvatar()}
-        subText={this.getSubtext()}
+        type="object"
+        resultId={resultId}
         text={name}
+        subText={this.getSubtext()}
+        caption={caption}
+        icon={this.getAvatar()}
       />
     );
   }

@@ -5,8 +5,6 @@ import { ResultBase, ResultItemGroup } from '../src';
 const defaultProps = {
   resultId: 'result_id',
   type: 'base',
-  isCompact: false,
-  onClick: () => {},
 };
 
 export default class extends React.Component {

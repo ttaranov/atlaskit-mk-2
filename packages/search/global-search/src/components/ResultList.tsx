@@ -42,6 +42,7 @@ export default class ResultList extends React.Component<Props> {
         ...this.props.analyticsData,
         contentType: result.contentType,
         resultId: result.resultId,
+        type: result.analyticsType,
       };
 
       // Make sure that key and resultId are unique across all search results
@@ -56,7 +57,6 @@ export default class ResultList extends React.Component<Props> {
               resultId={uniqueResultId}
               name={confluenceResult.name}
               href={confluenceResult.href}
-              type={confluenceResult.analyticsType}
               containerName={confluenceResult.containerName}
               avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
               analyticsData={analyticsData}
@@ -72,7 +72,6 @@ export default class ResultList extends React.Component<Props> {
               resultId={uniqueResultId}
               name={jiraResult.name}
               href={jiraResult.href}
-              type={jiraResult.analyticsType}
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
               {...avatarData}
@@ -89,7 +88,6 @@ export default class ResultList extends React.Component<Props> {
               resultId={uniqueResultId}
               name={containerResult.name}
               href={containerResult.href}
-              type={containerResult.analyticsType}
               avatarUrl={containerResult.avatarUrl}
               analyticsData={analyticsData}
             />
@@ -104,7 +102,6 @@ export default class ResultList extends React.Component<Props> {
               resultId={uniqueResultId}
               name={personResult.name}
               href={personResult.href}
-              type={personResult.analyticsType}
               avatarUrl={personResult.avatarUrl}
               mentionName={personResult.mentionName}
               presenceMessage={personResult.presenceMessage}

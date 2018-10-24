@@ -2,23 +2,23 @@ import * as React from 'react';
 import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
-import { ContainerResultType as Props } from './types';
+import { CommonResultProps } from './types';
 
-const CONTAINER_RESULT_TYPE = 'container';
-
-// ===================================================================
-// If adding a prop or feature that may be useful to all result types,
-// add it to ResultBase instead
-// ===================================================================
+export type Props = CommonResultProps & {
+  /** Name of the container. Provides the main text to be displayed as the item. */
+  name: React.ReactNode;
+  /** Text to appear to the right of the text. It has a lower font-weight. */
+  caption?: string;
+  /** Set whether to display a lock on the result's icon */
+  isPrivate?: boolean;
+  /** Text to be shown alongside the main `text`. */
+  subText?: string;
+};
 
 /**
  * Generic result type for Atlassian containers.
  */
 export default class ContainerResult extends React.PureComponent<Props> {
-  static defaultProps: Partial<Props> = {
-    type: CONTAINER_RESULT_TYPE,
-  };
-
   getAvatar = () => {
     if (this.props.avatar) {
       return this.props.avatar;
@@ -35,9 +35,16 @@ export default class ContainerResult extends React.PureComponent<Props> {
   };
 
   render() {
-    const { name, ...resultBaseProps } = this.props;
+    const { resultId, name, subText, caption } = this.props;
     return (
-      <ResultBase {...resultBaseProps} icon={this.getAvatar()} text={name} />
+      <ResultBase
+        type="container"
+        resultId={resultId}
+        text={name}
+        subText={subText}
+        caption={caption}
+        icon={this.getAvatar()}
+      />
     );
   }
 }

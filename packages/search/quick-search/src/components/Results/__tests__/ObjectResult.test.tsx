@@ -8,14 +8,7 @@ const DUMMY_AVATAR = <Avatar key="test-avatar" />;
 describe('Object Result', () => {
   let resultWrapper;
   beforeEach(() => {
-    resultWrapper = mount(
-      <ObjectResult
-        containerName=""
-        resultId="testId"
-        type="object"
-        name="test"
-      />,
-    );
+    resultWrapper = mount(<ObjectResult resultId="testId" name="test" />);
   });
 
   it('should render an avatar if `avatarUrl` is provided', () => {
