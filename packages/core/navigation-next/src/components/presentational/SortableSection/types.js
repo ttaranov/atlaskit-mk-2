@@ -32,7 +32,7 @@ export type SortableSectionProps = SectionPropsNoChildren & {
     Object of objects representing item props, will be rendered by the group
     with their matching `itemId`.
   */
-  items: ItemsType,
+  itemsMap: ItemsType,
   /**
     Array of objects representing group props with an additional `itemIds` array.
   */

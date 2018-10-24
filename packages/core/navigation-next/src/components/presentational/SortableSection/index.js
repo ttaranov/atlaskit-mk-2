@@ -104,7 +104,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
   };
 
   render() {
-    const { groups, items, ...sectionProps } = this.props;
+    const { groups, itemsMap, ...sectionProps } = this.props;
 
     return (
       <DragDropContext
@@ -124,7 +124,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
                     key={group.id}
                   >
                     {group.itemIds.map((itemId, index) => {
-                      const item = items[itemId];
+                      const item = itemsMap[itemId];
 
                       return (
                         <DraggableItem

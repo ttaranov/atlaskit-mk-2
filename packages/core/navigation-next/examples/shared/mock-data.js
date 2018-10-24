@@ -114,6 +114,13 @@ const rootIndex = [
         text: 'Issues',
         type: 'GoToItem',
       },
+      {
+        icon: 'IssuesIcon',
+        goTo: 'root/sortable-issues',
+        id: 'sortable-issues',
+        text: 'Sortable Issues',
+        type: 'GoToItem',
+      },
     ],
     nestedGroupKey: 'menu',
     parentId: null,
@@ -178,6 +185,94 @@ const rootIssues = [
   },
 ];
 
+const defaultSortableGroups = [
+  {
+    type: 'Group',
+    id: 'starred-filters-group',
+    heading: 'Starred filters',
+    itemIds: ['older-than-90-days', 'critical-bugs'],
+  },
+  {
+    type: 'Group',
+    id: 'other-filters-group',
+    heading: 'Other filters',
+    itemIds: [
+      'my-open-issues',
+      'reported-by-me',
+      'all-issues',
+      'open-issues',
+      'done-issues',
+      'viewed-recently',
+      'created-recently',
+      'resolved-recently',
+      'updated-recently',
+    ],
+  },
+];
+const getRootSortableIssues = ({
+  groups = defaultSortableGroups,
+  onSortChange,
+}: *) => () => [
+  {
+    id: 'root/sortable-issues:header',
+    type: 'HeaderSection',
+    items: [
+      { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
+      {
+        type: 'BackItem',
+        goTo: 'root/index',
+        id: 'back',
+        text: 'Back to Jira',
+      },
+    ],
+  },
+  {
+    id: 'root/sortable-issues:menu',
+    nestedGroupKey: 'menu',
+    parentId: 'root/index:menu',
+    type: 'MenuSection',
+    alwaysShowScrollHint: true,
+    items: [
+      {
+        type: 'SectionHeading',
+        id: 'section-heading',
+        text: 'Sortable Issues and filters',
+      },
+      {
+        type: LinkItem,
+        id: 'search-issues',
+        text: 'Search issues',
+        to: '/issues/search',
+      },
+      {
+        type: 'SortableSection',
+        id: 'section-filters',
+        onChange: onSortChange,
+        itemsMap: {
+          'older-than-90-days': {
+            type: 'Item',
+            text: 'Older than 90 days',
+          },
+          'critical-bugs': {
+            type: 'Item',
+            text: 'Critical bugs',
+          },
+          'my-open-issues': { type: 'Item', text: 'My open issues' },
+          'reported-by-me': { type: 'Item', text: 'Reported by me' },
+          'all-issues': { type: 'Item', text: 'All issues' },
+          'open-issues': { type: 'Item', text: 'Open issues' },
+          'done-issues': { type: 'Item', text: 'Done issues' },
+          'viewed-recently': { type: 'Item', text: 'Viewed recently' },
+          'created-recently': { type: 'Item', text: 'Created recently' },
+          'resolved-recently': { type: 'Item', text: 'Resolved recently' },
+          'updated-recently': { type: 'Item', text: 'Updated recently' },
+        },
+        groups,
+      },
+    ],
+  },
+];
+
 export const rootViews = [
   {
     id: 'root/index',
@@ -190,6 +285,13 @@ export const rootViews = [
     getItems: () => rootIssues,
     type: 'product',
     getAnalyticsAttributes: getViewAnalyticsAttributes,
+  },
+  {
+    id: 'root/sortable-issues',
+    getItemsFactory: getRootSortableIssues,
+    type: 'product',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
+    sortable: true,
   },
 ];
 

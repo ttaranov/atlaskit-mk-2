@@ -87,7 +87,7 @@ export default class Example extends Component<Props, State> {
       <SectionWrapper>
         {/* <ViewRenderer items={this.props.items} /> */}
         <SortableSection
-          items={this.props.items}
+          itemsMap={this.props.items}
           groups={this.state.groups}
           onChange={this.onChange}
         />

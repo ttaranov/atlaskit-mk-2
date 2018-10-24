@@ -152,12 +152,11 @@ const MenuSection = ({
   </MenuSectionComponent>
 );
 
-const toObject = arr => arr.reduce((o, c) => ({ ...o, [c.id]: c }), {});
 const SortableSection = ({
   alwaysShowScrollHint = false,
   groups,
   id,
-  items,
+  itemsMap,
   nestedGroupKey,
   onChange,
   onDragStart,
@@ -172,7 +171,7 @@ const SortableSection = ({
     <SortableSectionComponent
       alwaysShowScrollHint={alwaysShowScrollHint}
       id={id}
-      items={Array.isArray(items) ? toObject(items) : items}
+      itemsMap={itemsMap}
       groups={groups}
       onChange={onChange}
       key={key}

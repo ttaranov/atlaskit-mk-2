@@ -44,15 +44,76 @@ class ViewRegistrarBase extends Component<{
       navigationViewController.addView(view);
     }
   }
+
   render() {
     return null;
   }
 }
+
+class SortableViewRegistrarBase extends Component<*, *> {
+  state = {
+    groups: undefined,
+  };
+
+  componentDidMount() {
+    this.registerView();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.groups !== this.state.groups ||
+      prevProps.criticalBugsCount !== this.props.criticalBugsCount
+    ) {
+      this.registerView();
+    }
+  }
+
+  // What do we do if the view changes over time?
+  // 1 - Change item properties is fine as they aren't managed by state
+  // 2 - Change group properties: such as itemIds is fine as we control the group state
+  getDerivedStateFromProps(props, state) {}
+
+  registerView = () => {
+    const { navigationViewController, view } = this.props;
+    const { groups } = this.state;
+    const { onSortChange } = this;
+    const { getItemsFactory, ...rest } = view;
+
+    const getItemsWithSortChange = getItemsFactory({
+      groups,
+      onSortChange,
+    });
+
+    navigationViewController.addView({
+      getItems: getItemsWithSortChange,
+      ...rest,
+    });
+  };
+
+  onSortChange = (groups: *) => {
+    this.setState({ groups });
+  };
+
+  render() {
+    return null;
+  }
+}
+
 const ViewRegistrar = withNavigationViewController(ViewRegistrarBase);
+const SortableViewRegistrar = withNavigationViewController(
+  SortableViewRegistrarBase,
+);
 
 const RootViews = () => (
   <Fragment>
-    {rootViews.map(view => <ViewRegistrar key={view.id} view={view} />)}
+    {rootViews.map(
+      view =>
+        view.sortable ? (
+          <SortableViewRegistrar key={view.id} view={view} />
+        ) : (
+          <ViewRegistrar key={view.id} view={view} />
+        ),
+    )}
   </Fragment>
 );
 const ContainerViews = () => (
