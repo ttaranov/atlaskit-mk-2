@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/editor-mobile-bridge", "type": "patch" }],
+  "dependents": []
+}
