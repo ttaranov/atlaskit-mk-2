@@ -379,9 +379,7 @@ export default class GlobalNavigation
                   name={analyticsIdMap[drawer]}
                   isVisible={this.state[`is${capitalisedDrawerName}Open`]}
                 />
-                <div>
-                  <DrawerContents />
-                </div>
+                <DrawerContents />
               </Drawer>
             );
           })}

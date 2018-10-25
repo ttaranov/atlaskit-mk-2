@@ -578,11 +578,52 @@ describe('GlobalNavigation', () => {
           .exists(),
       ).toBeFalsy();
     });
-    // it('should show badge using NotificationLogClient calls');
-    // it('should show "9+" when notificationCount is more than 10');
-    // it('should not show a badge when notificationCount is 0');
-    // it('should poll for notification every 180 seconds when there is no badge');
-    // it('should poll for notification every 60 seconds when there is a badge');
+
+    it('should poll for notification every 180 seconds when there is no badge', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+          notificationDrawerContents={DrawerContents}
+        />,
+      );
+
+      wrapper.setState({
+        notificationBadgeCount: 5,
+      });
+      wrapper.update();
+
+      wrapper.setState({
+        notificationBadgeCount: 0,
+      });
+      wrapper.update();
+      expect(wrapper.find('NotificationIndicator').props().refreshRate).toEqual(
+        180000,
+      );
+    });
+
+    it('should poll for notification every 60 seconds when there is a badge', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+          notificationDrawerContents={DrawerContents}
+        />,
+      );
+
+      wrapper.update();
+      wrapper.setState({
+        notificationBadgeCount: 5,
+      });
+
+      expect(wrapper.find('NotificationIndicator').props().refreshRate).toEqual(
+        60000,
+      );
+    });
   });
 
   describe('AppSwitcher', () => {
