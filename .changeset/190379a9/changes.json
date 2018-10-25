@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/dropdown-menu", "type": "patch" }],
+  "dependents": []
+}
