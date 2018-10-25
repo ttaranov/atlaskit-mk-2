@@ -1,0 +1,1 @@
+- Fixed clicking between date pickers doesn't show correct date
