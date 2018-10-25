@@ -1,7 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/icon", "type": "minor" },
-    { "name": "@atlaskit/reduced-ui-pack", "type": "minor" }
-  ],
-  "dependents": []
-}
