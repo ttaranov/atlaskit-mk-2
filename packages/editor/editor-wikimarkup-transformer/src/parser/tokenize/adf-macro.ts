@@ -8,8 +8,8 @@ export function adfMacro(
   tokenErrCallback?: TokenErrCallback,
 ): Token {
   return commonMacro(input, schema, {
-    opening: /^{adf(?::([^{\n}]*))?}/,
-    closing: /{adf}/,
+    opening: /^\{adf(?::([^\{\n\}]*))?\}/,
+    closing: /\{adf\}/,
     rawContentProcessor,
     tokenErrCallback,
   });

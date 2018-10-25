@@ -8,7 +8,7 @@ export function anchorMacro(
   tokenErrCallback?: TokenErrCallback,
 ): Token {
   return commonMacro(input, schema, {
-    opening: /^{anchor(?::([^{\n}]*))?}/,
+    opening: /^\{anchor(?::([^\{\n\}]*))?\}/,
     rawContentProcessor,
     tokenErrCallback,
   });

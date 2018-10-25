@@ -81,8 +81,8 @@ export function codeMacro(
   tokenErrCallback?: TokenErrCallback,
 ): Token {
   return commonMacro(input, schema, {
-    opening: /^{code(?::([^{\n}]*))?}/,
-    closing: /{code}/,
+    opening: /^\{code(?::([^\{\n\}]*))?\}/,
+    closing: /\{code\}/,
     rawContentProcessor,
     tokenErrCallback,
   });

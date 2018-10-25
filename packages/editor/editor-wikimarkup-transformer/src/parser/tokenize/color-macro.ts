@@ -12,8 +12,8 @@ export function colorMacro(
   tokenErrCallback?: TokenErrCallback,
 ): Token {
   return commonMacro(input, schema, {
-    opening: /^{color(?::([^{\n}]*))?}/,
-    closing: /{color}/,
+    opening: /^\{color(?::([^\{\n\}]*))?\}/,
+    closing: /\{color\}/,
     rawContentProcessor,
     tokenErrCallback,
   });

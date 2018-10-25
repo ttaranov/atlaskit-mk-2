@@ -8,8 +8,8 @@ export function noformatMacro(
   tokenErrCallback?: TokenErrCallback,
 ): Token {
   return commonMacro(input, schema, {
-    opening: /^{noformat(?::([^{\n}]*))?}/,
-    closing: /{noformat}/,
+    opening: /^\{noformat(?::([^\{\n\}]*))?\}/,
+    closing: /\{noformat\}/,
     rawContentProcessor,
     tokenErrCallback,
   });

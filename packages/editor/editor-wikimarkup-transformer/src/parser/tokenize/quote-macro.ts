@@ -11,8 +11,8 @@ export function quoteMacro(
   tokenErrCallback?: TokenErrCallback,
 ): Token {
   return commonMacro(input, schema, {
-    opening: /^{quote(?::([^{\n}]*))?}/,
-    closing: /{quote}/,
+    opening: /^\{quote(?::([^\{\n\}]*))?\}/,
+    closing: /\{quote\}/,
     rawContentProcessor,
     tokenErrCallback,
   });
