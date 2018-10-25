@@ -28,6 +28,7 @@ const DeleteButton = ({
       type="button"
       className={ClassName.CONTROLS_DELETE_BUTTON}
       onClick={onClick}
+      onMouseMove={e => e.preventDefault()}
     >
       <span className={ClassName.CONTROLS_BUTTON_ICON}>
         <CrossIcon
