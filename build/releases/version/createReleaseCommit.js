@@ -22,7 +22,10 @@ const outdent = require('outdent');
 // releaseObj is a Release object created from the createReleaseObject function
 // To create the commit string for a release, we mostly JSON.stringify, removing a few extraneous
 // fields
-function createReleaseCommit(releaseObj) {
+
+// This data is not depended upon by the publish step, but can be useful for other tools/debugging
+// I believe it would be safe to deprecate this format
+function createReleaseCommit(releaseObj, skipCi) {
   const numPackagesReleased = releaseObj.releases.length;
 
   const cleanReleaseObj = {};
@@ -60,9 +63,8 @@ function createReleaseCommit(releaseObj) {
     ---
     ${JSON.stringify(cleanReleaseObj)}
     ---
-
-    [skip ci]
-  `;
+    ${skipCi ? '\n\n[skip ci]' : ''}
+`;
 }
 
 module.exports = createReleaseCommit;

@@ -288,7 +288,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
         }}
       </Popper>
     );
-
     return mergedPopperProps.positionFixed
       ? popper
       : createPortal(popper, portalDestination);
@@ -296,7 +295,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
   render() {
     const { target } = this.props;
-
     return (
       <Manager>
         <Reference>

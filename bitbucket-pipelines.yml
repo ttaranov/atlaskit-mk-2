@@ -62,7 +62,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 128
+              - source build/ci-scripts/count-flowfixme.sh 142
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
               # Get the commit that we diverged from master at
               - export DIVERGED_AT=$(git merge-base master HEAD)
@@ -109,7 +109,8 @@ pipelines:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - cd website
-              - WEBSITE_ENV=staging yarn build:no-minimize
+              # This next line just makes it so we can skip website builds by having a branch name that starts with "skip-website/"
+              - if [[ "$BITBUCKET_BRANCH" == skip-website/* ]]; then echo "Skipping website build" && mkdir dist && echo "Build skipped" > dist/index.html; else WEBSITE_ENV=staging yarn build:no-minimize; fi
               - yarn build:copy
               - set -o pipefail # make sure we fail if the deployment fails
               # we pipe the output to stdout AND deploy-log.txt so that we can read the live url

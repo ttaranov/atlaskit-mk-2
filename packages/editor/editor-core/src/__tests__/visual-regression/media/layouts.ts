@@ -22,8 +22,8 @@ describe('Snapshot Test: Media', () => {
     await initEditor(page, 'full-page-with-toolbar');
     await setupMediaMocksProviders(page);
   });
-
-  describe('Layouts', async () => {
+  // TODO: AK-5551
+  describe.skip('Layouts', async () => {
     it('can switch layouts on media', async () => {
       // type some text
       await page.click(editable);

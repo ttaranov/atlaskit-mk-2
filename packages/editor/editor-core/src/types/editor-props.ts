@@ -112,7 +112,7 @@ export interface EditorProps {
   // This is a temporary setting for Confluence until we ship smart cards. **Please do not use.**
   allowJiraIssue?: boolean;
 
-  // Set this to allow unsupported content in the editor.
+  // Deprecated. Defaults to true.
   // Anything it doesn’t understand it will wrap in an unsupported block or inline node.
   // It will render a gray non editable box.
   allowUnsupportedContent?: boolean;

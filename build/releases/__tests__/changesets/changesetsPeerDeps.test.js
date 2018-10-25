@@ -1,15 +1,14 @@
 // @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
-import { changesetCommand } from '../../changeset';
-import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
-import createChangesetCommit from '../../changeset/createChangesetCommit';
 import {
   askCheckboxPlus,
   askList,
   askConfirm,
   askQuestion,
 } from '@atlaskit/build-utils/cli';
-import fs from 'fs';
+import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
+import { changesetCommand } from '../../changeset';
+import writeChangeset from '../../changeset/writeChangeset';
 
 /*
     Bumping peerDeps is a tricky issue, so we are testing every single combination here so that
@@ -23,7 +22,7 @@ jest.mock('@atlaskit/build-utils/logger');
 jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
-jest.mock('../../changeset/createChangesetCommit');
+jest.mock('../../changeset/writeChangeset');
 
 // This is some sad flow hackery
 const unsafeGetChangedPackagesSinceMaster: any = getChangedPackagesSinceMaster;
@@ -80,7 +79,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -99,7 +98,7 @@ describe('Changesets - bumping peerDeps', () => {
       releases: [{ name: 'depended-upon', type: 'patch' }],
       dependents: [],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -123,7 +122,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -147,7 +146,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -165,7 +164,7 @@ describe('Changesets - bumping peerDeps', () => {
       releases: [{ name: 'depended-upon', type: 'patch' }],
       dependents: [],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -188,7 +187,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -211,7 +210,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -235,7 +234,7 @@ describe('Changesets - bumping peerDeps', () => {
         { name: 'pkg-b', type: 'patch', dependencies: ['pkg-c', 'pkg-a'] },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 });

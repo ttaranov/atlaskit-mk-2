@@ -18,6 +18,13 @@ describe('<CreateDrawer />', () => {
           .props().width,
       ).toBe('full');
     });
+    it('width="medium" should pass width="medium" to the inner drawer', () => {
+      expect(
+        mount(<AkCreateDrawer {...requiredProps} width="medium" />)
+          .find(Drawer)
+          .props().width,
+      ).toBe('medium');
+    });
     it('isFullWidth={false} should pass width="narrow" to the inner drawer', () => {
       expect(
         mount(<AkCreateDrawer {...requiredProps} isFullWidth={false} />)

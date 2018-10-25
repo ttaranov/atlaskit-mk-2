@@ -1,6 +1,10 @@
 import * as ts from 'typescript';
 
-export type TagInfo = { name: string };
+export type TagInfo = {
+  name: string;
+  allowUnsupportedBlock?: boolean;
+  allowUnsupportedInline?: boolean;
+};
 
 export function getTags(tagInfo: ts.JSDocTagInfo[]): TagInfo {
   return tagInfo.reduce(

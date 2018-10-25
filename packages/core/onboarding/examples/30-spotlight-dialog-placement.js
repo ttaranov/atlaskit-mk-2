@@ -53,36 +53,38 @@ export default class SpotlightDialogPlacementExample extends Component<
       : options[(index || 0) % options.length];
 
     return (
-      <SpotlightManager component={Wrapper}>
-        <SpotlightTarget name="placement-example">
-          <Highlight color="neutral">Target</Highlight>
-        </SpotlightTarget>
+      <Wrapper>
+        <SpotlightManager>
+          <SpotlightTarget name="placement-example">
+            <Highlight color="neutral">Target</Highlight>
+          </SpotlightTarget>
 
-        <p>Click the target to change the dialog&apos;s placement.</p>
-        <p>
-          Achieved by passing our handler to the <Code>targetOnClick</Code>{' '}
-          property.
-        </p>
-        <p>
-          <button onClick={this.start}>Show</button>
-        </p>
+          <p>Click the target to change the dialog&apos;s placement.</p>
+          <p>
+            Achieved by passing our handler to the <Code>targetOnClick</Code>{' '}
+            property.
+          </p>
+          <p>
+            <button onClick={this.start}>Show</button>
+          </p>
 
-        <SpotlightTransition>
-          {placement ? (
-            <Spotlight
-              actions={[{ onClick: this.finish, text: 'Done' }]}
-              dialogPlacement={placement}
-              dialogWidth={300}
-              heading={`"${placement}"`}
-              key="placement-example"
-              target="placement-example"
-              targetOnClick={this.next}
-            >
-              A single line of innocuous text.
-            </Spotlight>
-          ) : null}
-        </SpotlightTransition>
-      </SpotlightManager>
+          <SpotlightTransition>
+            {placement ? (
+              <Spotlight
+                actions={[{ onClick: this.finish, text: 'Done' }]}
+                dialogPlacement={placement}
+                dialogWidth={300}
+                heading={`"${placement}"`}
+                key="placement-example"
+                target="placement-example"
+                targetOnClick={this.next}
+              >
+                A single line of innocuous text.
+              </Spotlight>
+            ) : null}
+          </SpotlightTransition>
+        </SpotlightManager>
+      </Wrapper>
     );
   }
 }

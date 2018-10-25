@@ -28,8 +28,8 @@ describe('Snapshot Test: Media', () => {
     // @ts-ignore
     expect(image).toMatchProdImageSnapshot();
   });
-
-  describe('Lists', async () => {
+  // TODO: AK-5551
+  describe.skip('Lists', async () => {
     it('can insert a media single inside a bullet list', async () => {
       // type some text
       await page.click(editable);

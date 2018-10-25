@@ -10,7 +10,7 @@ const containerStyle = {
 
 const createSingleLineTextInput = props => (
   <SingleLineTextInput
-    value="Lorem ipsum dolor sit amet"
+    readOnly={false}
     onChange={console.log('onChange')}
     onConfirm={console.log('onConfirm')}
     isEditing={false}

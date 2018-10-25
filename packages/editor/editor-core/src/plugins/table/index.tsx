@@ -103,12 +103,6 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
   },
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
-    const config = pluginConfig(options);
-
-    if (!config.allowMergeCells && !config.allowBackgroundColor) {
-      return null;
-    }
-
     return (
       <WithPluginState
         plugins={{
@@ -119,7 +113,6 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
             editorView={editorView}
             mountPoint={popupsMountPoint}
             boundariesElement={popupsBoundariesElement}
-            targetCellRef={tablesState.targetCellRef}
             targetCellPosition={tablesState.targetCellPosition}
             isOpen={tablesState.isContextualMenuOpen}
             pluginConfig={tablesState.pluginConfig}

@@ -9,7 +9,7 @@
   `packages/core/navigation-next/src/__tests__/integration/navigation.js`
 */
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -29,12 +29,14 @@ import {
   ContainerHeader,
   GlobalNav,
   GroupHeading,
+  HeaderSection,
   Item as ItemComponent,
   ItemAvatar,
   LayoutManager,
+  MenuSection,
   NavigationProvider,
-  Section,
   Separator,
+  Wordmark,
 } from '../src';
 
 const gridSize = gridSizeFn();
@@ -82,31 +84,27 @@ const GlobalNavigation = () => (
   </div>
 );
 
+const TestMark = ({ id, children }: { id: string, children: Node }) => (
+  <div data-webdriver-test-key={id}>{children}</div>
+);
+
 /**
  * Content navigation
  */
 const ProductNavigation = () => (
   <div data-webdriver-test-key="product-navigation">
-    <Section>
-      {({ css }) => (
-        <div css={{ ...css, paddingTop: gridSize * 2.5 }}>
-          <div
-            data-webdriver-test-key="product-header"
-            css={{
-              lineHeight: 0,
-              paddingBottom: gridSize * 3.5,
-              paddingLeft: gridSize * 1.5,
-              paddingTop: gridSize,
-            }}
-          >
-            <JiraWordmark />
-          </div>
+    <HeaderSection>
+      {({ className }) => (
+        <div className={className}>
+          <TestMark id="product-header">
+            <Wordmark wordmark={JiraWordmark} />
+          </TestMark>
         </div>
       )}
-    </Section>
-    <Section>
-      {({ css }) => (
-        <div css={{ ...css, paddingBottom: 12 }}>
+    </HeaderSection>
+    <MenuSection>
+      {({ className }) => (
+        <div className={className}>
           <Item
             before={DashboardIcon}
             text="Dashboards"
@@ -124,19 +122,18 @@ const ProductNavigation = () => (
           />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </div>
 );
 
 const ContainerNavigation = () => (
   <div data-webdriver-test-key="container-navigation">
-    <Section>
+    <HeaderSection>
       {({ css }) => (
         <div
           data-webdriver-test-key="container-header"
           css={{
             ...css,
-            paddingTop: gridSize * 2.5,
             paddingBottom: gridSize * 2.5,
           }}
         >
@@ -153,10 +150,10 @@ const ContainerNavigation = () => (
           />
         </div>
       )}
-    </Section>
-    <Section>
-      {({ css }) => (
-        <div css={{ ...css, paddingBottom: 12 }}>
+    </HeaderSection>
+    <MenuSection>
+      {({ className }) => (
+        <div className={className}>
           <Item
             before={BacklogIcon}
             text="Backlog"
@@ -179,7 +176,7 @@ const ContainerNavigation = () => (
           <Item before={ShortcutIcon} text="Project repo" />
         </div>
       )}
-    </Section>
+    </MenuSection>
   </div>
 );
 

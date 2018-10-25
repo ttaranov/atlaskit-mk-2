@@ -4,9 +4,8 @@ import {
   DOMOutputSpec,
   DOMSerializer,
 } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
+import { EditorView, NodeView } from 'prosemirror-view';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
-import { EventDispatcher } from '../../../event-dispatcher';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { parseDOMColumnWidths, generateColgroup } from '../utils';
@@ -14,7 +13,8 @@ import TableComponent from './TableComponent';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
-import { pluginKey } from '../pm-plugins/main';
+import { pluginKey, getPluginState } from '../pm-plugins/main';
+import { pluginConfig as getPluginConfig } from '../index';
 
 export interface Props {
   node: PmNode;
@@ -22,7 +22,6 @@ export interface Props {
   allowColumnResizing?: boolean;
   cellMinWidth?: number;
   portalProviderAPI: PortalProviderAPI;
-  eventDispatcher?: EventDispatcher;
   UNSAFE_allowFlexiColumnResizing?: boolean;
   getPos: () => number;
 }
@@ -89,7 +88,6 @@ export default class TableView extends ReactNodeView {
           containerWidth: widthPluginKey,
           pluginState: pluginKey,
         }}
-        eventDispatcher={props.eventDispatcher}
         editorView={props.view}
         render={pluginStates => (
           <TableComponent
@@ -162,3 +160,24 @@ export default class TableView extends ReactNodeView {
     return true;
   }
 }
+
+export const createTableView = (portalProviderAPI: PortalProviderAPI) => (
+  node,
+  view,
+  getPos,
+): NodeView => {
+  const { pluginConfig } = getPluginState(view.state);
+  const {
+    allowColumnResizing,
+    UNSAFE_allowFlexiColumnResizing,
+  } = getPluginConfig(pluginConfig);
+
+  return new TableView({
+    node,
+    view,
+    allowColumnResizing,
+    UNSAFE_allowFlexiColumnResizing,
+    portalProviderAPI,
+    getPos,
+  }).init();
+};

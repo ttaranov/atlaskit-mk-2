@@ -103,10 +103,6 @@ export {
   bodiedExtensionData,
 } from './mock-extension-data';
 export * from './schema-element-builder';
-export {
-  cardProvider,
-  CardMockProvider,
-  DelayedCardMockProvider,
-} from './card-provider';
+export { cardProvider, CardMockProvider } from './card-provider';
 export * from './enzyme';
 export { compareSelection } from './selection';

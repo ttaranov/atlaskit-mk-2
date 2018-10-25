@@ -317,7 +317,7 @@ describe('table plugin: actions', () => {
         doc(p('text'), table()(tr(tdEmpty, tdEmpty))),
       );
       const { state, dispatch } = editorView;
-      toggleContextualMenu(true)(state, dispatch);
+      toggleContextualMenu(state, dispatch);
       const { isContextualMenuOpen } = getPluginState(editorView.state);
       expect(isContextualMenuOpen).toBe(true);
     });

@@ -1,5 +1,8 @@
 # @atlaskit/editor-json-transformer
 
+## 4.0.20
+- [patch] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
+
 ## 4.0.19
 - [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
   - @atlaskit/editor-test-helpers@6.2.8

@@ -17,7 +17,7 @@ const BlockNode = styled.div`
   padding: 10px;
   text-align: center;
   user-select: all;
-  white-space: nowrap;
+  min-width: 120px;
 
   &.ProseMirror-selectednode {
     background: ${colors.N50};

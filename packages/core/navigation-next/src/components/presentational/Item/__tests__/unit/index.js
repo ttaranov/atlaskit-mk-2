@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import InteractionStateManager from '../../../InteractionStateManager';
-import Item, { ConnectedItem } from '../../index';
+import Item, { ItemBase } from '../../index';
 import ItemPrimitive from '../../primitives';
 
 describe('Item', () => {
@@ -18,22 +18,22 @@ describe('Item', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('should wrap ConnectedItem with navigationItemClicked HOC', () => {
+  it('should wrap ItemBase with navigationItemClicked HOC', () => {
     const mockNavigationItemClicked = jest.fn(() => () => null);
     jest.doMock('../../../../../common/analytics', () => ({
       navigationItemClicked: mockNavigationItemClicked,
     }));
-    const { ConnectedItem: RequiredConnectedItem } = require('../../index');
+    const { ItemBase: RequiredItemBase } = require('../../index');
 
     expect(mockNavigationItemClicked).toHaveBeenCalledWith(
-      RequiredConnectedItem,
+      RequiredItemBase,
       'item',
     );
   });
 
-  describe('ConnectedItem', () => {
+  describe('ItemBase', () => {
     it('should render an InteractionStateManager', () => {
-      const wrapper = shallow(<ConnectedItem text="My item" />);
+      const wrapper = shallow(<ItemBase text="My item" />);
 
       expect(wrapper.find(InteractionStateManager)).toHaveLength(1);
 
@@ -41,7 +41,7 @@ describe('Item', () => {
     });
 
     it('should render the Item primitive', () => {
-      const wrapper = shallow(<ConnectedItem text="My item" />);
+      const wrapper = shallow(<ItemBase text="My item" />);
 
       const renderChildren = wrapper.find(InteractionStateManager).dive();
 

@@ -67,13 +67,13 @@ BrowserTestCase(
 // IE is generally flaky
 BrowserTestCase(
   'task-decision-2.ts: can edit an action',
-  { skip: ['ie', 'safari'] },
+  { skip: ['ie', 'safari', 'edge'] },
   async client => {
     const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadActionButton);
-    await browser.waitForSelector('ol');
-    await browser.click('ol');
+    await browser.waitForSelector('ol span + div');
+    await browser.click('ol span + div');
     await browser.type(editable, ' has been edited');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();

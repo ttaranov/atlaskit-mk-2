@@ -56,7 +56,7 @@ export const StyledIcon: ComponentClass<SVGAttributes<{}>> = styled.svg`
 `;
 
 export const StyledSvgGroup: ComponentClass<
-  HTMLAttributes<{}> & IconProps & SVGProps<SVGGElement>
+  IconProps & SVGProps<SVGGElement>
 > = styled.g`
   fill: ${({ active }: IconProps) => (active ? '#0061C5' : '#42526E')};
 `;

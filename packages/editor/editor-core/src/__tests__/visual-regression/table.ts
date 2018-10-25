@@ -38,7 +38,7 @@ const selectTableDisplayOption = async (page, optionSelector) => {
 };
 
 const clickInContextMenu = async (page, title) => {
-  const contextMenuTriggerSelector = `.${ClassName.CONTEXTUAL_MENU_TRIGGER}`;
+  const contextMenuTriggerSelector = `.${ClassName.CONTEXTUAL_MENU_BUTTON}`;
   await page.waitForSelector(contextMenuTriggerSelector);
   await page.click(contextMenuTriggerSelector);
   await selectByTextAndClick({ page, tagName: 'span', text: title });
@@ -85,7 +85,7 @@ const getSelectorForCell = ({
   return `${rowSelector} > ${cellType}:nth-child(${cell})`;
 };
 
-// TODO renable after splitting and fix flaky tests
+// TODO: renable after splitting and fix flaky tests
 describe.skip('Snapshot Test: table', () => {
   ['full-page', 'comment'].forEach(appearance => {
     let page;

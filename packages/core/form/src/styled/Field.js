@@ -6,7 +6,7 @@ import { typography } from '@atlaskit/theme';
  * Provide a styled container for field components
  */
 const FieldWrapper = styled.div`
-  padding-top: 8px;
+  margin-top: 8px;
 `;
 
 /**
@@ -19,10 +19,7 @@ export const Label = styled.label`
 `;
 
 /**
- * Label can appear before or after
- */
-/**
- * Provide a styled container for field components
+ * The content that sits below the field
  */
 export const HelperText = styled.span`
   ${typography.h200()} font-weight: normal;

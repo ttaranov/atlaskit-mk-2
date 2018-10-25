@@ -1,5 +1,10 @@
-export * from './marks';
+/**
+ * NOTE: Ordering of export is pretty important for spec generator.
+ * Make sure to run `yarn generate:spec` inside `adf-utils` package if you
+ * change order here.
+ */
 export * from './nodes';
+export * from './marks';
 export * from './unsupported';
 export * from './inline-nodes';
 

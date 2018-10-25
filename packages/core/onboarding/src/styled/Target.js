@@ -29,19 +29,16 @@ const borderRadius = p =>
       `
     : null;
 
+// IE11 and Edge: z-index needed because fixed position calculates z-index relative
+// to body insteadof nearest stacking context (Portal in our case).
 export const Div = styled.div`
-  ${backgroundColor} ${borderRadius} position: absolute;
-  z-index: ${layers.spotlight};
-`;
-
-// absolute position anchors the Popper.js dialog
-export const TargetOuter = styled.div`
-  position: absolute;
+  z-index: ${layers.spotlight() + 1};
+  ${backgroundColor} ${borderRadius};
 `;
 
 // fixed position holds the target in place if overflow/scroll is necessary
 export const TargetInner = styled(Div)`
-  ${animationWithCheck} position: fixed;
+  ${animationWithCheck} position: absolute;
 `;
 
 export const TargetOverlay = styled.div`
@@ -55,5 +52,6 @@ export const TargetOverlay = styled.div`
 
 // exported for consumer
 export const Pulse = styled(Div)`
+  position: absolute;
   ${animation};
 `;
