@@ -1,5 +1,12 @@
 # @atlaskit/select
 
+## 6.1.3
+- [patch] [dab963b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dab963b"
+d):
+
+  - Make sure portal binds to DOM only
+
 ## 6.1.2
 - [patch] [0782e03"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0782e03"
