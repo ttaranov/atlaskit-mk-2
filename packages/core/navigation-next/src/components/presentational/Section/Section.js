@@ -1,7 +1,8 @@
 // @flow
 
 import React, { PureComponent, type Node } from 'react';
-import { TransitionGroup, Transition } from 'react-transition-group';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Transition from 'react-transition-group/Transition';
 import { css as parseJss } from 'emotion';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
@@ -37,7 +38,13 @@ export const StaticWrapper = (props: StyledComponentProps) => (
 export default class Section extends PureComponent<SectionProps, SectionState> {
   state = {
     traversalDirection: null,
+    isMounted: false,
   };
+
+  componentDidMount() {
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ isMounted: true });
+  }
 
   componentWillReceiveProps(nextProps: SectionProps) {
     if (nextProps.parentId && nextProps.parentId === this.props.id) {
@@ -68,8 +75,13 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
         component={
           shouldGrow ? ScrollableTransitionGroup : StaticTransitionGroup
         }
+        appear
       >
-        <Transition key={id} timeout={transitionDurationMs}>
+        <Transition
+          key={id}
+          timeout={this.state.isMounted ? 0 : transitionDurationMs}
+          appear
+        >
           {state => {
             const { traversalDirection } = this.state;
             const animationStyles = getAnimationStyles({
