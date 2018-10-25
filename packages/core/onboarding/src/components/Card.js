@@ -112,11 +112,18 @@ const Card = ({
                     {/* Always need an element so space-between alignment works */}
                     {actionsBeforeElement || <span />}
                     <ActionItems>
-                      {actions.map(({ text, ...rest }, idx) => (
-                        <ActionItem key={text || idx}>
-                          <Button {...rest}>{text}</Button>
-                        </ActionItem>
-                      ))}
+                      {actions.map(({ text, key, ...rest }, idx) => {
+                        return (
+                          <ActionItem
+                            key={
+                              key ||
+                              (typeof text === 'string' ? text : `${idx}`)
+                            }
+                          >
+                            <Button {...rest}>{text}</Button>
+                          </ActionItem>
+                        );
+                      })}
                     </ActionItems>
                   </Footer>
                 ) : null}

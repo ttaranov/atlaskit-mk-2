@@ -50,10 +50,12 @@ export default class OnboardingModal extends Component<Props> {
     const actionsElement = actionList ? (
       <ThemeProvider theme={getModalTheme}>
         <Actions>
-          {actionList.map(({ text, ...rest }, idx) => {
+          {actionList.map(({ text, key, ...rest }, idx) => {
             const variant = idx ? 'subtle-link' : 'primary';
             return (
-              <ActionItem key={text || idx}>
+              <ActionItem
+                key={key || (typeof text === 'string' ? text : `${idx}`)}
+              >
                 <Button appearance={variant} autoFocus={!idx} {...rest}>
                   {text}
                 </Button>
