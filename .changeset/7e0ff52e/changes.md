@@ -1,0 +1,1 @@
+- ED-5518: fix numbered column with merged rows
