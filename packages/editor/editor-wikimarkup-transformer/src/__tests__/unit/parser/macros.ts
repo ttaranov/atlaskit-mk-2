@@ -97,6 +97,18 @@ this is a text as well`,
 * list item
 {quote}`,
     ],
+    [
+      'should render {anchor} as empty string',
+      `You cannot see this {anchor:here}`,
+    ],
+    [
+      'should render {loremipsum} as plain text',
+      `This is plain text {loremipsum}`,
+    ],
+    [
+      'should render macro likes {macrolike} as plain text',
+      `This is plain text {macrolike}`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

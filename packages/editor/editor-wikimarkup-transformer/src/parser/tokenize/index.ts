@@ -23,6 +23,13 @@ import { subscript } from './subscript';
 import { superscript } from './superscript';
 import { table } from './table';
 import { tripleDashSymbol } from './triple-dash-symbol';
+import { panelMacro } from './panel-macro';
+import { adfMacro } from './adf-macro';
+import { anchorMacro } from './anchor-macro';
+import { codeMacro } from './code-macro';
+import { quoteMacro } from './quote-macro';
+import { colorMacro } from './color-macro';
+import { noformatMacro } from './noformat-macro';
 
 export enum TokenType {
   ADF_MACRO = 'ADF_MACRO', // {adf}
@@ -105,14 +112,13 @@ const tokenToTokenParserMapping: {
   [TokenType.TABLE]: table,
   [TokenType.EMOJI]: emoji,
   [TokenType.MENTION]: mention,
-  [TokenType.ADF_MACRO]: macro,
-  [TokenType.ANCHOR_MACRO]: macro,
-  [TokenType.CODE_MACRO]: macro,
-  [TokenType.QUOTE_MACRO]: macro,
-  [TokenType.NOFORMAT_MACRO]: macro,
-  [TokenType.PANEL_MACRO]: macro,
-  [TokenType.COLOR_MACRO]: macro,
-  [TokenType.LOREM_MACRO]: macro,
+  [TokenType.ADF_MACRO]: adfMacro,
+  [TokenType.ANCHOR_MACRO]: anchorMacro,
+  [TokenType.CODE_MACRO]: codeMacro,
+  [TokenType.QUOTE_MACRO]: quoteMacro,
+  [TokenType.NOFORMAT_MACRO]: noformatMacro,
+  [TokenType.PANEL_MACRO]: panelMacro,
+  [TokenType.COLOR_MACRO]: colorMacro,
 };
 
 export function parseToken(
