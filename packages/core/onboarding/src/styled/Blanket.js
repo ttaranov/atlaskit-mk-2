@@ -8,6 +8,8 @@ import { colors, layers, themed } from '@atlaskit/theme';
 
 const backgroundColor = themed({ light: colors.N100A, dark: colors.DN90A });
 
+// IE11 and Edge: z-index needed because fixed position calculates z-index relative
+// to body insteadof nearest stacking context (Portal in our case).
 export default styled.div`
   background: ${p => (p.isTinted ? backgroundColor : 'transparent')};
   bottom: 0;

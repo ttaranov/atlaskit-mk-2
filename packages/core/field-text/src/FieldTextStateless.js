@@ -78,6 +78,7 @@ class FieldTextStateless extends Component<Props, void> {
             form={this.props.form}
             id={this.props.id}
             innerRef={this.setInputRef}
+            isMonospaced={this.props.isMonospaced}
             maxLength={this.props.maxLength}
             min={this.props.min}
             max={this.props.max}

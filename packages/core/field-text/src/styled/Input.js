@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors, fontSize, themed } from '@atlaskit/theme';
+import { codeFontFamily, colors, fontSize, themed } from '@atlaskit/theme';
 
 const getPlaceholderColor = ({ disabled }) => {
   if (disabled) {
@@ -44,7 +44,7 @@ const InputElement = styled.input`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-family: inherit;
+  font-family: ${p => (p.isMonospaced ? codeFontFamily() : 'inherit')};
   font-size: ${fontSize}px;
   min-width: 0;
   outline: none;

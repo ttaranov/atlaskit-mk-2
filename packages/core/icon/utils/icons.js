@@ -102,6 +102,7 @@ import EditorBoldIcon from '../glyph/editor/bold';
 import EditorBulletListIcon from '../glyph/editor/bullet-list';
 import EditorCloseIcon from '../glyph/editor/close';
 import EditorCodeIcon from '../glyph/editor/code';
+import EditorCollapseIcon from '../glyph/editor/collapse';
 import EditorDateIcon from '../glyph/editor/date';
 import EditorDecisionIcon from '../glyph/editor/decision';
 import EditorDividerIcon from '../glyph/editor/divider';
@@ -109,6 +110,7 @@ import EditorDoneIcon from '../glyph/editor/done';
 import EditorEditIcon from '../glyph/editor/edit';
 import EditorEmojiIcon from '../glyph/editor/emoji';
 import EditorErrorIcon from '../glyph/editor/error';
+import EditorExpandIcon from '../glyph/editor/expand';
 import EditorFeedbackIcon from '../glyph/editor/feedback';
 import EditorFileIcon from '../glyph/editor/file';
 import EditorHelpIcon from '../glyph/editor/help';
@@ -144,6 +146,7 @@ import EditorRecentIcon from '../glyph/editor/recent';
 import EditorRedoIcon from '../glyph/editor/redo';
 import EditorRemoveIcon from '../glyph/editor/remove';
 import EditorSearchIcon from '../glyph/editor/search';
+import EditorSettingsIcon from '../glyph/editor/settings';
 import EditorStrikethroughIcon from '../glyph/editor/strikethrough';
 import EditorSuccessIcon from '../glyph/editor/success';
 import EditorTableDisplayOptionsIcon from '../glyph/editor/table-display-options';
@@ -912,6 +915,12 @@ export default {
     componentName: 'EditorCodeIcon',
     package: '@atlaskit/icon/glyph/editor/code',
   },
+  'editor/collapse': {
+    keywords: ['editor/collapse', 'editorcollapse', 'close', 'icon', 'core'],
+    component: EditorCollapseIcon,
+    componentName: 'EditorCollapseIcon',
+    package: '@atlaskit/icon/glyph/editor/collapse',
+  },
   'editor/date': {
     keywords: ['editor/date', 'editordate', 'calendar', 'icon', 'core'],
     component: EditorDateIcon,
@@ -953,6 +962,12 @@ export default {
     component: EditorErrorIcon,
     componentName: 'EditorErrorIcon',
     package: '@atlaskit/icon/glyph/editor/error',
+  },
+  'editor/expand': {
+    keywords: ['editor/expand', 'editorexpand', 'open', 'icon', 'core'],
+    component: EditorExpandIcon,
+    componentName: 'EditorExpandIcon',
+    package: '@atlaskit/icon/glyph/editor/expand',
   },
   'editor/feedback': {
     keywords: ['editor/feedback', 'editorfeedback', 'announce', 'speaker', 'megaphone', 'icon', 'core'],
@@ -1163,6 +1178,12 @@ export default {
     component: EditorSearchIcon,
     componentName: 'EditorSearchIcon',
     package: '@atlaskit/icon/glyph/editor/search',
+  },
+  'editor/settings': {
+    keywords: ['editor/settings', 'editorsettings', 'options', 'configuration', 'icon', 'core'],
+    component: EditorSettingsIcon,
+    componentName: 'EditorSettingsIcon',
+    package: '@atlaskit/icon/glyph/editor/settings',
   },
   'editor/strikethrough': {
     keywords: ['editor/strikethrough', 'editorstrikethrough', 'strikethrough', 'type', 'font', 'typography', 'icon', 'core'],
