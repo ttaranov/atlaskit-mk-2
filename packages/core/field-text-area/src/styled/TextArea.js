@@ -1,6 +1,6 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors, fontSize } from '@atlaskit/theme';
+import { codeFontFamily, colors, fontSize } from '@atlaskit/theme';
 
 const getPlaceholderStyle = style => css`
   &::-webkit-input-placeholder {
@@ -59,7 +59,7 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-family: inherit;
+  font-family: ${p => (p.isMonospaced ? codeFontFamily() : 'inherit')};
   font-size: ${fontSize}px;
   line-height: ${20 / fontSize()};
   min-width: 0;
