@@ -36,9 +36,9 @@ function noop() {}
 
 export default class OnboardingModal extends Component<Props> {
   headerComponent = (props: Props) => {
-    const { header: headerElement, heading, image: src } = props;
+    const { header: headerElement, image: src } = props;
 
-    const imageElement = <Image alt={heading} src={src} />;
+    const imageElement = <Image alt="" src={src} />;
     const header = makeFnComp(headerElement);
     const image = makeFnComp(imageElement);
 
