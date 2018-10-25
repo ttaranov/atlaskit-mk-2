@@ -1,5 +1,12 @@
 # @atlaskit/field-text-area
 
+## 4.0.11
+- [patch] [4035588"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4035588"
+d):
+
+  - Add isMonospaced prop
+
 ## 4.0.10
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 
