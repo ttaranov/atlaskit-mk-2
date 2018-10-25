@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { cities } from './common/data';
-import AsyncSelect from '../src/AsyncSelect';
+import { AsyncSelect } from '../src';
 
 type State = {
   inputValue: string,
