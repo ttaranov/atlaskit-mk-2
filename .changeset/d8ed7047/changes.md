@@ -1,1 +1,0 @@
-- Avoid unnecessary render cycle in ItemViewer

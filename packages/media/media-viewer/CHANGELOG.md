@@ -1,5 +1,12 @@
 # @atlaskit/media-viewer
 
+## 24.1.10
+- [patch] [4b84e8b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b84e8b"
+d):
+
+  - Avoid unnecessary render cycle in ItemViewer
+
 ## 24.1.9
 - [patch] [a787ee9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a787ee9):
 
