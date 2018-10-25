@@ -1,0 +1,1 @@
+- ED-5415 fix creating invalid media nodes on drag-drop
