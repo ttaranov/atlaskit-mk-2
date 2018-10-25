@@ -293,10 +293,11 @@ export class Card extends Component<CardProps, CardState> {
     } = this.props;
     const { progress, metadata, dataURI, previewOrientation } = this.state;
     const { analyticsContext, onRetry, actions } = this;
+    const status = getCardStatus(this.state, this.props);
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
-          status={getCardStatus(this.state, this.props)}
+          status={status}
           metadata={metadata}
           dataURI={dataURI}
           mediaItemType={identifier.mediaItemType}

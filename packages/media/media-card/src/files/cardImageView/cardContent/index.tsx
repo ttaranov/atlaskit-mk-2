@@ -11,18 +11,32 @@ export interface CardContentProps {
   dataURI?: string;
   loading?: boolean;
   crop?: boolean;
+  readonly previewOrientation?: number;
 }
 
 export class CardContent extends PureComponent<CardContentProps, {}> {
   render() {
-    const { loading, mediaType, mediaItemType, dataURI, crop } = this.props;
+    const {
+      loading,
+      mediaType,
+      mediaItemType,
+      dataURI,
+      crop,
+      previewOrientation,
+    } = this.props;
 
     if (loading) {
       return <CardLoading mediaItemType={mediaItemType} />;
     }
 
     if (shouldDisplayImageThumbnail(dataURI, mediaType)) {
-      return <MediaImage dataURI={dataURI} crop={crop} />;
+      return (
+        <MediaImage
+          dataURI={dataURI}
+          crop={crop}
+          previewOrientation={previewOrientation}
+        />
+      );
     } else {
       return null;
     }
