@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.1.6
+- [patch] [6201223"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6201223"
+d):
+
+  - Add examples.
+
 ## 87.1.5
 - [patch] [1662ae0"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1662ae0"
