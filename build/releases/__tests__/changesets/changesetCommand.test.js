@@ -1,21 +1,25 @@
 // @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
-import { changesetCommand } from '../../changeset';
-import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
-import createChangesetCommit from '../../changeset/createChangesetCommit';
 import {
   askCheckboxPlus,
   askList,
   askConfirm,
   askQuestion,
 } from '@atlaskit/build-utils/cli';
-import fs from 'fs';
+import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
+const git = require('@atlaskit/build-utils/git');
+
+import { changesetCommand } from '../../changeset';
+import { initializeCommand } from '../../initialize';
+import writeChangeset from '../../changeset/writeChangeset';
 
 jest.mock('@atlaskit/build-utils/logger');
 jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
-jest.mock('../../changeset/createChangesetCommit');
+jest.mock('../../changeset/writeChangeset');
+writeChangeset.mockImplementation(() => Promise.resolve('abcdefg'));
+git.commit.mockImplementation(() => Promise.resolve(true));
 
 // This is some sad flow hackery
 const unsafeGetChangedPackagesSinceMaster: any = getChangedPackagesSinceMaster;
@@ -62,7 +66,7 @@ describe('Changesets', () => {
       releases: [{ name: 'pkg-a', type: 'patch' }],
       dependents: [],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -81,7 +85,7 @@ describe('Changesets', () => {
         { name: 'pinned-dep', type: 'patch', dependencies: ['depended-upon'] },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -101,7 +105,7 @@ describe('Changesets', () => {
         { name: 'tilde-dep', type: 'patch', dependencies: ['depended-upon'] },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -122,7 +126,7 @@ describe('Changesets', () => {
         { name: 'tilde-dep', type: 'patch', dependencies: ['depended-upon'] },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -143,7 +147,7 @@ describe('Changesets', () => {
         { name: 'pkg-c', type: 'patch', dependencies: ['pkg-b'] },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
 
@@ -165,7 +169,23 @@ describe('Changesets', () => {
         { name: 'pkg-b', type: 'patch', dependencies: ['pkg-c', 'pkg-a'] },
       ],
     };
-    const call = createChangesetCommit.mock.calls[0][0];
+    const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
+  });
+  it('should commit when the commit flag is passed in', async () => {
+    const cwd = await copyFixtureIntoTempDir(
+      __dirname,
+      'simple-project-custom-config',
+    );
+
+    mockUserResponses({ releases: { 'pkg-a': 'patch' } });
+    const cs = await changesetCommand({ cwd, commit: true });
+
+    const expectedChangeset = {
+      summary: 'summary message mock',
+      releases: [{ name: 'pkg-a', type: 'patch' }],
+      dependents: [],
+    };
+    expect(git.add).toHaveBeenCalledTimes(1);
   });
 });

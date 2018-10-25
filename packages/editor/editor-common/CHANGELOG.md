@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 20.1.5
+- [patch] [f271431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f271431):
+
+  ED-5179: fix context menu when table has scroll
+
 ## 20.1.4
 - [patch] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
 

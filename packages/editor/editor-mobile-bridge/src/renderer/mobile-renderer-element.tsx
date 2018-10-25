@@ -42,6 +42,13 @@ export default class MobileRenderer extends React.Component<
 
   render() {
     try {
+      // If we haven't received a document yet, don't pass null.
+      // We'll get a flash of 'unsupported content'.
+      // Could add a loader here if needed.
+      if (!this.state.document) {
+        return null;
+      }
+
       return (
         <ReactRenderer
           dataProviders={this.providerFactory}

@@ -1,3 +1,5 @@
+import parseChangesetCommit from '@atlaskit/build-releases/changeset/parseChangesetCommit';
+
 function commitsToValues(response) {
   return response.values;
 }
@@ -6,7 +8,7 @@ function commitUrl(user, repo, pullrequestid, page) {
   return `/2.0/repositories/${user}/${repo}/pullrequests/${pullrequestid}/commits?page=${page}`;
 }
 
-export default function getCommits(user, repo, pullrequestid, page = 0) {
+function getCommits(user, repo, pullrequestid, page = 0) {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
@@ -26,4 +28,18 @@ export default function getCommits(user, repo, pullrequestid, page = 0) {
       });
     });
   });
+}
+
+export default function getCommitsThenParse(
+  user,
+  repo,
+  pullrequestid,
+  page = 0,
+) {
+  return getCommits(user, repo, pullrequestid, page).then(commits =>
+    commits
+      .map(commit => commit.message)
+      .filter(commit => !!commit.match(/^CHANGESET: .+?\n/))
+      .map(parseChangesetCommit),
+  );
 }

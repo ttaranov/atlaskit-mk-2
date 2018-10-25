@@ -1,17 +1,17 @@
 import queryString from 'query-string';
-import parseChangesetCommit from '@atlaskit/build-releases/changeset/parseChangesetCommit';
 import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
 
 import getCommits from './get-commits';
+import getFSChangesets from './get-fs-changesets';
 
-const noCommitsMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
+const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
   <p><strong>Warning:</strong> No packages will be released with this PR</p>
   <p>If this was not intentional make sure you have run \`bolt changeset\` if you are trying to release packages.</p>
   <p>See <a href="https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/docs/guides/07-releasing-packages.md" target="_parent">this guide</a> for more details.</p>
 
 </div>`;
-const errorLoadingCommitsMessage = `<div style="color: red; border: 2px solid; padding: 10px; border-radius: 10px; display: inline-block;">
-<p>Error loading commits for this PR</p>
+const errorLoadingChangesetMessage = `<div style="color: red; border: 2px solid; padding: 10px; border-radius: 10px; display: inline-block;">
+<p>Error loading changesets for this PR</p>
 </div>`;
 function releasesToHtmlList(releases) {
   return `<ul>
@@ -44,20 +44,22 @@ const releasedPackagesMessage = releases => {
 };
 
 const { user, repo, pullrequestid } = queryString.parse(window.location.search);
-getCommits(user, repo, pullrequestid)
-  .then(commits => {
-    const changesetCommits = commits
-      .map(commit => commit.message)
-      .filter(commit => !!commit.match(/^CHANGESET: .+?\n/))
-      .map(parseChangesetCommit);
-    if (changesetCommits.length === 0) {
-      document.body.innerHTML = noCommitsMessage;
+
+Promise.all([
+  getCommits(user, repo, pullrequestid),
+  getFSChangesets(user, repo, pullrequestid),
+])
+  .then(([changesetsFromCommits, changesetsFromFS]) => {
+    let changesets = [...changesetsFromCommits, ...changesetsFromFS];
+    if (changesets.length === 0) {
+      document.body.innerHTML = noChangesetMessage;
       return;
     }
-    const releases = flattenChangesets(changesetCommits);
+    const releases = flattenChangesets(changesets);
 
     document.body.innerHTML = releasedPackagesMessage(releases);
   })
-  .catch(() => {
-    document.body.innerHTML = errorLoadingCommitsMessage;
+  .catch(e => {
+    console.error('error in changeset', e);
+    document.body.innerHTML = errorLoadingChangesetMessage;
   });

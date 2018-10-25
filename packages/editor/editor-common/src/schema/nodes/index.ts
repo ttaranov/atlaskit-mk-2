@@ -73,6 +73,7 @@ export {
   TableCell as TableCellDefinition,
   TableHeader as TableHeaderDefinition,
   TableRow as TableRowDefinition,
+  setCellAttrs,
 } from './tableNodes';
 export {
   applicationCard,

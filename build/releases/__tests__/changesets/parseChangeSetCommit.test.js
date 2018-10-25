@@ -1,6 +1,5 @@
 const outdent = require('outdent');
 const parseChangesetCommit = require('../../changeset/parseChangesetCommit');
-const createChangesetCommit = require('../../changeset/createChangesetCommit');
 
 const simpleChangeset = {
   summary: 'This is a summary',
@@ -26,12 +25,6 @@ describe('parseChangesetCommit', () => {
       ${JSON.stringify(simpleChangeset)}
       ---
     `;
-    const parsed = parseChangesetCommit(commitStr);
-    expect(parsed).toEqual(simpleChangeset);
-  });
-
-  it('should return the same json used to create it in createChangesetCommit', () => {
-    const commitStr = createChangesetCommit(simpleChangeset);
     const parsed = parseChangesetCommit(commitStr);
     expect(parsed).toEqual(simpleChangeset);
   });

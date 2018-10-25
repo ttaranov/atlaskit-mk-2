@@ -1,11 +1,16 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
+
 const path = require('path');
 const versionCommand = require('../../version/versionCommand');
 const git = require('@atlaskit/build-utils/git');
 const fs = require('@atlaskit/build-utils/fs');
 const logger = require('@atlaskit/build-utils/logger');
+const writeChangeset = require('../../changeset/writeChangeset');
+const getChangesetBase = require('../../utils/getChangesetBase');
+const fse = require('fs-extra');
+
 // avoid polluting test logs with error message in console
-let consoleError = console.error;
+const consoleError = console.error;
 
 jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/git');
@@ -34,14 +39,10 @@ const simpleChangeset2 = {
   commit: 'b8bb699',
 };
 
-const mockNoChangesetCommits = () => {
-  mockUnpublishedChangesetCommits([]);
-};
+const writeEmptyChangeset = cwd => writeChangesets([], cwd);
 
-const mockUnpublishedChangesetCommits = commits => {
-  git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
-    Promise.resolve(commits),
-  );
+const writeChangesets = (commits, cwd) => {
+  return Promise.all(commits.map(commit => writeChangeset(commit, { cwd })));
 };
 
 describe('running version in a simple project', () => {
@@ -59,7 +60,7 @@ describe('running version in a simple project', () => {
 
   describe('when there are no changeset commits', () => {
     it('should warn if no changeset commits exist', async () => {
-      mockNoChangesetCommits();
+      await writeEmptyChangeset(cwd);
       await versionCommand({ cwd });
       const loggerWarnCalls = logger.warn.mock.calls;
       expect(loggerWarnCalls.length).toEqual(1);
@@ -72,7 +73,7 @@ describe('running version in a simple project', () => {
   describe('When there is a changeset commit', () => {
     it('should bump releasedPackages', async () => {
       const spy = jest.spyOn(fs, 'writeFile');
-      mockUnpublishedChangesetCommits([simpleChangeset2]);
+      await writeChangesets([simpleChangeset2], cwd);
 
       await versionCommand({ cwd });
       const calls = spy.mock.calls;
@@ -85,39 +86,43 @@ describe('running version in a simple project', () => {
       );
     });
 
-    it('should git add the expected files (without changelog)', async () => {
-      mockUnpublishedChangesetCommits([simpleChangeset2]);
-      await versionCommand({ cwd });
+    it('should git add the expected files (without changelog) when commit: true', async () => {
+      await writeChangesets([simpleChangeset2], cwd);
+      await versionCommand({ cwd, commit: true });
 
-      const mocks = git.add.mock.calls;
       const pkgAConfigPath = path.join(cwd, 'packages/pkg-a/package.json');
       const pkgBConfigPath = path.join(cwd, 'packages/pkg-b/package.json');
+      const changesetConfigPath = path.join(cwd, '.changeset');
 
-      // First two are adding the package.json actual versions
-      expect(mocks[0]).toEqual([pkgAConfigPath]);
-      expect(mocks[1]).toEqual([pkgBConfigPath]);
-      // Next is update package.json for A after its B dependency is bumped.
-      expect(mocks[2]).toEqual([pkgAConfigPath]);
+      expect(git.add).toHaveBeenCalledWith(pkgAConfigPath);
+      expect(git.add).toHaveBeenCalledWith(pkgBConfigPath);
+      expect(git.add).toHaveBeenCalledWith(changesetConfigPath);
     });
-
     it('should git add the expected files (with changelog)', async () => {
-      mockUnpublishedChangesetCommits([simpleChangeset2]);
-      await versionCommand({ cwd, changelogs: true });
-      const mocks = git.add.mock.calls;
+      await writeChangesets([simpleChangeset2], cwd);
+      await versionCommand({ cwd, changelogs: true, commit: true });
       const pkgAChangelogPath = path.join(cwd, 'packages/pkg-a/CHANGELOG.md');
       const pkgBChangelogPath = path.join(cwd, 'packages/pkg-b/CHANGELOG.md');
-
-      // First two are adding the package.json actual versions
-      // Next is update package.json for A after its B dependency is bumped.
-      // Final two bump changelogs
-      expect(mocks[3]).toEqual([pkgAChangelogPath]);
-      expect(mocks[4]).toEqual([pkgBChangelogPath]);
+      expect(git.add).toHaveBeenCalledWith(pkgAChangelogPath);
+      expect(git.add).toHaveBeenCalledWith(pkgBChangelogPath);
     });
+  });
+
+  it('should respect config file', async () => {
+    // We have used the atlaskit config. Its two differences are it has skipCI and commit as true
+    let cwd2 = await copyFixtureIntoTempDir(
+      __dirname,
+      'simple-project-custom-config',
+    );
+    await writeChangesets([simpleChangeset2], cwd2);
+    await versionCommand({ cwd: cwd2 });
+
+    expect(git.commit).toHaveBeenCalledTimes(1);
   });
 
   describe('when there are multiple changeset commits', () => {
     it('should bump releasedPackages', async () => {
-      mockUnpublishedChangesetCommits([simpleChangeset, simpleChangeset2]);
+      await writeChangesets([simpleChangeset, simpleChangeset2], cwd);
       const spy = jest.spyOn(fs, 'writeFile');
 
       await versionCommand({ cwd });
@@ -131,7 +136,7 @@ describe('running version in a simple project', () => {
     });
 
     it('should bump multiple released packages if required', async () => {
-      mockUnpublishedChangesetCommits([simpleChangeset, simpleChangeset2]);
+      await writeChangesets([simpleChangeset, simpleChangeset2], cwd);
       const spy = jest.spyOn(fs, 'writeFile');
       await versionCommand({ cwd });
       const calls = spy.mock.calls;
@@ -150,6 +155,13 @@ describe('running version in a simple project', () => {
           version: '1.0.1',
         }),
       );
+    });
+    it('should delete the changeset folders', async () => {
+      await writeChangesets([simpleChangeset, simpleChangeset2], cwd);
+      await versionCommand({ cwd });
+
+      const dirs = await fse.readdir(path.resolve(cwd, '.changeset'));
+      expect(dirs.length).toBe(1);
     });
   });
 });

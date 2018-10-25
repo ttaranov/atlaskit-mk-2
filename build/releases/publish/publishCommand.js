@@ -2,6 +2,8 @@
 const bolt = require('bolt');
 const logger = require('@atlaskit/build-utils/logger');
 const git = require('@atlaskit/build-utils/git');
+const resolveUserConfig = require('../utils/resolveConfig');
+const baseConfig = require('../initialize/initial/config');
 
 function logReleases(status, pkgs) {
   const mappedPkgs = pkgs.map(p => `${p.name}@${p.newVersion}`).join('\n');
@@ -10,10 +12,15 @@ function logReleases(status, pkgs) {
 }
 
 async function run(opts) {
-  const cwd = opts.cwd || process.cwd();
+  let userConfig = await resolveUserConfig({ cwd: opts.cwd });
+  let userPublishOptions =
+    userConfig && userConfig.publishOptions ? userConfig.publishOptions : {};
+
+  let config = { ...baseConfig.publishOptions, ...userPublishOptions, ...opts };
+
   const publishOpts = {};
   // if not public, we wont pass the access, and it works as normal
-  if (opts.publicFlag) publishOpts.access = 'public';
+  if (config.public) publishOpts.access = 'public';
   // Note: we use publishPackages, not publish here as publishPackages returns a list of published
   // and unpublished packages, publish does not (as of bolt 0.21.0)
   const response = await bolt.publishPackages(publishOpts);
