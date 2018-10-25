@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import AsyncSelect from '../src/AsyncSelect';
+import { AsyncSelect } from '../src';
 
 import { cities } from './common/data';
 

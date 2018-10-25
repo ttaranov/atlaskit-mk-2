@@ -13,6 +13,7 @@ import type { DrawerPrimitiveProps } from './types';
 const widths = {
   full: '100vw',
   narrow: 45 * gridSize(),
+  medium: 60 * gridSize(),
   wide: 75 * gridSize(),
 };
 
