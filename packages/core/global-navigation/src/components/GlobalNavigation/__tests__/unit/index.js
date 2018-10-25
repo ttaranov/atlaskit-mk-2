@@ -553,7 +553,9 @@ describe('GlobalNavigation', () => {
           .find('NotificationDrawer')
           .children('iframe')
           .props()
-          .src.endsWith('/home/notificationsDrawer/iframe.html?product=jira'),
+          .src.endsWith(
+            '/home/notificationsDrawer/iframe.html?locale=en&product=jira',
+          ),
       ).toBeTruthy();
     });
 

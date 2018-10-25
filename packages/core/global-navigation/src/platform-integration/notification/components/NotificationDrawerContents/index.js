@@ -53,11 +53,9 @@ class NotificationDrawer extends Component<Props, State> {
   render() {
     const { externalContentUrl, locale, product } = this.props;
     let drawerUrl = externalContentUrl;
-    drawerUrl = locale
-      ? addParamToUrl(externalContentUrl, 'locale', locale)
-      : drawerUrl;
+    drawerUrl = locale ? addParamToUrl(drawerUrl, 'locale', locale) : drawerUrl;
     drawerUrl = product
-      ? addParamToUrl(externalContentUrl, 'product', product)
+      ? addParamToUrl(drawerUrl, 'product', product)
       : drawerUrl;
 
     return (
