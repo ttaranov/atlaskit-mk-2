@@ -8,6 +8,7 @@ import Editor, { EditorProps } from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
 import {
+  cardProvider,
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
@@ -15,10 +16,7 @@ import {
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { EmojiProvider } from '@atlaskit/emoji';
-import {
-  editorCardProvider,
-  Provider as SmartCardProvider,
-} from '@atlaskit/smart-card';
+import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
@@ -155,7 +153,7 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
               allowGapCursor={true}
               allowTemplatePlaceholders={{ allowInserting: true }}
               UNSAFE_cards={{
-                provider: Promise.resolve(editorCardProvider),
+                provider: Promise.resolve(cardProvider),
               }}
               allowStatus={true}
               {...providers}
