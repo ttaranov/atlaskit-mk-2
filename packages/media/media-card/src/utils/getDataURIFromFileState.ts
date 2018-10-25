@@ -4,7 +4,7 @@ import { getOrientation } from '@atlaskit/media-ui';
 
 export interface FilePreview {
   src?: string;
-  orientation: number; // TODO: make optional
+  orientation?: number;
 }
 
 export const getDataURIFromFileState = async (
@@ -15,17 +15,14 @@ export const getDataURIFromFileState = async (
     state.status === 'failed-processing' ||
     !state.preview
   ) {
-    return {
-      src: undefined,
-      orientation: 1,
-    };
+    return {};
   }
   const type = state.preview.blob.type;
   const blob = state.preview.blob;
   const mediaType = getMediaTypeFromMimeType(type);
 
   if (mediaType === 'image') {
-    const orientation = await getOrientation(blob);
+    const orientation = await getOrientation(blob); // TODO: admit blob
     const src = URL.createObjectURL(blob);
 
     return {
@@ -42,12 +39,8 @@ export const getDataURIFromFileState = async (
 
     return {
       src,
-      orientation: 1,
     };
   }
 
-  return {
-    src: undefined,
-    orientation: 1,
-  };
+  return {};
 };
