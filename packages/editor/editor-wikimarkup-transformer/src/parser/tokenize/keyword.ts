@@ -26,7 +26,14 @@ const formatterKeywordTokenMap = {
 };
 
 const macroKeywordTokenMap = {
-  '{': TokenType.MACRO,
+  '{adf': TokenType.ADF_MACRO,
+  '{anchor': TokenType.ANCHOR_MACRO,
+  '{code': TokenType.CODE_MACRO,
+  '{quote': TokenType.QUOTE_MACRO,
+  '{noformat': TokenType.NOFORMAT_MACRO,
+  '{panel': TokenType.PANEL_MACRO,
+  '{color': TokenType.COLOR_MACRO,
+  '{loremipsum': TokenType.LOREM_MACRO,
 };
 
 /**

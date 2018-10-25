@@ -68,10 +68,6 @@ this is a text as well{panel}`,
 this is a text as well`,
     ],
     [
-      'should render unsupported macro as bodiedExtension',
-      'this is {unknown}no macro{unknown}',
-    ],
-    [
       'should transform h1 to Bold and Uppercase under blockquote',
       '{quote}h1. header one{quote}',
     ],

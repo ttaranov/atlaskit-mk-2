@@ -25,12 +25,15 @@ import { table } from './table';
 import { tripleDashSymbol } from './triple-dash-symbol';
 
 export enum TokenType {
-  MACRO = 'MACRO',
-  PANEL = 'PANEL',
+  ADF_MACRO = 'ADF_MACRO', // {adf}
+  ANCHOR_MACRO = 'ANCHOR_MACRO', // {anchor}
+  CODE_MACRO = 'CODE_MACRO', // {code}
+  QUOTE_MACRO = 'QUOTE_MACRO', // {quote}
+  NOFORMAT_MACRO = 'NOFORMAT_MACRO', // {noformat}
+  PANEL_MACRO = 'PANEL_MACRO', // {panel}
+  COLOR_MACRO = 'COLOR_MACRO', // {color}
+  LOREM_MACRO = 'LOREM_MACRO', // {loremipsum}
   QUOTE = 'QUOTE',
-  CODE = 'CODE',
-  NOFORMAT = 'NOFORMAT',
-  COLOR = 'COLOR',
   STRING = 'STRING',
   LINK_FORMAT = 'LINK_FORMAT',
   LINK_TEXT = 'LINK_TEXT',
@@ -102,7 +105,14 @@ const tokenToTokenParserMapping: {
   [TokenType.TABLE]: table,
   [TokenType.EMOJI]: emoji,
   [TokenType.MENTION]: mention,
-  [TokenType.MACRO]: macro,
+  [TokenType.ADF_MACRO]: macro,
+  [TokenType.ANCHOR_MACRO]: macro,
+  [TokenType.CODE_MACRO]: macro,
+  [TokenType.QUOTE_MACRO]: macro,
+  [TokenType.NOFORMAT_MACRO]: macro,
+  [TokenType.PANEL_MACRO]: macro,
+  [TokenType.COLOR_MACRO]: macro,
+  [TokenType.LOREM_MACRO]: macro,
 };
 
 export function parseToken(

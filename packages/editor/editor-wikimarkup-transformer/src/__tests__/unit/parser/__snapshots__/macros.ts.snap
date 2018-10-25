@@ -583,35 +583,6 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Macros should render unsupported macro as bodiedExtension 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "text": "this is ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-    Object {
-      "attrs": Object {
-        "extensionKey": "unknown",
-        "extensionType": "com.atlassian.jira.macro",
-        "layout": "default",
-        "parameters": Object {
-          "rawAttrs": undefined,
-        },
-        "text": "no macro",
-      },
-      "type": "extension",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
 exports[`JIRA wiki markup - Macros should split nodes if there is more than one level of depth 1`] = `
 Object {
   "content": Array [
