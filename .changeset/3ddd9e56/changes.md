@@ -1,0 +1,1 @@
+- Removed wrapping div from around selects as it is no longer needed when using the latest inline-dialog component.
