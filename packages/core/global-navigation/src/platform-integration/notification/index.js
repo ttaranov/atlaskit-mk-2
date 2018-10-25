@@ -14,8 +14,8 @@ const notificationIntegration = (
   locale?: string,
   product?: string,
   refreshRate?: number,
-  onCountUpdated: () => void,
-  onCountUpdating: () => void,
+  onCountUpdated: ({ newCount?: number }) => void,
+  onCountUpdating: ({ visibilityChangesSinceTimer?: number | void }) => {},
 ) =>
   fabricNotificationLogUrl && cloudId
     ? {
@@ -46,8 +46,8 @@ const notificationIntegration = (
     : {
         badge: null,
         notificationDrawerContents: null,
-        onNotificationDrawerOpen: Function.prototype,
-        onNotificationDrawerClose: Function.prototype,
+        onNotificationDrawerOpen: () => {},
+        onNotificationDrawerClose: () => {},
       };
 
 export default notificationIntegration;

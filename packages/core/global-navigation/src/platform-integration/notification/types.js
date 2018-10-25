@@ -3,8 +3,8 @@
 import type { Element } from 'react';
 
 export type NotificationIntegration = {|
-  badge: () => Element<*> | null,
-  notificationDrawerContents: () => Element<*> | null,
+  badge: ?() => Element<*>,
+  notificationDrawerContents: ?() => Element<*>,
   onNotificationDrawerOpen: () => void,
   onNotificationDrawerClose: () => void,
 |};
