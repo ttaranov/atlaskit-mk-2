@@ -75,4 +75,14 @@ describe('Drawer primitive', () => {
 
     expect(wrapper.getDOMNode()).not.toBe(null);
   });
+
+  it('should render with medium width', () => {
+    const props = { ...commonProps, width: 'medium' };
+    const wrapper = mount(
+      <DrawerPrimitive {...props}>
+        <DrawerContent />
+      </DrawerPrimitive>,
+    );
+    expect(wrapper.find(DrawerPrimitive).props().width).toBe('medium');
+  });
 });

@@ -9,7 +9,7 @@ export type BaseProps = {
   /** Icon to be rendered in your drawer as a component, if available */
   icon?: ComponentType<*>,
   /** Available drawer sizes */
-  width: 'full' | 'narrow' | 'wide',
+  width: 'full' | 'medium' | 'narrow' | 'wide',
 };
 export type DrawerPrimitiveProps = BaseProps & {
   onClose?: (SyntheticMouseEvent<*>) => void,
