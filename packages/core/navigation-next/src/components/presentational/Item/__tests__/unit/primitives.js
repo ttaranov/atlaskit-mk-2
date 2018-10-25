@@ -11,98 +11,22 @@ class TestComponent extends Component<ItemRenderComponentProps, {}> {
 }
 
 describe('<ItemPrimitive/>', () => {
-  it('should fetch component style', () => {
-    const props = {
-      isFocused: false,
-      theme: {
-        context: 'default',
-        mode: ({
-          item: jest.fn().mockReturnValue({
-            default: {},
-          }),
-        }: any),
-      },
-      component: TestComponent,
-    };
+  let defaultProps;
 
-    const wrapper = shallow(<ItemPrimitive {...props} />);
-
-    expect(props.theme.mode.item).toHaveBeenCalledTimes(1);
-  });
-
-  it('should render only component prop if present', () => {
-    const props = {
-      isFocused: false,
-      theme: {
-        context: 'default',
-        mode: ({
-          item: jest.fn().mockReturnValue({
-            default: {},
-          }),
-        }: any),
-      },
-      component: TestComponent,
-    };
-
-    const wrapper = mount(<ItemPrimitive {...props} />);
-
-    expect(wrapper.find(TestComponent).length).toBe(1);
-    expect(wrapper.find('a').length).toBe(0);
-  });
-
-  it('should pass all props and innerRef as ref prop to component if present', () => {
-    const props = {
-      isFocused: false,
-      theme: {
-        context: 'default',
-        mode: ({
-          item: jest.fn().mockReturnValue({
-            default: {},
-          }),
-        }: any),
-      },
-      component: TestComponent,
-      //apparently functional components shouldn't be allowed to have innerRefs, check this later
-      innerRef: undefined,
-    };
-
-    const wrapper = mount(<ItemPrimitive {...props} />);
-    const componentWrapper = wrapper.find(TestComponent);
-
-    expect(componentWrapper.props()).toEqual(expect.objectContaining(props));
-    expect(componentWrapper.prop('ref')).toEqual(props.innerRef);
-  });
-
-  it('should render an anchor element if href prop is present', () => {
-    const props = {
-      isFocused: false,
-      theme: {
-        context: 'default',
-        mode: ({
-          item: jest.fn().mockReturnValue({
-            default: {},
-          }),
-        }: any),
-      },
-      href: '<a>test</a>',
-    };
-
-    const wrapper = mount(<ItemPrimitive {...props} />);
-
-    expect(wrapper.find('a').length).toBe(1);
-  });
-
-  it('should pass expected props to anchor if href prop is present', () => {
-    const props = {
+  beforeEach(() => {
+    defaultProps = {
       after: undefined,
       before: undefined,
       component: undefined,
-      href: '<a>test</a>',
+      href: undefined,
       id: undefined,
       index: undefined,
       //apparently functional components shouldn't be allowed to have innerRefs, check this later
       innerRef: undefined,
       isSelected: false,
+      isActive: false,
+      isHover: false,
+      styles: () => {},
       onClick: () => {},
       spacing: 'default',
       styles: undefined,
@@ -119,15 +43,52 @@ describe('<ItemPrimitive/>', () => {
         }: any),
       },
     };
+  });
 
-    const wrapper = mount(<ItemPrimitive {...props} />);
+  it('should fetch component style', () => {
+    const wrapper = shallow(<ItemPrimitive {...defaultProps} />);
+
+    expect(defaultProps.theme.mode.item).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render only component prop if present', () => {
+    defaultProps.component = TestComponent;
+
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+
+    expect(wrapper.find(TestComponent).length).toBe(1);
+    expect(wrapper.find('a').length).toBe(0);
+  });
+
+  it('should pass all props and innerRef as ref prop to component if present', () => {
+    defaultProps.component = TestComponent;
+
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+    const componentWrapper = wrapper.find(TestComponent);
+
+    expect(componentWrapper.props()).toEqual(
+      expect.objectContaining(wrapper.props()),
+    );
+    expect(componentWrapper.prop('ref')).toEqual(wrapper.prop('innerRef'));
+  });
+
+  it('should render an anchor element if href prop is present', () => {
+    defaultProps.href = '<a>test</test>';
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+
+    expect(wrapper.find('a').length).toBe(1);
+  });
+
+  it('should pass expected props to anchor if href prop is present', () => {
+    defaultProps.href = '<a>test</test>';
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
 
     const anchorWrapper = wrapper.find('a');
-    expect(anchorWrapper.prop('href')).toBe(props.href);
-    expect(anchorWrapper.prop('onClick')).toBe(props.onClick);
-    expect(anchorWrapper.prop('target')).toBe(props.target);
-    expect(anchorWrapper.prop('innerRef')).toBe(props.innerRef);
-    expect(anchorWrapper.prop('ref')).toBe(props.innerRef);
+    expect(anchorWrapper.prop('href')).toBe(defaultProps.href);
+    expect(anchorWrapper.prop('onClick')).toBe(defaultProps.onClick);
+    expect(anchorWrapper.prop('target')).toBe(defaultProps.target);
+    expect(anchorWrapper.prop('innerRef')).toBe(defaultProps.innerRef);
+    expect(anchorWrapper.prop('ref')).toBe(defaultProps.innerRef);
   });
 
   // it should fetch component style |done|
@@ -135,7 +96,7 @@ describe('<ItemPrimitive/>', () => {
   // if CustomComponent is present send this.props to <ComponentSwitch/> |done|
 
   // if href is present send it in "as" prop to <ComponentSwitch/> |done|
-  // if href is present send { href, onClick, target, innerRef } to <ComponentSwitch/>
+  // if href is present send { href, onClick, target, innerRef } to <ComponentSwitch/> |done|
 
   // if onclick is present send it in "as" prop to <ComponentSwitch/>
   // if onclick is present send {onclick, innerRef} to <ComponentSwitch />
