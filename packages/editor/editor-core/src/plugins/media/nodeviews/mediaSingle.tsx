@@ -162,9 +162,11 @@ export default class MediaSingleNode extends Component<
       height = DEFAULT_HEIGHT;
     }
 
+    const cardWidth = this.props.width;
+    const cardHeight = height / width * cardWidth;
     const cardDimensions = {
-      width: `${this.props.width}px`,
-      height: '100%',
+      width: `${cardWidth}px`,
+      height: `${cardHeight}px`,
     };
 
     const props = {
