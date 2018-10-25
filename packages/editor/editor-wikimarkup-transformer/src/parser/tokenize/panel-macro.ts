@@ -4,7 +4,7 @@ import { commonMacro } from './common-macro';
 import { parseString } from '../text';
 import { parseAttrs } from '../utils/attrs';
 import { normalizePMNodes } from '../utils/normalize';
-import { getPanelType } from '../macro/panel-type';
+import { getPanelType } from '../utils/panel-type';
 import { title } from '../utils/title';
 
 const allowedNodeType = ['paragraph', 'heading', 'orderedList', 'bulletList'];

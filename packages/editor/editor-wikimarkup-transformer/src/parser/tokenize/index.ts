@@ -13,7 +13,6 @@ import { inserted } from './inserted';
 import { linkFormat } from './link-format';
 import { linkText } from './link-text';
 import { list } from './list';
-import { macro } from './macro';
 import { mention } from './mention';
 import { monospace } from './monospace';
 import { quadrupleDashSymbol } from './quadruple-dash-symbol';

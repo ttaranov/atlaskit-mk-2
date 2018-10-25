@@ -1,9 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { Token, TokenErrCallback } from './';
 
-// {panel:bgColor=red}This is a panel{panel}
-const MACRO_REGEXP_OPENING = /^{(\w+)(?::([^{\n]*))?}/;
-
 export interface MacroOption {
   /** The opening symbol regex */
   opening: RegExp;

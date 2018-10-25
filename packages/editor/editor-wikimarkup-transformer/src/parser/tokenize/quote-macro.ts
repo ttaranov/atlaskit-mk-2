@@ -18,7 +18,7 @@ export function quoteMacro(
   });
 }
 
-const rawContentProcessor = (
+export const rawContentProcessor = (
   rawAttrs: string,
   rawContent: string,
   length: number,
