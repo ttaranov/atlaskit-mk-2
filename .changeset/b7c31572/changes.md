@@ -1,0 +1,1 @@
+- Make sure portal binds to DOM only
