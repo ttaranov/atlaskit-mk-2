@@ -60,7 +60,8 @@ export default class MediaSingleNode extends Component<
       this.props.node.attrs.width !== nextProps.node.attrs.width ||
       this.props.selected() !== nextProps.selected() ||
       this.props.node.attrs.layout !== nextProps.node.attrs.layout ||
-      this.props.width !== nextProps.width
+      this.props.width !== nextProps.width ||
+      this.props.lineLength !== nextProps.lineLength
     ) {
       return true;
     }
