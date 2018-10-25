@@ -62,6 +62,9 @@ Array [
         "Section": [Function],
         "SectionHeading": [Function],
         "Separator": [Function],
+        "SortableGroup": [Function],
+        "SortableItem": [Function],
+        "SortableSection": [Function],
         "Switcher": [Function],
         "Wordmark": [Function],
       }
@@ -90,6 +93,9 @@ Array [
         "Section": [Function],
         "SectionHeading": [Function],
         "Separator": [Function],
+        "SortableGroup": [Function],
+        "SortableItem": [Function],
+        "SortableSection": [Function],
         "Switcher": [Function],
         "Wordmark": [Function],
       }
