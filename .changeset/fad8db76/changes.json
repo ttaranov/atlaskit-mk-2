@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/form", "type": "patch" }],
+  "dependents": []
+}
