@@ -3,14 +3,31 @@
 import { Component } from 'react';
 import { withNavigationViewController } from '../../../../src';
 
-class ViewRegistrarBase extends Component<{
+import getAnalyticsAttributes from './get-analytics-attributes';
+
+import type { ViewComponentProps } from './types';
+
+type Props = ViewComponentProps & {
   navigationViewController: *,
-  view: *,
-}> {
+};
+class ViewRegistrarBase extends Component<Props> {
   componentDidMount() {
-    const { navigationViewController, view } = this.props;
-    if (!navigationViewController.views[view.id]) {
-      navigationViewController.addView(view);
+    const {
+      navigationViewController,
+      viewId,
+      getItemsFactory,
+      type,
+      getAnalyticsAttributes: customGetAnalyticsAttributes,
+    } = this.props;
+
+    if (!navigationViewController.views[viewId]) {
+      navigationViewController.addView({
+        getAnalyticsAttributes:
+          customGetAnalyticsAttributes || getAnalyticsAttributes,
+        getItems: getItemsFactory(),
+        id: viewId,
+        type,
+      });
     }
   }
 
@@ -19,4 +36,4 @@ class ViewRegistrarBase extends Component<{
   }
 }
 
-export const ViewRegistrar = withNavigationViewController(ViewRegistrarBase);
+export default withNavigationViewController(ViewRegistrarBase);

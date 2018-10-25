@@ -9,6 +9,8 @@ import { ToggleStateless } from '@atlaskit/toggle';
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
 import { DefaultGlobalNavigation, ProjectSwitcher } from './shared/components';
+import RootViews from './shared/views/root';
+import ContainerViews from './shared/views/container';
 
 import {
   BacklogView,
@@ -53,6 +55,8 @@ export default class App extends Component<
           >
             <SortableItemsProvider>
               <div style={{ padding: 40 }}>
+                <RootViews />
+                <ContainerViews />
                 <Switch>
                   <Route path="/projects/:projectId" component={BacklogView} />
                   <Route path="/projects" component={ProjectsView} />
