@@ -1,0 +1,1 @@
+- Allow constrolled dynamic expansion or table rows, add isDefaultExpanded flag to control default expansion state
