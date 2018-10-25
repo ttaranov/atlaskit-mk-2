@@ -1,1 +1,2 @@
-- Allow constrolled dynamic expansion or table rows, add isDefaultExpanded flag to control default expansion state
+* added isDefaultExpanded flag to control default expansion state
+* Row component now takes in isExpanded prop to control the expansion state

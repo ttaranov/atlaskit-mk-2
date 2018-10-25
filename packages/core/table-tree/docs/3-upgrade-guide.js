@@ -10,7 +10,6 @@ In the v5 release was added ability to control expansion state of the tree-table
 ## Changes to the Props
 
 ## Row
-- v4 - **isExpanded**: Property was ignored due to a bug.
 - v5 - **isExpanded**: If set to true or false, turns component into stateless, that requires to control it's behavior with onExpand / onCollapse handlers.
 - v5 - **isDefaultExpanded**: New property that allows to control default expansion state of the row.
 
