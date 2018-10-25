@@ -1,5 +1,10 @@
 # @atlaskit/media-ui
 
+## 7.1.1
+- [patch] [1aa57ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aa57ab):
+
+  Clean up for media up and new task converter for smart cards
+
 ## 7.1.0
 - [minor] Added task converter  [8678076](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8678076)
 

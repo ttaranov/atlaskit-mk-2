@@ -1,5 +1,13 @@
 # @atlaskit/smart-card
 
+## 8.6.0
+- [minor] [1aa57ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aa57ab):
+
+  Clean up for media up and new task converter for smart cards
+- [minor] [d310628](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d310628):
+
+  Added a converter for atlassian:task type
+
 ## 8.5.2
 - [patch] ED-5439: add block smart cards, toolbar switcher [5f8bdfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f8bdfe)
 
