@@ -391,10 +391,9 @@ export const applicationCard = (attrs: ApplicationCardAttributes) =>
   nodeFactory(sampleSchema.nodes.applicationCard, attrs);
 export const placeholder = (attrs: { text: string }) =>
   nodeFactory(sampleSchema.nodes.placeholder, attrs)();
-export const layoutSection = (
-  attrs: { layoutType: string } = { layoutType: 'two-equal' },
-) => nodeFactory(sampleSchema.nodes.layoutSection, attrs);
-export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
+export const layoutSection = nodeFactory(sampleSchema.nodes.layoutSection);
+export const layoutColumn = (attrs: { width: number }) =>
+  nodeFactory(sampleSchema.nodes.layoutColumn, attrs);
 export const inlineCard = (attrs: CardAttributes) =>
   nodeFactory(sampleSchema.nodes.inlineCard, attrs);
 export const blockCard = (attrs: CardAttributes) =>

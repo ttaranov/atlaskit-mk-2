@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Node as PMNode } from 'prosemirror-model';
 import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import { layoutSection, layoutColumn } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
@@ -12,6 +11,7 @@ import {
   LayoutState,
 } from './pm-plugins/main';
 import { buildToolbar } from './toolbar';
+import { createDefaultLayoutSection } from './actions';
 
 export { pluginKey };
 
@@ -48,8 +48,7 @@ export default {
           <LayoutTwoEqualIcon label={formatMessage(messages.columns)} />
         ),
         action(insert, state) {
-          const { layoutSection } = state.schema.nodes;
-          return insert(layoutSection.createAndFill() as PMNode);
+          return insert(createDefaultLayoutSection(state));
         },
       },
     ],
