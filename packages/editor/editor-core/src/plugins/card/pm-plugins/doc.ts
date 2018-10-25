@@ -1,10 +1,12 @@
+import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
+
 import { pluginKey } from './main';
 import { CardPluginState, Request, CardAppearance } from '../types';
-import { Command } from '../../../types';
-import { processRawValue } from '../../../utils';
-import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
 import { resolveCard, queueCards } from './actions';
 import { appearanceForNodeType } from '../utils';
+
+import { Command } from '../../../types';
+import { processRawValue, getStepRange } from '../../../utils';
 
 export const replaceQueuedUrlWithCard = (
   url: string,
@@ -49,26 +51,6 @@ export const replaceQueuedUrlWithCard = (
 
   dispatch(resolveCard(url)(tr));
   return true;
-};
-
-const getStepRange = (
-  transaction: Transaction,
-): { from: number; to: number } | null => {
-  let from = -1;
-  let to = -1;
-
-  transaction.steps.forEach(step => {
-    step.getMap().forEach((_oldStart, _oldEnd, newStart, newEnd) => {
-      from = newStart < from || from === -1 ? newStart : from;
-      to = newEnd < to || to === -1 ? newEnd : to;
-    });
-  });
-
-  if (from !== -1) {
-    return { from, to };
-  }
-
-  return null;
 };
 
 export const queueCardsFromChangedTr = (

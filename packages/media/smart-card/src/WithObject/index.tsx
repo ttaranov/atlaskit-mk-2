@@ -116,6 +116,8 @@ export function WithObject(props: WithObjectProps) {
   return (
     <Context.Consumer>
       {clientFromContext => {
+        // TODO: Remove the last fallback - this is a temporary workaround for React context not penetrating the <Editor />
+        //       https://product-fabric.atlassian.net/browse/ED-5565
         const client =
           clientFromProps || clientFromContext || Provider.defaultClient;
         if (!client) {

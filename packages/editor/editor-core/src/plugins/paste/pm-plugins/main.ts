@@ -17,7 +17,10 @@ import { transformSliceToRemoveOpenBodiedExtension } from '../../extension/actio
 import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
 import { pluginKey as tableStateKey } from '../../table/pm-plugins/main';
-import { transformSliceToRemoveOpenTable } from '../../table/utils';
+import {
+  transformSliceToRemoveOpenTable,
+  transformSliceToRemoveNumberColumn,
+} from '../../table/utils';
 import { transformSliceToAddTableHeaders } from '../../table/actions';
 import {
   handlePasteIntoTaskAndDecision,
@@ -207,6 +210,9 @@ export function createPlugin(
         return false;
       },
       transformPasted(slice) {
+        // remove table number column if its part of the node
+        slice = transformSliceToRemoveNumberColumn(slice, schema);
+
         /** If a partial paste of table, paste only table's content */
         slice = transformSliceToRemoveOpenTable(slice, schema);
 

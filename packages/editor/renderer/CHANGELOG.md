@@ -1,5 +1,12 @@
 # @atlaskit/renderer
 
+## 29.2.1
+- [patch] [8636991"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8636991"
+d):
+
+  - ED-5518: fix numbered column with merged rows
+
 ## 29.2.0
 - [minor] Don't open external links in new window [2bb95c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2bb95c0)
 

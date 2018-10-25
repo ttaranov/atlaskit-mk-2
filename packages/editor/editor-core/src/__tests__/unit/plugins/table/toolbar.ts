@@ -79,14 +79,14 @@ describe('table toolbar', () => {
         it('returns false if table is nested in Columns', () => {
           const { editorView } = editor(
             doc(
-              layoutSection()(
-                layoutColumn(
+              layoutSection(
+                layoutColumn({ width: 50 })(
                   table()(
                     tr(th()(p('{<>}1')), th()(p('2'))),
                     tr(td()(p('3')), td()(p('4'))),
                   ),
                 ),
-                layoutColumn(p('text')),
+                layoutColumn({ width: 50 })(p('text')),
               ),
             ),
           );

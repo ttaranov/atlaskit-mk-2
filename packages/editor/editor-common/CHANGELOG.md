@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 20.1.6
+- [patch] [1662ae0"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1662ae0"
+d):
+
+  - ED-5440 convert sections to use percentages
+
 ## 20.1.5
 - [patch] [f271431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f271431):
 

@@ -1,6 +1,6 @@
 import { Node as PMNode, Schema, Slice, Fragment } from 'prosemirror-model';
 import { flatten } from 'prosemirror-utils';
-import { flatmap } from '../../../utils/slice';
+import { flatmap, mapSlice } from '../../../utils/slice';
 
 // lifts up the content of each cell, returning an array of nodes
 export const unwrapContentFromTable = (
@@ -86,3 +86,29 @@ export const transformSliceToRemoveOpenTable = (
 
   return slice;
 };
+
+export function transformSliceToRemoveNumberColumn(
+  slice: Slice,
+  schema: Schema,
+): Slice {
+  return mapSlice(slice, maybeTable => {
+    if (
+      maybeTable.type === schema.nodes.table &&
+      maybeTable.attrs.isNumberColumnEnabled
+    ) {
+      const rows: PMNode[] = [];
+      maybeTable.forEach(row => {
+        const cells: PMNode[] = [];
+
+        row.forEach((cell, _, index) => {
+          if (index > 0) {
+            cells.push(cell);
+          }
+        });
+        rows.push(row.copy(Fragment.from(cells)));
+      });
+      return maybeTable.copy(Fragment.from(rows));
+    }
+    return maybeTable;
+  });
+}

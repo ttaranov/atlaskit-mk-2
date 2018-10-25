@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 87.1.6
+- [patch] [6201223"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6201223"
+d):
+
+  - Add examples.
+
+## 87.1.5
+- [patch] [1662ae0"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1662ae0"
+d):
+
+  - ED-5440 convert sections to use percentages
+
+## 87.1.4
+- [patch] [d00326b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d00326b):
+
+  Prevent delete-button from disappearing when the mouse is moved
+
 ## 87.1.3
 - [patch] [f271431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f271431):
 
