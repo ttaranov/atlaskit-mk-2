@@ -2,8 +2,12 @@
 
 import type { ComponentType, ElementConfig } from 'react';
 
-import type { SortableSectionProps as SortableSectionPropsBase } from '../components/presentational/SortableSection/types';
-import { HeaderSection, MenuSection } from '../';
+import {
+  HeaderSection,
+  MenuSection,
+  SortableGroup,
+  SortableSection,
+} from '../';
 import type { ViewData } from '../../src/view-controller/types';
 
 /**
@@ -38,8 +42,11 @@ export type SectionProps = SharedGroupTypeProps & {
   shouldGrow?: boolean,
 };
 
+export type SortableGroupProps = SharedGroupTypeProps &
+  ElementConfig<typeof SortableGroup>;
+
 export type SortableSectionProps = SharedGroupTypeProps &
-  SortableSectionPropsBase & {
+  ElementConfig<typeof SortableSection> & {
     nestedGroupKey: string,
   };
 

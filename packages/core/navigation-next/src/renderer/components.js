@@ -13,6 +13,8 @@ import MenuSectionComponent from '../components/presentational/MenuSection';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
 import Separator from '../components/presentational/Separator';
+import SortableGroupComponent from '../components/presentational/SortableGroup';
+import SortableItem from '../components/presentational/SortableItem';
 import SortableSectionComponent from '../components/presentational/SortableSection';
 import Switcher from '../components/presentational/Switcher';
 import Wordmark from '../components/presentational/Wordmark';
@@ -29,6 +31,7 @@ import type {
   MenuSectionProps,
   SectionHeadingProps,
   SectionProps,
+  SortableGroupProps,
   SortableSectionProps,
 } from './types';
 
@@ -86,6 +89,23 @@ const Group = ({
     <GroupComponent heading={heading} hasSeparator={hasSeparator} id={id}>
       <ItemsRenderer items={items} customComponents={customComponents} />
     </GroupComponent>
+  ) : null;
+
+const SortableGroup = ({
+  customComponents,
+  hasSeparator,
+  heading,
+  items,
+  id,
+}: SortableGroupProps) =>
+  items && items.length ? (
+    <SortableGroupComponent
+      heading={heading}
+      hasSeparator={hasSeparator}
+      id={id}
+    >
+      <ItemsRenderer items={items} customComponents={customComponents} />
+    </SortableGroupComponent>
   ) : null;
 
 // Section
@@ -154,11 +174,10 @@ const MenuSection = ({
 
 const SortableSection = ({
   alwaysShowScrollHint = false,
-  groups,
+  customComponents,
   id,
-  itemsMap,
+  items,
   nestedGroupKey,
-  onChange,
   onDragStart,
   onDragUpdate,
   onDragEnd,
@@ -167,22 +186,26 @@ const SortableSection = ({
   styles,
 }: SortableSectionProps) => {
   const key = typeof nestedGroupKey === 'string' ? nestedGroupKey : id;
-  return (
+
+  return items.length ? (
     <SortableSectionComponent
       alwaysShowScrollHint={alwaysShowScrollHint}
       id={id}
-      itemsMap={itemsMap}
-      groups={groups}
-      onChange={onChange}
       key={key}
+      parentId={parentId}
+      shouldGrow={shouldGrow}
       onDragStart={onDragStart}
       onDragUpdate={onDragUpdate}
       onDragEnd={onDragEnd}
-      parentId={parentId}
-      shouldGrow={shouldGrow}
       styles={styles}
-    />
-  );
+    >
+      {({ className }) => (
+        <div className={className}>
+          <ItemsRenderer items={items} customComponents={customComponents} />
+        </div>
+      )}
+    </SortableSectionComponent>
+  ) : null;
 };
 
 const itemComponents = {
@@ -192,6 +215,7 @@ const itemComponents = {
   GoToItem,
   GroupHeading,
   Item: ConnectedItem,
+  SortableItem,
   SectionHeading,
   Separator,
   Switcher,
@@ -203,6 +227,7 @@ const groupComponents = {
   HeaderSection,
   MenuSection,
   Section,
+  SortableGroup,
   SortableSection,
 };
 

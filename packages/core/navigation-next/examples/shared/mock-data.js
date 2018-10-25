@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
@@ -11,6 +11,8 @@ import { Link, Route } from 'react-router-dom';
 
 import { viewReducerUtils } from '../../src';
 import type { ViewData } from '../../src/view-controller/types';
+
+import SortableIssuesView from './views/sortable-issues';
 
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
@@ -185,34 +187,7 @@ const rootIssues = [
   },
 ];
 
-const defaultSortableGroups = [
-  {
-    type: 'Group',
-    id: 'starred-filters-group',
-    heading: 'Starred filters',
-    itemIds: ['older-than-90-days', 'critical-bugs'],
-  },
-  {
-    type: 'Group',
-    id: 'other-filters-group',
-    heading: 'Other filters',
-    itemIds: [
-      'my-open-issues',
-      'reported-by-me',
-      'all-issues',
-      'open-issues',
-      'done-issues',
-      'viewed-recently',
-      'created-recently',
-      'resolved-recently',
-      'updated-recently',
-    ],
-  },
-];
-const getRootSortableIssues = ({
-  groups = defaultSortableGroups,
-  onSortChange,
-}: *) => () => [
+const getRootSortableIssues = ({ sortableItems, onDragEnd }: *) => () => [
   {
     id: 'root/sortable-issues:header',
     type: 'HeaderSection',
@@ -247,33 +222,36 @@ const getRootSortableIssues = ({
       {
         type: 'SortableSection',
         id: 'section-filters',
-        onChange: onSortChange,
-        itemsMap: {
-          'older-than-90-days': {
-            type: 'Item',
-            text: 'Older than 90 days',
+        onDragEnd,
+        items: [
+          {
+            type: 'SortableGroup',
+            id: 'starred-filters-group',
+            heading: 'Starred filters',
+            items: sortableItems['starred-filters-group'],
           },
-          'critical-bugs': {
-            type: 'Item',
-            text: 'Critical bugs',
+          {
+            type: 'SortableGroup',
+            id: 'other-filters-group',
+            heading: 'Other filters',
+            items: sortableItems['other-filters-group'],
           },
-          'my-open-issues': { type: 'Item', text: 'My open issues' },
-          'reported-by-me': { type: 'Item', text: 'Reported by me' },
-          'all-issues': { type: 'Item', text: 'All issues' },
-          'open-issues': { type: 'Item', text: 'Open issues' },
-          'done-issues': { type: 'Item', text: 'Done issues' },
-          'viewed-recently': { type: 'Item', text: 'Viewed recently' },
-          'created-recently': { type: 'Item', text: 'Created recently' },
-          'resolved-recently': { type: 'Item', text: 'Resolved recently' },
-          'updated-recently': { type: 'Item', text: 'Updated recently' },
-        },
-        groups,
+        ],
       },
     ],
   },
 ];
 
-export const rootViews = [
+type View = {
+  id: string,
+  getItems?: () => Array<*>,
+  type: string,
+  getAnalyticsAttributes: *,
+  viewComponent?: ComponentType<any>,
+  getItemsFactory?: any => () => Array<*>,
+};
+
+export const rootViews: View[] = [
   {
     id: 'root/index',
     getItems: () => rootIndex,
@@ -291,7 +269,7 @@ export const rootViews = [
     getItemsFactory: getRootSortableIssues,
     type: 'product',
     getAnalyticsAttributes: getViewAnalyticsAttributes,
-    sortable: true,
+    viewComponent: SortableIssuesView,
   },
 ];
 

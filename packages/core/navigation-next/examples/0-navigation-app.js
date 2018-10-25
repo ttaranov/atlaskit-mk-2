@@ -16,6 +16,7 @@ import {
   DashboardsView,
   SearchIssuesView,
 } from './shared/routes';
+import { SortableItemsProvider } from './shared/providers/sortable-items-provider';
 
 export default class App extends Component<
   {},
@@ -50,29 +51,31 @@ export default class App extends Component<
             experimental_flyoutOnHover={isFlyoutAvailable}
             globalNavigation={DefaultGlobalNavigation}
           >
-            <div style={{ padding: 40 }}>
-              <Switch>
-                <Route path="/projects/:projectId" component={BacklogView} />
-                <Route path="/projects" component={ProjectsView} />
-                <Route path="/issues/search" component={SearchIssuesView} />
-                <Route path="/" component={DashboardsView} />
-              </Switch>
+            <SortableItemsProvider>
+              <div style={{ padding: 40 }}>
+                <Switch>
+                  <Route path="/projects/:projectId" component={BacklogView} />
+                  <Route path="/projects" component={ProjectsView} />
+                  <Route path="/issues/search" component={SearchIssuesView} />
+                  <Route path="/" component={DashboardsView} />
+                </Switch>
 
-              <p>
-                The search drawer can be opened via the <kbd>/</kbd> keyboard
-                shortcut.
-              </p>
-              <Label label="Toggle flyout on hover (experimental)" />
-              <ToggleStateless
-                isChecked={isFlyoutAvailable}
-                onChange={this.onFlyoutToggle}
-              />
-              <Label label="Toggle debug logger" />
-              <ToggleStateless
-                isChecked={isDebugEnabled}
-                onChange={this.onDebugToggle}
-              />
-            </div>
+                <p>
+                  The search drawer can be opened via the <kbd>/</kbd> keyboard
+                  shortcut.
+                </p>
+                <Label label="Toggle flyout on hover (experimental)" />
+                <ToggleStateless
+                  isChecked={isFlyoutAvailable}
+                  onChange={this.onFlyoutToggle}
+                />
+                <Label label="Toggle debug logger" />
+                <ToggleStateless
+                  isChecked={isDebugEnabled}
+                  onChange={this.onDebugToggle}
+                />
+              </div>
+            </SortableItemsProvider>
           </LayoutManagerWithViewController>
         </NavigationProvider>
       </HashRouter>

@@ -12,6 +12,7 @@ import {
 
 import { containerViews, rootViews } from './mock-data';
 import ShortcutsPlugin from './shortcuts-plugin';
+import { ViewRegistrar } from './views/common/view-registrar';
 
 class SetActiveViewBase extends Component<{
   id: string,
@@ -34,86 +35,17 @@ const SetActiveView = withNavigationUI(
   withNavigationViewController(SetActiveViewBase),
 );
 
-class ViewRegistrarBase extends Component<{
-  navigationViewController: *,
-  view: *,
-}> {
-  componentDidMount() {
-    const { navigationViewController, view } = this.props;
-    if (!navigationViewController.views[view.id]) {
-      navigationViewController.addView(view);
-    }
-  }
-
-  render() {
-    return null;
-  }
-}
-
-class SortableViewRegistrarBase extends Component<*, *> {
-  state = {
-    groups: undefined,
-  };
-
-  componentDidMount() {
-    this.registerView();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.groups !== this.state.groups ||
-      prevProps.criticalBugsCount !== this.props.criticalBugsCount
-    ) {
-      this.registerView();
-    }
-  }
-
-  // What do we do if the view changes over time?
-  // 1 - Change item properties is fine as they aren't managed by state
-  // 2 - Change group properties: such as itemIds is fine as we control the group state
-  // getDerivedStateFromProps(props, state) {}
-
-  registerView = () => {
-    const { navigationViewController, view } = this.props;
-    const { groups } = this.state;
-    const { onSortChange } = this;
-    const { getItemsFactory, ...rest } = view;
-
-    const getItemsWithSortChange = getItemsFactory({
-      groups,
-      onSortChange,
-    });
-
-    navigationViewController.addView({
-      getItems: getItemsWithSortChange,
-      ...rest,
-    });
-  };
-
-  onSortChange = (groups: *) => {
-    this.setState({ groups });
-  };
-
-  render() {
-    return null;
-  }
-}
-
-const ViewRegistrar = withNavigationViewController(ViewRegistrarBase);
-const SortableViewRegistrar = withNavigationViewController(
-  SortableViewRegistrarBase,
-);
-
 const RootViews = () => (
   <Fragment>
-    {rootViews.map(
-      view =>
-        view.sortable ? (
-          <SortableViewRegistrar key={view.id} view={view} />
-        ) : (
-          <ViewRegistrar key={view.id} view={view} />
-        ),
-    )}
+    {rootViews.map(view => {
+      const { viewComponent: ViewComponent } = view;
+
+      return ViewComponent ? (
+        <ViewComponent key={view.id} view={view} />
+      ) : (
+        <ViewRegistrar key={view.id} view={view} />
+      );
+    })}
   </Fragment>
 );
 const ContainerViews = () => (
