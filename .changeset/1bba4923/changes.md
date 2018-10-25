@@ -1,0 +1,1 @@
+- ED-5600: add icons for new table ux
