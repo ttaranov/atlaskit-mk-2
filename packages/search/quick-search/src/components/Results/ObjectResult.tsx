@@ -51,7 +51,7 @@ export default class ObjectResult extends React.PureComponent<Props> {
       containerName,
       isPrivate,
       objectKey,
-      type = 'object2',
+      type = 'object',
       ...commonResultProps
     } = this.props;
 
