@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "sinon": "^2.2.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",

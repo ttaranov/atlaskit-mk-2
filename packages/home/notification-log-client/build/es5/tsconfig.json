@@ -7,8 +7,6 @@
     "target": "es5",
     "module": "commonjs"
   },
-  "include": [
-    "../../src/**/*.ts",
-    "../../src/**/*.tsx"
-  ]
+  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"],
+  "exclude": ["../../src/**/__tests__/*"]
 }
