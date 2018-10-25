@@ -121,13 +121,168 @@ test('expanding and collapsing', async () => {
     'Chapter 3',
   ]);
 
-  tree.collapseChevron(1).simulate('click');
+  tree
+    .collapseChevron(1)
+    .at(0)
+    .simulate('click');
 
   expect(tree.textOfCellsInColumn(0)).toEqual([
     'Chapter 1',
     'Chapter 2',
     'Chapter 3',
   ]);
+});
+
+test('with isDefaultExpanded property', async () => {
+  const c = (title, children) => ({ title, children });
+  const nestedData = [
+    c('Chapter 1'),
+    c('Chapter 2', [c('Chapter 2.1', [c('Chapter 2.1.1')])]),
+    c('Chapter 3'),
+  ];
+
+  const wrapper = mount(
+    <TableTree>
+      <Rows
+        items={nestedData}
+        render={({ title, children }) => (
+          <Row
+            itemId={title}
+            items={children}
+            hasChildren={children && children.length}
+            isDefaultExpanded
+          >
+            <Cell>{title}</Cell>
+          </Row>
+        )}
+      />
+    </TableTree>,
+  );
+
+  const tree = createTreeHarness(wrapper);
+
+  expect(tree.textOfCellsInColumn(0)).toEqual([
+    'Chapter 1',
+    'Chapter 2',
+    'Chapter 2.1',
+    'Chapter 2.1.1',
+    'Chapter 3',
+  ]);
+});
+
+test('with isExpanded=true property', async () => {
+  const c = (title, children) => ({ title, children });
+  const nestedData = [
+    c('Chapter 1'),
+    c('Chapter 2', [c('Chapter 2.1', [c('Chapter 2.1.1')])]),
+    c('Chapter 3'),
+  ];
+  const onCollapseSpy = jest.fn();
+
+  const wrapper = mount(
+    <TableTree>
+      <Rows
+        items={nestedData}
+        render={({ title, children }) => (
+          <Row
+            itemId={title}
+            items={children}
+            hasChildren={children && children.length}
+            onCollapse={onCollapseSpy}
+            isExpanded
+          >
+            <Cell>{title}</Cell>
+          </Row>
+        )}
+      />
+    </TableTree>,
+  );
+
+  const tree = createTreeHarness(wrapper);
+
+  expect(tree.textOfCellsInColumn(0)).toEqual([
+    'Chapter 1',
+    'Chapter 2',
+    'Chapter 2.1',
+    'Chapter 2.1.1',
+    'Chapter 3',
+  ]);
+
+  tree
+    .collapseChevron(1)
+    .at(0)
+    .simulate('click');
+
+  wrapper.update();
+
+  expect(tree.textOfCellsInColumn(0)).toEqual([
+    'Chapter 1',
+    'Chapter 2',
+    'Chapter 2.1',
+    'Chapter 2.1.1',
+    'Chapter 3',
+  ]);
+  expect(onCollapseSpy).toBeCalledWith(
+    expect.objectContaining({
+      ...c('Chapter 2'),
+      children: expect.any(Array),
+    }),
+    expect.any(Object),
+  );
+});
+
+test('with isExpanded=false property', async () => {
+  const c = (title, children) => ({ title, children });
+  const nestedData = [
+    c('Chapter 1'),
+    c('Chapter 2', [c('Chapter 2.1', [c('Chapter 2.1.1')])]),
+    c('Chapter 3'),
+  ];
+  const onExpandSpy = jest.fn();
+
+  const wrapper = mount(
+    <TableTree>
+      <Rows
+        items={nestedData}
+        render={({ title, children }) => (
+          <Row
+            itemId={title}
+            items={children}
+            hasChildren={children && children.length}
+            onExpand={onExpandSpy}
+            isExpanded={false}
+          >
+            <Cell>{title}</Cell>
+          </Row>
+        )}
+      />
+    </TableTree>,
+  );
+
+  const tree = createTreeHarness(wrapper);
+
+  expect(tree.textOfCellsInColumn(0)).toEqual([
+    'Chapter 1',
+    'Chapter 2',
+    'Chapter 3',
+  ]);
+
+  tree.expandChevron(1).simulate('click');
+
+  wrapper.update();
+
+  expect(tree.textOfCellsInColumn(0)).toEqual([
+    'Chapter 1',
+    'Chapter 2',
+    'Chapter 3',
+  ]);
+  expect(onExpandSpy).toBeCalledWith(
+    expect.objectContaining({
+      ...c('Chapter 2'),
+      children: expect.any(Array),
+    }),
+    expect.any(Object),
+  );
 });
 
 test('headers and column widths', async () => {

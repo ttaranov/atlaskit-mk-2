@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/table-tree", "type": "major" }],
+  "dependents": []
+}

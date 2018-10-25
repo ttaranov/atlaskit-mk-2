@@ -1,5 +1,11 @@
 // @flow
-import React, { Component, type Element, type ChildrenArray } from 'react';
+import React, {
+  Fragment,
+  Component,
+  type Element,
+  type ChildrenArray,
+  type Node,
+} from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -36,11 +42,11 @@ type Props = {
   /** Accessibility. Label used for the Collapse button (chevron). */
   collapseLabel?: string,
 
-  /** Passed implicitly. Whether the children of this row should currently be visible. */
+  /** Whether the children of this row should currently be visible. */
   isExpanded?: boolean,
 
-  /** Passed implicitly. Called whenever the current row gets expanded or collapsed. */
-  onExpandToggle?: Function,
+  /** Whether the children of this row should be visible by default. */
+  isDefaultExpanded?: boolean,
 
   /** Passed implicitly. The tree-depth (nesting level) of the current row. Used to calculate the indent. */
   depth?: number,
@@ -50,26 +56,63 @@ type Props = {
 
   /** Array of object of the children of expended parent item */
   items?: LoadableItems,
+
+  /** Passed implicitly. Method retrieves children of the row. */
+  renderChildren?: () => Node,
 };
 
-class Row extends Component<Props> {
-  componentDidUpdate(prevProps: Props) {
-    const isExpandChanged =
-      Boolean(prevProps.isExpanded) !== Boolean(this.props.isExpanded);
-    if (!isExpandChanged || !this.props.data) {
-      return;
-    }
+type State = {
+  isExpanded: boolean,
+};
 
-    if (this.props.isExpanded && this.props.onExpand) {
-      this.props.onExpand(this.props.data);
-    } else if (!this.props.isExpanded && this.props.onCollapse) {
-      this.props.onCollapse(this.props.data);
+class Row extends Component<Props, State> {
+  state = { isExpanded: this.props.isDefaultExpanded || false };
+
+  componentDidUpdate(prevProps: Props) {
+    const { isDefaultExpanded, isExpanded } = this.props;
+
+    if (
+      isExpanded === undefined &&
+      isDefaultExpanded !== undefined &&
+      prevProps.isDefaultExpanded !== isDefaultExpanded &&
+      this.state.isExpanded !== isDefaultExpanded
+    ) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ isExpanded: isDefaultExpanded });
     }
+  }
+
+  onExpandStateChange(isExpanded: boolean) {
+    if (this.props.data) {
+      if (isExpanded && this.props.onExpand) {
+        this.props.onExpand(this.props.data);
+      } else if (!isExpanded && this.props.onCollapse) {
+        this.props.onCollapse(this.props.data);
+      }
+    }
+  }
+
+  onExpandToggle = () => {
+    const { isExpanded } = this.props;
+
+    if (isExpanded !== undefined) {
+      this.onExpandStateChange(!isExpanded);
+    } else {
+      this.setState({ isExpanded: !this.state.isExpanded });
+      this.onExpandStateChange(!this.state.isExpanded);
+    }
+  };
+
+  isExpanded(): boolean {
+    const { isExpanded } = this.props;
+
+    return isExpanded !== undefined ? isExpanded : this.state.isExpanded;
   }
 
   renderCell(cell: Element<typeof Cell>, cellIndex: number) {
     const props = this.props;
-    const { hasChildren, depth, isExpanded = false } = props;
+    const isExpanded = this.isExpanded();
+    const { hasChildren, depth } = props;
     const isFirstCell = cellIndex === 0;
     const indentLevel = isFirstCell ? depth : 0;
     let cellContent = cell.props.children || [];
@@ -80,7 +123,7 @@ class Row extends Component<Props> {
           expandLabel={props.expandLabel}
           collapseLabel={props.collapseLabel}
           isExpanded={isExpanded}
-          onExpandToggle={props.onExpandToggle}
+          onExpandToggle={this.onExpandToggle}
           ariaControls={toItemId(props.itemId)}
         />,
       ].concat(cellContent);
@@ -97,7 +140,8 @@ class Row extends Component<Props> {
   }
 
   render() {
-    const { hasChildren, isExpanded, depth } = this.props;
+    const { hasChildren, depth, renderChildren } = this.props;
+    const isExpanded = this.isExpanded();
     const ariaAttrs = {};
     if (hasChildren) {
       ariaAttrs['aria-expanded'] = isExpanded;
@@ -106,11 +150,14 @@ class Row extends Component<Props> {
       ariaAttrs['aria-level'] = depth;
     }
     return (
-      <TreeRowContainer role={'row'} {...ariaAttrs}>
-        {React.Children.map(this.props.children, (cell, index) =>
-          this.renderCell(cell, index),
-        )}
-      </TreeRowContainer>
+      <Fragment>
+        <TreeRowContainer role={'row'} {...ariaAttrs}>
+          {React.Children.map(this.props.children, (cell, index) =>
+            this.renderCell(cell, index),
+          )}
+        </TreeRowContainer>
+        {hasChildren && isExpanded && renderChildren && renderChildren()}
+      </Fragment>
     );
   }
 }
