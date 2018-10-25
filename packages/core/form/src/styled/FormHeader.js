@@ -1,6 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import { fontSize, gridSize, typography } from '@atlaskit/theme';
+import { gridSize, typography } from '@atlaskit/theme';
 
 /**
  * Provide a styled container for form headers.
@@ -23,8 +23,7 @@ const FormHeaderTitle = styled.h1`
 /**
  * Provide a styled container for form header title.
  */
-const FormHeaderDescription = styled.span`
-  font-size: ${fontSize()};
+const FormHeaderDescription = styled.div`
   margin-top: 8px;
 `;
 
