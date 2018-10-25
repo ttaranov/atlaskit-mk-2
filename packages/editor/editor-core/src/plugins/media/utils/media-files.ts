@@ -9,7 +9,7 @@ import {
   startPositionOfParent,
   setNodeSelection,
   setTextSelection,
-  isTableCell,
+  insideTableCell,
   isInListItem,
 } from '../../../utils';
 import { MediaState } from '../types';
@@ -64,7 +64,7 @@ export const insertMediaGroupNode = (
   // insert a paragraph after if reach the end of doc
   // and there is no media group in the front or selection is a non media block node
   const shouldAppendParagraph =
-    isTableCell(state) ||
+    insideTableCell(state) ||
     isInListItem(state) ||
     (atTheEndOfDoc(state) &&
       (!posOfPrecedingMediaGroup(state) ||

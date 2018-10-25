@@ -3,12 +3,13 @@ import { EditorView } from 'prosemirror-view';
 
 import { isImage } from '../../../utils';
 import {
+  copyOptionalAttrsFromMediaState,
   insertNodesEndWithNewParagraph,
   shouldAppendParagraphAfterBlockNode,
-} from '../../../commands';
-import { copyOptionalAttrsFromMediaState } from '../utils/media-common';
+} from '../utils/media-common';
 import { MediaState } from '../types';
 import { safeInsert } from 'prosemirror-utils';
+import { GapCursorSelection } from '../../../plugins/gap-cursor';
 
 export interface MediaSingleState extends MediaState {
   dimensions: { width: number; height: number };
@@ -45,7 +46,12 @@ export const insertMediaSingleNode = (
   }
 
   const { state, dispatch } = view;
-  const grandParent = state.selection.$from.node(-1);
+  const {
+    selection: { $from },
+  } = state;
+  const grandParent = $from.node(
+    state.selection instanceof GapCursorSelection ? $from.depth : -1,
+  );
   const node = createMediaSingleNode(state.schema, collection)(
     mediaState as MediaSingleState,
   );

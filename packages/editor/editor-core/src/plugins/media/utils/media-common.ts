@@ -1,10 +1,16 @@
 import { deleteSelection, splitBlock } from 'prosemirror-commands';
-import { Node as PMNode, ResolvedPos, Fragment } from 'prosemirror-model';
+import {
+  Node as PMNode,
+  ResolvedPos,
+  Fragment,
+  Slice,
+} from 'prosemirror-model';
 import { EditorState, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
   createParagraphNear,
   createNewParagraphBelow,
+  Command,
 } from '../../../commands';
 import {
   moveLeft,
@@ -14,9 +20,12 @@ import {
   atTheBeginningOfBlock,
   endPositionOfParent,
   startPositionOfParent,
+  atTheEndOfDoc,
+  insideTableCell,
 } from '../../../utils';
 import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { MediaState } from '../types';
+import { GapCursorSelection, Side } from '../../gap-cursor';
 
 export const posOfMediaGroupNearby = (
   state: EditorState,
@@ -215,3 +224,32 @@ export const copyOptionalAttrsFromMediaState = (
       }
     });
 };
+
+export function shouldAppendParagraphAfterBlockNode(state: EditorState) {
+  return atTheEndOfDoc(state) && atTheBeginningOfBlock(state);
+}
+
+export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
+  return function(state, dispatch) {
+    const { tr, schema } = state;
+    const { paragraph } = schema.nodes;
+
+    if (shouldAppendParagraphAfterBlockNode(state)) {
+      nodes.push(paragraph.create());
+    }
+
+    const previousSelection = tr.selection;
+    const slice = new Slice(Fragment.from(nodes), 0, 0);
+    tr.replaceSelection(slice);
+
+    if (insideTableCell(state)) {
+      const $gapCursorPos = tr.doc.resolve(
+        tr.mapping.map(previousSelection.from, -1) + slice.size,
+      );
+      tr.setSelection(new GapCursorSelection($gapCursorPos, Side.RIGHT));
+    }
+
+    dispatch(tr);
+    return true;
+  };
+}

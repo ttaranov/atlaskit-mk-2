@@ -708,7 +708,7 @@ export const isEmptyNode = (schema: Schema) => {
   return innerIsEmptyNode;
 };
 
-export const isTableCell = (state: EditorState) => {
+export const insideTableCell = (state: EditorState) => {
   const { tableCell, tableHeader } = state.schema.nodes;
   return hasParentNodeOfType([tableCell, tableHeader])(state.selection);
 };
