@@ -1,0 +1,1 @@
+- actions prop offically accepts Node type for text. Adds optional key to action type.
