@@ -20,15 +20,13 @@ import tablesPlugin from '../../../../plugins/table';
 import {
   handleSetFocus,
   handleSetTableRef,
-  handleSetTargetCellRef,
   handleSetTargetCellPosition,
   handleClearSelection,
   handleHoverColumns,
   handleHoverRows,
   handleHoverTable,
-  handleDocChanged,
+  handleDocOrSelectionChanged,
   handleToggleContextualMenu,
-  handleSelectionChanged,
   handleShowInsertColumnButton,
   handleShowInsertRowButton,
 } from '../../../../plugins/table/action-handlers';
@@ -85,24 +83,6 @@ describe('table action handlers', () => {
           `.${ClassName.TABLE_NODE_WRAPPER}`,
         ) as HTMLElement,
         tableNode: editorView.state.doc.firstChild,
-      });
-    });
-  });
-  describe('#handleSetTargetCellRef', () => {
-    it('should return a new state with updated targetCellRef and isContextualMenuOpen props', () => {
-      const pluginState = {
-        ...defaultPluginState,
-        isContextualMenuOpen: true,
-      };
-      const targetCellRef = document.createElement('td');
-      const newState = handleSetTargetCellRef(targetCellRef)(
-        pluginState,
-        dispatch,
-      );
-      expect(newState).toEqual({
-        ...pluginState,
-        targetCellRef,
-        isContextualMenuOpen: false,
       });
     });
   });
@@ -262,19 +242,34 @@ describe('table action handlers', () => {
     });
   });
   describe('#handleToggleContextualMenu', () => {
-    it('should return a new state with updated isContextualMenuOpen prop', () => {
-      const pluginState = {
-        ...defaultPluginState,
-        isContextualMenuOpen: false,
-      };
-      const newState = handleToggleContextualMenu(true)(pluginState, dispatch);
-      expect(newState).toEqual({
-        ...pluginState,
-        isContextualMenuOpen: true,
+    describe('when isContextualMenuOpen === false', () => {
+      it('should return a new state with isContextualMenuOpen = true', () => {
+        const pluginState = {
+          ...defaultPluginState,
+          isContextualMenuOpen: false,
+        };
+        const newState = handleToggleContextualMenu(pluginState, dispatch);
+        expect(newState).toEqual({
+          ...pluginState,
+          isContextualMenuOpen: true,
+        });
+      });
+    });
+    describe('when isContextualMenuOpen === true', () => {
+      it('should return a new state with isContextualMenuOpen = false', () => {
+        const pluginState = {
+          ...defaultPluginState,
+          isContextualMenuOpen: true,
+        };
+        const newState = handleToggleContextualMenu(pluginState, dispatch);
+        expect(newState).toEqual({
+          ...pluginState,
+          isContextualMenuOpen: false,
+        });
       });
     });
   });
-  describe('#handleDocChanged', () => {
+  describe('#handleDocOrSelectionChanged', () => {
     it('should return a new state with updated tableNode prop and reset selection', () => {
       const pluginState = {
         ...defaultPluginState,
@@ -283,25 +278,7 @@ describe('table action handlers', () => {
         isTableInDanger: true,
         isTableHovered: true,
         tableNode: undefined,
-      };
-      const { editorView } = editor(
-        doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
-      );
-      const newState = handleDocChanged(editorView.state.tr)(
-        pluginState,
-        dispatch,
-      );
-      expect(newState).toEqual({
-        ...pluginState,
-        ...defaultTableSelection,
-        tableNode: editorView.state.doc.firstChild,
-      });
-    });
-  });
-  describe('#handleSelectionChanged', () => {
-    it('should return a new state with updated targetCellPosition', () => {
-      const pluginState = {
-        ...defaultPluginState,
+        targetCellPosition: undefined,
       };
       const { editorView } = editor(
         doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
@@ -311,12 +288,14 @@ describe('table action handlers', () => {
       editorView.dispatch(
         state.tr.setSelection(new TextSelection(state.doc.resolve(cursorPos))),
       );
-      const newState = handleSelectionChanged(editorView.state)(
+      const newState = handleDocOrSelectionChanged(editorView.state.tr)(
         pluginState,
         dispatch,
       );
       expect(newState).toEqual({
         ...pluginState,
+        ...defaultTableSelection,
+        tableNode: editorView.state.doc.firstChild,
         targetCellPosition: cursorPos - 2,
       });
     });

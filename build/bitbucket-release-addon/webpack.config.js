@@ -18,7 +18,6 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             babelrc: false,
-            presets: ['env'],
           },
         },
       },
@@ -30,7 +29,6 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             babelrc: false,
-            presets: ['env'],
           },
         },
       },

@@ -646,9 +646,7 @@ export const setMultipleCellAttrs = (
   return false;
 };
 
-export const toggleContextualMenu = (
-  isContextualMenuOpen: boolean,
-): Command => (
+export const toggleContextualMenu: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
@@ -656,7 +654,6 @@ export const toggleContextualMenu = (
     state.tr
       .setMeta(pluginKey, {
         action: ACTIONS.TOGGLE_CONTEXTUAL_MENU,
-        data: { isContextualMenuOpen },
       })
       .setMeta('addToHistory', false),
   );
@@ -685,21 +682,6 @@ export const setTableRef = (tableRef?: HTMLElement): Command => (
       .setMeta(pluginKey, {
         action: ACTIONS.SET_TABLE_REF,
         data: { tableRef },
-      })
-      .setMeta('addToHistory', false),
-  );
-  return true;
-};
-
-export const setTargetCell = (targetCellRef?: HTMLElement): Command => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  dispatch(
-    state.tr
-      .setMeta(pluginKey, {
-        action: ACTIONS.SET_TARGET_CELL_REF,
-        data: { targetCellRef },
       })
       .setMeta('addToHistory', false),
   );

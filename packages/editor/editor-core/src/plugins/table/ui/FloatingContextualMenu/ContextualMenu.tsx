@@ -4,7 +4,6 @@ import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import { splitCell, mergeCells } from 'prosemirror-tables';
 
-import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import {
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
@@ -25,7 +24,6 @@ import {
 import { CellRect, TableCssClassName as ClassName } from '../../types';
 import { contextualMenuDropdownWidth } from '../styles';
 import { Shortcut } from '../../../../ui/styles';
-import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import {
   analyticsDecorator,
@@ -35,11 +33,6 @@ import ColorPalette from '../../../../ui/ColorPalette';
 import tableMessages from '../messages';
 
 export const messages = defineMessages({
-  cellOptions: {
-    id: 'fabric.editor.cellOptions',
-    defaultMessage: 'Cell options',
-    description: 'Opens a menu with options for the current table cell.',
-  },
   cellBackground: {
     id: 'fabric.editor.cellBackground',
     defaultMessage: 'Cell background',
@@ -89,19 +82,12 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    const {
-      isOpen,
-      mountPoint,
-      offset,
-      boundariesElement,
-      intl: { formatMessage },
-    } = this.props;
+    const { isOpen, mountPoint, offset, boundariesElement } = this.props;
     const items = this.createItems();
     if (!items) {
       return null;
     }
 
-    const labelCellOptions = formatMessage(messages.cellOptions);
     return (
       <div onMouseLeave={this.closeSubmenu}>
         <DropdownMenu
@@ -116,16 +102,7 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
           fitWidth={contextualMenuDropdownWidth}
           boundariesElement={boundariesElement}
           offset={offset}
-        >
-          <div className={ClassName.CONTEXTUAL_MENU_TRIGGER}>
-            <ToolbarButton
-              selected={isOpen}
-              title={labelCellOptions}
-              onClick={this.toggleOpen}
-              iconBefore={<ExpandIcon label={labelCellOptions} />}
-            />
-          </div>
-        </DropdownMenu>
+        />
       </div>
     );
   }
@@ -290,7 +267,7 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
       isOpen,
       editorView: { state, dispatch },
     } = this.props;
-    toggleContextualMenu(!isOpen)(state, dispatch);
+    toggleContextualMenu(state, dispatch);
     if (!isOpen) {
       this.setState({
         isSubmenuOpen: false,
@@ -302,9 +279,8 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
     const {
       editorView: { state, dispatch },
     } = this.props;
-    const { isSubmenuOpen } = this.state;
-    toggleContextualMenu(isOpen)(state, dispatch);
-    this.setState({ isSubmenuOpen: isOpen ? isSubmenuOpen : false });
+    toggleContextualMenu(state, dispatch);
+    this.setState({ isSubmenuOpen: false });
   };
 
   private handleItemMouseEnter = ({ item }) => {

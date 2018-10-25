@@ -550,7 +550,11 @@ export const tableStyles = css`
   }
 
   /* =============== TABLE CONTEXTUAL MENU ================== */
-  .${ClassName.CONTEXTUAL_MENU_TRIGGER} {
+  .${ClassName.CONTEXTUAL_MENU_BUTTON} {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+
     > div {
       background: ${N20A};
       border-radius: ${borderRadius()}px;
@@ -594,7 +598,7 @@ export const tableStyles = css`
       width: 1px;
       position: relative;
       left: 25px;
-      top: -3px;
+      top: 9px;
       color: ${N90};
     }
   }

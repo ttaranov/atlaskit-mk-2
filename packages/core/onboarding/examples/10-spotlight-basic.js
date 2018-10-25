@@ -31,20 +31,20 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         ]}
         dialogPlacement="bottom left"
         heading="Green"
-        key="green"
         target="green"
+        key="green"
       >
         <Lorem count={1} />
       </Spotlight>,
       <Spotlight
         actions={[
-          { onClick: this.prev, text: 'Prev' },
           { onClick: this.next, text: 'Next' },
+          { onClick: this.prev, text: 'Prev' },
         ]}
         dialogPlacement="bottom center"
         heading="Yellow"
-        key="yellow"
         target="yellow"
+        key="yellow"
       >
         <Lorem count={1} />
       </Spotlight>,
@@ -52,8 +52,8 @@ export default class SpotlightBasicExample extends Component<Object, State> {
         actions={[{ onClick: this.finish, text: 'Got it' }]}
         dialogPlacement="bottom right"
         heading="Red"
-        key="red"
         target="red"
+        key="red"
       >
         <Lorem count={1} />
       </Spotlight>,
