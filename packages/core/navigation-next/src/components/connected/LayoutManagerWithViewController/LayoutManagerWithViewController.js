@@ -153,6 +153,7 @@ class LayoutManagerWithViewControllerBase extends Component<
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      renderPage: RenderPage,
       getRefs,
     } = this.props;
 
@@ -184,7 +185,7 @@ class LayoutManagerWithViewControllerBase extends Component<
           onCollapseEnd={onCollapseEnd}
           getRefs={getRefs}
         >
-          {children}
+          <RenderPage />
         </LayoutManager>
       </NavigationAnalyticsContext>
     );

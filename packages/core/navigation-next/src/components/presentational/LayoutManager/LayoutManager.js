@@ -2,7 +2,6 @@
 
 import React, {
   Component,
-  Fragment,
   PureComponent,
   type ElementRef,
   type Ref,
@@ -15,17 +14,14 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../../../package.json';
-import { Shadow } from '../../../common/primitives';
-import { light, ThemeProvider } from '../../../theme';
-import ContentNavigation from './ContentNavigation';
 import ResizeTransition, {
   isTransitioning,
   type TransitionState,
 } from './ResizeTransition';
 import ResizeControl from './ResizeControl';
+import Navigation from './Navigation';
 import {
   ContainerNavigationMask,
-  ContentNavigationWrapper,
   LayoutContainer,
   NavigationContainer,
   PageWrapper,
@@ -135,7 +131,11 @@ export default class LayoutManager extends Component<
   LayoutManagerProps,
   State,
 > {
-  state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
+  state = {
+    flyoutIsOpen: false,
+    mouseIsOverNavigation: false,
+    renderNavigation: false,
+  };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
   containerRef: HTMLElement;
@@ -159,6 +159,7 @@ export default class LayoutManager extends Component<
   };
 
   componentDidMount() {
+    setTimeout(() => this.setState({ renderNavigation: true }), 10000);
     this.publishRefs();
   }
 
@@ -205,180 +206,6 @@ export default class LayoutManager extends Component<
     this.setState({ mouseIsOverNavigation: false });
   };
 
-  renderGlobalNavigation = () => {
-    const {
-      containerNavigation,
-      globalNavigation: GlobalNavigation,
-    } = this.props;
-    return (
-      <ThemeProvider
-        theme={theme => ({
-          mode: light, // If no theme already exists default to light mode
-          ...theme,
-        })}
-      >
-        <Fragment>
-          <Shadow
-            isBold={!!containerNavigation}
-            isOverDarkBg
-            style={{ marginLeft: GLOBAL_NAV_WIDTH }}
-          />
-          <GlobalNavigation />
-        </Fragment>
-      </ThemeProvider>
-    );
-  };
-
-  renderContentNavigation = (args: RenderContentNavigationArgs) => {
-    const { transitionState, transitionStyle } = args;
-    const {
-      containerNavigation,
-      experimental_flyoutOnHover,
-      navigationUIController,
-      productNavigation,
-    } = this.props;
-    const {
-      isCollapsed,
-      isPeekHinting,
-      isPeeking,
-      isResizing,
-    } = navigationUIController.state;
-
-    const isVisible = transitionState !== 'exited';
-    const shouldDisableInteraction =
-      isResizing || isTransitioning(transitionState);
-
-    return (
-      <ContentNavigationWrapper
-        key="product-nav-wrapper"
-        innerRef={this.getNavRef}
-        disableInteraction={shouldDisableInteraction}
-        style={transitionStyle}
-      >
-        <ContentNavigation
-          container={containerNavigation}
-          isPeekHinting={isPeekHinting}
-          isPeeking={isPeeking}
-          isVisible={isVisible}
-          key="product-nav"
-          product={productNavigation}
-        />
-        {isCollapsed && !experimental_flyoutOnHover ? (
-          <div
-            aria-label="Click to expand the navigation"
-            role="button"
-            onClick={navigationUIController.expand}
-            css={{
-              cursor: 'pointer',
-              height: '100%',
-              outline: 0,
-              position: 'absolute',
-              transition: 'background-color 100ms',
-              width: CONTENT_NAV_WIDTH_COLLAPSED,
-
-              ':hover': {
-                backgroundColor: containerNavigation
-                  ? colors.N30
-                  : 'rgba(255, 255, 255, 0.08)',
-              },
-              ':active': {
-                backgroundColor: colors.N40A,
-              },
-            }}
-            tabIndex="0"
-          />
-        ) : null}
-      </ContentNavigationWrapper>
-    );
-  };
-
-  renderNavigation = () => {
-    const { navigationUIController, experimental_flyoutOnHover } = this.props;
-    const { flyoutIsOpen, mouseIsOverNavigation } = this.state;
-    const {
-      isCollapsed,
-      isResizeDisabled,
-      isResizing,
-      productNavWidth,
-    } = navigationUIController.state;
-
-    return (
-      <NavigationAnalyticsContext
-        data={{
-          attributes: {
-            isExpanded: !isCollapsed,
-            flyoutOnHoverEnabled: experimental_flyoutOnHover,
-          },
-          componentName: 'navigation',
-          packageName,
-          packageVersion,
-        }}
-      >
-        <ResizeTransition
-          from={[CONTENT_NAV_WIDTH_COLLAPSED]}
-          in={!isCollapsed || flyoutIsOpen}
-          properties={['width']}
-          to={[flyoutIsOpen ? CONTENT_NAV_WIDTH_FLYOUT : productNavWidth]}
-          userIsDragging={isResizing}
-          // only apply listeners to the NAV resize transition
-          productNavWidth={productNavWidth}
-        >
-          {({ transitionStyle, transitionState }) => {
-            const onMouseOut =
-              isCollapsed && experimental_flyoutOnHover && flyoutIsOpen
-                ? this.mouseOutFlyoutArea
-                : null;
-            return (
-              <NavigationContainer
-                innerRef={this.getContainerRef}
-                onMouseEnter={this.mouseEnter}
-                onMouseOut={onMouseOut}
-                onMouseLeave={this.mouseLeave}
-              >
-                <ResizeControl
-                  collapseToggleTooltipContent={
-                    // $FlowFixMe
-                    this.props.collapseToggleTooltipContent
-                  }
-                  expandCollapseAffordanceRef={
-                    this.nodeRefs.expandCollapseAffordance
-                  }
-                  experimental_flyoutOnHover={experimental_flyoutOnHover}
-                  isDisabled={isResizeDisabled}
-                  flyoutIsOpen={flyoutIsOpen}
-                  mouseIsOverNavigation={mouseIsOverNavigation}
-                  mutationRefs={[
-                    { ref: this.pageRef, property: 'padding-left' },
-                    { ref: this.productNavRef, property: 'width' },
-                  ]}
-                  navigation={navigationUIController}
-                >
-                  {({ isDragging, width }) => {
-                    const onMouseOver =
-                      isCollapsed && experimental_flyoutOnHover && !flyoutIsOpen
-                        ? this.mouseOverFlyoutArea
-                        : null;
-                    return (
-                      <ContainerNavigationMask onMouseOver={onMouseOver}>
-                        {this.renderGlobalNavigation()}
-                        {this.renderContentNavigation({
-                          isDragging,
-                          transitionState,
-                          transitionStyle,
-                          width,
-                        })}
-                      </ContainerNavigationMask>
-                    );
-                  }}
-                </ResizeControl>
-              </NavigationContainer>
-            );
-          }}
-        </ResizeTransition>
-      </NavigationAnalyticsContext>
-    );
-  };
-
   render() {
     const {
       navigationUIController,
@@ -386,8 +213,12 @@ export default class LayoutManager extends Component<
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      containerNavigation,
+      globalNavigation,
+      experimental_flyoutOnHover,
+      productNavigation,
     } = this.props;
-    const { flyoutIsOpen } = this.state;
+    const { flyoutIsOpen, renderNavigation } = this.state;
     const {
       isResizing,
       isCollapsed,
@@ -396,7 +227,14 @@ export default class LayoutManager extends Component<
 
     return (
       <LayoutContainer>
-        {this.renderNavigation()}
+        <Navigation
+          containerNavigation={containerNavigation}
+          globalNavigation={globalNavigation}
+          productNavigation={productNavigation}
+          navigationUIController={navigationUIController}
+          experimental_flyoutOnHover={experimental_flyoutOnHover}
+          expandCollapseAffordance={this.nodeRefs.expandCollapseAffordance}
+        />
         <Page
           flyoutIsOpen={flyoutIsOpen}
           innerRef={this.getPageRef}

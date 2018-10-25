@@ -44,7 +44,7 @@ class RightPageContainer extends Component<RightPageContainerProps> {
           <Route path="/issues/search" component={SearchIssuesView} />
           <Route path="/" component={DashboardsView} />
         </Switch>
-
+        <p>Flyout is {isFlyoutAvailable ? 'enabled' : 'disabled'}</p>
         <p>
           The search drawer can be opened via the <kbd>/</kbd> keyboard
           shortcut.
@@ -72,7 +72,12 @@ export default class App extends Component<
   state = {
     isDebugEnabled: true,
     isFlyoutAvailable: true,
+    renderGlobalNav: false,
   };
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ renderGlobalNav: true }), 50000);
+  }
 
   onDebugToggle = () => {
     this.setState(state => ({ isDebugEnabled: !state.isDebugEnabled }));
@@ -94,14 +99,15 @@ export default class App extends Component<
             customComponents={{ ProjectSwitcher }}
             experimental_flyoutOnHover={isFlyoutAvailable}
             globalNavigation={DefaultGlobalNavigation}
-          >
-            <RightPageContainer
-              isFlyoutAvailable={isFlyoutAvailable}
-              onFlyoutToggle={this.onFlyoutToggle}
-              isDebugEnabled={isDebugEnabled}
-              onDebugToggle={this.onDebugToggle}
-            />
-          </LayoutManagerWithViewController>
+            renderPage={() => (
+              <RightPageContainer
+                isFlyoutAvailable={isFlyoutAvailable}
+                onFlyoutToggle={this.onFlyoutToggle}
+                isDebugEnabled={isDebugEnabled}
+                onDebugToggle={this.onDebugToggle}
+              />
+            )}
+          />
         </NavigationProvider>
       </HashRouter>
     );
