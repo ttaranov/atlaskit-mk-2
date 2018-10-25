@@ -117,6 +117,7 @@ export function objectData(n: number): ObjectResultProps[] {
 
     items.push({
       resultId: uuid(),
+      type: 'object',
       name: getMockCatchPhrase(),
       containerName: getMockCompanyName(),
       avatarUrl: iconUrl,
@@ -134,6 +135,7 @@ export function containerData(n: number): ContainerResultProps[] {
   for (let i = 0; i < n; i++) {
     items.push({
       resultId: uuid(),
+      type: 'container',
       name: getMockCompanyName(),
       avatarUrl: getContainerAvatarUrl(i),
     });
@@ -148,6 +150,7 @@ export function personData(n: number): PersonResultProps[] {
   for (let i = 0; i < n; i++) {
     items.push({
       resultId: uuid(),
+      type: 'person',
       name: getMockName(),
       avatarUrl: getMockAvatarUrl(),
       presenceState: randomPresenceState(),

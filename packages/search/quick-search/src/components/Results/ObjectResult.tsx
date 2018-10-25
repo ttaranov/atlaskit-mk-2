@@ -46,14 +46,20 @@ export default class ObjectResult extends React.PureComponent<Props> {
   }
 
   render() {
-    const { resultId, name, caption } = this.props;
+    const {
+      name,
+      containerName,
+      isPrivate,
+      objectKey,
+      ...commonResultProps
+    } = this.props;
+
     return (
       <ResultBase
+        {...commonResultProps}
         type="object"
-        resultId={resultId}
         text={name}
         subText={this.getSubtext()}
-        caption={caption}
         icon={this.getAvatar()}
       />
     );

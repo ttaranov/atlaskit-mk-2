@@ -35,14 +35,13 @@ export default class ContainerResult extends React.PureComponent<Props> {
   };
 
   render() {
-    const { resultId, name, subText, caption } = this.props;
+    const { name, isPrivate, ...commonResultProps } = this.props;
+
     return (
       <ResultBase
+        {...commonResultProps}
         type="container"
-        resultId={resultId}
         text={name}
-        subText={subText}
-        caption={caption}
         icon={this.getAvatar()}
       />
     );

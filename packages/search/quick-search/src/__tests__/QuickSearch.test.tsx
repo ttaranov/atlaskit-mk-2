@@ -306,7 +306,11 @@ describe('<QuickSearch />', () => {
       try {
         const url = 'http://www.atlassian.com';
         wrapper.setProps({
-          children: <ResultItemGroup title="test group 2" />,
+          children: (
+            <ResultItemGroup title="test group 2">
+              <PersonResult resultId="b" name="test" href={url} />
+            </ResultItemGroup>
+          ),
           selectedResultId: 'b',
         });
         searchInput.simulate('keydown', { key: 'Enter' });
@@ -354,7 +358,12 @@ describe('<QuickSearch />', () => {
     });
 
     it('should remove any selection when query changes', () => {
-      const newChildren = <ResultItemGroup title="test group 2" />;
+      const newChildren = (
+        <ResultItemGroup title="test group 2">
+          <PersonResult key={1} resultId="4" name="four" />
+          <PersonResult key={2} resultId="5" name="five" />
+        </ResultItemGroup>
+      );
       wrapper.setProps({ children: newChildren });
       wrapper.update();
       expect(
