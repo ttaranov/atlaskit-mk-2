@@ -1,1 +1,0 @@
-- Make sure we check userAgent only if we have a DOM
