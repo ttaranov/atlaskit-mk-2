@@ -43,9 +43,7 @@ const mapResultsDataToComponents = resultData => {
     <ResultItemGroup title={group.title} key={group.title}>
       {group.items.map(props => {
         const Result = availableResultTypes[props.type];
-        return Result ? (
-          <Result key={props.resultId} {...props} isSelected={false} />
-        ) : null;
+        return Result ? <Result key={props.resultId} {...props} /> : null;
       })}
     </ResultItemGroup>
   ));

@@ -12,6 +12,8 @@ export type ResultData = {
 export type CommonResultProps = {
   /** Unique ID of the result. This is passed as a parameter to certain callbacks */
   resultId: string | number;
+  /** Type of the result. This is passed as a parameter to certain callbacks. */
+  type?: string;
   /** Src URL of the image to be used as the result's icon, overriden by avatar prop */
   avatarUrl?: string;
   /** React Component of the image to be used as the result's icon, takes precedence over avatarUrl */

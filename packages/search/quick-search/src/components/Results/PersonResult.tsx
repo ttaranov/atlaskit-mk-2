@@ -49,13 +49,14 @@ export default class PersonResult extends React.PureComponent<Props> {
       mentionPrefix,
       presenceMessage,
       presenceState,
+      type = 'person',
       ...commonResultProps
     } = this.props;
 
     return (
       <ResultBase
         {...commonResultProps}
-        type="person"
+        type={type}
         text={name}
         subText={presenceMessage}
         caption={this.getMention()}

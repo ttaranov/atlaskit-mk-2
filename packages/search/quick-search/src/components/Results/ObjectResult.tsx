@@ -51,13 +51,14 @@ export default class ObjectResult extends React.PureComponent<Props> {
       containerName,
       isPrivate,
       objectKey,
+      type = 'object2',
       ...commonResultProps
     } = this.props;
 
     return (
       <ResultBase
         {...commonResultProps}
-        type="object"
+        type={type}
         text={name}
         subText={this.getSubtext()}
         icon={this.getAvatar()}
