@@ -1134,33 +1134,18 @@ describe('table plugin', () => {
       expect(tableNode).toBeDefined();
       expect(tableNode.type.name).toEqual('table');
     });
-    it('should update targetCellRef when table looses focus', () => {
-      const {
-        editorView: view,
-        refs: { nextPos },
-      } = editor(doc(table()(tr(td()(p('{<>}')))), p('te{nextPos}xt')));
-
-      setEditorFocus(true)(view.state, view.dispatch);
-
-      expect(getPluginState(view.state).targetCellRef).toBeDefined();
-
-      view.dispatch(
-        view.state.tr.setSelection(
-          new TextSelection(view.state.doc.resolve(nextPos)),
-        ),
-      );
-      expect(getPluginState(view.state).targetCellRef).not.toBeDefined();
-    });
-    it('should update targetCellRef when document changes', () => {
+    it('should update targetCellPosition when document changes', () => {
       const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
       const { state, dispatch } = editorView;
       setEditorFocus(true)(state, dispatch);
+      let pluginState = getPluginState(editorView.state);
+      expect(pluginState.targetCellPosition).toEqual(2);
 
       let documentChangeTr = editorView.state.tr.insertText('hello world', 1);
       // Don't use dispatch to mimic collab provider
       editorView.updateState(editorView.state.apply(documentChangeTr));
 
-      let pluginState = getPluginState(editorView.state);
+      pluginState = getPluginState(editorView.state);
       expect(pluginState.targetCellPosition).toEqual(23);
     });
   });

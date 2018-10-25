@@ -21,4 +21,9 @@ export default defineMessages({
     defaultMessage: 'Remove {0, plural, one {row} other {rows}}',
     description: 'Deletes a table row.',
   },
+  cellOptions: {
+    id: 'fabric.editor.cellOptions',
+    defaultMessage: 'Cell options',
+    description: 'Opens a menu with options for the current table cell.',
+  },
 });

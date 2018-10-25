@@ -9,13 +9,20 @@ const get = require('lodash.get');
  */
 const extractResultInformationIntoProperties = results => {
   return results.testResults
-    .filter(test => test.numFailingTests > 0)
+    .filter(
+      test =>
+        test.numFailingTests > 0 ||
+        (test.failureMessage && results.numFailedTestSuites > 0),
+    )
     .map(test => ({
       failingTests: test.numFailingTests,
       testFilePath: test.testFilePath.replace(process.cwd(), ''), // Relative path to test
-      failureMessage: get(test, 'testResults[0].failureMessages[0]'),
-      duration: get(test, 'testResults[0].duration'),
+      failureMessage:
+        get(test, 'testResults[0].failureMessages[0]') || test.failureMessage,
+      duration: get(test, 'testResults[0].duration', 0),
       testName: get(test, 'testResults[0].fullName'),
+      buildNumber: process.env.BITBUCKET_BUILD_NUMBER,
+      branch: process.env.BITBUCKET_BRANCH,
     }));
 };
 

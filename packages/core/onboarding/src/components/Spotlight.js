@@ -1,22 +1,14 @@
 // @flow
-import React, {
-  type ComponentType,
-  type ElementType,
-  type Element,
-  type Node,
-} from 'react';
-import { layers } from '@atlaskit/theme';
-import Portal from '@atlaskit/portal';
-import { Fade } from './Animation';
-import Spotlight from './SpotlightInternal';
-import { SpotlightTransitionConsumer } from './SpotlightTransition';
+import React, { type ComponentType, type ElementType, type Node } from 'react';
+import SpotlightInner from './SpotlightInner';
+import { SpotlightConsumer } from './SpotlightManager';
 import type { ActionsType } from '../types';
 
 export type Props = {
   /** Buttons to render in the footer */
   actions?: ActionsType,
-  /** An optional element rendered beside the footer actions */
-  actionsBeforeElement?: Element<*>,
+  /** An optional node to be rendered beside the footer actions */
+  actionsBeforeElement?: Node,
   /** The elements rendered in the modal */
   children?: Node,
   /** Where the dialog should appear, relative to the contents of the children. */
@@ -59,31 +51,33 @@ export type Props = {
   targetReplacement?: ComponentType<*>,
 };
 
-class SpotlightWrapper extends React.Component<Props> {
+class Spotlight extends React.Component<Props> {
   static defaultProps = {
     dialogWidth: 400,
     pulse: true,
   };
-
   render() {
+    const { targetNode, target, ...rest } = this.props;
     return (
-      <SpotlightTransitionConsumer>
-        {({ isOpen, onExited }) => (
-          <Fade in={isOpen} onExited={onExited}>
-            {animationStyles => (
-              <Portal zIndex={layers.spotlight()}>
-                <Spotlight
-                  {...this.props}
-                  isOpen={isOpen}
-                  animationStyles={animationStyles}
-                />
-              </Portal>
-            )}
-          </Fade>
-        )}
-      </SpotlightTransitionConsumer>
+      <SpotlightConsumer>
+        {({ opened, closed, targets }) => {
+          // use the targetNode prop or try get the target from context targets using name
+          const actualTargetNode =
+            targetNode ||
+            (typeof target === 'string' ? targets[target] : undefined);
+          return actualTargetNode ? (
+            <SpotlightInner
+              {...rest}
+              targetNode={actualTargetNode}
+              target={target}
+              onOpened={opened}
+              onClosed={closed}
+            />
+          ) : null;
+        }}
+      </SpotlightConsumer>
     );
   }
 }
 
-export default SpotlightWrapper;
+export default Spotlight;

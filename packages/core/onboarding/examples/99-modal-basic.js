@@ -1,16 +1,15 @@
 // @flow
 import React, { Component } from 'react';
-import Lorem from 'react-lorem-component';
-import LayerManager from '@atlaskit/layer-manager';
+import Button from '@atlaskit/button';
 
-import { Modal, SpotlightManager } from '../src';
-import { Code } from './styled';
+import { Modal } from '../src';
 import welcomeImage from './assets/this-is-new-jira.png';
 
 type State = {
   active: boolean,
 };
-class Example extends Component<{}, State> {
+
+export default class Example extends Component<{}, State> {
   state: State = { active: false };
   start = () => this.setState({ active: true });
   finish = () => this.setState({ active: false });
@@ -19,16 +18,7 @@ class Example extends Component<{}, State> {
 
     return (
       <div>
-        <p>
-          <button onClick={this.start}>Launch Modal</button>
-        </p>
-        <p>
-          The main way the user benefits modal differs from the typical{' '}
-          <Code>@atlaskit/modal-dialog</Code> is how it scrolls the exterior
-          wrapper rather than the dialog body.
-        </p>
-        <Lorem count={10} style={{ marginTop: '1em' }} />
-
+        <Button onClick={this.start}>Launch benefits modal</Button>
         {active && (
           <Modal
             actions={[
@@ -50,11 +40,3 @@ class Example extends Component<{}, State> {
     );
   }
 }
-
-export default () => (
-  <LayerManager>
-    <SpotlightManager>
-      <Example />
-    </SpotlightManager>
-  </LayerManager>
-);

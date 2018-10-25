@@ -1,7 +1,7 @@
-const createChangesetCommit = require('./createChangesetCommit');
+const writeChangeset = require('./writeChangeset');
 const changesetCommand = require('./changesetCommand');
 
 module.exports = {
-  createChangesetCommit,
+  writeChangeset,
   changesetCommand,
 };

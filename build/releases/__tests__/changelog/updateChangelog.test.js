@@ -1,7 +1,8 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
-import { updateChangelog } from '../../changelog';
 import path from 'path';
 import fs from 'fs';
+import updateChangelog from '../../changelog';
+import { versionOptions } from '../../initialize/initial/config';
 
 jest.mock('@atlaskit/build-utils/logger');
 
@@ -97,7 +98,6 @@ const multipleReleaseObj = {
 
 describe('updateChangelog', async () => {
   let cwd, emptyChangelogPath, existingChangelogPath, noChangelogPath;
-  const repoUrl = 'https://bitbucket.org/atlassian/atlaskit-mk-2/commits';
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(
       __dirname,
@@ -126,26 +126,32 @@ describe('updateChangelog', async () => {
   it('should work with empty changelog', async () => {
     const initalChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(initalChangelog).toEqual('');
-    await updateChangelog(emptyFileChangeset, { cwd });
+    await updateChangelog(emptyFileChangeset, { ...versionOptions, cwd });
 
     const updatedChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# has-empty-changelog
 
 ## 1.1.0
-- [minor] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
+- [minor] b8bb699:
+
+  This is a summary
 `);
   });
   it('should work with multiple changesets', async () => {
     const initalChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(initalChangelog).toEqual('');
-    await updateChangelog(multipleChangesets, { cwd });
+    await updateChangelog(multipleChangesets, { ...versionOptions, cwd });
 
     const updatedChangelog = fs.readFileSync(emptyChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# has-empty-changelog
 
 ## 1.1.0
-- [patch] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
-- [minor] This is a second summary [abcdefg](https://somewhere-fake-to-visit.com/abcdefg)
+- [patch] b8bb699:
+
+  This is a summary
+- [minor] abcdefg:
+
+  This is a second summary
 `);
   });
   it('should work for multiple packages', async () => {
@@ -153,7 +159,7 @@ describe('updateChangelog', async () => {
     const existingInitial = fs.readFileSync(existingChangelogPath).toString();
     expect(initalChangelog).toEqual('');
     expect(existingInitial).toEqual(filledChangelogContent);
-    await updateChangelog(multipleReleaseObj, { cwd });
+    await updateChangelog(multipleReleaseObj, { ...versionOptions, cwd });
 
     const updatedChangelog = fs.readFileSync(emptyChangelogPath).toString();
     const updatedExistingChangelog = fs
@@ -162,12 +168,16 @@ describe('updateChangelog', async () => {
     expect(updatedChangelog).toEqual(`# has-empty-changelog
 
 ## 1.1.0
-- [minor] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
+- [minor] b8bb699:
+
+  This is a summary
 `);
     expect(updatedExistingChangelog).toEqual(`# Has Empty Changelog
 
 ## 1.0.1
-- [patch] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
+- [patch] b8bb699:
+
+  This is a summary
 
 ## 1.0.0
 - [patch] This existed before [b8bb699](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8bb699)
@@ -175,7 +185,10 @@ describe('updateChangelog', async () => {
 `);
   });
   it('should return the updated file paths', async () => {
-    const updatedPackages = await updateChangelog(multipleReleaseObj, { cwd });
+    const updatedPackages = await updateChangelog(multipleReleaseObj, {
+      ...versionOptions,
+      cwd,
+    });
     expect(updatedPackages).toEqual([
       emptyChangelogPath,
       existingChangelogPath,
@@ -184,26 +197,33 @@ describe('updateChangelog', async () => {
   it('has no changelog file', async () => {
     const changelogExists = fs.existsSync(noChangelogPath);
     expect(changelogExists).toEqual(false);
-    await updateChangelog(noChangelogFileChangeset, { cwd });
+    await updateChangelog(noChangelogFileChangeset, { ...versionOptions, cwd });
 
     const updatedChangelog = fs.readFileSync(noChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# has-no-changelog
 
 ## 1.1.0
-- [minor] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
+- [minor] b8bb699:
+
+  This is a summary
 `);
   });
   it('should work with an existing changelog', async () => {
     const initalChangelog = fs.readFileSync(existingChangelogPath).toString();
 
     expect(initalChangelog).toEqual(filledChangelogContent);
-    await updateChangelog(hasFilledChangelogChangeset, { cwd });
+    await updateChangelog(hasFilledChangelogChangeset, {
+      ...versionOptions,
+      cwd,
+    });
 
     const updatedChangelog = fs.readFileSync(existingChangelogPath).toString();
     expect(updatedChangelog).toEqual(`# Has Empty Changelog
 
 ## 1.1.0
-- [minor] This is a summary [b8bb699](https://somewhere-fake-to-visit.com/b8bb699)
+- [minor] b8bb699:
+
+  This is a summary
 
 ## 1.0.0
 - [patch] This existed before [b8bb699](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8bb699)

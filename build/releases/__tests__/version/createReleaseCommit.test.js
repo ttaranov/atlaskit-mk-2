@@ -48,6 +48,28 @@ describe('createReleaseCommit', () => {
       {"releases":[{"name":"package-a","commits":["dec4a66"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"}]}
       ---
 
+    `);
+  });
+  it('should skip CI when the flag is passed', () => {
+    const releaseObj = createRelease([simpleChangeset], fakeAllPackages);
+    const commitStr = createReleaseCommit(releaseObj, { skipCI: true });
+    expect(commitStr).toEqual(outdent`
+      RELEASING: Releasing 1 package(s)
+
+      Releases:
+        package-a@1.1.0
+
+      Dependents:
+        []
+
+      Deleted:
+        []
+
+      ---
+      {"releases":[{"name":"package-a","commits":["dec4a66"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"}]}
+      ---
+
+
       [skip ci]
     `);
   });
@@ -74,7 +96,6 @@ describe('createReleaseCommit', () => {
       {"releases":[{"name":"package-a","commits":["dec4a66"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"}]}
       ---
 
-      [skip ci]
     `);
   });
 
@@ -98,7 +119,6 @@ describe('createReleaseCommit', () => {
       {"releases":[{"name":"package-a","commits":["695fad0"],"version":"1.0.1"},{"name":"package-b","commits":["695fad0"],"version":"1.1.0"}],"changesets":[{"commit":"695fad0","summary":"This is another summary"}]}
       ---
 
-      [skip ci]
     `);
   });
 
@@ -126,7 +146,6 @@ describe('createReleaseCommit', () => {
       {"releases":[{"name":"package-a","commits":["dec4a66","695fad0"],"version":"1.1.0"},{"name":"package-b","commits":["695fad0"],"version":"1.1.0"}],"changesets":[{"commit":"dec4a66","summary":"This is a summary"},{"commit":"695fad0","summary":"This is another summary"}]}
       ---
 
-      [skip ci]
     `);
   });
 });
