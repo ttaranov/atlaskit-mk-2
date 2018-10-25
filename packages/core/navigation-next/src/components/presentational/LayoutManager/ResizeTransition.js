@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent, type Node } from 'react';
-import { Transition } from 'react-transition-group';
+import Transition from 'react-transition-group/Transition';
 import type { CollapseListener } from './types';
 
 const DURATION = 300;
@@ -52,7 +52,11 @@ type Props = {
   onCollapseEnd: CollapseListener,
 };
 
-export default class ResizeTransition extends PureComponent<Props> {
+type State = {
+  isMounted: boolean,
+};
+
+export default class ResizeTransition extends PureComponent<Props, State> {
   target: HTMLElement;
   static defaultProps = {
     onExpandStart: NOOP,
@@ -60,6 +64,13 @@ export default class ResizeTransition extends PureComponent<Props> {
     onCollapseStart: NOOP,
     onCollapseEnd: NOOP,
   };
+  state = { isMounted: false };
+
+  componentDidMount() {
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ isMounted: true });
+  }
+
   getTarget = (ref: HTMLElement) => {
     this.target = ref;
 
@@ -77,6 +88,7 @@ export default class ResizeTransition extends PureComponent<Props> {
       properties,
       to,
       userIsDragging,
+      in: inProp,
     } = this.props;
 
     return (
@@ -85,14 +97,16 @@ export default class ResizeTransition extends PureComponent<Props> {
         onEntered={onExpandEnd}
         onExiting={onCollapseStart}
         onExited={onCollapseEnd}
-        in={this.props.in}
-        timeout={DURATION}
+        in={inProp}
+        timeout={this.state.isMounted ? DURATION : 0}
+        appear
       >
         {transitionState => {
           // transitions interupt manual resize behaviour
-          const cssTransition = !userIsDragging
-            ? getTransition(properties)
-            : {};
+          const cssTransition =
+            !userIsDragging && this.state.isMounted
+              ? getTransition(properties)
+              : {};
 
           // `from` and `to` styles tweened by the transition
           const dynamicProperties = {

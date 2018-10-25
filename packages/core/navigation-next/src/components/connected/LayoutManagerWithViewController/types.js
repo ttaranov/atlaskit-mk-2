@@ -2,8 +2,8 @@
 
 import type { ComponentType, Node } from 'react';
 import type { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
-
-import { UIController, ViewController } from '../../../';
+import UIController from '../../../ui-controller/UIController';
+import ViewController from '../../../view-controller/ViewController';
 
 import type {
   CollapseListeners,
