@@ -80,6 +80,7 @@ export class MediaEditor extends React.Component<
 
   private onImageLoadSucceeded(size: Size) {
     this.content.backImageLoaded(this.props.imageUrl, size);
+    this.positioning.backImageLoaded(size);
     this.props.onLoadSucceeded({
       export: this.exportImage.bind(this),
     });
