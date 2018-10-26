@@ -1,0 +1,1 @@
+- ED-5632: mock Selection API globally; allows dispatching before Editor finishes mounting
