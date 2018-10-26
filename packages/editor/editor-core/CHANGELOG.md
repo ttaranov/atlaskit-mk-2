@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.1.8
+- [patch] [3c505aa"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c505aa"
+d):
+
+  * Adds Danish and Romanian translations
+
 ## 87.1.7
 - [patch] [fc20259](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc20259):
 
