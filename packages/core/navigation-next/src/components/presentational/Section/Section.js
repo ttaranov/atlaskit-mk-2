@@ -80,7 +80,6 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
         <Transition
           key={id}
           timeout={this.state.isMounted ? 0 : transitionDurationMs}
-          appear
         >
           {state => {
             const { traversalDirection } = this.state;

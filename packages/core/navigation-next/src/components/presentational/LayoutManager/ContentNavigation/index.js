@@ -18,8 +18,6 @@ export default class ContentNavigation extends Component<
 > {
   state = { isMounted: false };
 
-  startTime = performance.now();
-
   componentDidMount() {
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ isMounted: true });
@@ -50,7 +48,6 @@ export default class ContentNavigation extends Component<
           timeout={this.state.isMounted ? transitionDurationMs : 0}
           mountOnEnter
           unmountOnExit
-          appear
         >
           {state => (
             <ContainerNavigation
