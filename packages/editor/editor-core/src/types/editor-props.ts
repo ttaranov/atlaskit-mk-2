@@ -227,4 +227,7 @@ export interface EditorProps {
 
   // Set to provide your extensions handlers.
   extensionHandlers?: ExtensionHandlers;
+
+  // Set to add a blue ring when the editor is active
+  formAppearance?: boolean;
 }
