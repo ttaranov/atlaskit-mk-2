@@ -11,7 +11,10 @@ export default function removeFileFromRecents(
     const recentItems = state.recents.items.filter(
       item => item.id !== action.id,
     );
-    return { ...state, recents: { items: recentItems } };
+    const selectedItems = state.selectedItems.filter(
+      item => item.id !== action.id,
+    );
+    return { ...state, recents: { items: recentItems }, selectedItems };
   } else {
     return state;
   }
