@@ -39,4 +39,9 @@ export class Content implements Scene {
 
     this.onSceneChanged();
   }
+
+  addModel(model: Model) {
+    this.models.push(model);
+    this.onSceneChanged();
+  }
 }

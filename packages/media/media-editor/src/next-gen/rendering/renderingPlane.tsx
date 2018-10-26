@@ -1,17 +1,18 @@
 import * as React from 'react';
 
-import { Scene, ImageModel, Rectangle } from '../scene';
+import { Scene, Model, Rectangle } from '../scene';
 import { Camera } from './camera';
 import { createRenderer } from './renderers';
 
 export interface RenderingPlaneProps {
-  scene: Scene;
   camera: Camera;
+  scene: Scene;
+  createdModels: Model[];
 }
 
 export class RenderingPlane extends React.Component<RenderingPlaneProps> {
   render() {
-    const { scene, camera } = this.props;
+    const { scene, camera, createdModels } = this.props;
     const { windowSize } = camera;
     const { width: windowWidth, height: windowHeight } = windowSize;
     const viewBox = this.viewBox;
@@ -28,6 +29,7 @@ export class RenderingPlane extends React.Component<RenderingPlaneProps> {
         preserveAspectRatio="xMidYMid meet"
       >
         {scene.models.map(model => createRenderer(model, model.id))}
+        {createdModels.map(model => createRenderer(model, model.id))}
       </svg>
     );
   }

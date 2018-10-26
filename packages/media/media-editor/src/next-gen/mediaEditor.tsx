@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import { Tool, Color } from './common';
 import { RenderingPlane } from './rendering';
-import { Scene, Size } from './scene';
+import { Scene, Size, Point } from './scene';
+import { CreatedModel, createModel } from './scene/creating';
 import { Camera } from './rendering';
 import { Positioning } from './positioning';
 import { Content } from './content';
@@ -28,6 +29,7 @@ export interface MediaEditorProps {
 interface MediaEditorState {
   scene?: Scene;
   camera: Camera;
+  createdModel?: CreatedModel;
 }
 
 const Container = styled.div`
@@ -40,6 +42,7 @@ export class MediaEditor extends React.Component<
 > {
   private readonly positioning: Positioning;
   private readonly content: Content;
+  private container?: HTMLElement;
 
   constructor(props: MediaEditorProps) {
     super(props);
@@ -59,12 +62,22 @@ export class MediaEditor extends React.Component<
 
   render() {
     const { width, height, imageUrl } = this.props;
-    const { scene, camera } = this.state;
+    const { scene, camera, createdModel } = this.state;
+
+    const createdModels = createdModel ? [createdModel.model] : [];
 
     return (
-      <Container style={{ width, height }}>
+      <Container
+        style={{ width, height }}
+        innerRef={ref => (this.container = ref)}
+        onMouseDown={this.onMouseDown.bind(this)}
+      >
         {scene ? (
-          <RenderingPlane scene={scene} camera={camera} />
+          <RenderingPlane
+            scene={scene}
+            camera={camera}
+            createdModels={createdModels}
+          />
         ) : (
           <ImageLoader
             url={imageUrl}
@@ -100,5 +113,134 @@ export class MediaEditor extends React.Component<
 
     const exporter = new Exporter(scene);
     return exporter.export();
+  }
+
+  // Mouse operations
+
+  private initialMouseScenePosition?: Point; // in scene coordinates
+  private isDragging = false;
+
+  // For simplicity I don't check the mouse button.
+  // For production-ready code we need to check the mouse button in onMouseDown and onMouseUp
+
+  private onMouseDown(event: MouseEvent) {
+    if (!this.container) {
+      return;
+    }
+
+    event.preventDefault();
+    const screenPoint = MediaEditor.getMouseCoordinates(event, this.container);
+    const scenePoint = this.positioning.screenToScene(screenPoint);
+
+    this.initialMouseScenePosition = scenePoint;
+    this.isDragging = false;
+
+    document.onmousemove = this.onMouseMove.bind(this);
+    document.onmouseup = this.onMouseUp.bind(this);
+  }
+
+  private onMouseMove(event: MouseEvent) {
+    if (!this.initialMouseScenePosition || !this.container) {
+      this.initialMouseScenePosition = undefined;
+      this.isDragging = false;
+      document.onmousemove = null;
+      document.onmouseup = null;
+      return;
+    }
+
+    event.preventDefault();
+
+    if (!this.isDragging) {
+      this.isDragging = true;
+      this.handleDragStart(this.initialMouseScenePosition);
+    }
+
+    const screenPoint = MediaEditor.getMouseCoordinates(event, this.container);
+    const scenePoint = this.positioning.screenToScene(screenPoint);
+    this.handleDragMove(scenePoint, this.initialMouseScenePosition);
+  }
+
+  private onMouseUp(event: MouseEvent) {
+    if (!this.initialMouseScenePosition || !this.container) {
+      this.initialMouseScenePosition = undefined;
+      this.isDragging = false;
+      document.onmousemove = null;
+      document.onmouseup = null;
+      return;
+    }
+
+    event.preventDefault();
+    const screenPoint = MediaEditor.getMouseCoordinates(event, this.container);
+    const realPoint = this.positioning.screenToScene(screenPoint);
+
+    if (this.isDragging) {
+      this.handleDragEnd(realPoint, this.initialMouseScenePosition);
+    } else {
+      this.handleOneClick(realPoint);
+    }
+
+    this.isDragging = false;
+    this.initialMouseScenePosition = undefined;
+    document.onmousemove = null;
+    document.onmouseup = null;
+  }
+
+  private handleDragStart(position: Point) {
+    const { tool, shapeColor } = this.props;
+    if (tool === 'move') {
+      // Move camera
+    } else {
+      const createdModel = createModel(
+        this.content.nextId,
+        tool,
+        position,
+        shapeColor,
+        this.sceneThickness,
+      );
+      if (!!createdModel) {
+        this.setState({ createdModel });
+      }
+    }
+  }
+
+  private handleDragMove(position: Point, initial: Point) {
+    const { createdModel } = this.state;
+
+    if (!!createdModel) {
+      this.setState({
+        createdModel: createdModel.setNextPoint(position),
+      });
+    }
+  }
+
+  private handleDragEnd(position: Point, initial: Point) {
+    const { createdModel, scene } = this.state;
+
+    if (!!createdModel) {
+      const model = createdModel.setNextPoint(position).model;
+      this.setState({ createdModel: undefined });
+      this.content.addModel(model);
+    }
+  }
+
+  private handleOneClick(position: Point) {
+    // Nothing to do right now
+  }
+
+  private get sceneThickness(): number {
+    // thickness in scene coordinates
+    return this.props.lineThickness / this.positioning.scale;
+  }
+
+  private static getMouseCoordinates(
+    event: MouseEvent,
+    element: HTMLElement,
+  ): Point {
+    // in screen coordinates
+    const rect = element.getBoundingClientRect();
+    const x = event.pageX - rect.left - window.pageXOffset;
+    const y = event.pageY - rect.top - window.pageYOffset;
+
+    return { x, y };
   }
 }

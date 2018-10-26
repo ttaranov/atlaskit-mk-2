@@ -36,6 +36,23 @@ export class Positioning implements Camera {
     this.validateAndUpdate();
   }
 
+  screenToScene(point: Point): Point {
+    const { center, scale, windowSize } = this;
+    const { width, height } = windowSize;
+    const { x: xc, y: yc } = center;
+    const { x, y } = point;
+
+    /*
+    x = xc + (X - W / 2) / scale
+    y = yc + (Y - H / 2) / scale
+    */
+
+    return {
+      x: xc + (x - width / 2.0) / scale,
+      y: yc + (y - height / 2.0) / scale,
+    };
+  }
+
   private validateAndUpdate() {
     this.scale = Math.min(
       Math.max(this.scale, Positioning.minScale),
