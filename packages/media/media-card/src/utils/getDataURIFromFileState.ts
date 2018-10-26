@@ -22,7 +22,7 @@ export const getDataURIFromFileState = async (
   const mediaType = getMediaTypeFromMimeType(type);
 
   if (mediaType === 'image') {
-    const orientation = await getOrientation(blob); // TODO: admit blob
+    const orientation = await getOrientation(blob as File);
     const src = URL.createObjectURL(blob);
 
     return {

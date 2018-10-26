@@ -10,7 +10,7 @@ import { ImageComponent } from './styled';
 export interface MediaImageProps {
   dataURI: string;
   crop?: boolean;
-  readonly previewOrientation?: number;
+  previewOrientation?: number;
 }
 
 export interface MediaImageState {

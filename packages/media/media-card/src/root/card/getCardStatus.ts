@@ -20,7 +20,6 @@ export const getCardStatus = (
       if (status === 'complete' && !dataURI) {
         return 'processing';
       }
-      // TODO: add test for 'uploading' case
       if ((status === 'processing' || status === 'uploading') && dataURI) {
         return 'complete';
       }
