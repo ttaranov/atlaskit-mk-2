@@ -58,6 +58,7 @@ describe('<ItemPrimitive/>', () => {
 
     expect(wrapper.find(TestComponent).length).toBe(1);
     expect(wrapper.find('a').length).toBe(0);
+    expect(wrapper.find('button').length).toBe(0);
   });
 
   it('should pass all props and innerRef as ref prop to component if present', () => {
@@ -74,13 +75,17 @@ describe('<ItemPrimitive/>', () => {
 
   it('should render an anchor element if href prop is present', () => {
     defaultProps.href = '<a>test</test>';
+
     const wrapper = mount(<ItemPrimitive {...defaultProps} />);
 
     expect(wrapper.find('a').length).toBe(1);
+    expect(wrapper.find(TestComponent).length).toBe(0);
+    expect(wrapper.find('button').length).toBe(0);
   });
 
   it('should pass expected props to anchor if href prop is present', () => {
     defaultProps.href = '<a>test</test>';
+
     const wrapper = mount(<ItemPrimitive {...defaultProps} />);
 
     const anchorWrapper = wrapper.find('a');
@@ -91,6 +96,31 @@ describe('<ItemPrimitive/>', () => {
     expect(anchorWrapper.prop('ref')).toBe(defaultProps.innerRef);
   });
 
+  it('should render a button element if onClick prop is present', () => {
+    defaultProps.onClick = () => {};
+
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+
+    expect(wrapper.find('button').length).toBe(1);
+    expect(wrapper.find('a').length).toBe(0);
+    expect(wrapper.find(TestComponent).length).toBe(0);
+  });
+
+  it('should pass expected props to button if onClick prop is present', () => {
+    defaultProps.onClick = jest.fn();
+
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+
+    expect(wrapper.find('button').prop('onClick')).toBe(defaultProps.onClick);
+    expect(wrapper.find('button').prop('innerRef')).toBe(defaultProps.innerRef);
+    expect(wrapper.find('button').prop('ref')).toBe(defaultProps.innerRef);
+  });
+
+  it('should always render text prop', () => {
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+    expect(wrapper.text()).toBe(wrapper.prop('text'));
+  });
+
   // it should fetch component style |done|
   // if CustomComponent is present send it in "as" prop to <ComponentSwitch/> |done|
   // if CustomComponent is present send this.props to <ComponentSwitch/> |done|
@@ -98,11 +128,11 @@ describe('<ItemPrimitive/>', () => {
   // if href is present send it in "as" prop to <ComponentSwitch/> |done|
   // if href is present send { href, onClick, target, innerRef } to <ComponentSwitch/> |done|
 
-  // if onclick is present send it in "as" prop to <ComponentSwitch/>
-  // if onclick is present send {onclick, innerRef} to <ComponentSwitch />
-  // it should render a div if no href ,onclick or  component are provided
+  // if onclick is present send it in "as" prop to <ComponentSwitch/> |done|
+  // if onclick is present send {onclick, innerRef} to <ComponentSwitch /> |done|
+  // it should render a div if no href ,onclick or  component are provided x
 
-  // it should always render text
+  // it should always render text done
   // if subText is present it should render subText
   // if Before is present it should render Before with presentationProps
   // if After is present it should render After with presentationProps
