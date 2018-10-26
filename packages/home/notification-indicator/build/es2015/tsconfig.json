@@ -2,10 +2,10 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/es2015"
+    "outDir": "../../dist/es2015",
+    "target": "es5",
+    "module": "esnext"
   },
-  "include": [
-    "../../src/**/*.ts",
-    "../../src/**/*.tsx"
-  ]
+  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"],
+  "exclude": ["../../src/**/__tests__/*"]
 }
