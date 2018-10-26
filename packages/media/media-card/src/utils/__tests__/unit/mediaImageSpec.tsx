@@ -158,14 +158,14 @@ describe('MediaImage', () => {
       it('should do nothing if orientation is 1', () => {
         const component = setup(false, false, false, true, 1);
 
-        expect(component.props().style.transform).toEqual(
+        expect(component.prop('style')!.transform).toEqual(
           defaultTransform.transform,
         );
       });
       it('should rotate the image when orientation is bigger than 1', () => {
         const component = setup(false, false, false, true, 6);
 
-        expect(component.props().style.transform).toEqual(
+        expect(component.prop('style')!.transform).toEqual(
           'translate(-50%, -50%) rotate(90deg)',
         );
       });
