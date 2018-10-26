@@ -1,11 +1,13 @@
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import { nextTick } from '@atlaskit/media-test-helpers';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import {
   CollectionFetcher,
   collectionCache,
   mergeItems,
 } from '../../collection';
 import { fileStreamsCache } from '../../context/fileStreamCache';
+import { MediaCollectionItemDetails } from '../../../../media-store/src/models/media';
 
 const setup = (nextInclusiveStartKey: string | null = 'first-key') => {
   const firstItem: MediaCollectionItem = {
@@ -59,14 +61,17 @@ const setup = (nextInclusiveStartKey: string | null = 'first-key') => {
       },
     }),
   );
+  const removeCollectionFile = jest.fn().mockReturnValue(Promise.resolve());
   const mediaStore: any = {
     getCollectionItems,
+    removeCollectionFile,
   };
   const collectionFetcher = new CollectionFetcher(mediaStore);
 
   return {
     collectionFetcher,
     getCollectionItems,
+    removeCollectionFile,
     contents,
     newItem,
   };
@@ -269,6 +274,51 @@ describe('CollectionFetcher', () => {
           done();
         },
       });
+    });
+  });
+
+  describe('removeFile()', () => {
+    beforeEach(() => {
+      collectionCache['some-collection-name'] = {
+        items: [
+          {
+            id: 'some-id',
+            insertedAt: 42,
+            occurrenceKey: '',
+            type: 'file',
+            details: {} as MediaCollectionItemDetails,
+          },
+        ],
+        subject: new ReplaySubject<MediaCollectionItem[]>(1),
+        isLoadingNextPage: false,
+      };
+    });
+
+    it('should call store.removeCollectionFile', async () => {
+      const { collectionFetcher, removeCollectionFile } = setup();
+      await collectionFetcher.removeFile(
+        'some-id',
+        'some-collection-name',
+        'some-occurrence-key',
+      );
+
+      expect(removeCollectionFile).toHaveBeenCalledWith(
+        'some-id',
+        'some-collection-name',
+        'some-occurrence-key',
+      );
+    });
+    it('should remove item from cache', async () => {
+      const { collectionFetcher } = setup();
+
+      const removeSpy = spyOn(fileStreamsCache, 'remove');
+      await collectionFetcher.removeFile(
+        'some-id',
+        'some-collection-name',
+        'some-occurrence-key',
+      );
+      expect(collectionCache['some-collection-name'].items).toHaveLength(0);
+      expect(removeSpy).toHaveBeenCalledWith('some-id-some-collection-name');
     });
   });
 });

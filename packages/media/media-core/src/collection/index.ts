@@ -106,6 +106,10 @@ export class CollectionFetcher {
 
     const key = FileStreamCache.createKey(id, keyOptions);
     fileStreamsCache.remove(key);
+    const collectionCacheIndex = collectionCache[
+      collectionName
+    ].items.findIndex(item => item.id === id);
+    collectionCache[collectionName].items.splice(collectionCacheIndex, 1);
   }
 
   getItems(
