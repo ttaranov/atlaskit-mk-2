@@ -3,7 +3,12 @@ const babel = require('@babel/core');
 const { promisify } = require('util');
 
 const babelConfig = {
-  plugins: ['react-intl', '@babel/syntax-dynamic-import'],
+  presets: ['@babel/preset-typescript'],
+  plugins: [
+    'react-intl',
+    '@babel/syntax-dynamic-import',
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+  ],
 };
 
 function errorAndExit(msg) {
@@ -11,11 +16,13 @@ function errorAndExit(msg) {
   process.exit(1);
 }
 
-function getExtensionForType(type) {
+function isTypeScript(type) {
   const lowerCasedType = String(type).toLowerCase();
-  return lowerCasedType === 'typescript' || lowerCasedType === 'ts'
-    ? '.ts'
-    : '.js';
+  return lowerCasedType === 'typescript' || lowerCasedType === 'ts';
+}
+
+function getExtensionForType(type) {
+  return isTypeScript(type) ? '.ts' : '.js';
 }
 
 async function extractMessagesFromFile(file) {
@@ -23,4 +30,9 @@ async function extractMessagesFromFile(file) {
   return res.metadata['react-intl'].messages;
 }
 
-module.exports = { errorAndExit, getExtensionForType, extractMessagesFromFile };
+module.exports = {
+  errorAndExit,
+  getExtensionForType,
+  extractMessagesFromFile,
+  isTypeScript,
+};

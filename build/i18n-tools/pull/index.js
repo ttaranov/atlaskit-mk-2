@@ -12,13 +12,7 @@ const {
 } = require('../utils/transifex');
 
 function pullCommand(options) {
-  const {
-    absPathToPackage,
-    outputDir,
-    outputType,
-    project,
-    resource,
-  } = options;
+  const { absPathToPackage, outputDir, type, project, resource } = options;
   const dirToOutput = path.join(absPathToPackage, outputDir);
   return new Listr([
     {
@@ -64,12 +58,12 @@ function pullCommand(options) {
 
         // Generate index.js|ts with exports
         fs.writeFileSync(
-          path.join(outputDir, 'index' + getExtensionForType(outputType)),
+          path.join(outputDir, 'index' + getExtensionForType(type)),
           prettier.format(exports.join('\n'), options),
         );
 
         fs.writeFileSync(
-          path.join(outputDir, 'languages' + getExtensionForType(outputType)),
+          path.join(outputDir, 'languages' + getExtensionForType(type)),
           prettier.format(
             `export default ${JSON.stringify(
               languages.reduce((acc, { name, code }) => {
@@ -91,7 +85,7 @@ function downloadLanguage(options) {
     project,
     resource,
     outputDir,
-    outputType,
+    type,
     code,
     name,
   } = options;
@@ -129,7 +123,7 @@ function downloadLanguage(options) {
 
         const outputPath = path.join(
           outputDir,
-          code + getExtensionForType(outputType),
+          code + getExtensionForType(type),
         );
 
         fs.writeFileSync(outputPath, formattedContent);

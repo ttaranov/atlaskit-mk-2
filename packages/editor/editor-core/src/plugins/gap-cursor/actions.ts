@@ -10,7 +10,7 @@ import { isIgnored } from './utils';
 import { Command } from '../../types';
 import { pluginKey } from './pm-plugins/main';
 
-export const enum Direction {
+export enum Direction {
   BACKWARD,
   FORWARD,
 }

@@ -28,32 +28,34 @@ function createApp() {
       --project     Override Transifex project name
                     [Default: ${TRANSIFEX_PROJECT_NAME}]
       --searchDir   Override the default directory that i18n-tools will search in when extracting translation strings (relative to the package you point to)
-                    [Default: dist/es2015]
+                    [Default: src]
       --dry         Dry run - extract messages without pushing to Transifex (push command only)
       --outputDir   Override the default directory that i18n-tools will store downloaded translations (relative to the package you point to)
                     [Default: src/i18n]
-      --outputType  Override the default file type that i18n-tools will use to store the translation files
+      --type        Override the default type that i18n-tools will use to find & store translations
                     [Default: javascript]
       --cwd         Override the current working directory
                     [Default: process.cwd()]
+      --ignore      A list of comma separated globs to ignore during extract
+                    [Default: "**/__tests__**"]
 
     Examples
-      $ i18n-tools push --resource global-search packages/search/global-search
-      $ i18n-tools pull --resource media packages/media/media-card
+      $ i18n-tools push --resource global-search --type typescript packages/search/global-search
+      $ i18n-tools pull --resource media-ui --type typescript packages/media/media-ui
 
       $ i18n-tools push --resource core --searchDir dist/esm packages/core/avatar
-      $ i18n-tools pull --resource editor-core --outputType typescript packages/editor/editor-core
+      $ i18n-tools pull --resource editor-core --type typescript packages/editor/editor-core
 
     Notes
-      i18n-tools extract will look in dist/es2015 by default, this can be overridden using the searchDir flag.
-      i18n-tools can only extract messages from files that **import** react-intl. That means esm/es2015 only.
-      i18n-tools can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
+      i18n-tools extract will look in src by default, this can be overridden using the searchDir flag.
+      i18n-tools extract uses babel-plugin-transform-typescript under the hood so it shares all the caveats too https://babeljs.io/docs/en/babel-plugin-transform-typescript#caveats.
+        If you are using any of those listed features then you might want to run this on your dist using \`--searchDir\`.
   `,
     {
       flags: {
         searchDir: {
           type: 'string',
-          default: 'dist/es2015',
+          default: 'src',
         },
         dry: {
           type: 'boolean',
@@ -63,7 +65,7 @@ function createApp() {
           type: 'string',
           default: 'src/i18n',
         },
-        outputType: {
+        type: {
           type: 'string',
           default: 'javascript',
         },
@@ -77,6 +79,10 @@ function createApp() {
         },
         resource: {
           type: 'string',
+        },
+        ignore: {
+          type: 'string',
+          default: '**/__tests__/**',
         },
       },
     },
@@ -95,7 +101,8 @@ function createApp() {
     searchDir,
     dry,
     outputDir,
-    outputType,
+    type,
+    ignore,
   } = cli.flags;
 
   if (!resource) {
@@ -116,8 +123,8 @@ function createApp() {
   }
 
   const options = { absPathToPackage, project, resource };
-  const pushOptions = { ...options, searchDir, dry };
-  const pullOptions = { ...options, outputDir, outputType };
+  const pushOptions = { ...options, searchDir, type, dry, ignore };
+  const pullOptions = { ...options, outputDir, type };
 
   return command === 'push'
     ? pushCommand(pushOptions)
