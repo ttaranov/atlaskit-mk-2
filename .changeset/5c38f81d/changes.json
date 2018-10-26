@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/analytics-listeners", "type": "patch" }],
+  "dependents": []
+}
