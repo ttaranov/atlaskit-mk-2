@@ -6,7 +6,7 @@ type i18nShape = {
   next: string,
 };
 
-type Props = {|
+type Props = {
   /** The default current page. This makes the current page value uncontrolled. */
   defaultValue: number,
   /** Object that sets the labels for the previous and next buttons. It should
@@ -19,7 +19,7 @@ type Props = {|
   total: number,
   /** The current page. This makes the current page value controlled */
   value?: number,
-|};
+};
 
 const defaultI18n = {
   prev: 'Prev',
@@ -38,7 +38,6 @@ export default class v7PropsHelper extends Component<Props> {
     total: 0,
   };
   render() {
-    //$FlowFixMe
     return <Noop {...this.props} />;
   }
 }
