@@ -14,7 +14,7 @@ interface StatusContainerProps {
   selected: boolean;
 }
 
-const StatusContainer = styled.span`
+export const StatusContainer = styled.span`
   cursor: pointer;
 
   * ::selection {
