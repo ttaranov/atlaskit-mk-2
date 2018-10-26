@@ -65,8 +65,5 @@ export default editorView => {
 
   (editorView as any).destroy = function() {
     EditorView.prototype.destroy.apply(this, arguments);
-    delete (window as any).getSelection;
-    delete (document as any).getSelection;
-    delete (document as any).createRange;
   };
 };
