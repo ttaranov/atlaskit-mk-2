@@ -2,7 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { Token } from './';
 
 // [~username]
-const MENTION_REGEXP = /^\[~([\w-:]+?)\]/;
+const MENTION_REGEXP = /^\[[~@]([^\\\],]+?)\]/;
 
 export function mention(input: string, schema: Schema): Token {
   const match = input.match(MENTION_REGEXP);
