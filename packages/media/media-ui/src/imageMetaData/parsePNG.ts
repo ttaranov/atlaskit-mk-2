@@ -1,24 +1,21 @@
 import { fileToArrayBuffer } from '../util';
+import { PNGMetaData, PNGChunk } from './types';
 
 let pngChunksExtract: any;
-let utf8ByteArrayToString: any;
 
-export async function readPNGXMPMetaData(
-  file: File,
-): Promise<{
-  iTXt: string;
-  pHYs: { PixelPerUnitX?: number; PixelPerUnitY?: number };
-}> {
-  // load 3rd party libs async on demand
-  pngChunksExtract =
-    pngChunksExtract || (await import('png-chunks-extract')).default;
-  utf8ByteArrayToString =
-    utf8ByteArrayToString ||
-    (await import('utf8-string-bytes')).utf8ByteArrayToString;
+export async function readPNGXMPMetaData(file: File): Promise<PNGMetaData> {
+  if (!pngChunksExtract) {
+    const module = await import('png-chunks-extract');
+    pngChunksExtract = module.default || module;
+  }
 
   const buffer = await fileToArrayBuffer(file);
   const chunks = pngChunksExtract(buffer);
 
+  return await parsePNGChunks(chunks);
+}
+
+export async function parsePNGChunks(chunks: PNGChunk[]): Promise<PNGMetaData> {
   let iTXt = '';
   let pHYs = {};
   /**
@@ -39,7 +36,7 @@ export async function readPNGXMPMetaData(
      * iTXt contains the useful XMP/XML string data of meta tags
      */
     if (chunk.name === 'iTXt') {
-      iTXt = utf8ByteArrayToString(chunk.data);
+      iTXt = String.fromCharCode.apply(null, chunk.data);
     }
     /**
      * http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.pHYs
