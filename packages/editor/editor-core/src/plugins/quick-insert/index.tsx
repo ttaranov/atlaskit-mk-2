@@ -27,7 +27,9 @@ const quickInsertPlugin: EditorPlugin = {
     typeAhead: {
       trigger: '/',
       getItems: (query, state, intl) => {
-        analyticsService.trackEvent('atlassian.editor.quickinsert.query');
+        analyticsService.trackEvent('atlassian.editor.quickinsert.query', {
+          query,
+        });
 
         const quickInsertState = pluginKey.getState(state);
         const defaultItems = processItems(quickInsertState.items, intl);
