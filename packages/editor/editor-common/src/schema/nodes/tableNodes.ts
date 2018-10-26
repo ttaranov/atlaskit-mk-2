@@ -258,7 +258,7 @@ const cellAttrs = {
 
 export const tableCell = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | blockCard | extension)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   isolating: true,
