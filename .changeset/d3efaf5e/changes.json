@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/datetime-picker", "type": "patch" }],
+  "dependents": []
+}
