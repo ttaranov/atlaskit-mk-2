@@ -20,7 +20,7 @@ const generateAfterProp = ({
   if (incomingView && incomingView.id === goTo) {
     return <Spinner delay={spinnerDelay} invertColor size="small" />;
   }
-  if (isActive || isHover) {
+  if (isActive || isHover || isFocused) {
     return (
       <ArrowRightCircleIcon
         primaryColor="currentColor"
