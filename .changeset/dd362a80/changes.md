@@ -1,1 +1,0 @@
-- Remove unecessary alt text for modal image to avoid redundancy for screenreaders
