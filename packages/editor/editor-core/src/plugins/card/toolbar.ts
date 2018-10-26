@@ -24,18 +24,19 @@ import { Fragment } from 'prosemirror-model';
 export const messages = defineMessages({
   block: {
     id: 'fabric.editor.displayBlock',
-    defaultMessage: 'Display as block',
-    description: 'Change the appearance of the card to be a block.',
+    defaultMessage: 'Display as card',
+    description:
+      'Display link as a card with a rich preview similar to in a Facebook feed with page title, description, and potentially an image.',
   },
   inline: {
     id: 'fabric.editor.displayInline',
-    defaultMessage: 'Display as inline',
-    description: 'Change the appearance of the card to be inline.',
+    defaultMessage: 'Display as link',
+    description: 'Display link with the title only.',
   },
   link: {
     id: 'fabric.editor.displayLink',
-    defaultMessage: 'Display as link',
-    description: 'Convert the card to become a regular link.',
+    defaultMessage: 'Display as text',
+    description: 'Convert the card to become a regular text-based hyperlink.',
   },
 });
 
