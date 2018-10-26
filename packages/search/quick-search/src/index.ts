@@ -31,3 +31,6 @@ export {
   default as ContainerResult,
 } from './components/Results/ContainerResult';
 export { default as ResultBase } from './components/Results/ResultBase';
+
+// types
+export { Props as ResultBaseProps } from './components/Results/ResultBase';
