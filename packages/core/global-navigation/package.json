@@ -46,11 +46,5 @@
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
     "react-lorem-component": "^0.12.2"
-  },
-  "atlaskitCoverage": {
-    "statements": 97,
-    "branches": 98,
-    "functions": 97,
-    "lines": 97
   }
 }
