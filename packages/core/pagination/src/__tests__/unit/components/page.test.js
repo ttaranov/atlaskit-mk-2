@@ -1,13 +1,13 @@
 //@flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
 import Page from '../../../components/page';
 import { name } from '../../../../package.json';
 
 describe(`${name} - Page component`, () => {
   it('renders child props', () => {
-    const wrapper = shallow(<Page isSelected>1</Page>);
+    const wrapper = mount(<Page isSelected>1</Page>);
     expect(wrapper.text()).toBe('1');
   });
   it('passes in isSelected props to button', () => {

@@ -46,7 +46,7 @@ export default class extends Component<{}, State> {
     const firstPage = pageLinksCollapsed[0];
     const lastPage = pageLinksCollapsed[pageLinksCollapsed.length - 1];
     return (
-      <AnalyticsListener onEvent={this.sendAnalytics}>
+      <AnalyticsListener channel="atlaskit" onEvent={this.sendAnalytics}>
         <Pagination>
           {(LeftNavigator, Link, RightNavigator) => (
             <Fragment>
@@ -73,8 +73,8 @@ export default class extends Component<{}, State> {
                 return (
                   <Link
                     key={`${value}`}
-                    onClick={(e, v) => {
-                      v.fire();
+                    onClick={(e, v, f) => {
+                      console.log({ e, v, f });
                       this.updateTheSelected(value);
                     }}
                     isSelected={value === this.state.selected}

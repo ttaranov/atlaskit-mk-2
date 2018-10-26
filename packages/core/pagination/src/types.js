@@ -7,6 +7,8 @@ export type NavigatorPropsType = {
   ariaLabel?: string,
   /** React node to render in the button, pass the text you want use to view on pagination button */
   children?: Node,
+  /** [FOR INTERNAL USE ONLY] this is used curate analytics on Pagination */
+  createAnalyticsEvent: Function,
   /** Is the navigator disabled */
   isDisabled?: boolean,
   /** This function is called with the when user clicks on navigator */
@@ -28,4 +30,6 @@ export type PagePropsType = $Diff<
     shouldFitContainer: boolean,
     type: 'button' | 'submit',
   },
->;
+> & {
+  createAnalyticsEvent: Function,
+};
