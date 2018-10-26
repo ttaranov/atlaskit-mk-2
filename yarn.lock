@@ -16876,10 +16876,6 @@ useragent@^2.1.12:
     lru-cache "2.2.x"
     tmp "0.0.x"
 
-utf8-string-bytes@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/utf8-string-bytes/-/utf8-string-bytes-1.0.3.tgz#8923be75a543b1a1bb00e5a12c52c1b0553b65c6"
-
 util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
