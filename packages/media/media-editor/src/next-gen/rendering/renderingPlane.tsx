@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Scene, ImageModel, Rectangle } from '../scene';
 import { Camera } from './camera';
-import { ImageRenderer } from './renderers';
+import { createRenderer } from './renderers';
 
 export interface RenderingPlaneProps {
   scene: Scene;
@@ -27,17 +27,7 @@ export class RenderingPlane extends React.Component<RenderingPlaneProps> {
         viewBox={viewBoxString}
         preserveAspectRatio="xMidYMid meet"
       >
-        {scene.models.map(model => {
-          const { id, type } = model;
-
-          switch (type) {
-            case 'image':
-              return <ImageRenderer key={id} model={model as ImageModel} />;
-
-            default:
-              return null;
-          }
-        })}
+        {scene.models.map(model => createRenderer(model, model.id))}
       </svg>
     );
   }

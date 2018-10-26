@@ -7,7 +7,7 @@ import { Scene, Size } from './scene';
 import { Camera } from './rendering';
 import { Positioning } from './positioning';
 import { Content } from './content';
-import { ImageLoader } from './util';
+import { ImageLoader, Exporter } from './util';
 
 // Operations exposed by Media Editor
 export interface MediaEditorOperations {
@@ -92,5 +92,13 @@ export class MediaEditor extends React.Component<
 
   // Media editor operations
 
-  private exportImage() {}
+  private exportImage(): Promise<string> {
+    const { scene } = this.state;
+    if (!scene) {
+      return Promise.reject(new Error('No scene created yet'));
+    }
+
+    const exporter = new Exporter(scene);
+    return exporter.export();
+  }
 }
