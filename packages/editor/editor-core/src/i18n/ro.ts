@@ -4,7 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Lat',
   'fabric.editor.layoutFullWidth': 'Lățime completă',
   'fabric.editor.remove': 'Eliminare',
-  'fabric.editor.visit': 'Open link in a new window',
+  'fabric.editor.visit': 'Deschidere link în fereastră nouă',
   'fabric.editor.normal': 'Text normal',
   'fabric.editor.heading1': 'Titlu 1',
   'fabric.editor.heading2': 'Titlu 2',
@@ -79,9 +79,9 @@ export default {
   'fabric.editor.insertRow': 'Inserare rând',
   'fabric.editor.removeRows':
     '{0, plural, one{Eliminare rând} few{Eliminare rânduri} other{Eliminare rânduri}}',
-  'fabric.editor.decisionPlaceholder': 'Add a decision…',
+  'fabric.editor.decisionPlaceholder': 'Adăugați o decizie...',
   'fabric.editor.taskPlaceholder':
-    "Type your action, use '@' to assign to someone.",
+    'Introduceți acțiunea și folosiți semnul @ pentru a o atribui cuiva.',
   'fabric.editor.textColor': 'Culoare text',
   'fabric.editor.underline': 'Subliniere',
   'fabric.editor.strike': 'Tăiere cu o linie',
