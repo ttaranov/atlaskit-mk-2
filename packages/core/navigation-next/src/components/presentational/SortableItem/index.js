@@ -75,9 +75,9 @@ const SortableItem = ({ index, ...itemProps }: SortableItemProps) => (
           innerRef={draggableProvided.innerRef}
           isDragging={draggableSnapshot.isDragging}
           styles={getStyles}
+          component={Div}
           {...itemProps}
           onClick={onClick}
-          component={Div}
         />
       );
     }}

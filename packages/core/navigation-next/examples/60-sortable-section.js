@@ -57,6 +57,16 @@ const DEFAULT_ITEMS = [
     text: 'viewed-recently',
     onClick: () => console.log('viewed-recently'),
   },
+  {
+    component: ({ children, className, draggableProps, innerRef }: *) => (
+      <div className={className} to="/" {...draggableProps} ref={innerRef}>
+        {children}
+      </div>
+    ),
+    subText: "Pretend I'm a react-router <Link>",
+    text: 'Custom component',
+    id: 'custom-component',
+  },
 ];
 
 /** Reorders an item in items from startIndex to endIndex.

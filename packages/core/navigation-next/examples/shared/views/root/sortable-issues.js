@@ -83,11 +83,6 @@ class SortableIssuesViewBase extends Component<SortableIssuesViewProps> {
     }
   }
 
-  // What do we do if the view changes over time?
-  // 1 - Change item properties is fine as they aren't managed by state
-  // 2 - Change group properties: such as itemIds is fine as we control the group state
-  // getDerivedStateFromProps(props, state) {}
-
   registerView = () => {
     const {
       viewController,
