@@ -1,5 +1,12 @@
 # @atlaskit/select
 
+## 6.1.4
+- [patch] [6ab8e95"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ab8e95"
+d):
+
+  - Removed wrapping div from around selects as it is no longer needed when using the latest inline-dialog component.
+
 ## 6.1.3
 - [patch] [dab963b"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dab963b"
