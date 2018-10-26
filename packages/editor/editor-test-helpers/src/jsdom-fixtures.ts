@@ -32,26 +32,6 @@ export class NullSelectionReader {
   }
 }
 
-const clientRectFixture = {
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-};
-
-const selectionFixture = {
-  removeAllRanges: () => {},
-  addRange: () => {},
-};
-
-const rangeFixture = {
-  setEnd: () => {},
-  setStart: () => {},
-  collapse: () => {},
-  getClientRects: () => [] as any,
-  getBoundingClientRect: () => clientRectFixture as any,
-};
-
 export default editorView => {
   const warnOnce = (() => {
     return () => {
@@ -82,28 +62,6 @@ export default editorView => {
   (editorView as any).setSelection = function(anchor, head, root) {
     warnOnce();
   };
-
-  // Do nothing when attempting to retrieve selection
-  window.getSelection = () => {
-    warnOnce();
-    return selectionFixture as any;
-  };
-
-  document.getSelection = () => {
-    warnOnce();
-    return selectionFixture as any;
-  };
-
-  // Do nothing when attempting to create DOM ranges
-  document.createRange = () => {
-    warnOnce();
-    return rangeFixture as any;
-  };
-
-  if (!('getClientRects' in document.createElement('div'))) {
-    Element.prototype.getClientRects = () => [] as any;
-    Element.prototype.getBoundingClientRect = () => clientRectFixture as any;
-  }
 
   (editorView as any).destroy = function() {
     EditorView.prototype.destroy.apply(this, arguments);
