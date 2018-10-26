@@ -31,5 +31,6 @@ export type PagePropsType = $Diff<
     type: 'button' | 'submit',
   },
 > & {
+  /** [FOR INTERNAL USE ONLY] this is used curate analytics on Pagination */
   createAnalyticsEvent: Function,
 };

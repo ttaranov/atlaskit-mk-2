@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import DynamicTableStateless from './Stateless';
-import type { SortOrderType, StatelessProps, RankEnd, RowType } from '../types';
+import type { SortOrderType, StatefulProps, RankEnd, RowType } from '../types';
 import { reorderRows } from '../internal/helpers';
 
 type Props = {
   defaultPage: number,
   defaultSortKey?: string,
   defaultSortOrder?: SortOrderType,
-} & StatelessProps;
+} & StatefulProps;
 
 type State = {
   page: number,

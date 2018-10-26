@@ -44,6 +44,27 @@ export type StatelessProps = {
   paginationi18n?: i18nShape,
 };
 
+export type StatefulProps = {
+  caption?: Node,
+  head?: HeadType,
+  rows?: Array<RowType>,
+  emptyView?: Element<any>,
+  loadingSpinnerSize?: LoadingSpinnerSizeType,
+  isLoading?: boolean,
+  isFixedSize?: boolean,
+  rowsPerPage?: number,
+  onSetPage: Function,
+  onSort: Function,
+  page?: number,
+  sortKey?: string,
+  sortOrder?: SortOrderType,
+  isRankable?: boolean,
+  isRankingDisabled?: boolean,
+  onRankStart?: RankStart => void,
+  onRankEnd?: RankEnd => void,
+  paginationi18n?: i18nShape,
+};
+
 export type RowType = {
   cells: Array<RowCellType>,
   key?: string,
