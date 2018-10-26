@@ -1,1 +1,0 @@
-- Removing animations on first page load
