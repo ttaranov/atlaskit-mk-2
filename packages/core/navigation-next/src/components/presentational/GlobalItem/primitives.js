@@ -7,7 +7,7 @@ import Tooltip from '@atlaskit/tooltip';
 import { styleReducerNoOp, withGlobalTheme } from '../../../theme';
 import type { GlobalItemPresentationProps, GlobalItemStyles } from './types';
 
-class GlobalNavigationItemPrimitive extends Component<*> {
+function GlobalNavigationItemPrimitive (props) {
   static defaultProps = {
     isActive: false,
     isHover: false,

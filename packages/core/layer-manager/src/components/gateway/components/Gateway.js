@@ -12,7 +12,7 @@ type Context = {
   gatewayRegistry: GatewayRegistry,
 };
 
-export default class Gateway extends Component<Props> {
+export default function Gateway (props) {
   gatewayRegistry: GatewayRegistry;
   id: string = '';
   static contextTypes: Context = {

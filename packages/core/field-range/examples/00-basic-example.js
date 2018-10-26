@@ -16,8 +16,8 @@ type State = {
   rangeValue: number,
 };
 
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     onChangeResult: 'Check & Uncheck to trigger onChange',
     rangeValue: 50,
   };

@@ -92,8 +92,8 @@ const starterTree = {
   },
 };
 
-export default class InfiniteTree extends Component<void, State> {
-  state = {
+export default function InfiniteTree (props) {
+  const state = useState({
     tree: addRandomChildren(starterTree, starterTree.rootId, [], 20),
   };
 

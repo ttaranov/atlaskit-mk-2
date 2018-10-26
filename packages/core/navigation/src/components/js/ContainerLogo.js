@@ -10,7 +10,7 @@ type Props = {
   theme: {},
 };
 
-class ContainerLogo extends PureComponent<Props> {
+function ContainerLogo (props) {
   render() {
     /* eslint-disable react/prop-types */
     // theme is passed in via context and not part of the props API for this component

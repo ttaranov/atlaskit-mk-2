@@ -23,7 +23,7 @@ type Props = {
   showKeyline?: boolean,
 };
 
-export default class ModalFooter extends Component<Props, {}> {
+export default function ModalFooter (props) {
   props: Props; // eslint-disable-line react/sort-comp
 
   render() {

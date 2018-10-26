@@ -33,7 +33,7 @@ type Props = {
   innerRef?: Function,
 };
 
-class SpotlightCard extends React.Component<Props> {
+function SpotlightCard (props) {
   static defaultProps = {
     width: 400,
     isFlat: false,

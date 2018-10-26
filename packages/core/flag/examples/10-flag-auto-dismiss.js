@@ -19,8 +19,8 @@ type State = {
   flags: Array<number>,
 };
 
-export default class AutoDismissExample extends Component<void, State> {
-  state = {
+export default function AutoDismissExample (props) {
+  const state = useState({
     flags: [],
   };
 

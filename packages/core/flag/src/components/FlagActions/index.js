@@ -13,7 +13,7 @@ type Props = {
   linkComponent?: ElementType,
 };
 
-export default class FlagActions extends Component<Props, {}> {
+export default function FlagActions (props) {
   props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = {
     appearance: DEFAULT_APPEARANCE,

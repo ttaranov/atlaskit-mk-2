@@ -9,7 +9,7 @@ type State = {
 };
 
 export default class extends Component<{}, State> {
-  state = {
+  const state = useState({
     count: 0,
     disabled: true,
     childrenEls: false,

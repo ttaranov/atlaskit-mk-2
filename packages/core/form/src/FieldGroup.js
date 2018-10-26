@@ -18,12 +18,12 @@ type State = {
   layout?: 'column',
 };
 
-export default class FieldGroup extends Component<FieldGroupProps, State> {
+export default function FieldGroup (props) {
   static defaultProps = {
     layout: 'column',
   };
 
-  state = {
+  const state = useState({
     layout: this.props.layout,
   };
 

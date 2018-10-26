@@ -10,7 +10,7 @@ type Props = {
   onRemoveAction?: () => mixed,
 };
 
-export default class RemoveButton extends PureComponent<Props> {
+export default function RemoveButton (props) {
   onKeyPress = (e: KeyboardEvent) => {
     const spacebarOrEnter = e.key === ' ' || e.key === 'Enter';
 

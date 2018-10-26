@@ -14,7 +14,7 @@ type Props = {
   collapseLabel: string,
 };
 
-export default class Chevron extends Component<Props> {
+export default function Chevron (props) {
   static defaultProps = {
     expandLabel: 'Expand',
     collapseLabel: 'Collapse',

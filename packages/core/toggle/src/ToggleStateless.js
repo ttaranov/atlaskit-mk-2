@@ -25,7 +25,7 @@ type DefaultProps = DefaultBaseProps & {
   isChecked: boolean,
 };
 
-class ToggleStateless extends Component<StatelessProps, State> {
+function ToggleStateless (props) {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isChecked: false,

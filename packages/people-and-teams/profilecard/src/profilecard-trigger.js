@@ -32,7 +32,7 @@ type State = {
   isFlipped: boolean,
 };
 
-export default class ProfilecardTrigger extends PureComponent<Props, State> {
+export default function ProfilecardTrigger (props) {
   showDelay: number = 500;
   hideDelay: number = 500;
   showTimer: any;
@@ -44,7 +44,7 @@ export default class ProfilecardTrigger extends PureComponent<Props, State> {
     trigger: 'hover',
   };
 
-  state = {
+  const state = useState({
     visible: false,
     isFlipped: false,
   };

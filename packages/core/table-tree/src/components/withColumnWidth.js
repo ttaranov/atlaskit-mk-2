@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function withColumnWidth(Cell: ElementType): ComponentType<*> {
-  return class CellWithColumnWidth extends Component<Props> {
+  return function CellWithColumnWidth (props) {
     static contextTypes = {
       tableTree: PropTypes.object.isRequired,
     };

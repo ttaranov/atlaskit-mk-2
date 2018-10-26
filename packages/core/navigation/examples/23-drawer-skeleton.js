@@ -84,8 +84,8 @@ const StarDrawerIcon = ({ openDrawer }: { openDrawer: string => void }) => (
   </Tooltip>
 );
 
-export default class ConfluenceHome extends Component<*, *> {
-  state = {
+export default function ConfluenceHome (props) {
+  const state = useState({
     isOpen: true,
     menuLoading: true,
     openDrawer: null,

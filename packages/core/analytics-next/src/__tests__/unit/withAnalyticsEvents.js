@@ -20,7 +20,7 @@ const Button = ({ children, onClick }: WrappedProps) => (
 );
 
 // eslint-disable-next-line react/no-multi-comp
-class ButtonWithCreate extends Component<WrappedProps> {
+function ButtonWithCreate (props) {
   handleClick = e => {
     const { createAnalyticsEvent, onClick } = this.props;
     if (onClick) {

@@ -8,8 +8,8 @@ type State = {
   isCompleting: boolean,
 };
 
-class StatefulSpinnerExample extends Component<{}, State> {
-  state = {
+function StatefulSpinnerExample (props) {
+  const state = useState({
     isCompleting: false,
   };
 

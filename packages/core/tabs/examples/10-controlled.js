@@ -16,7 +16,7 @@ export default class TabsControlledExample extends Component<
   {},
   { selected: TabData },
 > {
-  state = { selected: tabs[0] };
+  const state = useState({ selected: tabs[0] };
 
   handleUpdate = (selected: TabData) => this.setState({ selected });
 

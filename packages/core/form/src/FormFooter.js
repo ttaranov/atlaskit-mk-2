@@ -10,7 +10,7 @@ type Props = {
   form?: FormRef,
 };
 
-export default class FormFooter extends Component<Props, void> {
+export default function FormFooter (props) {
   static defaultProps = {};
 
   /** For we just render all children. TODO: implement actions provider which can generate

@@ -7,7 +7,7 @@ const Dummy = styled.div`
   background: #fea;
 `;
 
-export default class LayoutExample extends PureComponent<void, void> {
+export default function LayoutExample (props) {
   render() {
     return (
       <div>

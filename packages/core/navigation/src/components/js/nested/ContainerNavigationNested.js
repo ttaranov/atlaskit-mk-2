@@ -19,7 +19,7 @@ export default class ContainerNavigationNested extends PureComponent<
   Props,
   State,
 > {
-  state = {
+  const state = useState({
     stack: this.props.stack,
     traversalDirection: 'down',
   };

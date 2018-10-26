@@ -20,8 +20,8 @@ const ButtonWrapper = styled.div`
   will-change: padding;
 `;
 
-export default class ToggleBanner extends Component<{}, { isOpen: boolean }> {
-  state = { isOpen: false };
+export default function ToggleBanner (props) {
+  const state = useState({ isOpen: false };
 
   toggleBanner = () => this.setState(state => ({ isOpen: !state.isOpen }));
 

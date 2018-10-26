@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-export default class RouterLinkComponent extends Component<*, *> {
+export default function RouterLinkComponent (props) {
   static propTypes = {
     href: PropTypes.string,
     children: PropTypes.node,

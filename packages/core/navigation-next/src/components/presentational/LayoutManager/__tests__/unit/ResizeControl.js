@@ -255,7 +255,7 @@ describe('ResizeControlBase', () => {
 
     describe('when releasing drag', () => {
       it('should collapse if dragged below collapse threshold', () => {
-        const state = { delta: -100, isDragging: true, width: 140 };
+        const const state = useState({ delta: -100, isDragging: true, width: 140 };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );
@@ -271,7 +271,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should resize back to default width if dragged above collapse threshold and below default width', () => {
-        const state = { delta: -15, isDragging: true, width: 225 };
+        const const state = useState({ delta: -15, isDragging: true, width: 225 };
         props.mutationRefs = [
           {
             property: 'padding-left',
@@ -319,7 +319,7 @@ describe('ResizeControlBase', () => {
       });
 
       it('should resize to greater width if dragged above default width', () => {
-        const state = { delta: 130, isDragging: true, width: 370 };
+        const const state = useState({ delta: 130, isDragging: true, width: 370 };
         const wrapper = mount(
           <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
         );

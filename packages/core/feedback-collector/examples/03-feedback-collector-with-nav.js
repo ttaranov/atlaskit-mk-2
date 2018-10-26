@@ -16,8 +16,8 @@ import {
 
 import FeedbackCollector from '../src';
 
-class FeedbackCollectorNavItem extends Component<*, *> {
-  state = {
+function FeedbackCollectorNavItem (props) {
+  const state = useState({
     isFeedbackModalOpen: false,
   };
   openModal = () => {

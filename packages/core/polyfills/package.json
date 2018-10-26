@@ -19,7 +19,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2"

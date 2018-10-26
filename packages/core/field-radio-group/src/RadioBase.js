@@ -11,7 +11,7 @@ type State = {
   mouseIsDown: boolean,
 };
 
-export default class Radio extends Component<RadioBasePropTypes, State> {
+export default function Radio (props) {
   static defaultProps = {
     isDisabled: false,
     isSelected: false,

@@ -89,7 +89,7 @@ it('should pass an empty object to analytics context if no default or prop value
 
 it('should forward the ref of inner component', () => {
   const spy = jest.fn();
-  class Button extends React.Component<{}> {
+  function Button (props) {
     render() {
       return <button>click here</button>;
     }

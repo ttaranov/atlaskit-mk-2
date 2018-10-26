@@ -23,7 +23,7 @@ const initialState: State = {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-export default class ExternalSrcAvatar extends Component<*, State> {
+export default function ExternalSrcAvatar (props) {
   state: State = initialState;
 
   changeUrl = (event: SyntheticInputEvent<HTMLInputElement>) =>

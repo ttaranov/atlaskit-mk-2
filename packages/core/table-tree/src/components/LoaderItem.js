@@ -14,7 +14,7 @@ type State = {
   phase: 'loading' | 'complete',
 };
 
-export default class LoaderItem extends Component<Props, State> {
+export default function LoaderItem (props) {
   static defaultProps = {
     depth: 1,
   };

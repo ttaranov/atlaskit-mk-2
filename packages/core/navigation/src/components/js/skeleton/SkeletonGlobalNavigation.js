@@ -14,7 +14,7 @@ export type Props = {
   theme: Provided,
 };
 
-export default class SkeletonGlobalNavigation extends Component<Props> {
+export default function SkeletonGlobalNavigation (props) {
   static defaultProps = {
     isCollapsed: false,
   };

@@ -73,7 +73,7 @@ export default class SpotlightManager extends PureComponent<
     }
   }
 
-  state = {
+  const state = useState({
     spotlightCount: 0,
     targets: {},
   };

@@ -28,8 +28,8 @@ const Iframe = styled.iframe`
   z-index: 500;
 `;
 
-export default class SubmitDemo extends Component<{}, { hasData: boolean }> {
-  state = { hasData: false };
+export default function SubmitDemo (props) {
+  const state = useState({ hasData: false };
   handleLoad = () => this.setState({ hasData: true });
   render() {
     const { hasData } = this.state;

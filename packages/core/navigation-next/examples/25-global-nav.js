@@ -30,7 +30,7 @@ class GlobalItemWithDropdown extends Component<
   GlobalItemWithDropdownProps,
   GlobalItemWithDropdownState,
 > {
-  state = {
+  const state = useState({
     isOpen: false,
   };
   handleOpenChange = ({ isOpen }) => this.setState({ isOpen });
@@ -185,8 +185,8 @@ type State = {
   isDrawerOpen: boolean,
 };
 // eslint-disable-next-line react/no-multi-comp
-class GlobalNavWithModalsAndDrawers extends Component<{}, State> {
-  state = {
+function GlobalNavWithModalsAndDrawers (props) {
+  const state = useState({
     isModalOpen: false,
     isDrawerOpen: false,
   };

@@ -176,7 +176,7 @@ export const components = { ...itemComponents, ...groupComponents };
 /**
  * RENDERER
  */
-class ItemsRenderer extends PureComponent<ItemsRendererProps> {
+function ItemsRenderer (props) {
   customComponentsWithAnalytics: Map<
     string | ComponentType<*>,
     ComponentType<*>,

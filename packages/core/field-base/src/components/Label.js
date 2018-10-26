@@ -24,7 +24,7 @@ type Props = {
   isFirstChild?: boolean,
 };
 
-export default class Label extends Component<Props, void> {
+export default function Label (props) {
   static defaultProps = {
     appearance: 'default',
   };

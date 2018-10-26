@@ -41,9 +41,9 @@ type DropdownProps = {
   onOpenChange?: DropdownState => void,
   trigger: ComponentType<DropdownState>,
 };
-class BetterDropdown extends Component<DropdownProps, DropdownState> {
+function BetterDropdown (props) {
   static defaultProps = { defaultIsOpen: false };
-  state = { isOpen: this.props.defaultIsOpen };
+  const state = useState({ isOpen: this.props.defaultIsOpen };
 
   onOpenChange = (openState: DropdownState) => {
     if (this.props.onOpenChange) {

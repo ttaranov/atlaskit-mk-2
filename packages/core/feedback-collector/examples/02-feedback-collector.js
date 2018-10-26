@@ -11,8 +11,8 @@ const REQUEST_TYPE_ID = 'your_jsd_request_type_id';
 const name = 'Feedback Sender';
 const email = 'fsender@atlassian.com';
 
-export default class DisplayFeedback extends Component<void, State> {
-  state = { isOpen: false, displayFlag: false };
+export default function DisplayFeedback (props) {
+  const state = useState({ isOpen: false, displayFlag: false };
 
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });

@@ -27,7 +27,7 @@ type Props = {
   tag: TagType, // eslint-disable-line react/no-unused-prop-types
 };
 
-export default class ItemShape extends PureComponent<Props, {}> {
+export default function ItemShape (props) {
   static defaultProps = {
     isDisabled: false,
     isSelected: false,

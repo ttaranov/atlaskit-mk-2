@@ -26,7 +26,7 @@ import {
   DeactivatedInfo,
 } from './styled/Card';
 
-export default class Profilecard extends PureComponent<ProfilecardProps, void> {
+export default function Profilecard (props) {
   static defaultProps = {
     isActive: true,
     isBot: false,

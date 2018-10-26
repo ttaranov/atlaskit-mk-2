@@ -34,8 +34,8 @@ type State = {|
   tree: TreeData,
 |};
 
-export default class DragDropTree extends Component<void, State> {
-  state = {
+export default function DragDropTree (props) {
+  const state = useState({
     tree: complexTree,
   };
 

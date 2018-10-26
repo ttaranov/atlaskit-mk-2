@@ -6,7 +6,7 @@ import type { TabItemComponentProvided } from '../types';
 
 const noop = () => {};
 
-export default class TabItem extends Component<TabItemComponentProvided> {
+export default function TabItem (props) {
   static defaultProps = {
     data: {},
     elementProps: {},

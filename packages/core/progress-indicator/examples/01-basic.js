@@ -26,7 +26,7 @@ export default class extends Component<Props, State> {
     values: ['first', 'second', 'third'],
   };
 
-  state = {
+  const state = useState({
     selectedIndex: this.props.selectedIndex,
   };
 

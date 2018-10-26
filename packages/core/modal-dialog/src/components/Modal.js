@@ -65,7 +65,7 @@ type State = {
   scrollDistance: number,
 };
 
-class Modal extends Component<Props, State> {
+function Modal (props) {
   static defaultProps = {
     autoFocus: true,
     scrollBehavior: 'inside',

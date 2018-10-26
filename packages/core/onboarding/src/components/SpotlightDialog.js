@@ -64,8 +64,8 @@ type State = {
   hasFocusLock: boolean,
 };
 
-class SpotlightDialog extends Component<Props, State> {
-  state = {
+function SpotlightDialog (props) {
+  const state = useState({
     hasFocusLock: false,
   };
 

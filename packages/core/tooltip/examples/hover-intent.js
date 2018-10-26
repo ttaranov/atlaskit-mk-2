@@ -9,8 +9,8 @@ type S = {
   position: 'bottom' | 'mouse',
 };
 
-export default class HoverIntent extends Component<{}, S> {
-  state = {
+export default function HoverIntent (props) {
+  const state = useState({
     position: 'bottom',
   };
 

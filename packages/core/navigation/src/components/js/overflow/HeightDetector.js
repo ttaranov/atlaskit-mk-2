@@ -9,7 +9,7 @@ type Props = {
   onHeightChange: (height: number) => void,
 };
 
-export default class HeightDetector extends Component<Props> {
+export default function HeightDetector (props) {
   notifyHeight = rafSchd(height => {
     this.props.onHeightChange(height);
   });

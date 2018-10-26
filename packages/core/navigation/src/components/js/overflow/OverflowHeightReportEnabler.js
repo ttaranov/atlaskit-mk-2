@@ -9,7 +9,7 @@ type Props = {
   children: Node,
 };
 
-export default class OverflowHeightReportEnabler extends Component<Props> {
+export default function OverflowHeightReportEnabler (props) {
   static childContextTypes = {
     [shouldReportItemHeight]: PropTypes.bool,
   };

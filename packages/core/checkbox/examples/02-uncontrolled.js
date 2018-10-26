@@ -6,8 +6,8 @@ type State = {
   onChangeResult: string,
 };
 
-export default class UncontrolledExample extends PureComponent<void, State> {
-  state = {
+export default function UncontrolledExample (props) {
+  const state = useState({
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
   onChange = (event: SyntheticEvent<*>) => {

@@ -13,8 +13,8 @@ import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 // Simple global navigation
 // ==============================
 
-export class DefaultGlobalNavigation extends PureComponent<*, *> {
-  state = {
+export function DefaultGlobalNavigation (props) {
+  const state = useState({
     isOpen: false,
   };
   componentDidMount = () => {
@@ -60,8 +60,8 @@ export const SearchDrawer = ({ children, isOpen, onClose }: *) => (
 const SwitcherBefore = itemState => (
   <ItemAvatar itemState={itemState} appearance="square" size="large" />
 );
-class ProjectSwitcherBase extends PureComponent<*, *> {
-  state = {
+function ProjectSwitcherBase (props) {
+  const state = useState({
     selected: this.props.defaultSelected,
   };
   getTarget = () => {

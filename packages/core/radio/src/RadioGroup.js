@@ -17,7 +17,7 @@ type RadioElementArray = Array<Element<typeof Radio>>;
 
 type State = { checkedValue?: string | number | null };
 
-export default class RadioGroup extends Component<RadioGroupProps, State> {
+export default function RadioGroup (props) {
   static defaultProps = {
     onChange: () => {},
     options: [],
@@ -25,7 +25,7 @@ export default class RadioGroup extends Component<RadioGroupProps, State> {
 
   constructor(props: RadioGroupProps) {
     super(props);
-    this.state = {
+    this.const state = useState({
       checkedValue:
         this.props.checkedValue !== undefined
           ? this.props.checkedValue

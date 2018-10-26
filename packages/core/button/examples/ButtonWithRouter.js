@@ -10,7 +10,7 @@ type Props = {
   onMouseEnter: Event,
   onMouseLeave: Event,
 };
-class RouterLink extends React.PureComponent<Props, {}> {
+function RouterLink (props) {
   render() {
     const {
       children,

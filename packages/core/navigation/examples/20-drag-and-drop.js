@@ -37,8 +37,8 @@ type State = {
   items: Item[],
 };
 
-export default class NavigationWithDragAndDrop extends Component<void, State> {
-  state = {
+export default function NavigationWithDragAndDrop (props) {
+  const state = useState({
     items: getItems(10),
   };
 

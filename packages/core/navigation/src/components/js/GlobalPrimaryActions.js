@@ -20,7 +20,7 @@ type Props = {
   searchIcon?: Element<any>,
 };
 
-export default class GlobalPrimaryActions extends PureComponent<Props> {
+export default function GlobalPrimaryActions (props) {
   render() {
     const {
       actions,

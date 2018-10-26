@@ -62,8 +62,8 @@ const items: Array<{
   },
 ];
 
-export default class RadioInputExample extends Component<*, State> {
-  state = {
+export default function RadioInputExample (props) {
+  const state = useState({
     items: (items.slice(): Array<*>),
     checkedValue: '1',
     isActive: false,

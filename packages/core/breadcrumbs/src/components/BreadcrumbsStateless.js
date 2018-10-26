@@ -34,7 +34,7 @@ type Props = {
   itemsAfterCollapse: number,
 };
 
-class BreadcrumbsStateless extends Component<Props, {}> {
+function BreadcrumbsStateless (props) {
   static defaultProps = {
     isExpanded: false,
     children: null,

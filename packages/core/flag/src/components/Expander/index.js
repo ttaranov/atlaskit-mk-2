@@ -11,10 +11,10 @@ type State = {
   isAnimating: boolean,
 };
 
-export default class Expander extends Component<Props, State> {
+export default function Expander (props) {
   props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = { isExpanded: false };
-  state = { isAnimating: false };
+  const state = useState({ isAnimating: false };
 
   componentWillReceiveProps(nextProps: Props) {
     if (this.props.isExpanded !== nextProps.isExpanded) {

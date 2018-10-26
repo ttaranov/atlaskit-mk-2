@@ -20,7 +20,7 @@ export default md`
 ${code`
 import LayerManager from '@atlaskit/layer-manager';
 
-export default class App extends Component {
+export default function App (props) {
   render() {
     return (
       <LayerManager>

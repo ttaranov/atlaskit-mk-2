@@ -8,7 +8,7 @@ import type { MenuSectionProps } from './types';
 
 const gridSize = gridSizeFn();
 
-export default class MenuSection extends Component<MenuSectionProps> {
+export default function MenuSection (props) {
   static defaultProps = {
     alwaysShowScrollHint: false,
   };

@@ -15,7 +15,7 @@ export default class extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    this.state = {
+    this.const state = useState({
       showPagination: true,
     };
   }

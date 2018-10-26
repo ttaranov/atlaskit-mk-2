@@ -26,7 +26,7 @@ type CodeState = {
   language: string,
 };
 
-export class Code extends PureComponent<CodeProps, CodeState> {
+export function Code (props) {
   static defaultProps = {
     language: '',
     theme: {},
@@ -35,7 +35,7 @@ export class Code extends PureComponent<CodeProps, CodeState> {
     codeTagProps: {},
   };
 
-  state = {
+  const state = useState({
     language: normalizeLanguage(''),
   };
 

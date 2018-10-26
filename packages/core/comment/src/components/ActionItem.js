@@ -24,7 +24,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-class ActionItem extends Component<Props, {}> {
+function ActionItem (props) {
   render() {
     const { children, onClick, onFocus, onMouseOver } = this.props;
     /* eslint-disable jsx-a11y/no-static-element-interactions */

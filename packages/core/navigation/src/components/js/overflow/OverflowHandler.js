@@ -21,7 +21,7 @@ type State = {
   breakAt: { group: number, item: number },
 };
 
-export default class OverflowManager extends Component<Props, State> {
+export default function OverflowManager (props) {
   static childContextTypes = {
     [overflowManagerNamespace]: PropTypes.object,
   };
@@ -44,7 +44,7 @@ export default class OverflowManager extends Component<Props, State> {
     this.groupHeights = new Array(this.props.groupCount);
   }
 
-  state = {
+  const state = useState({
     // eslint-disable-line react/sort-comp
     breakAt: { group: 999, item: 999 },
   };

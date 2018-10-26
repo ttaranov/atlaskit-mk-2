@@ -14,7 +14,7 @@ type Props = {
   linkComponent?: ComponentType<*>,
 };
 
-export default class Content extends Component<Props> {
+export default function Content (props) {
   getLinkComponent = () => {
     const { linkComponent, href } = this.props;
 

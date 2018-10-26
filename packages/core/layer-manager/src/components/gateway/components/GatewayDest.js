@@ -14,7 +14,7 @@ type Context = {
   gatewayRegistry: GatewayRegistry,
 };
 
-export default class GatewayDest extends Component<Props, State> {
+export default function GatewayDest (props) {
   gatewayRegistry: GatewayRegistry;
   static contextTypes = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,
@@ -22,7 +22,7 @@ export default class GatewayDest extends Component<Props, State> {
   static defaultProps = {
     component: 'div',
   };
-  state = {
+  const state = useState({
     children: null,
   };
 

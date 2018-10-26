@@ -37,7 +37,7 @@ const defaultTransitionProps = {
   mountOnEnter: true,
   unmountOnExit: true,
 };
-class TransitionHandler extends Component<TransitionProps & HandlerProps> {
+function TransitionHandler (props) {
   static defaultProps = {
     component: 'div',
     transitionProps: defaultTransitionProps,

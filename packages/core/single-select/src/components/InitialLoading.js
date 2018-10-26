@@ -7,7 +7,7 @@ type Props = {
   children: Node,
 };
 
-export default class InitialLoading extends PureComponent<Props, {}> {
+export default function InitialLoading (props) {
   render() {
     return (
       <InitialLoadingElement aria-live="polite" role="status">

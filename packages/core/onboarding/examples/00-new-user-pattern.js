@@ -28,7 +28,7 @@ const Option = styled.div`
   padding: ${gridSize() / 2}px;
 `;
 
-class NewUser extends React.Component<{}> {
+function NewUser (props) {
   render() {
     return (
       <Wrapper>

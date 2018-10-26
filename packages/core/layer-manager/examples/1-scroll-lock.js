@@ -5,7 +5,7 @@ import { ScrollLock } from '../src';
 type Props = {};
 type State = { isActive: boolean };
 
-export default class ScrollLockExample extends Component<Props, State> {
+export default function ScrollLockExample (props) {
   state: State = { isActive: false };
   toggleLock = () => this.setState(state => ({ isActive: !state.isActive }));
   render() {

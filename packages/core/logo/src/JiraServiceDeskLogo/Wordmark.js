@@ -12,7 +12,7 @@ const svg = `<canvas height="32" width="185" aria-hidden="true"></canvas>
   </g>
 </svg>`;
 
-export default class JiraServiceDeskWordmark extends Component<Props> {
+export default function JiraServiceDeskWordmark (props) {
   static defaultProps = DefaultProps;
 
   render() {

@@ -12,7 +12,7 @@ export default class CheckboxGroups extends Component<
   void,
   { flexDirection: string },
 > {
-  state = {
+  const state = useState({
     flexDirection: 'column',
   };
   onChange = (event: SyntheticEvent<*>) => {

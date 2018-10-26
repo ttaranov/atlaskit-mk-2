@@ -62,8 +62,8 @@ type State = {
   themeIndex: number,
 };
 
-export default class ProgressIndicatorDots extends Component<{}, State> {
-  state = {
+export default function ProgressIndicatorDots (props) {
+  const state = useState({
     isInteractive: true,
     selectedIndex: 0,
     selectedAppearance: appearances[1],

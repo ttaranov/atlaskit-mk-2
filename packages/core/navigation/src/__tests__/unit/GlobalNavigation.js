@@ -11,7 +11,7 @@ import GlobalSecondaryActions from '../../components/js/GlobalSecondaryActions';
 
 configure({ adapter: new Adapter() });
 
-class Child extends PureComponent<any> {
+function Child (props) {
   render() {
     return <div>Hi there</div>;
   }

@@ -11,9 +11,9 @@ type State = {
   spotlightIsVisible: boolean,
 };
 
-export default class SpotlightNodeExample extends Component<Object, State> {
+export default function SpotlightNodeExample (props) {
   drawer: HTMLElement;
-  state = { drawerIsVisible: false, spotlightIsVisible: false };
+  const state = useState({ drawerIsVisible: false, spotlightIsVisible: false };
   showDrawer = () => {
     this.setState({ drawerIsVisible: true });
   };

@@ -21,7 +21,7 @@ const Dot = styled.span`
   line-height: 32px;
 `;
 
-export default class StaticTree extends Component<void> {
+export default function StaticTree (props) {
   static getIcon(item: TreeItem) {
     if (item.children && item.children.length > 0) {
       return item.isExpanded ? (

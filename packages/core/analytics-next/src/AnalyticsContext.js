@@ -15,7 +15,7 @@ type Props = {
   data: {},
 };
 
-export default class AnalyticsContext extends Component<Props> {
+export default function AnalyticsContext (props) {
   static contextTypes = ContextTypes;
 
   static childContextTypes = ContextTypes;

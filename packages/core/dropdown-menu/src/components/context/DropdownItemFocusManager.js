@@ -16,7 +16,7 @@ type Props = {
   }) => void,
 };
 
-export default class DropdownItemFocusManager extends Component<Props> {
+export default function DropdownItemFocusManager (props) {
   static childContextTypes = {
     [focusManagerContext]: PropTypes.object,
   };

@@ -14,7 +14,7 @@ type State = {
 };
 
 export default class extends Component<{}, State> {
-  state = {
+  const state = useState({
     isModalOpen: false,
   };
 

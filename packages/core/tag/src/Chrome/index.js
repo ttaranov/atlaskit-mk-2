@@ -15,7 +15,7 @@ type Props = {
   color: TagColor,
 };
 
-export default class Chrome extends PureComponent<Props> {
+export default function Chrome (props) {
   chromeRef: HTMLElement;
 
   handleKeyPress = (e: KeyboardEvent) => {

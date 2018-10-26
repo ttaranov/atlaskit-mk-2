@@ -17,8 +17,8 @@ const promiseOptions = inputValue =>
     }, 1000);
   });
 
-export default class WithPromises extends Component<*, State> {
-  state = { inputValue: '' };
+export default function WithPromises (props) {
+  const state = useState({ inputValue: '' };
   handleInputChange = (newValue: string) => {
     const inputValue = newValue.replace(/\W/g, '');
     this.setState({ inputValue });

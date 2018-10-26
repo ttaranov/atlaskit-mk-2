@@ -18,7 +18,7 @@ type Props = {
   isRankingDisabled: boolean,
 } & WithDimensionsProps;
 
-export class RankableTableRow extends Component<Props, {}> {
+export function RankableTableRow (props) {
   innerRef = (innerRefFn: Function) => (ref: ?HTMLElement) => {
     innerRefFn(ref);
     this.props.innerRef(ref);

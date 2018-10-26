@@ -8,7 +8,7 @@ type State = {
   isOpen: boolean,
 };
 
-export default class SelectInModal extends Component<{}, State> {
+export default function SelectInModal (props) {
   state: State = { isOpen: false };
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });

@@ -12,7 +12,7 @@ type Props = {
   children?: Node,
 };
 
-class Header extends Component<Props> {
+function Header (props) {
   render() {
     const { props } = this;
     return (

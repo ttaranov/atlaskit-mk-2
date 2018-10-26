@@ -76,7 +76,7 @@ export const clearCache = () => {
   cache = {};
 };
 
-export default class AvatarImage extends PureComponent<Props, State> {
+export default function AvatarImage (props) {
   state: State = {
     hasError: false,
     // if provided a scr - we need to load it

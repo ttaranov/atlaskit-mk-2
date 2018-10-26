@@ -41,7 +41,7 @@ const createAndFireOnClick = (
     },
   })(createAnalyticsEvent);
 
-export class DrawerBase extends Component<DrawerProps> {
+export function DrawerBase (props) {
   body = document.querySelector('body');
 
   componentDidMount() {

@@ -35,8 +35,8 @@ type State = {
   shouldShowContainer: boolean,
   shouldRenderSkeleton: boolean,
 };
-export default class Example extends Component<{}, State> {
-  state = {
+export default function Example (props) {
+  const state = useState({
     themeMode: 'light',
     shouldShowContainer: true,
     shouldRenderSkeleton: true,

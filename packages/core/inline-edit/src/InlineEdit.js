@@ -15,8 +15,8 @@ type DefaultProps = {
   cancelButtonLabel: string,
 };
 
-export default class InlineEditor extends Component<StatefulProps, State> {
-  state = {
+export default function InlineEditor (props) {
+  const state = useState({
     isEditing: false,
   };
 

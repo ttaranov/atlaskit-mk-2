@@ -12,7 +12,7 @@ const svg = `<canvas height="32" width="129" aria-hidden="true"></canvas>
   </g>
 </svg>`;
 
-export default class StatuspageWordmark extends Component<Props> {
+export default function StatuspageWordmark (props) {
   static defaultProps = DefaultProps;
 
   render() {

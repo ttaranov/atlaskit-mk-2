@@ -7,8 +7,8 @@ type State = {
   onChangeResult: string,
 };
 
-export default class ControlledExample extends PureComponent<void, State> {
-  state = {
+export default function ControlledExample (props) {
+  const state = useState({
     isChecked: false,
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };

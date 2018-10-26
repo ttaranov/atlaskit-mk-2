@@ -55,7 +55,7 @@ type State = {|
   value?: number | string,
 |};
 
-export default class FieldTextArea extends Component<Props, State> {
+export default function FieldTextArea (props) {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -63,7 +63,7 @@ export default class FieldTextArea extends Component<Props, State> {
     enableResize: false,
   };
 
-  state = {
+  const state = useState({
     value: this.props.value,
   };
 

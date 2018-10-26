@@ -11,4 +11,4 @@ type Props = {
   items: Array<DummyItem>, // eslint-disable-line react/no-unused-prop-types
 };
 
-export default class DummyGroup extends PureComponent<Props, {}> {}
+export default function DummyGroup (props) {}

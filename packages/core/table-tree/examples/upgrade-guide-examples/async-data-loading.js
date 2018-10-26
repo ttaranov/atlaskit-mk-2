@@ -16,8 +16,8 @@ type State = {
 
 const tableTreeDataHelper = new TableTreeDataHelper({ key: 'title' });
 
-class WithStaticData extends Component<{}, State> {
-  state = {
+function WithStaticData (props) {
+  const state = useState({
     items: [],
   };
 

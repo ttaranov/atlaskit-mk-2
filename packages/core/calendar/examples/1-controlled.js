@@ -20,8 +20,8 @@ type DateObj = {
   year: number,
 };
 
-export default class ControlledCalendar extends Component<{}, State> {
-  state = {
+export default function ControlledCalendar (props) {
+  const state = useState({
     disabled: ['2020-12-04'],
     previouslySelected: ['2020-12-06'],
     selected: ['2020-12-08'],

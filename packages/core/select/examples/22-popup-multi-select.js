@@ -24,8 +24,8 @@ type State = {
   placeholder: string,
   controlShouldRenderValue: boolean,
 };
-class MultiPopupSelectExample extends Component<*, State> {
-  state = {
+function MultiPopupSelectExample (props) {
+  const state = useState({
     values: [options[0]],
     valuesString: '',
     placeholder: 'Choose value...',

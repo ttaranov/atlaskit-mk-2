@@ -11,7 +11,7 @@ class Shortcuts extends Component<
   { navigationViewController: any },
   { items: any[] },
 > {
-  state = {
+  const state = useState({
     items: [],
   };
 

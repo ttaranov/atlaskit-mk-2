@@ -119,7 +119,7 @@ describe('Layer', () => {
           <div>Foo</div>
         </Layer>,
       );
-      const state = {
+      const const state = useState({
         flipped: true,
         actualPosition: 'top left',
         originalPosition: 'bottom left',

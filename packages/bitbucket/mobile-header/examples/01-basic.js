@@ -19,8 +19,8 @@ type State = {
   drawerState: 'navigation' | 'sidebar' | 'none',
 };
 
-class MobileHeaderDemo extends Component<*, State> {
-  state = {
+function MobileHeaderDemo (props) {
+  const state = useState({
     drawerState: 'none',
   };
 

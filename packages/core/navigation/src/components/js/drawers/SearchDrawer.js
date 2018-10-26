@@ -8,7 +8,7 @@ import type { DrawerProps } from './types';
 NOTE: All drawers mirror each other in design, with the only difference
 being the offset.
 */
-export default class SearchDrawer extends PureComponent<DrawerProps> {
+export default function SearchDrawer (props) {
   render() {
     return (
       <Drawer

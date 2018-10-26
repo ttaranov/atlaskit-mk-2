@@ -52,20 +52,20 @@
     "utf8-string-bytes": "^1.0.3"
   },
   "peerDependencies": {
-    "react": "^16.4.0",
+    "react": "^16.7.0-alpha",
     "react-intl": "^2.6.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/button": "^9.0.10",
-    "@atlaskit/docs": "^5.0.8",
     "@atlaskit/checkbox": "^5.0.2",
+    "@atlaskit/docs": "^5.0.8",
     "@atlaskit/i18n-tools": "^0.3.0",
     "@types/enzyme": "^3.1.6",
-    "jsverify": "^0.8.3",
-    "react": "^16.4.0",
-    "react-intl": "^2.6.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz"
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "jsverify": "^0.8.3",
+    "react": "^16.7.0-alpha",
+    "react-intl": "^2.6.0"
   }
 }

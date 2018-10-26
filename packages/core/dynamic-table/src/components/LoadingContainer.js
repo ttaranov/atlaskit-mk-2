@@ -16,7 +16,7 @@ type Props = {
   spinnerSize?: SpinnerSizeType,
   contentsOpacity?: number,
 };
-export default class LoadingContainer extends Component<Props, {}> {
+export default function LoadingContainer (props) {
   static defaultProps = {
     isLoading: true,
     spinnerSize: LARGE,

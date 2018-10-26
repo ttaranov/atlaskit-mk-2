@@ -17,8 +17,8 @@ type State = {
   ref: HTMLElement | null,
 };
 
-class Position extends React.Component<Props, State> {
-  state = {
+function Position (props) {
+  const state = useState({
     ref: null,
   };
   initialMouseCoordinates: ?Object = undefined;

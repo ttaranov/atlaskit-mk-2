@@ -11,7 +11,7 @@ type Context = {
   gatewayRegistry: GatewayRegistry,
 };
 
-export default class GatewayProvider extends Component<Props> {
+export default function GatewayProvider (props) {
   gatewayRegistry: GatewayRegistry;
   static childContextTypes = {
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry).isRequired,

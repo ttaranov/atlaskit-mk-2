@@ -24,8 +24,8 @@ const getIsParentIndeterminate = (checkedItems: CheckedItems) => {
   return checkedChildrenCount > 0 && checkedChildrenCount < 2;
 };
 
-export default class IndeterminateExample extends PureComponent<void, State> {
-  state = {
+export default function IndeterminateExample (props) {
+  const state = useState({
     checkedItems: {
       [PARENT_ID]: false,
       [CHILD_1_ID]: false,

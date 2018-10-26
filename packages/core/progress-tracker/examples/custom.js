@@ -61,7 +61,7 @@ const StyledLink = styled(Link)`
   color: ${colors.N800};
 `;
 
-class CustomProgressTrackerLink extends PureComponent<Props> {
+function CustomProgressTrackerLink (props) {
   render() {
     const { href, label } = this.props.item;
     return <StyledLink to={href}>{label}</StyledLink>;

@@ -22,7 +22,7 @@ type Props = {
   innerRef?: (ElementRef<*>) => void,
 };
 
-export default class NavigationItemGroup extends Component<Props> {
+export default function NavigationItemGroup (props) {
   static defaultProps = {
     isCompact: false,
     hasSeparator: false,

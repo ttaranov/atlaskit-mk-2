@@ -24,7 +24,7 @@ const defaultOptions: ViewStateOptions = {
   debug: false,
 };
 
-export default class ViewState extends Container<ViewStateState> {
+export default function ViewState (props) {
   reducers: { [ViewKey]: Reducer[] } = {};
   views: { [ViewKey]: ViewResolver } = {};
   debug: boolean;
@@ -38,7 +38,7 @@ export default class ViewState extends Container<ViewStateState> {
     };
 
     // Initialise state
-    this.state = {
+    this.const state = useState({
       activeView,
       data: null,
       isLoading: !activeView,

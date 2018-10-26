@@ -11,7 +11,7 @@ type Props = {
   children?: Node,
 };
 
-export default class ResultItemGroup extends Component<Props> {
+export default function ResultItemGroup (props) {
   render() {
     const { title, children } = this.props;
 

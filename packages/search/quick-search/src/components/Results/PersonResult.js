@@ -13,7 +13,7 @@ const PERSON_RESULT_TYPE = 'person';
 // add it to ResultBase instead
 // ===================================================================
 
-export default class PersonResult extends PureComponent<Props> {
+export default function PersonResult (props) {
   static defaultProps = {
     isCompact: false,
     isSelected: false,

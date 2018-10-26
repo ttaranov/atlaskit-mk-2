@@ -12,7 +12,7 @@ export default function mapProps(mapping: { [string]: any }) {
     DecoratedComponent: WrappedComponent,
   ): ComponentType<ElementConfig<WrappedComponent>> =>
     // TODO: type this correctly
-    class MapProps extends Component<*> {
+    function MapProps (props) {
       static displayName: string | void | null = getDisplayName(
         'mapProps',
         DecoratedComponent,

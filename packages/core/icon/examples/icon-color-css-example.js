@@ -25,7 +25,7 @@ const styles = (
   </style>
 );
 
-export default class Example extends Component<{}, {}> {
+export default function Example (props) {
   render() {
     return (
       <div>

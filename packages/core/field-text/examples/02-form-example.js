@@ -5,7 +5,7 @@ import FieldText from '../src';
 
 const formTestUrl = '//httpbin.org/get';
 
-export default class FormExample extends Component<void, void> {
+export default function FormExample (props) {
   render() {
     return (
       <div>

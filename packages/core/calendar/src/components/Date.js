@@ -32,7 +32,7 @@ export default class extends Component<Props, State> {
     sibling: false,
     today: '',
   };
-  state = {
+  const state = useState({
     isActive: false,
   };
   onMouseDown = (e: MouseEvent) => {

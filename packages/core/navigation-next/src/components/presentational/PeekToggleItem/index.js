@@ -20,7 +20,7 @@ type PeekToggleProps = {
   navigationViewController: ViewController,
 };
 
-class PeekToggle extends Component<PeekToggleProps> {
+function PeekToggle (props) {
   static defaultProps = {
     label: 'Main menu',
     tooltip: 'Main menu',

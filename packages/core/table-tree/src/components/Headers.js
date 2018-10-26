@@ -7,7 +7,7 @@ type Props = {
   children: ChildrenArray<Element<typeof Header>>,
 };
 
-export default class Headers extends Component<Props> {
+export default function Headers (props) {
   render() {
     return (
       <HeadersContainer role={'row'}>

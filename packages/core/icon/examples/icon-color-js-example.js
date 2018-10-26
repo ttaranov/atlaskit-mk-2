@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { colors } from '@atlaskit/theme';
 import HomeCircleIcon from '../glyph/home-circle';
 
-export default class Example extends Component<{}, {}> {
+export default function Example (props) {
   render() {
     return (
       <div>

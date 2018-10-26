@@ -14,8 +14,8 @@ type State = {
   onRadioChangeResult: string,
 };
 
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     onRadioChangeResult: 'Click on a radio field to trigger onRadioChange',
   };
 

@@ -7,7 +7,7 @@ type State = {
 };
 
 const BasicUsageExample = class extends PureComponent<void, State> {
-  state = {
+  const state = useState({
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
 

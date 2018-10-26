@@ -17,7 +17,7 @@ const Button = withAnalytics(
   { onClick: 'click' },
 );
 
-export default class MatchExample extends Component<{}, {}> {
+export default function MatchExample (props) {
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

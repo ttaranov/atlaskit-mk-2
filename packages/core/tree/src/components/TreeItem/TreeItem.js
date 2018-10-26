@@ -12,7 +12,7 @@ import type {
   TreeDraggableProps,
 } from './TreeItem-types';
 
-export default class TreeItem extends Component<Props> {
+export default function TreeItem (props) {
   shouldComponentUpdate(nextProps: Props) {
     return (
       !sameProps(this.props, nextProps, ['item', 'provided', 'snapshot']) ||

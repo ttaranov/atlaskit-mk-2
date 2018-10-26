@@ -32,8 +32,8 @@ type State = {
   icons: any,
 };
 
-export default class ToggleIcons extends Component<{}, State> {
-  state = {
+export default function ToggleIcons (props) {
+  const state = useState({
     toggleColor: false,
     toggleFill: false,
     icons: toggleableIcons,

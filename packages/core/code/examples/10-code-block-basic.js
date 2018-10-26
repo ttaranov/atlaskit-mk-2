@@ -3,7 +3,7 @@ import React from 'react';
 import { AkCodeBlock } from '../src';
 
 const exampleCodeBlock = `  // React Component
-  class HelloMessage extends React.Component {
+  function HelloMessage (props) {
     render() {
       return (
         <div>

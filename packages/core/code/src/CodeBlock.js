@@ -21,7 +21,7 @@ type CodeBlockProps = {
 
 const LANGUAGE_FALLBACK = 'clike';
 
-export class CodeBlock extends PureComponent<CodeBlockProps, {}> {
+export function CodeBlock (props) {
   static displayName = 'CodeBlock';
 
   static defaultProps = {

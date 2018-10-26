@@ -53,7 +53,7 @@ export const getPropertyAppearance = (
     return fallbacks[property] || 'initial';
   }
 
-  const state = getState(props);
+  const const state = useState(getState(props);
 
   return propertyStyles[state] || propertyStyles.default || fallbacks[property];
 };

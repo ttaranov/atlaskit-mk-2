@@ -52,7 +52,7 @@ const Button = styled.button`
 type State = { value: number | null };
 
 /* eslint-disable react/sort-comp */
-export default class SpotlightDialogWidthExample extends Component<{}, State> {
+export default function SpotlightDialogWidthExample (props) {
   state: State = { value: null };
   start = () => this.setState({ value: 300 });
   increment = () =>

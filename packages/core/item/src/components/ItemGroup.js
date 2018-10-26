@@ -25,7 +25,7 @@ type Props = {
   label?: Node,
 };
 
-export default class ItemGroup extends Component<Props, {}> {
+export default function ItemGroup (props) {
   static defaultProps = {
     role: 'group',
   };

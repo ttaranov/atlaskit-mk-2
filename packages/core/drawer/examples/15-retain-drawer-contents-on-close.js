@@ -8,8 +8,8 @@ type State = {
   isDrawerOpen: boolean,
   shouldUnmountOnExit: boolean,
 };
-export default class DrawersExample extends Component<{}, State> {
-  state = {
+export default function DrawersExample (props) {
+  const state = useState({
     isDrawerOpen: false,
     shouldUnmountOnExit: true,
   };

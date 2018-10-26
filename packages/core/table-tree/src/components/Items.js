@@ -15,7 +15,7 @@ type State = {
   isLoaderShown: boolean,
 };
 
-export default class Items extends Component<Props, State> {
+export default function Items (props) {
   static defaultProps = {
     depth: 0,
   };

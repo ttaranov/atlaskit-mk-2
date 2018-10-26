@@ -14,7 +14,7 @@ const defaultProps = {
 
 /*eslint-disable */
 // too many violations in this component
-class AlertLinkComponent extends Component<*> {
+function AlertLinkComponent (props) {
   handleClick = () => {
     const { href } = this.props;
     alert(`href: ${href}`);

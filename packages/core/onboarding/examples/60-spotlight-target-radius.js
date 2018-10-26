@@ -9,7 +9,7 @@ type State = {
   active: number | null,
 };
 
-export default class SpotlightTargetRadiusExample extends Component<{}, State> {
+export default function SpotlightTargetRadiusExample (props) {
   state: State = { active: null };
   start = () => this.setState({ active: 0 });
   next = () =>

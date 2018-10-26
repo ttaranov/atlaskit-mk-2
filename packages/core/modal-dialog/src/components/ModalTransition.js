@@ -23,7 +23,7 @@ const hasChildren = children =>
   React.Children.count(children) > 0 &&
   React.Children.map(children, child => !!child).filter(Boolean).length > 0;
 
-class Transition extends React.Component<Props, State> {
+function Transition (props) {
   static getDerivedStateFromProps(props: Props, state: State) {
     const { currentChildren: previousChildren } = state;
     const exiting =
@@ -33,7 +33,7 @@ class Transition extends React.Component<Props, State> {
     };
   }
 
-  state = {
+  const state = useState({
     currentChildren: undefined,
   };
 

@@ -14,13 +14,13 @@ type State = {
   shouldRenderChildren: boolean,
 };
 
-export default class Reveal extends PureComponent<Props, State> {
+export default function Reveal (props) {
   constructor(props: Props, context: {}) {
     super(props, context);
 
     const { isOpen, shouldAnimate } = props;
 
-    this.state = {
+    this.const state = useState({
       isAnimatingInOnMount: isOpen && shouldAnimate,
       shouldRenderChildren: isOpen,
     };

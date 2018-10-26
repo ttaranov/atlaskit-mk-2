@@ -27,7 +27,7 @@ type State = {
 };
 
 export default class extends Component<*, State> {
-  state = {
+  const state = useState({
     inputValue: 'Input value',
     editInputValue: 'Input value',
     fieldTextValue: 'Field text value',

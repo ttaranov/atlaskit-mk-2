@@ -6,8 +6,8 @@ type State = {
   onChangeResult: string,
 };
 
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     onChangeResult: 'Type in the Field Text Area above to trigger onChange',
   };
 

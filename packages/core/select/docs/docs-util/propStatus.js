@@ -20,8 +20,8 @@ type State = {
   modalIsOpen: boolean,
 };
 
-export default class PropStatus extends Component<*, State> {
-  state = {
+export default function PropStatus (props) {
+  const state = useState({
     modalIsOpen: false,
   };
   onClick = (event: SyntheticEvent<HTMLElement>) => {

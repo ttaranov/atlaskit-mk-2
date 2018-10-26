@@ -31,12 +31,12 @@ type FormSectionRef = {
   validate?: () => any,
 };
 
-export default class FormSection extends Component<Props, State> {
+export default function FormSection (props) {
   static defaultProps = {
     name: '',
   };
 
-  state = {
+  const state = useState({
     name: this.props.name,
   };
 

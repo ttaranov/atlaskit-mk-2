@@ -11,7 +11,7 @@ const SeparatorWithTheme = withContentTheme(({ theme }: SeparatorProps) => {
   return <div css={styles} />;
 });
 
-export default class Separator extends Component<ConnectedSeparatorProps> {
+export default function Separator (props) {
   render() {
     return <SeparatorWithTheme {...this.props} />;
   }

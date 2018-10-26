@@ -246,7 +246,7 @@ function baseStyles(validationState, isCompact) {
 }
 
 export default function createSelect(WrappedComponent: ComponentType<*>) {
-  return class AtlaskitSelect extends Component<*> {
+  return function AtlaskitSelect (props) {
     components: {};
     select: ElementRef<*>;
     constructor(props: Props) {

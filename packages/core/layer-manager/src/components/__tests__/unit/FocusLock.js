@@ -117,7 +117,7 @@ it('should focus on last enabled inner lock', () => {
 });
 
 it('should work through Portals', () => {
-  class Portal extends React.Component<{ children: Node }> {
+  function Portal (props) {
     domNode = document.createElement('div');
     constructor(props) {
       super(props);
@@ -160,7 +160,7 @@ class FocusLockWithState extends React.Component<
   },
   { enabled: boolean },
 > {
-  state = {
+  const state = useState({
     enabled: this.props.defaultEnabled,
   };
   render() {

@@ -38,7 +38,7 @@ export default class HeightTransitionWrapper extends PureComponent<
 > {
   ref: any;
 
-  state = {
+  const state = useState({
     height: 'auto',
   };
 

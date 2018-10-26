@@ -10,7 +10,7 @@ type Props = {
   width: number,
 };
 
-export default class Spacer extends PureComponent<Props> {
+export default function Spacer (props) {
   static defaultProps = {
     shouldAnimate: false,
     width: 0,

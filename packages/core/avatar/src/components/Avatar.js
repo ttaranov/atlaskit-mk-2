@@ -30,7 +30,7 @@ const warn = (message: string) => {
   }
 };
 
-class Avatar extends Component<AvatarPropTypes> {
+function Avatar (props) {
   ref: ?HTMLElement;
 
   static defaultProps = {

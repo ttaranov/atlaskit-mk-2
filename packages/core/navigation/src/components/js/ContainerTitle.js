@@ -42,7 +42,7 @@ type Props = {
 
 const key = itemThemeNamespace;
 
-class ContainerTitle extends PureComponent<Props> {
+function ContainerTitle (props) {
   withOuterTheme = memoizeOne(outerTheme => overrideItemTheme(outerTheme, key));
 
   render() {

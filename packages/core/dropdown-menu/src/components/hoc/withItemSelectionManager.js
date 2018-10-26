@@ -15,7 +15,7 @@ const withDropdownItemSelectionManager = (
   WrappedComponent: any,
   selectionBehavior: Behaviors,
 ) =>
-  class WithDropdownItemSelectionManager extends Component<Props> {
+  function WithDropdownItemSelectionManager (props) {
     static displayName = `WithDropdownItemSelectionManager(${getDisplayName(
       WrappedComponent,
     )})`;

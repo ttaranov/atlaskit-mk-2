@@ -32,7 +32,7 @@ const getFlipBehavior = (side: string) =>
     left: ['left', 'right', 'left'],
   }[side]);
 
-export class Popper extends Component<Props, State> {
+export function Popper (props) {
   static defaultProps: Props = {
     children: () => {},
     offset: '0, 8px',

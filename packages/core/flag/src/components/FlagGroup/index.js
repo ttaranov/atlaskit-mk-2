@@ -17,7 +17,7 @@ type Props = {
   onDismissed?: FunctionType,
 };
 
-export default class FlagGroup extends Component<Props, {}> {
+export default function FlagGroup (props) {
   props: Props; // eslint-disable-line react/sort-comp
 
   renderChildren = () => {

@@ -106,7 +106,7 @@ const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
   return pendingHide.cancel;
 };
 
-class Tooltip extends Component<Props, State> {
+function Tooltip (props) {
   static defaultProps = {
     component: StyledTooltip,
     delay: 300,
@@ -119,7 +119,7 @@ class Tooltip extends Component<Props, State> {
   targetRef: HTMLElement | null;
   mouseCoordinates: CoordinatesType | null = null;
   cancelPendingSetState = () => {}; // set in mouseover/mouseout handlers
-  state = {
+  const state = useState({
     immediatelyHide: false,
     immediatelyShow: false,
     isVisible: false,

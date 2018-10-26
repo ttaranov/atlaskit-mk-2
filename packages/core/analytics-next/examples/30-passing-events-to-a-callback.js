@@ -6,7 +6,7 @@ import {
   withAnalyticsEvents,
 } from '../src';
 
-class ManualButtonBase extends Component<*> {
+function ManualButtonBase (props) {
   handleClick = e => {
     // Create our analytics event
     const analyticsEvent = this.props.createAnalyticsEvent({ action: 'click' });
@@ -24,7 +24,7 @@ class ManualButtonBase extends Component<*> {
 }
 
 // eslint-disable-next-line react/no-multi-comp
-class ButtonBase extends Component<*> {
+function ButtonBase (props) {
   render() {
     const { createAnalyticsEvent, ...props } = this.props;
     return <button {...props} />;
@@ -63,7 +63,7 @@ const ButtonGroup = () => {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-export default class App extends Component<void> {
+export default function App (props) {
   handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
     const { payload, context } = analyticsEvent;
     console.log('Received event:', { payload, context });

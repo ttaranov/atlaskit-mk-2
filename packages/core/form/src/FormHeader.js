@@ -17,7 +17,7 @@ type Props = {
   fixed?: boolean,
 };
 
-export default class FormHeader extends Component<Props, void> {
+export default function FormHeader (props) {
   static defaultProps = {
     title: '',
     description: '',

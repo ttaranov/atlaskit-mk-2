@@ -23,7 +23,7 @@ type Props = FieldTextProps & {
   innerRef?: (node: ?HTMLInputElement) => void,
 };
 
-class FieldTextStateless extends Component<Props, void> {
+function FieldTextStateless (props) {
   static defaultProps = {
     compact: false,
     disabled: false,

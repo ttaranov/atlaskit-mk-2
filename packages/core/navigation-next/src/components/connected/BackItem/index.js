@@ -13,7 +13,7 @@ const ArrowLeft = () => (
   <ArrowLeftCircleIcon primaryColor="currentColor" secondaryColor="inherit" />
 );
 
-export default class BackItem extends Component<BackItemProps> {
+export default function BackItem (props) {
   static defaultProps = {
     text: 'Back',
   };

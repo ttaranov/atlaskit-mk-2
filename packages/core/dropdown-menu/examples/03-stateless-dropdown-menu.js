@@ -11,8 +11,8 @@ type State = {
   isDropdownOpen: boolean,
 };
 
-export default class StatelessMenuExample extends Component<{}, State> {
-  state = { isDropdownOpen: false };
+export default function StatelessMenuExample (props) {
+  const state = useState({ isDropdownOpen: false };
 
   render() {
     return (

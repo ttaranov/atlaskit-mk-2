@@ -40,9 +40,9 @@ type Props = {
   package: string,
 };
 
-class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
+function IconExplorerCell (props) {
   props: Props;
-  state = {
+  const state = useState({
     isModalOpen: false,
   };
 

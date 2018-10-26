@@ -9,8 +9,8 @@ type State = {
   isBlanketVisible: boolean,
 };
 
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     onEventResult: 'Blanket isTinted:false canClickThrough:true',
     canClickThrough: true,
     isBlanketVisible: false,

@@ -45,13 +45,13 @@ type State = {
   sizeMetrics?: SizeMetrics,
 };
 
-export default class SizeDetector extends Component<Props, State> {
+export default function SizeDetector (props) {
   props: Props;
   state: State;
 
   constructor(props: Object) {
     super(props);
-    this.state = {};
+    this.const state = useState({};
   }
 
   static defaultProps = {

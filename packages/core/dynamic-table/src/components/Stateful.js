@@ -17,7 +17,7 @@ type State = {
   rows?: RowType[],
 };
 
-export default class DynamicTable extends Component<Props, State> {
+export default function DynamicTable (props) {
   static defaultProps = {
     defaultPage: 1,
     isLoading: false,
@@ -28,7 +28,7 @@ export default class DynamicTable extends Component<Props, State> {
     rowsPerPage: Infinity,
   };
 
-  state = {
+  const state = useState({
     page: this.props.defaultPage,
     sortKey: this.props.defaultSortKey,
     sortOrder: this.props.defaultSortOrder,

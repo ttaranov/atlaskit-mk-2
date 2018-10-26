@@ -28,9 +28,9 @@
     "ui"
   ],
   "devDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   }
 }

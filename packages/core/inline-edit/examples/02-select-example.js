@@ -20,8 +20,8 @@ type State = {
   editValue: string | number,
 };
 
-export default class SelectExample extends Component<void, State> {
-  state = {
+export default function SelectExample (props) {
+  const state = useState({
     onEventResult: 'Click on a field above to show edit view',
     editValue: '',
   };

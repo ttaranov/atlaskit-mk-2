@@ -24,7 +24,7 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -40,7 +40,7 @@
     "@atlaskit/docs": "^5.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   },
   "atlaskit": {
     "internal": true

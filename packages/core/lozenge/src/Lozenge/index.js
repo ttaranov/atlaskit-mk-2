@@ -23,7 +23,7 @@ type Props = {
   theme: ThemeProps => ThemeProps,
 };
 
-export default class Lozenge extends PureComponent<Props> {
+export default function Lozenge (props) {
   static defaultProps = {
     isBold: false,
     appearance: 'default',

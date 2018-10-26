@@ -4,7 +4,7 @@ import { AtlasKitThemeProvider } from '@atlaskit/theme';
 import { AkCodeBlock } from '../src';
 
 const exampleCodeBlock = `  // React component
-  class HelloMessage extends React.Component {
+  function HelloMessage (props) {
     render() {
       return (
         <div>

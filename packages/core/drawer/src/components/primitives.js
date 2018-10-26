@@ -112,7 +112,7 @@ const IconWrapper = (props: IconWrapperProps) => (
   />
 );
 
-export default class DrawerPrimitive extends Component<DrawerPrimitiveProps> {
+export default function DrawerPrimitive (props) {
   render() {
     const { children, icon: Icon, onClose, ...props } = this.props;
 

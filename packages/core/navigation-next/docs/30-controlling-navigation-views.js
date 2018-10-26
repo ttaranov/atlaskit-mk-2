@@ -137,7 +137,7 @@ const myView = {
   getItems: () => [/* ... */],
 };
 
-class MyComponent extends React.Component {
+function MyComponent (props) {
   componentDidMount() {
     this.props.navigationViewController.addView(myView);
   }
@@ -269,7 +269,7 @@ This component renders a \`react-router\` \`Link\`. It also connects to the rout
 
 We create components for the Dashboards and Issues and Filters routes which look like this:
 
-${code`class MyRouteBase extends Component {
+${code`function MyRouteBase (props) {
   componentDidMount() {
     const { navigationViewController } = this.props;
     navigationViewController.setView(myView.id);
@@ -283,7 +283,7 @@ const MyRoute = withNavigationViewController(MyRouteBase);`}
 
 We update our app like so:
 
-${code`class App extends Component {
+${code`function App (props) {
   componentDidMount() {
     const { navigationViewController } = this.props;
     navigationViewController.addView(productHomeView);
@@ -372,7 +372,7 @@ ${code`import {
   withNavigationViewController,
 } from '@atlaskit/navigation-next';
 
-class GrowthExperimentBase extends Component {
+function GrowthExperimentBase (props) {
   componentDidMount() {
     const { navigationViewController } = this.props;
     navigationViewController.addReducer(productHomeView.id, this.reducer);

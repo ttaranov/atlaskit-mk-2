@@ -20,7 +20,7 @@ type State = {
   selectedItem?: ItemType,
 };
 
-export default class StatelessSelectOverview extends Component<{}, State> {
+export default function StatelessSelectOverview (props) {
   state: State = {
     isSelectOpen: false,
     selectedItem: undefined,

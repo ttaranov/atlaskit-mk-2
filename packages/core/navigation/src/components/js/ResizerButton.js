@@ -8,7 +8,7 @@ type Props = {
   onClick?: () => void,
 };
 
-export default class ResizerButton extends PureComponent<Props> {
+export default function ResizerButton (props) {
   static defaultProps = {
     isPointingRight: false,
     isVisible: false,

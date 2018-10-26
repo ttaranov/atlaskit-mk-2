@@ -31,7 +31,7 @@ export default function withDeprecationWarnings<
 >(
   WrappedComponent: InnerComponent,
 ): ComponentType<ElementConfig<InnerComponent>> {
-  return class WithDeprecationWarnings extends Component<$ReadOnly<Props>> {
+  return function WithDeprecationWarnings (props) {
     static displayName = `WithDeprecationWarnings(${getComponentName(
       WrappedComponent,
     )})`;

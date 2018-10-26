@@ -16,8 +16,8 @@ type State = {
   value: Array<*>,
 };
 
-export default class MultiLineSearchInput extends Component<*, State> {
-  state = {
+export default function MultiLineSearchInput (props) {
+  const state = useState({
     inputValue: '',
     value: [],
   };

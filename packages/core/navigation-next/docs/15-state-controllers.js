@@ -95,7 +95,7 @@ A higher-order component which provides the UI controller instance through the \
 
 ${code`import { withNavigationUI } from '@atlaskit/navigation-next';
 
-class MyComponentBase extends Component {
+function MyComponentBase (props) {
   render() {
     const { navigationUIController } = this.props;
     return navigationUIController.state.isCollapsed ? 'Foo' : 'Bar';
@@ -226,7 +226,7 @@ A higher-order component which provides the view controller instance through the
 
 ${code`import { withNavigationViewController } from '@atlaskit/navigation-next';
 
-class MyComponentBase extends Component {
+function MyComponentBase (props) {
   render() {
     const { navigationViewController } = this.props;
     navigationViewController.setView('view-id');

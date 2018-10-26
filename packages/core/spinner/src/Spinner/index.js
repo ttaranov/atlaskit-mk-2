@@ -15,7 +15,7 @@ const Outer = styled.div`
 `;
 Outer.displayName = 'Outer';
 
-export default class Spinner extends Component<SpinnerProps, SpinnerState> {
+export default function Spinner (props) {
   static defaultProps = {
     delay: 100,
     isCompleting: false,
@@ -28,7 +28,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
 
   constructor(props: SpinnerProps) {
     super(props);
-    this.state = {
+    this.const state = useState({
       phase: '',
     };
   }

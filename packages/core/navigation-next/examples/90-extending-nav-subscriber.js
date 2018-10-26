@@ -217,7 +217,7 @@ const withNavState = (Comp: ComponentType<*>) => (props: *) => (
   </UIControllerSubscriber>
 );
 
-class CollapseStatus extends React.Component<StatusProps> {
+function CollapseStatus (props) {
   static defaultProps = {
     onResizeEnd: NOOP,
     onResizeStart: NOOP,
@@ -327,8 +327,8 @@ function makeKey() {
 }
 
 // eslint-disable-next-line react/no-multi-comp
-class ExtendingNavSubscriber extends React.Component<*, State> {
-  state = {
+function ExtendingNavSubscriber (props) {
+  const state = useState({
     callStack: [],
     boxWidth: 'auto',
     resizePending: false,

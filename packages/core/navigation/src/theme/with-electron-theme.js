@@ -13,7 +13,7 @@ const getTheme = memoizeOne((isElectronMac?: boolean) => ({
   [isElectronMacKey]: isElectronMac,
 }));
 
-export default class WithElectronTheme extends PureComponent<Props> {
+export default function WithElectronTheme (props) {
   static defaultProps = {
     isElectronMac: false,
   };

@@ -27,7 +27,7 @@ type Props = {
   position: string,
 };
 
-export default class DirectionWrapper extends PureComponent<Props> {
+export default function DirectionWrapper (props) {
   static defaultProps = {
     position: 'top left',
   };

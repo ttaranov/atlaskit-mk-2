@@ -27,8 +27,8 @@ type State = {
   selectedItem?: ItemType,
 };
 
-export default class StatelessExample extends PureComponent<{}, State> {
-  state = {
+export default function StatelessExample (props) {
+  const state = useState({
     isOpen: false,
     filterValue: '',
     selectedItem: undefined,

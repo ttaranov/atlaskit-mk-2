@@ -5,8 +5,8 @@ import InlineEdit, { SingleLineTextInput } from '../src';
 type State = {
   onEventResult: string,
 };
-export default class WaitingExample extends Component<void, State> {
-  state = {
+export default function WaitingExample (props) {
+  const state = useState({
     onEventResult: 'Click on a field above to show edit view',
   };
 

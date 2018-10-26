@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Item, { ItemGroup } from '@atlaskit/item';
 import DropList from '../src';
 
-export default class BoundingExample extends Component<void, void> {
+export default function BoundingExample (props) {
   render() {
     return (
       <div>

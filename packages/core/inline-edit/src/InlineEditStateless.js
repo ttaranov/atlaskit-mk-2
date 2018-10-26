@@ -33,7 +33,7 @@ type State = {
   startY: number,
 };
 
-class InlineEdit extends Component<StatelessProps, State> {
+function InlineEdit (props) {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -51,7 +51,7 @@ class InlineEdit extends Component<StatelessProps, State> {
     cancelButtonLabel: 'Cancel',
   };
 
-  state = {
+  const state = useState({
     fieldBaseWrapperIsHover: false,
     wasFocusReceivedSinceLastBlur: false,
     startX: 0,

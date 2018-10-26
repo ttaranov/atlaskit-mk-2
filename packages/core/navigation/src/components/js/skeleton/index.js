@@ -21,7 +21,7 @@ export type Props = {
   containerHeaderComponent: ComponentType<SkeletonContainerHeaderProps>,
 };
 
-export default class SkeletonNavigation extends Component<Props> {
+export default function SkeletonNavigation (props) {
   static defaultProps = {
     isCollapsed: false,
     containerHeaderComponent: SkeletonDefaultContainerHeader,

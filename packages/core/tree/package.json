@@ -19,7 +19,7 @@
     "react-beautiful-dnd-next": "10.0.0-alpha.1"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",

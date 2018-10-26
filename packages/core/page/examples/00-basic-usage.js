@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import Page, { Grid, GridColumn } from '../src';
 
-export default class BasicExample extends PureComponent<void, void> {
+export default function BasicExample (props) {
   render() {
     return (
       <Page>

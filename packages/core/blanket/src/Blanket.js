@@ -20,7 +20,7 @@ type Props = {
   onBlanketClicked: (event: Event) => void,
 };
 
-class Blanket extends PureComponent<Props, void> {
+function Blanket (props) {
   static defaultProps = {
     canClickThrough: false,
     isTinted: false,

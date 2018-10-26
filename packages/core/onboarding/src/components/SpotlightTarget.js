@@ -11,7 +11,7 @@ type Props = {
   name: string,
 };
 
-class SpotlightTarget extends Component<Props> {
+function SpotlightTarget (props) {
   render() {
     return (
       <TargetConsumer>

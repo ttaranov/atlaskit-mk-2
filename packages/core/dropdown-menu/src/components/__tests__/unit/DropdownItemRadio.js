@@ -135,7 +135,7 @@ describe('dropdown menu - DropdownItemRadio', () => {
   });
 
   describe('isSelected prop', () => {
-    class IsSelectedController extends React.Component<{}> {
+    function IsSelectedController (props) {
       render() {
         return (
           <DropdownMenu defaultOpen trigger={<span className="test-trigger" />}>

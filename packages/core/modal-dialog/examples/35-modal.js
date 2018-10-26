@@ -18,7 +18,7 @@ type Props = {
   heading: string,
 };
 
-export default class ModalDemo extends Component<Props, {}> {
+export default function ModalDemo (props) {
   static defaultProps = {
     heading: 'New issue',
   };

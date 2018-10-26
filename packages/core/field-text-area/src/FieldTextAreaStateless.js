@@ -72,7 +72,7 @@ type Props = {
   isValidationHidden?: boolean,
 };
 
-class FieldTextAreaStateless extends Component<Props, void> {
+function FieldTextAreaStateless (props) {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

@@ -40,7 +40,7 @@ class ThreeStepSpotlight extends React.Component<
   SpotlightProps,
   { step: number },
 > {
-  state = {
+  const state = useState({
     step: 1,
   };
   next = () => {
@@ -96,8 +96,8 @@ type ModalProps = {
   onClose: () => void,
 };
 
-class Modal extends React.Component<ModalProps, ModalState> {
-  state = {
+function Modal (props) {
+  const state = useState({
     onboardingOpen: false,
     inlineOpen: false,
     flags: [],
@@ -166,8 +166,8 @@ type State = {
   modals: number[],
 };
 
-class App extends React.Component<{}, State> {
-  state = {
+function App (props) {
+  const state = useState({
     modals: [],
   };
   render() {

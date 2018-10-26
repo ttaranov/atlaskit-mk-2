@@ -7,7 +7,7 @@ import RevealInner from '../../components/styled/RevealInner';
 
 configure({ adapter: new Adapter() });
 
-class Child extends PureComponent<any> {
+function Child (props) {
   render() {
     return <div />;
   }

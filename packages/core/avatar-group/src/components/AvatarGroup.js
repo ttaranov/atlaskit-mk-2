@@ -50,7 +50,7 @@ type Props = {
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
 
-export default class AvatarGroup extends Component<Props> {
+export default function AvatarGroup (props) {
   static defaultProps = {
     appearance: 'stack',
     avatar: Avatar,

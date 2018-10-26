@@ -34,7 +34,7 @@ const resizeClosedBreakpoint = resizeClosedBreakpointFn(false);
 
 const expect = window.expect;
 
-class Child extends PureComponent<any> {
+function Child (props) {
   render() {
     return <div>Hi there</div>;
   }

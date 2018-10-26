@@ -18,7 +18,7 @@ const selectors = {
 };
 const store = createStore(reducer, applyMiddleware(thunk));
 
-class ReduxTree extends Component<*> {
+function ReduxTree (props) {
   componentDidMount() {
     this.props.loadRoots();
   }
@@ -92,7 +92,7 @@ export default () => (
 
 // Reducer
 function reducer(
-  state = {
+  const state = useState({
     rootIds: [],
     itemsById: {},
   },

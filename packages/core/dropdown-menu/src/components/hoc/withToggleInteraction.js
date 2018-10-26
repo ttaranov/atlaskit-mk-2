@@ -32,7 +32,7 @@ const withToggleInteraction = (
   SelectionIcon: ComponentType<any>,
   getAriaRole: () => Behaviors,
 ) => {
-  class WithToggleInteraction extends Component<Props> {
+  function WithToggleInteraction (props) {
     static defaultProps = {
       onClick: () => {},
     };

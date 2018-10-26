@@ -32,14 +32,14 @@ type State = {
   value?: string,
 };
 
-export default class Search extends PureComponent<Props, State> {
+export default function Search (props) {
   static defaultProps = {
     isLoading: false,
     onBlur: () => {},
     placeholder: 'Search',
   };
 
-  state = {
+  const state = useState({
     value: this.props.value,
   };
 

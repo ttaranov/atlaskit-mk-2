@@ -25,8 +25,8 @@ const ButtonSpacer = styled.div`
 `;
 
 type State = {| isMenuFixed: boolean, isMenuOpen: boolean |};
-export default class OverflowParentExample extends Component<{}, State> {
-  state = {
+export default function OverflowParentExample (props) {
+  const state = useState({
     isMenuFixed: false,
     isMenuOpen: false,
   };

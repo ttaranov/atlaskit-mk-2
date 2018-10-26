@@ -30,7 +30,7 @@ type State = {
   isResizing: boolean,
 };
 
-class Resizer extends PureComponent<Props, State> {
+function Resizer (props) {
   static defaultProps = {
     onResizeStart: () => {},
     onResizeEnd: () => {},
@@ -40,7 +40,7 @@ class Resizer extends PureComponent<Props, State> {
     showResizeButton: true,
     theme: {},
   };
-  state = {
+  const state = useState({
     startScreenX: 0,
     isHovering: false,
     isResizing: false,

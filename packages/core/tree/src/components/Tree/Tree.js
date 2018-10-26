@@ -25,7 +25,7 @@ import {
 } from '../../utils/flat-tree';
 import DelayedFunction from '../../utils/delayed-function';
 
-export default class Tree extends Component<Props, State> {
+export default function Tree (props) {
   static defaultProps = {
     tree: { children: [] },
     onExpand: noop,
@@ -38,7 +38,7 @@ export default class Tree extends Component<Props, State> {
     isNestingEnabled: false,
   };
 
-  state = {
+  const state = useState({
     flattenedTree: [],
     draggedItemId: null,
   };

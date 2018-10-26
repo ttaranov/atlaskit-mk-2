@@ -16,8 +16,8 @@ type Props = {
   innerRef?: HTMLElement => mixed,
 };
 
-export default class Banner extends Component<Props, { height: number }> {
-  state = {
+export default function Banner (props) {
+  const state = useState({
     height: 0,
   };
   static defaultProps = {

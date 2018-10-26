@@ -22,7 +22,7 @@ type Props = {
 };
 
 const withItemFocus = (WrappedComponent: any) =>
-  class WithItemFocus extends Component<Props> {
+  function WithItemFocus (props) {
     static displayName = `WithItemFocus(${getDisplayName(WrappedComponent)})`;
 
     static contextTypes = {

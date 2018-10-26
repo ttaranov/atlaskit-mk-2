@@ -26,7 +26,7 @@ export const iconMap = {
   ShipIcon,
 };
 
-export default class ConnectedItem extends Component<ConnectedItemProps> {
+export default function ConnectedItem (props) {
   render() {
     const { before: beforeProp, icon, ...rest } = this.props;
     let before = beforeProp;

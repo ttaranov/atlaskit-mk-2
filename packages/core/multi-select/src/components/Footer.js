@@ -12,7 +12,7 @@ type Props = {
   shouldHideSeparator: boolean,
 };
 
-export default class Footer extends PureComponent<Props, {}> {
+export default function Footer (props) {
   render() {
     const {
       appearance,

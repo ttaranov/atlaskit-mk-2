@@ -18,8 +18,8 @@ const ReallyBigDiv = styled.div`
   background-color: blue;
 `;
 
-export default class StatelessMenuExample extends Component<{}, State> {
-  state = { isDropdownOpen: false };
+export default function StatelessMenuExample (props) {
+  const state = useState({ isDropdownOpen: false };
 
   render() {
     return (

@@ -8,7 +8,7 @@ type State = {|
   isChecked: boolean,
 |};
 
-export default class StatelessExample extends Component<any, State> {
+export default function StatelessExample (props) {
   state: State = {
     isChecked: false,
   };

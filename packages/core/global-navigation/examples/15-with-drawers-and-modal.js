@@ -132,8 +132,8 @@ const HelpDropdown = () => (
   </DropdownItemGroup>
 );
 
-class GlobalNavWithDrawers extends Component<Props, State> {
-  state = {
+function GlobalNavWithDrawers (props) {
+  const state = useState({
     isCreateModalOpen: false,
     isSearchDrawerOpen: false,
   };
@@ -266,7 +266,7 @@ type NavState = {
 // Need two components because both have state
 // eslint-disable-next-line react/no-multi-comp
 export default class extends Component<{||}, NavState> {
-  state = {
+  const state = useState({
     createItemOpens: 'modal',
     notificationCount: DEFAULT_NOTIFICATION_COUNT,
     shouldUnmountOnExit: false,

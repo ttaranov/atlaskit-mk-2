@@ -24,7 +24,7 @@ export default class FormExample extends Component<
   { isChecked: boolean },
 > {
   form: any;
-  state = {
+  const state = useState({
     isChecked: false,
   };
   onChange = (event: SyntheticEvent<*>) => {

@@ -8,7 +8,7 @@ type State = {
 };
 
 export default class extends PureComponent<{}, State> {
-  state = {
+  const state = useState({
     lastEvent: '',
   };
 

@@ -91,7 +91,7 @@ type State = {
   items: Array<any>,
 };
 
-export default class MultiSelect extends PureComponent<Props, State> {
+export default function MultiSelect (props) {
   static defaultProps = {
     appearance: appearances.default,
     createNewItemLabel: 'New item',

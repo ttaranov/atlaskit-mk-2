@@ -37,7 +37,7 @@ type Props = {
   type?: string,
 };
 
-export default class Element extends PureComponent<Props, void> {
+export default function Element (props) {
   // this prevents the focus ring from appearing when the element is clicked.
   // It doesn't interfere with the onClick handler
   handleMouseDown = (e: Event) => {

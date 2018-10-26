@@ -55,7 +55,7 @@ type Props = {
   linkComponent?: ElementType,
 };
 
-export default class SectionMessage extends Component<Props, *> {
+export default function SectionMessage (props) {
   static defaultProps = {
     appearance: 'info',
   };

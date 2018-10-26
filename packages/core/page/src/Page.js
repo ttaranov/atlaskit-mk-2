@@ -84,7 +84,7 @@ type Props = {
   bannerHeight: number,
 };
 
-export default class Page extends Component<Props, void> {
+export default function Page (props) {
   static displayName = 'AkPage';
 
   static defaultProps = {

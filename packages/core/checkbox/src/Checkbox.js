@@ -31,7 +31,7 @@ type State = {|
 
 const emptyTheme = {};
 
-class Checkbox extends Component<CheckboxProps, State> {
+function Checkbox (props) {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,

@@ -31,8 +31,8 @@ type State = {|
   tree: TreeData,
 |};
 
-export default class StaticTree extends Component<void, State> {
-  state = {
+export default function StaticTree (props) {
+  const state = useState({
     tree: treeWithTwoBranches,
   };
 

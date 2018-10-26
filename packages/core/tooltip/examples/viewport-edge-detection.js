@@ -71,10 +71,10 @@ function getTooltipContent(position, index) {
 
 const tooltipSize = ['small', 'medium', 'large', 'long words'];
 
-export default class PositionExample extends Component<Props, State> {
+export default function PositionExample (props) {
   // store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
-  state = {
+  const state = useState({
     position: 0,
     positionType: 'standard',
     viewportPosition: 0,

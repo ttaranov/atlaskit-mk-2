@@ -6,8 +6,8 @@ import Modal, { ModalTransition } from '../src';
 
 const sizes = ['large', 'medium', 'small'];
 type State = { isOpen: Array<any> };
-export default class NestedDemo extends Component<{}, State> {
-  state = { isOpen: [] };
+export default function NestedDemo (props) {
+  const state = useState({ isOpen: [] };
   open = (isOpen: string) => {
     const openModals = this.state.isOpen.slice(0);
     openModals.push(isOpen);

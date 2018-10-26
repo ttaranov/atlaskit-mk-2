@@ -8,7 +8,7 @@ import type { HeaderSectionProps } from './types';
 
 const gridSize = gridSizeFn();
 
-export default class HeaderSection extends Component<HeaderSectionProps> {
+export default function HeaderSection (props) {
   render() {
     const { children, id, parentId } = this.props;
     return (

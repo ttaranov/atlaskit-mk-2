@@ -137,7 +137,7 @@ const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
   />
 );
 
-class DatePicker extends Component<Props, State> {
+function DatePicker (props) {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
   containerRef: ?HTMLElement;
@@ -174,7 +174,7 @@ class DatePicker extends Component<Props, State> {
     const thisDay = now.getDate();
     const thisMonth = now.getMonth() + 1;
     const thisYear = now.getFullYear();
-    this.state = {
+    this.const state = useState({
       isOpen: this.props.defaultIsOpen,
       selectedValue: this.props.value || this.props.defaultValue,
       value: this.props.defaultValue,

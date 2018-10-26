@@ -18,7 +18,7 @@ const LoadingDiv = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-export default class LoadingSpinner extends Component<Props, *> {
+export default function LoadingSpinner (props) {
   invertSpinner = () => {
     const { appearance, isSelected, isDisabled } = this.props;
     if (isSelected) return true;

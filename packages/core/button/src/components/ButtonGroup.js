@@ -17,7 +17,7 @@ export type ButtonGroupProps = {
   children: ChildrenArray<Element<any> | null | void>,
 };
 
-class ButtonGroup extends Component<ButtonGroupProps> {
+function ButtonGroup (props) {
   render() {
     const { appearance, children } = this.props;
 

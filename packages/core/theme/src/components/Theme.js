@@ -24,7 +24,7 @@ type Props = {
   values?: (*) => *,
 };
 
-export default class Theme extends Component<Props> {
+export default function Theme (props) {
   static defaultProps = {
     theme: (v: *): * => v,
   };

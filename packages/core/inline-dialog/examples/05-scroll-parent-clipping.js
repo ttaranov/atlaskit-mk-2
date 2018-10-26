@@ -15,8 +15,8 @@ const content = (
   </div>
 );
 
-export default class InlineDialogExample extends Component<{}, State> {
-  state = {
+export default function InlineDialogExample (props) {
+  const state = useState({
     dialogOpen: false,
   };
 

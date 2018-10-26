@@ -14,7 +14,7 @@ type State = {
   isLoading: boolean,
 };
 export default class extends Component<{}, State> {
-  state = {
+  const state = useState({
     isFixedSize: false,
     isLoading: false,
   };

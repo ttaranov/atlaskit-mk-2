@@ -27,7 +27,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
   </svg>`;
 };
 
-export default class JiraLogo extends Component<Props> {
+export default function JiraLogo (props) {
   static defaultProps = DefaultProps;
 
   render() {

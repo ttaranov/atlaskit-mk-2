@@ -70,8 +70,8 @@ const nestedLevels = [
   },
 ];
 
-class NestedSection extends Component<{}, { activeLevel: number }> {
-  state = {
+function NestedSection (props) {
+  const state = useState({
     activeLevel: 0,
   };
 

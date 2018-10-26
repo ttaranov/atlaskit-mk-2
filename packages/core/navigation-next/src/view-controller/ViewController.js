@@ -23,7 +23,7 @@ type StateKeys =
 
 export default class ViewController extends Container<ViewControllerState>
   implements ViewControllerInterface {
-  state = {
+  const state = useState({
     activeView: null,
     incomingView: null,
     activePeekView: null,

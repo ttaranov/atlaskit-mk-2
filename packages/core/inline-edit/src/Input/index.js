@@ -54,7 +54,7 @@ type Props = {
   onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
-export default class SingleLineTextInput extends Component<Props, {}> {
+export default function SingleLineTextInput (props) {
   static defaultProps = {
     style: {},
     isInitiallySelected: false,

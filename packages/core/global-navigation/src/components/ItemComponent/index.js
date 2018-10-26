@@ -11,8 +11,8 @@ type DropdownItemProps = {
   trigger: ComponentType<{ isOpen: boolean }>,
 };
 type DropdownItemState = { isOpen: boolean };
-class DropdownItem extends Component<DropdownItemProps, DropdownItemState> {
-  state = {
+function DropdownItem (props) {
+  const state = useState({
     isOpen: false,
   };
   handleOpenChange = ({ isOpen }) => this.setState({ isOpen });

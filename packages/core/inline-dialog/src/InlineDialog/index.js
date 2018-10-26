@@ -15,7 +15,7 @@ import {
 } from '../../package.json';
 import { Container } from './styled';
 
-class InlineDialog extends Component<Props, {}> {
+function InlineDialog (props) {
   static defaultProps = {
     children: null,
     content: null,

@@ -25,7 +25,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-class Time extends Component<Props> {
+function Time (props) {
   render() {
     const { children, href, onClick, onFocus, onMouseOver } = this.props;
     return (

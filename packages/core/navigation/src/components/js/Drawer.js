@@ -48,7 +48,7 @@ type State = {
   isAnimating: boolean,
 };
 
-export class DrawerImpl extends PureComponent<Props, State> {
+export function DrawerImpl (props) {
   static defaultProps = {
     iconOffset: 0,
     isOpen: false,
@@ -57,7 +57,7 @@ export class DrawerImpl extends PureComponent<Props, State> {
     width: 'narrow',
   };
 
-  state = {
+  const state = useState({
     isAnimating: false,
   };
 

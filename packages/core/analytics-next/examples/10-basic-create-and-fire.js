@@ -6,7 +6,7 @@ import {
   withAnalyticsEvents,
 } from '../src';
 
-class ButtonBase extends Component<*> {
+function ButtonBase (props) {
   handleClick = e => {
     // Create our analytics event
     const analyticsEvent = this.props.createAnalyticsEvent({ action: 'click' });
@@ -28,7 +28,7 @@ class ButtonBase extends Component<*> {
 const Button = withAnalyticsEvents()(ButtonBase);
 
 // eslint-disable-next-line react/no-multi-comp
-export default class App extends Component<void> {
+export default function App (props) {
   handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
     const { payload, context } = analyticsEvent;
     console.log('Received event:', { payload, context });

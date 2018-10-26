@@ -36,7 +36,7 @@ const defaultComponents = {
   Item: DefaultTabItem,
 };
 
-class Tabs extends Component<TabsProps, TabsState> {
+function Tabs (props) {
   static defaultProps = {
     components: {},
   };
@@ -49,7 +49,7 @@ class Tabs extends Component<TabsProps, TabsState> {
 
     const selected = this.resolveSelected(initiallyselected);
 
-    this.state = {
+    this.const state = useState({
       selected,
     };
   }

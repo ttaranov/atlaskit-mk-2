@@ -51,8 +51,8 @@ const themes = {
   },
 };
 
-export default class SkeletonInteractiveStory extends Component<void, State> {
-  state = {
+export default function SkeletonInteractiveStory (props) {
+  const state = useState({
     isCollapsed: false,
     theme: 'container',
   };

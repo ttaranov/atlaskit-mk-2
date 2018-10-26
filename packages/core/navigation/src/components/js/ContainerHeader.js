@@ -10,7 +10,7 @@ type Props = {
   isInDrawer: boolean,
 };
 
-export default class ContainerHeader extends PureComponent<Props> {
+export default function ContainerHeader (props) {
   static defaultProps = {
     iconOffset: globalItemSizes.medium,
     isInDrawer: false,

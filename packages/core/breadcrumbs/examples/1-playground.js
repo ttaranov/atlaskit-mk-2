@@ -43,7 +43,7 @@ type State = {
   itemsBeforeCollapse?: number,
 };
 
-export default class BreadcrumbsExpand extends Component<{}, State> {
+export default function BreadcrumbsExpand (props) {
   state: State = {
     isExpanded: false,
     itemsToShow: 3,

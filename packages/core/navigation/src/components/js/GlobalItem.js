@@ -31,7 +31,7 @@ type Props = {
   appearance: IconAppearance,
 };
 
-class GlobalItem extends PureComponent<Props> {
+function GlobalItem (props) {
   static defaultProps = {
     onMouseDown: () => {},
     size: 'small',

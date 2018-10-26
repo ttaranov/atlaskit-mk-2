@@ -83,7 +83,7 @@ export default class AtlaskitThemeProvider extends Component<
   };
   constructor(props: Props) {
     super(props);
-    this.state = buildThemeState(props.mode);
+    this.const state = useState(buildThemeState(props.mode);
   }
   getChildContext() {
     return { hasAtlaskitThemeProvider: true };

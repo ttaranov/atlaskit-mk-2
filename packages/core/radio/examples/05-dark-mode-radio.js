@@ -12,7 +12,7 @@ export default class ThemedRadio extends Component<
   *,
   { themeMode: 'light' | 'dark' },
 > {
-  state = {
+  const state = useState({
     themeMode: 'dark',
   };
 

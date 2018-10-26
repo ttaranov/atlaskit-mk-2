@@ -6,8 +6,8 @@ type State = {
   value: string | number,
 };
 
-export default class StatelessExample extends Component<void, State> {
-  state = {
+export default function StatelessExample (props) {
+  const state = useState({
     value: '',
   };
 

@@ -66,8 +66,8 @@ type State = {
   hasLongPresenceMessage: string,
 };
 
-export default class ProfilecardInteractive extends Component<Props, State> {
-  state = {
+export default function ProfilecardInteractive (props) {
+  const state = useState({
     avatarUrl: profiles[4].User.avatarUrl,
     email: 'nlindsey@example.com',
     presence: 'available',

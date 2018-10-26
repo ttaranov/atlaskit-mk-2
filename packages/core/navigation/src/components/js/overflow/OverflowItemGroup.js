@@ -16,7 +16,7 @@ type Props = {
   children: Node,
 };
 
-export default class OverflowItemGroup extends Component<Props> {
+export default function OverflowItemGroup (props) {
   rootNode: ElementRef<*>;
   heights: Array<number>;
 

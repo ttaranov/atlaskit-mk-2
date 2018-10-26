@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import Input from '@atlaskit/input';
 import FieldBase, { Label } from '../src';
 
-export default class LabelExample extends PureComponent<void, void> {
+export default function LabelExample (props) {
   render() {
     return (
       <div>

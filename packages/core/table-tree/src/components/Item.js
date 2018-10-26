@@ -10,7 +10,7 @@ type Props = {
   render: RenderFunction,
 };
 
-export default class Item extends Component<Props> {
+export default function Item (props) {
   static defaultProps = {
     depth: 0,
   };

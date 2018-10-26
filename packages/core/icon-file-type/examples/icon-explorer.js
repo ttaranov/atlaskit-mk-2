@@ -48,8 +48,8 @@ type State = {
   showIcons: boolean,
 };
 
-class IconAllExample extends Component<{}, State> {
-  state = {
+function IconAllExample (props) {
+  const state = useState({
     query: '',
     showIcons: true,
   };

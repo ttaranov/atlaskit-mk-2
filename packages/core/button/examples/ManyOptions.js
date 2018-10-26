@@ -34,7 +34,7 @@ const css = `
   }
 `;
 
-class CustomComponent extends Component<any, {}> {
+function CustomComponent (props) {
   render() {
     const { children, innerRef, ...props } = this.props; // eslint-disable-line no-unused-vars
     return <div {...props}>{children}</div>;
@@ -305,7 +305,7 @@ const appearances = [
 
 /* eslint-disable react/no-multi-comp */
 export default class extends Component<*, *> {
-  state = {
+  const state = useState({
     appearance: 'default',
   };
 

@@ -14,7 +14,7 @@ type State = {|
 
 // This component is a thin wrapper around the stateless component that manages
 // the isChecked state for you
-export default class Toggle extends Component<StatefulProps, State> {
+export default function Toggle (props) {
   static defaultProps: DefaultProps = {
     ...defaultBaseProps,
     isDefaultChecked: false,

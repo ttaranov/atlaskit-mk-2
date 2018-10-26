@@ -7,7 +7,7 @@ type State = {|
   width: number,
 |};
 
-export default class PresenceWidthExample extends Component<*, State> {
+export default function PresenceWidthExample (props) {
   state: State = {
     width: 60,
   };

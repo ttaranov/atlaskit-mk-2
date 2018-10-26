@@ -79,7 +79,7 @@ const getProfileDataFromSomewhereElse = (url, cloudId, userId) => {
   });
 };
 
-class CustomProfileClient extends ProfileClient {
+function CustomProfileClient (props) {
   /**
    * @param {String} cloudId
    * @param {String} userId

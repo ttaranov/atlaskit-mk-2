@@ -19,7 +19,7 @@ type Props = {
   size?: SizeType,
 };
 
-export default class Status extends Component<Props> {
+export default function Status (props) {
   render() {
     const { borderColor, children, status, size } = this.props;
 

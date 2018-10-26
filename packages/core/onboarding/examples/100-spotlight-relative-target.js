@@ -26,7 +26,7 @@ const RelativeDiv = styled.div`
   width: 200px;
 `;
 
-export default class SpotlightRelativeTarget extends Component<Object, State> {
+export default function SpotlightRelativeTarget (props) {
   state: State = { active: false };
   render() {
     const { active } = this.state;

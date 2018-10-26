@@ -103,7 +103,7 @@ type State = {
   context: Context,
 };
 
-export class QuickSearch extends Component<Props, State> {
+export function QuickSearch (props) {
   static defaultProps = {
     children: [],
     firePrivateAnalyticsEvent: Function.prototype,
@@ -123,7 +123,7 @@ export class QuickSearch extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
+    this.const state = useState({
       /** Select first result by default if `selectedResultId` prop is not provided */
       selectedResultId: this.props.selectedResultId || null,
       context: {

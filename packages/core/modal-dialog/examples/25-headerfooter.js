@@ -60,8 +60,8 @@ type FooterProps = {
 type FooterState = {
   isOpen: boolean,
 };
-class Footer extends Component<FooterProps, FooterState> {
-  state = { isOpen: false };
+function Footer (props) {
+  const state = useState({ isOpen: false };
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });
 
@@ -91,8 +91,8 @@ class Footer extends Component<FooterProps, FooterState> {
 
 type State = { isOpen: string | null };
 // eslint-disable-next-line react/no-multi-comp
-export default class ModalDemo extends Component<{}, State> {
-  state = { isOpen: null };
+export default function ModalDemo (props) {
+  const state = useState({ isOpen: null };
   open = (isOpen: string) => this.setState({ isOpen });
   close = (isOpen: string) => this.setState({ isOpen });
   secondaryAction = ({ target }: Object) => console.log(target.innerText);

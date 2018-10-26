@@ -136,7 +136,7 @@ type State = {
   droplistWidth?: number,
 };
 
-export default class StatelessSelect extends PureComponent<Props, State> {
+export default function StatelessSelect (props) {
   containerNode: HTMLElement | null;
   triggerNode: HTMLElement | null;
   inputNode: HTMLElement | null;
@@ -167,7 +167,7 @@ export default class StatelessSelect extends PureComponent<Props, State> {
     shouldFlip: true,
   };
 
-  state = {
+  const state = useState({
     focusedItemIndex: undefined,
     droplistWidth: undefined,
   };

@@ -5,7 +5,7 @@ import Checkbox from '../src/Checkbox';
 
 const formTestUrl = '//httpbin.org/get';
 
-export default class CheckboxGroupExample extends PureComponent<void> {
+export default function CheckboxGroupExample (props) {
   render() {
     return (
       <div>

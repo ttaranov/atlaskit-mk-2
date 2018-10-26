@@ -33,7 +33,7 @@ export default class DropdownItemSelectionCache extends Component<
   // Need to store selectedItemValues in state rather than component instance property
   // to ensure that re-render happens down the tree via context when selectedItemValues
   // is updated.
-  state = {
+  const state = useState({
     lastCacheUpdate: 0,
   };
 

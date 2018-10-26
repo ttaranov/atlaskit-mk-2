@@ -77,7 +77,7 @@ type Props = {
   /** Standard browser title to be displayed on the item when hovered. */
   title?: string,
 };
-export default class Item extends Component<Props, {}> {
+export default function Item (props) {
   static defaultProps = {
     autoFocus: false,
     description: '',

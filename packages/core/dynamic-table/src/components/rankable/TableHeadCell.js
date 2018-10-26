@@ -11,7 +11,7 @@ type Props = {
 } & WithDimensionsProps &
   HeadCellProps;
 
-class RankableTableHeadCell extends Component<Props, {}> {
+function RankableTableHeadCell (props) {
   render() {
     const {
       isRanking,

@@ -54,7 +54,7 @@ type Props = {
   enableTextTruncate?: boolean,
 };
 
-class AvatarItem extends Component<Props> {
+function AvatarItem (props) {
   node: ?HTMLElement;
 
   static defaultProps = {

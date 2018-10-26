@@ -35,7 +35,7 @@ type Props = {
 
 const key = itemThemeNamespace;
 
-class ContainerTitleDropdown extends PureComponent<Props> {
+function ContainerTitleDropdown (props) {
   withOuterTheme = memoizeOne(outerTheme => overrideItemTheme(outerTheme, key));
 
   render() {

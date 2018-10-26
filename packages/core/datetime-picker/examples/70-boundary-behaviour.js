@@ -17,8 +17,8 @@ type State = {
   textBelow: number,
 };
 
-export default class MyComponent extends Component<{}, State> {
-  state = {
+export default function MyComponent (props) {
+  const state = useState({
     datePickerValue: '2018-01-02',
     timePickerValue: '14:30',
     dateTimePickerValue: '2018-01-02T14:30+11:00',

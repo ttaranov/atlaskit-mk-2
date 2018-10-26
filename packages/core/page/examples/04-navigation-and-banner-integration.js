@@ -17,11 +17,11 @@ const Wrapper = props => (
   <div style={{ padding: '4px', display: 'block' }} {...props} />
 );
 
-export default class NavigationExample extends Component<void, State> {
+export default function NavigationExample (props) {
   errorBannerRef: ?HTMLElement;
   announcementBannerRef: ?HTMLElement;
 
-  state = {
+  const state = useState({
     isErrorBannerOpen: false,
     isAnnouncementBannerOpen: false,
     navigationWidth: 0,

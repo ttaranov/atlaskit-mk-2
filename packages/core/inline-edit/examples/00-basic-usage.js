@@ -7,8 +7,8 @@ type State = {
   editValue: string | number,
 };
 
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     editValue: '',
     onEventResult: 'Click on a field above to show edit view',
   };

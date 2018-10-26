@@ -26,7 +26,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
   </svg>`;
 };
 
-export default class StatuspageLogo extends Component<Props> {
+export default function StatuspageLogo (props) {
   static defaultProps = DefaultProps;
 
   render() {

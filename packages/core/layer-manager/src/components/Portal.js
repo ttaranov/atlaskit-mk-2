@@ -12,7 +12,7 @@ type Props = {
 
 const FirstChild = ({ children }) => Children.toArray(children)[0] || null;
 
-class Portal extends Component<Props> {
+function Portal (props) {
   portalElement = null;
   mountTimeout = null;
   componentDidMount() {

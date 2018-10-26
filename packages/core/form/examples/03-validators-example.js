@@ -94,8 +94,8 @@ const isAtlassian = (value: string): boolean => {
   return value.indexOf('atlassian.com') >= 0;
 };
 
-export default class ValidatorsExample extends PureComponent<void, State> {
-  state = {
+export default function ValidatorsExample (props) {
+  const state = useState({
     validateOnChange: true,
     eventResult:
       'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',

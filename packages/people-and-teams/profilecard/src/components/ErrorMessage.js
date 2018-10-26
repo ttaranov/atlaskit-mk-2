@@ -11,7 +11,7 @@ type Props = {
   errorType?: ?ProfileCardErrorType,
 };
 
-export default class ErrorMessage extends PureComponent<Props> {
+export default function ErrorMessage (props) {
   static defaultProps = {
     errorType: {
       reason: 'default',

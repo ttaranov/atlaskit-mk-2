@@ -18,7 +18,7 @@ const fruitItems: ItemsPropTypeSmart = [
   { name: 'fruit', value: 'pair', label: 'Pair' },
 ];
 
-export default class FormExample extends Component<void, void> {
+export default function FormExample (props) {
   onRadioChange = (event: any) => {
     console.log(event.target.value);
   };

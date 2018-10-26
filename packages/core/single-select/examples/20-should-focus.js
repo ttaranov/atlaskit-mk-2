@@ -20,7 +20,7 @@ type State = {
   selectedItem?: ItemType,
 };
 
-class SelectShouldFocus extends PureComponent<{}, State> {
+function SelectShouldFocus (props) {
   state: State = {
     isSelectOpen: false,
     selectedItem: undefined,

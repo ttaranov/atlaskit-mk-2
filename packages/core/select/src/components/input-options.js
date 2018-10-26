@@ -79,7 +79,7 @@ type OptionProps = CommonProps & {
 };
 type OptionState = { isActive?: boolean };
 
-class ControlOption extends Component<OptionProps, OptionState> {
+function ControlOption (props) {
   state: OptionState = { isActive: false };
   onMouseDown = () => this.setState({ isActive: true });
   onMouseUp = () => this.setState({ isActive: false });

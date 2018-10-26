@@ -29,9 +29,9 @@ type State = {
   appearance: AppearanceTypes,
 };
 
-export default class ConnectionDemo extends Component<any, State> {
+export default function ConnectionDemo (props) {
   createdFlagCount = 0; // eslint-disable-line react/sort-comp
-  state = {
+  const state = useState({
     appearance: boldAppearanceNames[0],
   };
 

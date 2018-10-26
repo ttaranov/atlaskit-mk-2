@@ -29,7 +29,7 @@
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0",
+    "react": "^16.7.0-alpha",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@atlaskit/navigation": "^33.1.11",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "prop-types": "^15.5.10",
-    "react": "^16.4.0",
+    "react": "^16.7.0-alpha",
     "sinon": "^2.2.0",
     "uuid": "^3.1.0"
   }

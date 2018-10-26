@@ -50,7 +50,7 @@
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0",
+    "react": "^16.7.0-alpha",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -60,7 +60,7 @@
     "@atlaskit/quick-search": "^4.2.11",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fetch-mock": "^6.5.2",
-    "react": "^16.4.0",
+    "react": "^16.7.0-alpha",
     "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0",
     "seedrandom": "^2.4.4",

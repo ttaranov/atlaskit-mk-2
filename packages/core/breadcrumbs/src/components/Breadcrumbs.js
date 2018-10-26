@@ -10,14 +10,14 @@ type State = {|
   isExpanded: boolean,
 |};
 
-export default class Breadcrumbs extends Component<Props, State> {
+export default function Breadcrumbs (props) {
   props: Props;
 
   static defaultProps = {
     children: null,
   };
 
-  state = { isExpanded: false };
+  const state = useState({ isExpanded: false };
 
   expand = () => this.setState({ isExpanded: true });
 

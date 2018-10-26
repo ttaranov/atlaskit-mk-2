@@ -33,7 +33,7 @@ const TRANSITION_SPEED = 300;
 const LINEAR_TRANSITION_SPEED = 50;
 const easeOut = 'cubic-bezier(0.15,1,0.3,1)';
 
-export default class ProgressTracker extends PureComponent<Props, State> {
+export default function ProgressTracker (props) {
   static defaultProps = {
     items: [],
     spacing: 'cosy',

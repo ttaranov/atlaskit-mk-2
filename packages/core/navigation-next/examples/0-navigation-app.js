@@ -24,7 +24,7 @@ export default class App extends Component<
     isFlyoutAvailable: boolean,
   },
 > {
-  state = {
+  const state = useState({
     isDebugEnabled: true,
     isFlyoutAvailable: true,
   };

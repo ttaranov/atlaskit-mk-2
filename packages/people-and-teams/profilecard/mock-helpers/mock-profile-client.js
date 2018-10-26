@@ -6,7 +6,7 @@ export default function getMockProfileClient(
   BaseProfileClient: any,
   modifyResponse: any,
 ): any {
-  return class MockProfileClient extends BaseProfileClient {
+  return function MockProfileClient (props) {
     // eslint-disable-next-line class-methods-use-this
     makeRequest(cloudId, userId) {
       const timeout = random(1500) + 500;

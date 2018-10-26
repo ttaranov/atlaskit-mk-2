@@ -15,7 +15,7 @@ type Props = {
   isSelected?: boolean,
 };
 
-export default class DefaultLinkComponent extends PureComponent<Props> {
+export default function DefaultLinkComponent (props) {
   render() {
     const {
       children,

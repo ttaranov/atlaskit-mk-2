@@ -23,10 +23,10 @@ const Paragraph = ({ position }: { position: number }) => (
   </Fragment>
 );
 
-export default class SpotlightAutoscrollExample extends Component<*, State> {
+export default function SpotlightAutoscrollExample (props) {
   constructor() {
     super();
-    this.state = {
+    this.const state = useState({
       spotlight: 'off',
     };
   }

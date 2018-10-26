@@ -11,7 +11,7 @@ type Props = {
   innerRef: () => any,
 };
 
-class CustomComponent extends Component<Props, *> {
+function CustomComponent (props) {
   render() {
     const { children, innerRef, ...props } = this.props;
     return <div {...props}>{children}</div>;
@@ -30,8 +30,8 @@ type State = {
   count: number,
 };
 
-class PerfTest extends Component<{}, State> {
-  state = {
+function PerfTest (props) {
+  const state = useState({
     count: 0,
   };
   startTest = () => {

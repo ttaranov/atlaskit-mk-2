@@ -84,10 +84,10 @@ const Fade = ({ children, ...props }: Object) => (
   </CSSTransition>
 );
 
-export default class ProgressTrackerStage extends PureComponent<Props, State> {
+export default function ProgressTrackerStage (props) {
   constructor(props: Object) {
     super(props);
-    this.state = {
+    this.const state = useState({
       transitioning: false,
       oldMarkerColor: getMarkerColor(this.props.item.status),
       oldPercentageComplete: 0,

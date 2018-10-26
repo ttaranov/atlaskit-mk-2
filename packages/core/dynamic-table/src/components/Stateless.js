@@ -52,10 +52,10 @@ type State = {
   isRanking: boolean,
 };
 
-class DynamicTable extends Component<Props, State> {
+function DynamicTable (props) {
   tableBody: ?ComponentType<any, any>;
 
-  state = {
+  const state = useState({
     isRanking: false,
   };
 

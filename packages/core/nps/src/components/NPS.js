@@ -94,7 +94,7 @@ type State = {
   allowContact: boolean,
 };
 
-export default class NPS extends React.Component<Props, State> {
+export default function NPS (props) {
   static defaultProps = {
     onClose: () => {},
     onOptOut: () => {},
@@ -109,7 +109,7 @@ export default class NPS extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       page: Pages.FEEDBACK,
       rating: null,
       comment: '',

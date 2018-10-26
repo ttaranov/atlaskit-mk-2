@@ -13,7 +13,7 @@ export default class ModalDemo extends Component<
   {},
   { isOpen: string | null },
 > {
-  state = { isOpen: null };
+  const state = useState({ isOpen: null };
   focusTarget: HTMLElement | null;
   open = (isOpen: string) => this.setState({ isOpen });
   close = () => this.setState({ isOpen: null });

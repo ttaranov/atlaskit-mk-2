@@ -20,13 +20,13 @@ type State = {
   isOpen: boolean,
 };
 
-class Controlled extends Component<Props, State> {
+function Controlled (props) {
   state: State;
   recentlySelected: boolean = false;
 
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       value: props.initialValue || '',
       isOpen: props.initialIsOpen || false,
     };

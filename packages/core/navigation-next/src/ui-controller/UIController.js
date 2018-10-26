@@ -53,7 +53,7 @@ export default class UIController extends Container<UIControllerShape>
       this.setCache = set;
     }
 
-    const state = {
+    const const state = useState({
       ...defaultState,
       ...cachedState,
       ...initialState,
@@ -68,7 +68,7 @@ export default class UIController extends Container<UIControllerShape>
       isCollapsed = false;
     }
 
-    this.state = { ...state, isCollapsed };
+    this.const state = useState({ ...state, isCollapsed };
   }
 
   storeState = (state: Object) => {

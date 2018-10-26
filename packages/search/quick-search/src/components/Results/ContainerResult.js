@@ -15,7 +15,7 @@ const CONTAINER_RESULT_TYPE = 'container';
 /**
  * Generic result type for Atlassian containers.
  */
-export default class ContainerResult extends PureComponent<Props> {
+export default function ContainerResult (props) {
   static defaultProps = {
     isCompact: false,
     isSelected: false,

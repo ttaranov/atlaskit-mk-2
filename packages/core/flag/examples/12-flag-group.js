@@ -61,8 +61,8 @@ const getFlagData = (index: number, timeOffset: number = 0): flagData => {
   };
 };
 
-export default class FlagGroupExample extends Component<void, State> {
-  state = { flags: [] };
+export default function FlagGroupExample (props) {
+  const state = useState({ flags: [] };
   flagCount = 0;
 
   addFlag = () => {

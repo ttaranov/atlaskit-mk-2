@@ -57,7 +57,7 @@ const computeRankDestination = (
   return undefined;
 };
 
-export class RankableBody extends Component<Props, {}> {
+export function RankableBody (props) {
   onBeforeDragStart = (dragStart: DragStart) => {
     const {
       draggableId: key,

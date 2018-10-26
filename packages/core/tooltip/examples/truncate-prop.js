@@ -32,8 +32,8 @@ const Checkbox = ({
   );
 };
 
-export default class Image extends Component<{}, { truncate: boolean }> {
-  state = { truncate: false };
+export default function Image (props) {
+  const state = useState({ truncate: false };
   toggle = () => this.setState(state => ({ truncate: !state.truncate }));
   render() {
     const { truncate } = this.state;

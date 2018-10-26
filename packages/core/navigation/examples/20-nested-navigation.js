@@ -12,11 +12,11 @@ type State = {
   stack: Stack,
 };
 
-export default class NavigationPanel extends Component<{}, State> {
+export default function NavigationPanel (props) {
   constructor(props: {}) {
     super(props);
 
-    this.state = {
+    this.const state = useState({
       stack: [
         [
           {

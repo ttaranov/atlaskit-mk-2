@@ -39,7 +39,7 @@ type State = {
   current: number,
 };
 
-class Pagination extends Component<Props, State> {
+function Pagination (props) {
   static defaultProps = {
     defaultValue: 1,
     i18n: defaultI18n,
@@ -47,7 +47,7 @@ class Pagination extends Component<Props, State> {
     total: 0,
   };
 
-  state = {
+  const state = useState({
     current: this.props.defaultValue,
   };
 

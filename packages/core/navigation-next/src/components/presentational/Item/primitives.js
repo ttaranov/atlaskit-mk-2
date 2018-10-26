@@ -18,7 +18,7 @@ const ComponentSwitch = ({ as, innerRef, ...rest }: SwitchProps) => {
   return <ElementOrComponent ref={innerRef} {...props} />;
 };
 
-class ItemPrimitive extends PureComponent<ItemProps> {
+function ItemPrimitive (props) {
   static defaultProps = {
     isActive: false,
     isHover: false,

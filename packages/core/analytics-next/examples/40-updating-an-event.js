@@ -4,8 +4,8 @@ import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import { AnalyticsListener } from '../src';
 
-class Form extends Component<*, { value: string }> {
-  state = {
+function Form (props) {
+  const state = useState({
     value: 'Joe Bloggs',
   };
 

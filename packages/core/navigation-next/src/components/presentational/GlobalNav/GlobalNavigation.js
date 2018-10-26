@@ -15,7 +15,7 @@ import {
 } from './primitives';
 import type { GlobalNavigationProps } from './types';
 
-export default class GlobalNavigation extends Component<GlobalNavigationProps> {
+export default function GlobalNavigation (props) {
   render() {
     const {
       itemComponent: ItemComponent,

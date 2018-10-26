@@ -41,7 +41,7 @@ type Props = {
   theme: Provided,
 };
 
-export default class GlobalNavigation extends PureComponent<Props> {
+export default function GlobalNavigation (props) {
   static defaultProps = {
     primaryIconAppearance: 'round',
     secondaryActions: [],

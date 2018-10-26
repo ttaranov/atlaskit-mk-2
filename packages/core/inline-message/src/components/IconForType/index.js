@@ -10,7 +10,7 @@ type Props = {
   type: IconType,
 };
 
-export default class SelectedIconForType extends Component<Props, {}> {
+export default function SelectedIconForType (props) {
   render() {
     const { type, isHovered, isOpen } = this.props;
     const {

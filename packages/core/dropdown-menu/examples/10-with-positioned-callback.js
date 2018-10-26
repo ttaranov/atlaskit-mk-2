@@ -18,8 +18,8 @@ type State = {|
   afterPosition: Position,
 |};
 
-export default class PositionCallbackExample extends Component<{}, State> {
-  state = {
+export default function PositionCallbackExample (props) {
+  const state = useState({
     beforePosition: { x: 0, y: 0 },
     afterPosition: { x: 0, y: 0 },
   };

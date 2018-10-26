@@ -24,8 +24,8 @@ let stackConsumers = [];
 // - When a modal renders for the first time it takes the first stack position
 // - When a modal mounts, all other modals have to adjust their position
 // - When a modal unmounts, all other modals have to adjust their position
-class StackConsumer extends React.Component<Props, State> {
-  state = {
+function StackConsumer (props) {
+  const state = useState({
     stackIndex: 0,
   };
   componentDidMount() {

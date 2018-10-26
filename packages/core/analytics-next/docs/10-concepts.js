@@ -135,7 +135,7 @@ ${code`
 import React, { Component } from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
-class Button extends Component {
+function Button (props) {
   handleClick = e => {
     // Create our analytics event
     const analyticsEvent = this.props.createAnalyticsEvent({ action: 'click' });

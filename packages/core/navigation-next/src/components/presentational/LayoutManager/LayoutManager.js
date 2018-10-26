@@ -67,7 +67,7 @@ type PageProps = CollapseListeners & {
 
 // FIXME: Move to separate file
 // eslint-disable-next-line react/no-multi-comp
-class PageInner extends PureComponent<{ children: Node }> {
+function PageInner (props) {
   render() {
     return this.props.children;
   }
@@ -75,7 +75,7 @@ class PageInner extends PureComponent<{ children: Node }> {
 
 // FIXME: Move to separate file
 // eslint-disable-next-line react/no-multi-comp
-export class Page extends PureComponent<PageProps> {
+export function Page (props) {
   render() {
     const {
       flyoutIsOpen,
@@ -126,7 +126,7 @@ export default class LayoutManager extends Component<
   LayoutManagerProps,
   State,
 > {
-  state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
+  const state = useState({ flyoutIsOpen: false, mouseIsOverNavigation: false };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
   containerRef: HTMLElement;

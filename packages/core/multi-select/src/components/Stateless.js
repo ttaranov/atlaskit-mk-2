@@ -130,7 +130,7 @@ type State = {
   groupedItems: Array<GroupType>,
 };
 
-export default class StatelessMultiSelect extends PureComponent<Props, State> {
+export default function StatelessMultiSelect (props) {
   inputNode: HTMLElement | null;
   tagGroup: HTMLElement | null;
   static defaultProps = {
@@ -157,7 +157,7 @@ export default class StatelessMultiSelect extends PureComponent<Props, State> {
   };
 
   // This is used only to manipulate focus , it's okay to have state in this case.
-  state = {
+  const state = useState({
     isFocused: this.props.isOpen || this.props.shouldFocus,
     focusedItemIndex: undefined,
     groupedItems: groupItems(this.props.items),

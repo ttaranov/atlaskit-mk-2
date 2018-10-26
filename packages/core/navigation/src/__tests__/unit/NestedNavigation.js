@@ -9,7 +9,7 @@ import NestedNavigationPage, {
 
 configure({ adapter: new Adapter() });
 
-class Child extends PureComponent<any> {
+function Child (props) {
   render() {
     return <div />;
   }

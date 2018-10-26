@@ -116,7 +116,7 @@ type State = {
   modalVisible: boolean,
 };
 
-class ModalWrapper extends Component<Props, State> {
+function ModalWrapper (props) {
   static defaultProps = {
     autoFocus: true,
     scrollBehavior: 'inside',

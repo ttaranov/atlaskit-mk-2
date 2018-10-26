@@ -8,7 +8,7 @@ type Props = {
   isVisible: boolean,
 };
 
-export default class DrawerBackIcon extends PureComponent<Props> {
+export default function DrawerBackIcon (props) {
   static defaultProps = {
     isVisible: false,
   };

@@ -27,7 +27,7 @@ type State = {
   isHovered: boolean,
 };
 
-export default class InlineMessage extends Component<Props, State> {
+export default function InlineMessage (props) {
   static defaultProps = {
     children: null,
     placement: 'bottom-start',
@@ -36,7 +36,7 @@ export default class InlineMessage extends Component<Props, State> {
     type: 'connectivity',
   };
 
-  state = {
+  const state = useState({
     isOpen: false,
     isHovered: false,
   };

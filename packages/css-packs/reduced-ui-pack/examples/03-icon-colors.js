@@ -10,8 +10,8 @@ import Warning from './utils/warning';
 // eslint-disable-next-line react/no-danger
 const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
 
-class FilledIconExample extends Component<*, *> {
-  state = {
+function FilledIconExample (props) {
+  const state = useState({
     color: '#253858',
     fill: '#36B37E',
   };

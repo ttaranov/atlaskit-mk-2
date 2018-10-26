@@ -29,7 +29,7 @@ type Props = {
 };
 
 /* eslint-disable react/sort-comp */
-export default class FocusLock extends Component<Props> {
+export default function FocusLock (props) {
   ariaHiddenNode: HTMLElement;
   initFromProps: boolean = false;
   teardownFromProps: boolean = false;

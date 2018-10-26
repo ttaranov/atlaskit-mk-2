@@ -31,7 +31,7 @@ type State = {
   isExpanded: boolean,
 };
 
-class Flag extends Component<FlagProps, State> {
+function Flag (props) {
   props: FlagProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -40,7 +40,7 @@ class Flag extends Component<FlagProps, State> {
     isDismissAllowed: false,
   };
 
-  state = { isExpanded: false };
+  const state = useState({ isExpanded: false };
 
   componentWillReceiveProps(nextProps: FlagProps) {
     const { actions, description } = nextProps;

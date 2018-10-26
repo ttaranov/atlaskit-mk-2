@@ -15,7 +15,7 @@ const Button = ({ inline = true, ...props }: { inline?: boolean }) => (
   </div>
 );
 
-export default class FocusBlurSelect extends Component<*> {
+export default function FocusBlurSelect (props) {
   select: ElementRef<*>;
   focus = () => {
     this.select.focus();

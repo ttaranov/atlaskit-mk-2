@@ -62,10 +62,10 @@ type State = {
   allowContact: AllowContact,
 };
 
-export default class Followup extends React.Component<Props, State> {
+export default function Followup (props) {
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       role: null,
       allowContact: false,
     };

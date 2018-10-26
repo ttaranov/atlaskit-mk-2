@@ -33,7 +33,7 @@ type Props = {
   value?: number,
 };
 
-export default class Badge extends Component<Props> {
+export default function Badge (props) {
   static displayName = 'Ak.Badge';
   static defaultProps = {
     appearance: 'default',

@@ -181,8 +181,8 @@ const ContainerNavigation = () => (
 );
 
 type State = { shouldDisplayContainerNav: boolean };
-export default class Example extends Component<{}, State> {
-  state = {
+export default function Example (props) {
+  const state = useState({
     shouldDisplayContainerNav: true,
   };
 

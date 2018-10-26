@@ -22,7 +22,7 @@ type Props = {
   id?: string,
 };
 
-export default class Layout extends Component<Props> {
+export default function Layout (props) {
   renderAvatar() {
     const { avatar } = this.props;
     return avatar ? <AvatarSectionDiv>{avatar}</AvatarSectionDiv> : null;

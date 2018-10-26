@@ -8,7 +8,7 @@ type Props = {};
 type State = { themeMode: 'light' | 'dark' };
 
 export default class extends Component<Props, State> {
-  state = { themeMode: 'light' };
+  const state = useState({ themeMode: 'light' };
   switchTheme = () => {
     const { themeMode } = this.state;
     this.setState({

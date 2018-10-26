@@ -11,7 +11,7 @@ type ButtonProps = {
 };
 
 /* eslint-disable react/no-multi-comp */
-class Button extends Component<ButtonProps, {}> {
+function Button (props) {
   onClick = e => {
     const { fireAnalyticsEvent, firePrivateAnalyticsEvent } = this.props;
     fireAnalyticsEvent('click');
@@ -32,7 +32,7 @@ class Button extends Component<ButtonProps, {}> {
 const IntegratedButton = withAnalytics(Button);
 /* eslint-disable react/no-multi-comp */
 
-export default class IntegratingExample extends Component<{}, {}> {
+export default function IntegratingExample (props) {
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

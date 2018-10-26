@@ -72,7 +72,7 @@ type State = {
   isInitiallyRendered: boolean,
 };
 
-export default class ContainerNavigation extends Component<Props, State> {
+export default function ContainerNavigation (props) {
   static defaultProps = {
     showGlobalActions: false,
     globalSecondaryActions: [],
@@ -84,7 +84,7 @@ export default class ContainerNavigation extends Component<Props, State> {
   constructor(props: Props, context: any) {
     super(props, context);
 
-    this.state = {
+    this.const state = useState({
       isInitiallyRendered: false,
     };
   }

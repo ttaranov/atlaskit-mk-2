@@ -16,7 +16,7 @@ const DefaultPropsButton = withAnalytics(
   },
 );
 
-export default class DefaultPropsExample extends Component<{}, {}> {
+export default function DefaultPropsExample (props) {
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

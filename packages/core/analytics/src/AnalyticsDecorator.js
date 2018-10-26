@@ -31,7 +31,7 @@ const ContextTypes = {
   getParentAnalyticsData: PropTypes.func,
 };
 
-class AnalyticsDecorator extends Component<Props, {}> {
+function AnalyticsDecorator (props) {
   static defaultProps = {
     match: '*',
     matchPrivate: false,

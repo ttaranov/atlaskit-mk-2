@@ -16,7 +16,7 @@ type Props = {
   isRanking: boolean,
 };
 
-class TableHead extends Component<Props, {}> {
+function TableHead (props) {
   componentWillMount() {
     validateSortKey(this.props.sortKey, this.props.head);
   }

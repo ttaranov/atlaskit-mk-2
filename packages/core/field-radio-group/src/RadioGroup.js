@@ -26,7 +26,7 @@ export default class FieldRadioGroup extends Component<
 
   constructor() {
     super();
-    this.state = {
+    this.const state = useState({
       selectedValue: null, // Overrides default once user selects a value.
     };
   }

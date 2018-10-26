@@ -13,7 +13,7 @@ const ResultWrapperStateless = () => (
   />
 );
 
-class ResultWrapperClass extends Component<*> {
+function ResultWrapperClass (props) {
   static defaultProps = {
     resultId: '3',
   };

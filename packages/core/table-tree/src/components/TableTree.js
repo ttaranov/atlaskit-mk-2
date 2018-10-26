@@ -31,12 +31,12 @@ type State = {
   columnWidths: Array<CSSWidth>,
 };
 
-export default class TableTree extends Component<Props, State> {
+export default function TableTree (props) {
   static childContextTypes = {
     tableTree: PropTypes.object.isRequired,
   };
 
-  state = {
+  const state = useState({
     columnWidths: [],
   };
 

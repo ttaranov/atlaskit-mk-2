@@ -86,7 +86,7 @@ const FixedTarget = styled.div`
   }};
 `;
 
-export default class Layer extends Component<Props, State> {
+export default function Layer (props) {
   popper: {
     destroy: Function,
   };
@@ -113,7 +113,7 @@ export default class Layer extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       hasExtractedStyles: false,
       position: null,
       transform: null,

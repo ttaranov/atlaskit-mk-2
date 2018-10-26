@@ -1783,7 +1783,7 @@
         this.options = _extends({}, Popper.Defaults, options);
 
         // init state
-        this.state = {
+        this.const state = useState({
           isDestroyed: false,
           isCreated: false,
           scrollParents: []
@@ -1958,7 +1958,7 @@
         key: 'enableEventListeners',
         value: function enableEventListeners() {
           if (!this.state.eventsEnabled) {
-            this.state = setupEventListeners(this.reference, this.options, this.state, this.scheduleUpdate);
+            this.const state = useState(setupEventListeners(this.reference, this.options, this.state, this.scheduleUpdate);
           }
         }
 
@@ -1975,7 +1975,7 @@
         value: function disableEventListeners() {
           if (this.state.eventsEnabled) {
             window.cancelAnimationFrame(this.scheduleUpdate);
-            this.state = removeEventListeners(this.reference, this.state);
+            this.const state = useState(removeEventListeners(this.reference, this.state);
           }
         }
 

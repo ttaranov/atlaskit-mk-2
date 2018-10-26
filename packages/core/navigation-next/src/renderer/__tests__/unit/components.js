@@ -142,7 +142,7 @@ describe('navigation-next view renderer', () => {
 
   describe('ItemsRenderer', () => {
     const didMountSpy = jest.fn();
-    class Corgie extends Component<{}> {
+    function Corgie (props) {
       componentDidMount() {
         didMountSpy();
       }

@@ -24,7 +24,7 @@ type State = {
   isOpen: boolean,
   scrollBehavior: 'inside' | 'outside',
 };
-export default class ExampleScroll extends PureComponent<{}, State> {
+export default function ExampleScroll (props) {
   bottomRef: any;
   state: State = {
     isOpen: false,

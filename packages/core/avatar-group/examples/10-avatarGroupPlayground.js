@@ -19,7 +19,7 @@ type State = {|
   tooltipsEnabled: boolean,
 |};
 
-export default class AvatarGroupExample extends Component<*, State> {
+export default function AvatarGroupExample (props) {
   state: State = {
     avatarCount: 20,
     avatarCountMax: 11,

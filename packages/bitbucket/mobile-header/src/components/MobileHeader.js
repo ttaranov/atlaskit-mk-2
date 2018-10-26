@@ -20,8 +20,8 @@ type MobileHeaderState = {
   isAnimatingNavigation: boolean,
 };
 
-class MobileHeader extends PureComponent<MobileHeaderProps, MobileHeaderState> {
-  state = {
+function MobileHeader (props) {
+  const state = useState({
     isAnimatingNavigation: false,
     isAnimatingSidebar: false,
   };

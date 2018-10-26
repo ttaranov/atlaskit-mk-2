@@ -19,7 +19,7 @@ type State = {
   experiments: Experiments,
 };
 
-class ExperimentController extends Component<Props, State> {
+function ExperimentController (props) {
   static displayName = 'ExperimentController';
 
   resolverPromises: ResolverPromises = {};
@@ -42,7 +42,7 @@ class ExperimentController extends Component<Props, State> {
       {},
     );
 
-    this.state = {
+    this.const state = useState({
       experiments: intialExperiments,
     };
   }

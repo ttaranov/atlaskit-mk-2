@@ -12,7 +12,7 @@ type Props = {
   components: FieldComponentsType,
 };
 
-export default class ComponentsTable extends PureComponent<Props, void> {
+export default function ComponentsTable (props) {
   renderSupportIcon = (support: number) => {
     if (support) return <CheckCircleIcon primaryColor={colors.G400} />;
     return <CrossCircleIcon primaryColor={colors.R400} />;

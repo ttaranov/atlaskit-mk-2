@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Checkbox from '../src/Checkbox';
 
-export default class ControlledExample extends Component<void> {
+export default function ControlledExample (props) {
   render() {
     return (
       <div>

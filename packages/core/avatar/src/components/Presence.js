@@ -18,7 +18,7 @@ type Props = {
   size?: SizeType,
 };
 
-export default class Presence extends Component<Props> {
+export default function Presence (props) {
   render() {
     const { borderColor, children, presence, size } = this.props;
 

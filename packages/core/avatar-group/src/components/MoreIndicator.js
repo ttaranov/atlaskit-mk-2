@@ -26,7 +26,7 @@ export type Props = {
 
 const MAX_DISPLAY_COUNT = 99;
 
-class MoreIndicator extends Component<Props> {
+function MoreIndicator (props) {
   static defaultProps = {
     appearance: 'circle',
   };

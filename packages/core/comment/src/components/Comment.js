@@ -42,7 +42,7 @@ type Props = {
   id?: string,
 };
 
-export default class Comment extends Component<Props, {}> {
+export default function Comment (props) {
   static defaultProps = {
     actions: [],
     restrictedTo: '',

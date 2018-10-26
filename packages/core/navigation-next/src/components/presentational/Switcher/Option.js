@@ -140,7 +140,7 @@ type ItemProps = {
   onClick?: (SyntheticEvent<MouseEvent>) => void,
 };
 
-export default class Option extends PureComponent<ItemProps> {
+export default function Option (props) {
   render() {
     const { data, innerProps, isFocused, isSelected } = this.props;
     const { avatar, subText, text, ...dataProps } = data;

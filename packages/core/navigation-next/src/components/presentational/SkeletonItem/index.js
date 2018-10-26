@@ -6,7 +6,7 @@ import { css } from 'emotion';
 import { withContentTheme, styleReducerNoOp } from '../../../theme';
 import type { SkeletonItemProps } from './types';
 
-class SkeletonItem extends PureComponent<SkeletonItemProps> {
+function SkeletonItem (props) {
   static defaultProps = {
     hasBefore: false,
     styles: styleReducerNoOp,

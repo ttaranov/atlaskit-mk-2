@@ -21,10 +21,10 @@ const theme = {
   [isDropdownOverflowKey]: true,
 };
 
-export default class OverflowDropdown extends Component<Props, State> {
+export default function OverflowDropdown (props) {
   constructor(props: Props, context: any) {
     super(props, context);
-    this.state = { isOpen: false };
+    this.const state = useState({ isOpen: false };
   }
 
   handleDropdownToggle = ({ isOpen }: any) => {

@@ -41,7 +41,7 @@ type State = {
   positionIdx: number,
 };
 
-export default class InteractiveTrigger extends Component<Props, State> {
+export default function InteractiveTrigger (props) {
   static propTypes = {
     resourceClient: PropTypes.shape({
       getProfile: PropTypes.func,
@@ -50,7 +50,7 @@ export default class InteractiveTrigger extends Component<Props, State> {
     }),
   };
 
-  state = {
+  const state = useState({
     positionIdx: 0,
   };
 

@@ -20,7 +20,7 @@ type Props = {
   onClick: (Event, UIAnalyticsEvent) => void,
 };
 
-class Everything extends Component<Props> {
+function Everything (props) {
   componentWillUnmount() {
     console.log('Unmounting everything...');
   }
@@ -49,8 +49,8 @@ const mockReduxEpicDispatch = (analyticsEvent: UIAnalyticsEvent) => {
 
 type State = { hasUnmountedEverything: boolean };
 // eslint-disable-next-line react/no-multi-comp
-export default class App extends Component<void, State> {
-  state = {
+export default function App (props) {
+  const state = useState({
     hasUnmountedEverything: false,
   };
 

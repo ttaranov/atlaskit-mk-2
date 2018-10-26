@@ -146,7 +146,7 @@ type State = {
   resizeDelta: number,
 };
 
-class Navigation extends PureComponent<Props, State> {
+function Navigation (props) {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -172,7 +172,7 @@ class Navigation extends PureComponent<Props, State> {
     // $FlowFixMe  - theme is not found in props
     const { mode } = getTheme(props);
 
-    this.state = {
+    this.const state = useState({
       containerTheme: defaultContainerTheme(containerTheme, mode),
       globalTheme: defaultGlobalTheme(globalTheme, mode),
       resizeDelta: 0,

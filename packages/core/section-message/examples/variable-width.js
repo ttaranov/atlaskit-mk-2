@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import FieldRange from '@atlaskit/field-range';
 import SectionMessage from '../src';
 
-class Example extends Component<*, *> {
-  state = { width: 800 };
+function Example (props) {
+  const state = useState({ width: 800 };
 
   updateWidth = (width: number) => {
     this.setState({ width });

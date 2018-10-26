@@ -28,7 +28,7 @@ type Props = {
   children?: ReactNode,
 };
 
-export default class IconLabel extends PureComponent<Props> {
+export default function IconLabel (props) {
   static defaultProps = {
     icon: '',
   };

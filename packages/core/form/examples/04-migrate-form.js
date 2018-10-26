@@ -88,8 +88,8 @@ const isFutureDate = (value: string): boolean => {
   return Date.parse(value) > Date.now();
 };
 
-export default class FieldsExample extends PureComponent<void, State> {
-  state = {
+export default function FieldsExample (props) {
+  const state = useState({
     validateOnChange: false,
     validateOnBlur: true,
     validateOnSubmit: true,

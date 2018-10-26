@@ -6,7 +6,7 @@ import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { navigationUILoaded } from '../../../common/analytics';
 import type { LayerInitialisedProps } from './types';
 
-class LayerInitialised extends Component<LayerInitialisedProps> {
+function LayerInitialised (props) {
   componentDidMount() {
     if (!this.props.initialised) {
       this.fireInitialisedEvent();

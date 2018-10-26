@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Nav, NavLine, NavWrapper } from '../styled';
 import type { TabData, TabsNavigationProps } from '../types';
 
-export default class TabsNavigation extends Component<TabsNavigationProps> {
+export default function TabsNavigation (props) {
   elementRefs: Array<HTMLElement> = [];
 
   componentWillReceiveProps(newProps: TabsNavigationProps) {

@@ -25,7 +25,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-class Author extends Component<Props, {}> {
+function Author (props) {
   render() {
     const { children, href, onClick, onFocus, onMouseOver } = this.props;
     return (

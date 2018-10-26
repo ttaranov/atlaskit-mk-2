@@ -139,7 +139,7 @@ describe('dropdown menu - DropdownItemCheckbox', () => {
       itemZeroProps?: {},
       itemOneProps?: {},
     };
-    class IsSelectedController extends React.Component<Props> {
+    function IsSelectedController (props) {
       static propTypes = {
         itemZeroProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
         itemOneProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types

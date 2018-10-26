@@ -65,8 +65,8 @@ type State = {
   isExpanded: boolean,
 };
 
-class Row extends Component<Props, State> {
-  state = { isExpanded: this.props.isDefaultExpanded || false };
+function Row (props) {
+  const state = useState({ isExpanded: this.props.isDefaultExpanded || false };
 
   componentDidUpdate(prevProps: Props) {
     const { isDefaultExpanded, isExpanded } = this.props;

@@ -79,7 +79,7 @@ type State = {
   filterValue: string,
 };
 
-export default class AkSingleSelect extends PureComponent<Props, State> {
+export default function AkSingleSelect (props) {
   static defaultProps = {
     appearance: appearances.default,
     droplistShouldFitContainer: true,
@@ -95,7 +95,7 @@ export default class AkSingleSelect extends PureComponent<Props, State> {
     shouldFlip: true,
   };
 
-  state = {
+  const state = useState({
     isOpen: this.props.isDefaultOpen,
     selectedItem: this.props.defaultSelected,
     filterValue: this.props.defaultSelected

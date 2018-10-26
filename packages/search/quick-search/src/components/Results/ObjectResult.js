@@ -15,7 +15,7 @@ const OBJECT_RESULT_TYPE = 'object';
 /**
  * Generic result type for Atlassian objects.
  */
-export default class ObjectResult extends PureComponent<Props> {
+export default function ObjectResult (props) {
   static defaultProps = {
     isCompact: false,
     isSelected: false,

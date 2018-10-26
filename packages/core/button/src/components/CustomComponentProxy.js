@@ -11,7 +11,7 @@ import { cleanProps } from '@atlaskit/analytics-next';
  */
 import type { DerivedButtonProps } from '../types';
 
-class CustomComponentProxy extends Component<DerivedButtonProps> {
+function CustomComponentProxy (props) {
   render() {
     const {
       appearance,

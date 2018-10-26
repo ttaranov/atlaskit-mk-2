@@ -11,7 +11,7 @@ const DummyNested = styled.div`
   background: #afe;
 `;
 
-export default class LayoutExample extends PureComponent<void, void> {
+export default function LayoutExample (props) {
   render() {
     return (
       <div>

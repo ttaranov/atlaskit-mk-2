@@ -9,10 +9,10 @@ type State = {
   state: 'spinning' | 'removing' | 'completed',
 };
 
-class StatefulSpinner extends PureComponent<{}, State> {
+function StatefulSpinner (props) {
   constructor(props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       active: true,
       delay: 100,
       state: 'spinning',

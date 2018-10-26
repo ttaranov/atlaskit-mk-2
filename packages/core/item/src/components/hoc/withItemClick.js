@@ -26,7 +26,7 @@ type Props = {
 
 // HOC that typically wraps @atlaskit/item
 const withItemClick = (WrappedItem: ComponentType<any>) =>
-  class WithItemClick extends Component<Props> {
+  function WithItemClick (props) {
     static displayName = `WithItemClick(${getDisplayName(WrappedItem)})`;
 
     static defaultProps = {

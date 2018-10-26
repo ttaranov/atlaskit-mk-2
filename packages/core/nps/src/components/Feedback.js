@@ -100,10 +100,10 @@ type State = {
   comment: Comment,
 };
 
-export default class Feedback extends React.Component<Props, State> {
+export default function Feedback (props) {
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       rating: null,
       comment: '',
     };

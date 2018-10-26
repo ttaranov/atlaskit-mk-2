@@ -7,7 +7,7 @@ import Modal, { ModalTransition } from '../src';
 type State = {
   isOpen: boolean,
 };
-export default class ExampleBasic extends PureComponent<{}, State> {
+export default function ExampleBasic (props) {
   state: State = { isOpen: false };
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });

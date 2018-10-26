@@ -9,7 +9,7 @@ type State = {
   active: number | null,
 };
 
-export default class SpotlightBasicExample extends Component<Object, State> {
+export default function SpotlightBasicExample (props) {
   state: State = { active: null };
   start = () => this.setState({ active: 0 });
   next = () => this.setState(state => ({ active: state.active + 1 }));

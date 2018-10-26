@@ -45,11 +45,11 @@ type State = {
   hover: boolean,
 };
 
-class Button extends Component<Props, State> {
+function Button (props) {
   static defaultProps = {
     theme: defaultButtonTheme,
   };
-  state = {
+  const state = useState({
     hover: false,
   };
   onMouseEnter = () => this.setState({ hover: true });

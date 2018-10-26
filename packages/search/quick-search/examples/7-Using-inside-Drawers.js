@@ -20,7 +20,7 @@ export default class IssueUsingDrawers extends Component<
   *,
   IssueWithDrawerState,
 > {
-  state = {
+  const state = useState({
     isDrawerOpen: false,
     shouldUnmountOnExit: true,
     shouldRenderNewDrawer: true,

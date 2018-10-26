@@ -74,7 +74,7 @@
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
     "query-string": "^4.3.2",
-    "react": "^16.4.0",
+    "react": "^16.7.0-alpha",
     "react-addons-text-content": "^0.0.4",
     "react-codesandboxer": "^2.1.0",
     "react-dom": "^16.4.2",

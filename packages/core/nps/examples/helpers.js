@@ -2,10 +2,10 @@
 
 import React from 'react';
 
-export class WithDataDisplay extends React.Component<any, any> {
+export function WithDataDisplay (props) {
   constructor(...args: Array<any>) {
     super(...args);
-    this.state = {
+    this.const state = useState({
       rating: null,
       comment: null,
       role: null,

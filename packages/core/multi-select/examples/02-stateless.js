@@ -26,7 +26,7 @@ type State = {
   selectedItems: Array<ItemType>,
 };
 
-export default class StatelessExample extends PureComponent<{}, State> {
+export default function StatelessExample (props) {
   state: State = {
     isOpen: false,
     filterValue: '',

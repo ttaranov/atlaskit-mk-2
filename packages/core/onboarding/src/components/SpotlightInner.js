@@ -29,7 +29,7 @@ class SpotlightInner extends React.Component<
     pulse: true,
   };
 
-  state = {
+  const state = useState({
     // This is only used when targetReplacement is specified.
     // In this case, we have to render the targetReplacement component,
     // get a dom reference from that component, then render again passing

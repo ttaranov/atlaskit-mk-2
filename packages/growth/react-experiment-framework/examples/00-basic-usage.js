@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import asExperiment from '../src/asExperiment';
 import ExperimentController from '../src/ExperimentController';
 
-export class Control extends Component<{ title: string }> {
+export function Control (props) {
   render() {
     const { title } = this.props;
     const text = `Control ${title}`;
@@ -13,7 +13,7 @@ export class Control extends Component<{ title: string }> {
   }
 }
 
-export class VariantA extends Component<{ title: string }> {
+export function VariantA (props) {
   render() {
     const { title } = this.props;
     const text = `Variant A ${title}`;
@@ -21,7 +21,7 @@ export class VariantA extends Component<{ title: string }> {
   }
 }
 
-export class VariantB extends Component<{ title: string }> {
+export function VariantB (props) {
   render() {
     const { title } = this.props;
     const text = `Variant B ${title}`;
@@ -30,13 +30,13 @@ export class VariantB extends Component<{ title: string }> {
 }
 
 // eslint-disable-next-line react/require-render-return
-export class Broken extends Component<{}> {
+export function Broken (props) {
   render() {
     throw new Error('Threw on render');
   }
 }
 
-export class Loader extends Component<{}> {
+export function Loader (props) {
   render() {
     return <div>Loading ...</div>;
   }

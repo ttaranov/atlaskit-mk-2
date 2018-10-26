@@ -8,8 +8,8 @@ type State = {
   isBlanketVisible: boolean,
 };
 
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     isBlanketVisible: false,
     canClickThrough: true,
   };

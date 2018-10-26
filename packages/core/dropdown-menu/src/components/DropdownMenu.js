@@ -35,7 +35,7 @@ export default class DropdownMenu extends Component<
     onPositioned: () => {},
   };
 
-  state = {
+  const state = useState({
     isOpen: this.props.defaultOpen,
     items: [...this.props.items],
   };

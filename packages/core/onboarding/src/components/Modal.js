@@ -34,7 +34,7 @@ function makeFnComp(element) {
 }
 function noop() {}
 
-export default class OnboardingModal extends Component<Props> {
+export default function OnboardingModal (props) {
   headerComponent = (props: Props) => {
     const { header: headerElement, image: src } = props;
 

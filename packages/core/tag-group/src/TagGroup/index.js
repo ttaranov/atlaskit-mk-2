@@ -9,7 +9,7 @@ type Props = {
   children: Node,
 };
 
-export default class TagGroup extends PureComponent<Props> {
+export default function TagGroup (props) {
   static defaultProps = {
     alignment: 'start',
   };

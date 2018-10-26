@@ -35,7 +35,7 @@ type State = {
   filterValue: string,
 };
 
-export default class CustomMultiSelect extends PureComponent<Props, State> {
+export default function CustomMultiSelect (props) {
   static defaultProps = {
     isDisabled: false,
     shouldFocus: false,
@@ -48,7 +48,7 @@ export default class CustomMultiSelect extends PureComponent<Props, State> {
   };
 
   // we need to keep track of this state ourselves and pass it back into the MultiSelectStateless
-  state = {
+  const state = useState({
     isOpen: this.props.isDefaultOpen,
     selectedItems: [],
     filterValue: '',

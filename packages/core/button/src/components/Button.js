@@ -67,12 +67,12 @@ export const defaultProps = {
   autoFocus: false,
 };
 
-class Button extends Component<ButtonProps, State> {
+function Button (props) {
   button: HTMLElement;
 
   static defaultProps = defaultProps;
 
-  state = {
+  const state = useState({
     isActive: false,
     isFocus: false,
     isHover: false,

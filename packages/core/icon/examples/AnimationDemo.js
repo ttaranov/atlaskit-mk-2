@@ -12,11 +12,11 @@ type State = {
   components: Component<*>[],
 };
 
-class AnimationDemo extends Component<{}, State> {
+function AnimationDemo (props) {
   checkbox: ?HTMLInputElement;
   timer: ?IntervalID;
 
-  state = {
+  const state = useState({
     components: [
       ArrowDownIcon,
       ArrowLeftIcon,

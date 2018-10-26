@@ -5,8 +5,8 @@ import TextField from '../src';
 type State = {|
   eventResult: string,
 |};
-export default class BasicExample extends PureComponent<void, State> {
-  state = {
+export default function BasicExample (props) {
+  const state = useState({
     eventResult:
       'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',
   };

@@ -30,8 +30,8 @@ const SelectWrapper = styled.div`
   padding: 20px;
 `;
 
-export default class GetPath extends Component<*, *> {
-  state = {
+export default function GetPath (props) {
+  const state = useState({
     selectedProduct: products[0],
     selectedFile: files[0],
   };

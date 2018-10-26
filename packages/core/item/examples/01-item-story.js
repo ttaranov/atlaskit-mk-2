@@ -20,7 +20,7 @@ import ItemThemeDemo from './00-basic';
 // eslint-disable-next-line react/prop-types
 const Icon = () => <Question label="test question" />;
 
-const RouterLink = class RouterLinkBase extends Component<*> {
+const RouterLink = function RouterLinkBase (props) {
   render() {
     const { children, className, href } = this.props;
     return (
@@ -32,7 +32,7 @@ const RouterLink = class RouterLinkBase extends Component<*> {
 };
 
 // eslint-disable-next-line react/no-multi-comp
-export default class ItemStory extends Component<{}, {}> {
+export default function ItemStory (props) {
   render() {
     return (
       <div>

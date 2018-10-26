@@ -30,7 +30,7 @@ export default class ChangingColorWithInheritance extends Component<
   {},
   { isColorFlipped: boolean },
 > {
-  state = {
+  const state = useState({
     isColorFlipped: false,
   };
 

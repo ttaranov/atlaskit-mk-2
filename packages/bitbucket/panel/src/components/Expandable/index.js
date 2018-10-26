@@ -34,7 +34,7 @@ export default class Expandable extends PureComponent<
 
     const { defaultIsExpanded } = this.props;
 
-    this.state = { isExpanded: defaultIsExpanded };
+    this.const state = useState({ isExpanded: defaultIsExpanded };
   }
 
   toggleExpanded = (isExpanded?: boolean): void => {

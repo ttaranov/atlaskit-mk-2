@@ -6,7 +6,7 @@ import Avatar from '@atlaskit/avatar';
 import { withContentTheme } from '../../../theme';
 import type { ItemAvatarProps } from './types';
 
-class ItemAvatar extends Component<ItemAvatarProps> {
+function ItemAvatar (props) {
   render() {
     const { itemState, styles: styleReducer, theme, ...props } = this.props;
     const { mode, context } = theme;

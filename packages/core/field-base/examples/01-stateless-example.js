@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import Input from '@atlaskit/input';
 import { FieldBaseStateless } from '../src';
 
-export default class StatelessExample extends PureComponent<void, void> {
+export default function StatelessExample (props) {
   render() {
     return (
       <FieldBaseStateless

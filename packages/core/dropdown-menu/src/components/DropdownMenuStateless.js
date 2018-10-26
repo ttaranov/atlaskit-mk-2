@@ -67,7 +67,7 @@ class DropdownMenuStateless extends Component<
     onPositioned: () => {},
   };
 
-  state = {
+  const state = useState({
     id: uuid(),
     autoFocusDropdownItems: false,
   };

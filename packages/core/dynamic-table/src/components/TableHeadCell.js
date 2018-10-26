@@ -14,7 +14,7 @@ export type Props = {
   onClick?: Function,
 };
 
-class TableHeadCell extends Component<Props, {}> {
+function TableHeadCell (props) {
   static defaultProps = {
     innerRef: () => {},
     inlineStyles: {},

@@ -4,7 +4,7 @@ import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
 export default class extends Component<*, *> {
-  state = {
+  const state = useState({
     roots: null,
   };
 

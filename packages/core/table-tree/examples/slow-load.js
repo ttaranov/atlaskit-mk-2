@@ -7,7 +7,7 @@ export default class SlowLoad extends Component<
   {},
   { tableData: ?Array<Object> },
 > {
-  state = {
+  const state = useState({
     tableData: null,
   };
 

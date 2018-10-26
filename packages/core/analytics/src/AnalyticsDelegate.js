@@ -22,7 +22,7 @@ const ContextTypes = {
   onAnalyticsEvent: PropTypes.func,
 };
 
-class AnalyticsDelegate extends Component<Props, {}> {
+function AnalyticsDelegate (props) {
   static contextTypes = ContextTypes;
 
   static childContextTypes = ContextTypes;

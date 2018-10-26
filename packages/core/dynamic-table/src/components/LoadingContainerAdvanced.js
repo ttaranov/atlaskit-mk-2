@@ -23,7 +23,7 @@ type Props = {
   targetRef?: Function, // eslint-disable-line react/no-unused-prop-types
 };
 
-export default class LoadingContainerAdvanced extends Component<Props, {}> {
+export default function LoadingContainerAdvanced (props) {
   children: Element | null;
   spinner: ComponentType<any> | void | null;
   static defaultProps = {

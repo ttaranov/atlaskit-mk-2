@@ -17,7 +17,7 @@ type ButtonProps = {
 
 /* eslint-disable react/no-multi-comp */
 const Button = withAnalytics(
-  class T extends Component<ButtonProps, {}> {
+  function T (props) {
     onClick = e => {
       const { fireAnalyticsEvent, firePrivateAnalyticsEvent } = this.props;
       fireAnalyticsEvent('click');
@@ -36,7 +36,7 @@ const Button = withAnalytics(
 );
 /* eslint-disable react/no-multi-comp */
 
-export default class BasicExample extends Component<{}, {}> {
+export default function BasicExample (props) {
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

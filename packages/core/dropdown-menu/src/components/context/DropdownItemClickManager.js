@@ -11,7 +11,7 @@ type Props = {
   ) => void,
 };
 
-export default class DropdownItemClickManager extends Component<Props> {
+export default function DropdownItemClickManager (props) {
   static childContextTypes = {
     [clickManagerContext]: PropTypes.object,
   };

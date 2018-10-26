@@ -46,7 +46,7 @@ export type ValidatorResult = {
   message?: string,
 };
 
-export default class Validator extends PureComponent<ValidatorType, void> {
+export default function Validator (props) {
   static defaultProps = {
     func: {},
     validOnFalse: false,

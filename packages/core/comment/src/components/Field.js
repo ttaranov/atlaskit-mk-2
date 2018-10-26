@@ -12,7 +12,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-export default class CommentField extends Component<Props> {
+export default function CommentField (props) {
   render() {
     const {
       children,

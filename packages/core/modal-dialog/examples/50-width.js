@@ -14,8 +14,8 @@ const H4 = styled.h4`
   margin-bottom: 0.66em;
 `;
 
-export default class ModalDemo extends Component<{}, { isOpen: any }> {
-  state = { isOpen: null };
+export default function ModalDemo (props) {
+  const state = useState({ isOpen: null };
   open = (isOpen: any) => this.setState({ isOpen });
   close = (isOpen: any) => this.setState({ isOpen });
   secondaryAction = ({ target }: Object) => console.log(target.innerText);

@@ -34,8 +34,8 @@ export const StaticWrapper = (props: StyledComponentProps) => (
   <div {...props} />
 );
 
-export default class Section extends PureComponent<SectionProps, SectionState> {
-  state = {
+export default function Section (props) {
+  const state = useState({
     traversalDirection: null,
   };
 

@@ -17,8 +17,8 @@ const styles = {
   width: '100%',
 };
 
-export default class InlineDialogExample extends Component<{}, State> {
-  state = {
+export default function InlineDialogExample (props) {
+  const state = useState({
     placementIndex: 0,
   };
 

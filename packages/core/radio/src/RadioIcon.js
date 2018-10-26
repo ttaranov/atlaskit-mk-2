@@ -4,7 +4,7 @@ import Icon from '@atlaskit/icon/glyph/radio';
 import { IconWrapper } from './styled/Radio';
 import type { RadioIconProps } from './types';
 
-export default class RadioIcon extends Component<RadioIconProps> {
+export default function RadioIcon (props) {
   render() {
     const {
       isActive,

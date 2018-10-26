@@ -22,12 +22,12 @@ type State = {
   hasFinishedAnimating: boolean,
 };
 
-export default class Panel extends PureComponent<Props, State> {
+export default function Panel (props) {
   static defaultProps = {
     isDefaultExpanded: false,
   };
 
-  state = {
+  const state = useState({
     hasFinishedAnimating: true,
   };
 

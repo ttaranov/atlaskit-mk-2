@@ -56,7 +56,7 @@ type State = {
   isPressed: boolean,
 };
 
-class Item extends PureComponent<Props, State> {
+function Item (props) {
   static defaultProps = {
     appearance: 'default',
     children: null,
@@ -79,7 +79,7 @@ class Item extends PureComponent<Props, State> {
     type: 'link',
   };
 
-  state = {
+  const state = useState({
     isHovered: false,
     isPressed: false,
   };

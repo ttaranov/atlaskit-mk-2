@@ -11,7 +11,7 @@ import type { ExperimentEnrollmentResolver, Experiments } from '../types';
 import CohortTracker from '../CohortTracker';
 
 const createDumbComponent = (componentName: string) => {
-  class DumbComponent extends Component<{}> {
+  function DumbComponent (props) {
     render() {
       return <div>{componentName}</div>;
     }
@@ -20,7 +20,7 @@ const createDumbComponent = (componentName: string) => {
   return DumbComponent;
 };
 
-class LoadingComponent extends Component<{}> {
+function LoadingComponent (props) {
   render() {
     return <div>Loading...</div>;
   }
@@ -288,7 +288,7 @@ describe('asExperiment', () => {
   describe('Bail behaviour', () => {
     describe('Variant but component is broken', () => {
       // eslint-disable-next-line react/require-render-return
-      class BrokenComponent extends Component<{}> {
+      function BrokenComponent (props) {
         render() {
           throw new Error('Exploded');
         }

@@ -8,7 +8,7 @@ type State = {|
   mode: 'light' | 'dark',
 |};
 
-export default class Swapper extends React.Component<any, State> {
+export default function Swapper (props) {
   state: State = {
     mode: 'light',
   };

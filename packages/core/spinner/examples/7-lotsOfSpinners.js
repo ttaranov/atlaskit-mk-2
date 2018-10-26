@@ -24,8 +24,8 @@ const Input = styled.input`
   margin: 10px 5px;
 `;
 
-export default class App extends React.Component<{}, State> {
-  state = {
+export default function App (props) {
+  const state = useState({
     spinners: [...Array(100).keys()],
     showSpinners: false,
     size: 20,

@@ -46,8 +46,8 @@ type ExampleState = {
   isChangeboardingOpen: boolean,
   spotlightTargetNode: ?HTMLElement,
 };
-class Example extends Component<ExampleProps, ExampleState> {
-  state = {
+function Example (props) {
+  const state = useState({
     isChangeboardingOpen: this.props.navigationUIController.state.isCollapsed,
     spotlightTargetNode: null,
   };

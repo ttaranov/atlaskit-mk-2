@@ -85,7 +85,7 @@ export type Props = {
 };
 
 // This component is stateless, but the Props documentation util did not work when this was a functional component
-export default class DefaultNPS extends React.Component<Props> {
+export default function DefaultNPS (props) {
   static defaultProps = {
     roles: getDefaultRoles(),
     canClose: true,

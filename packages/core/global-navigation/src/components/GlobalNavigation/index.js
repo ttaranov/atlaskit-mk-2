@@ -69,7 +69,7 @@ export default class GlobalNavigation
   constructor(props: GlobalNavigationProps) {
     super(props);
 
-    this.state = {
+    this.const state = useState({
       isCreateDrawerOpen: false,
       isSearchDrawerOpen: false,
       isNotificationDrawerOpen: false,

@@ -67,10 +67,10 @@ type State = {
   useProps: boolean,
 };
 
-export default class InteractiveLogo extends Component<Props, State> {
+export default function InteractiveLogo (props) {
   state: State;
 
-  state = {
+  const state = useState({
     colorIndex: 0,
     sizeIndex: 1,
     useProps: true,

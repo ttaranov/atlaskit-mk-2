@@ -36,7 +36,7 @@ type PopperProps = {
  * TODO: Fix a bug in layer/popper.js where auto flip isn't occuring when it should because of vertical scroll distance incorrectly
  * making the library think the component is further up the page than it is.
  */
-export default class FixedLayer extends Component<Props> {
+export default function FixedLayer (props) {
   scheduleUpdate: () => void = () => {};
 
   componentDidUpdate(prevProps: any) {

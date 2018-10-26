@@ -52,7 +52,7 @@ type Props = {
   size?: 'small' | 'medium' | 'xlarge',
 };
 
-export default class Icon extends Component<Props, {}> {
+export default function Icon (props) {
   static defaultProps = {
     onClick: () => {},
   };

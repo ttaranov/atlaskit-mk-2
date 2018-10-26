@@ -25,7 +25,7 @@ class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
   LayoutManagerWithViewControllerState,
 > {
-  state = {
+  const state = useState({
     hasInitialised: false,
   };
 

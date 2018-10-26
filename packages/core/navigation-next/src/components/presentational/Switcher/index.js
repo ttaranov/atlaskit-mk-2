@@ -86,8 +86,8 @@ const isEmpty = obj => Object.keys(obj).length === 0;
 // internal `navWidth` property isn't part of the public API
 type SwitcherPropsExtended = SwitcherProps & { navWidth: number };
 
-class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
-  state = {
+function Switcher (props) {
+  const state = useState({
     isOpen: false,
     mergedComponents: defaultComponents,
   };

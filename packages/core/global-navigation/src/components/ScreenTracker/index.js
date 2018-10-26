@@ -16,7 +16,7 @@ type Props = {
 } & WithAnalyticsEventsProps;
 
 /** Fires a screen event when the screen becomes visible */
-export class ScreenTrackerBase extends Component<Props> {
+export function ScreenTrackerBase (props) {
   componentDidMount() {
     if (this.props.isVisible) {
       this.fireScreenEvent();

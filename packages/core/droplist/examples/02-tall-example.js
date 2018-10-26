@@ -8,8 +8,8 @@ import DropList from '../src';
 type State = {|
   eventResult: string,
 |};
-export default class TallExample extends PureComponent<void, State> {
-  state = {
+export default function TallExample (props) {
+  const state = useState({
     eventResult: 'Click into and out of the content to trigger event handlers',
   };
 

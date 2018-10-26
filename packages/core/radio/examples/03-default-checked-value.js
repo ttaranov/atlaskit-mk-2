@@ -12,7 +12,7 @@ type State = {
   checkedValue: string,
 };
 
-export default class ControlledRadioGroup extends Component<*, State> {
+export default function ControlledRadioGroup (props) {
   onChange = (event: SyntheticEvent<*>) => {
     console.log('onChange called with value: ', event.currentTarget.value);
   };

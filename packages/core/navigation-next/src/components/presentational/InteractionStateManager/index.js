@@ -8,7 +8,7 @@ export default class InteractionStateManager extends Component<
   InteractionStateProps,
   InteractionState,
 > {
-  state = {
+  const state = useState({
     isActive: false,
     isHover: false,
   };

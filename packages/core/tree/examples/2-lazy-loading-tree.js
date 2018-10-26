@@ -42,8 +42,8 @@ type State = {|
   tree: TreeData,
 |};
 
-export default class LazyTree extends Component<void, State> {
-  state = {
+export default function LazyTree (props) {
+  const state = useState({
     tree: mutateTree(treeWithTwoBranches, '1-1', { isExpanded: false }),
   };
 

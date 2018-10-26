@@ -88,7 +88,7 @@ export default class BasicQuickSearch extends Component<
     fakeNetworkLatency: 0,
   };
 
-  state = {
+  const state = useState({
     query: store.query || '',
     results: searchData(''),
     isLoading: false,

@@ -14,7 +14,7 @@ type Props = {
   onAvatarClick: Function,
 };
 
-class AvatarGroupItem extends Component<Props> {
+function AvatarGroupItem (props) {
   render() {
     const { avatar, onAvatarClick } = this.props;
     const borderColor = getBackgroundColor(this.props);

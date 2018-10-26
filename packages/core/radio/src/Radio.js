@@ -24,7 +24,7 @@ type State = {
   isMouseDown: boolean,
 };
 
-class Radio extends Component<RadioProps, State> {
+function Radio (props) {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,

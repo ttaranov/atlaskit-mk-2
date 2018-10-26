@@ -10,7 +10,7 @@ export type Props = {
   itemTextWidth?: string,
 };
 
-export default class SkeletonContainerItems extends Component<Props> {
+export default function SkeletonContainerItems (props) {
   static defaultProps = {
     isCollapsed: false,
   };

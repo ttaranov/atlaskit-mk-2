@@ -40,7 +40,7 @@ const Message = styled.div`
   margin-top: ${gridSize() / 2}px;
 `;
 
-export default class ValidatorMessage extends Component<Props> {
+export default function ValidatorMessage (props) {
   static defaultProps = {
     invalidMessage: '',
     validMessage: '',

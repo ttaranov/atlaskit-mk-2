@@ -15,7 +15,7 @@ type Props = {
   children?: Node,
 };
 
-class Cell extends Component<Props> {
+function Cell (props) {
   render() {
     const { props } = this;
     return (

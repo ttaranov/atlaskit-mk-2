@@ -12,7 +12,7 @@ type Props = {
   elemAfter?: Node | string,
 };
 
-export default class DropdownItemGroup extends Component<Props> {
+export default function DropdownItemGroup (props) {
   render() {
     const { children, elemAfter, title } = this.props;
     return (

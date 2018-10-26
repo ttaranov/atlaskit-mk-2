@@ -54,9 +54,9 @@ const Position = ({ children, pos, ...rest }: PosTypes) => (
 type Props = {};
 type State = { pinned: boolean, top: number };
 
-export default class PositionExample extends Component<Props, State> {
+export default function PositionExample (props) {
   panel: HTMLElement;
-  state = { pinned: false, top: 0 };
+  const state = useState({ pinned: false, top: 0 };
   pin = () => {
     const { top } = this.panel.getBoundingClientRect();
     this.setState({ pinned: true, top });

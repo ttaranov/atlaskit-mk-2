@@ -20,8 +20,8 @@ type SizeMetrics = {
 };
 /* eslint-enable */
 
-export default class Example extends Component<*, *> {
-  state = {};
+export default function Example (props) {
+  const state = useState({};
 
   onResize = ({ width, height }: SizeMetrics) => {
     this.setState({

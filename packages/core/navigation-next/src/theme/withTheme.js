@@ -12,7 +12,7 @@ type State = { theme: Theme };
 const withTheme = (defaultTheme: Theme) => (
   WrappedComponent: ComponentType<*>,
 ) => {
-  return class WithTheme extends Component<*, State> {
+  return function WithTheme (props) {
     static contextTypes = {
       [channel]: PropTypes.object,
     };
@@ -21,7 +21,7 @@ const withTheme = (defaultTheme: Theme) => (
       WrappedComponent.name ||
       'Component'})`;
 
-    state = {
+    const state = useState({
       theme: undefined,
     };
 

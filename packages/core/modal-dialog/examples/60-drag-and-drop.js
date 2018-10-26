@@ -61,13 +61,13 @@ type ItemLineCardState = {
   isFocused: boolean,
 };
 
-class ItemLineCard extends Component<ItemLineCardProps, ItemLineCardState> {
+function ItemLineCard (props) {
   static defaultProps = {
     isReorderEnabled: true,
     onClick: noop,
   };
 
-  state = {
+  const state = useState({
     isHovering: false,
     isActive: false,
     isFocused: false,
@@ -175,7 +175,7 @@ type ItemLineCardGroupProps = {
   onClick: () => void,
 };
 
-class ItemLineCardGroup extends Component<ItemLineCardGroupProps> {
+function ItemLineCardGroup (props) {
   static defaultProps = {
     onOrderChange: noop,
     onClick: noop,
@@ -250,8 +250,8 @@ type WrapperState = {
   items: Item[],
 };
 
-class Wrapper extends Component<*, WrapperState> {
-  state = {
+function Wrapper (props) {
+  const state = useState({
     items: [...items],
   };
 

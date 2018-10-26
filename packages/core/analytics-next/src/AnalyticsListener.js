@@ -19,7 +19,7 @@ const ContextTypes = {
   getAtlaskitAnalyticsEventHandlers: PropTypes.func,
 };
 
-export default class AnalyticsListener extends Component<Props> {
+export default function AnalyticsListener (props) {
   static contextTypes = ContextTypes;
   static childContextTypes = ContextTypes;
 

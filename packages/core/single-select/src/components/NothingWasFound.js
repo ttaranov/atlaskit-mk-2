@@ -7,7 +7,7 @@ type Props = {
   noMatchesFound: string,
 };
 
-export default class NothingWasFound extends PureComponent<Props, {}> {
+export default function NothingWasFound (props) {
   render() {
     return (
       <NothingWasFoundElement>

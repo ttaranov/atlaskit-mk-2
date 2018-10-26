@@ -92,7 +92,7 @@ type State = {
   tabbableElements: Array<{}>,
 };
 
-export default class Content extends Component<Props, State> {
+export default function Content (props) {
   static defaultProps = {
     autoFocus: false,
     isChromeless: false,

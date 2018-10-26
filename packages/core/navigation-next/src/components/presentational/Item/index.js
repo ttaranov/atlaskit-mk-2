@@ -9,7 +9,7 @@ import { styleReducerNoOp } from '../../../theme';
 import ItemPrimitive from './primitives';
 import type { ItemBaseProps } from './types';
 
-class Item extends PureComponent<ItemBaseProps> {
+function Item (props) {
   static defaultProps = {
     styles: styleReducerNoOp,
     isSelected: false,

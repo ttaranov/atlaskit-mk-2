@@ -6,7 +6,7 @@ import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indetermina
 import { IconWrapper } from './styled/Checkbox';
 import { type CheckboxIconProps } from './types';
 
-export default class CheckboxIcon extends Component<CheckboxIconProps, void> {
+export default function CheckboxIcon (props) {
   static defaultProps = {
     primaryColor: 'inherit',
     secondaryColor: 'inherit',

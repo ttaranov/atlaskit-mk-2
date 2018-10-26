@@ -22,7 +22,7 @@ type Props = {
   elemBefore: Node, // eslint-disable-line react/no-unused-prop-types
 };
 
-export default class DummyItem extends PureComponent<Props, {}> {
+export default function DummyItem (props) {
   static defaultProps = {
     isDisabled: false,
     isSelected: false,

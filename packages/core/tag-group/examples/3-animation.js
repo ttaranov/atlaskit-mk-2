@@ -11,8 +11,8 @@ type State = {
   tags: Array<string>,
 };
 
-class MyTagGroup extends React.Component<Props, State> {
-  state = {
+function MyTagGroup (props) {
+  const state = useState({
     tags: ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels'],
   };
 

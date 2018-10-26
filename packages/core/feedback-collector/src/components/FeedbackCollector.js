@@ -86,7 +86,7 @@ const singleLineTruncatedText = (
   return truncate(singleLineText, { length });
 };
 
-export default class FeedbackCollector extends Component<Props> {
+export default function FeedbackCollector (props) {
   static defaultProps = {
     canBeContactedFieldId: 'customfield_10043',
     canBeContactedDefaultValue: [{ id: '10109' }],

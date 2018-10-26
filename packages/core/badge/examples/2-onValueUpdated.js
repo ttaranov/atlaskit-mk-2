@@ -7,8 +7,8 @@ type State = {
   value: number,
 };
 
-export default class Component extends React.Component<void, State> {
-  state = {
+export default function Component (props) {
+  const state = useState({
     value: 1,
   };
 

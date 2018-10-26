@@ -13,7 +13,7 @@ type Props = {
   provided: Provided,
 };
 
-export default class WithRootTheme extends PureComponent<Props> {
+export default function WithRootTheme (props) {
   static defaultProps = {
     isCollapsed: false,
   };

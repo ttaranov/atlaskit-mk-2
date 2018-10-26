@@ -16,7 +16,7 @@ type Props = {
 } & ThemeProviderProps;
 
 export default withTheme(
-  class AkGrid extends Component<Props, void> {
+  function AkGrid (props) {
     static defaultProps = {
       spacing: 'cosy',
       layout: 'fixed',

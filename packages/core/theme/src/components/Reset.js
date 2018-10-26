@@ -68,7 +68,7 @@ type Props = {
   children?: Node,
 };
 
-export default class Reset extends Component<Props> {
+export default function Reset (props) {
   render() {
     return (
       <Consumer>

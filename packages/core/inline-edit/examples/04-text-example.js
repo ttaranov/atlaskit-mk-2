@@ -7,8 +7,8 @@ type State = {|
   readValue: string | number,
   onEventResult: string,
 |};
-export default class TextExample extends Component<void, State> {
-  state = {
+export default function TextExample (props) {
+  const state = useState({
     editValue: 'Read value of the field',
     readValue: 'Read value of the field',
     onEventResult: 'Click on a field above to show edit view',

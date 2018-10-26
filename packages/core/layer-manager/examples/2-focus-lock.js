@@ -7,7 +7,7 @@ import { FocusLock } from '../src';
 type Props = {};
 type State = { isActive: boolean };
 
-export default class FocusLockExample extends Component<Props, State> {
+export default function FocusLockExample (props) {
   target: HTMLElement;
   state: State = { isActive: false };
   toggleLock = () => {

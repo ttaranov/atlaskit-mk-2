@@ -7,7 +7,7 @@ import type { FieldTextProps } from './types';
 type State = {
   value?: string | number,
 };
-export default class FieldText extends Component<FieldTextProps, State> {
+export default function FieldText (props) {
   static defaultProps = {
     onChange: () => {},
   };
@@ -20,7 +20,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
     }
   }
 
-  state = {
+  const state = useState({
     value: this.props.value,
   };
 

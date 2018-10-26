@@ -14,7 +14,7 @@ type ProgressTrackerLinkStageAdditionalProps = {
   onClick?: () => void,
 };
 
-export default class ProgressTrackerLink extends PureComponent<Props> {
+export default function ProgressTrackerLink (props) {
   render() {
     const { href, onClick, label } = this.props.item;
     return (

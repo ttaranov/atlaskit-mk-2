@@ -29,7 +29,7 @@ const ContextTypes = {
   onAnalyticsEvent: PropTypes.func,
 };
 
-class AnalyticsListener extends Component<Props, {}> {
+function AnalyticsListener (props) {
   static defaultProps = {
     match: '*',
     matchPrivate: false,

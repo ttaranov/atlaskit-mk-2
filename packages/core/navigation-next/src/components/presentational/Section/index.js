@@ -8,7 +8,7 @@ import type { ConnectedSectionProps } from './types';
 
 const SectionWithTheme = withContentTheme(SectionBase);
 
-export default class Section extends Component<ConnectedSectionProps> {
+export default function Section (props) {
   static defaultProps = {
     alwaysShowScrollHint: false,
     shouldGrow: false,

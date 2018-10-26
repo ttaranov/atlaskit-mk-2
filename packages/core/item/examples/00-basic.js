@@ -81,7 +81,7 @@ type Props = {
   title?: string,
 };
 
-export default class ItemThemeDemo extends Component<Props, {}> {
+export default function ItemThemeDemo (props) {
   static defaultProps = {
     backgroundColor: colors.N30,
     padding: gridSize(),

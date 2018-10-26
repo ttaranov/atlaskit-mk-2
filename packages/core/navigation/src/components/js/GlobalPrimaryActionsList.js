@@ -16,7 +16,7 @@ type Props = {
   actions: Array<Element<any>>,
 };
 
-export default class GlobalPrimaryActionsList extends PureComponent<Props> {
+export default function GlobalPrimaryActionsList (props) {
   constructor(props: Props, context: {}) {
     super(props, context);
     checkIfTooManyPrimaryActions(props.actions);

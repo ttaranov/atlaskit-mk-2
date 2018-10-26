@@ -7,8 +7,8 @@ type State = {
   checkedValue: string | number | null,
   options: OptionsPropType,
 };
-export default class StatelessExample extends Component<void, State> {
-  state = {
+export default function StatelessExample (props) {
+  const state = useState({
     checkedValue: null,
     options: [
       { name: 'color2', value: 'red', label: 'Red' },

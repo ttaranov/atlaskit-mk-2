@@ -15,7 +15,7 @@ const DemoGroup = props => (
   </ItemGroup>
 );
 
-export default class ItemGroupStory extends Component<{}, {}> {
+export default function ItemGroupStory (props) {
   render() {
     return (
       <div>

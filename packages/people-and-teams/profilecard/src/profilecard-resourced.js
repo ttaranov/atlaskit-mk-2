@@ -24,7 +24,7 @@ type State = {
   data: any,
 };
 
-export default class ProfilecardResourced extends PureComponent<Props, State> {
+export default function ProfilecardResourced (props) {
   static defaultProps = {
     actions: [],
   };
@@ -36,7 +36,7 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
     this._isMounted = false;
   }
 
-  state = {
+  const state = useState({
     isLoading: false,
     hasError: false,
     error: null,

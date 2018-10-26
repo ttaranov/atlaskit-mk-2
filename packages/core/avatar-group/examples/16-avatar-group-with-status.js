@@ -30,8 +30,8 @@ type State = {
   theme: 'light' | 'dark',
 };
 
-export default class AvatarGroupWithStatus extends Component<{}, State> {
-  state = {
+export default function AvatarGroupWithStatus (props) {
+  const state = useState({
     theme: 'light',
   };
 

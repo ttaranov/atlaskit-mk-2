@@ -10,8 +10,8 @@ type State = {
   showSpinner: boolean,
 };
 
-class SpinnerButton extends React.PureComponent<{}, State> {
-  state = {
+function SpinnerButton (props) {
+  const state = useState({
     isLoading: false,
     showSpinner: false,
   };

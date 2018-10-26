@@ -8,7 +8,7 @@ type Props = {
   onExposure: (exposureDetails: ExposureDetails) => void,
 };
 
-export default class CohortTracker extends Component<Props> {
+export default function CohortTracker (props) {
   static displayName = 'CohortTracker';
 
   componentDidMount() {

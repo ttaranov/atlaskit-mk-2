@@ -8,8 +8,8 @@ type State = {|
   onEventResult: string,
 |};
 
-export default class StatelessExample extends Component<void, State> {
-  state = {
+export default function StatelessExample (props) {
+  const state = useState({
     value: '',
     isEditing: false,
     onEventResult: 'Click on a field above to show edit view',

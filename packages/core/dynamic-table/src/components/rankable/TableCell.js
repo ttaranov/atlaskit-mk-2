@@ -16,7 +16,7 @@ type Props = {
 
 const stopPropagation = e => e.stopPropagation();
 
-export class RankableTableCell extends Component<Props, {}> {
+export function RankableTableCell (props) {
   render() {
     const {
       cell,

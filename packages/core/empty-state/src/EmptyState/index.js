@@ -42,7 +42,7 @@ type Props = {
   imageHeight?: number,
 };
 
-export default class EmptyState extends React.Component<Props> {
+export default function EmptyState (props) {
   static defaultProps: $Shape<Props> = {
     size: 'wide',
     maxImageWidth: 160,

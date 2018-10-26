@@ -70,7 +70,7 @@ type State = {
   isFocused: boolean,
 };
 
-class Tag extends Component<Props, State> {
+function Tag (props) {
   static defaultProps = {
     color: 'standard',
     appearance: 'default',
@@ -79,7 +79,7 @@ class Tag extends Component<Props, State> {
     onBeforeRemoveAction: () => true,
   };
 
-  state = {
+  const state = useState({
     isRemoving: false,
     isRemoved: false,
     markedForRemoval: false,

@@ -91,7 +91,7 @@ describe('@atlaskit comments', () => {
       it('should not unmount the component when the children change', () => {
         // Extend the class to bind an inspectable componentWillUnmount
         const componentWillUnmount = jest.fn();
-        class CommentLayoutTest extends CommentLayout {
+        function CommentLayoutTest (props) {
           componentWillUnmount = componentWillUnmount;
         }
 

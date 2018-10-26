@@ -62,7 +62,7 @@ export class ContentsProvider extends Component<
   ContentsProviderProps,
   ContentsProviderState,
 > {
-  state = {
+  const state = useState({
     items: [],
   };
   registerItem = (item: string) => {
@@ -119,7 +119,7 @@ type HProps = {
 type HWithContextProps = HProps & {
   __context: ContentsContext | void,
 };
-class HWithContext extends Component<HWithContextProps> {
+function HWithContext (props) {
   componentDidMount() {
     const { __context, children } = this.props;
     if (__context) {

@@ -98,7 +98,7 @@ export const SearchIssuesView = () => (
 /**
  * Container-level routes
  */
-class BacklogViewBase extends Component<*> {
+function BacklogViewBase (props) {
   componentDidMount() {
     this.props.navigationUIController.unPeek();
   }

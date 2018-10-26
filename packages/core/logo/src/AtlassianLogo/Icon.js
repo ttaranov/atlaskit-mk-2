@@ -25,7 +25,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
   </svg>`;
 };
 
-export default class AtlassianIcon extends Component<Props> {
+export default function AtlassianIcon (props) {
   static defaultProps = DefaultProps;
 
   render() {

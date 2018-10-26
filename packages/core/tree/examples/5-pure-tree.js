@@ -42,8 +42,8 @@ const getIcon = (
   return <PreTextIcon>&bull;</PreTextIcon>;
 };
 
-export default class PureTree extends Component<void, State> {
-  state = {
+export default function PureTree (props) {
+  const state = useState({
     tree: treeWithTwoBranches,
   };
 

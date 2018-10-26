@@ -13,7 +13,7 @@ type Props = {
   render: RenderFunction,
 };
 
-export default class Rows extends Component<Props> {
+export default function Rows (props) {
   render() {
     const { items, render } = this.props;
     return (

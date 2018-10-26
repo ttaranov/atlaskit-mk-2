@@ -5,8 +5,8 @@ import { FeedbackForm } from '../src';
 
 type State = { isOpen: boolean, displayFlag: boolean };
 
-export default class DisplayFeedback extends Component<void, State> {
-  state = { isOpen: false, displayFlag: false };
+export default function DisplayFeedback (props) {
+  const state = useState({ isOpen: false, displayFlag: false };
 
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });

@@ -29,8 +29,8 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export default class ButtonAppearance extends Component<*, *> {
-  state = { showLoadingState: false };
+export default function ButtonAppearance (props) {
+  const state = useState({ showLoadingState: false };
 
   render() {
     const { showLoadingState } = this.state;

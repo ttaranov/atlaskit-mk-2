@@ -31,7 +31,7 @@ type Props = {
   values: Array<any>,
 };
 
-class ProgressDots extends Component<Props, {}> {
+function ProgressDots (props) {
   props: Props; // eslint-disable-line react/sort-comp
   tablist: { children: Array<HTMLElement> };
   static defaultProps = {

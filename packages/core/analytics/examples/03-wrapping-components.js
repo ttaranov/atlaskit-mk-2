@@ -23,7 +23,7 @@ const WrappedButtonFunction = withAnalytics(
   }),
 );
 
-export default class WrapExample extends Component<{}, {}> {
+export default function WrapExample (props) {
   onEvent = (eventName: string, eventData: Object) => {
     console.log(eventName, eventData);
   };

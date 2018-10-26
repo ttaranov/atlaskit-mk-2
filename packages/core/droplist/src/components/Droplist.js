@@ -65,7 +65,7 @@ type Props = {
   onPositioned?: Function,
 };
 
-class Droplist extends Component<Props, void> {
+function Droplist (props) {
   static defaultProps = {
     appearance: 'default',
     boundariesElement: 'viewport',

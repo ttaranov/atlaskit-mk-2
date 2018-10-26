@@ -63,7 +63,7 @@ function fetchChildrenOf() {
 }
 
 export default class extends Component<*, *> {
-  state = {
+  const state = useState({
     roots: null,
   };
 

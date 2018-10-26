@@ -15,7 +15,7 @@ type Props = {
   weight: 'normal' | 'strong',
 };
 
-export default class Skeleton extends Component<Props> {
+export default function Skeleton (props) {
   static defaultProps = {
     appearance: 'circle',
     size: 'medium',

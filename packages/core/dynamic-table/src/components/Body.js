@@ -11,7 +11,7 @@ type Props = WithSortedPageRowsProps & {
   isFixedSize: boolean,
 };
 
-class Body extends Component<Props, {}> {
+function Body (props) {
   render() {
     const { pageRows, head, isFixedSize } = this.props;
 

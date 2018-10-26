@@ -10,7 +10,7 @@ type Props = {
   target: HTMLElement,
 };
 
-class PropertyToggle extends PureComponent<Props> {
+function PropertyToggle (props) {
   originalAttributes: ObjectType = {};
   originalStyles: ObjectType = {};
   attributeKeys: Keys;

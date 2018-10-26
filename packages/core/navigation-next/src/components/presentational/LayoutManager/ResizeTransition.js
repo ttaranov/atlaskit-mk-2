@@ -52,7 +52,7 @@ type Props = {
   onCollapseEnd: CollapseListener,
 };
 
-export default class ResizeTransition extends PureComponent<Props> {
+export default function ResizeTransition (props) {
   target: HTMLElement;
   static defaultProps = {
     onExpandStart: NOOP,

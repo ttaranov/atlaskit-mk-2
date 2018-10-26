@@ -29,7 +29,7 @@ const Hr = () => (
   />
 );
 
-export default class Example extends Component<Props, State> {
+export default function Example (props) {
   state: State = {
     modalIsVisible: false,
     modalTwoIsVisible: false,

@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function withOuterListeners(Component: any) {
-  return class WithOutsideClick extends PureComponent<Props> {
+  return function WithOutsideClick (props) {
     componentDidMount() {
       if (this.props.handleClickOutside) {
         document.addEventListener('click', this.handleClick, false);

@@ -46,12 +46,12 @@ const portalParent = () => {
 // 2. Creates the DOM node container for the portal based on props
 // 3. Ensures DOM the container creates it's own stacking context
 
-class Portal extends React.Component<Props, State> {
+function Portal (props) {
   static defaultProps = {
     zIndex: 0,
   };
 
-  state = {
+  const state = useState({
     container: canUseDOM() ? createContainer(this.props.zIndex) : undefined,
   };
 

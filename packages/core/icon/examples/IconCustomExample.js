@@ -11,7 +11,7 @@ const customGlyph = () => (
   </svg>
 );
 
-class IconCustomExample extends Component<{}, {}> {
+function IconCustomExample (props) {
   render() {
     return <Icon glyph={customGlyph} label="Custom icon" size="xlarge" />;
   }

@@ -77,8 +77,8 @@ function getData(parentItem: ?Object) {
 
 const tableTreeHelper = new TableTreeDataHelper({ key: 'id' });
 
-export default class WithDifferentChildComponent extends Component<*, *> {
-  state = {
+export default function WithDifferentChildComponent (props) {
+  const state = useState({
     items: [],
   };
 

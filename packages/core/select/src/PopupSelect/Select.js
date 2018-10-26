@@ -74,12 +74,12 @@ const defaultPopperProps = {
 
 const isEmpty = obj => Object.keys(obj).length === 0;
 
-export default class PopupSelect extends PureComponent<Props, State> {
+export default function PopupSelect (props) {
   focusTrap: Object;
   menuRef: HTMLElement;
   selectRef: ElementRef<*>;
   targetRef: HTMLElement;
-  state = {
+  const state = useState({
     isOpen: false,
     mergedComponents: defaultComponents,
     mergedPopperProps: defaultPopperProps,

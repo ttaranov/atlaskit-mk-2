@@ -70,7 +70,7 @@ type FormFields = {
   isSubmitted: boolean,
 };
 
-export default class Form extends Component<Props, State> {
+export default function Form (props) {
   static defaultProps = {
     target: '_self',
   };
@@ -78,7 +78,7 @@ export default class Form extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
+    this.const state = useState({
       name: this.props.name,
       sections: [],
       header: null,

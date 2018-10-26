@@ -88,7 +88,7 @@ type Props = {
   autoFocus?: boolean,
 };
 
-class NavigationItem extends PureComponent<Props> {
+function NavigationItem (props) {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,

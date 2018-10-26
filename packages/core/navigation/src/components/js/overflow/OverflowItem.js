@@ -13,7 +13,7 @@ type Props = {
   children: Node,
 };
 
-export default class OverflowItem extends Component<Props> {
+export default function OverflowItem (props) {
   static contextTypes = {
     [overflowGroupNamespace]: PropTypes.object,
     [shouldReportItemHeight]: PropTypes.bool,

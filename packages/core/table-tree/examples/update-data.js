@@ -10,8 +10,8 @@ const Title = (props: ExampleItemData) => <span>{props.title}</span>;
 const Numbering = (props: ExampleItemData) => <span>{props.numbering}</span>;
 /* eslint-enable react/no-unused-prop-types */
 
-export default class UpdateData extends Component<*, *> {
-  state = {
+export default function UpdateData (props) {
+  const state = useState({
     data: staticData.children,
   };
 

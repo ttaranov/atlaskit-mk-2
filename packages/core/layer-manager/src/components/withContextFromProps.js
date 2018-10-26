@@ -14,7 +14,7 @@ const withContextFromProps = (
   propTypes: {},
   BaseComponent: ComponentType<*> | null = DefaultBaseComponent,
 ) => {
-  class ContextProps extends Component<Props> {
+  function ContextProps (props) {
     getChildContext() {
       const props = Object.keys(propTypes).reduce((result, key) => {
         // eslint-disable-next-line no-param-reassign

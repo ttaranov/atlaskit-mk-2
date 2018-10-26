@@ -9,8 +9,8 @@ type State = {
   isInnerInnerModalOpen: boolean,
 };
 
-export default class App extends React.Component<{}, State> {
-  state = {
+export default function App (props) {
+  const state = useState({
     isOuterModalOpen: false,
     isInnerModalOpen: false,
     isInnerInnerModalOpen: false,

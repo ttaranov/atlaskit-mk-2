@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 const describe = window.describe;
 const it = window.it;
 
-class Child extends PureComponent<any> {
+function Child (props) {
   render() {
     return <div>Hi there</div>;
   }

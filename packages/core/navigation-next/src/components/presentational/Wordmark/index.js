@@ -6,7 +6,7 @@ import type { WordmarkProps } from './types';
 
 const gridSize = gridSizeFn();
 
-export default class Wordmark extends Component<WordmarkProps> {
+export default function Wordmark (props) {
   render() {
     const { wordmark: WordmarkLogo } = this.props;
     return (

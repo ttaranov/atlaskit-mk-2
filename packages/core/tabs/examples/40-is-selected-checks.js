@@ -31,8 +31,8 @@ export const tabs = [
 const customIsSelectedFunction = (selected: string, tab: TabData) =>
   selected === tab.id;
 
-class TabsWithCustomIsSelected extends Component<{}, { selected: string }> {
-  state = {
+function TabsWithCustomIsSelected (props) {
+  const state = useState({
     selected: 'tab-4',
   };
 

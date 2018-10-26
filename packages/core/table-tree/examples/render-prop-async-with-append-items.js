@@ -89,7 +89,7 @@ function getData(parentItem: ?Object) {
 const tableTreeHelper = new TableTreeDataHelper({ key: 'id' });
 
 export default class extends Component<*, *> {
-  state = {
+  const state = useState({
     items: [],
   };
 

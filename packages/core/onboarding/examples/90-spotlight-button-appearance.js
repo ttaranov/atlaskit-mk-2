@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
 type State = { active: boolean };
 
-export default class SpotlightDialogWidthExample extends Component<{}, State> {
+export default function SpotlightDialogWidthExample (props) {
   state: State = { active: false };
 
   start = () => this.setState({ active: true });

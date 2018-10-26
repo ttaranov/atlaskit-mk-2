@@ -8,7 +8,7 @@ type Props = {
   onActivate: (event: Event) => void,
 };
 
-export default class DrawerTrigger extends PureComponent<Props> {
+export default function DrawerTrigger (props) {
   static defaultProps = {
     onActivate: () => {},
   };

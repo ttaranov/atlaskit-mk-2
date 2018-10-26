@@ -48,7 +48,7 @@ type Props = {
   linkComponent?: ComponentType<*>,
 };
 
-class ResultItem extends PureComponent<Props> {
+function ResultItem (props) {
   static defaultProps = {
     isSelected: false,
   };

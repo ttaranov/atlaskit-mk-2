@@ -30,7 +30,7 @@ export default class ChangingColorWithProps extends Component<
   {},
   { isColorFlipped: boolean, icons: [Class<Component<*>>, string][] },
 > {
-  state = {
+  const state = useState({
     isColorFlipped: true,
     icons: [
       [BookIcon, 'BookIcon'],

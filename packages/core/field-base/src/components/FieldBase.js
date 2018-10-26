@@ -20,7 +20,7 @@ type State = {
   shouldIgnoreNextDialogBlur: boolean,
 };
 
-export default class FieldBase extends Component<FieldBaseProps, State> {
+export default function FieldBase (props) {
   static defaultProps: FieldBaseDefaultProps = {
     defaultIsFocused: false,
     onFocus: () => {},

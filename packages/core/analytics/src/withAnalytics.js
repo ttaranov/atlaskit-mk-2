@@ -36,7 +36,7 @@ const withAnalytics = (
   defaultProps: AnalyticsProps = {},
   withDelegation?: boolean,
 ) =>
-  class WithAnalytics extends Component<AnalyticsProps, {}> {
+  function WithAnalytics (props) {
     props: AnalyticsProps;
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
       WrappedComponent.name})`;

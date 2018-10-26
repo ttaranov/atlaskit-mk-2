@@ -24,8 +24,8 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-class NewFeature extends React.Component<{}, { spotlightVisible: boolean }> {
-  state = {
+function NewFeature (props) {
+  const state = useState({
     spotlightVisible: false,
   };
   render() {

@@ -35,8 +35,8 @@ const defaultSelectValue = {
   value: 'empty',
 };
 
-export default class FeedbackForm extends Component<Props, FormFields> {
-  state = {
+export default function FeedbackForm (props) {
+  const state = useState({
     type: 'empty',
     description: '',
     canBeContacted: false,

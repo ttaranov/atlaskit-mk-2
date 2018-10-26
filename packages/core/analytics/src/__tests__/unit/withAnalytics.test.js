@@ -15,7 +15,7 @@ describe('withAnalytics', () => {
   });
 
   it('should wrap the component in a WithAnalytics() component', () => {
-    class Button extends Component<{}> {
+    function Button (props) {
       displayName = 'Button';
       render() {
         return <button />;
@@ -86,7 +86,7 @@ describe('withAnalytics', () => {
     });
 
     describe('should pass through analyticsId to the WrappedComponent', () => {
-      class TestComponent extends Component<{}> {
+      function TestComponent (props) {
         render() {
           return null;
         }

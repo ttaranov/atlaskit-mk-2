@@ -25,8 +25,8 @@ const Header = ({ showKeyline }: Props) => (
 );
 
 type FooterState = { isOpen: boolean };
-class Footer extends Component<Props, FooterState> {
-  state = { isOpen: false };
+function Footer (props) {
+  const state = useState({ isOpen: false };
 
   open = () => this.setState({ isOpen: true });
   close = () => this.setState({ isOpen: false });
@@ -49,8 +49,8 @@ class Footer extends Component<Props, FooterState> {
 
 type State = { isOpen: boolean };
 // eslint-disable-next-line react/no-multi-comp
-export default class CreateIssueExample extends Component<void, State> {
-  state = { isOpen: false };
+export default function CreateIssueExample (props) {
+  const state = useState({ isOpen: false };
   formRef: any;
 
   open = () => this.setState({ isOpen: true });

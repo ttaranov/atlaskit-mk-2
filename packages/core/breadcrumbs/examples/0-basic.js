@@ -8,7 +8,7 @@ export default class BreadcrumbsExpand extends Component<
   {},
   { isExpanded: boolean },
 > {
-  state = {
+  const state = useState({
     isExpanded: false,
   };
 

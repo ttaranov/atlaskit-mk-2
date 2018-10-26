@@ -116,7 +116,7 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
   />
 );
 
-class TimePicker extends Component<Props, State> {
+function TimePicker (props) {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
@@ -143,7 +143,7 @@ class TimePicker extends Component<Props, State> {
     timeFormat: defaultTimeFormat,
   };
 
-  state = {
+  const state = useState({
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
     isFocused: false,

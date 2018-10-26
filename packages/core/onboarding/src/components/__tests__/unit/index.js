@@ -23,8 +23,8 @@ test('should show spotlight', () => {
 test('should spotlight different targets', () => {
   const ref = jest.fn();
   const NextButton = props => <button {...props} />;
-  class SpotlightDemo extends React.Component<{}, { target: string }> {
-    state = {
+  function SpotlightDemo (props) {
+    const state = useState({
       target: 'target-one',
     };
     render() {

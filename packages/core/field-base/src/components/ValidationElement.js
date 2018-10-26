@@ -25,7 +25,7 @@ type Props = {|
   isInvalid: boolean,
   isLoading: boolean,
 |};
-export default class ValidationElement extends Component<Props, void> {
+export default function ValidationElement (props) {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,

@@ -26,7 +26,7 @@ type Props = {
   /** Prevent the title from wrapping across lines */
   truncateTitle?: boolean,
 };
-export default class PageHeader extends Component<Props> {
+export default function PageHeader (props) {
   static defaultProps: $Shape<Props> = {
     disableTitleStyles: false,
     truncateTitle: false,

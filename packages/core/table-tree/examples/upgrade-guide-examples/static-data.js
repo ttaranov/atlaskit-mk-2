@@ -7,7 +7,7 @@ type Props = {
   tableData: Array<Object>,
 };
 
-class WithStaticData extends Component<Props> {
+function WithStaticData (props) {
   render() {
     return (
       <TableTree>

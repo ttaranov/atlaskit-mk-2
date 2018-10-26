@@ -154,8 +154,8 @@ const CreateDrawer = ({
   </AkCreateDrawer>
 );
 
-class CustomDrawer extends Component<*, *> {
-  state = {
+function CustomDrawer (props) {
+  const state = useState({
     width: 'narrow',
     iconOffset: 70,
   };
@@ -198,8 +198,8 @@ class CustomDrawer extends Component<*, *> {
   }
 }
 
-class SearchDrawer extends Component<*, *> {
-  state = {
+function SearchDrawer (props) {
+  const state = useState({
     value: '',
   };
 
@@ -238,8 +238,8 @@ type State = {
   globalThemeName: string,
 };
 
-class ExampleNav extends Component<void, State> {
-  state = {
+function ExampleNav (props) {
+  const state = useState({
     isOpen: true,
     openDrawer: false,
     showIcon: false,

@@ -12,8 +12,8 @@ type State = {
   ariaLabel?: string,
 };
 
-class DroplistGroup extends PureComponent<Props, State> {
-  state = { ariaLabel: this.props.heading };
+function DroplistGroup (props) {
+  const state = useState({ ariaLabel: this.props.heading };
   headingElement: HTMLElement;
 
   componentDidMount = () => {

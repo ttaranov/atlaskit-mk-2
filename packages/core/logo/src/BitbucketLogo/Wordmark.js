@@ -12,7 +12,7 @@ const svg = `<canvas height="32" width="105" aria-hidden="true"></canvas>
   </g>
 </svg>`;
 
-export default class BitbucketWordmark extends Component<Props> {
+export default function BitbucketWordmark (props) {
   static defaultProps = DefaultProps;
 
   render() {

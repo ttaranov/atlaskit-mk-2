@@ -21,7 +21,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-class Edited extends Component<Props, {}> {
+function Edited (props) {
   render() {
     const { children, onFocus, onMouseOver } = this.props;
     return (

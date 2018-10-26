@@ -14,7 +14,7 @@ export default class withCustomGetOptionLabel extends Component<
   *,
   { useCustomOptionLabel: boolean },
 > {
-  state = {
+  const state = useState({
     useCustomOptionLabel: true,
   };
   toggleValue = ({ value }: Object) =>

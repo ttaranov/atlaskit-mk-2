@@ -30,7 +30,7 @@ const generateAfterProp = ({
   return null;
 };
 
-class GoToItem extends Component<GoToItemProps> {
+function GoToItem (props) {
   static defaultProps = {
     spinnerDelay: 200,
   };

@@ -22,7 +22,7 @@ type State = {
   valuePercent: string,
 };
 
-export default class Slider extends Component<Props, State> {
+export default function Slider (props) {
   props: Props;
 
   static defaultProps = {
@@ -41,7 +41,7 @@ export default class Slider extends Component<Props, State> {
     super(props);
 
     this.inputElement = null;
-    this.state = {
+    this.const state = useState({
       value: props.value,
       valuePercent: this.getPercentValue(props.value, props.min, props.max),
     };

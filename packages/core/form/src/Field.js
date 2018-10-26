@@ -86,7 +86,7 @@ const RequiredIndicator = styled.span`
 // TODO: Decide & implement how multiple error messages should be displayed. Likely an UO list
 const messageSeperator: string = ' ';
 
-export default class Field extends Component<Props, State> {
+export default function Field (props) {
   static defaultProps = {
     validators: [],
     isInvalid: undefined,
@@ -100,7 +100,7 @@ export default class Field extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       fieldState: this.getFieldStateFromProps(props),
       component: this.getComponentFromProps(props),
     };

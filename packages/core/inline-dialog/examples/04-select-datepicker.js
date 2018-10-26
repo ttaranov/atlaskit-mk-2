@@ -9,8 +9,8 @@ type State = {
   isDialogOpen: boolean,
 };
 
-export default class SingleSelectDialog extends Component<{}, State> {
-  state = {
+export default function SingleSelectDialog (props) {
+  const state = useState({
     isDialogOpen: true,
   };
 

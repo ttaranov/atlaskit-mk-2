@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import { styleReducerNoOp, withContentTheme } from '../../../theme';
 import type { ScrollableSectionInnerProps } from './types';
 
-class ScrollableSectionInner extends Component<ScrollableSectionInnerProps> {
+function ScrollableSectionInner (props) {
   static defaultProps = {
     styles: styleReducerNoOp,
   };

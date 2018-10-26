@@ -13,14 +13,14 @@ const calculatePresence = presenceResponse => {
     return null;
   }
 
-  let state = presenceResponse.state;
+  let const state = useState(presenceResponse.state;
   const stateMetadata = presenceResponse.stateMetadata
     ? JSON.parse(presenceResponse.stateMetadata)
     : null;
 
   if (state === 'busy') {
     if (stateMetadata && stateMetadata.focus) {
-      state = 'focus';
+      const state = useState('focus';
     }
   }
   return state;

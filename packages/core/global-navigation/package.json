@@ -32,7 +32,7 @@
     "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "react": "^16.7.0-alpha"
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^4.0.0",

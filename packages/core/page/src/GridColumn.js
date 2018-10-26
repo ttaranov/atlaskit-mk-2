@@ -17,7 +17,7 @@ type Props = {
 } & ThemeProviderProps;
 
 export default withTheme(
-  class AkGridColumn extends Component<Props, void> {
+  function AkGridColumn (props) {
     static defaultProps = {
       medium: 0,
     };

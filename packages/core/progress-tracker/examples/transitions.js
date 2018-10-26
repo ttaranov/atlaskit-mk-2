@@ -92,10 +92,10 @@ const completedStages = [
   },
 ];
 
-class ProgressExample extends Component<any, any> {
+function ProgressExample (props) {
   constructor(props) {
     super(props);
-    this.state = {
+    this.const state = useState({
       current: 1,
       items,
     };

@@ -16,7 +16,7 @@ type Props = {
   actions: Array<Element<any>>,
 };
 
-export default class GlobalSecondaryActions extends PureComponent<Props> {
+export default function GlobalSecondaryActions (props) {
   constructor(props: Props, context: {}) {
     super(props, context);
     checkIfTooManySecondaryActions(props.actions);

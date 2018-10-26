@@ -101,7 +101,7 @@ function padToTwo(number: number) {
   return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
 }
 
-class Calendar extends Component<Props, State> {
+function Calendar (props) {
   calendar: Object;
   container: HTMLElement | null;
 
@@ -123,7 +123,7 @@ class Calendar extends Component<Props, State> {
     const thisDay = now.getDate();
     const thisMonth = now.getMonth() + 1;
     const thisYear = now.getFullYear();
-    this.state = {
+    this.const state = useState({
       day: this.props.defaultDay || thisDay,
       disabled: this.props.defaultDisabled,
       selected: this.props.defaultSelected,

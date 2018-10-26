@@ -22,8 +22,8 @@ type State = {
   time: number,
 };
 
-export default class PerfTest extends Component<Props, State> {
-  state = getInitialState();
+export default function PerfTest (props) {
+  const state = useState(getInitialState();
   startTest = () => {
     let runs = 0;
     let startTime;

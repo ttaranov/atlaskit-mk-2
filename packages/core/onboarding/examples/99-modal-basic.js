@@ -9,7 +9,7 @@ type State = {
   active: boolean,
 };
 
-export default class Example extends Component<{}, State> {
+export default function Example (props) {
   state: State = { active: false };
   start = () => this.setState({ active: true });
   finish = () => this.setState({ active: false });

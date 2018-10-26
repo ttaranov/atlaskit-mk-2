@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { TabPane } from '../styled';
 import type { TabContentComponentProvided } from '../types';
 
-export default class TabContent extends Component<TabContentComponentProvided> {
+export default function TabContent (props) {
   static defaultProps = {
     data: {},
     elementProps: {},

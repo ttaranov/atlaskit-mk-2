@@ -8,7 +8,7 @@ import { styleReducerNoOp, withGlobalTheme } from '../../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
 
-export class GlobalItemBase extends PureComponent<GlobalItemProps> {
+export function GlobalItemBase (props) {
   static defaultProps = {
     label: '',
     size: 'large',

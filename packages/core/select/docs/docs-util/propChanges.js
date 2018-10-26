@@ -88,8 +88,8 @@ const stringAllOptions: Array<string> = allOptions.map(
   (opt: { value: string }): string => opt.value,
 );
 
-export default class PropChanges extends Component<Prop, State> {
-  state = {
+export default function PropChanges (props) {
+  const state = useState({
     selectedOptions: stringAllOptions,
     filterValue: filterOptions[0].value,
     packageFilter: 'all',

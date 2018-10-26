@@ -38,7 +38,7 @@ class SelectableDropdownMenu extends Component<
   SelectableDropdownMenuProps,
   SelectableDropdownMenuState,
 > {
-  state = {
+  const state = useState({
     isOpen: false,
   };
 

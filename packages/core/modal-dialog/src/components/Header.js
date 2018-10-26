@@ -47,7 +47,7 @@ type Props = {
   isHeadingMultiline?: boolean,
 };
 
-export default class ModalHeader extends Component<Props, {}> {
+export default function ModalHeader (props) {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

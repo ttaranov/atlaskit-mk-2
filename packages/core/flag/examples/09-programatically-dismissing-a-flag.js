@@ -14,7 +14,7 @@ export default class ProgrammaticFlagDismissExample extends Component<
   void,
   State,
 > {
-  state = {
+  const state = useState({
     flags: [
       <Flag
         id="flag1"

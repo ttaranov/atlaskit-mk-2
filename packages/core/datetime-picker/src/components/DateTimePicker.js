@@ -152,7 +152,7 @@ const styles = {
   }),
 };
 
-class DateTimePicker extends Component<Props, State> {
+function DateTimePicker (props) {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
@@ -178,7 +178,7 @@ class DateTimePicker extends Component<Props, State> {
     spacing: 'default',
   };
 
-  state = {
+  const state = useState({
     active: 0,
     dateValue: '',
     isFocused: false,

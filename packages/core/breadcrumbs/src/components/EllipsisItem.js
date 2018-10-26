@@ -9,7 +9,7 @@ type Props = {|
   onClick: Event => mixed,
 |};
 
-export default class EllipsisItem extends Component<Props, {}> {
+export default function EllipsisItem (props) {
   props: Props; // eslint-disable-line react/sort-comp
 
   static defaultProps = {

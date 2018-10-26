@@ -9,8 +9,8 @@ type State = {
   isDrawerOpen: boolean,
   width: Widths,
 };
-export default class DrawersExample extends Component<{}, State> {
-  state = {
+export default function DrawersExample (props) {
+  const state = useState({
     isDrawerOpen: false,
     width: 'narrow',
   };

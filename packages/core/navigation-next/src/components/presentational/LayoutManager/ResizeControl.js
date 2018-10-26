@@ -197,11 +197,11 @@ type State = {
 /* NOTE: experimental props use an underscore */
 /* eslint-disable camelcase */
 
-class ResizeControl extends PureComponent<Props, State> {
+function ResizeControl (props) {
   invalidDragAttempted = false;
   lastWidth: number;
   wrapper: HTMLElement;
-  state = {
+  const state = useState({
     delta: 0,
     didDragOpen: false,
     isDragging: false,

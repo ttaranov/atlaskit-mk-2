@@ -51,8 +51,8 @@ const sizes = ['small', 'medium', 'large', 'xlarge'];
 
 type sizeOpts = 'small' | 'medium' | 'large' | 'xlarge';
 
-class IconSizeExample extends Component<{}, { size: sizeOpts }> {
-  state = {
+function IconSizeExample (props) {
+  const state = useState({
     size: 'medium',
   };
 

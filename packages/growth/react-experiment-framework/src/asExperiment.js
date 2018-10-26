@@ -24,10 +24,10 @@ export default function asExperiment(
   },
   LoadingComponent?: ?ComponentType<any>,
 ) {
-  return class ExperimentSwitch extends Component<{}, State> {
+  return function ExperimentSwitch (props) {
     static displayName = 'ExperimentSwitch';
 
-    state = {
+    const state = useState({
       forceFallback: false,
     };
 

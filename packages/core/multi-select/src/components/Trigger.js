@@ -38,7 +38,7 @@ type Props = {
   icon: Node,
 };
 
-export default class Trigger extends PureComponent<Props, {}> {
+export default function Trigger (props) {
   static defaultProps = {
     isDisabled: false,
     isLoading: false,
