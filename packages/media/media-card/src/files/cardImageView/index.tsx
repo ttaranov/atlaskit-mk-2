@@ -31,6 +31,7 @@ export interface FileCardImageViewProps {
 
   readonly actions?: Array<CardAction>;
   readonly onRetry?: () => void;
+  readonly previewOrientation?: number;
 }
 
 export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
@@ -156,7 +157,12 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   };
 
   private getSuccessCardContents = (): JSX.Element => {
-    const { mediaType, dataURI, disableOverlay } = this.props;
+    const {
+      mediaType,
+      dataURI,
+      disableOverlay,
+      previewOrientation,
+    } = this.props;
     const overlay =
       this.isDownloadingOrProcessing() || disableOverlay
         ? null
@@ -171,6 +177,7 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
             mediaType={mediaType}
             dataURI={dataURI}
             crop={this.isCropped}
+            previewOrientation={previewOrientation}
           />
         </div>
         {overlay}

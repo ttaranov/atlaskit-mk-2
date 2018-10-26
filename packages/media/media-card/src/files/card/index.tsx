@@ -22,6 +22,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly resizeMode?: ImageResizeMode;
   readonly disableOverlay?: boolean;
   readonly mediaItemType?: MediaItemType;
+  readonly previewOrientation?: number;
 }
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -46,6 +47,7 @@ export class FileCard extends Component<FileCardProps, {}> {
       onRetry,
       disableOverlay,
       mediaItemType,
+      previewOrientation,
     } = this.props;
     const defaultDetails: FileDetails = {
       id: '',
@@ -96,6 +98,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           onRetry={onRetry}
           actions={this._getActions()}
           disableOverlay={disableOverlay}
+          previewOrientation={previewOrientation}
         />
       );
     }

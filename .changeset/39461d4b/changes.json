@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/media-card", "type": "minor" },
+    { "name": "@atlaskit/media-ui", "type": "minor" }
+  ],
+  "dependents": []
+}

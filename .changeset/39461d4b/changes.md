@@ -1,0 +1,1 @@
+- rotate local image preview in cards based on the file orientation

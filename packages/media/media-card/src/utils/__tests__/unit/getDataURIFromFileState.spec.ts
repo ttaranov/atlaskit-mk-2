@@ -9,20 +9,22 @@ jest.mock('video-snapshot', () => {
     default: FakeVideoSnapshot,
   };
 });
+jest.mock('@atlaskit/media-ui');
+import { getOrientation } from '@atlaskit/media-ui';
 import { getDataURIFromFileState } from '../../getDataURIFromFileState';
 
 describe('getDataURIFromFileState()', () => {
   it('should not work for error state', async () => {
-    const dataURI = await getDataURIFromFileState({
+    const { src } = await getDataURIFromFileState({
       status: 'error',
       id: '1',
     });
 
-    expect(dataURI).toBeUndefined();
+    expect(src).toBeUndefined();
   });
 
   it('should not work for non previewable types', async () => {
-    const dataURI = await getDataURIFromFileState({
+    const { src } = await getDataURIFromFileState({
       status: 'processing',
       id: '1',
       name: '',
@@ -34,11 +36,11 @@ describe('getDataURIFromFileState()', () => {
       },
     });
 
-    expect(dataURI).toBeUndefined();
+    expect(src).toBeUndefined();
   });
 
   it('should return data uri for images', async () => {
-    const dataURI = await getDataURIFromFileState({
+    const { src } = await getDataURIFromFileState({
       status: 'uploading',
       id: '1',
       name: '',
@@ -51,11 +53,11 @@ describe('getDataURIFromFileState()', () => {
       },
     });
 
-    expect(dataURI).toEqual('mock result of URL.createObjectURL()');
+    expect(src).toEqual('mock result of URL.createObjectURL()');
   });
 
   it('should return data uri for videos', async () => {
-    const dataURI = await getDataURIFromFileState({
+    const { src } = await getDataURIFromFileState({
       status: 'processed',
       id: '1',
       name: '',
@@ -68,6 +70,29 @@ describe('getDataURIFromFileState()', () => {
       artifacts: {},
     });
 
-    expect(dataURI).toEqual('video-preview');
+    expect(src).toEqual('video-preview');
+  });
+
+  it('should return orientation for images', async () => {
+    (getOrientation as jest.Mock<any>).mockReset();
+    (getOrientation as jest.Mock<any>).mockReturnValue(10);
+
+    const blob = new File([], 'filename', { type: 'image/png' });
+    const { orientation } = await getDataURIFromFileState({
+      status: 'uploading',
+      id: '1',
+      name: '',
+      size: 1,
+      progress: 0.5,
+      mediaType: 'image',
+      mimeType: 'image/jpg',
+      preview: {
+        blob,
+      },
+    });
+
+    expect(getOrientation).toHaveBeenCalledTimes(1);
+    expect(getOrientation).toBeCalledWith(blob);
+    expect(orientation).toEqual(10);
   });
 });
