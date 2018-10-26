@@ -51,9 +51,12 @@ export function getScaleFactor(
      * Scale Factor is actually a 2D thing, but in practice X & Y are same in 99% cases.
      * So we are only relying on X axis.
      */
-    if (tags['PixelPerUnitX']) {
+    if (typeof tags['PixelPerUnitX'] === 'number') {
       // 1 inch = 0.0254 meters
-      return Math.round(tags['PixelPerUnitX'] * 0.0254) / DPI_WEB_BASELINE;
+      return (
+        Math.round((tags['PixelPerUnitX'] as number) * 0.0254) /
+        DPI_WEB_BASELINE
+      );
     } else {
       return (
         getMetaTagNumericValue(tags, XResolution, DPI_WEB_BASELINE) /
