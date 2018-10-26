@@ -99,7 +99,6 @@ export default class ResizeTransition extends PureComponent<Props, State> {
         onExited={onCollapseEnd}
         in={inProp}
         timeout={this.state.isMounted ? DURATION : 0}
-        appear
       >
         {transitionState => {
           // transitions interupt manual resize behaviour
