@@ -4,7 +4,7 @@ export default {
   'fabric.editor.layoutWide': 'Bred',
   'fabric.editor.layoutFullWidth': 'Fuld bredde',
   'fabric.editor.remove': 'Fjern',
-  'fabric.editor.visit': 'Open link in a new window',
+  'fabric.editor.visit': 'Åbn link i et nyt vindue',
   'fabric.editor.normal': 'Normal tekst',
   'fabric.editor.heading1': 'Overskrift 1',
   'fabric.editor.heading2': 'Overskrift 2',
@@ -78,9 +78,9 @@ export default {
   'fabric.editor.insertRow': 'Indsæt række',
   'fabric.editor.removeRows':
     '{0, plural, one{Fjern række} other{Fjern rækker}}',
-  'fabric.editor.decisionPlaceholder': 'Add a decision…',
+  'fabric.editor.decisionPlaceholder': 'Tilføj en beslutning ...',
   'fabric.editor.taskPlaceholder':
-    "Type your action, use '@' to assign to someone.",
+    'Indtast din handling, og brug "@" for at tildele til nogen.',
   'fabric.editor.textColor': 'Tekstfarve',
   'fabric.editor.underline': 'Understreget',
   'fabric.editor.strike': 'Gennemstreget',
