@@ -13,12 +13,7 @@ import {
 import { batchByKey } from './batch';
 import { getComponents } from './components';
 import { getStyles } from './styles';
-import {
-  extractUserValue,
-  formatUserLabel,
-  getOptions,
-  isIterable,
-} from './utils';
+import { extractUserValue, getOptions, isIterable } from './utils';
 
 export type Props = {
   users?: User[];
@@ -35,6 +30,8 @@ export type Props = {
   onFocus?: OnPicker;
   onBlur?: OnPicker;
   blurInputOnSelect?: boolean;
+  appearence?: 'normal' | 'compact';
+  subtle?: boolean;
 };
 
 export type State = {
@@ -42,12 +39,15 @@ export type State = {
   resultVersion: number;
   inflightRequest: number;
   count: number;
+  hoveringClearIndicator: boolean;
 };
 
 export class UserPicker extends React.PureComponent<Props, State> {
   static defaultProps = {
     width: 350,
     isMulti: false,
+    appearence: 'normal',
+    subtle: false,
   };
 
   private selectRef;
@@ -59,6 +59,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
       resultVersion: 0,
       inflightRequest: 0,
       count: 0,
+      hoveringClearIndicator: false,
     };
   }
 
@@ -182,6 +183,10 @@ export class UserPicker extends React.PureComponent<Props, State> {
     }
   }
 
+  handleClearIndicatorHover = (hoveringClearIndicator: boolean) => {
+    this.setState({ hoveringClearIndicator });
+  };
+
   render() {
     const {
       width,
@@ -192,17 +197,18 @@ export class UserPicker extends React.PureComponent<Props, State> {
       users,
       isLoading,
       blurInputOnSelect,
+      appearence,
+      subtle,
     } = this.props;
-    const { users: usersFromState, count } = this.state;
+    const { users: usersFromState, count, hoveringClearIndicator } = this.state;
     return (
       <Select
         ref={this.handleSelectRef}
         isMulti={isMulti}
-        formatOptionLabel={formatUserLabel}
         options={getOptions(usersFromState, users)}
         onChange={this.handleChange}
         styles={getStyles(width)}
-        components={getComponents(anchor)}
+        components={getComponents(isMulti, anchor)}
         inputValue={search}
         menuIsOpen={open}
         onFocus={this.handleFocus}
@@ -211,6 +217,13 @@ export class UserPicker extends React.PureComponent<Props, State> {
         onBlur={this.handleBlur}
         blurInputOnSelect={blurInputOnSelect}
         menuPlacement="auto"
+        placeholder="Find a person..." // TODO i18n
+        classNamePrefix="atlassian-user-picker"
+        onClearIndicatorHover={this.handleClearIndicatorHover}
+        hoveringClearIndicator={hoveringClearIndicator}
+        appearence={isMulti ? 'compact' : appearence}
+        isClearable
+        subtle={isMulti ? false : subtle}
       />
     );
   }
