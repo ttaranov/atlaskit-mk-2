@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WikiMarkup => ADF Formatters - citation [CS-491] should detect mention in the following pattern 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "Hi ",
+          "type": "text",
+        },
+        Object {
+          "attrs": Object {
+            "accessLevel": "",
+            "id": "qm:78032763-2feb-4f5b-88c0-99b50613d53a:5bce2c0c5b397117c112bc02",
+            "text": "",
+            "userType": null,
+          },
+          "type": "mention",
+        },
+        Object {
+          "text": ",",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
