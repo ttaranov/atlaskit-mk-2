@@ -1,7 +1,7 @@
 import {
   setState as setInteractiveImgState,
   InteractiveImg as InteractiveImgMock,
-} from '../../../../../../mocks/interactive-img';
+} from '../../../../mocks/_interactive-img';
 
 jest.mock('../../../../../newgen/viewers/image/interactive-img', () => ({
   InteractiveImg: InteractiveImgMock,
