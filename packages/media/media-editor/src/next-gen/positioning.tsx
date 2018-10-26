@@ -36,6 +36,23 @@ export class Positioning implements Camera {
     this.validateAndUpdate();
   }
 
+  zoom(newScale: number, screenStablePoint: Point) {
+    const oldScale = this.scale;
+    this.scale = Math.min(
+      Math.max(newScale, Positioning.minScale),
+      Positioning.maxScale,
+    );
+
+    const { x, y } = this.center;
+    const { width, height } = this.windowSize;
+
+    this.center = {
+      x: x + (screenStablePoint.x - width / 2) * (1 / oldScale - 1 / newScale),
+      y: y + (screenStablePoint.y - height / 2) * (1 / oldScale - 1 / newScale),
+    };
+    this.validateAndUpdate();
+  }
+
   screenToScene(point: Point): Point {
     const { center, scale, windowSize } = this;
     const { width, height } = windowSize;

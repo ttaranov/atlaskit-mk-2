@@ -71,6 +71,7 @@ export class MediaEditor extends React.Component<
         style={{ width, height }}
         innerRef={ref => (this.container = ref)}
         onMouseDown={this.onMouseDown.bind(this)}
+        onWheel={this.onMouseWheel.bind(this)}
       >
         {scene ? (
           <RenderingPlane
@@ -116,6 +117,19 @@ export class MediaEditor extends React.Component<
   }
 
   // Mouse operations
+
+  private onMouseWheel(event: WheelEvent) {
+    if (!this.container) {
+      return;
+    }
+
+    event.preventDefault();
+    const screenPoint = MediaEditor.getMouseCoordinates(event, this.container);
+    const step = 0.15;
+    const scale = this.positioning.scale + Math.sign(event.deltaY) * step;
+
+    this.positioning.zoom(scale, screenPoint);
+  }
 
   private initialMouseScenePosition?: Point; // in scene coordinates
   private isDragging = false;
