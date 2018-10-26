@@ -98,5 +98,5 @@ class ItemPrimitive extends PureComponent<ItemProps> {
   }
 }
 
-export { ItemPrimitive };
+export { ItemPrimitive as ItemPrimitiveBase };
 export default withContentTheme(ItemPrimitive);

@@ -34,13 +34,9 @@ export default class InteractionStateManager extends Component<
     this.setState({ isActive: false, isHover: false });
   };
 
-  onFocus = (e: SyntheticFocusEvent<HTMLDivElement>) => {
-    this.setState({ isFocused: true });
-  };
+  onFocus = () => this.setState({ isFocused: true });
 
-  onBlur = (e: SyntheticFocusEvent<HTMLDivElement>) => {
-    this.setState({ isFocused: false });
-  };
+  onBlur = () => this.setState({ isFocused: false });
 
   render() {
     const { styles } = this.props;

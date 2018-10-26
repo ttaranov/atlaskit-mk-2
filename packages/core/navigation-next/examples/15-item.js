@@ -88,7 +88,7 @@ const CloseButton = () => (
 
 const BadgeOrCloseOnHover = ({ isHover }: { isHover: boolean }) =>
   isHover ? <CloseButton /> : <ConfiguredBadge />;
-const OnFocusLozenge = ({ isFocused }) =>
+const OnFocusLozenge = ({ isFocused }: { isFocused: boolean }) =>
   isFocused ? (
     <Lozenge appearance="success">focus on</Lozenge>
   ) : (
