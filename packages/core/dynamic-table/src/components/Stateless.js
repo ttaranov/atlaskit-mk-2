@@ -6,7 +6,7 @@ import {
   createAndFireEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
-import Pagination from '@atlaskit/pagination';
+import ManagedPagination from './managedPagination';
 
 import {
   name as packageName,
@@ -230,7 +230,7 @@ class DynamicTable extends Component<Props, State> {
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
           <PaginationWrapper>
-            <Pagination
+            <ManagedPagination
               value={page}
               onChange={this.onSetPage}
               total={totalPages}

@@ -1,9 +1,7 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import Button from '@atlaskit/button';
-import Pagination from '@atlaskit/pagination';
-import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import Pagination from '../../managedPagination';
 import TableHead from '../../TableHead';
 import {
   EmptyViewContainer,
