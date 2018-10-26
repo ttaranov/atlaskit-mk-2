@@ -1,0 +1,1 @@
+- Inline-dialog now has useCapture: true for the outside click event listeners to avoid closing when clicking on child content that might disappear, such as a select or dropdown-menu
