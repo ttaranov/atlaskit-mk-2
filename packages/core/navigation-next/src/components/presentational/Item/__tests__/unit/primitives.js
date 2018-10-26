@@ -7,13 +7,11 @@ import type {
   ItemPresentationProps,
 } from '../../types';
 
-//eslint-disable-next-line
 const TestComponent = (props: ItemRenderComponentProps) => (
-  <div>Test Component</div>
+  <div>Test Component {props.className}</div>
 );
-//eslint-disable-next-line
 const BeforeOrAfterComponent = (props: ItemPresentationProps) => (
-  <div>Before/After Component </div>
+  <div>Before/After Component {props.spacing}</div>
 );
 
 describe('ItemPrimitiveBase', () => {
@@ -27,7 +25,6 @@ describe('ItemPrimitiveBase', () => {
       href: undefined,
       id: undefined,
       index: undefined,
-      //apparently functional components shouldn't be allowed to have innerRefs, check this later
       innerRef: undefined,
       isSelected: false,
       isActive: false,
