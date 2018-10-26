@@ -87,6 +87,7 @@ type State = {
   /** Value to be shown in the calendar as selected.  */
   selectedValue: string,
   view: string,
+  inputValue: string,
 };
 
 function isoToObj(iso: string) {
@@ -176,6 +177,7 @@ class DatePicker extends Component<Props, State> {
     const thisYear = now.getFullYear();
     this.state = {
       isOpen: this.props.defaultIsOpen,
+      inputValue: this.props.selectProps.inputValue,
       selectedValue: this.props.value || this.props.defaultValue,
       value: this.props.defaultValue,
       view:
@@ -191,6 +193,7 @@ class DatePicker extends Component<Props, State> {
     return {
       ...this.state,
       ...pick(this.props, ['value', 'isOpen']),
+      ...pick(this.props.selectProps, ['inputValue']),
     };
   };
 
@@ -217,7 +220,7 @@ class DatePicker extends Component<Props, State> {
   };
 
   onCalendarSelect = ({ iso: value }: { iso: string }) => {
-    this.setState({ isOpen: false, selectedValue: value });
+    this.setState({ isOpen: false, selectedValue: value, inputValue: '' });
     this.triggerChange(value);
   };
 
@@ -279,7 +282,11 @@ class DatePicker extends Component<Props, State> {
     } else if (!this.isDateDisabled(view)) {
       if (key === 'Enter') {
         this.triggerChange(view);
-        this.setState({ isOpen: false, selectedValue: view });
+        this.setState({
+          isOpen: false,
+          selectedValue: view,
+          inputValue: '',
+        });
       }
 
       if (key === 'Tab') {
@@ -290,6 +297,12 @@ class DatePicker extends Component<Props, State> {
 
   refCalendar = (ref: ElementRef<typeof Calendar>) => {
     this.calendar = ref;
+  };
+
+  handleInputChange = (inputValue: string, actionMeta: {}) => {
+    const { onInputChange } = this.props.selectProps;
+    onInputChange && onInputChange(inputValue, actionMeta);
+    this.setState({ inputValue });
   };
 
   triggerChange = (value: string) => {
@@ -331,7 +344,7 @@ class DatePicker extends Component<Props, State> {
       dateFormat,
       placeholder,
     } = this.props;
-    const { value, view, isOpen } = this.getState();
+    const { value, view, isOpen, inputValue } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon
@@ -354,6 +367,7 @@ class DatePicker extends Component<Props, State> {
     const controlStyles =
       this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
     const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
+
     return (
       <div
         {...innerProps}
@@ -374,6 +388,8 @@ class DatePicker extends Component<Props, State> {
           isDisabled={isDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
+          inputValue={inputValue}
+          onInputChange={this.handleInputChange}
           components={{
             ClearIndicator,
             DropdownIndicator,
