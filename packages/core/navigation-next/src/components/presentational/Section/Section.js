@@ -38,12 +38,12 @@ export const StaticWrapper = (props: StyledComponentProps) => (
 export default class Section extends PureComponent<SectionProps, SectionState> {
   state = {
     traversalDirection: null,
-    isMounted: false,
   };
 
+  isMounted = false;
+
   componentDidMount() {
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({ isMounted: true });
+    this.isMounted = true;
   }
 
   componentWillReceiveProps(nextProps: SectionProps) {
@@ -79,7 +79,7 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
       >
         <Transition
           key={id}
-          timeout={this.state.isMounted ? 0 : transitionDurationMs}
+          timeout={this.isMounted ? 0 : transitionDurationMs}
         >
           {state => {
             const { traversalDirection } = this.state;

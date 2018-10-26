@@ -14,13 +14,11 @@ import type { ContentNavigationProps } from './types';
 
 export default class ContentNavigation extends Component<
   ContentNavigationProps,
-  { isMounted: boolean },
 > {
-  state = { isMounted: false };
+  isMounted = false;
 
   componentDidMount() {
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({ isMounted: true });
+    this.isMounted = true;
   }
 
   render() {
@@ -45,7 +43,7 @@ export default class ContentNavigation extends Component<
         </ProductNavigation>
         <Transition
           in={!!Container}
-          timeout={this.state.isMounted ? transitionDurationMs : 0}
+          timeout={this.isMounted ? transitionDurationMs : 0}
           mountOnEnter
           unmountOnExit
         >
