@@ -1,10 +1,5 @@
 //@flow
 import { Component } from 'react';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 import Page from './page';
 import { LeftNavigator, RightNavigator } from './navigators';
 import {
@@ -16,31 +11,9 @@ type Props = {
   children: Function,
 };
 
-class Pagination extends Component<Props> {
+export default class Pagination extends Component<Props> {
   render() {
     const { children } = this.props;
     return children ? children(LeftNavigator, Page, RightNavigator) : null;
   }
 }
-
-export { Pagination as PaginationWithoutAnalytics };
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'pagination',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
-      actionSubject: 'pageNumber',
-
-      attributes: {
-        componentName: 'pagination',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(Pagination),
-);

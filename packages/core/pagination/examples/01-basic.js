@@ -1,5 +1,6 @@
 //@flow
 import React, { Component, Fragment } from 'react';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import Pagination, { collapseRange } from '../src';
 
 const MAX_NUMBER_OF_PAGES = 7;
@@ -33,6 +34,8 @@ export default class extends Component<{}, State> {
     });
   };
 
+  sendAnalytics = (analytic: any) => console.log(analytic);
+
   render() {
     const pageLinksCollapsed = collapseRange(
       MAX_NUMBER_OF_PAGES,
@@ -43,45 +46,54 @@ export default class extends Component<{}, State> {
     const firstPage = pageLinksCollapsed[0];
     const lastPage = pageLinksCollapsed[pageLinksCollapsed.length - 1];
     return (
-      <Pagination>
-        {(LeftNavigator, Link, RightNavigator) => (
-          <Fragment>
-            <LeftNavigator
-              isDisabled={firstPage.value === selected}
-              onClick={() => this.onArrowClicked('previous')}
-            />
-            {pageLinksCollapsed.map((pageLink, index) => {
-              if (pageLink === '...') {
+      <AnalyticsListener onEvent={this.sendAnalytics}>
+        <Pagination>
+          {(LeftNavigator, Link, RightNavigator) => (
+            <Fragment>
+              <LeftNavigator
+                isDisabled={firstPage.value === selected}
+                onClick={(e, v) => {
+                  v.fire();
+                  this.onArrowClicked('previous');
+                }}
+              />
+              {pageLinksCollapsed.map((pageLink, index) => {
+                if (pageLink === '...') {
+                  return (
+                    <span
+                      //eslint-disable-next-line
+                      key={`${pageLink}-${index}`}
+                      style={{ padding: '0 8px' }}
+                    >
+                      ...
+                    </span>
+                  );
+                }
+                const { value } = pageLink;
                 return (
-                  <span
-                    //eslint-disable-next-line
-                    key={`${pageLink}-${index}`}
-                    style={{ padding: '0 8px' }}
+                  <Link
+                    key={`${value}`}
+                    onClick={(e, v) => {
+                      v.fire();
+                      this.updateTheSelected(value);
+                    }}
+                    isSelected={value === this.state.selected}
                   >
-                    ...
-                  </span>
+                    {value}
+                  </Link>
                 );
-              }
-              const { value } = pageLink;
-              return (
-                <Link
-                  key={`${value}`}
-                  onClick={() => {
-                    this.updateTheSelected(value);
-                  }}
-                  isSelected={value === this.state.selected}
-                >
-                  {value}
-                </Link>
-              );
-            })}
-            <RightNavigator
-              isDisabled={lastPage.value === selected}
-              onClick={this.onArrowClicked}
-            />
-          </Fragment>
-        )}
-      </Pagination>
+              })}
+              <RightNavigator
+                isDisabled={lastPage.value === selected}
+                onClick={(e, v) => {
+                  v.fire();
+                  this.onArrowClicked();
+                }}
+              />
+            </Fragment>
+          )}
+        </Pagination>
+      </AnalyticsListener>
     );
   }
 }
