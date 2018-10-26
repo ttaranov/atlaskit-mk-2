@@ -2,11 +2,20 @@
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import { ItemPrimitive } from '../../primitives';
-import type { ItemRenderComponentProps } from '../../types';
+import type {
+  ItemRenderComponentProps,
+  ItemPresentationProps,
+} from '../../types';
 
 class TestComponent extends Component<ItemRenderComponentProps, {}> {
-  render(props) {
+  render() {
     return <div> Hello Test </div>;
+  }
+}
+
+class BeforeOrAfterComponent extends Component<ItemPresentationProps, {}> {
+  render() {
+    return <div> BeforeOrAfter </div>;
   }
 }
 
@@ -121,21 +130,31 @@ describe('<ItemPrimitive/>', () => {
     expect(wrapper.text()).toBe(wrapper.prop('text'));
   });
 
-  // it should fetch component style |done|
-  // if CustomComponent is present send it in "as" prop to <ComponentSwitch/> |done|
-  // if CustomComponent is present send this.props to <ComponentSwitch/> |done|
+  it('should render Before with expected props if present', () => {
+    defaultProps.before = BeforeOrAfterComponent;
 
-  // if href is present send it in "as" prop to <ComponentSwitch/> |done|
-  // if href is present send { href, onClick, target, innerRef } to <ComponentSwitch/> |done|
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
 
-  // if onclick is present send it in "as" prop to <ComponentSwitch/> |done|
-  // if onclick is present send {onclick, innerRef} to <ComponentSwitch /> |done|
-  // it should render a div if no href ,onclick or  component are provided x
+    expect(wrapper.find(BeforeOrAfterComponent).props()).toEqual({
+      isActive: false,
+      isHover: false,
+      isSelected: false,
+      spacing: 'default',
+      isFocused: false,
+    });
+  });
 
-  // it should always render text done
-  // if subText is present it should render subText
-  // if Before is present it should render Before with presentationProps
-  // if After is present it should render After with presentationProps
+  it('should render After with expected props if present', () => {
+    defaultProps.after = BeforeOrAfterComponent;
 
-  // presentationProps should have isFocused field
+    const wrapper = mount(<ItemPrimitive {...defaultProps} />);
+
+    expect(wrapper.find(BeforeOrAfterComponent).props()).toEqual({
+      isActive: false,
+      isHover: false,
+      isSelected: false,
+      spacing: 'default',
+      isFocused: false,
+    });
+  });
 });
