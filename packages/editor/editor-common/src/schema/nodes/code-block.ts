@@ -168,6 +168,24 @@ export const codeBlock: NodeSpec = {
         return false;
       },
     },
+    {
+      tag: 'div.CodeBlock',
+      preserveWhitespace: 'full',
+      getAttrs: (dom: HTMLElement) => {
+        // TODO: ED-5604 Fix it inside `react-syntax-highlighter`
+        // Remove line numbers
+        const linesCode = dom.querySelector('code');
+        if (
+          linesCode &&
+          linesCode.querySelector('.react-syntax-highlighter-line-number')
+        ) {
+          // It's possible to copy without the line numbers too hence this
+          // `react-syntax-highlighter-line-number` check, so that we don't remove real code
+          linesCode.remove();
+        }
+        return {};
+      },
+    },
   ],
   toDOM(node) {
     const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
