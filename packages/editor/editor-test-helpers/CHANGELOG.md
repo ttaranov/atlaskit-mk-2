@@ -1,5 +1,12 @@
 # @atlaskit/editor-test-helpers
 
+## 6.2.12
+- [patch] [44d9c5b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44d9c5b"
+d):
+
+  - ED-5632: mock Selection API globally; allows dispatching before Editor finishes mounting
+
 ## 6.2.11
 - [patch] [1662ae0"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1662ae0"
