@@ -13,7 +13,7 @@ The documentation for a package on the `atlaskit.atlassian.com` website consists
 Exists: Always
 
 #### Header
-Header contents is automatically generated. The links come from the package.json information, and extrapolating from them. The changelog info is pulled from the changelog md file at the package root. All packages have a link to examples.
+Header content is automatically generated. The links come from the package.json information, and extrapolating from them. The changelog info is pulled from the changelog md file at the package root. All packages have a link to examples.
 
 - link to examples modal
 - link to examples full-screen explorer
