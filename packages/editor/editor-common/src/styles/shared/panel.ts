@@ -15,6 +15,7 @@ export const panelSharedStyles = css`
 
     .ak-editor-panel__icon {
       display: block;
+      flex-shrink: 0;
       height: ${gridSize() * 3}px;
       width: ${gridSize() * 3}px;
       padding-right: ${gridSize()}px;
