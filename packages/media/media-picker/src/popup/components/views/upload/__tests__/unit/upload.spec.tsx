@@ -1,3 +1,4 @@
+jest.mock('lodash.debounce');
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { Provider } from 'react-redux';
@@ -20,6 +21,8 @@ import { isWebGLAvailable } from '../../../../../tools/webgl';
 import {
   StatelessUploadView,
   default as ConnectedUploadView,
+  UploadViewProps,
+  UploadViewState,
 } from '../../upload';
 import { LoadingNextPageWrapper } from '../../styled';
 import { fileClick } from '../../../../../actions/fileClick';
@@ -31,6 +34,7 @@ import { Dropzone } from '../../dropzone';
 import { SpinnerWrapper, Wrapper } from '../../styled';
 import { LocalBrowserButton } from '../../../../views/upload/uploadButton';
 import { Browser } from '../../../../../../components/browser';
+import { InfiniteScroll } from '../../../../../../../../media-ui/src';
 
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
@@ -95,6 +99,7 @@ describe('<StatelessUploadView />', () => {
           onFileClick={() => {}}
           onEditorShowImage={() => {}}
           onEditRemoteImage={() => {}}
+          removeFileFromRecents={() => {}}
           setUpfrontIdDeferred={setUpfrontIdDeferred}
         />
       </Provider>
@@ -336,13 +341,18 @@ describe('<UploadView />', () => {
   });
 
   describe('pagination', () => {
-    const simulateScrollEndReached = (component: ReactWrapper<any, any>) =>
-      (component.instance() as any)['onThresholdReachedListener']();
+    const simulateThresholdReached = (
+      component: ReactWrapper<UploadViewProps, UploadViewState>,
+    ) =>
+      component
+        .find(InfiniteScroll)
+        .props()
+        .onThresholdReached();
 
     it('should load next collection page when threshold is reached', () => {
       const { component, context } = createConnectedComponent(state);
 
-      simulateScrollEndReached(component);
+      simulateThresholdReached(component);
 
       expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
       expect(context.collection.loadNextPage).toBeCalledWith('recents');
@@ -359,10 +369,15 @@ describe('<UploadView />', () => {
         undefined,
         context,
       );
+      // We fire threshold reached on mount
+      expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(1);
+      await nextItems;
+      root.update();
 
       expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(0);
-      simulateScrollEndReached(component);
+      simulateThresholdReached(component);
       root.update();
+
       expect(root.find(LoadingNextPageWrapper).find(Spinner)).toHaveLength(1);
       await nextItems;
       root.update();
@@ -372,8 +387,8 @@ describe('<UploadView />', () => {
     it('should not load next collection page if its already being loaded', () => {
       const { component, context } = createConnectedComponent(state);
 
-      simulateScrollEndReached(component);
-      simulateScrollEndReached(component);
+      simulateThresholdReached(component);
+      simulateThresholdReached(component);
 
       expect(context.collection.loadNextPage).toHaveBeenCalledTimes(1);
     });

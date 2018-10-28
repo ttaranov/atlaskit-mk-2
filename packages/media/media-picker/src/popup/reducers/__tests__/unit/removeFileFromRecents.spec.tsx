@@ -9,6 +9,7 @@ import { State } from '../../../domain';
 describe('removeFileFromRecents reducer', () => {
   let action: RemoveFileFromRecentsAction;
   let state: State;
+  let resultState: State;
 
   beforeEach(() => {
     action = removeFileFromRecentsAction('some-id', 'occurrence-key');
@@ -55,15 +56,15 @@ describe('removeFileFromRecents reducer', () => {
         },
       ],
     };
-    removeFileFromRecents(state, action);
+    resultState = removeFileFromRecents(state, action);
   });
 
   it('should remove file from recents list', () => {
-    expect(state.recents.items).toHaveLength(1);
-    expect(state.recents.items[0].id).toEqual('other-id');
+    expect(resultState.recents.items).toHaveLength(1);
+    expect(resultState.recents.items[0].id).toEqual('other-id');
   });
   it('should remove item from selected list', () => {
-    expect(state.selectedItems).toHaveLength(1);
-    expect(state.selectedItems[0].id).toEqual('other-id');
+    expect(resultState.selectedItems).toHaveLength(1);
+    expect(resultState.selectedItems[0].id).toEqual('other-id');
   });
 });
