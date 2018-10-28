@@ -42,8 +42,8 @@ export async function getPreview(
 ) {
   const { file, collection } = action;
   const { userContext } = store.getState();
-  const subscription = userContext
-    .getFile(file.id, { collectionName: collection })
+  const subscription = userContext.file
+    .getFileState(file.id, { collectionName: collection })
     .subscribe({
       async next(state) {
         if (state.status === 'error') {
