@@ -1,0 +1,1 @@
+- ED-5622: fix table selection when adding columns/rows very fast
