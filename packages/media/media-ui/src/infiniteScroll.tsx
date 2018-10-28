@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, UIEvent } from 'react';
+import { Component } from 'react';
 import * as debounce from 'lodash.debounce';
 
 export type ThresholdReachedEventHandler = () => void;
@@ -19,27 +19,34 @@ export class InfiniteScroll extends Component<
   InfiniteScrollProps,
   InfiniteScrollState
 > {
+  private readonly div: React.RefObject<any>;
+
+  constructor(props: InfiniteScrollProps) {
+    super(props);
+    this.div = React.createRef();
+  }
+
   static defaultProps = {
     width: '100%',
     delay: 1000,
     threshold: 100,
   };
 
-  private readonly emitOnThresholdReachedWithDebounce = debounce(
-    this.emitOnThresholdReached,
-    this.props.delay,
-    {
-      leading: true,
-      trailing: true,
-    },
-  );
-
   private scrollHeight: number = 0;
+
+  componentDidMount() {
+    this.checkThresholdDebounce();
+  }
+
+  componentDidUpdate() {
+    this.checkThresholdDebounce();
+  }
 
   render(): JSX.Element {
     const { width, height, children } = this.props;
     return (
       <div
+        ref={this.div}
         style={{
           width,
           height,
@@ -48,37 +55,45 @@ export class InfiniteScroll extends Component<
           msOverflowStyle: 'scrollbar',
           display: 'inline-block',
         }}
-        onScroll={this.checkThreshold}
+        onScroll={this.checkThresholdDebounce}
       >
         {children}
       </div>
     );
   }
 
-  private checkThreshold = (event: UIEvent<HTMLDivElement>) => {
-    const target = event.currentTarget;
+  private checkThreshold = () => {
+    const div = this.div.current;
+    if (div === null) {
+      return;
+    }
     const threshold = this.props.threshold || 0;
-    const position = target.scrollTop + target.offsetHeight;
+    const position = div.scrollTop + div.offsetHeight;
     const thresholdModifier = 0.1;
     const adjustedThreshold = Math.min(
       threshold,
-      target.scrollHeight * thresholdModifier,
+      div.scrollHeight * thresholdModifier,
     );
 
     const thresholdReached =
-      position > this.scrollHeight &&
-      position > target.scrollHeight - adjustedThreshold;
+      position >= this.scrollHeight &&
+      position >= div.scrollHeight - adjustedThreshold;
 
     if (thresholdReached) {
-      this.scrollHeight = target.scrollHeight;
+      this.scrollHeight = div.scrollHeight;
 
-      this.emitOnThresholdReachedWithDebounce();
+      if (this.props.onThresholdReached) {
+        this.props.onThresholdReached();
+      }
     }
   };
 
-  private emitOnThresholdReached(): void {
-    if (this.props.onThresholdReached) {
-      this.props.onThresholdReached();
-    }
-  }
+  private readonly checkThresholdDebounce = debounce(
+    this.checkThreshold,
+    this.props.delay,
+    {
+      leading: true,
+      trailing: true,
+    },
+  );
 }
