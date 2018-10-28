@@ -110,8 +110,7 @@ describe('SectionMessage', () => {
   );
   describe('styled rule', () => {
     it('should have background color and default color', () => {
-      // $FlowFixMe - https://github.com/facebook/flow/issues/396
-      expect(shallow(<SectionMessage />)).toHaveStyleRule(
+      expect(shallow(<SectionMessage>test</SectionMessage>)).toHaveStyleRule(
         'background-color',
         '#DEEBFF',
       );
