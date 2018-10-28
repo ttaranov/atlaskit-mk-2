@@ -1,0 +1,1 @@
+- ED-5619 Change "Loren ipsun" to "Lorem ipsum" in the example
