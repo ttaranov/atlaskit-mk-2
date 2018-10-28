@@ -56,6 +56,7 @@ type GlobalNavigationState = {
   isSearchDrawerOpen: boolean,
   isNotificationDrawerOpen: boolean,
   isStarredDrawerOpen: boolean,
+  notificationBadgeCount: number,
   isCreateDrawerOpen: boolean,
   isSearchDrawerOpen: boolean,
   isNotificationDrawerOpen: boolean,
@@ -86,6 +87,7 @@ export default class GlobalNavigation
       isSearchDrawerOpen: false,
       isNotificationDrawerOpen: false,
       isStarredDrawerOpen: false,
+      notificationBadgeCount: 0,
     };
 
     this.drawers.forEach((drawer: DrawerName) => {
@@ -196,6 +198,9 @@ export default class GlobalNavigation
   onNotificationBadgeCountUpdated = (param: { newCount?: number } = {}) => {
     const { newCount = 0 } = param;
     this.updateLocalStorageCount(newCount);
+    this.setState({
+      notificationBadgeCount: newCount,
+    });
   };
 
   getLocalStorageCount = () => {
