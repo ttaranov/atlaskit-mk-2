@@ -218,16 +218,6 @@ const variations: Array<VariationCategory> = [
         text: 'Selected + hover + active',
         subText: 'Sub text',
       },
-      {
-        after: OnFocusLozenge,
-        before: ConfiguredAvatar,
-        isActive: false,
-        isHover: false,
-        isSelected: false,
-        isFocused: true,
-        text: 'focused',
-        subText: 'Sub text',
-      },
     ],
   },
   {
