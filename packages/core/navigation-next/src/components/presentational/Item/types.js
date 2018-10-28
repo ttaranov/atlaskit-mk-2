@@ -14,7 +14,7 @@ export type ItemPresentationProps = {
   isHover: boolean,
   /** Whether the Item should display as being selected. */
   isSelected: boolean,
-  /** Wether the Item is currently in the 'focus' interaction state. */
+  /** Whether the Item is currently in the 'focus' interaction state. */
   isFocused: boolean,
   /** How tight the spacing between the elements inside the Item should be. */
   spacing: Spacing,
