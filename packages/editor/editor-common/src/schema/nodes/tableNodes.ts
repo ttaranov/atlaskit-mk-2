@@ -209,6 +209,7 @@ export const table: any = {
   },
   tableRole: 'table',
   isolating: true,
+  selectable: false,
   group: 'block',
   parseDOM: [
     {
