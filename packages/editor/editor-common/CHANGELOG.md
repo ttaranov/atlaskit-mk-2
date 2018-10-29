@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 20.1.9
+- [patch] [ef26075"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef26075"
+d):
+
+  - ED-5622: fix table selection when adding columns/rows very fast
+
 ## 20.1.8
 - [patch] [08e6a0c"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08e6a0c"
