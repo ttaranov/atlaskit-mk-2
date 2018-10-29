@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.6.0
+- [minor] [bb3336a"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb3336a"
+d):
+
+  - Make text formatting toolbar account for different item titles legnths
+
 ## 87.5.0
 - [minor] [d182ad9"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d182ad9"

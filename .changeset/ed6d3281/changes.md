@@ -1,1 +1,0 @@
-- Make text formatting toolbar account for different item titles legnths
