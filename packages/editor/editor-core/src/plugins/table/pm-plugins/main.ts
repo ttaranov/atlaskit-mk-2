@@ -27,6 +27,7 @@ import {
   handleBlur,
   handleFocus,
   handleClick,
+  handleTripleClick,
 } from '../event-handlers';
 import { findControlsHoverDecoration } from '../utils';
 
@@ -220,6 +221,8 @@ export const createPlugin = (
         mouseleave: handleMouseLeave,
         click: handleClick,
       },
+
+      handleTripleClick,
     },
   });
 
