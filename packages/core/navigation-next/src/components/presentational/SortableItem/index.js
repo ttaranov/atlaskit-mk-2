@@ -27,7 +27,7 @@ const getStyles = (provided, { isDragging }) => {
       ...provided.itemBase,
       boxShadow: isDragging
         ? `${colors.N60A} 0px 4px 8px -2px, ${colors.N60A} 0px 0px 1px`
-        : null,
+        : undefined,
       cursor: isDragging ? 'grabbing' : 'pointer',
     },
   };
