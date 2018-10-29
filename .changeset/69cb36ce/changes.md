@@ -1,1 +1,0 @@
-- Fix getCommitThatAddsFile function to not have quotes, use entire first line
