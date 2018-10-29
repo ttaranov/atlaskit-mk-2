@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 20.2.2
+- [patch] [67325ee"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67325ee"
+d):
+
+  - fixing image size inside tables
+
 ## 20.2.1
 - [patch] [534f6ab"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/534f6ab"
