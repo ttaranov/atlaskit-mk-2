@@ -1,0 +1,1 @@
+- upgrades verison of react-scrolllock to SSR safe version
