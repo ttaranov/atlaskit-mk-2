@@ -21,6 +21,7 @@ import {
 } from '../../../../ui/styles';
 import { BlockTypeState } from '../../pm-plugins/main';
 import { BlockType, NORMAL_TEXT } from '../../types';
+import { BlockTypeMenuItem } from './styled';
 
 export const messages = defineMessages({
   textStyles: {
@@ -154,18 +155,20 @@ class ToolbarBlockType extends React.PureComponent<
     const { currentBlockType, availableBlockTypes } = this.props.pluginState;
     const items = availableBlockTypes.reduce(
       (acc, blockType, blockTypeNo) => {
+        const isActive = currentBlockType === blockType;
+        const tagName = blockType.tagName || 'p';
         acc.push({
-          content: createElement(
-            blockType.tagName || 'p',
-            {},
-            formatMessage(blockType.title),
+          content: (
+            <BlockTypeMenuItem tagName={tagName} selected={isActive}>
+              {createElement(tagName, {}, formatMessage(blockType.title))}
+            </BlockTypeMenuItem>
           ),
           value: blockType,
           key: `${blockType}-${blockTypeNo}`,
           // ED-2853, hiding tooltips as shortcuts are not working atm.
           // tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
           // tooltipPosition: 'right',
-          isActive: currentBlockType === blockType,
+          isActive,
         });
         return acc;
       },
