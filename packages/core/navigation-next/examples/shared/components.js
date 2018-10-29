@@ -12,7 +12,13 @@ import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { JiraIcon } from '@atlaskit/logo';
 
-import { GlobalNav, ContainerHeader, ItemAvatar, Switcher } from '../../src';
+import {
+  ConnectedItem,
+  GlobalNav,
+  ContainerHeader,
+  ItemAvatar,
+  Switcher,
+} from '../../src';
 
 export const GlobalLink = ({ className, to, onClick, children }: any) => {
   return (
@@ -159,14 +165,24 @@ class ProjectSwitcherBase extends PureComponent<*, *> {
 }
 export const ProjectSwitcher = withRouter(ProjectSwitcherBase);
 
-export const LinkItem = ({ components: C, to, ...props }: *) => {
+export const LinkItem = ({
+  itemComponent: Component = ConnectedItem,
+  to,
+  ...props
+}: *) => {
   return (
     <Route
       render={({ location: { pathname } }) => (
-        <C.Item
+        <Component
           after={() => <LinkIcon size="small" />}
-          component={({ children, className }) => (
-            <Link className={className} to={to} onClick={props.onClick}>
+          component={({ children, className, innerRef, draggableProps }) => (
+            <Link
+              className={className}
+              to={to}
+              onClick={props.onClick}
+              innerRef={innerRef}
+              {...draggableProps}
+            >
               {children}
             </Link>
           )}

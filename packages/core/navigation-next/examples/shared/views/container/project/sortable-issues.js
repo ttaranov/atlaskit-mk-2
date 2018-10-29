@@ -7,13 +7,13 @@ import {
   SortableItem,
   ViewController,
   ViewControllerSubscriber,
-} from '../../../../src';
+} from '../../../../../src';
 
-import { LinkItem } from '../../components';
-import SortableItemState from '../../providers/sortable-item-state';
-import type { ItemsByGroup } from '../../providers/sortable-item-state/types';
-import defaultGetAnalyticsAttributes from '../common/get-analytics-attributes';
-import type { ViewComponentProps } from '../common/types';
+import { LinkItem } from '../../../components';
+import SortableItemState from '../../../providers/sortable-item-state';
+import type { ItemsByGroup } from '../../../providers/sortable-item-state/types';
+import defaultGetAnalyticsAttributes from '../../common/get-analytics-attributes';
+import type { ViewComponentProps } from '../../common/types';
 
 type SortableIssuesViewProps = ViewComponentProps & {
   setItems: ItemsByGroup => void,
@@ -47,32 +47,32 @@ const initialSortableIssueItems: ItemsByGroup = {
     { type: 'SortableItem', id: 'done-issues', text: 'Done issues' },
     {
       type: LinkItem,
-      id: 'go-to-projects',
-      to: '/projects/endeavour',
-      text: 'Go to endeavour project',
+      id: 'go-to-root',
+      to: '/',
+      text: 'Go to root',
       itemComponent: SortableItem,
     },
   ],
 };
 
-const getRootSortableIssues = ({ sortableItems, onDragEnd }: *) => () => [
+const getSortableIssues = ({ sortableItems, onDragEnd }: *) => () => [
   {
-    id: 'root/sortable-issues:header',
+    id: 'container/project/sortable-issues:header',
     type: 'HeaderSection',
     items: [
       { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
       {
         type: 'BackItem',
-        goTo: 'root/index',
+        goTo: 'container/project/index',
         id: 'back',
         text: 'Back to Jira',
       },
     ],
   },
   {
-    id: 'root/sortable-issues:menu',
+    id: 'container/project/sortable-issues:menu',
     nestedGroupKey: 'menu',
-    parentId: 'root/index:menu',
+    parentId: 'container/project/index:menu',
     type: 'MenuSection',
     alwaysShowScrollHint: true,
     items: [
@@ -168,9 +168,9 @@ const SortableIssuesView = () => (
             setItems={setItems}
             viewController={viewController}
             getAnalyticsAttributes={defaultGetAnalyticsAttributes}
-            getItemsFactory={getRootSortableIssues}
-            type="product"
-            viewId="root/sortable-issues"
+            getItemsFactory={getSortableIssues}
+            type="container"
+            viewId="container/project/sortable-issues"
           />
         )}
       </SortableItemState>

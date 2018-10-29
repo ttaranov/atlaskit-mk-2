@@ -49,6 +49,13 @@ const getItems = () => [
         text: 'Issues',
         type: 'GoToItem',
       },
+      {
+        icon: 'IssuesIcon',
+        goTo: 'container/project/sortable-issues',
+        id: 'sortable-issues',
+        text: 'Sortable Issues',
+        type: 'GoToItem',
+      },
     ],
     type: 'MenuSection',
   },
