@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/editor-core", "type": "patch" },
+    { "name": "@atlaskit/renderer", "type": "patch" }
+  ],
+  "dependents": []
+}
