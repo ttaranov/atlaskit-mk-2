@@ -248,6 +248,7 @@ export const Wrapper = styled.div<Props & HTMLAttributes<{}>>`
         width: ${akEditorTableNumberColumnWidth}px;
         text-align: center;
         color: ${colors.N200};
+        font-size: ${fontSize()}px;
       }
     }
   }
