@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.6.1
+- [patch] [bdc9961"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc9961"
+d):
+
+  - Fixes the codeblock insert rules
+
 ## 87.6.0
 - [minor] [bb3336a"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb3336a"
