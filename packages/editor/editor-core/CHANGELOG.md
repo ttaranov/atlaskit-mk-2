@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.4.2
+- [patch] [4cc767e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cc767e"
+d):
+
+  - ED-5030: Fixed gap-cursor on nodeviews in breakout mode.
+
 ## 87.4.1
 - [patch] [abd19cd"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abd19cd"

@@ -1,1 +1,0 @@
-- ED-5030: Fixed gap-cursor on nodeviews in breakout mode.
