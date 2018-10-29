@@ -1,0 +1,1 @@
+- Disable clear formatting menu when there is no formatting
