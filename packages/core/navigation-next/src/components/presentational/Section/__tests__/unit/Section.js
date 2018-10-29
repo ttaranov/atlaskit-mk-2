@@ -11,8 +11,16 @@ import {
   StaticWrapper,
 } from '../../Section';
 import Section from '../../';
+import { transitionDurationMs } from '../../../../../common/constants';
 
 describe('Section', () => {
+  it('should use defaults for transition animations', () => {
+    const section = mount(<Section>{() => <div>Hello world</div>}</Section>);
+    expect(section.find('Transition').props().timeout).toBe(
+      transitionDurationMs,
+    );
+  });
+
   it('should wrap its children with an internally scrollable div when shouldGrow is true', () => {
     const notScrollable = mount(
       <Section>{() => <div>Hello world</div>}</Section>,
