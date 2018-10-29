@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.3.1
+- [patch] [52f5b51"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52f5b51"
+d):
+
+  - ED-4366: fix text selection inside table cell on triple click
+
 ## 87.3.0
 - [minor] [b911028"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b911028"

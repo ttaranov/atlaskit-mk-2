@@ -1,1 +1,0 @@
-- ED-4366: fix text selection inside table cell on triple click
