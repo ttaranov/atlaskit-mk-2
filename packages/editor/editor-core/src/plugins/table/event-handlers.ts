@@ -1,6 +1,7 @@
 import { EditorView } from 'prosemirror-view';
 import { findTable } from 'prosemirror-utils';
-import { TableMap } from 'prosemirror-tables';
+import { TextSelection, Selection } from 'prosemirror-state';
+import { TableMap, cellAround } from 'prosemirror-tables';
 import { Node as PmNode } from 'prosemirror-model';
 import { browser } from '@atlaskit/editor-common';
 import { getPluginState } from './pm-plugins/main';
@@ -135,3 +136,29 @@ export const handleMouseLeave = (view: EditorView): boolean => {
   }
   return false;
 };
+
+export function handleTripleClick(view, pos) {
+  const { state, dispatch } = view;
+  const $cellPos = cellAround(state.doc.resolve(pos));
+  if (!$cellPos) {
+    return false;
+  }
+
+  const cell = state.doc.nodeAt($cellPos.pos);
+  if (cell) {
+    const selFrom = Selection.findFrom($cellPos, 1, true);
+    const selTo = Selection.findFrom(
+      state.doc.resolve($cellPos.pos + cell.nodeSize),
+      -1,
+      true,
+    );
+    if (selFrom && selTo) {
+      dispatch(
+        state.tr.setSelection(new TextSelection(selFrom.$from, selTo.$to)),
+      );
+      return true;
+    }
+  }
+
+  return false;
+}
