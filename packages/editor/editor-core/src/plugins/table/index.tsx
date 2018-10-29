@@ -20,6 +20,10 @@ import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { PluginConfig, PermittedLayoutsDescriptor } from './types';
 import { createPlugin, pluginKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
+import {
+  createPlugin as stickyHeader,
+  pluginKey as stickyPluginKey,
+} from './pm-plugins/sticky-header';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
 import {
   columnResizing as flexiResizing,
@@ -27,6 +31,7 @@ import {
 } from './pm-plugins/table-resizing';
 import { getToolbarConfig } from './toolbar';
 import FloatingContextualMenu from './ui/FloatingContextualMenu';
+import StickyHeader from './ui/StickyHeader';
 
 export const CELL_MIN_WIDTH = 128;
 export const getCellMinWidth = newResizing =>
@@ -99,6 +104,10 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
       // plugin as it is currently swallowing backspace events inside tables
       { name: 'tableKeymap', plugin: () => keymapPlugin() },
       { name: 'tableEditing', plugin: () => tableEditing() },
+      {
+        name: 'tableStickyHeader',
+        plugin: ({ dispatch }) => stickyHeader(dispatch),
+      },
     ];
   },
 
@@ -107,16 +116,20 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
       <WithPluginState
         plugins={{
           tablesState: pluginKey,
+          stickyState: stickyPluginKey,
         }}
-        render={({ tablesState }) => (
-          <FloatingContextualMenu
-            editorView={editorView}
-            mountPoint={popupsMountPoint}
-            boundariesElement={popupsBoundariesElement}
-            targetCellPosition={tablesState.targetCellPosition}
-            isOpen={tablesState.isContextualMenuOpen}
-            pluginConfig={tablesState.pluginConfig}
-          />
+        render={({ tablesState, stickyState }) => (
+          <>
+            <FloatingContextualMenu
+              editorView={editorView}
+              mountPoint={popupsMountPoint}
+              boundariesElement={popupsBoundariesElement}
+              targetCellPosition={tablesState.targetCellPosition}
+              isOpen={tablesState.isContextualMenuOpen}
+              pluginConfig={tablesState.pluginConfig}
+            />
+            <StickyHeader {...stickyState} />
+          </>
         )}
       />
     );
