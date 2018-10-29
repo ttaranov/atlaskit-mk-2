@@ -1,1 +1,0 @@
-- ED-3762: fix setting text cursor when clicking on editor gutter
