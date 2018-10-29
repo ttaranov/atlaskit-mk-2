@@ -1,1 +1,0 @@
-- ED-5307: make text white for selected heading menu item

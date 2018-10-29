@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.1.11
+- [patch] [cb4168f"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb4168f"
+d):
+
+  - ED-5307: make text white for selected heading menu item
+
 ## 87.1.10
 - [patch] [db65837"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db65837"
