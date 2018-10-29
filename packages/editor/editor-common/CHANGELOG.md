@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 20.2.1
+- [patch] [534f6ab"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/534f6ab"
+d):
+
+  - ED-5615: Fix block element padding inside table cells.
+
 ## 20.2.0
 - [minor] [03947b2"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03947b2"
