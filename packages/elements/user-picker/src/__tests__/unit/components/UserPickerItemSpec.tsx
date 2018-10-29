@@ -53,27 +53,27 @@ describe('UserPickerItem', () => {
     });
   });
 
-  describe('lozenge', () => {
-    it('should not render lozenge for basic user', () => {
+  describe('badge', () => {
+    it('should not render badge for basic user', () => {
       const component = shallowUserPickerItem({ context: 'menu' });
 
       expect(component.find(Lozenge)).toHaveLength(0);
     });
 
-    it('should render tag if lozenge prop passed in', () => {
+    it('should render tag if badge prop passed in', () => {
       const component = shallowUserPickerItem({
-        user: { ...user, lozenge: 'app' },
+        user: { ...user, badge: 'app' },
         context: 'menu',
       });
 
-      const lozenge = component.find(Lozenge);
-      expect(lozenge).toHaveLength(1);
-      expect(lozenge.prop('children')).toEqual('app');
+      const badge = component.find(Lozenge);
+      expect(badge).toHaveLength(1);
+      expect(badge.prop('children')).toEqual('app');
     });
 
-    it('should not render lozenge if empty string', () => {
+    it('should not render badge if empty string', () => {
       const component = shallowUserPickerItem({
-        user: { ...user, lozenge: '' },
+        user: { ...user, badge: '' },
         context: 'menu',
       });
 
