@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/editor-common", "type": "minor" }],
-  "dependents": []
-}

@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 20.2.0
+- [minor] [03947b2"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03947b2"
+d):
+
+  - Change selected state for horizontal rule
+
 ## 20.1.9
 - [patch] [ef26075"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef26075"

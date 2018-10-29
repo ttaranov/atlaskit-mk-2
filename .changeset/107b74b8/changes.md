@@ -1,1 +1,0 @@
-- Change selected state for horizontal rule
