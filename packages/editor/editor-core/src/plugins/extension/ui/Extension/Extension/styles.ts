@@ -37,7 +37,7 @@ export const Header: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const Content: ComponentClass<
   HTMLAttributes<{}> & { innerRef?: any }
 > = styled.div`
-  padding: ${padding}px 32px 32px;
+  padding: ${padding}px 32px ${padding}px 32px;
   background: white;
   border: 1px solid ${colors.N30};
   border-radius: ${borderRadius()}px;
