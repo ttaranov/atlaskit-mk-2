@@ -66,17 +66,17 @@ exports[`DeleteUserOverviewScreen 1`] = `
         <li
           key="0"
         >
-          https://hello.atlassian.net
+          hello.atlassian.net
         </li>
         <li
           key="1"
         >
-          https://acme.atlassian.net
+          acme.atlassian.net
         </li>
         <li
           key="2"
         >
-          https://test.atlassian.net
+          test.atlassian.net
         </li>
       </styled.ul>
       <FormattedMessage

@@ -18,7 +18,10 @@ exports[`isOpen snapshot 1`] = `
       secondaryActions={
         <ForwardRef
           appearance="subtle-link"
+          href="https://hello.atlassian.net"
+          id="learn-more-button"
           spacing="none"
+          target="_blank"
         >
           <FormattedMessage
             defaultMessage="Learn more"

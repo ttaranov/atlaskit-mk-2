@@ -11,7 +11,7 @@ import {
   FocusedTaskCloseAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
-} from '..';
+} from '../src';
 
 const Controls = styled.div`
   display: flex;
@@ -80,6 +80,7 @@ export default class DeleteUserDrawerExample extends React.Component {
                 this.renderDeleteUserContentPreviewScreen(),
               ]}
               submitButton={submitButton}
+              learnMoreLink={'https://hello.atlassian.net'}
             />
           )}
         </>
