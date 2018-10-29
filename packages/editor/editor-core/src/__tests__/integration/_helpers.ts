@@ -158,6 +158,12 @@ export const insertBlockMenuItem = async (
   await browser.click(menuSelector);
 };
 
+export const changeSelectedNodeLayout = async (page, layoutName) => {
+  const buttonSelector = `div[aria-label="Floating Toolbar"] span[aria-label="${layoutName}"]`;
+  await page.waitForSelector(buttonSelector, 3000);
+  await page.click(buttonSelector);
+};
+
 /**
  * When using quick insert, `insertTitle` should match exactly to the typeahead wording.
  * We need to filter down the typeahead, as we select the first result.
