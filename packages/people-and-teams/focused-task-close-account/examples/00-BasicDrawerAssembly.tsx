@@ -8,7 +8,7 @@ import {
   FocusedTaskCloseAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
-} from '..';
+} from '../src';
 
 const submitButton = (
   <Button appearance="primary" onClick={() => null}>
