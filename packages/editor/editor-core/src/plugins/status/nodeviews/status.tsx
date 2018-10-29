@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
@@ -30,6 +31,15 @@ export const StatusContainer = styled.span`
   }
 `;
 
+const messages = defineMessages({
+  placeholder: {
+    id: 'fabric.editor.statusPlaceholder',
+    defaultMessage: 'Set a status',
+    description:
+      'Placeholder description for an empty (new) status item in the editor',
+  },
+});
+
 export interface Props {
   node: PMNode;
   view: EditorView;
@@ -40,7 +50,7 @@ export interface State {
   selected: boolean;
 }
 
-export default class StatusNodeView extends React.Component<Props, State> {
+default class StatusNodeView extends React.Component<Props & InjectedIntlProp, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -78,13 +88,17 @@ export default class StatusNodeView extends React.Component<Props, State> {
 
   render() {
     const {
-      attrs: { text, color, localId },
-    } = this.props.node;
+      node: {
+        attrs: { text, color, localId },
+      },
+      intl: { formatMessage },
+    } = this.props;
     const { selected } = this.state;
+    const statusText = text ? text : formatMessage(messages.placeholder);
 
     return (
       <StatusContainer onClick={this.handleClick} selected={selected}>
-        <Status text={text} color={color} localId={localId} />
+        <Status text={statusText} color={color} localId={localId} />
       </StatusContainer>
     );
   }
@@ -97,3 +111,6 @@ export default class StatusNodeView extends React.Component<Props, State> {
     setStatusPickerAt(state.selection.from)(state, dispatch);
   };
 }
+
+export default injectIntl(StatusNodeView);
+

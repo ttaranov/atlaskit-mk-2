@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
-import { Selection } from 'prosemirror-state';
-import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
+import { ReactWrapper } from 'enzyme';
+import {
+  createEditor,
+  doc,
+  p,
+  mountWithIntl,
+} from '@atlaskit/editor-test-helpers';
 import { Status } from '@atlaskit/status';
 import StatusNodeView, {
   Props as StatusNodeViewProps,
@@ -31,9 +35,9 @@ describe('Status - NodeView', () => {
       text: 'In progress',
       color: 'blue',
       localId: '666',
-    })(view.state, view.dispatch);
+    })(view);
 
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <StatusNodeView
         view={view}
         node={view.state.selection.$from.nodeBefore!}
@@ -54,9 +58,9 @@ describe('Status - NodeView', () => {
       text: 'In progress',
       color: 'blue',
       localId: '666',
-    })(view.state, view.dispatch);
+    })(view);
 
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <StatusNodeView
         view={view}
         node={view.state.selection.$from.nodeBefore!}
