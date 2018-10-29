@@ -1,12 +1,23 @@
 import { keymap } from 'prosemirror-keymap';
 import { Plugin, EditorState, Selection, Transaction } from 'prosemirror-state';
-import { CellSelection } from 'prosemirror-tables';
+import {
+  addColumnBefore,
+  addColumnAfter,
+  addRowBefore,
+  addRowAfter,
+  CellSelection,
+} from 'prosemirror-tables';
 import {
   emptyCell,
   findCellClosestToPos,
   isCellSelection,
 } from 'prosemirror-utils';
-import { moveCursorBackward, goToNextCell, createTable } from '../actions';
+import {
+  createTable,
+  goToNextCell,
+  moveCursorBackward,
+  triggerUnlessTableHeader,
+} from '../actions';
 import * as keymaps from '../../../keymaps';
 import { analyticsService } from '../../../analytics';
 
@@ -55,6 +66,27 @@ export function keymapPlugin(): Plugin {
   keymaps.bindKeymapWithCommand(
     keymaps.backspace.common!,
     moveCursorBackward,
+    list,
+  );
+
+  // Add row/column shortcuts
+  keymaps.bindKeymapWithCommand(
+    keymaps.addRowBefore.common!,
+    triggerUnlessTableHeader(addRowBefore),
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(keymaps.addRowAfter.common!, addRowAfter, list);
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.addColumnBefore.common!,
+    triggerUnlessTableHeader(addColumnBefore),
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.addColumnAfter.common!,
+    addColumnAfter,
     list,
   );
 
