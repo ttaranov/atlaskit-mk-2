@@ -30,7 +30,7 @@ export type Props = {
   onFocus?: OnPicker;
   onBlur?: OnPicker;
   blurInputOnSelect?: boolean;
-  appearence?: 'normal' | 'compact';
+  appearance?: 'normal' | 'compact';
   subtle?: boolean;
 };
 
@@ -40,15 +40,25 @@ export type State = {
   inflightRequest: number;
   count: number;
   hoveringClearIndicator: boolean;
+  menuIsOpen: boolean;
 };
 
 export class UserPicker extends React.PureComponent<Props, State> {
   static defaultProps = {
     width: 350,
     isMulti: false,
-    appearence: 'normal',
+    appearance: 'normal',
     subtle: false,
   };
+
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (nextProps.open !== undefined) {
+      return {
+        menuIsOpen: nextProps.open,
+      };
+    }
+    return null;
+  }
 
   private selectRef;
 
@@ -60,6 +70,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
       inflightRequest: 0,
       count: 0,
       hoveringClearIndicator: false,
+      menuIsOpen: false,
     };
   }
 
@@ -147,11 +158,11 @@ export class UserPicker extends React.PureComponent<Props, State> {
   }, 200);
 
   private handleFocus = () => {
-    const { onFocus } = this.props;
-    this.executeLoadOptions();
-    if (onFocus) {
-      onFocus();
-    }
+    this.setState({ menuIsOpen: true });
+  };
+
+  private handleBlur = () => {
+    this.setState({ menuIsOpen: false });
   };
 
   private handleInputChange = (
@@ -171,14 +182,14 @@ export class UserPicker extends React.PureComponent<Props, State> {
     select.onInputChange(this.props.search, { action: 'input-change' });
   });
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     // trigger onInputChange
     if (this.props.search !== prevProps.search) {
       this.triggerInputChange();
     }
 
     // load options when the picker open
-    if (this.props.open && !prevProps.open) {
+    if (this.state.menuIsOpen && !prevState.menuIsOpen) {
       this.executeLoadOptions();
     }
   }
@@ -192,15 +203,19 @@ export class UserPicker extends React.PureComponent<Props, State> {
       width,
       isMulti,
       search,
-      open,
       anchor,
       users,
       isLoading,
       blurInputOnSelect,
-      appearence,
+      appearance,
       subtle,
     } = this.props;
-    const { users: usersFromState, count, hoveringClearIndicator } = this.state;
+    const {
+      users: usersFromState,
+      count,
+      hoveringClearIndicator,
+      menuIsOpen,
+    } = this.state;
     return (
       <Select
         ref={this.handleSelectRef}
@@ -210,8 +225,9 @@ export class UserPicker extends React.PureComponent<Props, State> {
         styles={getStyles(width)}
         components={getComponents(isMulti, anchor)}
         inputValue={search}
-        menuIsOpen={open}
+        menuIsOpen={menuIsOpen}
         onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
         isLoading={count > 0 || isLoading}
         onInputChange={this.handleInputChange}
         onBlur={this.handleBlur}
@@ -221,9 +237,12 @@ export class UserPicker extends React.PureComponent<Props, State> {
         classNamePrefix="atlassian-user-picker"
         onClearIndicatorHover={this.handleClearIndicatorHover}
         hoveringClearIndicator={hoveringClearIndicator}
-        appearence={isMulti ? 'compact' : appearence}
+        appearance={isMulti ? 'compact' : appearance}
         isClearable
         subtle={isMulti ? false : subtle}
+        blurInputOnSelect={!isMulti}
+        closeMenuOnSelect={!isMulti}
+        openMenuOnFocus
       />
     );
   }

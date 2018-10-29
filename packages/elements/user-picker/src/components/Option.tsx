@@ -1,15 +1,10 @@
 import Avatar, { AvatarItem } from '@atlaskit/avatar';
+import { components } from '@atlaskit/select';
+import { colors } from '@atlaskit/theme';
 import * as React from 'react';
-import { components } from 'react-select';
 import styled from 'styled-components';
 import { HighlightRange } from '../types';
 import { HighlightText } from './HighlightText';
-
-// export interface Props {
-//   user: User;
-//   status?: 'online' | 'busy' | 'focus' | 'offline';
-//   innerRef?: React.Ref<unknown>;
-// }
 
 interface AvatarText {
   primaryText: string;
@@ -27,6 +22,12 @@ const AvatarComponent = styled.div`
   }
 `;
 
+const TextWrapper = styled.div`
+  color: ${({ color }) => color};
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export class Option extends React.PureComponent<any> {
   private renderAvatar = () => {
     const {
@@ -36,7 +37,13 @@ export class Option extends React.PureComponent<any> {
       status,
     } = this.props;
     return (
-      <Avatar src={avatarUrl} size="medium" presence={status} name={name} />
+      <Avatar
+        src={avatarUrl}
+        size="medium"
+        presence={status}
+        name={name}
+        isHover={false}
+      />
     );
   };
 
@@ -56,13 +63,19 @@ export class Option extends React.PureComponent<any> {
   };
 
   private highlightText = (text?: string, highlights?: HighlightRange[]) => {
+    const { isSelected } = this.props;
     if (!text) {
       return undefined;
     }
-    if (!highlights) {
-      return text;
-    }
-    return <HighlightText highlights={highlights}>{text}</HighlightText>;
+    return (
+      <TextWrapper color={isSelected ? colors.N0 : colors.N800}>
+        {highlights ? (
+          <HighlightText highlights={highlights}>{text}</HighlightText>
+        ) : (
+          text
+        )}
+      </TextWrapper>
+    );
   };
 
   render() {

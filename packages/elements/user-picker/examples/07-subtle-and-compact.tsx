@@ -9,7 +9,7 @@ export default class Example extends React.Component<{}> {
         users={exampleUsers}
         onChange={console.log}
         subtle
-        appearence="compact"
+        appearance="compact"
       />
     );
   }

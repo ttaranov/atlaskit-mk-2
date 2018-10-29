@@ -7,6 +7,11 @@ const AvatarItemComponent = styled.div`
   padding: 0;
   margin-left: 4px;
   width: auto;
+  overflow: hidden;
+
+  & > span {
+    box-sizing: border-box;
+  }
 
   &:hover {
     width: auto;
@@ -21,7 +26,7 @@ export const SingleValue = props => {
     data: {
       user: { avatarUrl, name, nickname },
     },
-    selectProps: { appearence },
+    selectProps: { appearance },
   } = props;
   return (
     <AvatarItem
@@ -29,8 +34,9 @@ export const SingleValue = props => {
       avatar={
         <Avatar
           src={avatarUrl}
-          size={appearence === 'normal' ? 'small' : 'xsmall'}
+          size={appearance === 'normal' ? 'small' : 'xsmall'}
           name={name}
+          isHover={false}
         />
       }
       primaryText={name || nickname}

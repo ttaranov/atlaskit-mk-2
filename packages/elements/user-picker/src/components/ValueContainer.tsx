@@ -1,51 +1,55 @@
-import Avatar from '@atlaskit/avatar';
+import { components } from '@atlaskit/select';
 import * as React from 'react';
-import { components } from 'react-select';
 import styled from 'styled-components';
 
-// type Props = {};
-
-const ChildrenContainer = styled.div`
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+const ScrollAnchor = styled.div`
+  align-self: flex-end;
 `;
 
-const PlaceholderIconContainer = styled.span`
-  margin-right: 8px;
-  padding: 0;
-  line-height: 0;
-`;
+export type State = {
+  valueSize: number;
+  previousValueSize: number;
+};
 
-const PlaceHolderIcon = ({ hasValue, label, inputValue, appearance }) => {
-  if (!hasValue || (inputValue && inputValue.length > 0)) {
+export class ValueContainer extends React.PureComponent<any, State> {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      valueSize: nextProps.getValue().length,
+      previousValueSize: prevState.valueSize,
+    };
+  }
+
+  private bottomAnchor;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      valueSize: 0,
+      previousValueSize: 0,
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { previousValueSize, valueSize } = this.state;
+    if (previousValueSize && valueSize > previousValueSize) {
+      setTimeout(() => this.bottomAnchor.scrollIntoView());
+    }
+  }
+
+  handleBottomAnchor = ref => {
+    this.bottomAnchor = ref;
+  };
+
+  render() {
+    const { children, ...valueContainerProps } = this.props;
     return (
-      <PlaceholderIconContainer>
-        <Avatar
-          size={appearance === 'normal' ? 'medium' : 'xsmall'}
-          name={label}
-        />
-      </PlaceholderIconContainer>
+      <components.ValueContainer
+        data-test="hey! it is me!!"
+        {...valueContainerProps}
+      >
+        {children}
+        <ScrollAnchor innerRef={this.handleBottomAnchor} />
+      </components.ValueContainer>
     );
   }
-  return null;
-};
-
-export const ValueContainer: React.StatelessComponent<any> = props => {
-  const { children, ...valueContainerProps } = props;
-  const {
-    selectProps: { placeholder, inputValue, appearance },
-    hasValue,
-  } = valueContainerProps;
-  return (
-    <components.ValueContainer {...valueContainerProps}>
-      <PlaceHolderIcon
-        label={placeholder}
-        inputValue={inputValue}
-        hasValue={hasValue}
-        appearance={appearance}
-      />
-      <ChildrenContainer>{children}</ChildrenContainer>
-    </components.ValueContainer>
-  );
-};
+}

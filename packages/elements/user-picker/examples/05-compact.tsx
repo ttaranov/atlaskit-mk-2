@@ -8,7 +8,7 @@ export default class Example extends React.Component<{}> {
       <UserPicker
         users={exampleUsers}
         onChange={console.log}
-        appearence="compact"
+        appearance="compact"
       />
     );
   }

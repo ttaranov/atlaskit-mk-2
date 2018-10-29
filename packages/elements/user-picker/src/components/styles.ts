@@ -1,3 +1,4 @@
+import { colors } from '@atlaskit/theme';
 import memoizeOne from 'memoize-one';
 
 export const getStyles = memoizeOne(width => ({
@@ -5,13 +6,12 @@ export const getStyles = memoizeOne(width => ({
   control: (css, state) => ({
     ...css,
     width,
-    flexWrap: 'nowrap',
     borderColor: state.isFocused
       ? css.borderColor
       : state.selectProps.subtle
         ? 'transparent'
-        : '#DFE1E6',
-    backgroundColor: state.selectProps.subtle ? 'transparent' : '#FAFBFC',
+        : colors.N40,
+    backgroundColor: state.selectProps.subtle ? 'transparent' : colors.N10,
     '&:hover .atlassian-user-picker__clear-indicator': {
       opacity: 1,
     },
@@ -19,16 +19,18 @@ export const getStyles = memoizeOne(width => ({
       ...css[':hover'],
       borderColor: state.isFocused
         ? css[':hover'].borderColor
-        : state.selectProps.subtle && state.selectProps.hoveringClearIndicator
-          ? '#FFEBE6'
-          : css[':hover'].backgroundColor,
+        : state.selectProps.subtle
+          ? state.selectProps.hoveringClearIndicator
+            ? colors.R50
+            : colors.N30
+          : colors.N40,
       backgroundColor:
         state.selectProps.subtle && state.selectProps.hoveringClearIndicator
-          ? '#FFEBE6'
-          : css[':hover'].backgroundColor,
+          ? colors.R50
+          : colors.N30,
     },
     padding: 0,
-    minHeight: state.selectProps.appearence === 'compact' ? 32 : 44,
+    minHeight: state.selectProps.appearance === 'compact' ? 32 : 44,
     alignItems: 'stretch',
   }),
   clearIndicator: ({
@@ -44,16 +46,18 @@ export const getStyles = memoizeOne(width => ({
     paddingTop: 0,
     padding: 0,
     ':hover': {
-      color: '#DE350B',
+      color: colors.R400,
     },
   }),
-  valueContainer: ({ paddingTop, paddingBottom, ...css }) => ({
+  valueContainer: ({ paddingTop, paddingBottom, ...css }, state) => ({
     ...css,
     flexGrow: 1,
-    overflow: 'hidden',
     padding: 0,
     display: 'flex',
     flexDirection: 'row',
+    maxHeight: 100,
+    overflow: 'auto',
+    flexWrap: state.selectProps.isMulti ? 'wrap' : 'nowrap',
   }),
   multiValue: css => ({
     ...css,
@@ -62,9 +66,7 @@ export const getStyles = memoizeOne(width => ({
   multiValueRemove: css => ({
     ...css,
     backgroundColor: 'transparent',
-    '&:hover': {
-      backgroundColor: 'transparent',
-    },
+    '&:hover': { backgroundColor: 'transparent' },
   }),
   placeholder: css => ({
     ...css,
@@ -72,5 +74,9 @@ export const getStyles = memoizeOne(width => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  }),
+  option: css => ({
+    ...css,
+    overflow: 'hidden',
   }),
 }));
