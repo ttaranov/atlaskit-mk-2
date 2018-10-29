@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/editor-test-helpers", "type": "patch" }],
-  "dependents": []
-}

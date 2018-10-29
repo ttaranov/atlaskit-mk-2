@@ -1,5 +1,12 @@
 # @atlaskit/editor-test-helpers
 
+## 6.2.13
+- [patch] [7fc0ffb"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fc0ffb"
+d):
+
+  - ED-5619 Change "Loren ipsun" to "Lorem ipsum" in the example
+
 ## 6.2.12
 - [patch] [44d9c5b"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44d9c5b"
