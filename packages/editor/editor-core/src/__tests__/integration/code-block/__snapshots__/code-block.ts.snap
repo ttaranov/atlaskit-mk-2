@@ -4,6 +4,9 @@ exports[`code-block: produces correct ADF after language change 1`] = `
 Object {
   "content": Array [
     Object {
+      "type": "paragraph",
+    },
+    Object {
       "attrs": Object {
         "language": "javascript",
         "uniqueId": null,
