@@ -6,10 +6,9 @@ import { shallow, mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
 import { Ellipsify, Camera, Rectangle } from '@atlaskit/media-ui';
-import {
+import ImageNavigator, {
   CONTAINER_INNER_SIZE,
   containerRect,
-  ImageNavigator,
   Props as ImageNavigatorProps,
 } from '../../../src/image-navigator';
 import { ERROR, MAX_SIZE_MB } from '../../../src/avatar-picker-dialog';

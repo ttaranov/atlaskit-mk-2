@@ -113,27 +113,54 @@ export const messages = defineMessages({
   upload_an_avatar: {
     id: 'fabric.media.upload_an_avatar',
     defaultMessage: 'Upload an avatar',
-    description: 'TODO',
+    description: 'Indicates that the user can upload a new avatar',
   },
   save: {
     id: 'fabric.media.save',
     defaultMessage: 'Save',
-    description: 'TODO',
+    description: 'Just the "save" word',
   },
   or: {
     id: 'fabric.media.or',
     defaultMessage: 'or',
-    description: 'TODO',
+    description: 'Just the "or" word',
   },
   upload_photo: {
     id: 'fabric.media.upload_photo',
     defaultMessage: 'Upload a photo',
-    description: 'TODO',
+    description: 'Call to action for the user to upload a new photo',
   },
   default_avatars: {
     id: 'fabric.media.default_avatars',
     defaultMessage: 'Default avatars',
-    description: 'TODO',
+    description: 'Showed above the default avatar list',
+  },
+  drag_and_drop_images_here: {
+    id: 'fabric.media.drag_and_drop_images_here',
+    defaultMessage: 'Drag and drop your images here',
+    description:
+      'Indicates that the user can drag and drop images in that area',
+  },
+  upload_image: {
+    id: 'fabric.media.upload_image',
+    defaultMessage: 'Upload image',
+    description: 'Call to action for the user to upload a new image',
+  },
+  image_url_invalid_error: {
+    id: 'fabric.media.image_url_invalid_error',
+    defaultMessage: 'Could not load image, the url is invalid.',
+    description: 'There was an error parsing the image url',
+  },
+  image_format_invalid_error: {
+    id: 'fabric.media.image_format_invalid_error',
+    defaultMessage: 'Could not load image, the format is invalid.',
+    description: 'The provided image format is not valid',
+  },
+  image_size_too_large_error: {
+    id: 'fabric.media.image_size_too_large_error',
+    defaultMessage:
+      'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+    description: 'The provided image size is too big',
   },
   something_went_wrong: {
     id: 'fabric.media.something_went_wrong',

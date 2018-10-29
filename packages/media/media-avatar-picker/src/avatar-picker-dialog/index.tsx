@@ -2,10 +2,10 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import ModalDialog, { ModalFooter } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape, IntlProvider } from 'react-intl';
 import { messages } from '@atlaskit/media-ui';
 import { Avatar } from '../avatar-list';
-import { ImageNavigator, CropProperties } from '../image-navigator';
+import ImageNavigator, { CropProperties } from '../image-navigator';
 import { PredefinedAvatarList } from '../predefined-avatar-list';
 import {
   AvatarPickerViewWrapper,
@@ -44,9 +44,9 @@ export enum Mode {
 export const MAX_SIZE_MB = 10;
 
 export const ERROR = {
-  URL: 'Could not load image, the url is invalid.',
-  FORMAT: 'Could not load image, the format is invalid.',
-  SIZE: `Image is too large, must be no larger than ${MAX_SIZE_MB}Mb`,
+  URL: messages.image_url_invalid_error,
+  FORMAT: messages.image_format_invalid_error,
+  SIZE: messages.image_size_too_large_error,
 };
 
 export const ACCEPT = ['image/gif', 'image/jpeg', 'image/png'];
@@ -186,8 +186,16 @@ export class AvatarPickerDialog extends PureComponent<
     this.setErrorState(errorMessage);
   };
 
+  static contextTypes = {
+    intl: intlShape,
+  };
+
+  // context: {
+  //   intl: IntlShape;
+  // };
+
   render() {
-    return (
+    const content = (
       <ModalDialog
         height={`${AVATAR_DIALOG_HEIGHT}px`}
         width={`${AVATAR_DIALOG_WIDTH}px`}
@@ -198,6 +206,12 @@ export class AvatarPickerDialog extends PureComponent<
       >
         <AvatarPickerViewWrapper>{this.renderBody()}</AvatarPickerViewWrapper>
       </ModalDialog>
+    );
+
+    return this.context.intl ? (
+      content
+    ) : (
+      <IntlProvider locale="en">{content}</IntlProvider>
     );
   }
 

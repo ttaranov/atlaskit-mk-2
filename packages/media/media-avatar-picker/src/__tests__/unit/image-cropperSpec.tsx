@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { ImageCropper, ImageCropperProp } from '../../../src/image-cropper';
+import ImageCropper, { ImageCropperProp } from '../../../src/image-cropper';
 import { ERROR } from '../../../src/avatar-picker-dialog';
 import {
   Container,
