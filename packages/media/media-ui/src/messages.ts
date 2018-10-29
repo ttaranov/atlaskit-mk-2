@@ -112,7 +112,7 @@ export const messages = defineMessages({
   },
   something_went_wrong: {
     id: 'fabric.media.something_went_wrong',
-    defaultMessage: 'Something went wrong',
+    defaultMessage: 'Something went wrong.',
     description:
       'Showed when an error happen but we dont have more info about it',
   },
