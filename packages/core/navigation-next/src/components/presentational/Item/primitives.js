@@ -12,6 +12,7 @@ type SwitchProps = {
   as: ElementType,
   innerRef: Ref<*>,
 };
+
 const ComponentSwitch = ({ as, innerRef, ...rest }: SwitchProps) => {
   const props = isString(as) ? rest : { innerRef, ...rest };
   const ElementOrComponent = as;

@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { ItemPrimitiveBase } from '../../primitives';
+import ItemPrimitive, { ItemPrimitiveBase } from '../../primitives';
 import type {
   ItemRenderComponentProps,
   ItemPresentationProps,
@@ -19,23 +19,12 @@ describe('ItemPrimitiveBase', () => {
 
   beforeEach(() => {
     defaultProps = {
-      after: undefined,
-      before: undefined,
-      component: undefined,
-      href: undefined,
-      id: undefined,
-      index: undefined,
-      innerRef: undefined,
       isSelected: false,
       isActive: false,
       isHover: false,
-      onClick: () => {},
-      spacing: 'default',
-      styles: undefined,
-      subText: undefined,
-      target: undefined,
-      text: 'item content',
       isFocused: false,
+      spacing: 'default',
+      text: 'item content',
       theme: {
         context: 'default',
         mode: ({
@@ -54,9 +43,9 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should render only component prop if present', () => {
-    defaultProps.component = TestComponent;
-
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} component={TestComponent} />,
+    );
 
     expect(wrapper.find(TestComponent).length).toBe(1);
     expect(wrapper.find('a').length).toBe(0);
@@ -64,9 +53,9 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should pass all props and innerRef as ref prop to component if present', () => {
-    defaultProps.component = TestComponent;
-
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} component={TestComponent} />,
+    );
     const componentWrapper = wrapper.find(TestComponent);
 
     expect(componentWrapper.props()).toEqual(
@@ -76,9 +65,9 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should render an anchor element if href prop is present', () => {
-    defaultProps.href = '<a>test</test>';
-
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} href={'<a>test</test>'} />,
+    );
 
     expect(wrapper.find('a').length).toBe(1);
     expect(wrapper.find(TestComponent).length).toBe(0);
@@ -86,22 +75,35 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should pass expected props to anchor if href prop is present', () => {
-    defaultProps.href = '<a>test</test>';
+    const onClick = () => {};
+    const target = 'target';
+    const href = '<a>test</a>';
 
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase
+        {...defaultProps}
+        onClick={onClick}
+        href={href}
+        target={target}
+      />,
+    );
 
     const anchorWrapper = wrapper.find('a');
-    expect(anchorWrapper.prop('href')).toBe(defaultProps.href);
-    expect(anchorWrapper.prop('onClick')).toBe(defaultProps.onClick);
-    expect(anchorWrapper.prop('target')).toBe(defaultProps.target);
-    expect(anchorWrapper.prop('innerRef')).toBe(defaultProps.innerRef);
-    expect(anchorWrapper.prop('ref')).toBe(defaultProps.innerRef);
+
+    expect(anchorWrapper.props()).toEqual(
+      expect.objectContaining({
+        href,
+        onClick,
+        target,
+      }),
+    );
+    expect(anchorWrapper.prop('innerRef')).toBeUndefined();
   });
 
   it('should render a button element if onClick prop is present', () => {
-    defaultProps.onClick = () => {};
-
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} onClick={() => {}} />,
+    );
 
     expect(wrapper.find('button').length).toBe(1);
     expect(wrapper.find('a').length).toBe(0);
@@ -109,13 +111,14 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should pass expected props to button if onClick prop is present', () => {
-    defaultProps.onClick = jest.fn();
+    const onClick = () => {};
 
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} onClick={onClick} />,
+    );
 
-    expect(wrapper.find('button').prop('onClick')).toBe(defaultProps.onClick);
-    expect(wrapper.find('button').prop('innerRef')).toBe(defaultProps.innerRef);
-    expect(wrapper.find('button').prop('ref')).toBe(defaultProps.innerRef);
+    expect(wrapper.find('button').prop('onClick')).toBe(onClick);
+    expect(wrapper.find('button').prop('innerRef')).toBeUndefined();
   });
 
   it('should always render text prop', () => {
@@ -124,9 +127,9 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should render Before with expected props if present', () => {
-    defaultProps.before = BeforeOrAfterComponent;
-
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} before={BeforeOrAfterComponent} />,
+    );
 
     expect(wrapper.find(BeforeOrAfterComponent).props()).toEqual({
       isActive: false,
@@ -138,9 +141,9 @@ describe('ItemPrimitiveBase', () => {
   });
 
   it('should render After with expected props if present', () => {
-    defaultProps.after = BeforeOrAfterComponent;
-
-    const wrapper = mount(<ItemPrimitiveBase {...defaultProps} />);
+    const wrapper = mount(
+      <ItemPrimitiveBase {...defaultProps} after={BeforeOrAfterComponent} />,
+    );
 
     expect(wrapper.find(BeforeOrAfterComponent).props()).toEqual({
       isActive: false,
@@ -150,4 +153,11 @@ describe('ItemPrimitiveBase', () => {
       isFocused: false,
     });
   });
+
+  // describe('ItemPrimitive', () => {
+  //   it('should render correctly', () => {
+  //     const wrapper = mount(<ItemPrimitive {...defaultProps}/>);
+  //     expect(wrapper).toMatchSnapshot();
+  //   })
+  // })
 });
