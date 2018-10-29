@@ -14,10 +14,7 @@ import {
   leafNodeReplacementCharacter,
   InputRuleWithHandler,
 } from '../../../utils/input-rules';
-import {
-  isConvertableToCodeBlock,
-  transformToCodeBlockAction,
-} from '../commands/transform-to-code-block';
+import { transformToCodeBlockAction } from '../commands/transform-to-code-block';
 import { insertBlock } from '../commands/insert-block';
 
 export function headingRule(nodeType: NodeType, maxLevel: number) {
@@ -109,18 +106,16 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
           if (match[4]) {
             attributes.language = match[4];
           }
-          if (isConvertableToCodeBlock(state)) {
-            const newStart = match[0][0] === ' ' ? start + 1 : start;
-            analyticsService.trackEvent(
-              `atlassian.editor.format.codeblock.autoformatting`,
-            );
-            return (
-              transformToCodeBlockAction(state, attributes)
-                // remove markdown decorator ```
-                .delete(newStart, end)
-                .scrollIntoView()
-            );
-          }
+          const newStart = match[0][0] === ' ' ? start + 1 : start;
+          analyticsService.trackEvent(
+            `atlassian.editor.format.codeblock.autoformatting`,
+          );
+          return transformToCodeBlockAction(
+            state,
+            attributes,
+            newStart,
+            end,
+          ).scrollIntoView();
         },
         true,
       ),

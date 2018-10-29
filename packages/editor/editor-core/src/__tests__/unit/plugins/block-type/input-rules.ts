@@ -196,7 +196,7 @@ describe('inputrules', () => {
 
           insertText(editorView, '```', sel);
           expect(editorView.state.doc).toEqualDocument(
-            doc(code_block()('hello\nworld')),
+            doc(p('{<>}hello', br(), 'world'), code_block()()),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.codeblock.autoformatting',
@@ -219,11 +219,11 @@ describe('inputrules', () => {
           editorView.destroy();
         });
 
-        it('should convert "```" in middle of paragraph to a code block', () => {
+        it('should convert "```" in middle of paragraph to a code block below', () => {
           const { editorView, sel } = editor(doc(p('code ``{<>}block!')));
           insertText(editorView, '`', sel);
           expect(editorView.state.doc).toEqualDocument(
-            doc(p('code '), code_block()('block!')),
+            doc(p('code block!'), code_block()()),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.codeblock.autoformatting',
