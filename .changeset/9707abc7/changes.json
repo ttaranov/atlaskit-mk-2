@@ -1,7 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/media-ui", "type": "minor" },
-    { "name": "@atlaskit/media-viewer", "type": "major" }
-  ],
-  "dependents": []
-}
