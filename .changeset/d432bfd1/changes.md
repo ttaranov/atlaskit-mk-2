@@ -1,0 +1,1 @@
+- ED-5641 Add more padding to bodied macro's to accomdate for tables
