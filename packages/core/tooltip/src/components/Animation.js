@@ -71,7 +71,10 @@ const Animation = ({
   };
   return (
     <Transition timeout={timeout} in={inProp} unmountOnExit appear>
-      {state => children(getStyle(timeout, state))}
+      {state =>
+        console.log(getStyle(timeout, state)) ||
+        children(getStyle(timeout, state))
+      }
     </Transition>
   );
 };

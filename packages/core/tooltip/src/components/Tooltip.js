@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import NodeResolver from 'react-node-resolver';
 import flushable from 'flushable';
+import { Manager, Reference, Popper } from '@atlaskit/popper';
 
 import Portal from '@atlaskit/portal';
 import {
@@ -227,60 +228,119 @@ class Tooltip extends Component<Props, State> {
       immediatelyShow,
       immediatelyHide,
     } = this.state;
+
+    let useNew = true;
     return (
-      <React.Fragment>
-        <TargetContainer
-          onClick={this.handleMouseClick}
-          onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseLeave}
-          onMouseMove={this.handleMouseMove}
-          onMouseDown={this.handleMouseDown}
-          ref={wrapperRef => {
-            this.wrapperRef = wrapperRef;
-          }}
-        >
-          <NodeResolver
-            innerRef={targetRef => {
-              this.targetRef = targetRef;
-            }}
-          >
-            {Children.only(children)}
-          </NodeResolver>
-        </TargetContainer>
-        {everBeenVisible && (
-          <Animation
-            immediatelyShow={immediatelyShow}
-            immediatelyHide={immediatelyHide}
-            in={isVisible}
-          >
-            {getAnimationStyles => (
-              <Portal zIndex={layers.tooltip()}>
-                <Position
-                  key={position}
-                  mouseCoordinates={this.mouseCoordinates}
-                  mousePosition={mousePosition}
-                  position={position}
-                  target={this.targetRef}
-                >
-                  {(ref, placement, positionStyles) => (
-                    <TooltipContainer
-                      innerRef={ref}
-                      style={{
-                        ...positionStyles,
-                        ...getAnimationStyles(placement),
-                      }}
-                      truncate={truncate}
-                      data-placement={placement}
+      // TODO: remove Fragment, as Manager is now our wrapper
+      <>
+        {useNew ? (
+          <>
+            <TargetContainer
+              onClick={this.handleMouseClick}
+              onMouseOver={this.handleMouseOver}
+              onMouseOut={this.handleMouseLeave}
+              onMouseMove={this.handleMouseMove}
+              onMouseDown={this.handleMouseDown}
+              ref={wrapperRef => {
+                this.wrapperRef = wrapperRef;
+              }}
+            >
+              <NodeResolver
+                innerRef={targetRef => {
+                  this.targetRef = targetRef;
+                }}
+              >
+                {Children.only(children)}
+              </NodeResolver>
+            </TargetContainer>
+            {everBeenVisible && this.targetRef ? (
+              <Popper
+                referenceElement={this.targetRef}
+                placement={position === 'mouse' ? 'bottom' : position}
+              >
+                {({ ref, style, placement, ...rest }) => (
+                  <Animation
+                    immediatelyShow={immediatelyShow}
+                    immediatelyHide={immediatelyHide}
+                    in={isVisible}
+                  >
+                    {getAnimationStyles => (
+                      <TooltipContainer
+                        innerRef={ref}
+                        style={{
+                          ...style,
+                          ...getAnimationStyles(placement),
+                        }}
+                        truncate={truncate}
+                        data-placement={placement}
+                      >
+                        {content}
+                      </TooltipContainer>
+                    )}
+                  </Animation>
+                )}
+              </Popper>
+            ) : null}
+          </>
+        ) : null}
+        {useNew ? null : (
+          <>
+            <TargetContainer
+              onClick={this.handleMouseClick}
+              onMouseOver={this.handleMouseOver}
+              onMouseOut={this.handleMouseLeave}
+              onMouseMove={this.handleMouseMove}
+              onMouseDown={this.handleMouseDown}
+              ref={wrapperRef => {
+                this.wrapperRef = wrapperRef;
+              }}
+            >
+              <NodeResolver
+                innerRef={targetRef => {
+                  this.targetRef = targetRef;
+                }}
+              >
+                {Children.only(children)}
+              </NodeResolver>
+            </TargetContainer>
+            {everBeenVisible && (
+              <Animation
+                immediatelyShow={immediatelyShow}
+                immediatelyHide={immediatelyHide}
+                in={isVisible}
+              >
+                {getAnimationStyles => (
+                  <Portal zIndex={layers.tooltip()}>
+                    <Position
+                      key={position}
+                      mouseCoordinates={this.mouseCoordinates}
+                      mousePosition={mousePosition}
+                      position={position}
+                      target={this.targetRef}
                     >
-                      {content}
-                    </TooltipContainer>
-                  )}
-                </Position>
-              </Portal>
+                      {(ref, placement, positionStyles) =>
+                        console.log(placement, position, positionStyles) || (
+                          <TooltipContainer
+                            innerRef={ref}
+                            style={{
+                              ...positionStyles,
+                              ...getAnimationStyles(placement),
+                            }}
+                            truncate={truncate}
+                            data-placement={placement}
+                          >
+                            {content}
+                          </TooltipContainer>
+                        )
+                      }
+                    </Position>
+                  </Portal>
+                )}
+              </Animation>
             )}
-          </Animation>
+          </>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

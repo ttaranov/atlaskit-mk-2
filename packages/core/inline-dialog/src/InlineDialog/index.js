@@ -117,7 +117,25 @@ class InlineDialog extends Component<Props, {}> {
             </NodeResolver>
           )}
         </Reference>
-        {popper}
+        {isOpen ? (
+          <Popper placement={placement}>
+            {({ ref, style, outOfBoundaries }) => (
+              <Container
+                onBlur={onContentBlur}
+                onFocus={onContentFocus}
+                onClick={onContentClick}
+                outOfBoundaries={outOfBoundaries}
+                innerRef={node => {
+                  this.containerRef = node;
+                  ref(node);
+                }}
+                style={style}
+              >
+                {content}
+              </Container>
+            )}
+          </Popper>
+        ) : null}
       </Manager>
     );
   }
