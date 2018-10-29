@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.4.0
+- [minor] [5981cec"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5981cec"
+d):
+
+  - TypeAhead to preserve marks
+
 ## 87.3.2
 - [patch] [14d581b"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14d581b"
