@@ -109,6 +109,7 @@ const HeaderButton = (css?: string) => `
   .active .${ClassName.CONTROLS_BUTTON},
   .${ClassName.HOVERED_TABLE} .${ClassName.CONTROLS_BUTTON},
   .${ClassName.CONTROLS_BUTTON}:hover {
+    color: ${N0};
     background-color: ${tableToolbarSelectedColor};
     border-color: ${tableBorderSelectedColor};
   }
@@ -124,19 +125,13 @@ const InsertButton = (css?: string) => `
   .${ClassName.CONTROLS_INSERT_BUTTON_INNER} {
     position: absolute;
     z-index: ${akEditorUnitZIndex};
-    display: none;
-    width: 100%;
     ${css}
 
-    button {
-      width: 100%;
-    }
-    button * {
-      width: 100%;
-      height: 100%;
-    }
     .${ClassName.CONTROLS_INSERT_BUTTON} {
-      ${Button()}
+      ${Button(`
+      height: ${tableInsertColumnButtonSize}px;
+      width: ${tableInsertColumnButtonSize}px;
+`)}
     }
   }
 `;
@@ -144,8 +139,6 @@ const InsertButton = (css?: string) => `
 const DeleteButton = (css?: string) => `
   .${ClassName.CONTROLS_DELETE_BUTTON_WRAP} {
     position: absolute;
-    height: ${tableDeleteButtonSize}px;
-    width: ${tableDeleteButtonSize}px;
     cursor: pointer;
     ${css}
 
@@ -157,12 +150,9 @@ const DeleteButton = (css?: string) => `
           background: ${R300};
           color: white;
         }
+        height: ${tableDeleteButtonSize}px;
+        width: ${tableDeleteButtonSize}px;
       `)}
-      .${ClassName.CONTROLS_BUTTON_ICON},
-      .${ClassName.CONTROLS_BUTTON_ICON} svg {
-        width: 16px;
-        height: 16px;
-      }
     }
   }
 `;
@@ -494,7 +484,7 @@ export const tableStyles = css`
     .${ClassName.COLUMN_CONTROLS_WRAPPER},
     .${ClassName.ROW_CONTROLS_WRAPPER} {
       position: absolute;
-      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
+      top: ${tableMarginTop - 1}px;
     }
     .${ClassName.ROW_CONTROLS_WRAPPER}.${ClassName.TABLE_LEFT_SHADOW} {
       z-index: ${akEditorUnitZIndex};
@@ -508,6 +498,8 @@ export const tableStyles = css`
     .${ClassName.TABLE_NODE_WRAPPER} {
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
+      padding-top: ${tableInsertColumnButtonSize / 2}px;
+      margin-top: -${tableInsertColumnButtonSize / 2}px;
       z-index: ${akEditorUnitZIndex - 1};
       /* fixes gap cursor height */
       overflow: ${isIE11 ? 'none' : 'auto'};
