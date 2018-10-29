@@ -31,7 +31,7 @@ export type NavigationProps = Readonly<{
   WithAnalyticsEventProps;
 
 export type NavigationSource = 'keyboard' | 'mouse';
-class NavigationBase extends Component<NavigationProps, any> {
+export class NavigationBase extends Component<NavigationProps, {}> {
   private navigate(direction: NavigationDirection, source: NavigationSource) {
     return () => {
       const { onChange, items } = this.props;
@@ -108,4 +108,4 @@ class NavigationBase extends Component<NavigationProps, any> {
   }
 }
 
-export default withAnalyticsEvents({})(NavigationBase);
+export const Navigation = withAnalyticsEvents({})(NavigationBase);
