@@ -30,13 +30,18 @@ export const Animation = ({
 }: AnimationProps) => (
   <Transition
     in={hasEntered}
-    timeout={duration}
+    timeout={{ enter: 0, exit: duration }}
     onExited={onExited}
     onEntered={onEntered}
     appear
   >
     {status => {
-      if (status === 'exited' && canUseDom()) return null;
+      // when we first render, we want to finish the 'entering' state render
+      // then jump to the 'entered' state as quick as possible.
+      let adjustedStatus = status;
+      if (hasEntered && status === 'exited') {
+        adjustedStatus = 'entering';
+      }
       // Fade styles
       const fadeBase = {
         transition: `opacity ${duration / 2}ms`,
@@ -67,8 +72,8 @@ export const Animation = ({
         },
       };
       return children({
-        fade: { ...fadeBase, ...fadeTransitions[status] },
-        slide: { ...slideBase, ...slideTransitions[status] },
+        fade: { ...fadeBase, ...fadeTransitions[adjustedStatus] },
+        slide: { ...slideBase, ...slideTransitions[adjustedStatus] },
       });
     }}
   </Transition>
