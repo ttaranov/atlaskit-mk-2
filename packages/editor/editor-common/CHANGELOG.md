@@ -1,5 +1,12 @@
 # @atlaskit/editor-common
 
+## 20.1.8
+- [patch] [08e6a0c"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08e6a0c"
+d):
+
+  - Fix panel icon shrinking when a lot of text in a panel
+
 ## 20.1.7
 - [patch] [25cdb93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25cdb93):
 

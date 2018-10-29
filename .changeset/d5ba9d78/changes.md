@@ -1,1 +1,0 @@
-- Fix panel icon shrinking when a lot of text in a panel
