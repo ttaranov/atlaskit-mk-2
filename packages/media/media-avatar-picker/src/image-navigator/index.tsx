@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
@@ -7,7 +8,13 @@ import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 import { ImageCropper, OnLoadHandler } from '../image-cropper';
 import Slider from '@atlaskit/field-range';
 import Spinner from '@atlaskit/spinner';
-import { Ellipsify, Camera, Rectangle, Vector2 } from '@atlaskit/media-ui';
+import {
+  Ellipsify,
+  Camera,
+  Rectangle,
+  Vector2,
+  messages,
+} from '@atlaskit/media-ui';
 import {
   Container,
   SliderContainer,
@@ -308,8 +315,8 @@ export class ImageNavigator extends Component<Props, State> {
     const { errorMessage, isLoading } = this.props;
     const showBorder = !isLoading && !!!errorMessage;
     const dropZoneImageSrc = errorMessage ? errorIcon : uploadPlaceholder;
-    let dragZoneText = errorMessage || 'Drag and drop your images here';
-    const dragZoneAlt = errorMessage || 'Upload image';
+    let dragZoneText = errorMessage || 'Drag and drop your images here'; // TODO [i18n]
+    const dragZoneAlt = errorMessage || 'Upload image'; // TODO [i18n]
 
     return (
       <DragZone
@@ -336,7 +343,11 @@ export class ImageNavigator extends Component<Props, State> {
 
   renderImageUploader() {
     const { errorMessage, isLoading } = this.props;
-    const separatorText = errorMessage ? 'Try again' : 'or';
+    const separatorText = errorMessage ? (
+      <FormattedMessage {...messages.try_again} />
+    ) : (
+      <FormattedMessage {...messages.or} />
+    );
 
     return (
       <ImageUploader>
@@ -345,7 +356,7 @@ export class ImageNavigator extends Component<Props, State> {
           <div>
             <PaddedBreak>{separatorText}</PaddedBreak>
             <Button onClick={this.onUploadButtonClick} isDisabled={isLoading}>
-              Upload a photo
+              <FormattedMessage {...messages.upload_photo} />
               <FileInput
                 type="file"
                 id="image-input"

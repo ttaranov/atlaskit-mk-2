@@ -119,6 +119,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
         <DragOverlay onMouseDown={this.onDragStarted} />
         <RemoveImageContainer>
           <RemoveImageButton onClick={onRemoveImage}>
+            {/* TODO [i18n] */}
             <CrossIcon size="small" label="Remove image" />
           </RemoveImageButton>
         </RemoveImageContainer>

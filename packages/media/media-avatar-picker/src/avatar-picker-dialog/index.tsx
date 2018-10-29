@@ -2,6 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import ModalDialog, { ModalFooter } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { Avatar } from '../avatar-list';
 import { ImageNavigator, CropProperties } from '../image-navigator';
 import { PredefinedAvatarList } from '../predefined-avatar-list';
@@ -201,7 +203,11 @@ export class AvatarPickerDialog extends PureComponent<
 
   headerContent = () => {
     const { title } = this.props;
-    return <ModalHeader>{title || 'Upload an avatar'}</ModalHeader>;
+    return (
+      <ModalHeader>
+        {title || <FormattedMessage {...messages.upload_an_avatar} />}
+      </ModalHeader>
+    );
   };
 
   footerContent = () => {
@@ -215,10 +221,10 @@ export class AvatarPickerDialog extends PureComponent<
             onClick={onSaveClick}
             isDisabled={isDisabled}
           >
-            {primaryButtonText || 'Save'}
+            {primaryButtonText || <FormattedMessage {...messages.save} />}
           </Button>
           <Button appearance="default" onClick={onCancel}>
-            Cancel
+            <FormattedMessage {...messages.cancel} />
           </Button>
         </ModalFooterButtons>
       </ModalFooter>

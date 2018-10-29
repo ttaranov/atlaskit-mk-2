@@ -110,4 +110,29 @@ export const messages = defineMessages({
     description:
       'Explains what will happen when the users connects to a new account',
   },
+  upload_an_avatar: {
+    id: 'fabric.media.upload_an_avatar',
+    defaultMessage: 'Upload an avatar',
+    description: 'TODO',
+  },
+  save: {
+    id: 'fabric.media.save',
+    defaultMessage: 'Save',
+    description: 'TODO',
+  },
+  or: {
+    id: 'fabric.media.or',
+    defaultMessage: 'or',
+    description: 'TODO',
+  },
+  upload_photo: {
+    id: 'fabric.media.upload_photo',
+    defaultMessage: 'Upload a photo',
+    description: 'TODO',
+  },
+  default_avatars: {
+    id: 'fabric.media.default_avatars',
+    defaultMessage: 'Default avatars',
+    description: 'TODO',
+  },
 });
