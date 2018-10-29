@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.5.0
+- [minor] [d182ad9"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d182ad9"
+d):
+
+  - Add <-> to ↔︎ convertion rule
+
 ## 87.4.3
 - [patch] [8fb4b1e"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
