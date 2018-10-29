@@ -1,7 +1,7 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
-import { borderRadius, colors } from '@atlaskit/theme';
+import { borderRadius, colors, fontSize } from '@atlaskit/theme';
 import {
   browser,
   tableMarginTop,
@@ -382,6 +382,7 @@ export const tableStyles = css`
       margin-top: -1px;
       padding: 10px 2px;
       text-align: center;
+      font-size: ${fontSize()}px;
       background-color: ${tableToolbarColor};
       color: ${N200};
       border-color: ${akEditorTableBorder};
