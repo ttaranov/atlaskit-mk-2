@@ -7,7 +7,6 @@ import type {
 } from 'react-beautiful-dnd-next';
 import type {
   TreeData,
-  Path,
   ItemId,
   FlattenedTree,
   TreeSourcePosition,
@@ -19,9 +18,9 @@ export type Props = {|
   /** The tree data structure. */
   tree: TreeData,
   /** Function that will be called when a parent item needs to be expanded. */
-  onExpand: (itemId: ItemId, path: Path) => void,
+  onExpand: (itemId: ItemId) => void,
   /** Function that will be called when a parent item needs to be collapsed. */
-  onCollapse: (itemId: ItemId, path: Path) => void,
+  onCollapse: (itemId: ItemId) => void,
   /** Function that will be called when the user starts dragging. */
   onDragStart: (itemId: ItemId) => void,
   /** Function that will be called when the user finishes dragging. */

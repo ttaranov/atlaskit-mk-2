@@ -135,7 +135,6 @@ describe('@atlaskit/tree - Tree', () => {
   describe('#onExpand', () => {
     it('calls with the right item', () => {
       const mockOnExpand = jest.fn();
-      const firstItem = treeWithThreeLeaves.items['1-1'];
       mount(
         <Tree
           tree={treeWithThreeLeaves}
@@ -143,16 +142,15 @@ describe('@atlaskit/tree - Tree', () => {
           onExpand={mockOnExpand}
         />,
       );
-      mockRender.mock.calls[0][0].onExpand(firstItem);
+      mockRender.mock.calls[0][0].onExpand();
       expect(mockOnExpand).toHaveBeenCalledTimes(1);
-      expect(mockOnExpand).toBeCalledWith(firstItem, [0]);
+      expect(mockOnExpand).toBeCalledWith('1-1');
     });
   });
 
   describe('#onCollapse', () => {
     it('calls with the right item', () => {
       const mockOnCollapse = jest.fn();
-      const firstItem = treeWithThreeLeaves.items['1-1'];
       mount(
         <Tree
           tree={treeWithThreeLeaves}
@@ -160,9 +158,9 @@ describe('@atlaskit/tree - Tree', () => {
           onCollapse={mockOnCollapse}
         />,
       );
-      mockRender.mock.calls[0][0].onCollapse(firstItem);
+      mockRender.mock.calls[0][0].onCollapse();
       expect(mockOnCollapse).toHaveBeenCalledTimes(1);
-      expect(mockOnCollapse).toBeCalledWith(firstItem, [0]);
+      expect(mockOnCollapse).toBeCalledWith('1-1');
     });
   });
 

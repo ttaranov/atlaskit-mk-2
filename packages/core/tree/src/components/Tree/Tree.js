@@ -102,7 +102,7 @@ export default class Tree extends Component<Props, State> {
       const { draggableId } = update.combine;
       const item: ?FlattenedItem = getItemById(flattenedTree, draggableId);
       if (item && this.isExpandable(item)) {
-        this.expandTimer.start(() => onExpand(draggableId, item.path));
+        this.expandTimer.start(() => onExpand(draggableId));
       }
     }
     this.dragState = {

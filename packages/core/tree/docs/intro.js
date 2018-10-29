@@ -92,9 +92,9 @@ type RenderItemParams = {|
   /** The depth of the item on the tree. 0 means root level. */
   depth: number,
   /** Function to call when a parent item needs to be expanded */
-  onExpand: (itemId: ItemId) => void,
+  onExpand: () => void,
   /** Function to call when a parent item needs to be collapsed */
-  onCollapse: (itemId: ItemId) => void,
+  onCollapse: () => void,
   /** Couple of Props to be spread into the rendered React.Components and DOM elements */
   /** More info: https://github.com/atlassian/react-beautiful-dnd#children-function-render-props */
   provided: TreeDraggableProvided,

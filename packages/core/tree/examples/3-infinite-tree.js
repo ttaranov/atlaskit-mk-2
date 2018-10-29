@@ -12,7 +12,6 @@ import Tree, {
   type TreeItem,
   type TreeData,
   type ItemId,
-  type Path,
 } from '../src/';
 import { range } from '../src/utils/handy';
 
@@ -46,19 +45,20 @@ type State = {|
 const addRandomChildren = (
   tree: TreeData,
   itemId: ItemId,
-  path: Path,
   n: number,
 ): TreeData => {
   const newChildrenHash = {};
   range(n)
-    .map(() => {
+    .map(currentIndex => {
       return {
-        id: Math.random(),
+        id: `${itemId}-${currentIndex}`,
         children: [],
         hasChildren: true,
         isExpanded: false,
         isChildrenLoading: false,
-        data: { title: `Title ${path.length}` },
+        data: {
+          title: `Title ${itemId}-${currentIndex}`,
+        },
       };
     })
     .forEach(c => {
@@ -94,7 +94,7 @@ const starterTree = {
 
 export default class InfiniteTree extends Component<void, State> {
   state = {
-    tree: addRandomChildren(starterTree, starterTree.rootId, [], 20),
+    tree: addRandomChildren(starterTree, starterTree.rootId, 20),
   };
 
   static getIcon(
@@ -139,10 +139,10 @@ export default class InfiniteTree extends Component<void, State> {
     );
   };
 
-  onExpand = (itemId: ItemId, path: Path) => {
+  onExpand = (itemId: ItemId) => {
     const { tree }: State = this.state;
     const newTree = mutateTree(tree, itemId, { isExpanded: true });
-    const newerTree = addRandomChildren(newTree, itemId, path, 20);
+    const newerTree = addRandomChildren(newTree, itemId, 20);
     this.setState({
       tree: newerTree,
     });

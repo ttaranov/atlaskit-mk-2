@@ -28,11 +28,19 @@ export type TreeDraggableProps = {|
 export type DragActionType = null | 'mouse' | 'key' | 'touch';
 
 export type RenderItemParams = {|
+  /** Item to be rendered */
   item: TreeItem,
+  /** The depth of the item on the tree. 0 means root level. */
   depth: number,
-  onExpand: (itemId: ItemId) => void,
-  onCollapse: (itemId: ItemId) => void,
+  /** Function to call when a parent item needs to be expanded */
+  onExpand: () => void,
+  /** Function to call when a parent item needs to be collapsed */
+  onCollapse: () => void,
+  /** Couple of Props to be spread into the rendered React.Components and DOM elements */
+  /** More info: https://github.com/atlassian/react-beautiful-dnd#children-function-render-props */
   provided: TreeDraggableProvided,
+  /** Couple of state variables */
+  /** More info: https://github.com/atlassian/react-beautiful-dnd#2-snapshot-draggablestatesnapshot */
   snapshot: DraggableStateSnapshot,
 |};
 
@@ -47,8 +55,8 @@ export type TreeDraggableProvided = {|
 export type Props = {|
   item: TreeItem,
   path: Path,
-  onExpand: (itemId: ItemId, path: Path) => void,
-  onCollapse: (itemId: ItemId, path: Path) => void,
+  onExpand: (itemId: ItemId) => void,
+  onCollapse: (itemId: ItemId) => void,
   renderItem: RenderItemParams => React.Node,
   provided: DraggableProvided,
   snapshot: DraggableStateSnapshot,
