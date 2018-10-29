@@ -76,7 +76,6 @@ export class FocusedTaskCloseAccount extends React.Component<Props> {
             secondaryActions={
               learnMoreLink && (
                 <Button
-                  id="learn-more-button"
                   appearance="subtle-link"
                   spacing="none"
                   href={learnMoreLink}
