@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.3.0
+- [minor] [b911028"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b911028"
+d):
+
+  - Show selected color in a table contextual menu
+
 ## 87.2.0
 - [minor] [746c927"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/746c927"

@@ -1,1 +1,0 @@
-- Show selected color in a table contextual menu
