@@ -7,47 +7,28 @@ import { Draggable } from 'react-beautiful-dnd';
 import Item from '../Item';
 import type { SortableItemProps } from './types';
 
-// The sortable item cannot be a `<button />` because rbdnd will use it as a
-// placeholder and we have no way of removing the browser's default button
-// styling.
-// NOTE that we strip off any props that would result in invalid DOM attributes
-const Div = ({
-  after,
-  before,
-  component,
-  createAnalyticsEvent,
-  draggableProps,
-  index,
-  innerRef,
-  isActive,
-  isDragging,
-  isHover,
-  isSelected,
-  spacing,
-  styles,
-  subText,
-  ...props
-}: any) => <div ref={innerRef} {...props} />;
+/* We use a DivWrapper item custom component to override the default Item DOM elements
+ * as draggable button elements cause rbdnd to render a placeholder that is styled with
+ * native button styling.
+ *
+ * If consumers pass a custom component themselves, they must spread the innerRef and
+ * draggableProps properties onto their nearest DOM element.
+ */
+const DivWrapper = ({ className, children, draggableProps, innerRef }: any) => (
+  <div className={className} ref={innerRef} {...draggableProps}>
+    {children}
+  </div>
+);
 
-const getStyles = (provided, { isDragging }, theme) => {
-  let bg = provided.itemBase.backgroundColor;
-  if (theme.context === 'container') {
-    if (isDragging) bg = colors.N30;
-  }
-  if (theme.context === 'product') {
-    if (isDragging) bg = colors.DN30;
-  }
-
+const getStyles = (provided, { isDragging }) => {
   return {
     ...provided,
     itemBase: {
       ...provided.itemBase,
-      backgroundColor: bg,
       boxShadow: isDragging
         ? `${colors.N60A} 0px 4px 8px -2px, ${colors.N60A} 0px 0px 1px`
         : null,
       cursor: isDragging ? 'grabbing' : 'pointer',
-      pointerEvents: 'all !important',
     },
   };
 };
@@ -75,7 +56,7 @@ const SortableItem = ({ index, ...itemProps }: SortableItemProps) => (
           innerRef={draggableProvided.innerRef}
           isDragging={draggableSnapshot.isDragging}
           styles={getStyles}
-          component={Div}
+          component={DivWrapper}
           {...itemProps}
           onClick={onClick}
         />
