@@ -1,0 +1,1 @@
+- fixing image size inside tables
