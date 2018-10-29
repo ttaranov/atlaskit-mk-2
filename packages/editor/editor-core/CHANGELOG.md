@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.4.1
+- [patch] [abd19cd"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abd19cd"
+d):
+
+  - ED-5616: fix inline cursor navigation
+
 ## 87.4.0
 - [minor] [5981cec"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5981cec"

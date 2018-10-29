@@ -1,1 +1,0 @@
-- ED-5616: fix inline cursor navigation
