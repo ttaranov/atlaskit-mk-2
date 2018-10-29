@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.2.0
+- [minor] [746c927"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/746c927"
+d):
+
+  - Add buffer to the bottom fullpage editor
+
 ## 87.1.13
 - [patch] [f3d067d"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3d067d"

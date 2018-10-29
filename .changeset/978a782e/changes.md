@@ -1,1 +1,0 @@
-- Add buffer to the bottom fullpage editor
