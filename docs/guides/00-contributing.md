@@ -24,7 +24,7 @@ We want to keep this model very simple. At it's core, we make the assumptions th
 The process consists of:
 
 1. Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
-2. Submit a PR resolving the raised issue.
+2. Submit a PR resolving the raised issue.  (If this is your first time or if you don't have permission to create a branch, follow the instructions under 'Become a collaborator' in our [README.md](https://bitbucket.org/atlassian/atlaskit-mk-2/src) to request permission.)
 
 This is super simple and the PR guidelines can be derived from the rest of our conventions and documentation. It's also compatible with the inter-team model, because, at the very worst, internal teams would still be able to follow this process.
 

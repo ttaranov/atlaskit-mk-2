@@ -121,12 +121,14 @@ For pull requests:
 
 See the existing issues for things to start contributing. For bigger changes, make sure you start a discussion first by creating dan issue and explaining the intended change.
 
-If this is your _first time_ raising a pull request in this repo, please raise an [issue](https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open) to gain access to our repo and include the following:
+#### Become a collaborator
+
+If this is your _first time_ to raise a pull request, you need to first become a collaborator in order to create branches for your pull requests. Do not raise pull requests from forks. To become a collaborator, create an [issue](https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open) and include the following:
 
 1. Issue title - __"Become an Atlaskit collaborator"__
 2. Your Bitbucket username and
 3. Reasons you'd want to be a collaborator - e.g. Reference another issue that you'd like to provide a PR for.
-4. Be ready to sign the Contributor License Agreement(CLA). See below.
+4. Have signed or be ready to sign the Contributor License Agreement(CLA). See below.
 
 Atlassian requires contributors to sign a Contributor License Agreement,
 known as a CLA. This serves as a record stating that the contributor is
