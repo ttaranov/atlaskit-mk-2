@@ -62,13 +62,14 @@ export const ContentNavigationWrapper = ({
     {...props}
   />
 );
-export const ContainerNavigationMask = (props: *) => (
+export const ContainerNavigationMask = ({ isItemDragging, ...props }: *) => (
   <div
     css={{
       display: 'flex',
       flexDirection: 'row',
       overflow: 'hidden',
       height: '100%',
+      pointerEvents: isItemDragging ? 'none' : undefined,
     }}
     {...props}
   />

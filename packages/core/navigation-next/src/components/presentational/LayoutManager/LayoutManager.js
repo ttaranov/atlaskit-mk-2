@@ -38,6 +38,7 @@ import {
   GLOBAL_NAV_WIDTH,
   FLYOUT_DELAY,
 } from '../../../common/constants';
+import { LayoutEventListener } from './LayoutEvent';
 
 type RenderContentNavigationArgs = {
   isDragging: boolean,
@@ -48,6 +49,7 @@ type RenderContentNavigationArgs = {
 type State = {
   flyoutIsOpen: boolean,
   mouseIsOverNavigation: boolean,
+  isItemDragging: boolean,
 };
 
 function defaultTooltipContent(isCollapsed: boolean) {
@@ -126,7 +128,11 @@ export default class LayoutManager extends Component<
   LayoutManagerProps,
   State,
 > {
-  state = { flyoutIsOpen: false, mouseIsOverNavigation: false };
+  state = {
+    flyoutIsOpen: false,
+    mouseIsOverNavigation: false,
+    isItemDragging: false,
+  };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
   containerRef: HTMLElement;
@@ -194,6 +200,14 @@ export default class LayoutManager extends Component<
   mouseLeave = () => {
     clearTimeout(this.flyoutMouseOverTimeout);
     this.setState({ mouseIsOverNavigation: false });
+  };
+
+  onItemDragStart = () => {
+    this.setState({ isItemDragging: true });
+  };
+
+  onItemDragEnd = () => {
+    this.setState({ isItemDragging: false });
   };
 
   renderGlobalNavigation = () => {
@@ -285,7 +299,7 @@ export default class LayoutManager extends Component<
 
   renderNavigation = () => {
     const { navigationUIController, experimental_flyoutOnHover } = this.props;
-    const { flyoutIsOpen, mouseIsOverNavigation } = this.state;
+    const { flyoutIsOpen, mouseIsOverNavigation, isItemDragging } = this.state;
     const {
       isCollapsed,
       isResizeDisabled,
@@ -294,79 +308,90 @@ export default class LayoutManager extends Component<
     } = navigationUIController.state;
 
     return (
-      <NavigationAnalyticsContext
-        data={{
-          attributes: {
-            isExpanded: !isCollapsed,
-            flyoutOnHoverEnabled: experimental_flyoutOnHover,
-          },
-          componentName: 'navigation',
-          packageName,
-          packageVersion,
-        }}
+      <LayoutEventListener
+        onItemDragStart={this.onItemDragStart}
+        onItemDragEnd={this.onItemDragEnd}
       >
-        <ResizeTransition
-          from={[CONTENT_NAV_WIDTH_COLLAPSED]}
-          in={!isCollapsed || flyoutIsOpen}
-          properties={['width']}
-          to={[flyoutIsOpen ? CONTENT_NAV_WIDTH_FLYOUT : productNavWidth]}
-          userIsDragging={isResizing}
-          // only apply listeners to the NAV resize transition
-          productNavWidth={productNavWidth}
-        >
-          {({ transitionStyle, transitionState }) => {
-            const onMouseOut =
-              isCollapsed && experimental_flyoutOnHover && flyoutIsOpen
-                ? this.mouseOutFlyoutArea
-                : null;
-            return (
-              <NavigationContainer
-                innerRef={this.getContainerRef}
-                onMouseEnter={this.mouseEnter}
-                onMouseOut={onMouseOut}
-                onMouseLeave={this.mouseLeave}
-              >
-                <ResizeControl
-                  collapseToggleTooltipContent={
-                    // $FlowFixMe
-                    this.props.collapseToggleTooltipContent
-                  }
-                  expandCollapseAffordanceRef={
-                    this.nodeRefs.expandCollapseAffordance
-                  }
-                  experimental_flyoutOnHover={experimental_flyoutOnHover}
-                  isDisabled={isResizeDisabled}
-                  flyoutIsOpen={flyoutIsOpen}
-                  mouseIsOverNavigation={mouseIsOverNavigation}
-                  mutationRefs={[
-                    { ref: this.pageRef, property: 'padding-left' },
-                    { ref: this.productNavRef, property: 'width' },
-                  ]}
-                  navigation={navigationUIController}
-                >
-                  {({ isDragging, width }) => {
-                    const onMouseOver =
-                      isCollapsed && experimental_flyoutOnHover && !flyoutIsOpen
-                        ? this.mouseOverFlyoutArea
-                        : null;
-                    return (
-                      <ContainerNavigationMask onMouseOver={onMouseOver}>
-                        {this.renderGlobalNavigation()}
-                        {this.renderContentNavigation({
-                          isDragging,
-                          transitionState,
-                          transitionStyle,
-                          width,
-                        })}
-                      </ContainerNavigationMask>
-                    );
-                  }}
-                </ResizeControl>
-              </NavigationContainer>
-            );
+        <NavigationAnalyticsContext
+          data={{
+            attributes: {
+              isExpanded: !isCollapsed,
+              flyoutOnHoverEnabled: experimental_flyoutOnHover,
+            },
+            componentName: 'navigation',
+            packageName,
+            packageVersion,
           }}
-        </ResizeTransition>
-      </NavigationAnalyticsContext>
+        >
+          <ResizeTransition
+            from={[CONTENT_NAV_WIDTH_COLLAPSED]}
+            in={!isCollapsed || flyoutIsOpen}
+            properties={['width']}
+            to={[flyoutIsOpen ? CONTENT_NAV_WIDTH_FLYOUT : productNavWidth]}
+            userIsDragging={isResizing}
+            // only apply listeners to the NAV resize transition
+            productNavWidth={productNavWidth}
+          >
+            {({ transitionStyle, transitionState }) => {
+              const onMouseOut =
+                isCollapsed && experimental_flyoutOnHover && flyoutIsOpen
+                  ? this.mouseOutFlyoutArea
+                  : null;
+              return (
+                <NavigationContainer
+                  innerRef={this.getContainerRef}
+                  onMouseEnter={this.mouseEnter}
+                  onMouseOut={onMouseOut}
+                  onMouseLeave={this.mouseLeave}
+                >
+                  <ResizeControl
+                    collapseToggleTooltipContent={
+                      // $FlowFixMe
+                      this.props.collapseToggleTooltipContent
+                    }
+                    expandCollapseAffordanceRef={
+                      this.nodeRefs.expandCollapseAffordance
+                    }
+                    experimental_flyoutOnHover={experimental_flyoutOnHover}
+                    isDisabled={isResizeDisabled}
+                    flyoutIsOpen={flyoutIsOpen}
+                    isGrabAreaDisabled={isItemDragging}
+                    mouseIsOverNavigation={mouseIsOverNavigation}
+                    mutationRefs={[
+                      { ref: this.pageRef, property: 'padding-left' },
+                      { ref: this.productNavRef, property: 'width' },
+                    ]}
+                    navigation={navigationUIController}
+                  >
+                    {({ isDragging, width }) => {
+                      const onMouseOver =
+                        isCollapsed &&
+                        experimental_flyoutOnHover &&
+                        !flyoutIsOpen
+                          ? this.mouseOverFlyoutArea
+                          : null;
+                      return (
+                        <ContainerNavigationMask
+                          isItemDragging={isItemDragging}
+                          onMouseOver={onMouseOver}
+                        >
+                          {this.renderGlobalNavigation()}
+                          {this.renderContentNavigation({
+                            isDragging,
+                            transitionState,
+                            transitionStyle,
+                            width,
+                          })}
+                        </ContainerNavigationMask>
+                      );
+                    }}
+                  </ResizeControl>
+                </NavigationContainer>
+              );
+            }}
+          </ResizeTransition>
+        </NavigationAnalyticsContext>
+      </LayoutEventListener>
     );
   };
 
