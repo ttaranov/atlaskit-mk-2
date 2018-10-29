@@ -384,7 +384,7 @@ export default class Examples extends React.Component<Props, State> {
         <Helmet>
           <title>
             Example - {fs.titleize(exampleId)} - {fs.titleize(packageId)} -{' '}
-            {BASE_TITLE}
+            {process.env.BASE_TITLE}
           </title>
         </Helmet>
         {examples && exampleId ? (

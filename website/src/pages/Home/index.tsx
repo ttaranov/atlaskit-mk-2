@@ -65,7 +65,7 @@ export default class HomePage extends Component {
     return (
       <HomePageWrapper>
         <Helmet>
-          <title>{BASE_TITLE}</title>
+          <title>{process.env.BASE_TITLE}</title>
         </Helmet>
         <Style />
         <Title>Atlaskit</Title>

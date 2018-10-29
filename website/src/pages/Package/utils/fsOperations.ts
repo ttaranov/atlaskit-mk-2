@@ -1,6 +1,5 @@
 import { packages } from '../../../site';
 import * as fs from '../../../utils/fs';
-import { divvyChangelog } from '../../../utils/changelog';
 
 function getPkg(packages, groupId, pkgId) {
   const groups = fs.getDirectories(packages.children);
@@ -10,9 +9,10 @@ function getPkg(packages, groupId, pkgId) {
   return pkg;
 }
 
-const getJSON = files => fs.getById(files, 'package.json').exports();
-const getDocs = dirs => {
-  const docs = fs.maybeGetById(dirs, 'docs');
+// TODO: find the exact types for the getJson and getDocs
+const getJSON: any = files => fs.getById(files, 'package.json').exports();
+const getDocs: any = dirs => {
+  const docs: any = fs.maybeGetById(dirs, 'docs');
   let doc;
   if (docs) {
     doc = fs.find(docs, () => true);

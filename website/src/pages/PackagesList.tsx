@@ -7,7 +7,19 @@ import * as fs from '../utils/fs';
 import Page, { Title, Section } from '../components/Page';
 import { externalPackages as packages, getConfig } from '../site';
 
-const head = {
+type Head = {
+  cells: [
+    {
+      key: string;
+      content: string;
+      shouldTruncate?: boolean;
+      isSortable: boolean;
+      width: number;
+    }
+  ];
+};
+
+const head: Head = {
   cells: [
     {
       key: 'name',
@@ -47,13 +59,7 @@ const head = {
 };
 
 const renderRow = (
-  {
-    name: packageName,
-    description,
-    maintainers,
-    // lastPublishedOn,
-    version,
-  },
+  { name: packageName, description, maintainers, version },
   { id },
   groupId,
 ) => {
@@ -126,7 +132,7 @@ export default function PackagesList() {
   return (
     <Page width="large">
       <Helmet>
-        <title>Browse all packages - {BASE_TITLE}</title>
+        <title>Browse all packages - {process.env.BASE_TITLE}</title>
       </Helmet>
       <Title>All Packages</Title>
       <Section>

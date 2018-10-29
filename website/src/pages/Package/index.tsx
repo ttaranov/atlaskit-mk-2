@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from '../../components/WrappedLink';
@@ -15,7 +16,6 @@ import FourOhFour from '../FourOhFour';
 import MetaData from './MetaData';
 import LatestChangelog from './LatestChangelog';
 
-import { isModuleNotFoundError } from '../../utils/errors';
 import * as fs from '../../utils/fs';
 import { RouterMatch } from '../../types';
 
@@ -62,24 +62,16 @@ export const NoDocs = props => {
   return <div>Component "{props.name}" doesn't have any documentation.</div>;
 };
 
-type PackageProps = {
+export type PackageProps = {
   match: RouterMatch;
 };
 
-type PackageState = {
+export type PackageState = {
   changelog: Logs;
   doc: React.ReactNode | null;
   examples: Array<any> | null;
   missing: boolean | null;
   pkg: Object | null;
-};
-
-const initialState = {
-  changelog: [],
-  doc: null,
-  examples: null,
-  missing: false,
-  pkg: null,
 };
 
 function getExamplesPaths(groupId, pkgId, examples) {
@@ -109,9 +101,7 @@ export default function LoadData({ match }) {
       </Page>
     ),
     loader: () =>
-      fetchPackageData(groupId, pkgId).catch(
-        error => console.log(error) || { error },
-      ),
+      fetchPackageData(groupId, pkgId).catch(error => console.log(error)),
     render: props =>
       props.missing || props.error ? (
         <FourOhFour />
@@ -152,7 +142,7 @@ class Package extends Component<any, any> {
         {urlIsExactMatch && (
           <Helmet>
             <title>
-              {title} package - {BASE_TITLE}
+              {title} package - {process.env.BASE_TITLE}
             </title>
           </Helmet>
         )}

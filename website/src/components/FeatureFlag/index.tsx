@@ -1,3 +1,4 @@
+import * as React from 'react';
 import LDClient from 'ldclient-js';
 import uuid from 'uuid/v4';
 import {
@@ -19,11 +20,9 @@ const clientKey = websiteEnv => {
 
 const id = () => {
   try {
-    let id = localStorage.getItem('atlaskit-website-ld-user-key');
-    if (id === null) {
-      id = uuid();
-      localStorage.setItem('atlaskit-website-ld-user-key', id);
-    }
+    let id = localStorage.getItem('atlaskit-website-ld-user-key') || '';
+    id = uuid();
+    localStorage.setItem('atlaskit-website-ld-user-key', id);
     return id;
   } catch (e) {
     // localStorage is not available just use a new id
@@ -43,9 +42,13 @@ const createClient = () => {
   let client;
   return () => {
     if (!client) {
-      client = LDClient.initialize(clientKey(WEBSITE_ENV), anonymousUser(), {
-        bootstrap: 'localStorage',
-      });
+      client = LDClient.initialize(
+        clientKey(process.env.WEBSITE_ENV),
+        anonymousUser(),
+        {
+          bootstrap: 'localStorage',
+        },
+      );
     }
     return client;
   };

@@ -34,7 +34,7 @@ export default function PackageDocument({
     <Page>
       <Helmet>
         <title>
-          {fs.titleize(pkgId)} - {fs.titleize(docId)} - {BASE_TITLE}
+          {fs.titleize(pkgId)} - {fs.titleize(docId)} - {process.env.BASE_TITLE}
         </title>
       </Helmet>
       <Title>

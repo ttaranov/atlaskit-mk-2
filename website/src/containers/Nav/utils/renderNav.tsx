@@ -4,7 +4,7 @@ import { RouterNavigationItem, ExternalNavigationItem } from './linkComponents';
 import { NavGroup } from '../../../types';
 
 type Props = {
-  onClick?: () => mixed;
+  onClick: (e: Event) => void;
   pathname: string;
 };
 

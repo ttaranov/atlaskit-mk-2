@@ -56,7 +56,7 @@ const defaultNavGroups = [
 ];
 
 export type DefaultNavProps = {
-  onClick?: () => mixed;
+  onClick?: (e: Event) => void;
   pathname: string;
 };
 

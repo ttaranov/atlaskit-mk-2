@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Page from '../components/Page';
-import { Markdown } from '../components/Markdown';
+import Markdown from '../components/Markdown';
 
 export default function PatternsInfo() {
   return (

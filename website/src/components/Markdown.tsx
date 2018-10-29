@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import CommonMark from 'commonmark';
 import ReactRenderer from 'commonmark-react-renderer';
@@ -29,14 +30,14 @@ export default function Markdown({
   description,
 }: {
   children: React.ReactNode;
-  description: string;
+  description?: string;
 }) {
   return (
     <div>
       <Helmet>
         <meta
           name="description"
-          content={description || DEFAULT_META_DESCRIPTION}
+          content={description || process.env.DEFAULT_META_DESCRIPTION}
         />
       </Helmet>
       {renderer.render(parser.parse(children))}

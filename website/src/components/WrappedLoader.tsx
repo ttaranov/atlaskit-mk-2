@@ -1,5 +1,6 @@
 import Loadable from 'react-loadable';
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import { sendApdex } from './Analytics/GoogleAnalyticsListener';
 
 function checkMarkAndSendAnalytics() {

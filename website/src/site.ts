@@ -3,8 +3,8 @@ import { Directory } from './types';
 // SITE_DATA is dynamically generated at runtime by bolt-fs-loader.
 // Configuration for bolt-fs-loader is in webpack.config.js since it needs to be dynamically created
 // depending on the subset of packages we want to represent on the website.
-import data from './SITE_DATA';
-import NAV_DATA from './NAV_DATA';
+import * as data from './SITE_DATA';
+import * as NAV_DATA from './NAV_DATA';
 import * as fs from './utils/fs';
 
 const productPackages = [
@@ -31,7 +31,7 @@ function isInternal(groupId, pkgId) {
   );
 }
 
-const publicPackages = {
+const publicPackages: Directory = {
   type: 'dir',
   id: 'packages',
   children: [],
@@ -61,7 +61,7 @@ export const packages: Directory = fs.getById(dirs, 'packages');
 export const externalPackages: Directory = publicPackages;
 export const pkgData = NAV_DATA;
 export const patterns: Directory = fs.maybeGetById(dirs, 'patterns') || {
-  id: 'patterns',
   type: 'dir',
+  id: 'patterns',
   children: [],
 };

@@ -37,9 +37,9 @@ const SearchDrawer = ({
   packages,
 }: {
   isOpen: boolean;
-  closeDrawer: () => mixed;
+  closeDrawer: (e: Event) => void;
   searchDrawerValue: string;
-  updateSearchValue: (e: SyntheticInputEvent<any>) => mixed;
+  updateSearchValue: (e: React.SyntheticEvent<any>) => void;
   packages: Directory;
 }) => (
   <AkSearchDrawer

@@ -1,12 +1,13 @@
+import * as React from 'react';
 import { mount } from 'enzyme';
 import FeatureFlag, {
   LaunchDarklyClientProviderForTesting as Provider,
-} from '../index.js';
+} from '../../../FeatureFlag';
 
 it('should get feature flag value', () => {
   const variation = jest.fn().mockReturnValueOnce(true);
   const children = jest.fn();
-  const wrapper = mount(
+  mount(
     <Provider value={() => ({ variation })}>
       <FeatureFlag name="my-feature-flag">{children}</FeatureFlag>,
     </Provider>,
@@ -18,7 +19,7 @@ it('should get feature flag value', () => {
 it('should get disabled feature flag by default', () => {
   const variation = jest.fn().mockReturnValueOnce(false);
   const children = jest.fn();
-  const wrapper = mount(
+  mount(
     <Provider value={() => ({ variation })}>
       <FeatureFlag name="my-feature-flag">{children}</FeatureFlag>
     </Provider>,
@@ -30,7 +31,7 @@ it('should get disabled feature flag by default', () => {
 it('should get enabled feature flag when enabledByDefault is set', () => {
   const variation = jest.fn().mockReturnValueOnce(false);
   const children = jest.fn();
-  const wrapper = mount(
+  mount(
     <Provider value={() => ({ variation })}>
       <FeatureFlag name="my-feature-flag" enabledByDefault>
         {children}

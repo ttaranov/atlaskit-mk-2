@@ -21,6 +21,10 @@ export default class ExampleDisplay extends Component<Props> {
   // TODO: find the correct type
   // iframeRef: ElementRef(<iframe>);
   iframeRef: HTMLElement<iframe>;
+  ExampleCode:
+    | (React.ComponentClass<{}, any> & Loadable.LoadableComponent)
+    | (React.StatelessComponent<{}> & Loadable.LoadableComponent);
+  Example: () => JSX.Element;
   constructor(props) {
     super(props);
     this.buildExampleComponents(props);
@@ -77,10 +81,11 @@ export default class ExampleDisplay extends Component<Props> {
       return;
     }
 
-    return this.props.children(
+    const children = this.props.children(
       this.ExampleCode,
       this.Example,
       this.props.displayCode,
     );
+    return children;
   }
 }

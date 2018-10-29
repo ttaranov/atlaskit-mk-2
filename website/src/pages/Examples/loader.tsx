@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Component, ComponentType } from 'react';
-import { isValidElementType } from 'react-is';
 import styled from 'styled-components';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 import Loadable from '../../components/WrappedLoader';
 import qs from 'query-string';
 
@@ -12,7 +11,6 @@ import * as fs from '../../utils/fs';
 import { File } from '../../types';
 import Loading from '../../components/Loading';
 import {
-  sendApdex,
   sendInitialApdex,
   initializeGA,
   observePerformanceMetrics,

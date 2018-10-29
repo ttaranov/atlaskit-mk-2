@@ -7,7 +7,7 @@ import DefaultNav from './navigations/Default';
 import { AtlaskitIcon } from './index';
 
 type Props = {
-  closeDrawer: () => mixed;
+  closeDrawer: (e: Event) => void;
   isOpen: boolean;
   pathname: string;
 };

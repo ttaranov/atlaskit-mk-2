@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CodeSandboxer from 'react-codesandboxer';
-import { replaceImports } from 'codesandboxer';
 import { replaceSrc } from '@atlaskit/docs';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>
@@ -62,7 +61,6 @@ export default class CodeSandbox extends Component<{}, {}> {
     const {
       deployButton,
       example,
-      examples,
       groupId,
       loadingButton,
       packageId,

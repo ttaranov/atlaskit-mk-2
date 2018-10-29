@@ -4,7 +4,7 @@ import { Directory, File } from '../types';
 export function getDirectories(
   items: Array<Directory | File>,
 ): Array<Directory> {
-  const dirs = [];
+  const dirs: Array<Directory> = [];
 
   for (const item of items) {
     if (item.type === 'dir') {
@@ -16,7 +16,7 @@ export function getDirectories(
 }
 
 export function getFiles(items: Array<Directory | File>): Array<File> {
-  const files = [];
+  const files: Array<File> = [];
 
   for (const item of items) {
     if (item.type === 'file') {
@@ -45,7 +45,7 @@ export function flatMap<T>(
   dir: Directory,
   iteratee: (file: File, filePath: string) => T,
 ): Array<T> {
-  const result = [];
+  const result: Array<T> = [];
 
   function visit(dir, filePath) {
     for (const item of dir.children) {

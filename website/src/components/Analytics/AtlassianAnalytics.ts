@@ -1,5 +1,5 @@
 class AtlassianAnalyticsClient {
-  constructor(options) {
+  constructor(options: any) {
     this.payload = [];
     this.version = options.version;
   }
@@ -26,7 +26,7 @@ class AtlassianAnalyticsClient {
         events: this.payload.map(event => ({
           name: event.name,
           properties: event.properties,
-          server: WEBSITE_ENV, //Set by webpack
+          server: process.env.WEBSITE_ENV, //Set by webpack
           product: 'atlaskit',
           subproduct: 'website',
           version: this.version,

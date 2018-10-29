@@ -76,7 +76,7 @@ export const NoMatch = styled.div`
   min-height: 120px;
 `;
 
-export type Log = { md: string; version: string };
+export type Log = { md: string; version: string; repository: string };
 export type Logs = Array<Log>;
 
 type Props = {
@@ -93,7 +93,7 @@ export default class ChangeLog extends Component<Props> {
       ? changelog.filter(e => semver.satisfies(e.version, range))
       : changelog;
 
-    let currentMajor = 0;
+    let currentMajor = 0 || '';
 
     return (
       <div>

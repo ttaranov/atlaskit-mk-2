@@ -375,7 +375,7 @@ export default class ExamplesModal extends Component<Props, State> {
         <Helmet>
           <title>
             Example - {fs.titleize(exampleId)} - {fs.titleize(packageId)} -{' '}
-            {BASE_TITLE}
+            {process.env.BASE_TITLE}
           </title>
         </Helmet>
         <ContentBody>

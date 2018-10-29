@@ -21,7 +21,7 @@ import Groups from './Groups';
 import GroupDrawer from './GroupDrawer';
 import SearchDrawer from './SearchDrawer';
 import { externalPackages as packages, docs, patterns } from '../../site';
-
+// TODO: find how to import image in ts
 import atlaskitLogo from '../../assets/atlaskit-logo-inverted.png';
 import atlaskitLogoMonochrome from '../../assets/atlaskit-logo-monochrome.png';
 
@@ -90,7 +90,7 @@ export default class Nav extends Component<{}, State> {
       searchDrawerOpen: false,
       searchDrawerValue: '',
     });
-  updateSearchValue = (e: SyntheticInputEvent<any>) =>
+  updateSearchValue = (e: React.SyntheticEvent<any>) =>
     this.setState({
       searchDrawerValue: e.target.value,
     });
@@ -144,8 +144,12 @@ export default class Nav extends Component<{}, State> {
                       text={header.label}
                       href={`/${headerKey}`}
                       linkComponent={toClass(
-                        ({ href, children, className }) => (
-                          <Link to={href} className={className}>
+                        ({ href, children, className, onClick }) => (
+                          <Link
+                            onClick={onClick}
+                            to={href}
+                            className={className}
+                          >
                             {children}
                           </Link>
                         ),

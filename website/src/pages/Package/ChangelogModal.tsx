@@ -183,7 +183,7 @@ export default class ExamplesModal extends Component<Props, State> {
       >
         <Helmet>
           <title>
-            Changelog - {fs.titleize(pkgId)} - {BASE_TITLE}
+            Changelog - {fs.titleize(pkgId)} - {process.env.BASE_TITLE}
           </title>
         </Helmet>
         <ModalBody>

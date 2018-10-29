@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { toClass } from 'recompose';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
@@ -10,7 +11,7 @@ type RouterLinkProps = {
   className?: string;
   href: string;
   isSelected: boolean;
-  onClick: () => mixed;
+  onClick: (e: Event) => void;
   pathname: string;
   replace?: boolean;
   subNav?: any;
@@ -47,12 +48,15 @@ const RouterLink = ({
         replace={replace}
         style={{ color: 'inherit' }}
         to={href}
+        isSelected={isSelected}
       >
         {children}
       </Link>
       {subNav &&
         isSubNavExpanded(href, pathname) && (
-          <SubNavWrapper>{renderNav(subNav, { pathname })}</SubNavWrapper>
+          <SubNavWrapper>
+            {renderNav(subNav, { pathname, onClick })}
+          </SubNavWrapper>
         )}
     </div>
   );

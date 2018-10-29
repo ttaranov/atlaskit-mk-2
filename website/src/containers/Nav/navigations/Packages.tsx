@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { ComponentType } from 'react';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
@@ -71,9 +72,9 @@ const getItemDetails = (pkg: Directory, group: Directory, pathname) => {
       packageUrl(group.id, pkg.id),
       pathname,
     ) ? (
-      <ChevronDownIcon size="small" />
+      <ChevronDownIcon label="chevron" size="small" />
     ) : (
-      <PackageIcon size="small" />
+      <PackageIcon label="package" size="small" />
     );
   }
 
