@@ -1,5 +1,12 @@
 # @atlaskit/renderer
 
+## 29.2.2
+- [patch] [f3d067d"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3d067d"
+d):
+
+  - Fix font size for numbered column in tables with dynamic text sizing
+
 ## 29.2.1
 - [patch] [8636991"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8636991"

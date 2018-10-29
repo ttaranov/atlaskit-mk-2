@@ -1,1 +1,0 @@
-- Fix font size for numbered column in tables with dynamic text sizing
