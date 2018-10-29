@@ -556,10 +556,11 @@ export const tableStyles = css`
     top: 2px;
 
     > div {
-      background: ${N20A};
+      background: ${N20};
       border-radius: ${borderRadius()}px;
+      border: 2px solid ${N0};
       display: flex;
-      height: ${contextualMenuTriggerSize}px;
+      height: ${contextualMenuTriggerSize + 2}px;
       flex-direction: column;
     }
     button {

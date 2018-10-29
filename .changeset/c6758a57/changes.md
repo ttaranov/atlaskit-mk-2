@@ -1,0 +1,1 @@
+- ED-5615: Fix block element padding inside table cells.

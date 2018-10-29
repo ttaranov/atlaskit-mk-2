@@ -68,6 +68,20 @@ export const clearEditor = async page => {
   });
 };
 
+export const insertBlockMenuItem = async (
+  page,
+  menuTitle,
+  tagName = 'span',
+) => {
+  const openInsertBlockMenuSelector = `[aria-label="${
+    insertBlockMessages.insertMenu.defaultMessage
+  }"]`;
+
+  await page.click(openInsertBlockMenuSelector);
+  // Do we need to wait for something here?
+  await selectByTextAndClick({ page, text: menuTitle, tagName });
+};
+
 export const insertTable = async page => {
   await page.click(
     `span[aria-label="${insertBlockMessages.table.defaultMessage}"]`,
