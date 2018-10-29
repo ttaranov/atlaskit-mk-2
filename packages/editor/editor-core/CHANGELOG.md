@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.3.2
+- [patch] [14d581b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14d581b"
+d):
+
+  - Disable clear formatting menu when there is no formatting
+
 ## 87.3.1
 - [patch] [52f5b51"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52f5b51"
