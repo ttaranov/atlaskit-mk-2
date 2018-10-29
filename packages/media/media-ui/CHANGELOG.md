@@ -1,5 +1,12 @@
 # @atlaskit/media-ui
 
+## 7.3.0
+- [minor] [023cb45"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/023cb45"
+d):
+
+  - Add i18n support to MediaViewer
+
 ## 7.2.1
 - [patch] [cf840fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf840fa):
 

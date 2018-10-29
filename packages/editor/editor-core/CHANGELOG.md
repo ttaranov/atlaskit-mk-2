@@ -1,5 +1,47 @@
 # @atlaskit/editor-core
 
+## 87.6.0
+- [minor] [bb3336a"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb3336a"
+d):
+
+  - Make text formatting toolbar account for different item titles legnths
+
+## 87.5.0
+- [minor] [d182ad9"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d182ad9"
+d):
+
+  - Add <-> to ↔︎ convertion rule
+
+## 87.4.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
+## 87.4.2
+- [patch] [4cc767e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cc767e"
+d):
+
+  - ED-5030: Fixed gap-cursor on nodeviews in breakout mode.
+
+## 87.4.1
+- [patch] [abd19cd"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abd19cd"
+d):
+
+  - ED-5616: fix inline cursor navigation
+
+## 87.4.0
+- [minor] [5981cec"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5981cec"
+d):
+
+  - TypeAhead to preserve marks
+
 ## 87.3.2
 - [patch] [14d581b"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14d581b"

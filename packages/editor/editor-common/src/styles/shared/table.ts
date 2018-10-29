@@ -8,11 +8,10 @@ import {
   akEditorTableNumberColumnWidth,
   akEditorBreakoutPadding,
 } from '../consts';
-
 import { PanelSharedCssClassName } from './panel';
 
-export const tableMarginTop = 32;
-export const tableMarginBottom = 20;
+export const tableMarginTop = 24;
+export const tableMarginBottom = 16;
 export const tableMarginSides = 8;
 
 export const TableSharedCssClassName = {

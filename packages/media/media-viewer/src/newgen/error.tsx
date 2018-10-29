@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { ErrorMessageWrapper, ErrorImage } from './styled';
 import { FileState } from '@atlaskit/media-core';
+import { messages as i18nMessages } from '@atlaskit/media-ui';
 import { cannotViewFile, errorLoadingFile } from './error-images';
 
 type MessagesType<Key extends string> = { [k in Key]: ReactNode };
@@ -18,9 +20,11 @@ export type Props = Readonly<{
   children?: ReactNode;
 }>;
 
+// TODO [i18n]
 const errorLoadingFileImage = (
   <ErrorImage src={errorLoadingFile} alt="Error loading file" />
 );
+// TODO [i18n]
 const cannotViewFileImage = (
   <ErrorImage src={cannotViewFile} alt="Error generating preview" />
 );
@@ -29,36 +33,48 @@ const messages: MessagesType<ErrorName> = {
   metadataFailed: (
     <div>
       {errorLoadingFileImage}
-      <p>Something went wrong.</p>
-      <p>It might just be a hiccup.</p>
+      <p>
+        <FormattedMessage {...i18nMessages.something_went_wrong} />
+      </p>
+      <p>
+        <FormattedMessage {...i18nMessages.might_be_a_hiccup} />
+      </p>
     </div>
   ),
 
   previewFailed: (
     <div>
       {cannotViewFileImage}
-      <p>We couldn't generate a preview for this file.</p>
+      <p>
+        <FormattedMessage {...i18nMessages.couldnt_generate_preview} />
+      </p>
     </div>
   ),
 
   unsupported: (
     <div>
       {cannotViewFileImage}
-      <p>We can't preview this file type.</p>
+      <p>
+        <FormattedMessage {...i18nMessages.cant_preview_file_type} />
+      </p>
     </div>
   ),
 
   idNotFound: (
     <div>
       {errorLoadingFileImage}
-      <p>The selected item was not found on the list.</p>
+      <p>
+        <FormattedMessage {...i18nMessages.item_not_found_in_list} />
+      </p>
     </div>
   ),
 
   noPDFArtifactsFound: (
     <div>
       {cannotViewFileImage}
-      <p>No PDF artifacts found for this file.</p>
+      <p>
+        <FormattedMessage {...i18nMessages.no_pdf_artifacts} />
+      </p>
     </div>
   ),
 };

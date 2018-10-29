@@ -24,6 +24,7 @@ import { MediaViewerItem } from '../src';
 import { MediaViewerDataSource } from '..';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
+import { I18NWrapper } from '@atlaskit/media-test-helpers';
 
 const context = createStorybookContext();
 
@@ -154,63 +155,65 @@ export default class Example extends React.Component<{}, State> {
 
   render() {
     return (
-      <Container>
-        <Group>
-          <h2>File lists</h2>
-          <ButtonList>
-            <li>
-              <Button onClick={this.openList}>Small list</Button>
-            </li>
-          </ButtonList>
-        </Group>
+      <I18NWrapper>
+        <Container>
+          <Group>
+            <h2>File lists</h2>
+            <ButtonList>
+              <li>
+                <Button onClick={this.openList}>Small list</Button>
+              </li>
+            </ButtonList>
+          </Group>
 
-        <Group>
-          <h2>Collection names</h2>
-          <ButtonList>
-            <li>
-              {this.state.firstCollectionItem ? (
-                <Button onClick={this.openCollection}>
-                  Default collection
+          <Group>
+            <h2>Collection names</h2>
+            <ButtonList>
+              <li>
+                {this.state.firstCollectionItem ? (
+                  <Button onClick={this.openCollection}>
+                    Default collection
+                  </Button>
+                ) : (
+                  <AkSpinner />
+                )}
+              </li>
+            </ButtonList>
+          </Group>
+
+          <Group>
+            <h2>Errors</h2>
+            <ButtonList>
+              <li>
+                <Button onClick={this.openNotFound}>
+                  Selected item not found
                 </Button>
-              ) : (
-                <AkSpinner />
-              )}
-            </li>
-          </ButtonList>
-        </Group>
+              </li>
+              <li>
+                <Button onClick={this.openInvalidId}>Invalid ID</Button>
+              </li>
+              <li>
+                <Button onClick={this.openInvalidCollection}>
+                  Invalid collection name
+                </Button>
+              </li>
+            </ButtonList>
+          </Group>
 
-        <Group>
-          <h2>Errors</h2>
-          <ButtonList>
-            <li>
-              <Button onClick={this.openNotFound}>
-                Selected item not found
-              </Button>
-            </li>
-            <li>
-              <Button onClick={this.openInvalidId}>Invalid ID</Button>
-            </li>
-            <li>
-              <Button onClick={this.openInvalidCollection}>
-                Invalid collection name
-              </Button>
-            </li>
-          </ButtonList>
-        </Group>
-
-        {this.state.selected && (
-          <AnalyticsListener channel="media" onEvent={handleEvent}>
-            <MediaViewer
-              context={context}
-              selectedItem={this.state.selected.identifier}
-              dataSource={this.state.selected.dataSource}
-              collectionName={defaultCollectionName}
-              onClose={this.onClose}
-              pageSize={5}
-            />
-          </AnalyticsListener>
-        )}
-      </Container>
+          {this.state.selected && (
+            <AnalyticsListener channel="media" onEvent={handleEvent}>
+              <MediaViewer
+                context={context}
+                selectedItem={this.state.selected.identifier}
+                dataSource={this.state.selected.dataSource}
+                collectionName={defaultCollectionName}
+                onClose={this.onClose}
+                pageSize={5}
+              />
+            </AnalyticsListener>
+          )}
+        </Container>
+      </I18NWrapper>
     );
   }
 }
