@@ -17,6 +17,7 @@ import {
   showInsertColumnButton,
   showInsertRowButton,
   clearHoverSelection,
+  handleShiftSelection,
 } from './actions';
 
 const isIE11 = browser.ie_version === 11;
@@ -162,3 +163,16 @@ export function handleTripleClick(view, pos) {
 
   return false;
 }
+export const handleMouseDown = (
+  view: EditorView,
+  event: MouseEvent,
+): boolean => {
+  const { state, dispatch } = view;
+
+  // shift-selecting table rows/columns
+  if (handleShiftSelection(event)(state, dispatch)) {
+    return true;
+  }
+
+  return false;
+};

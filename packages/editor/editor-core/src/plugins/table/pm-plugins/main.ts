@@ -22,6 +22,7 @@ import {
   handleShowInsertRowButton,
 } from '../action-handlers';
 import {
+  handleMouseDown,
   handleMouseOver,
   handleMouseLeave,
   handleBlur,
@@ -217,6 +218,7 @@ export const createPlugin = (
       handleDOMEvents: {
         blur: handleBlur,
         focus: handleFocus,
+        mousedown: handleMouseDown,
         mouseover: handleMouseOver,
         mouseleave: handleMouseLeave,
         click: handleClick,
