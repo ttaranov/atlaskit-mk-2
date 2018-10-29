@@ -40,12 +40,14 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
             appearance="toolbar"
             isDisabled={!zoomLevel.canZoomOut}
             onClick={this.zoomOut}
+            // TODO [i18n]
             iconBefore={<ZoomOutIcon label="zoom out" />}
           />
           <Button
             appearance="toolbar"
             isDisabled={!zoomLevel.canZoomIn}
             onClick={this.zoomIn}
+            // TODO [i18n]
             iconBefore={<ZoomInIcon label="zoom in" />}
           />
         </ZoomControlsWrapper>

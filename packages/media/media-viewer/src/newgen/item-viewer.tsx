@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Context, FileState, ProcessedFileState } from '@atlaskit/media-core';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -136,7 +138,9 @@ export class ItemViewerBase extends React.Component<Props, State> {
       const err = createError(errorName, undefined, file);
       return (
         <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
+          <p>
+            <FormattedMessage {...messages.try_downloading_file} />
+          </p>
           {this.renderDownloadButton(file, err)}
         </ErrorMessage>
       );
