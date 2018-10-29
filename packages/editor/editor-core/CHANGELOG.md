@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.4.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
 ## 87.4.2
 - [patch] [4cc767e"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cc767e"
