@@ -1,0 +1,1 @@
+- Fix getCommitThatAddsFile function
