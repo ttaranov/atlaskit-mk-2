@@ -1,0 +1,1 @@
+- ED-5570 Fixed long URLs wrapping in editor panel

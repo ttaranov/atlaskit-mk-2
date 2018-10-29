@@ -16,6 +16,7 @@ export const panelSharedStyles = css`
     min-width: ${akEditorElementMinWidth}px;
     display: flex;
     align-items: baseline;
+    word-break: break-word;
 
     .ak-editor-panel__icon {
       display: block;
