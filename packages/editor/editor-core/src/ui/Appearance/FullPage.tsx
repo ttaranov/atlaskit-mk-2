@@ -28,7 +28,7 @@ FullPageEditorWrapper.displayName = 'FullPageEditorWrapper';
 
 const ScrollContainer = styled(ContentStyles)`
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   position: relative;
   display: flex;
   flex-direction: column;

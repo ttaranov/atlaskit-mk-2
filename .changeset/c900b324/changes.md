@@ -1,0 +1,1 @@
+- ED-5186: Always show scroll bar, to avoid page shift.
