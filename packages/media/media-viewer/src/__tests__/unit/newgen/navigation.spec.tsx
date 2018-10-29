@@ -54,8 +54,7 @@ describe('Navigation', () => {
         onChange={() => {}}
       />,
     );
-    const instance = el.instance() as any;
-    return { el, instance, createAnalyticsEventSpy };
+    return { el, createAnalyticsEventSpy };
   }
 
   it('should show right arrow if there are items on the right', () => {
