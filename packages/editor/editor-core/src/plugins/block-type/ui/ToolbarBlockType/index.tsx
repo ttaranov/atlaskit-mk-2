@@ -87,6 +87,14 @@ class ToolbarBlockType extends React.PureComponent<
       .filter(blockType => blockType.name === currentBlockType.name)
       .map(blockType => blockType.title);
 
+    const longestDropdownMenuItem = [
+      NORMAL_TEXT,
+      ...availableBlockTypes,
+    ].reduce((longest, item) => {
+      const itemTitle = formatMessage(item.title);
+      return itemTitle.length >= longest.length ? itemTitle : longest;
+    }, '');
+
     const toolbarButtonFactory = (disabled: boolean) => {
       const labelTextStyles = formatMessage(messages.textStyles);
       return (
@@ -108,6 +116,9 @@ class ToolbarBlockType extends React.PureComponent<
           {!isSmall && (
             <ButtonContent>
               <FormattedMessage {...blockTypeTitles[0] || NORMAL_TEXT.title} />
+              <div style={{ overflow: 'hidden', height: 0 }}>
+                {longestDropdownMenuItem}
+              </div>
             </ButtonContent>
           )}
         </ToolbarButton>
