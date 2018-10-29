@@ -35,7 +35,6 @@ import {
   selectColumn as selectColumnTransform,
   selectRow as selectRowTransform,
 } from 'prosemirror-utils';
-import { TableLayout } from '@atlaskit/editor-common';
 import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
   createControlsHoverDecoration,
@@ -423,7 +422,7 @@ export const deleteSelectedRows: Command = (
   return true;
 };
 
-export const setTableLayout = (layout: TableLayout): Command => (
+export const toggleTableLayout: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
@@ -431,9 +430,20 @@ export const setTableLayout = (layout: TableLayout): Command => (
   if (!table) {
     return false;
   }
-  const { schema, tr } = state;
+  let layout;
+  switch (table.node.attrs.layout) {
+    case 'default':
+      layout = 'wide';
+      break;
+    case 'wide':
+      layout = 'full-width';
+      break;
+    case 'full-width':
+      layout = 'default';
+      break;
+  }
   dispatch(
-    tr.setNodeMarkup(table.pos, schema.nodes.table, {
+    state.tr.setNodeMarkup(table.pos, state.schema.nodes.table, {
       ...table.node.attrs,
       layout,
     }),
@@ -730,7 +740,7 @@ export const showInsertColumnButton = (columnIndex: number): Command => (
   dispatch,
 ) => {
   const { insertColumnButtonIndex } = getPluginState(state);
-  if (typeof insertColumnButtonIndex !== 'number') {
+  if (columnIndex > -1 && insertColumnButtonIndex !== columnIndex) {
     dispatch(
       state.tr
         .setMeta(pluginKey, {
@@ -751,7 +761,7 @@ export const showInsertRowButton = (rowIndex: number): Command => (
   dispatch,
 ) => {
   const { insertRowButtonIndex } = getPluginState(state);
-  if (typeof insertRowButtonIndex !== 'number') {
+  if (rowIndex > -1 && insertRowButtonIndex !== rowIndex) {
     dispatch(
       state.tr
         .setMeta(pluginKey, {
@@ -764,6 +774,27 @@ export const showInsertRowButton = (rowIndex: number): Command => (
     );
     return true;
   }
+  return false;
+};
+
+export const hideInsertColumnOrRowButton: Command = (state, dispatch) => {
+  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
+    state,
+  );
+  if (
+    typeof insertColumnButtonIndex === 'number' ||
+    typeof insertRowButtonIndex === 'number'
+  ) {
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.HIDE_INSERT_COLUMN_OR_ROW_BUTTON,
+        })
+        .setMeta('addToHistory', false),
+    );
+    return true;
+  }
+
   return false;
 };
 

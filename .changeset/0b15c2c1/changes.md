@@ -1,0 +1,1 @@
+- ED-5537: table ux improvements

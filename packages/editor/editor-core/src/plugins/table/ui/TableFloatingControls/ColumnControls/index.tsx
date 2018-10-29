@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
-import { isTableSelected } from 'prosemirror-utils';
+import { isTableSelected, isCellSelection } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
 import { tableDeleteButtonSize } from '../../styles';
 import InsertButton from '../InsertButton';
@@ -177,7 +177,20 @@ export default class ColumnControls extends Component<Props, any> {
             onMouseDown={() => this.selectColumn(i)}
             onMouseOver={() => this.hoverColumns([i])}
             onMouseOut={this.clearHoverSelection}
-          />
+          >
+            {!isCellSelection(state.selection) && (
+              <>
+                <div
+                  className={ClassName.CONTROLS_BUTTON_OVERLAY}
+                  data-index={i}
+                />
+                <div
+                  className={ClassName.CONTROLS_BUTTON_OVERLAY}
+                  data-index={i + 1}
+                />
+              </>
+            )}
+          </button>
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (

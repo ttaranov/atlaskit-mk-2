@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import { isRowSelected, isTableSelected } from 'prosemirror-utils';
+import {
+  isRowSelected,
+  isTableSelected,
+  isCellSelection,
+} from 'prosemirror-utils';
 import InsertButton from '../InsertButton';
 import { findRowSelection, TableSelection } from '../utils';
 import DeleteButton from '../DeleteButton';
@@ -141,7 +145,20 @@ export default class RowControls extends Component<Props, any> {
             onMouseDown={() => this.props.selectRow(i)}
             onMouseOver={() => this.props.hoverRows([i])}
             onMouseOut={() => this.props.clearHoverSelection()}
-          />
+          >
+            {!isCellSelection(state.selection) && (
+              <>
+                <div
+                  className={ClassName.CONTROLS_BUTTON_OVERLAY}
+                  data-index={i}
+                />
+                <div
+                  className={ClassName.CONTROLS_BUTTON_OVERLAY}
+                  data-index={i + 1}
+                />
+              </>
+            )}
+          </button>
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (
