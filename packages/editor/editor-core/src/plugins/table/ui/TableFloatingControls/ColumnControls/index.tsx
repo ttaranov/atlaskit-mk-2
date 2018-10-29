@@ -20,6 +20,7 @@ import {
   selectColumn,
 } from '../../../actions';
 import { TableCssClassName as ClassName } from '../../../types';
+import tableMessages from '../../messages';
 
 export interface Props {
   editorView: EditorView;
@@ -82,6 +83,7 @@ export default class ColumnControls extends Component<Props, any> {
     return (
       <DeleteButton
         key="delete"
+        removeLabel={tableMessages.removeColumns}
         style={{
           left: offsetWidth + selectionWidth / 2 - tableDeleteButtonSize / 2,
         }}
