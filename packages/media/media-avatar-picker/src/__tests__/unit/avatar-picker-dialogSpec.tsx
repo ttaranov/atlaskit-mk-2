@@ -8,6 +8,7 @@ import { PredefinedAvatarList } from '../../../src/predefined-avatar-list';
 import {
   AvatarPickerDialog,
   AvatarPickerDialogProps,
+  AvatarPickerDialogState,
 } from '../../../src/avatar-picker-dialog';
 import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from '../../../src/avatar-picker-dialog/layout-const';
 import { dataURItoFile, fileToDataURI } from '../../../src/util';
@@ -284,13 +285,21 @@ describe('Avatar Picker Dialog', () => {
       onRemoveImage: any;
     };
 
-    expect((component.state() as any).selectedImage).toBeInstanceOf(File);
-    expect((component.state() as any).selectedImageSource).toBe(smallImage);
+    expect(
+      (component.state() as AvatarPickerDialogState).selectedImage,
+    ).toBeInstanceOf(File);
+    expect(
+      (component.state() as AvatarPickerDialogState).selectedImageSource,
+    ).toBe(smallImage);
 
     onRemoveImage();
 
-    expect((component.state() as any).selectedImage).toBeUndefined();
-    expect((component.state() as any).selectedImageSource).toBeUndefined();
+    expect(
+      (component.state() as AvatarPickerDialogState).selectedImage,
+    ).toBeUndefined();
+    expect(
+      (component.state() as AvatarPickerDialogState).selectedImageSource,
+    ).toBeUndefined();
   });
 
   it('should render loading state when "isLoading" is true', () => {

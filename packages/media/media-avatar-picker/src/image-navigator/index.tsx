@@ -356,18 +356,17 @@ export class ImageNavigator extends Component<
 
   renderImageUploader() {
     const { errorMessage, isLoading } = this.props;
-    const separatorText = errorMessage ? (
-      <FormattedMessage {...messages.try_again} />
-    ) : (
-      <FormattedMessage {...messages.or} />
-    );
 
     return (
       <ImageUploader>
         {this.renderDragZone()}
         {isLoading ? null : (
           <div>
-            <PaddedBreak>{separatorText}</PaddedBreak>
+            <PaddedBreak>
+              <FormattedMessage
+                {...(errorMessage ? messages.try_again : messages.or)}
+              />
+            </PaddedBreak>
             <Button onClick={this.onUploadButtonClick} isDisabled={isLoading}>
               <FormattedMessage {...messages.upload_photo} />
               <FileInput

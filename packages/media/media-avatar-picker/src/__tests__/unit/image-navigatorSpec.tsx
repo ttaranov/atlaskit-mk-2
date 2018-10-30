@@ -27,6 +27,7 @@ import {
   mountWithIntlContext,
 } from '@atlaskit/media-test-helpers';
 import { errorIcon } from '../../../src/image-navigator/images';
+import { ReactWrapper } from 'enzyme';
 
 describe('Image navigator', () => {
   let component: any;
@@ -265,7 +266,7 @@ describe('Image navigator', () => {
   });
 
   describe('with no imageSource', () => {
-    let viewComponent: any;
+    let viewComponent: ReactWrapper;
 
     beforeEach(() => {
       component = mountWithIntlContext(
