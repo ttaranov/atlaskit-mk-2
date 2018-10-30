@@ -63,5 +63,8 @@
     "react-dom": "^16.4.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
+  },
+  "scripts": {
+    "build": "cp -r dist/cjs/entrypoints/*.js . && rm -rf dist/esm/entrypoints dist/cjs/entrypoints"
   }
 }
