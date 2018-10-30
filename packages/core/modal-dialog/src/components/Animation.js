@@ -1,7 +1,6 @@
 // @flow
 import React, { type Node } from 'react';
 import { Transition } from 'react-transition-group';
-import canUseDom from '../utils/can-use-dom';
 
 const duration = 500;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
