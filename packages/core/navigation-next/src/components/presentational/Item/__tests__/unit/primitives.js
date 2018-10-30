@@ -169,4 +169,39 @@ describe('ItemPrimitiveBase', () => {
     expect(wrapper.childAt(1).text()).toEqual(defaultProps.text);
     expect(wrapper.childAt(2).find(AfterComponent)).toHaveLength(1);
   });
+
+  it('should allow applying custom styles', () => {
+    const styles = () => ({
+      itemBase: {
+        color: 'itemBase-fake-color',
+      },
+      beforeWrapper: {
+        color: 'beforeWrapper-fake-color',
+      },
+      contentWrapper: {
+        color: 'contentWrapper-fake-color',
+      },
+      textWrapper: {
+        color: 'textWrapper-fake-color',
+      },
+      subTextWrapper: {
+        color: 'subTextWrapper-fake-color',
+      },
+      afterWrapper: {
+        color: 'afterWrapper-fake-color',
+      },
+    });
+
+    const wrapper = shallow(
+      <ItemPrimitiveBase
+        {...defaultProps}
+        styles={styles}
+        subText={'subtext'}
+        before={BeforeOrAfterComponent}
+        after={BeforeOrAfterComponent}
+      />,
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
 });
