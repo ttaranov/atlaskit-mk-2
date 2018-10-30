@@ -11,7 +11,6 @@ import {
   docFileDetails,
   unknownFileDetails,
   genericLinkDetails,
-  gifDataUri,
   smallImage,
   smallTransparentImage,
   tallImage,
@@ -73,7 +72,6 @@ const mediaItemTypeOptions = [
   { value: 'link', label: 'Link' },
 ];
 const dataURIOptions = [
-  { value: gifDataUri, label: 'Gif' },
   { value: smallImage, label: 'Small' },
   { value: smallTransparentImage, label: 'Small transparent' },
   { value: tallImage, label: 'Tall' },
@@ -166,7 +164,7 @@ export const generateStoriesForEditableCards = () => {
         appearance: 'auto',
         status: 'complete',
         metadata: 'fileImage',
-        dataURI: gifDataUri,
+        dataURI: tallImage,
         dimensions: {
           width: defaultImageCardDimensions.width,
           height: defaultImageCardDimensions.height,
