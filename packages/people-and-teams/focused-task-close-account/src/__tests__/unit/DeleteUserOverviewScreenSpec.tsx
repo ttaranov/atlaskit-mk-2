@@ -17,7 +17,7 @@ const render = (props = {}) =>
 test('DeleteUserOverviewScreen', () => {
   expect(
     render({
-      deactivateUserHandler: () => {}
+      deactivateUserHandler: () => {},
     }),
   ).toMatchSnapshot();
 });
@@ -25,7 +25,7 @@ test('DeleteUserOverviewScreen', () => {
 describe('selectAdminOrSelfCopy', () => {
   test('selects admin copy if delete candidate is not current user', () => {
     const selectAdminOrSelfCopy = (render({
-        deactivateUserHandler: () => {},
+      deactivateUserHandler: () => {},
       isCurrentUser: false,
     }).instance() as DeleteUserOverviewScreen).selectAdminOrSelfCopy;
     expect(selectAdminOrSelfCopy('admin', 'self')).toBe('admin');

@@ -1,6 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/focused-task-close-account", "type": "minor" }
-  ],
-  "dependents": []
-}
