@@ -5,7 +5,7 @@ import Group from '../Group';
 
 export type SortableGroupProps = {
   ...ElementConfig<typeof Group>,
-  /** A unique identifier for the group. Required for drag and drop and for analytics. */
+  /** A unique identifier for the group that will be used as the droppableId for drag and drop. Also used for analytics. */
   id: string,
   /** Styling to apply to the DroppableGroup. The SortableSection children css prop can
    *  be passed through here if you opt not to wrap SortableGroups with a wrapper.

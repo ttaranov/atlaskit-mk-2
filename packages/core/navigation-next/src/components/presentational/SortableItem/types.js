@@ -7,7 +7,8 @@ export type SortableItemProps = {
   ...ElementConfig<typeof Item>,
   /** The index of the sortable item within it's group, used for sorting. */
   index: number,
-  /** A unique identifier to identify what item it is, used for both sorting
-   *  and analytics */
+  /** A unique identifier to identify what item it is, used as the draggableId
+   *  for drag and drop. Also used for analytics.
+   */
   id: string,
 };
