@@ -1,0 +1,1 @@
+- Adds visual regression test for ie11
