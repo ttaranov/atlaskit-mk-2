@@ -59,7 +59,7 @@ export class DeleteUserOverviewScreen extends React.Component<
         />
         <Styled.MainInformationList>
           <li>
-            {!accessibleSites || accessibleSites.length == 0 ? (
+            {!accessibleSites || accessibleSites.length === 0 ? (
               <FormattedMessage
                 {...this.selectAdminOrSelfCopy(
                   overviewMessages.paragraphLoseAccessAdminNoSites,
