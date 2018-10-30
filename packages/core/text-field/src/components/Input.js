@@ -3,6 +3,7 @@ import React from 'react';
 import { InputWrapper } from '../styled';
 
 type InputProps = any;
+
 export default ({
   isDisabled,
   isInvalid,
