@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.8
+- [patch] [8b084d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b084d0):
+
+  - Fix unsupported node event name
+
 ## 87.6.7
 - [patch] [6a0a6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a0a6f8):
 
