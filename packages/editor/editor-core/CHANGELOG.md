@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.2
+- [patch] [7459970](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7459970):
+
+  - ED-5263: handle rows and columns shift selection
+
 ## 87.6.1
 - [patch] [bdc9961"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc9961"
