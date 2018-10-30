@@ -114,16 +114,17 @@ Pull requests, issues and comments are welcomed.
 
 For pull requests:
 
+* Do not raise pull requests from forks because our CI builds do not run on forks. Create a pull request from a branch instead.
 * Add tests for new features and bug fixes
 * Follow the existing style
 * Separate unrelated changes into multiple pull requests
 * Read [Contributing guidelines][contributing] for more details
 
-See the existing issues for things to start contributing. For bigger changes, make sure you start a discussion first by creating dan issue and explaining the intended change.
+See the existing issues for things to start contributing. For bigger changes, make sure you start a discussion first by creating an issue and explaining the intended change.
 
-#### Become a collaborator
+#### Become a contributor
 
-If this is your _first time_ to raise a pull request, you need to first become a collaborator in order to create branches for your pull requests. Do not raise pull requests from forks. To become a collaborator, create an [issue](https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open) and include the following:
+ If this is your _first time_ to raise a pull request, you need to be added to the 'atlaskit collaborator' team in order to create branches for your pull requests. To be added, create an [issue](https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open) and include the following:
 
 1. Issue title - __"Become an Atlaskit collaborator"__
 2. Your Bitbucket username and
