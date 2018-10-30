@@ -1,1 +1,0 @@
-- Solving race condition when dropping and nesting at the same time

@@ -1,5 +1,10 @@
 # @atlaskit/tree
 
+## 4.1.4
+- [patch] [7b08fd4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b08fd4):
+
+  - Solving race condition when dropping and nesting at the same time
+
 ## 4.1.3
 - [patch] [5de65a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5de65a9):
 
