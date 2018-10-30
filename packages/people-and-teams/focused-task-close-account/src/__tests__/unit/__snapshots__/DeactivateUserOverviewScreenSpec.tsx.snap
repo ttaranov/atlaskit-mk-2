@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeactivateUserOverviewScreen 1`] = `
+<styled.div>
+  <styled.div>
+    <FormattedMessage
+      defaultMessage="Deactivate account"
+      description="Heading for the screen that explains what happens when a user's account is deactivated"
+      id="focused-task-close-account.deactivate-account.overview.heading"
+      values={Object {}}
+    />
+  </styled.div>
+  <FormattedMessage
+    defaultMessage="You're about to deactivate the user account of"
+    description="A paragraph explaining that the admin is about to deactivate another user"
+    id="focused-task-close-account.deactivate-account.overview.paragraph.about-to-delete.admin"
+    values={Object {}}
+  />
+  <UserInfo
+    user={
+      Object {
+        "avatarUrl": "",
+        "email": "catherine.hirons@acme.com",
+        "fullName": "Catherine Hirons",
+      }
+    }
+  />
+  <FormattedMessage
+    defaultMessage="When you deactivate the account:"
+    description="A paragraph introducing the impact of deactivating the account"
+    id="focused-task-close-account.deactivate-account.overview.paragraph.when-deactivate-account"
+    values={Object {}}
+  />
+  <styled.ul>
+    <li>
+      <FormattedMessage
+        defaultMessage="They will immediately lose access to all Atlassian services. {fullName} currently has access to:"
+        description="A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access. {fullName} is filled in by the web app."
+        id="focused-task-close-account.deactivate-account.overview.paragraph.loseAccess.admin"
+        values={
+          Object {
+            "fullName": "Catherine Hirons",
+          }
+        }
+      />
+      <styled.ul>
+        <li
+          key="0"
+        >
+          hello.atlassian.net
+        </li>
+        <li
+          key="1"
+        >
+          acme.atlassian.net
+        </li>
+        <li
+          key="2"
+        >
+          test.atlassian.net
+        </li>
+      </styled.ul>
+      <FormattedMessage
+        defaultMessage="They might also have access to other services, such as {atlassianCommunity}"
+        description="A paragraph explaining that upon deletion the user may also lose access to services that weren't listed prior."
+        id="focused-task-close-account.deactivate-account.overview.paragraph.loseAccess.footnote.admin"
+        tagName="small"
+        values={
+          Object {
+            "atlassianCommunity": "Atlassian Commnuity",
+          }
+        }
+      />
+    </li>
+    <li>
+      <FormattedMessage
+        defaultMessage="Their personal data, such as their full name and email address, and content they've created will remain in Atlassian services."
+        description="A paragraph explaining that content you have created will remain."
+        id="focused-task-close-account.deactivate-account.overview.paragraph.content-created.admin"
+        values={Object {}}
+      />
+       
+      <styled.span>
+        <StatefulInlineDialog
+          content={
+            <FormattedMessage
+              defaultMessage="For example, pages, issues, and comments they've created in products."
+              description="Examples of what constitutes as created content. Appears when the user hovers over the info icon"
+              id="focused-task-close-account.deactivate-account.overview.inline-dialog.content-created.admin"
+              values={Object {}}
+            />
+          }
+          placement="auto-start"
+        >
+          <InfoIcon
+            label=""
+            size="small"
+          />
+        </StatefulInlineDialog>
+      </styled.span>
+    </li>
+    <li>
+      <FormattedMessage
+        defaultMessage="We'll no longer bill you for them."
+        description="A paragraph explaining what parts of the user's personal data will be deleted"
+        id="focused-task-close-account.deactivate-account.overview.paragraph.no-longer-billed.admin"
+        values={Object {}}
+      />
+    </li>
+  </styled.ul>
+  <FormattedMessage
+    defaultMessage="You can reactivate the account at any time"
+    description="A paragraph explaining what parts of the user's personal data will be deleted"
+    id="focused-task-close-account.deactivate-account.overview.paragraph.no-longer-billed.admin"
+    values={Object {}}
+  />
+</styled.div>
+`;

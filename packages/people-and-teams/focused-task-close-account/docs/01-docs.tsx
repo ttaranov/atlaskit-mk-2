@@ -34,6 +34,7 @@ export default md`
   ${code`
 import {
   FocusedTaskCloseAccount,
+  FocusedTaskDeactivateAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
 } from '@atlaskit/focused-task-close-account';
@@ -64,6 +65,15 @@ import {
       title="Single screen drawer"
       Component={require('../examples/02-SingleScreenDrawer').default}
       source={require('!!raw-loader!../examples/02-SingleScreenDrawer')}
+    />
+  )}
+
+  ${(
+    <Example
+      packageName="@atlaskit/focused-task-close-account"
+      title="Deactivate screen drawer"
+      Component={require('../examples/03-DeactivateUserDrawer').default}
+      source={require('!!raw-loader!../examples/03-DeactivateUserDrawer')}
     />
   )}
 

@@ -218,6 +218,202 @@ export const contentPreviewMessages = {
     id: 'focused-task-close-account.delete-account.content-preview.heading',
     defaultMessage: 'How users will see this account',
     description:
-      'Heading for the screen that explains what other users will see when viewing the deleted/deactivated user',
+      'Heading for the screen that explains what other users will see when viewing the deleted user',
+  },
+};
+
+export const deactivateContentPreviewMessages = {
+  heading: {
+    id: 'focused-task-close-account.deactivate-account.content-preview.heading',
+    defaultMessage: 'How users will see this account',
+    description:
+      'Heading for the screen that explains what other users will see when viewing the deactivated user',
+  },
+};
+
+export const deactivateOverviewMessages = {
+  heading: {
+    id: 'focused-task-close-account.deactivate-account.overview.heading',
+    defaultMessage: 'Deactivate account',
+    description:
+      "Heading for the screen that explains what happens when a user's account is deactivated",
+  },
+
+  paragraphAboutToDeactivateAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.about-to-delete.admin',
+    defaultMessage: "You're about to deactivate the user account of",
+    description:
+      'A paragraph explaining that the admin is about to deactivate another user',
+  },
+
+  paragraphAboutToDeactivateSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.about-to-delete.self',
+    defaultMessage: "You're about to deactivate your account:",
+    description:
+      'A paragraph explaining that user is about to deactivate their own account',
+  },
+
+  paragraphWhenDeactivateAccountAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.when-deactivate-account',
+    defaultMessage: 'When you deactivate the account:',
+    description:
+      'A paragraph introducing the impact of deactivating the account',
+  },
+
+  paragraphWhenDeactivateAccountSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.when-deactivate-account',
+    defaultMessage: 'When you deactivate your account:',
+    description:
+      'A paragraph introducing the impact of deactivating your account',
+  },
+
+  paragraphLoseAccessAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.loseAccess.admin',
+    defaultMessage:
+      'They will immediately lose access to all Atlassian services. {fullName} currently has access to:',
+    description:
+      'A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access. {fullName} is filled in by the web app.',
+  },
+  paragraphLoseAccessSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.loseAccess.self',
+    defaultMessage:
+      'You will immediately lose access to all Atlassian services. You currently have access to:',
+    description:
+      'A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access.',
+  },
+
+  paragraphLoseAccessFootnoteAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.loseAccess.footnote.admin',
+    defaultMessage:
+      'They might also have access to other services, such as {atlassianCommunity}',
+    description:
+      "A paragraph explaining that upon deletion the user may also lose access to services that weren't listed prior.",
+    values: {
+      atlassianCommunity: 'Atlassian Commnuity',
+    },
+  },
+  paragraphLoseAccessFootnoteSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.loseAccess.footnote.self',
+    defaultMessage:
+      'You might also have access to other services, such as {atlassianCommunity}',
+    description:
+      "A paragraph explaining that upon deletion the user may also lose access to services that weren't listed prior.",
+    values: {
+      atlassianCommunity: 'Atlassian Commnuity',
+    },
+  },
+
+  paragraphContentCreatedAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.content-created.admin',
+    defaultMessage:
+      "Their personal data, such as their full name and email address, and content they've created will remain in Atlassian services.",
+    description:
+      'A paragraph explaining that content you have created will remain.',
+  },
+  paragraphContentCreatedSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.content-created.self',
+    defaultMessage:
+      "Your personal data, such as your full name and email address, and content you've created will remain in Atlassian services.",
+    description:
+      'A paragraph explaining that content they have created will remain.',
+  },
+
+  inlineDialogContentCreatedAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.inline-dialog.content-created.admin',
+    defaultMessage:
+      "For example, pages, issues, and comments they've created in products.",
+    description:
+      'Examples of what constitutes as created content. Appears when the user hovers over the info icon',
+  },
+  inlineDialogContentCreatedSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.inline-dialog.content-created.self',
+    defaultMessage:
+      "For example, pages, issues, and comments you've created in products.",
+    description:
+      'Examples of what constitutes as created content. Appears when the user hovers over the info icon',
+  },
+
+  paragraphNoLongerBilledAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.no-longer-billed.admin',
+    defaultMessage: "We'll no longer bill you for them.",
+    description:
+      "A paragraph explaining what parts of the user's personal data will be deleted",
+  },
+  paragraphNoLongerBilledSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.no-longer-billed.self',
+    defaultMessage: 'You will no longer be included in the bill.',
+    description:
+      "A paragraph explaining what parts of the user's personal data will be deleted",
+  },
+
+  paragraphReactivateAtAnyTimeAdmin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.no-longer-billed.admin',
+    defaultMessage: 'You can reactivate the account at any time',
+    description:
+      "A paragraph explaining what parts of the user's personal data will be deleted",
+  },
+
+  paragraphReactivateAtAnyTimeSelf: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.no-longer-billed.self',
+    defaultMessage: 'You can reactivate the account at any time',
+    description: 'A paragraph explaining that the account can be reactivated.',
+  },
+
+  paragraphPersonalDataWillBeDeletedFootnote: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.paragraph.personal-data-will-be-deleted.footnote',
+    defaultMessage: 'We keep some personal data for legal purposes.',
+    description:
+      'A note explaining that some personal data is required to be saved from deletion for legal purposes.',
+  },
+
+  inlineDialogDataWillBeDeletedP1Admin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.inline-dialog.personal-data-will-be-deleted.p1.admin',
+    defaultMessage:
+      "We keep some personal data for the purposes of legal claims or for other legitimate interests. We might need this data if the user requests a service or we need to comply with a legal obligation. For example, if the user is a billing administrator, we're required to retain their name and purchase history for financial reporting and auditing.",
+    description:
+      'Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes.',
+  },
+  inlineDialogDataWillBeDeletedP1Self: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.inline-dialog.personal-data-will-be-deleted.p1.self',
+    defaultMessage:
+      "We keep some personal data for the purposes of legal claims or for other legitimate interests. We might need this data you request a service or we need to comply with a legal obligation. For example, if you are a billing administrator, we're required to retain your name and purchase history for financial reporting and auditing.",
+    description:
+      'Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes.',
+  },
+
+  inlineDialogDataWillBeDeletedP2Admin: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.inline-dialog.personal-data-will-be-deleted.p2.admin',
+    defaultMessage:
+      'Users have the right to submit complaints to a supervisory authority.',
+    description:
+      'Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes.',
+  },
+  inlineDialogDataWillBeDeletedP2Self: {
+    id:
+      'focused-task-close-account.deactivate-account.overview.inline-dialog.personal-data-will-be-deleted.p2.self',
+    defaultMessage:
+      'You have the right to submit complaints to a supervisory authority.',
+    description:
+      'Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes.',
   },
 };
