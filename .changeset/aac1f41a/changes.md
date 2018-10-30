@@ -1,0 +1,1 @@
+- Use @atlaskit/popper internally instead of a custom approach to position management
