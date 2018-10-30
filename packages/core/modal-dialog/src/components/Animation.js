@@ -60,6 +60,7 @@ export const Animation = ({
         transform: `translate3d(0, ${verticalOffset * 2}px, 0)`,
       };
       const slideTransitions = {
+        entering: {},
         entered: {
           transform:
             stackIndex > 0
