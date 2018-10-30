@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, Example } from '@atlaskit/docs';
 
 export default md`
   Spinners are used for showing a system process of unknown length going on
@@ -21,6 +21,4 @@ export default md`
       source={require('!!raw-loader!../examples/00-basic')}
     />
   )}
-
-  ${<Props props={require('!!extract-react-types-loader!../src/components')} />}
 `;

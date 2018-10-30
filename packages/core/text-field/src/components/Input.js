@@ -4,7 +4,7 @@ import { InputWrapper } from '../styled';
 
 type InputProps = any;
 
-export default ({
+const Input = ({
   isDisabled,
   isInvalid,
   isRequired,
@@ -26,3 +26,5 @@ export default ({
     />
   </InputWrapper>
 );
+
+export default Input;

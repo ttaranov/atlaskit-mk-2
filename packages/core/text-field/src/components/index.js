@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import DefaultInput from './Input';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -19,10 +20,11 @@ type State = {
 
 type Props = any;
 
-class TextField extends Component<Props, State> {
+export default class TextField extends Component<Props, State> {
   static defaultProps = {
     size: 'default',
     onChange: () => {},
+    input: DefaultInput,
   };
 
   state = {
@@ -56,6 +58,7 @@ class TextField extends Component<Props, State> {
 
   render() {
     const { size, input: Input, ...props } = this.props;
+    console.log(size);
     return (
       <Wrapper size={size}>
         <Input
@@ -72,32 +75,32 @@ class TextField extends Component<Props, State> {
 export { TextField as TextFieldWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
-  componentName: 'fieldText',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onBlur: createAndFireEventOnAtlaskit({
-      action: 'blurred',
-      actionSubject: 'textField',
-
-      attributes: {
-        componentName: 'fieldText',
-        packageName,
-        packageVersion,
-      },
-    }),
-
-    onFocus: createAndFireEventOnAtlaskit({
-      action: 'focused',
-      actionSubject: 'textField',
-
-      attributes: {
-        componentName: 'fieldText',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(TextField),
-);
+// export default withAnalyticsContext({
+//   componentName: 'fieldText',
+//   packageName,
+//   packageVersion,
+// })(
+//   withAnalyticsEvents({
+//     onBlur: createAndFireEventOnAtlaskit({
+//       action: 'blurred',
+//       actionSubject: 'textField',
+//
+//       attributes: {
+//         componentName: 'fieldText',
+//         packageName,
+//         packageVersion,
+//       },
+//     }),
+//
+//     onFocus: createAndFireEventOnAtlaskit({
+//       action: 'focused',
+//       actionSubject: 'textField',
+//
+//       attributes: {
+//         componentName: 'fieldText',
+//         packageName,
+//         packageVersion,
+//       },
+//     }),
+//   })(TextField),
+// );
