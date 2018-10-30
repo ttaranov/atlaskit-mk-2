@@ -91,7 +91,8 @@ if (CHANGED_PACKAGES) {
 // If not it will keep the same flow without code coverage check
 if (COVERAGE_PACKAGES) {
   const coveragePackages = JSON.parse(COVERAGE_PACKAGES);
-  if (Object.keys(coveragePackages).length > 0) {
+
+  if (coveragePackages.collectCoverageFrom.length > 0) {
     config.collectCoverage = true;
     config.collectCoverageFrom = coveragePackages.collectCoverageFrom;
     config.coverageThreshold = coveragePackages.coverageThreshold;
