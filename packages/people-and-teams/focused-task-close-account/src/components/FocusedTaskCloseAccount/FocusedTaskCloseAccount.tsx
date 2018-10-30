@@ -18,10 +18,6 @@ interface Props {
 }
 
 export class FocusedTaskCloseAccount extends React.Component<Props> {
-  static defaultProps = {
-    learnMoreLink: '',
-  };
-
   state = {
     currentScreenIdx: 0,
   };
