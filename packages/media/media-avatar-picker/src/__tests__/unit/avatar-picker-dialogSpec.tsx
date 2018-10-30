@@ -284,13 +284,13 @@ describe('Avatar Picker Dialog', () => {
       onRemoveImage: any;
     };
 
-    expect(component.state().selectedImage).toBeInstanceOf(File);
-    expect(component.state().selectedImageSource).toBe(smallImage);
+    expect((component.state() as any).selectedImage).toBeInstanceOf(File);
+    expect((component.state() as any).selectedImageSource).toBe(smallImage);
 
     onRemoveImage();
 
-    expect(component.state().selectedImage).toBeUndefined();
-    expect(component.state().selectedImageSource).toBeUndefined();
+    expect((component.state() as any).selectedImage).toBeUndefined();
+    expect((component.state() as any).selectedImageSource).toBeUndefined();
   });
 
   it('should render loading state when "isLoading" is true', () => {

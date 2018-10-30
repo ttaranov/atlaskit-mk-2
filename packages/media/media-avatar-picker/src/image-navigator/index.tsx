@@ -233,6 +233,7 @@ export class ImageNavigator extends Component<
     const {
       intl: { formatMessage },
     } = this.props;
+
     if (ACCEPT.indexOf(imageFile.type) === -1) {
       return formatMessage(ERROR.FORMAT);
     } else if (fileSizeMb(imageFile) > MAX_SIZE_MB) {
