@@ -1,1 +1,0 @@
-- Adds an Import option in full-page example
