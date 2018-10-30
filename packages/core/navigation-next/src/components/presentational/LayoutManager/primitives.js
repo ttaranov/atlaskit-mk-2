@@ -62,7 +62,13 @@ export const ContentNavigationWrapper = ({
     {...props}
   />
 );
-export const ContainerNavigationMask = ({ isItemDragging, ...props }: *) => (
+export const ContainerNavigationMask = ({
+  isItemDragging,
+  ...props
+}: {
+  isItemDragging?: boolean,
+  [string]: any,
+}) => (
   <div
     css={{
       display: 'flex',

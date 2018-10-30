@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ElementConfig, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import type { DropResult } from 'react-beautiful-dnd';
 import { colors } from '@atlaskit/theme';
 
@@ -148,7 +148,7 @@ const updateGroups = (
 
 type State = {
   groups: {
-    [groupId: string]: ElementConfig<typeof SortableItem>[],
+    [groupId: string]: Array<any>,
   },
   showContainer: boolean,
 };
