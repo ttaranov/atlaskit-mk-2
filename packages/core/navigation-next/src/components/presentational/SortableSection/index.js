@@ -34,12 +34,18 @@ export default class SortableSection extends Component<SortableSectionProps> {
   };
 
   render() {
-    const { children, ...sectionProps } = this.props;
+    const {
+      children,
+      onDragStart,
+      onDragUpdate,
+      onDragEnd,
+      ...sectionProps
+    } = this.props;
     return (
       <LayoutEventEmitter>
         {({ emitItemDragStart, emitItemDragEnd }) => (
           <DragDropContext
-            onDragUpdate={this.props.onDragUpdate}
+            onDragUpdate={onDragUpdate}
             onDragStart={(...args) => this.onDragStart(args, emitItemDragStart)}
             onDragEnd={(...args) => this.onDragEnd(args, emitItemDragEnd)}
           >
