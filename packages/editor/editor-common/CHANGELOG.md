@@ -1,5 +1,19 @@
 # @atlaskit/editor-common
 
+## 20.2.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
+## 20.2.2
+- [patch] [67325ee"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67325ee"
+d):
+
+  - fixing image size inside tables
+
 ## 20.2.1
 - [patch] [534f6ab"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/534f6ab"

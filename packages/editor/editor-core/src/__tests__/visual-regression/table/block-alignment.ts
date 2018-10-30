@@ -4,7 +4,6 @@ import {
   getSelectorForTableCell,
   insertTable,
   snapshot,
-  insertBlockMenuItem,
   insertMedia,
   setupMediaMocksProviders,
 } from '../_utils';
@@ -32,29 +31,12 @@ describe('Snapshot Test: table block alignment', () => {
 
   test('Block elements should align at the top of the cell', async () => {
     // Setup block elements in table.
-    let cellSelectors: string[] = [];
+    const content = ['[] ', '<> ', '``` ', '/panel '];
     for (let i = 1; i < 5; i++) {
-      cellSelectors.push(`${getSelectorForTableCell({ row: 2, cell: i })} p`);
+      const selector = `${getSelectorForTableCell({ row: 2, cell: i })} p`;
+      await page.click(selector);
+      await page.type(selector, content[i - 1], { delay: 100 });
     }
-    // Action
-    await page.click(cellSelectors[0]);
-    await page.type(cellSelectors[0], '[] ', {
-      delay: 100,
-    });
-    // Decision
-    await page.click(cellSelectors[1]);
-    await page.type(cellSelectors[1], '<> ', {
-      delay: 100,
-    });
-    // Code block
-    await page.click(cellSelectors[2]);
-    await page.type(cellSelectors[2], '``` ', {
-      delay: 100,
-    });
-
-    // Panel
-    await page.click(cellSelectors[3]);
-    await insertBlockMenuItem(page, 'Panel');
 
     // Text to align to
     await page.click(getSelectorForTableCell({ row: 3, cell: 1 }));

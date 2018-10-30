@@ -141,7 +141,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         .find(ToolbarButton)
         .first()
         .text(),
-    ).toEqual(messages.normal.defaultMessage);
+    ).toContain(messages.normal.defaultMessage);
     toolbarOption.unmount();
   });
 

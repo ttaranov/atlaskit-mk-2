@@ -9,7 +9,11 @@ import { messages as advancedTextFormattingMessages } from '../../plugins/text-f
 import { messages as listsMessages } from '../../plugins/lists/ui/ToolbarLists';
 import { messages as textColorMessages } from '../../plugins/text-color/ui/ToolbarTextColor';
 
-export { setupMediaMocksProviders, editable } from '../integration/_helpers';
+export {
+  setupMediaMocksProviders,
+  editable,
+  changeSelectedNodeLayout,
+} from '../integration/_helpers';
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
@@ -106,6 +110,10 @@ export const getSelectorForTableCell = ({
   }
 
   return `${rowSelector} > ${cellType}:nth-child(${cell})`;
+};
+
+export const getSelectorForTableRow = (row: number) => {
+  return `table tr:nth-child(${row})`;
 };
 
 export const insertMenuSelector = `span[aria-label="${

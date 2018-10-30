@@ -59,21 +59,15 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     max-width: 100%;
   }
 
-  /**
-   * Fixes the weird cursor navigation bug
-   * for inline-nodes
-   * https://github.com/ProseMirror/prosemirror/issues/514
-  */
-  .mentionView-content-wrap,
-  .inlineExtensionView-content-wrap,
-  .emojiView-content-wrap,
-  .dateView-content-wrap,
   .inlineCardView-content-wrap,
   .blockCardView-content-wrap {
     display: inline-block;
   }
 
-  
+  /* fix cursor alignment */
+  .ProseMirror .emoji-common-node {
+    display: inline;
+  }
 
   ${blocktypeStyles}
   ${textFormattingStyles}

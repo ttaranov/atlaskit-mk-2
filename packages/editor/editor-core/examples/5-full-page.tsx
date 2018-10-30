@@ -48,6 +48,8 @@ TitleInput.displayName = 'TitleInput';
  *                                    80px - 48px (Outside of iframe)
  */
 export const Wrapper: any = styled.div`
+  box-sizing: border-box;
+  padding: 2px;
   height: 100vh;
 `;
 Wrapper.displayName = 'Wrapper';

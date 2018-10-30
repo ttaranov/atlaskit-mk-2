@@ -1,5 +1,12 @@
 # @atlaskit/media-viewer
 
+## 25.0.0
+- [major] [023cb45"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/023cb45"
+d):
+
+  - Add i18n support to MediaViewer
+
 ## 24.1.11
 - [patch] [12afe80"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12afe80"

@@ -1,5 +1,88 @@
 # @atlaskit/editor-core
 
+## 87.6.5
+- [patch] [f713993](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f713993):
+
+  - ED-5537: table ux improvements
+
+## 87.6.4
+- [patch] [2dd9ae3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dd9ae3):
+
+  - ED-4979 When in the an unindentable list item, tab should do nothing
+
+## 87.6.3
+- [patch] [563c4da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563c4da):
+
+  - ED-5149 Fixed DatePicker calendar shadow in table
+
+## 87.6.2
+- [patch] [7459970](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7459970):
+
+  - ED-5263: handle rows and columns shift selection
+
+## 87.6.1
+- [patch] [bdc9961"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc9961"
+d):
+
+  - Fixes the codeblock insert rules
+
+## 87.6.0
+- [minor] [bb3336a"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb3336a"
+d):
+
+  - Make text formatting toolbar account for different item titles legnths
+
+## 87.5.0
+- [minor] [d182ad9"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d182ad9"
+d):
+
+  - Add <-> to ↔︎ convertion rule
+
+## 87.4.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
+## 87.4.2
+- [patch] [4cc767e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cc767e"
+d):
+
+  - ED-5030: Fixed gap-cursor on nodeviews in breakout mode.
+
+## 87.4.1
+- [patch] [abd19cd"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abd19cd"
+d):
+
+  - ED-5616: fix inline cursor navigation
+
+## 87.4.0
+- [minor] [5981cec"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5981cec"
+d):
+
+  - TypeAhead to preserve marks
+
+## 87.3.2
+- [patch] [14d581b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14d581b"
+d):
+
+  - Disable clear formatting menu when there is no formatting
+
+## 87.3.1
+- [patch] [52f5b51"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52f5b51"
+d):
+
+  - ED-4366: fix text selection inside table cell on triple click
+
 ## 87.3.0
 - [minor] [b911028"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b911028"
