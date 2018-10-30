@@ -17,14 +17,16 @@ interface StatusContainerProps {
 export const StatusContainer = styled.span`
   cursor: pointer;
 
-  * ::selection {
-    background-color: transparent;
+  display: inline-block;
+  line-height: 1;
+  border-radius: 5px;
+
+  border: 2px solid ${(props: StatusContainerProps) =>
+    props.selected ? B100 : 'transparent'};
   }
 
-  > * {
-    border: 1px solid;
-    border-color: ${(props: StatusContainerProps) =>
-      props.selected ? B100 : 'transparent'};
+  * ::selection {
+    background-color: transparent;
   }
 `;
 
