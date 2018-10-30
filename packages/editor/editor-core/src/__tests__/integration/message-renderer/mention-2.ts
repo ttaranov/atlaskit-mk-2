@@ -2,12 +2,12 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement } from '../_helpers';
 import {
-  messageEditor,
+  message,
   editable,
-  picker,
+  typeAheadPicker,
   insertMention,
   lozenge,
-} from './_mention-helpers';
+} from '../_helpers';
 
 /*
  * Safari does not understand webdriver keyboard actions so a
@@ -22,11 +22,11 @@ BrowserTestCase(
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
-    await browser.goto(messageEditor);
+    await browser.goto(message.path);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(picker);
-    expect(await browser.isExisting(picker)).toBe(true);
+    await browser.waitForSelector(typeAheadPicker);
+    expect(await browser.isExisting(typeAheadPicker)).toBe(true);
   },
 );
 
@@ -35,10 +35,10 @@ BrowserTestCase(
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
-    await browser.goto(messageEditor);
+    await browser.goto(message.path);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'test@');
-    expect(await browser.isExisting(picker)).toBe(false);
+    expect(await browser.isExisting(typeAheadPicker)).toBe(false);
   },
 );
 
@@ -47,7 +47,7 @@ BrowserTestCase(
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
-    await browser.goto(messageEditor);
+    await browser.goto(message.path);
     await browser.waitForSelector(editable);
     await insertMention(browser, 'Carolyn');
     await insertMention(browser, 'Summer');
@@ -64,10 +64,10 @@ BrowserTestCase(
   { skip: ['ie'] },
   async client => {
     const browser = new Page(client);
-    await browser.goto(messageEditor);
+    await browser.goto(message.path);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@ Carolyn');
-    expect(await browser.isExisting(picker)).toBe(false);
+    expect(await browser.isExisting(typeAheadPicker)).toBe(false);
   },
 );
 
@@ -77,7 +77,7 @@ BrowserTestCase(
   async client => {
     const browser = new Page(client);
     await browser.waitForSelector(editable);
-    await browser.goto(messageEditor);
+    await browser.goto(message.path);
     await insertMention(browser, 'Summer');
     await browser.waitForSelector('span=@Summer');
     const doc = await browser.$eval(editable, getDocFromElement);
@@ -90,11 +90,11 @@ BrowserTestCase(
   { skip: ['safari', 'ie'] },
   async client => {
     const browser = new Page(client);
-    await browser.goto(messageEditor);
+    await browser.goto(message.path);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(picker);
+    await browser.waitForSelector(typeAheadPicker);
     await browser.type(editable, 'Escape');
-    expect(await browser.isExisting(picker)).toBe(false);
+    expect(await browser.isExisting(typeAheadPicker)).toBe(false);
   },
 );

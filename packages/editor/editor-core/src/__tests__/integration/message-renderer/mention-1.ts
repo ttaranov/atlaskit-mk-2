@@ -4,7 +4,7 @@ import {
   getDocFromElement,
   editable,
   insertMention,
-  mentionPicker,
+  typeAheadPicker,
 } from '../_helpers';
 
 import { messageEditor, lozenge } from './_message-renderer-helpers';
@@ -104,7 +104,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
+    await browser.waitForSelector(typeAheadPicker);
     await browser.type(editable, 'ArrowDown');
     await browser.type(editable, 'Enter');
     const doc = await browser.$eval(editable, getDocFromElement);

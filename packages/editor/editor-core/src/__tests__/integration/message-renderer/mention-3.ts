@@ -4,7 +4,7 @@ import {
   getDocFromElement,
   insertMention,
   editable,
-  mentionPicker,
+  typeAheadPicker,
 } from '../_helpers';
 
 import {
@@ -45,7 +45,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
+    await browser.waitForSelector(typeAheadPicker);
     await browser.type(editable, 'gill');
     await browser.isVisible('[data-mention-name=pgill]');
     await browser.isVisible('[data-mention-name=jjackson]');
@@ -64,12 +64,12 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
+    await browser.waitForSelector(typeAheadPicker);
     await browser.type(editable, 'Carolyn');
     // Wait until there is only one mention left in picker.
     await browser.browser.waitUntil(async () => {
       const mentionsInPicker = await browser.$$(
-        `${mentionPicker} [data-mention-name]`,
+        `${typeAheadPicker} [data-mention-name]`,
       );
       return mentionsInPicker.value.length === 1;
     });
@@ -120,7 +120,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(mentionPicker);
+    await browser.waitForSelector(typeAheadPicker);
     await browser.type(editable, 'alica');
     await browser.isVisible('[data-mention-name=awoods]');
     await browser.isVisible('[data-mention-name=Fatima]');
