@@ -17,9 +17,7 @@ const render = (props = {}) =>
 test('DeleteUserOverviewScreen', () => {
   expect(
     render({
-      deactivateUserHandler: () => {
-        <></>;
-      },
+      deactivateUserHandler: () => {},
     }),
   ).toMatchSnapshot();
 });
@@ -27,9 +25,7 @@ test('DeleteUserOverviewScreen', () => {
 describe('selectAdminOrSelfCopy', () => {
   test('selects admin copy if delete candidate is not current user', () => {
     const selectAdminOrSelfCopy = (render({
-      deactivateUserHandler: () => {
-        <></>;
-      },
+      deactivateUserHandler: () => {},
       isCurrentUser: false,
     }).instance() as DeleteUserOverviewScreen).selectAdminOrSelfCopy;
     expect(selectAdminOrSelfCopy('admin', 'self')).toBe('admin');
@@ -37,9 +33,7 @@ describe('selectAdminOrSelfCopy', () => {
 
   test('selects self copy if delete candidate is current user', () => {
     const selectAdminOrSelfCopy = (render({
-      deactivateUserHandler: () => {
-        <></>;
-      },
+      deactivateUserHandler: () => {},
       isCurrentUser: true,
     }).instance() as DeleteUserOverviewScreen).selectAdminOrSelfCopy;
     expect(selectAdminOrSelfCopy('admin', 'self')).toBe('self');
@@ -50,9 +44,7 @@ describe('accessibleSites display', () => {
   test('text displayed is different when no accessibleSites prop is passed', () => {
     expect(
       render({
-        deactivateUserHandler: () => {
-          <></>;
-        },
+        deactivateUserHandler: () => {},
         accessibleSites: [],
       }),
     ).toMatchSnapshot();
