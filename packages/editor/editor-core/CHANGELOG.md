@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.3
+- [patch] [563c4da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563c4da):
+
+  - ED-5149 Fixed DatePicker calendar shadow in table
+
 ## 87.6.2
 - [patch] [7459970](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7459970):
 

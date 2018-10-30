@@ -1,1 +1,0 @@
-- ED-5149 Fixed DatePicker calendar shadow in table
