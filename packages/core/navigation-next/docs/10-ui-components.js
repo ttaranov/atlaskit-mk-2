@@ -14,8 +14,8 @@ ${<Hr />}
 
 ${<H>BackItem</H>}
 
-BackItem is a pre-configured version of [ConnectedItem](#ConnectedItem) that is used to navigate back to a parent view.
-Its text prop defaults to 'Back' and its before prop defaults to an ArrowLeftCircle icon. See [ConnectedItem](#ConnectedItem) for props.
+BackItem is a pre-configured version of [ConnectedItem](#connecteditem) that is used to navigate back to a parent view.
+Its text prop defaults to 'Back' and its before prop defaults to an ArrowLeftCircle icon. See [ConnectedItem](#connecteditem) for props.
 
 ${(
       <Example
@@ -37,7 +37,7 @@ ${<Hr />}
 
 ${<H>ConnectedItem</H>}
 
-ConnectedItem is an Item that will render a [GoToItem](#GoToItem) if goTo prop is provided, otherwise it will render an [Item](#Item).
+ConnectedItem is an Item that will render a [GoToItem](#gotoitem) if goTo prop is provided, otherwise it will render an [Item](#item).
 
 ${(
       <Props
@@ -63,7 +63,7 @@ ${(
 
 ## ContainerHeader props
 
-See [Item](#Item).
+See [Item](#item).
 
 ${<Hr />}
 
@@ -106,8 +106,8 @@ ${<Hr />}
 
 ${<H>GoToItem</H>}
 
-GoToItem is a special [Item](#Item) that when clicked will cause a transition to the view specified by the 'goTo' prop. You will need to ensure that both the view you're
-transitioning from and to use the same [MenuSection](#MenuSection) component instance with the correct 'id' and parentId' props so that the transition animation works correctly.
+GoToItem is a special [Item](#item) that when clicked will cause a transition to the view specified by the 'goTo' prop. You will need to ensure that both the view you're
+transitioning from and to use the same [MenuSection](#menusection) component instance with the correct 'id' and parentId' props so that the transition animation works correctly.
 
 ${(
       <Example
@@ -262,7 +262,7 @@ The product or container navigation layers can be separated into Sections - a na
 
 Use Sections to perform nesting transitions. If a Section's props update and its parentId matches its previous id, or vice versa, it will automatically perform a nested navigation animation as it re-renders.
 
-In the majority of cases, you won't need to use Section directly and can use the specific [HeaderSection](#HeaderSection) and [MenuSection](#MenuSection) components which provide some extra styling
+In the majority of cases, you won't need to use Section directly and can use the specific [HeaderSection](#headersection) and [MenuSection](#menusection) components which provide some extra styling
 specific to headers and nested menu sections.
 
 ${(
@@ -285,8 +285,8 @@ ${<Hr />}
 
 ${<H>SortableItem</H>}
 
-Sortable items are draggable versions of [Items](#Item) and should be used within a [SortableGroup](#SortableGroup) that is inside a [SortableSection](#SortableSection).
-Takes the same props as [Item](#Item) as well as some additional props documented below.
+Sortable items are draggable versions of [Items](#item) and should be used within a [SortableGroup](#sortablegroup) that is inside a [SortableSection](#sortablesection).
+Takes the same props as [Item](#item) as well as some additional props documented below.
 
 ${(
       <Props
@@ -299,8 +299,8 @@ ${<Hr />}
 
 ${<H>SortableGroup</H>}
 
-Sortable groups are used to represent droppable areas within a [SortableSection](#SortableSection). The items within this group must be [SortableItems](#SortableItem) to achieve drag-and-drop behaviour.
-Takes the same props as [Group](#Group) as well as some additional props documented below.
+Sortable groups are used to represent droppable areas within a [SortableSection](#sortablesection). The items within this group must be [SortableItems](#sortableitem) to achieve drag-and-drop behaviour.
+Takes the same props as [Group](#group) as well as some additional props documented below.
 
 ${(
       <Props
@@ -313,8 +313,8 @@ ${<Hr />}
 
 ${<H>SortableSection</H>}
 
-Adds the ability to drag-and-drop items within a section. You must compose [SortableGroup](#SortableGroup) and [SortableItem](#SortableItem) components to achieve drag-and-drop behaviour.
-Takes the same props as [Section](#Section) as well as some additional props documented below.
+Adds the ability to drag-and-drop items within a section. You must compose [SortableGroup](#sortablegroup) and [SortableItem](#sortableitem) components to achieve drag-and-drop behaviour.
+Takes the same props as [Section](#section) as well as some additional props documented below.
 
 ${(
       <Example
