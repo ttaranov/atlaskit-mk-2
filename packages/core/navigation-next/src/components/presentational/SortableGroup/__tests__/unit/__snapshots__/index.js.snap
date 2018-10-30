@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SortableGroup should render a Group component 1`] = `
+<div
+  mySpecialProp="foo"
+  style={
+    Object {
+      "minHeight": 64,
+    }
+  }
+>
+  <Group
+    hasSeparator={false}
+    heading="My group"
+    id="my-group"
+  >
+    Group children
+    <unknown />
+  </Group>
+</div>
+`;
+
+exports[`SortableGroup should wrap Group with a Droppable Component 1`] = `
+<MockDroppable
+  droppableId="my-group"
+>
+  <unknown />
+</MockDroppable>
+`;
