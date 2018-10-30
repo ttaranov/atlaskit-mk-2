@@ -2,7 +2,7 @@ declare var global: any; // we need define an interface for the Node global obje
 import * as util from '../../../src/util';
 const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
 import { Ellipsify, Camera, Rectangle } from '@atlaskit/media-ui';
@@ -21,7 +21,11 @@ import {
 } from '../../../src/image-navigator/styled';
 import { ImageCropper } from '../../../src/image-cropper';
 import Slider from '@atlaskit/field-range';
-import { createMouseEvent, smallImage } from '@atlaskit/media-test-helpers';
+import {
+  createMouseEvent,
+  smallImage,
+  mountWithIntlContext,
+} from '@atlaskit/media-test-helpers';
 import { errorIcon } from '../../../src/image-navigator/images';
 
 describe('Image navigator', () => {
@@ -35,7 +39,7 @@ describe('Image navigator', () => {
   let isLoading: boolean;
 
   const setup = (props?: Partial<ImageNavigatorProps>) => {
-    return mount(
+    return mountWithIntlContext(
       <ImageNavigator
         imageSource={smallImage}
         onImageLoaded={onImageLoaded}
@@ -146,6 +150,8 @@ describe('Image navigator', () => {
       slider()
         .props()
         .onChange(20);
+
+      component.update();
       expect(component.state().scale).toBe(0.2);
     });
 
@@ -153,6 +159,7 @@ describe('Image navigator', () => {
       imageCropper()
         .props()
         .onDragStarted(0, 0);
+
       expect(component.state().isDragging).toBe(true);
     });
 
@@ -258,7 +265,7 @@ describe('Image navigator', () => {
 
   describe('with no imageSource', () => {
     beforeEach(() => {
-      component = mount(
+      component = mountWithIntlContext(
         <ImageNavigator
           onImageLoaded={onImageLoaded}
           onPositionChanged={onPositionChanged}
@@ -366,7 +373,7 @@ describe('Image navigator', () => {
     const errorMessage = 'Error message!';
 
     beforeEach(() => {
-      component = mount(
+      component = mountWithIntlContext(
         <ImageNavigator
           imageSource={smallImage}
           onImageLoaded={onImageLoaded}

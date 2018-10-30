@@ -11,13 +11,13 @@ import {
 } from '../../../src/avatar-picker-dialog';
 import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from '../../../src/avatar-picker-dialog/layout-const';
 import { dataURItoFile, fileToDataURI } from '../../../src/util';
-import { smallImage } from '@atlaskit/media-test-helpers';
+import { smallImage, mountWithIntlContext } from '@atlaskit/media-test-helpers';
 import { PredefinedAvatarView } from '../../../src/predefined-avatar-view';
 import { Mode } from '../../../src';
 
 describe('Avatar Picker Dialog', () => {
   const renderWithProps = (props: Partial<AvatarPickerDialogProps>) => {
-    const component = shallow(
+    const component = mountWithIntlContext(
       <AvatarPickerDialog
         avatars={[{ dataURI: 'http://an.avatar.com/453' }]}
         onAvatarPicked={jest.fn()}
@@ -199,8 +199,11 @@ describe('Avatar Picker Dialog', () => {
     const avatars = [selectedAvatar];
     const component = renderWithProps({ avatars });
     const { header } = component.find(ModalDialog).props() as { header: any };
-    const title = shallow(header());
-    expect(title.text()).toBe('Upload an avatar');
+    const title = shallow(header()) as any;
+
+    expect(title.props().children.props.defaultMessage).toBe(
+      'Upload an avatar',
+    );
   });
 
   it('should by able to customise title', () => {
@@ -225,7 +228,7 @@ describe('Avatar Picker Dialog', () => {
       (footerComponent
         .find(Button)
         .at(0)
-        .props() as React.Props<{}>).children,
+        .props() as any).children.props.defaultMessage,
     ).toBe('Save');
   });
 
