@@ -370,7 +370,6 @@ function mentionPluginFactory(
                   'mentionPlugin',
                   (mentions, query, stats) => {
                     setResults(mentions)(editorView.state, editorView.dispatch);
-                    console.log(stats);
 
                     if (stats && stats.remoteSearch) {
                       fireEvent(
