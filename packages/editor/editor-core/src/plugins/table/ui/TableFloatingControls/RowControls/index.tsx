@@ -10,6 +10,7 @@ import InsertButton from '../InsertButton';
 import { findRowSelection, TableSelection } from '../utils';
 import DeleteButton from '../DeleteButton';
 import { TableCssClassName as ClassName } from '../../../types';
+import tableMessages from '../../messages';
 
 export interface Props {
   editorView: EditorView;
@@ -41,6 +42,7 @@ export default class RowControls extends Component<Props, any> {
     return (
       <DeleteButton
         key="delete"
+        removeLabel={tableMessages.removeRows}
         onClick={this.props.deleteSelectedRows}
         onMouseEnter={() => {
           this.props.hoverRows(selectedRowIdxs, true);
