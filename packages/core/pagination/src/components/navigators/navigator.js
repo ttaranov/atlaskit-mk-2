@@ -5,6 +5,6 @@ import type { NavigatorPropsType } from '../../types';
 
 export default class Navigator extends Component<NavigatorPropsType> {
   render() {
-    return <PaddedButton {...this.props} appearance="subtle" />;
+    return <PaddedButton {...this.props} appearance="subtle" spacing="none" />;
   }
 }
