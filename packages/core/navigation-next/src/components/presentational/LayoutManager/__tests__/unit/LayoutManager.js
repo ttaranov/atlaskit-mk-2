@@ -6,7 +6,9 @@ import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-conte
 
 import ContentNavigation from '../../ContentNavigation';
 import LayoutManager, { Page } from '../../LayoutManager';
+import ResizeControl from '../../ResizeControl';
 import ResizeTransition from '../../ResizeTransition';
+import { LayoutEventListener } from '../../LayoutEvent';
 
 import { ContainerNavigationMask, NavigationContainer } from '../../primitives';
 import type { LayoutManagerProps } from '../../types';
@@ -373,6 +375,47 @@ describe('LayoutManager', () => {
         packageName: '@atlaskit/navigation-next',
         packageVersion: expect.any(String),
       });
+    });
+  });
+
+  describe('Sortable item dragging', () => {
+    it('should set itemIsDragging state when onItemDragStart event is fired', () => {
+      const wrapper = shallow(<LayoutManager {...defaultProps} />);
+
+      expect(wrapper.state('isItemDragging')).toBe(false);
+      wrapper.find(LayoutEventListener).prop('onItemDragStart')();
+      expect(wrapper.state('isItemDragging')).toBe(true);
+    });
+
+    it('should unset itemIsDragging state when onItemDragEnd event is fired', () => {
+      const wrapper = shallow(<LayoutManager {...defaultProps} />);
+      wrapper.find(LayoutEventListener).prop('onItemDragStart')();
+
+      expect(wrapper.state('isItemDragging')).toBe(true);
+      wrapper.find(LayoutEventListener).prop('onItemDragEnd')();
+      expect(wrapper.state('isItemDragging')).toBe(false);
+    });
+
+    it('should disable grab area when item is being dragged', () => {
+      const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+      expect(wrapper.find(ResizeControl).prop('isGrabAreaDisabled')).toBe(
+        false,
+      );
+      wrapper.setState({ isItemDragging: true });
+      expect(wrapper.find(ResizeControl).prop('isGrabAreaDisabled')).toBe(true);
+    });
+
+    it('should apply item dragging styles to ContainerNavigationMask when item is being dragged', () => {
+      const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+      expect(wrapper.find(ContainerNavigationMask).prop('isItemDragging')).toBe(
+        false,
+      );
+      wrapper.setState({ isItemDragging: true });
+      expect(wrapper.find(ContainerNavigationMask).prop('isItemDragging')).toBe(
+        true,
+      );
     });
   });
 });

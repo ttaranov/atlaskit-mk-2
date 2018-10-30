@@ -120,3 +120,43 @@ exports[`navigation-next view renderer MenuSection should render the MenuSection
   <unknown />
 </MenuSection>
 `;
+
+exports[`navigation-next view renderer SortableGroup should render the SortableGroup UI Component 1`] = `
+<SortableGroup
+  heading="Sortable Group"
+  id="sortable-group"
+>
+  <ItemsRenderer
+    items={
+      Array [
+        Object {
+          "id": "backlog",
+          "text": "Backlog",
+          "type": "SortableItem",
+        },
+        Object {
+          "id": "active-sprints",
+          "text": "Active sprints",
+          "type": "SortableItem",
+        },
+        Object {
+          "id": "issues",
+          "text": "Issues",
+          "type": "SortableItem",
+        },
+      ]
+    }
+  />
+</SortableGroup>
+`;
+
+exports[`navigation-next view renderer SortableSection should render the SortableSection UI component 1`] = `
+<SortableSection
+  alwaysShowScrollHint={false}
+  id="sortable"
+  key="sortable"
+  onDragEnd={[Function]}
+>
+  <unknown />
+</SortableSection>
+`;

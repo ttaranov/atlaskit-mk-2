@@ -9,9 +9,21 @@ import ConnectedItemComponent from '../../../components/connected/ConnectedItem'
 import GoToItemComponent from '../../../components/connected/GoToItem';
 import HeaderSectionComponent from '../../../components/presentational/HeaderSection';
 import MenuSectionComponent from '../../../components/presentational/MenuSection';
+import SortableGroupComponent from '../../../components/presentational/SortableGroup';
+import SortableItemComponent from '../../../components/presentational/SortableItem';
+import SortableSectionComponent from '../../../components/presentational/SortableSection';
 import ItemsRenderer, { components } from '../../components';
 
-const { BackItem, GoToItem, Item, HeaderSection, MenuSection } = components;
+const {
+  BackItem,
+  GoToItem,
+  Item,
+  HeaderSection,
+  MenuSection,
+  SortableGroup,
+  SortableItem,
+  SortableSection,
+} = components;
 
 describe('navigation-next view renderer', () => {
   describe('Item component', () => {
@@ -29,6 +41,12 @@ describe('navigation-next view renderer', () => {
   describe('Back Item component', () => {
     it('should be the BackItem UI component', () => {
       expect(BackItem).toBe(BackItemComponent);
+    });
+  });
+
+  describe('Sortable Item component', () => {
+    it('should be the SortableItem UI component', () => {
+      expect(SortableItem).toBe(SortableItemComponent);
     });
   });
 
@@ -130,6 +148,142 @@ describe('navigation-next view renderer', () => {
         >
           {({ className }) => <div className={className} />}
         </MenuSection>,
+      );
+
+      expect(wrapper.find(ItemsRenderer)).toHaveLength(1);
+      expect(wrapper.find(ItemsRenderer).props()).toEqual({
+        customComponents,
+        items,
+      });
+    });
+  });
+
+  describe('SortableSection', () => {
+    let sectionItems;
+    beforeEach(() => {
+      sectionItems = [
+        {
+          type: 'SortableGroup',
+          id: 'sortable-group',
+          items: [
+            { type: 'SortableItem', id: 'backlog', text: 'Backlog' },
+            {
+              type: 'SortableItem',
+              id: 'active-sprints',
+              text: 'Active sprints',
+            },
+            { type: 'SortableItem', id: 'issues', text: 'Issues' },
+          ],
+        },
+      ];
+    });
+    it('should render the SortableSection UI component', () => {
+      const wrapper = shallow(
+        <SortableSection
+          id="sortable"
+          items={sectionItems}
+          onDragEnd={() => {}}
+        />,
+      );
+
+      expect(wrapper.find(SortableSectionComponent)).toHaveLength(1);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the SortableSection UI component correctly with all optional props', () => {
+      const dragHooks = {
+        onDragStart: () => {},
+        onDragUpdate: () => {},
+        onDragEnd: () => {},
+      };
+      const styles = s => s;
+      const wrapper = shallow(
+        <SortableSection
+          id="sortable"
+          items={sectionItems}
+          alwaysShowScrollHint
+          shouldGrow
+          parentId="menu"
+          styles={styles}
+          {...dragHooks}
+        />,
+      );
+
+      expect(wrapper.find(SortableSectionComponent).props()).toEqual({
+        children: expect.any(Function),
+        id: 'sortable',
+        parentId: 'menu',
+        alwaysShowScrollHint: true,
+        shouldGrow: true,
+        styles,
+        ...dragHooks,
+      });
+    });
+
+    it('should render the items using ItemsRenderer', () => {
+      const customComponents = { foo: () => null };
+      const wrapper = mount(
+        <SortableSection
+          customComponents={customComponents}
+          id="menu"
+          items={sectionItems}
+          onDragEnd={() => {}}
+        />,
+      );
+
+      // More than 1 ItemsRenderer will render due to SortableGroup existing in sectionItems
+      expect(wrapper.find(ItemsRenderer).length).toBeGreaterThanOrEqual(1);
+      expect(
+        wrapper
+          .find(ItemsRenderer)
+          .first()
+          .props(),
+      ).toEqual({
+        customComponents,
+        items: sectionItems,
+      });
+    });
+
+    it('should not render anything if items is empty', () => {
+      const wrapper = shallow(
+        <SortableSection id="sortable" items={[]} onDragEnd={() => {}} />,
+      );
+
+      expect(wrapper.html()).toBeNull();
+    });
+  });
+
+  describe('SortableGroup', () => {
+    let items;
+    beforeEach(() => {
+      items = [
+        { type: 'SortableItem', text: 'Backlog', id: 'backlog' },
+        { type: 'SortableItem', text: 'Active sprints', id: 'active-sprints' },
+        { type: 'SortableItem', text: 'Issues', id: 'issues' },
+      ];
+    });
+    it('should render the SortableGroup UI Component', () => {
+      const wrapper = shallow(
+        <SortableGroup
+          id="sortable-group"
+          heading="Sortable Group"
+          items={items}
+        />,
+      );
+
+      expect(wrapper.find(SortableGroupComponent)).toHaveLength(1);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the items using ItemsRenderer', () => {
+      const customComponents = { foo: () => null };
+      const wrapper = shallow(
+        <SortableGroup
+          customComponents={customComponents}
+          id="sortable-group"
+          heading="Sortable Group"
+          items={items}
+        />,
       );
 
       expect(wrapper.find(ItemsRenderer)).toHaveLength(1);

@@ -1,6 +1,6 @@
 // @flow
 
-import type { ComponentType, ElementConfig } from 'react';
+import type { ComponentType, ElementConfig, Node } from 'react';
 
 import {
   HeaderSection,
@@ -42,13 +42,16 @@ export type SectionProps = SharedGroupTypeProps & {
   shouldGrow?: boolean,
 };
 
-export type SortableGroupProps = SharedGroupTypeProps &
-  ElementConfig<typeof SortableGroup>;
+export type SortableGroupProps = {|
+  ...$Exact<SharedGroupTypeProps>,
+  ...$Exact<$Diff<ElementConfig<typeof SortableGroup>, { children: Node }>>,
+|};
 
-export type SortableSectionProps = SharedGroupTypeProps &
-  ElementConfig<typeof SortableSection> & {
-    nestedGroupKey: string,
-  };
+export type SortableSectionProps = {|
+  ...$Exact<SharedGroupTypeProps>,
+  ...$Exact<$Diff<ElementConfig<typeof SortableSection>, { children: Node }>>,
+  nestedGroupKey?: string,
+|};
 
 export type HeaderSectionProps = SharedGroupTypeProps &
   ElementConfig<typeof HeaderSection> & {

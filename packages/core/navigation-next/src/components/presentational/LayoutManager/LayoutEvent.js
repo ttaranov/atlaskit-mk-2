@@ -15,11 +15,6 @@ type Props = {
   onItemDragEnd: () => void,
 };
 
-type State = {
-  isItemDragging: boolean,
-  setIsItemDragging: boolean => void,
-};
-
 const { Provider, Consumer } = React.createContext({
   emitItemDragStart: noop,
   emitItemDragEnd: noop,
@@ -27,7 +22,7 @@ const { Provider, Consumer } = React.createContext({
 
 export { Consumer as LayoutEventEmitter };
 
-export class LayoutEventListener extends Component<Props, State> {
+export class LayoutEventListener extends Component<Props> {
   emitters: Emitters;
 
   static defaultProps = {
