@@ -1,30 +1,40 @@
 // @flow
+
 import React from 'react';
 import { InputWrapper } from '../styled';
 
-type InputProps = any;
+type InputProps = {
+  appearance: boolean,
+  isDisabled: boolean,
+  isFocused: boolean,
+  isInvalid: boolean,
+  isReadOnly: boolean,
+  isRequired: boolean,
+};
 
-const Input = ({
+export default ({
+  appearance,
   isDisabled,
+  isFocused,
   isInvalid,
-  isRequired,
   isReadOnly,
+  isRequired,
   ...props
 }: InputProps) => (
   <InputWrapper
+    appearance={appearance}
     isDisabled={isDisabled}
+    isFocused={isFocused}
     isInvalid={isInvalid}
-    isRequired={isRequired}
     isReadOnly={isReadOnly}
+    isRequired={isRequired}
   >
     <input
       disabled={isDisabled}
       invalid={isInvalid}
-      required={isRequired}
       readOnly={isReadOnly}
+      required={isRequired}
       {...props}
     />
   </InputWrapper>
 );
-
-export default Input;
