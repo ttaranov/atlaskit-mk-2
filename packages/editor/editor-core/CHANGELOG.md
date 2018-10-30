@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.7
+- [patch] [6a0a6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a0a6f8):
+
+  - ED-5448, ED-5613, ED-5582: smart card UX improvements; allow blockCard in tableCell
+
 ## 87.6.6
 - [patch] [c39507e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c39507e):
 
