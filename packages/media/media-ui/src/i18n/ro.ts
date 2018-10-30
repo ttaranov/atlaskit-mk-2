@@ -23,6 +23,19 @@ export default {
   'fabric.media.connect_to': 'Conectare la {name}',
   'fabric.media.connect_account_description':
     'Vom deschide o pagină nouă pentru a vă ajuta să vă conectați contul {name}',
+  'fabric.media.upload_an_avatar': 'Upload an avatar',
+  'fabric.media.save': 'Save',
+  'fabric.media.or': 'or',
+  'fabric.media.upload_photo': 'Upload a photo',
+  'fabric.media.default_avatars': 'Default avatars',
+  'fabric.media.drag_and_drop_images_here': 'Drag and drop your images here',
+  'fabric.media.upload_image': 'Upload image',
+  'fabric.media.image_url_invalid_error':
+    'Could not load image, the url is invalid.',
+  'fabric.media.image_format_invalid_error':
+    'Could not load image, the format is invalid.',
+  'fabric.media.image_size_too_large_error':
+    'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
   'fabric.media.something_went_wrong': 'Something went wrong.',
   'fabric.media.might_be_a_hiccup': 'It might just be a hiccup.',
   'fabric.media.couldnt_generate_preview':

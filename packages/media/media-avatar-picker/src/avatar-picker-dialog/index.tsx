@@ -190,10 +190,6 @@ export class AvatarPickerDialog extends PureComponent<
     intl: intlShape,
   };
 
-  // context: {
-  //   intl: IntlShape;
-  // };
-
   render() {
     const content = (
       <ModalDialog
