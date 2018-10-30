@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.4
+- [patch] [2dd9ae3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dd9ae3):
+
+  - ED-4979 When in the an unindentable list item, tab should do nothing
+
 ## 87.6.3
 - [patch] [563c4da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563c4da):
 
