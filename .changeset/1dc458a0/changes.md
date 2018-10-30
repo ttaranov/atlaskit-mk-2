@@ -1,0 +1,1 @@
+- ED-5583: Pass all link events to native for handling

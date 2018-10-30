@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { colors } from '@atlaskit/theme';
+import { EventHandlers } from '@atlaskit/editor-common';
 import styled from 'styled-components';
+
+import { getEventHandler } from '../../utils';
 
 // tslint:disable-next-line:variable-name
 const StyledAnchor = styled.a`
@@ -13,9 +16,14 @@ const StyledAnchor = styled.a`
 `;
 
 export default function Link(
-  props: { children?: any; href: string; target?: string } & React.Props<any>,
+  props: {
+    children?: any;
+    href: string;
+    target?: string;
+    eventHandlers?: EventHandlers;
+  } & React.Props<any>,
 ) {
-  const { href, target } = props;
+  const { href, target, eventHandlers } = props;
 
   const anchorProps: any = {
     href,
@@ -27,5 +35,18 @@ export default function Link(
     anchorProps.rel = 'noreferrer noopener';
   }
 
-  return <StyledAnchor {...anchorProps}>{props.children}</StyledAnchor>;
+  const handler = getEventHandler(eventHandlers, 'link');
+
+  return (
+    <StyledAnchor
+      onClick={e => {
+        if (handler) {
+          handler(e, href);
+        }
+      }}
+      {...anchorProps}
+    >
+      {props.children}
+    </StyledAnchor>
+  );
 }
