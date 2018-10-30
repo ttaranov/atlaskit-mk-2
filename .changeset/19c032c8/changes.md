@@ -1,0 +1,1 @@
+- ED-5511: tweaked quickInsert so that query can match space-separated items
