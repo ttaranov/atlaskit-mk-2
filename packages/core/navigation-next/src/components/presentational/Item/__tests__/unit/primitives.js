@@ -1,7 +1,7 @@
 //@flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import ItemPrimitive, { ItemPrimitiveBase } from '../../primitives';
+import { ItemPrimitiveBase } from '../../primitives';
 import type {
   ItemRenderComponentProps,
   ItemPresentationProps,
@@ -130,7 +130,6 @@ describe('ItemPrimitiveBase', () => {
     const wrapper = mount(
       <ItemPrimitiveBase {...defaultProps} before={BeforeOrAfterComponent} />,
     );
-
     expect(wrapper.find(BeforeOrAfterComponent).props()).toEqual({
       isActive: false,
       isHover: false,
@@ -154,10 +153,20 @@ describe('ItemPrimitiveBase', () => {
     });
   });
 
-  // describe('ItemPrimitive', () => {
-  //   it('should render correctly', () => {
-  //     const wrapper = mount(<ItemPrimitive {...defaultProps}/>);
-  //     expect(wrapper).toMatchSnapshot();
-  //   })
-  // })
+  it('should render Before, text and After components in right order', () => {
+    const BeforeComponent = (props: ItemPresentationProps) => props.spacing;
+    const AfterComponent = (props: ItemPresentationProps) => props.spacing;
+
+    const wrapper = shallow(
+      <ItemPrimitiveBase
+        {...defaultProps}
+        before={BeforeComponent}
+        after={AfterComponent}
+      />,
+    );
+
+    expect(wrapper.childAt(0).find(BeforeComponent)).toHaveLength(1);
+    expect(wrapper.childAt(1).text()).toEqual(defaultProps.text);
+    expect(wrapper.childAt(2).find(AfterComponent)).toHaveLength(1);
+  });
 });
