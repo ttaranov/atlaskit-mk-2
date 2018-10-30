@@ -18,6 +18,13 @@ export interface LinkCardProps extends SharedCardProps {
 
 export const defaultLinkCardAppearance: CardAppearance = 'square';
 
+const getYoutubeId = (url: string): string | undefined => {
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+  const match = url.match(regExp);
+
+  return match && match[7].length === 11 ? match[7] : undefined;
+};
+
 export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
     const {
@@ -40,6 +47,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
           return this.renderEmbed(app);
         } else if (player && this.isEmbed(player)) {
           return this.renderEmbed(player);
+        } else if (player && this.isYoutubeEmbed(player)) {
+          return this.renderYoutubeEmbed(player);
         } else {
           return this.renderGenericLink(defaultLinkCardAppearance);
         }
@@ -88,6 +97,16 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     return this.isURLEmbed(embed) || this.isHTMLEmbed(embed);
   }
 
+  private isYoutubeEmbed(embed: Resource): boolean {
+    if (!embed.url) {
+      return false;
+    }
+
+    const url = new URL(embed.url);
+
+    return url.host === 'www.youtube.com';
+  }
+
   private renderURLEmbed(embed: Resource): JSX.Element {
     const { url, width, height, aspect_ratio } = embed;
     return (
@@ -102,7 +121,22 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderHTMLEmbed(embed: Resource): JSX.Element {
     const { html } = embed;
+
     return <HTMLEmbedCard html={html || ''} />;
+  }
+
+  private renderYoutubeEmbed(embed: Resource) {
+    const youtubeId = getYoutubeId(embed.url!); // TODO: remove !
+    const iframeUrl = `https://www.youtube.com/embed/${youtubeId}`;
+
+    return (
+      <URLEmbedCard
+        url={iframeUrl}
+        // width={300} // TODO: is this needed?
+        // height={200} // TODO: is this needed?
+        // aspectRatio={aspect_ratio} // embed.aspect_ratio ?
+      />
+    );
   }
 
   private renderEmbed(embed: Resource) {

@@ -12,6 +12,11 @@ const linkType: MediaItemType = 'link';
 
 // === URL PREVIEW ===
 
+export const twitterUrlPreviewId = {
+  url: 'https://twitter.com/horse_js/status/859988831780708352',
+  mediaItemType: linkType,
+};
+
 export const genericUrlPreviewId = {
   url: 'https://atlassian.com',
   mediaItemType: linkType,
