@@ -1,1 +1,0 @@
-- FS-3139 add select props to user picker api
