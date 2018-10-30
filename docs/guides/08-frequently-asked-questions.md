@@ -11,7 +11,7 @@ Related reading:
 
 ## Why can't I create a branch to create a pull request? Should I fork this repository?
 
-Please don't fork this repository for pull requests. Instead, request permission to create branches by follwing the instructions under "Become a collaborator" section in our [README.md](https://bitbucket.org/atlassian/atlaskit-mk-2/src).
+Please don't fork this repository for pull requests. Instead, request permission to create branches by follwing the instructions under "Become a contributor" section in our [README.md](https://bitbucket.org/atlassian/atlaskit-mk-2/src).
 
 ## How do I release a change once it's merged?
 
