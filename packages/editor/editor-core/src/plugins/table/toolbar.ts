@@ -1,13 +1,7 @@
 import { EditorState, Transaction } from 'prosemirror-state';
-import { hasParentNodeOfType } from 'prosemirror-utils';
-import { TableLayout } from '@atlaskit/editor-common';
 import { defineMessages } from 'react-intl';
-
-import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
-import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
-import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
+import SettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 
 import commonMessages from '../../messages';
 import { Command } from '../../types';
@@ -21,7 +15,6 @@ import { pluginKey } from './pm-plugins/main';
 import {
   hoverTable,
   deleteTable,
-  setTableLayout,
   clearHoverSelection,
   toggleHeaderRow,
   toggleHeaderColumn,
@@ -56,9 +49,6 @@ export const messages = defineMessages({
   },
 });
 
-const getTableLayout = (tableState: TablePluginState) =>
-  tableState.tableNode!.attrs.layout;
-
 const withAnalytics = (
   command: Command,
   eventName: string,
@@ -66,20 +56,6 @@ const withAnalytics = (
 ) => (state: EditorState, dispatch: (tr: Transaction) => void) => {
   analytics.trackEvent(eventName, properties);
   return command(state, dispatch);
-};
-
-export const supportsTableLayout = (state: EditorState) => (
-  layoutName: TableLayout,
-) => {
-  const {
-    pluginConfig: { permittedLayouts },
-  } = pluginKey.getState(state);
-  const { bodiedExtension, layoutSection } = state.schema.nodes;
-  return (
-    !hasParentNodeOfType([layoutSection, bodiedExtension])(state.selection) &&
-    (permittedLayouts === 'all' ||
-      (permittedLayouts && permittedLayouts.indexOf(layoutName) > -1))
-  );
 };
 
 export const getToolbarConfig: FloatingToolbarHandler = (
@@ -93,9 +69,7 @@ export const getToolbarConfig: FloatingToolbarHandler = (
     tableState.tableNode &&
     tableState.pluginConfig
   ) {
-    const currentLayout = getTableLayout(tableState);
     const { pluginConfig } = tableState;
-    const isLayoutSupported = supportsTableLayout(state);
     return {
       title: 'Table floating controls',
       getDomRef: () => tableState.tableFloatingToolbarTarget!,
@@ -104,7 +78,7 @@ export const getToolbarConfig: FloatingToolbarHandler = (
         {
           type: 'dropdown',
           title: formatMessage(messages.tableOptions),
-          icon: TableDisplayOptionsIcon,
+          icon: SettingsIcon,
           hidden: !(
             pluginConfig.allowHeaderRow && pluginConfig.allowHeaderColumn
           ),
@@ -146,38 +120,6 @@ export const getToolbarConfig: FloatingToolbarHandler = (
             pluginConfig.allowHeaderColumn &&
             pluginConfig.allowMergeCells
           ),
-        },
-        {
-          type: 'button',
-          icon: CenterIcon,
-          onClick: setTableLayout('default'),
-          selected: currentLayout === 'default',
-          title: formatMessage(commonMessages.layoutFixedWidth),
-          hidden: !isLayoutSupported('default'),
-        },
-        {
-          type: 'button',
-          icon: WideIcon,
-          onClick: setTableLayout('wide'),
-          selected: currentLayout === 'wide',
-          title: formatMessage(commonMessages.layoutWide),
-          hidden: !isLayoutSupported('wide'),
-        },
-        {
-          type: 'button',
-          icon: FullWidthIcon,
-          onClick: setTableLayout('full-width'),
-          selected: currentLayout === 'full-width',
-          title: formatMessage(commonMessages.layoutFullWidth),
-          hidden: !isLayoutSupported('full-width'),
-        },
-        {
-          type: 'separator',
-          hidden:
-            !pluginConfig.permittedLayouts ||
-            (!isLayoutSupported('default') &&
-              !isLayoutSupported('wide') &&
-              !isLayoutSupported('full-width')),
         },
         {
           type: 'button',
