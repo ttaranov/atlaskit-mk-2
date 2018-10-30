@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.5
+- [patch] [f713993](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f713993):
+
+  - ED-5537: table ux improvements
+
 ## 87.6.4
 - [patch] [2dd9ae3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dd9ae3):
 
