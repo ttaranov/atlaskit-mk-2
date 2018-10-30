@@ -1,0 +1,1 @@
+- ED-5263: handle rows and columns shift selection
