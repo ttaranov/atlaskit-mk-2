@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.6
+- [patch] [c39507e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c39507e):
+
+  - ED-5561 Single media honors scale factor from media-picker
+
 ## 87.6.5
 - [patch] [f713993](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f713993):
 
