@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/renderer", "type": "minor" }],
-  "dependents": []
-}
