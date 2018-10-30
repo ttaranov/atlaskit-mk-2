@@ -1,1 +1,0 @@
-- ED-5561 Single media honors scale factor from media-picker
