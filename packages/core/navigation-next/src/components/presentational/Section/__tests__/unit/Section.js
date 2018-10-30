@@ -19,7 +19,9 @@ const props = {
 };
 
 describe('Section', () => {
-  afterEach(() => jest.resetAllMocks());
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
   it('should not trigger animations on first-page load', () => {
     const wrapper = mount(
