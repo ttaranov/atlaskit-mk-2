@@ -163,9 +163,9 @@ export default class Profilecard extends PureComponent<ProfilecardProps, void> {
       return this.renderCardDetailsApp();
     } else if (!this.props.isActive) {
       return this.renderCardDetailsDeactivated();
-    } else {
-      return this.renderCardDetailsDefault();
     }
+
+    return this.renderCardDetailsDefault();
   }
 
   renderProfilecard() {
