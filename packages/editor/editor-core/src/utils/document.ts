@@ -5,7 +5,7 @@ import {
   Entity,
   VALIDATION_ERRORS,
   ValidationError,
-} from '@atlaskit/adf-utils';
+} from '@atlaskit/adf-utils/validator';
 import { analyticsService } from '../analytics';
 
 /**

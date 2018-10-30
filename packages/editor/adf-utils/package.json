@@ -3,11 +3,6 @@
   "version": "4.0.2",
   "description": "Set of utilities to traverse, modify and create ADF documents.",
   "license": "Apache-2.0",
-  "atlaskit:src": "src/index.ts",
-  "main": "dist/es5/index.js",
-  "jsnext:main": "dist/es2015/index.js",
-  "module": "dist/es2015/index.js",
-  "types": "dist/es5/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "generate:spec": "rm -rf ./src/validator/specs/ && ../json-schema-generator/bin.js --outDir=./src/validator/specs/ --mode=Spec --stage=0 ./src/validator/entry.ts"
