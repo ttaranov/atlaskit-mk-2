@@ -305,7 +305,7 @@ describe('Image navigator', () => {
         }
       }
 
-      const mockDropEvent = (file: any) => ({
+      const mockDropEvent = (file: any): any => ({
         stopPropagation: jest.fn(),
         preventDefault: jest.fn(),
         dataTransfer: {
@@ -333,7 +333,7 @@ describe('Image navigator', () => {
       it('should set imageFile state with the image', () => {
         const { onDrop } = viewComponent.find(DragZone).props();
 
-        onDrop(mockDropEvent(droppedImage));
+        onDrop!(mockDropEvent(droppedImage));
         expect(viewComponent.state('imageFile')).toBe(droppedImage);
         expect(onImageUploaded).toHaveBeenCalledWith(droppedImage);
       });
