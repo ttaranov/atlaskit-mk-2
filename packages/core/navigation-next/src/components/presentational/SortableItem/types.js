@@ -4,7 +4,7 @@ import type { ElementConfig } from 'react';
 import Item from '../Item';
 
 export type SortableItemProps = {
-  ...ElementConfig<typeof Item>,
+  ...$Exact<ElementConfig<typeof Item>>,
   /** The index of the sortable item within it's group, used for sorting. */
   index: number,
   /** A unique identifier to identify what item it is, used as the draggableId

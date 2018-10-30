@@ -283,9 +283,38 @@ ${(
 
 ${<Hr />}
 
+${<H>SortableItem</H>}
+
+Sortable items are draggable versions of [Items](#Item) and should be used within a [SortableGroup](#SortableGroup) that is inside a [SortableSection](#SortableSection).
+Takes the same props as [Item](#Item) as well as some additional props documented below.
+
+${(
+      <Props
+        heading="SortableItem props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/SortableItem')}
+      />
+    )}
+
+${<Hr />}
+
+${<H>SortableGroup</H>}
+
+Sortable groups are used to represent droppable areas within a [SortableSection](#SortableSection). The items within this group must be [SortableItems](#SortableItem) to achieve drag-and-drop behaviour.
+Takes the same props as [Group](#Group) as well as some additional props documented below.
+
+${(
+      <Props
+        heading="SortableGroup props"
+        props={require('!!extract-react-types-loader!../src/components/presentational/SortableGroup')}
+      />
+    )}
+
+${<Hr />}
+
 ${<H>SortableSection</H>}
 
-Adds the ability to drag-and-drop items within a section.
+Adds the ability to drag-and-drop items within a section. You must compose [SortableGroup](#SortableGroup) and [SortableItem](#SortableItem) components to achieve drag-and-drop behaviour.
+Takes the same props as [Section](#Section) as well as some additional props documented below.
 
 ${(
       <Example
