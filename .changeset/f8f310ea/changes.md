@@ -1,0 +1,1 @@
+- ED-5448, ED-5613, ED-5582: smart card UX improvements; allow blockCard in tableCell
