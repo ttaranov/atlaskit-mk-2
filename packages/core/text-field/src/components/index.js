@@ -99,5 +99,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-  })(FieldTextStateless),
+  })(TextField),
 );
