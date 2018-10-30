@@ -1,6 +1,6 @@
 const bolt = require('bolt');
 const packages = require('../utils/packages');
-const codeCoverageByPackage = require('../../jest.codeCoverageThreshold');
+const codeCoverageByPackage = require('./jest.codeCoverageThreshold');
 
 const TEST_ONLY_PATTERN = process.env.TEST_ONLY_PATTERN || '';
 /**
