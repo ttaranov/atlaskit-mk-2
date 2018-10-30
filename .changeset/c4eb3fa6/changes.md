@@ -1,1 +1,0 @@
-- Make GoToItem display arrow icon on focus event
