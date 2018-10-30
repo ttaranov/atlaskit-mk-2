@@ -5,6 +5,7 @@ export const status = (
     text: 'In progress',
     color: 'blue',
     localId: 'localId',
+    style: 'subtle',
   },
 ): StatusDefinition => ({
   type: 'status',

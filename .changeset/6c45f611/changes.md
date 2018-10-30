@@ -1,0 +1,1 @@
+- added style attribute for Status node in ADF schema
