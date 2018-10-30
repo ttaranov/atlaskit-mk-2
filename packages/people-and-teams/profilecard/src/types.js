@@ -14,7 +14,6 @@ export type ProfileCardAction = {
 };
 
 export type ProfilecardProps = {
-  isCensored?: boolean,
   isActive?: boolean,
   isBot?: boolean,
   avatarUrl?: string,
