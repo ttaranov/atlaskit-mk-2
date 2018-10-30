@@ -40,6 +40,12 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
     traversalDirection: null,
   };
 
+  isMounted = false;
+
+  componentDidMount() {
+    this.isMounted = true;
+  }
+
   componentWillReceiveProps(nextProps: SectionProps) {
     if (nextProps.parentId && nextProps.parentId === this.props.id) {
       this.setState({ traversalDirection: 'down' });
@@ -71,7 +77,10 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
         }
         appear
       >
-        <Transition key={id} timeout={transitionDurationMs}>
+        <Transition
+          key={id}
+          timeout={this.isMounted ? transitionDurationMs : 0}
+        >
           {state => {
             const { traversalDirection } = this.state;
             const animationStyles = getAnimationStyles({
