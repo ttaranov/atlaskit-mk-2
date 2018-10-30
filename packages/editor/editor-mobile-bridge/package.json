@@ -26,6 +26,7 @@
     "@atlaskit/editor-common": "^20.1.3",
     "@atlaskit/editor-core": "^87.0.0",
     "@atlaskit/editor-json-transformer": "^4.0.19",
+    "@atlaskit/emoji": "^45.0.2",
     "@atlaskit/media-core": "^24.3.0",
     "@atlaskit/mention": "^15.0.6",
     "@atlaskit/renderer": "^29.0.4",

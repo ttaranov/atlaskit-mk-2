@@ -1,4 +1,4 @@
-import { EmojiResource } from '@atlaskit/editor-core';
+import { EmojiResource } from '@atlaskit/emoji';
 import { createPromise } from '../cross-platform-promise';
 
 function getCloudId() {

@@ -35,7 +35,6 @@ module.exports = {
       'components/picker/EmojiPicker': emptyExportPath,
       'react-virtualized/dist/commonjs/List': emptyExportPath,
       'react-virtualized': emptyExportPath,
-      '@atlaskit/emoji': emptyExportPath,
     },
   },
   module: {
