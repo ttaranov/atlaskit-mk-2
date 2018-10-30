@@ -1,0 +1,1 @@
+- Fix unsupported node event name
