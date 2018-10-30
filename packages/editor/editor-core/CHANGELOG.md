@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.9
+- [patch] [31653d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31653d9):
+
+  - Fixed clicking between date pickers doesn't show correct date
+
 ## 87.6.8
 - [patch] [8b084d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b084d0):
 
