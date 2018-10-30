@@ -40,10 +40,17 @@ describe('Navigation Next: Item styles', () => {
     ).toEqual('#104493');
   });
 
-  it('should add the active background into the base item styles if element state is `:hover`', () => {
+  it('should add the hover background into the base item styles if element state is `:hover`', () => {
     expect(
       themeMode({ ...commonArgs, isHover: true }).product.itemBase
         .backgroundColor,
     ).toEqual('#0F63E0');
+  });
+
+  it('should add the active background into the base item styles if element state is dragging', () => {
+    expect(
+      themeMode({ ...commonArgs, isDragging: true }).product.itemBase
+        .backgroundColor,
+    ).toEqual('#104493');
   });
 });

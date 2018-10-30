@@ -41,7 +41,7 @@ const shouldResetGrabArea = (width: number) => {
 const Outer = (props: *) => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const GrabArea = ({ showHandle, isBold, ...props }: *) => (
+export const GrabArea = ({ showHandle, isBold, ...props }: *) => (
   <div
     css={{
       cursor: 'ew-resize',
