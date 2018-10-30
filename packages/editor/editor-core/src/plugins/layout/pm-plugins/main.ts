@@ -1,69 +1,22 @@
-import { Slice, Node } from 'prosemirror-model';
+import { Node, Slice } from 'prosemirror-model';
 import {
   PluginKey,
   Plugin,
   EditorState,
-  Transaction,
   TextSelection,
 } from 'prosemirror-state';
 import { DecorationSet, Decoration } from 'prosemirror-view';
 import { keydownHandler } from 'prosemirror-keymap';
 import { findParentNodeOfType } from 'prosemirror-utils';
-import { isEmptyDocument } from '../../../utils';
 import { filter } from '../../../utils/commands';
 import { Command } from '../../../commands';
-
-export function enforceLayoutColumnConstraints(
-  state: EditorState,
-): Transaction | undefined {
-  const tr = state.tr;
-  state.doc.forEach((node, pos) => {
-    if (node.type === state.schema.nodes.layoutSection) {
-      if (
-        node.attrs.layoutType &&
-        (node.attrs.layoutType as string).startsWith('two') &&
-        node.childCount === 3
-      ) {
-        const thirdColumn = node.content.child(2);
-        const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
-        const thirdColumnPos =
-          insideRightEdgeOfLayoutSection - thirdColumn.nodeSize;
-        if (isEmptyDocument(thirdColumn)) {
-          tr.replaceRange(
-            // end pos of second column
-            tr.mapping.map(thirdColumnPos - 1),
-            tr.mapping.map(insideRightEdgeOfLayoutSection),
-            Slice.empty,
-          );
-        } else {
-          tr.replaceRange(
-            // end pos of second column
-            tr.mapping.map(thirdColumnPos - 1),
-            // start pos of third column
-            tr.mapping.map(thirdColumnPos + 1),
-            Slice.empty,
-          );
-        }
-      } else if (
-        node.attrs.layoutType &&
-        (node.attrs.layoutType as string).startsWith('three') &&
-        node.childCount === 2
-      ) {
-        const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
-        tr.replaceWith(
-          tr.mapping.map(insideRightEdgeOfLayoutSection),
-          tr.mapping.map(insideRightEdgeOfLayoutSection),
-          state.schema.nodes.layoutColumn.createAndFill() as Node,
-        );
-      }
-    }
-  });
-  return tr.docChanged ? tr : undefined;
-}
+import { fixColumnSizes } from '../actions';
 
 export type LayoutState = {
   pos: number | null;
 };
+
+type Change = { from: number; to: number; slice: Slice };
 
 const isWholeSelectionInsideLayoutColumn = (state: EditorState): boolean => {
   // Since findParentNodeOfType doesn't check if selection.to shares the parent, we do this check ourselves
@@ -142,14 +95,43 @@ export default new Plugin({
       Tab: filter(isWholeSelectionInsideLayoutColumn, moveCursorToNextColumn),
     }),
   },
-  appendTransaction(_, oldState, newState) {
-    if (!oldState.doc.eq(newState.doc)) {
-      const tr = enforceLayoutColumnConstraints(newState);
-      if (tr) {
+  appendTransaction: (transactions, oldState, newState) => {
+    let changes: Change[] = [];
+    transactions.forEach(prevTr => {
+      // remap change segments across the transaction set
+      changes.map(change => {
+        return {
+          from: prevTr.mapping.map(change.from),
+          to: prevTr.mapping.map(change.to),
+          slice: change.slice,
+        };
+      });
+
+      // don't consider transactions that don't mutate
+      if (!prevTr.docChanged) {
+        return;
+      }
+
+      const change = fixColumnSizes(prevTr, newState);
+      if (change) {
+        changes.push(change);
+      }
+    });
+
+    if (changes.length) {
+      const tr = newState.tr;
+      const selection = newState.selection;
+
+      changes.forEach(change => {
+        tr.replaceRange(change.from, change.to, change.slice);
+      });
+
+      if (tr.docChanged) {
+        tr.setSelection(selection);
         tr.setMeta('isLocal', true);
         tr.setMeta('addToHistory', false);
+        return tr;
       }
-      return tr;
     }
   },
 });

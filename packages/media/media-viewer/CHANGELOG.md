@@ -1,5 +1,26 @@
 # @atlaskit/media-viewer
 
+## 25.0.0
+- [major] [023cb45"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/023cb45"
+d):
+
+  - Add i18n support to MediaViewer
+
+## 24.1.11
+- [patch] [12afe80"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12afe80"
+d):
+
+  - Move mocks directory structure to fix dist build issues
+
+## 24.1.10
+- [patch] [4b84e8b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b84e8b"
+d):
+
+  - Avoid unnecessary render cycle in ItemViewer
+
 ## 24.1.9
 - [patch] [a787ee9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a787ee9):
 

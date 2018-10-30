@@ -54,7 +54,6 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
           attrs: {
             extensionType: 'com.atlassian.stride',
             extensionKey: 'default',
-            bodyType: 'rich',
           },
           content: [
             {

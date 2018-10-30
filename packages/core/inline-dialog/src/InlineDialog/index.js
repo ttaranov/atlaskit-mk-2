@@ -34,7 +34,7 @@ class InlineDialog extends Component<Props, {}> {
     if (typeof window === 'undefined') return;
 
     if (!prevProps.isOpen && this.props.isOpen) {
-      window.addEventListener('click', this.handleClickOutside);
+      window.addEventListener('click', this.handleClickOutside, true);
     } else if (prevProps.isOpen && !this.props.isOpen) {
       window.removeEventListener('click', this.handleClickOutside);
     }
@@ -44,7 +44,7 @@ class InlineDialog extends Component<Props, {}> {
     if (typeof window === 'undefined') return;
 
     if (this.props.isOpen) {
-      window.addEventListener('click', this.handleClickOutside);
+      window.addEventListener('click', this.handleClickOutside, true);
     }
   }
 

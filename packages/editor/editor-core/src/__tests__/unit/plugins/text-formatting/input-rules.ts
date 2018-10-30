@@ -243,6 +243,7 @@ describe('text-formatting input rules', () => {
     notautoformats('->');
     notautoformats('-->');
     notautoformats('<-');
+    notautoformats('<->');
     notautoformats('<--');
     notautoformats('>');
     notautoformats('-!>');
@@ -251,13 +252,12 @@ describe('text-formatting input rules', () => {
     notautoformats('-->> ');
     notautoformats('->> ');
 
-    notautoformats(' <-> ');
-
     // autoformat only after space
     autoformats('-> ', p('→ '), 'arrow');
     autoformats('--> ', p('→ '), 'arrow');
     autoformats('<- ', p('← '), 'arrow');
     autoformats('<-- ', p('← '), 'arrow');
+    autoformats('<-> ', p('↔︎ '), 'arrow');
 
     // test spacing
     autoformatCombinations(

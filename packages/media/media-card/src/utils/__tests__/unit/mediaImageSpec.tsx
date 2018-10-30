@@ -15,12 +15,16 @@ describe('MediaImage', () => {
       imageIsBiggerThanContainer: [[1000, 2000], [500, 500]],
     },
   };
+  const defaultTransform = {
+    transform: 'translate(-50%, -50%)',
+  };
 
   const setup = (
     isCoverStrategy: boolean,
     isImageMoreLandscapyThanContainer: boolean,
     imageIsSmallerThanContainer: boolean,
     loadImageImmediately: boolean = true,
+    previewOrientation?: number,
   ) => {
     const [imageDimentions, containerDimentions] = dimensionsMap[
       isImageMoreLandscapyThanContainer
@@ -38,7 +42,11 @@ describe('MediaImage', () => {
         height: containerDimentions[1],
       } as any);
     const component = mount(
-      <MediaImage dataURI="data:image/png;base64," crop={isCoverStrategy} />,
+      <MediaImage
+        dataURI="data:image/png;base64,"
+        crop={isCoverStrategy}
+        previewOrientation={previewOrientation}
+      />,
     );
     const img = component.find('img');
     const imgInstance = img.instance();
@@ -81,25 +89,33 @@ describe('MediaImage', () => {
     describe('when image is smaller than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, true, true);
-        expect(component.props().style).toEqual({ maxHeight: '100%' });
+        expect(component.props().style).toEqual({
+          maxHeight: '100%',
+          ...defaultTransform,
+        });
       });
       it('should have right style for fit strategy', () => {
         const component = setup(false, true, true);
         expect(component.props().style).toEqual({
           maxWidth: '100%',
           maxHeight: '100%',
+          ...defaultTransform,
         });
       });
     });
     describe('when image is bigger than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, true, false);
-        expect(component.props().style).toEqual({ height: '100%' });
+        expect(component.props().style).toEqual({
+          height: '100%',
+          ...defaultTransform,
+        });
       });
       it('should have right style for fit strategy', () => {
         const component = setup(false, true, false);
         expect(component.props().style).toEqual({
           width: '100%',
+          ...defaultTransform,
         });
       });
     });
@@ -108,26 +124,50 @@ describe('MediaImage', () => {
     describe('when image is smaller than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, false, true);
-        expect(component.props().style).toEqual({ maxWidth: '100%' });
+        expect(component.props().style).toEqual({
+          maxWidth: '100%',
+          ...defaultTransform,
+        });
       });
       it('should have right style for fit strategy', () => {
         const component = setup(false, false, true);
         expect(component.props().style).toEqual({
           maxWidth: '100%',
           maxHeight: '100%',
+          ...defaultTransform,
         });
       });
     });
     describe('when image is bigger than container', () => {
       it('should have right style for cover strategy', () => {
         const component = setup(true, false, false);
-        expect(component.props().style).toEqual({ width: '100%' });
+        expect(component.props().style).toEqual({
+          width: '100%',
+          ...defaultTransform,
+        });
       });
       it('should have right style for fit strategy', () => {
         const component = setup(false, false, false);
         expect(component.props().style).toEqual({
           height: '100%',
+          ...defaultTransform,
         });
+      });
+    });
+    describe('image orientation', () => {
+      it('should do nothing if orientation is 1', () => {
+        const component = setup(false, false, false, true, 1);
+
+        expect(component.prop('style')!.transform).toEqual(
+          defaultTransform.transform,
+        );
+      });
+      it('should rotate the image when orientation is bigger than 1', () => {
+        const component = setup(false, false, false, true, 6);
+
+        expect(component.prop('style')!.transform).toEqual(
+          'translate(-50%, -50%) rotate(90deg)',
+        );
       });
     });
   });

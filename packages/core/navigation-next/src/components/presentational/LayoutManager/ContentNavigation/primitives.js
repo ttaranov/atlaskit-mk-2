@@ -2,7 +2,7 @@
 
 import React, { Fragment, type Node } from 'react';
 import { keyframes } from 'emotion';
-import { Transition } from 'react-transition-group';
+import Transition from 'react-transition-group/Transition';
 import { colors } from '@atlaskit/theme';
 
 import {

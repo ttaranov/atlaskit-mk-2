@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "9.0.8",
+  "version": "9.0.9",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -35,7 +35,7 @@
     "@atlaskit/datetime-picker": "^6.3.13",
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/icon": "^14.0.2",
-    "@atlaskit/select": "^6.0.3",
+    "@atlaskit/select": "^6.1.4",
     "@atlaskit/single-select": "^6.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",

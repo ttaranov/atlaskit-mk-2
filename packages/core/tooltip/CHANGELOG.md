@@ -1,5 +1,10 @@
 # @atlaskit/tooltip
 
+## 12.1.6
+- [patch] [7f1ff28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1ff28):
+
+  Fixes error when Tooltip attempts to setState on an unmounted component
+
 ## 12.1.5
 - [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
   - @atlaskit/portal@0.0.12

@@ -6,7 +6,7 @@ import { columnLayoutSharedStyle } from '@atlaskit/editor-common';
 
 export const layoutStyles = css`
   .ProseMirror {
-    ${columnLayoutSharedStyle} [data-layout-type] {
+    ${columnLayoutSharedStyle} [data-layout-section] {
       position: relative;
       width: calc(100% + 26px);
       /* left-padding (12px) + layout-column-border (1px) */

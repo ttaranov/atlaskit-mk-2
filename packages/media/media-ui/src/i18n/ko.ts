@@ -22,4 +22,14 @@ export default {
   'fabric.media.connect_to': '{name}에 연결',
   'fabric.media.connect_account_description':
     '{name} 계정을 연결할 수 있도록 새로운 페이지를 열겠습니다.',
+  'fabric.media.something_went_wrong': 'Something went wrong.',
+  'fabric.media.might_be_a_hiccup': 'It might just be a hiccup.',
+  'fabric.media.couldnt_generate_preview':
+    "We couldn't generate a preview for this file.",
+  'fabric.media.cant_preview_file_type': "We can't preview this file type.",
+  'fabric.media.item_not_found_in_list':
+    'The selected item was not found on the list.',
+  'fabric.media.no_pdf_artifacts': 'No PDF artifacts found for this file.',
+  'fabric.media.give_feedback': 'Give feedback',
+  'fabric.media.try_downloading_file': 'Try downloading the file to view it.',
 };

@@ -47,10 +47,22 @@ export function getScaleFactor(
   if (scaleFactorFromFilename !== null) {
     return scaleFactorFromFilename;
   } else if (tags) {
-    return (
-      getMetaTagNumericValue(tags, XResolution, DPI_WEB_BASELINE) /
-      DPI_WEB_BASELINE
-    );
+    /**
+     * Scale Factor is actually a 2D thing, but in practice X & Y are same in 99% cases.
+     * So we are only relying on X axis.
+     */
+    if (typeof tags['PixelPerUnitX'] === 'number') {
+      // 1 inch = 0.0254 meters
+      return (
+        Math.round((tags['PixelPerUnitX'] as number) * 0.0254) /
+        DPI_WEB_BASELINE
+      );
+    } else {
+      return (
+        getMetaTagNumericValue(tags, XResolution, DPI_WEB_BASELINE) /
+        DPI_WEB_BASELINE
+      );
+    }
   } else {
     return 1;
   }
@@ -60,11 +72,13 @@ export async function getOrientation(file: File): Promise<number> {
   const tags = await readImageMetaTags(file);
   if (tags && tags[Orientation]) {
     const tagValue = tags[Orientation];
-    const numericValue = parseInt(tagValue, 10);
-    if (isNaN(numericValue)) {
-      return ExifOrientation[tagValue];
+    if (tagValue) {
+      const numericValue = parseInt(tagValue, 10);
+      if (isNaN(numericValue)) {
+        return ExifOrientation[tagValue];
+      }
+      return numericValue;
     }
-    return numericValue;
   }
   return 1;
 }
@@ -75,7 +89,7 @@ export function getMetaTagNumericValue(
   defaultValue: number,
 ): number {
   try {
-    const num = parseFloat(tags[key]);
+    const num = parseFloat(`${tags[key]}`);
     if (!isNaN(num)) {
       return num;
     }
@@ -133,3 +147,5 @@ export async function readImageMetaData(
   };
   return data;
 }
+
+export * from './getCssFromImageOrientation';

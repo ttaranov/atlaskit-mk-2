@@ -39,7 +39,7 @@ type Props = {
    given to the GlobalNavigation component */
   primaryIcon: Node,
   /** Controls the width of the drawer */
-  width: 'narrow' | 'wide' | 'full',
+  width: 'narrow' | 'medium' | 'wide' | 'full',
   /** Fires anayltics event. Injected by withAnalytics. */
   fireAnalyticsEvent: (eventName: string, eventData?: Object) => void,
 };

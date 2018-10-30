@@ -1,5 +1,15 @@
 # @atlaskit/tree
 
+## 4.1.4
+- [patch] [7b08fd4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b08fd4):
+
+  - Solving race condition when dropping and nesting at the same time
+
+## 4.1.3
+- [patch] [5de65a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5de65a9):
+
+  - Upgrading react-beautiful-dnd-next to 10.0.0-alpha.5
+
 ## 4.1.2
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

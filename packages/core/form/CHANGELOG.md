@@ -1,5 +1,12 @@
 # @atlaskit/form
 
+## 4.0.14
+- [patch] [c8d935f"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8d935f"
+d):
+
+  - Fixing form header styles
+
 ## 4.0.13
 - [patch] Fixed rendering of FieldGroup legends [af05f8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af05f8e)
 

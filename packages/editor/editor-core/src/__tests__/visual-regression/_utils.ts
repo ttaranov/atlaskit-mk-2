@@ -9,7 +9,11 @@ import { messages as advancedTextFormattingMessages } from '../../plugins/text-f
 import { messages as listsMessages } from '../../plugins/lists/ui/ToolbarLists';
 import { messages as textColorMessages } from '../../plugins/text-color/ui/ToolbarTextColor';
 
-export { setupMediaMocksProviders, editable } from '../integration/_helpers';
+export {
+  setupMediaMocksProviders,
+  editable,
+  changeSelectedNodeLayout,
+} from '../integration/_helpers';
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
@@ -66,6 +70,20 @@ export const clearEditor = async page => {
     const dom = document.querySelector('.ProseMirror') as HTMLElement;
     dom.innerHTML = '<p><br /></p>';
   });
+};
+
+export const insertBlockMenuItem = async (
+  page,
+  menuTitle,
+  tagName = 'span',
+) => {
+  const openInsertBlockMenuSelector = `[aria-label="${
+    insertBlockMessages.insertMenu.defaultMessage
+  }"]`;
+
+  await page.click(openInsertBlockMenuSelector);
+  // Do we need to wait for something here?
+  await selectByTextAndClick({ page, text: menuTitle, tagName });
 };
 
 export const insertTable = async page => {

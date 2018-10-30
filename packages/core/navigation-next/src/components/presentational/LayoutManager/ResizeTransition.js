@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent, type Node } from 'react';
-import { Transition } from 'react-transition-group';
+import Transition from 'react-transition-group/Transition';
 import type { CollapseListener } from './types';
 
 const DURATION = 300;
@@ -60,6 +60,13 @@ export default class ResizeTransition extends PureComponent<Props> {
     onCollapseStart: NOOP,
     onCollapseEnd: NOOP,
   };
+
+  isMounted = false;
+
+  componentDidMount() {
+    this.isMounted = true;
+  }
+
   getTarget = (ref: HTMLElement) => {
     this.target = ref;
 
@@ -77,6 +84,7 @@ export default class ResizeTransition extends PureComponent<Props> {
       properties,
       to,
       userIsDragging,
+      in: inProp,
     } = this.props;
 
     return (
@@ -85,14 +93,13 @@ export default class ResizeTransition extends PureComponent<Props> {
         onEntered={onExpandEnd}
         onExiting={onCollapseStart}
         onExited={onCollapseEnd}
-        in={this.props.in}
-        timeout={DURATION}
+        in={inProp}
+        timeout={this.isMounted ? DURATION : 0}
       >
         {transitionState => {
           // transitions interupt manual resize behaviour
-          const cssTransition = !userIsDragging
-            ? getTransition(properties)
-            : {};
+          const cssTransition =
+            !userIsDragging && this.isMounted ? getTransition(properties) : {};
 
           // `from` and `to` styles tweened by the transition
           const dynamicProperties = {

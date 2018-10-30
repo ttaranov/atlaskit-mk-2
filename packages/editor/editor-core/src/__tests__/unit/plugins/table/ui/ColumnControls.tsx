@@ -23,6 +23,7 @@ import {
 import ColumnControls from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls';
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
+import { getSelectionRect } from '../../../../../plugins/table/utils';
 
 const ColumnControlsButtonWrap = `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}`;
 const DeleteColumnButton = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP}`;
@@ -342,6 +343,57 @@ describe('ColumnControls', () => {
       expect(floatingControls.find(DeleteColumnButton).length).toBe(1);
 
       floatingControls.unmount();
+    });
+  });
+
+  describe('column shift selection', () => {
+    const createEvent = (target: Element) => ({
+      stopPropagation: () => {},
+      preventDefault: () => {},
+      shiftKey: true,
+      target,
+    });
+
+    it('should shift select columns after the currently selected column', () => {
+      const { editorView, plugin } = editor(
+        doc(
+          table()(
+            tr(thEmpty, thEmpty, thEmpty, thEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty, thEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty, thEmpty),
+          ),
+        ),
+      );
+
+      editorView.dispatch(selectColumns([0])(editorView.state.tr));
+      const target = document.querySelectorAll(
+        `.${ClassName.COLUMN_CONTROLS} .${ClassName.CONTROLS_BUTTON}`,
+      )[2];
+
+      plugin.props.handleDOMEvents.mousedown(editorView, createEvent(target));
+      const rect = getSelectionRect(editorView.state.selection);
+      expect(rect).toEqual({ left: 0, top: 0, right: 3, bottom: 3 });
+    });
+
+    it('should shift select columns before the currently selected column', () => {
+      const { editorView, plugin } = editor(
+        doc(
+          table()(
+            tr(thEmpty, thEmpty, thEmpty, thEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty, thEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty, thEmpty),
+          ),
+        ),
+      );
+
+      editorView.dispatch(selectColumns([2])(editorView.state.tr));
+      const target = document.querySelectorAll(
+        `.${ClassName.COLUMN_CONTROLS} .${ClassName.CONTROLS_BUTTON}`,
+      )[0];
+
+      plugin.props.handleDOMEvents.mousedown(editorView, createEvent(target));
+      const rect = getSelectionRect(editorView.state.selection);
+      expect(rect).toEqual({ left: 0, top: 0, right: 3, bottom: 3 });
     });
   });
 });

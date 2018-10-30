@@ -20,7 +20,7 @@ export const getCardStatus = (
       if (status === 'complete' && !dataURI) {
         return 'processing';
       }
-      if (status === 'processing' && dataURI) {
+      if ((status === 'processing' || status === 'uploading') && dataURI) {
         return 'complete';
       }
     } else if (name && size && !disableOverlay && status === 'processing') {

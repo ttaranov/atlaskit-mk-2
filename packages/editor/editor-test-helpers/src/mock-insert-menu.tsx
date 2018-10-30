@@ -1,12 +1,28 @@
+import * as React from 'react';
 import { bodiedExtensionData } from './mock-extension-data';
+import DevIcon from '@atlaskit/icon/glyph/editor/code';
+import { EditorActions } from '@atlaskit/editor-core';
 
 export const customInsertMenuItems = [
+  {
+    content: 'Import',
+    value: { name: 'import' },
+    tooltipDescription: 'import',
+    tooltipPosition: 'right',
+    elemBefore: <DevIcon label="dev" />,
+    onClick: async (editorActions: EditorActions) => {
+      const input = prompt('Import from?');
+      if (input !== null) {
+        editorActions.replaceDocument(input);
+      }
+    },
+  },
   {
     content: 'Inline macro (EH)',
     value: { name: 'inline-eh' },
     tooltipDescription: 'Inline macro (Using extension handlers)',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     onClick: function(editorActions) {
       editorActions.replaceSelection({
         type: 'inlineExtension',
@@ -33,7 +49,7 @@ export const customInsertMenuItems = [
     value: { name: 'block-eh' },
     tooltipDescription: 'Block macro (Using extension handlers)',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     className: 'block-macro',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
@@ -61,7 +77,7 @@ export const customInsertMenuItems = [
     value: { name: 'bodied-eh' },
     tooltipDescription: 'Bodied macro (Using extension handlers)',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     className: 'bodied-macro',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
@@ -95,7 +111,7 @@ export const customInsertMenuItems = [
     value: { name: 'bodied-non-eh' },
     tooltipDescription: 'Bodied macro',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     onClick: function(editorActions) {
       editorActions.replaceSelection({
         type: 'bodiedExtension',
@@ -125,11 +141,11 @@ export const customInsertMenuItems = [
     },
   },
   {
-    content: 'Loren ipsun',
-    value: { name: 'loren-ipsun' },
-    tooltipDescription: 'Insert loren ipsun text',
+    content: 'Lorem ipsum',
+    value: { name: 'lorem-ipsum' },
+    tooltipDescription: 'Insert lorem ipsum text',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     onClick: function(editorActions) {
       editorActions.appendText(
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mi nisl, venenatis eget auctor vitae, venenatis quis lorem. Suspendisse maximus tortor vel dui tincidunt cursus. Vestibulum magna nibh, auctor non auctor id, finibus vitae orci. Nulla viverra ipsum et nunc fringilla ultricies. Pellentesque vitae felis molestie justo finibus accumsan. Suspendisse potenti. Nulla facilisi. Integer dignissim quis velit quis elementum. Sed sit amet varius ante. Duis vestibulum porta augue eu laoreet. Morbi id risus et augue sollicitudin aliquam. In et ligula dolor. Nam ac aliquet diam.',
@@ -141,7 +157,7 @@ export const customInsertMenuItems = [
     value: { name: 'info' },
     tooltipDescription: 'Insert info macro',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     onClick: function(editorActions) {
       editorActions.replaceSelection({
         type: 'inlineExtension',
@@ -169,7 +185,7 @@ export const customInsertMenuItems = [
     value: { name: 'macro-browser' },
     tooltipDescription: 'Open macro browser',
     tooltipPosition: 'right',
-    elemBefore: '-',
+    elemBefore: <DevIcon label="dev" />,
     onClick: function(editorActions) {
       // tslint:disable-next-line:no-console
       console.log(

@@ -25,6 +25,9 @@ Object {
       },
       "content": Array [
         Object {
+          "type": "paragraph",
+        },
+        Object {
           "attrs": Object {
             "language": null,
             "uniqueId": null,

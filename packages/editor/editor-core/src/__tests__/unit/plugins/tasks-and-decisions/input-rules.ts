@@ -191,15 +191,22 @@ describe('tasks and decisions - input rules', () => {
 
       it(`should replace "${input}" with a ${name}List inside layouts`, () => {
         const { editorView, sel } = editorFactory(
-          doc(layoutSection()(layoutColumn(p('{<>}')), layoutColumn(p('')))),
+          doc(
+            layoutSection(
+              layoutColumn({ width: 50 })(p('{<>}')),
+              layoutColumn({ width: 50 })(p('')),
+            ),
+          ),
         );
 
         insertText(editorView, input, sel);
 
         const expectedDoc = doc(
-          layoutSection()(
-            layoutColumn(list(listProps)(item(itemProps)('{<>}'))),
-            layoutColumn(p('')),
+          layoutSection(
+            layoutColumn({ width: 50 })(
+              list(listProps)(item(itemProps)('{<>}')),
+            ),
+            layoutColumn({ width: 50 })(p('')),
           ),
         );
         expect(editorView.state.doc).toEqualDocument(expectedDoc);

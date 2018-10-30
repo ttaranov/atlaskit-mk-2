@@ -62,11 +62,11 @@ describe('layout', () => {
     });
 
     it('should unwrap any content inside a layoutSection', () => {
-      const columnA = layoutColumn(p('Column A'), hr());
-      const columnB = layoutColumn(p('Column B'));
-      const columnC = layoutColumn(hr(), p('Column C'), hr());
+      const columnA = layoutColumn({ width: 33.33 })(p('Column A'), hr());
+      const columnB = layoutColumn({ width: 33.33 })(p('Column B'));
+      const columnC = layoutColumn({ width: 33.33 })(hr(), p('Column C'), hr());
       const layout = removeRef(
-        layoutSection()(columnA, columnB, columnC)(defaultSchema),
+        layoutSection(columnA, columnB, columnC)(defaultSchema),
       );
 
       const expected = array(
@@ -92,29 +92,27 @@ describe('layout', () => {
 
   describe('#removeLayoutFromFirstChild', () => {
     it('should unwrap the layout when it is the first child of a node', () => {
-      const columnA = layoutColumn(p('Column A'));
-      const columnB = layoutColumn(p('Column B'));
-      const layout = removeRef(
-        layoutSection()(columnA, columnB)(defaultSchema),
-      );
+      const columnA = layoutColumn({ width: 50 })(p('Column A'));
+      const columnB = layoutColumn({ width: 50 })(p('Column B'));
+      const layout = removeRef(layoutSection(columnA, columnB)(defaultSchema));
 
       const expected = array(p('Column A'), p('Column B'));
       expect(removeLayoutFromFirstChild(layout, 0)).toEqual(expected);
     });
 
     it('should do nothing when the layout is not the first child of a node', () => {
-      const columnA = layoutColumn(p('Column A'));
-      const columnB = layoutColumn(p('Column B'));
-      const layout = layoutSection()(columnA, columnB)(defaultSchema);
+      const columnA = layoutColumn({ width: 50 })(p('Column A'));
+      const columnB = layoutColumn({ width: 50 })(p('Column B'));
+      const layout = layoutSection(columnA, columnB)(defaultSchema);
       expect(removeLayoutFromFirstChild(layout, 1)).toEqual(layout);
     });
   });
 
   describe('#removeLayoutFromLastChild', () => {
     it('should unwrap the layout when it is the last child of a node', () => {
-      const columnA = layoutColumn(p('Column A'));
-      const columnB = layoutColumn(p('Column B'));
-      const layout = layoutSection()(columnA, columnB);
+      const columnA = layoutColumn({ width: 50 })(p('Column A'));
+      const columnB = layoutColumn({ width: 50 })(p('Column B'));
+      const layout = layoutSection(columnA, columnB);
       const sliceFragment = fragment(p('Start'), layout);
 
       const expected = array(p('Column A'), p('Column B'));
@@ -128,9 +126,9 @@ describe('layout', () => {
     });
 
     it('should do nothing when the layout is not the last child of a node', () => {
-      const columnA = layoutColumn(p('Column A'));
-      const columnB = layoutColumn(p('Column B'));
-      const layout = layoutSection()(columnA, columnB);
+      const columnA = layoutColumn({ width: 50 })(p('Column A'));
+      const columnB = layoutColumn({ width: 50 })(p('Column B'));
+      const layout = layoutSection(columnA, columnB);
       const sliceFragment = fragment(p('Start'), layout, p('End'));
 
       expect(
@@ -144,9 +142,9 @@ describe('layout', () => {
       it('should ignore the layoutSection if the node is closed', () => {
         const slice = new Slice(
           fragment(
-            layoutSection()(
-              layoutColumn(p('Column A')),
-              layoutColumn(p('Column B')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('Column A')),
+              layoutColumn({ width: 50 })(p('Column B')),
             ),
           ),
           0,
@@ -160,9 +158,9 @@ describe('layout', () => {
       it('should unwrap the layoutSection if the node is open', () => {
         const slice = new Slice(
           fragment(
-            layoutSection()(
-              layoutColumn(p('Column A')),
-              layoutColumn(p('Column B')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('Column A')),
+              layoutColumn({ width: 50 })(p('Column B')),
             ),
           ),
           3,
@@ -177,9 +175,9 @@ describe('layout', () => {
       it('should ignore the layoutSection if the node is closed', () => {
         const slice = new Slice(
           fragment(
-            layoutSection()(
-              layoutColumn(p('Column A')),
-              layoutColumn(p('Column B')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('Column A')),
+              layoutColumn({ width: 50 })(p('Column B')),
             ),
             p('End'),
           ),
@@ -194,9 +192,9 @@ describe('layout', () => {
       it('should unwrap the layoutSection if the node is open', () => {
         const slice = new Slice(
           fragment(
-            layoutSection()(
-              layoutColumn(p('Column A')),
-              layoutColumn(p('Column B')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('Column A')),
+              layoutColumn({ width: 50 })(p('Column B')),
             ),
             p('End'),
           ),
@@ -215,9 +213,9 @@ describe('layout', () => {
         const slice = new Slice(
           fragment(
             p('Start'),
-            layoutSection()(
-              layoutColumn(p('Column A')),
-              layoutColumn(p('Column B')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('Column A')),
+              layoutColumn({ width: 50 })(p('Column B')),
             ),
           ),
           0,
@@ -232,9 +230,9 @@ describe('layout', () => {
         const slice = new Slice(
           fragment(
             p('Start'),
-            layoutSection()(
-              layoutColumn(p('Column A')),
-              layoutColumn(p('Column B')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('Column A')),
+              layoutColumn({ width: 50 })(p('Column B')),
             ),
           ),
           0,
@@ -250,9 +248,9 @@ describe('layout', () => {
 
     describe('when a slice starts in one layoutSection and ends in another', () => {
       it('should ignore the layoutSection if the slice is closed', () => {
-        const layout = layoutSection()(
-          layoutColumn(p('Column A')),
-          layoutColumn(p('Column B')),
+        const layout = layoutSection(
+          layoutColumn({ width: 50 })(p('Column A')),
+          layoutColumn({ width: 50 })(p('Column B')),
         );
         const slice = new Slice(fragment(layout, p('Middle'), layout), 0, 0);
         expect(
@@ -261,9 +259,9 @@ describe('layout', () => {
       });
 
       it('should unwrap the layoutSection if the slice is open', () => {
-        const layout = layoutSection()(
-          layoutColumn(p('Column A')),
-          layoutColumn(p('Column B')),
+        const layout = layoutSection(
+          layoutColumn({ width: 50 })(p('Column A')),
+          layoutColumn({ width: 50 })(p('Column B')),
         );
         const slice = new Slice(fragment(layout, p('Middle'), layout), 3, 3);
         expect(

@@ -41,7 +41,7 @@ const getCellAttrs = (dom: HTMLElement) => {
   };
 };
 
-const setCellAttrs = (node: PmNode) => {
+export const setCellAttrs = (node: PmNode) => {
   const attrs: {
     colspan?: number;
     rowspan?: number;
@@ -209,6 +209,7 @@ export const table: any = {
   },
   tableRole: 'table',
   isolating: true,
+  selectable: false,
   group: 'block',
   parseDOM: [
     {

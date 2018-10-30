@@ -1,5 +1,29 @@
 # @atlaskit/media-ui
 
+## 7.3.0
+- [minor] [023cb45"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/023cb45"
+d):
+
+  - Add i18n support to MediaViewer
+
+## 7.2.1
+- [patch] [cf840fa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf840fa):
+
+  MS-1069 Use physical pixel dimensions to determine scale factor of PNG
+
+## 7.2.0
+- [minor] [439dde6"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/439dde6"
+d):
+
+  - rotate local image preview in cards based on the file orientation
+
+## 7.1.1
+- [patch] [1aa57ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aa57ab):
+
+  Clean up for media up and new task converter for smart cards
+
 ## 7.1.0
 - [minor] Added task converter  [8678076](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8678076)
 

@@ -9,6 +9,21 @@ import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/T
 export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
 export const editable = '.ProseMirror';
 export const LONG_WAIT_FOR = 5000;
+export const mentionPicker = '.ak-mention-picker';
+
+export const insertMention = async (browser, query: string) => {
+  await browser.type(editable, '@');
+  await browser.waitForSelector(mentionPicker);
+  await browser.type(editable, query);
+  await browser.type(editable, 'Return');
+};
+
+export const insertMentionUsingClick = async (browser, mentionId: string) => {
+  await browser.type(editable, '@');
+  await browser.waitForSelector(mentionPicker);
+  await browser.isVisible(`div[data-mention-id="${mentionId}"`);
+  await browser.click(`div[data-mention-id="${mentionId}"`);
+};
 
 export const comment = {
   name: 'comment',
@@ -143,10 +158,20 @@ export const insertBlockMenuItem = async (
   await browser.click(menuSelector);
 };
 
+export const changeSelectedNodeLayout = async (page, layoutName) => {
+  const buttonSelector = `div[aria-label="Floating Toolbar"] span[aria-label="${layoutName}"]`;
+  await page.waitForSelector(buttonSelector, 3000);
+  await page.click(buttonSelector);
+};
+
 /**
  * When using quick insert, `insertTitle` should match exactly to the typeahead wording.
  * We need to filter down the typeahead, as we select the first result.
+ * Edge appears to have a problem with await browser.browser.waitUntil().
+ * The statement at the bottom of the async function returns `firstInsertText && firstInsertText.startsWith(firstTitleWord)`
+ * Even when this is true the waitUntil doesn’t return.
  */
+
 export const quickInsert = async (browser, insertTitle) => {
   const firstTitleWord = insertTitle.split(' ')[0];
 

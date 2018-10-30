@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-ui",
-  "version": "7.1.0",
+  "version": "7.3.0",
   "description": "Includes common components and utilities used by other media packages",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -48,8 +48,7 @@
     "png-chunks-extract": "^1.0.0",
     "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",
-    "tslib": "^1.8.0",
-    "utf8-string-bytes": "^1.0.3"
+    "tslib": "^1.8.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",
