@@ -2,8 +2,9 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  flex: 1 1 100%;
-  width: ${p => p.size};
+  display: block;
 `;
 
-export const InputWrapper = styled.div``;
+export const InputWrapper = styled.div`
+  display: block;
+`;
