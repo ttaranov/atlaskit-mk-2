@@ -36,6 +36,7 @@ import mentionNodeView from './nodeviews/mention';
 import {
   buildTypeAheadInsertedPayload,
   buildTypeAheadCancelPayload,
+  buildTypeAheadRenderedPayload,
 } from './analytics';
 
 const mentionsPlugin = (
@@ -43,11 +44,10 @@ const mentionsPlugin = (
 ): EditorPlugin => {
   let sessionId = uuid();
   const fireEvent = <T extends AnalyticsEventPayload>(payload: T): void => {
-    // console.log('fire', {
-    //   payload,
-    //   createAnalyticsEvent: !!createAnalyticsEvent,
-    // });
     if (createAnalyticsEvent) {
+      if (payload.attributes && !payload.attributes.sessionId) {
+        payload.attributes.sessionId = sessionId;
+      }
       createAnalyticsEvent(payload).fire(ELEMENTS_CHANNEL);
     }
   };
@@ -62,7 +62,12 @@ const mentionsPlugin = (
         {
           name: 'mention',
           plugin: ({ providerFactory, dispatch, portalProviderAPI }) =>
-            mentionPluginFactory(dispatch, providerFactory, portalProviderAPI),
+            mentionPluginFactory(
+              dispatch,
+              providerFactory,
+              portalProviderAPI,
+              fireEvent,
+            ),
         },
       ];
     },
@@ -277,6 +282,7 @@ function mentionPluginFactory(
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
   portalProviderAPI: PortalProviderAPI,
+  fireEvent: (payload: any) => void,
 ) {
   let mentionProvider: MentionProvider;
 
@@ -360,9 +366,23 @@ function mentionPluginFactory(
                 mentionProvider = provider;
                 setProvider(provider)(editorView.state, editorView.dispatch);
 
-                provider.subscribe('mentionPlugin', result => {
-                  setResults(result)(editorView.state, editorView.dispatch);
-                });
+                provider.subscribe(
+                  'mentionPlugin',
+                  (mentions, query, stats) => {
+                    setResults(mentions)(editorView.state, editorView.dispatch);
+                    console.log(stats);
+
+                    if (stats && stats.remoteSearch) {
+                      fireEvent(
+                        buildTypeAheadRenderedPayload(
+                          stats.duration,
+                          mentions.map(mention => mention.id),
+                          query || '',
+                        ),
+                      );
+                    }
+                  },
+                );
               })
               .catch(() =>
                 setProvider(undefined)(editorView.state, editorView.dispatch),

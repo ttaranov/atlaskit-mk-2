@@ -6,6 +6,8 @@ import {
 } from '../../../package.json';
 import { SelectItemMode } from '../type-ahead/commands/select-item.js';
 
+const componentName = 'mention';
+
 export const buildAnalyticsPayload = (
   actionSubject: string,
   action: string,
@@ -19,7 +21,7 @@ export const buildAnalyticsPayload = (
   attributes: {
     packageName,
     packageVersion,
-    componentName: 'mention',
+    componentName,
     sessionId,
     ...otherAttributes,
   },
@@ -106,4 +108,24 @@ export const buildTypeAheadInsertedPayload = (
       userId: mention.id,
     },
   );
+};
+
+export const buildTypeAheadRenderedPayload = (
+  duration: number,
+  userIds: Array<string>,
+  query: string,
+): GasPayload => {
+  return {
+    action: 'rendered',
+    actionSubject: 'mentionTypeAhead',
+    eventType: 'ui',
+    attributes: {
+      packageName,
+      packageVersion,
+      componentName,
+      duration,
+      userIds,
+      query,
+    },
+  };
 };
