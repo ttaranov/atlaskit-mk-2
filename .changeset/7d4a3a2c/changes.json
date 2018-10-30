@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/onboarding", "type": "patch" }],
+  "dependents": []
+}
