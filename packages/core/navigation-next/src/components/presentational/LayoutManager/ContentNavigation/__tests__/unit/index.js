@@ -12,7 +12,7 @@ const defaultProps = {
   product: () => null,
 };
 
-describe('NavigationNext components: ContentNavigation', () => {
+describe('ContentNavigation', () => {
   it('should not trigger animations on first-page load', () => {
     const wrapper = shallow(
       <ContentNavigation {...defaultProps}>

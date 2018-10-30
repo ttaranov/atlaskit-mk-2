@@ -34,6 +34,5 @@ describe('Section with Content Theming', () => {
         .find(ScrollableWrapper)
         .find(ScrollableInner),
     ).toHaveLength(1);
-    expect(scrollable.find(StaticWrapper)).toHaveLength(0);
   });
 });
