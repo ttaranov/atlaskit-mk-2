@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "rootDir": "packages",
+    "outDir": "ts-gen"
+  },
+  "extends": "./tsconfig.base",
+  "include": [
+    "packages/**/src/**/*"
+  ],
+  "exclude": [
+    "**/__tests__/**/*",
+    "**/dist",
+    "ts-gen"
+  ]
+}

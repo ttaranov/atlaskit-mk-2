@@ -2,11 +2,15 @@
 
 module.exports = {
   plugins: [
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-object-rest-spread',
     '@babel/syntax-dynamic-import',
   ],
-  presets: ['@babel/react', '@babel/flow'],
+  presets: [
+    '@babel/react',
+    process.env.AK_TS ? '@babel/preset-typescript' : '@babel/flow',
+  ],
   overrides: [
     {
       test: [

@@ -11,3 +11,6 @@ declare namespace NodeJS {
 }
 
 declare var process: NodeJS.Process;
+
+declare module 'fs';
+declare module 'path';

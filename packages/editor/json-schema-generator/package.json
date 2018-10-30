@@ -26,5 +26,8 @@
   },
   "atlaskit": {
     "internal": true
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.1"
   }
 }

@@ -188,7 +188,7 @@ export interface OnCategory {
   (categoryId: CategoryId | null): void;
 }
 
-export const enum SearchSort {
+export enum SearchSort {
   // no sort - just the default ordering of emoji
   None,
   // a sort taking into account a number of factors including, usage, closeness of match to the query, etc

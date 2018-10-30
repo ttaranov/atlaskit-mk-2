@@ -37,3 +37,9 @@ website/dist.zip
 # A file we use for pushing secrets to micros, just in case
 secrets.json
 .vs/slnx.sqlite
+
+# Folder used to store generated typescript .d.ts before moving them to the correct directories
+ts-gen
+
+# Eslint checked files cache
+.eslintcache

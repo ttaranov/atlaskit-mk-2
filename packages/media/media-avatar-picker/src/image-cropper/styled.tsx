@@ -10,21 +10,6 @@ import {
 } from 'react';
 import { akBorderRadius, akColorN50A } from '@atlaskit/util-shared-styles';
 
-// Using module augmentation to add crossOrigin attribute as it does not exist yet, PR has been opened in
-// DefinitelyTyped for it
-declare module 'react' {
-  interface ImgHTMLAttributes<T> {
-    alt?: string;
-    crossOrigin?: 'anonymous' | 'use-credentials' | '';
-    height?: number | string;
-    sizes?: string;
-    src?: string;
-    srcSet?: string;
-    useMap?: string;
-    width?: number | string;
-  }
-}
-
 export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   overflow: hidden;
