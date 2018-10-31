@@ -1,0 +1,25 @@
+{
+  "releases": [{ "name": "@atlaskit/portal", "type": "patch" }],
+  "dependents": [
+    {
+      "name": "@atlaskit/flag",
+      "type": "patch",
+      "dependencies": ["@atlaskit/portal"]
+    },
+    {
+      "name": "@atlaskit/modal-dialog",
+      "type": "patch",
+      "dependencies": ["@atlaskit/portal"]
+    },
+    {
+      "name": "@atlaskit/onboarding",
+      "type": "patch",
+      "dependencies": ["@atlaskit/modal-dialog", "@atlaskit/portal"]
+    },
+    {
+      "name": "@atlaskit/tooltip",
+      "type": "patch",
+      "dependencies": ["@atlaskit/portal"]
+    }
+  ]
+}

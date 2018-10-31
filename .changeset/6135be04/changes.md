@@ -1,0 +1,1 @@
+- Replaces our own check for dom in ssr with exenv package
