@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-ui",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "description": "Includes common components and utilities used by other media packages",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -23,8 +23,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
-    "i18n:push": "NODE_ENV=production tsc --project ./build/es2015 && i18n-tools push --resource=media-ui .",
-    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource media-ui . --outputType ts"
+    "i18n:push": "i18n-tools push --resource media-ui --type ts .",
+    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource media-ui --type ts ."
   },
   "dependencies": {
     "@atlaskit/avatar": "^14.0.11",
@@ -57,14 +57,14 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^9.0.10",
-    "@atlaskit/docs": "^5.0.8",
     "@atlaskit/checkbox": "^5.0.2",
-    "@atlaskit/i18n-tools": "^0.3.0",
+    "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/i18n-tools": "^0.4.0",
     "@types/enzyme": "^3.1.6",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "jsverify": "^0.8.3",
     "react": "^16.4.0",
-    "react-intl": "^2.6.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz"
+    "react-intl": "^2.6.0"
   }
 }

@@ -40,13 +40,14 @@ export interface Props {
 export default class DateNodeView extends React.Component<Props> {
   render() {
     const {
-      attrs: { timestamp },
-    } = this.props.node;
-    const {
+      node: {
+        attrs: { timestamp },
+      },
       view: {
         state: { schema, selection },
       },
     } = this.props;
+
     const parent = selection.$from.parent;
     const withinIncompleteTask =
       parent.type === schema.nodes.taskItem && parent.attrs.state !== 'DONE';

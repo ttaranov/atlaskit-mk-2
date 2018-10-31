@@ -9,17 +9,18 @@ import { withNavigationViewController } from '../../../view-controller';
 import ConnectedItem from '../ConnectedItem';
 
 import type { GoToItemProps } from './types';
+import type { InteractionState } from '../../presentational/InteractionStateManager/types';
 
 const generateAfterProp = ({
   goTo,
   spinnerDelay,
   navigationViewController,
-}) => ({ isActive, isHover }: *) => {
+}) => ({ isActive, isHover, isFocused }: InteractionState) => {
   const { incomingView } = navigationViewController.state;
   if (incomingView && incomingView.id === goTo) {
     return <Spinner delay={spinnerDelay} invertColor size="small" />;
   }
-  if (isActive || isHover) {
+  if (isActive || isHover || isFocused) {
     return (
       <ArrowRightCircleIcon
         primaryColor="currentColor"

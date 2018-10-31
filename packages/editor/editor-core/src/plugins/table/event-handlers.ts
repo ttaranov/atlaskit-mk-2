@@ -4,38 +4,26 @@ import { TextSelection, Selection } from 'prosemirror-state';
 import { TableMap, cellAround } from 'prosemirror-tables';
 import { Node as PmNode } from 'prosemirror-model';
 import { browser } from '@atlaskit/editor-common';
-import { getPluginState } from './pm-plugins/main';
-import { TableCssClassName as ClassName } from './types';
+
 import {
   isElementInTableCell,
   setNodeSelection,
   isLastItemMediaGroup,
   closestElement,
 } from '../../utils/';
+import { isInsertColumnButton, isInsertRowButton, getIndex } from './utils';
 import {
   setEditorFocus,
   showInsertColumnButton,
   showInsertRowButton,
-  clearHoverSelection,
+  handleShiftSelection,
+  hideInsertColumnOrRowButton,
 } from './actions';
-
-const isIE11 = browser.ie_version === 11;
-
-const isInsertColumnButton = (node: HTMLElement) =>
-  node.classList.contains(ClassName.CONTROLS_INSERT_COLUMN) ||
-  closestElement(node, `.${ClassName.CONTROLS_INSERT_COLUMN}`);
-
-const isInsertRowButton = (node: HTMLElement) =>
-  node.classList.contains(ClassName.CONTROLS_INSERT_ROW) ||
-  closestElement(node, `.${ClassName.CONTROLS_INSERT_ROW}`);
-
-const getIndex = (target: HTMLElement) =>
-  parseInt(target.getAttribute('data-index') || '-1', 10);
 
 export const handleBlur = (view: EditorView, event): boolean => {
   const { state, dispatch } = view;
   // fix for issue ED-4665
-  if (!isIE11) {
+  if (browser.ie_version !== 11) {
     setEditorFocus(false)(state, dispatch);
   }
   event.preventDefault();
@@ -109,30 +97,16 @@ export const handleMouseOver = (
   if (isInsertRowButton(target)) {
     return showInsertRowButton(getIndex(target))(state, dispatch);
   }
-
-  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
-    state,
-  );
-  if (
-    typeof insertColumnButtonIndex === 'number' ||
-    typeof insertRowButtonIndex === 'number'
-  ) {
-    return clearHoverSelection(state, dispatch);
+  if (hideInsertColumnOrRowButton(state, dispatch)) {
+    return true;
   }
-
   return false;
 };
 
 export const handleMouseLeave = (view: EditorView): boolean => {
   const { state, dispatch } = view;
-  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
-    state,
-  );
-  if (
-    typeof insertColumnButtonIndex === 'number' ||
-    typeof insertRowButtonIndex === 'number'
-  ) {
-    return clearHoverSelection(state, dispatch);
+  if (hideInsertColumnOrRowButton(state, dispatch)) {
+    return true;
   }
   return false;
 };
@@ -162,3 +136,16 @@ export function handleTripleClick(view, pos) {
 
   return false;
 }
+export const handleMouseDown = (
+  view: EditorView,
+  event: MouseEvent,
+): boolean => {
+  const { state, dispatch } = view;
+
+  // shift-selecting table rows/columns
+  if (handleShiftSelection(event)(state, dispatch)) {
+    return true;
+  }
+
+  return false;
+};

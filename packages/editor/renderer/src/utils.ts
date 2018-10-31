@@ -1,5 +1,10 @@
 import { Schema } from 'prosemirror-model';
-import { defaultSchema, Transformer, ADNode } from '@atlaskit/editor-common';
+import {
+  defaultSchema,
+  Transformer,
+  ADNode,
+  EventHandlers,
+} from '@atlaskit/editor-common';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { Node as PMNode } from 'prosemirror-model';
 
@@ -23,5 +28,18 @@ export const getText = (node: PMNode | ADNode): string => {
     node.text ||
     (node.attrs && (node.attrs.text || node.attrs.shortName)) ||
     `[${typeof node.type === 'string' ? node.type : node.type.name}]`
+  );
+};
+
+export const getEventHandler = (
+  eventHandlers?: EventHandlers,
+  type?: keyof EventHandlers,
+  eventName: string = 'onClick',
+) => {
+  return (
+    eventHandlers &&
+    type &&
+    eventHandlers[type] &&
+    eventHandlers[type]![eventName]
   );
 };

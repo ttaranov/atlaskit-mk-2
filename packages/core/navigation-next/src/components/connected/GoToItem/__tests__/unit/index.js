@@ -60,7 +60,7 @@ describe('GoToItemBase', () => {
       expect(AfterComp).toEqual(expect.any(Function));
     });
 
-    it('should only show on hover or active', () => {
+    it('should only show on hover or active or focus', () => {
       const wrapper = shallow(
         <GoToItemBase
           {...baseProps}
@@ -79,10 +79,13 @@ describe('GoToItemBase', () => {
       expect(afterEl.find(ArrowRightCircleIcon)).toHaveLength(1);
       expect(afterEl).toMatchSnapshot();
 
-      afterEl.setProps({ isHover: false, isActive: true });
+      afterEl.setProps({ isFocused: false, isHover: false, isActive: true });
       expect(afterEl.find(ArrowRightCircleIcon)).toHaveLength(1);
 
-      afterEl.setProps({ isHover: false, isActive: false });
+      afterEl.setProps({ isFocused: true, isHover: false, isActive: false });
+      expect(afterEl.find(ArrowRightCircleIcon)).toHaveLength(1);
+
+      afterEl.setProps({ isFocused: false, isHover: false, isActive: false });
       expect(afterEl.find(ArrowRightCircleIcon)).toHaveLength(0);
     });
 

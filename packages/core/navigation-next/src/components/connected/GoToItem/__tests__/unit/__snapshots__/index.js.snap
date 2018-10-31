@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GoToItemBase Default After prop should only show on hover or active 1`] = `
+exports[`GoToItemBase Default After prop should only show on hover or active or focus 1`] = `
 <ArrowRightCircleIcon
   primaryColor="currentColor"
   secondaryColor="inherit"

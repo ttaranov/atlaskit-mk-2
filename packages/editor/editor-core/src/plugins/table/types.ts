@@ -81,6 +81,8 @@ export const TableCssClassName = {
   CONTROLS_INSERT_BUTTON_INNER: `${clPrefix}controls__insert-button-inner`,
   CONTROLS_INSERT_BUTTON_WRAP: `${clPrefix}controls__insert-button-wrap`,
   CONTROLS_INSERT_LINE: `${clPrefix}controls__insert-line`,
+  CONTROLS_BUTTON_OVERLAY: `${clPrefix}controls__button-overlay`,
+  LAYOUT_BUTTON: `${clPrefix}layout-button`,
 
   CONTROLS_INSERT_MARKER: `${clPrefix}controls__insert-marker`,
   CONTROLS_INSERT_COLUMN: `${clPrefix}controls__insert-column`,
