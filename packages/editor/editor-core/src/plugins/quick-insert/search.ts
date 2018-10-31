@@ -1,32 +1,77 @@
-import { QuickInsertItem } from './types';
+export function trimChunk(chunk: string) {
+  return chunk.toLowerCase().replace(/\s/g, '');
+}
+
+export function singleWord(search: string) {
+  return !search.includes(' ');
+}
+
+export function defaultCompareFn(
+  a: number | string,
+  b: number | string,
+): number {
+  return typeof a === 'number' && typeof b === 'number'
+    ? a - b
+    : String.prototype.localeCompare.call(a, b);
+}
+
+export enum SortMode {
+  PRIORITY_FIRST = 'first',
+  PRIORITY_LAST = 'last',
+}
+
+export function buildSortPredicateWith<T>(
+  getProp: (item: T) => string | number,
+  getPriority: (item: T) => number,
+  sortMode: SortMode,
+  compareFn = defaultCompareFn,
+): (a: T, b: T) => number {
+  return (a: T, b: T) => {
+    const [propA, propB, prioA, prioB] = [
+      getProp(a),
+      getProp(b),
+      getPriority(a),
+      getPriority(b),
+    ];
+    const prioDiff = compareFn(prioA, prioB);
+
+    if (sortMode === SortMode.PRIORITY_FIRST && prioDiff) {
+      return prioDiff;
+    } else if (sortMode === SortMode.PRIORITY_FIRST) {
+      return compareFn(propA, propB);
+    } else {
+      // SortMode.PRIORITY_LAST
+      return prioDiff;
+    }
+  };
+}
 
 export function distance(search: string, content: string): number {
-  const lowerContent = content.toLowerCase().replace(/\s/g, '');
-  return search
-    .replace(/\s/g, '')
-    .toLowerCase()
+  return trimChunk(search)
     .split('')
     .reduce(
       (acc, char, index) => {
-        if (acc.dist === Infinity) {
+        const { distance, offset } = acc;
+
+        if (distance === Infinity) {
           return acc;
         }
 
-        const indexInStr2 = lowerContent.indexOf(char, acc.offset);
+        const indexInContent = content.indexOf(char, offset);
 
-        if (indexInStr2 === -1) {
-          return { dist: Infinity, offset: 0 };
+        if (indexInContent === -1) {
+          return { distance: Infinity, offset: 0 };
         }
 
         return {
-          offset: indexInStr2 + 1,
-          dist:
-            acc.dist +
-            (index !== indexInStr2 ? Math.abs(index - indexInStr2) : 0),
+          offset: indexInContent + 1,
+          distance:
+            distance +
+            (index !== indexInContent ? Math.abs(index - indexInContent) : 0),
         };
       },
-      { dist: 0, offset: 0 },
-    ).dist;
+      { distance: 0, offset: 0 },
+    ).distance;
 }
 
 // Finds the distance of the search string from each word and returns the min.
@@ -35,51 +80,78 @@ export function distanceByWords(search: string, content: string): number {
   if (search === '') {
     return 0;
   }
-  const lowerSearch = search.toLowerCase().replace(/\s/g, '');
+
+  if (!singleWord(search)) {
+    return distance(search, trimChunk(content));
+  }
+
+  const lowerSearch = trimChunk(search);
+
   return content
     .replace(/\s/g, ' ')
     .toLowerCase()
     .split(' ')
     .filter(word => lowerSearch[0] === word[0])
+    .map(word => trimChunk(word))
     .reduce(
-      (minDist, word, index) => Math.min(minDist, distance(lowerSearch, word)),
+      (minDist, word) => Math.min(minDist, distance(lowerSearch, word)),
       Infinity,
     );
 }
 
-export function find(query, items) {
-  const getItemSearchStrings = (item: QuickInsertItem) =>
-    item.keywords ? [item.title].concat(item.keywords) : [item.title];
+export function getSearchChunks({
+  keywords,
+  title,
+}: {
+  keywords?: string;
+  title: string;
+}) {
+  return keywords ? [title].concat(keywords) : [title];
+}
 
-  const itemsWithDistances = items
-    .sort((a, b) => {
-      const aPriority = a.priority || Number.POSITIVE_INFINITY;
-      const bPriority = b.priority || Number.POSITIVE_INFINITY;
-      const priorityDiff = bPriority - aPriority;
-      return priorityDiff
-        ? priorityDiff
-        : a.title > b.title
-          ? -1
-          : a.title < b.title
-            ? 1
-            : 0;
-    })
-    .map(item => {
-      const dist = getItemSearchStrings(item).reduce((acc, keyword) => {
-        const interimDist = distanceByWords(query, keyword);
-        return interimDist < acc ? interimDist : acc;
-      }, Infinity);
-
-      return { item, dist };
-    });
-
-  const res = itemsWithDistances
-    .filter(item => item.dist !== Infinity)
-    .sort((a, b) => {
-      const aPriority = a.item.priority || Number.POSITIVE_INFINITY;
-      const bPriority = b.item.priority || Number.POSITIVE_INFINITY;
-      return a.dist > b.dist ? 1 : a.dist < b.dist ? -1 : aPriority - bPriority;
-    });
-
-  return res.map(item => item.item);
+export function find(
+  query: string,
+  items: Array<{
+    title: string;
+    keywords?: string;
+    priority?: number;
+  }>,
+) {
+  return (
+    items
+      // pre-sort items by title ascending, putting prioritary items first
+      .sort(
+        buildSortPredicateWith(
+          item => item.title,
+          item => item.priority || Number.POSITIVE_INFINITY,
+          SortMode.PRIORITY_FIRST,
+        ),
+      )
+      // calculate lowest items distance to query
+      .map(item => ({
+        item,
+        distance: getSearchChunks(item).reduce((acc, chunk) => {
+          const chunkDistance = distanceByWords(query, chunk);
+          return chunkDistance < acc ? chunkDistance : acc;
+        }, Infinity),
+      }))
+      /**
+       * Filter results giving:
+       * - potential match when query is one word
+       * - exact match when query has more words
+       */
+      .filter(
+        ({ distance }) =>
+          singleWord(query) ? distance !== Infinity : distance === 0,
+      )
+      // post-sort items by distance ascending, putting prioritary items last
+      .sort(
+        buildSortPredicateWith(
+          agg => agg.distance,
+          agg => agg.item.priority || Number.POSITIVE_INFINITY,
+          SortMode.PRIORITY_LAST,
+        ),
+      )
+      .map(agg => agg.item)
+  );
 }
