@@ -1,0 +1,1 @@
+- Add analytics for zoom controls
