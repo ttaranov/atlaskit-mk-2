@@ -30,16 +30,16 @@ const transitionDuration = '0.2s';
 // TODO Think about how to `theming` newer/better.
 const getColor = themed({ light: colors.N900, dark: colors.DN600 });
 
-const getPadding = ({ compact }) => {
-  const height = compact ? heightCompact : heightBase;
+const getPadding = ({ isCompact }) => {
+  const height = isCompact ? heightCompact : heightBase;
   return css`
     padding: ${(height - 2 * borderWidth - innerHeight) / 2}px
       ${horizontalPadding - borderWidth}px;
   `;
 };
 
-const getLineHeight = ({ compact }) => {
-  const currentLineHeight = compact ? lineHeightCompact : lineHeightBase;
+const getLineHeight = ({ isCompact }) => {
+  const currentLineHeight = isCompact ? lineHeightCompact : lineHeightBase;
   return currentLineHeight / fontSize();
 };
 
@@ -65,8 +65,8 @@ const getHoverState = props => {
 const getBorderStyle = ({ appearance }) =>
   appearance === 'none' ? 'none' : 'solid';
 
-const getMinHeight = ({ compact }) => {
-  const minHeight = compact ? heightCompact : heightBase;
+const getMinHeight = ({ isCompact }) => {
+  const minHeight = isCompact ? heightCompact : heightBase;
   return css`
     min-height: ${minHeight}px;
   `;
@@ -106,9 +106,27 @@ const overrideSafariDisabledStyles = `
   -webkit-opacity: 1;
 `;
 
+const getMaxWidth = ({ size }) => {
+  if (!size) return `100%`;
+  switch (size) {
+    case 'xsmall':
+      return '80px';
+    case 'small':
+      return '160px';
+    case 'medium':
+      return '240px';
+    case 'large':
+      return '320px';
+    case 'xlarge':
+      return '480px';
+    default:
+      return `${size}px`;
+  }
+};
+
 export const Wrapper = styled.div`
   flex: 1 1 100%;
-  ${p => (p.maxWidth ? `max-width: ${p.maxWidth}px` : '100%')};
+  max-width: ${getMaxWidth};
 `;
 
 export const InputWrapper = styled.div`
@@ -130,10 +148,11 @@ export const InputWrapper = styled.div`
   line-height: ${getLineHeight};
   max-width: 100%;
   overflow: hidden;
-  transition: background-color ${transitionDuration} ease-in-out, border-color ${transitionDuration} ease-in-out;
+  transition: background-color ${transitionDuration} ease-in-out,
+    border-color ${transitionDuration} ease-in-out;
   word-wrap: break-word;
   vertical-align: top;
-  ${p => p.disabled && `cursor: not-allowed;`}
+  ${p => p.isDisabled && `cursor: not-allowed;`}
   ${getPadding} ${getHoverState} ${getDisabledState};
   
   & > input {

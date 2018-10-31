@@ -23,6 +23,7 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.10",
     "@atlaskit/theme": "^6.1.1",
+    "@atlaskit/button": "^9.0.16",
     "@babel/runtime": "^7.0.0"
   },
   "peerDependencies": {
