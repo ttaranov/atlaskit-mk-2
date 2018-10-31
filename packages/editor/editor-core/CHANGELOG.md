@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.10
+- [patch] [941a687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/941a687):
+
+  Bump i18n-tools and refactor to support babel-plugin-transform-typescript
+
 ## 87.6.9
 - [patch] [31653d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31653d9):
 

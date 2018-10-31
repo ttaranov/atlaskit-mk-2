@@ -1,6 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/i18n-tools", "type": "minor" }
-  ],
-  "dependents": []
-}
