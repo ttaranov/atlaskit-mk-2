@@ -28,8 +28,6 @@ const Global = ({
   />
 );
 
-// Need two components because both have state
-// eslint-disable-next-line react/no-multi-comp
 export default class GlobalNavigationWithNotificationIntegration extends Component<
   {},
   { count: number },

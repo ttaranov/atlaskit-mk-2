@@ -61,9 +61,13 @@ export type GlobalNavDrawerProps = {
    * closed. */
   onNotificationDrawerClose?: () => void,
 
+  /** Locale to be passed to the notification iFrame */
   locale?: string,
+  /** Prop to let notification iframe know which product it's being rendered in*/
   product?: 'jira' | 'confluence',
+  /** fabricNotificationLogUrl of the user */
   fabricNotificationLogUrl?: string,
+  /** cloudId of the user */
   cloudId?: string,
 
   /** A prop to decide if the contents of the drawer should unmount on drawer
@@ -142,8 +146,6 @@ export type GlobalNavigationProps = {
   notificationCount?: number,
   /** The text to display in the tooltip for the notifications item. */
   notificationTooltip?: string,
-  /** Notification log provider instance. If not provided it will create a new one by default */
-  notificationLogProvider?: any,
 } & GlobalNavDrawerProps;
 
 export type DrawerName = 'search' | 'notification' | 'starred' | 'create';
