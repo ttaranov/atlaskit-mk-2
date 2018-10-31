@@ -23,7 +23,6 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.10",
     "@atlaskit/theme": "^6.1.1",
-    "@atlaskit/button": "^9.0.16",
     "@babel/runtime": "^7.0.0"
   },
   "peerDependencies": {
@@ -31,7 +30,9 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/button": "^9.0.16",
     "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/form": "^4.0.14",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },

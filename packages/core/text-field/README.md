@@ -25,9 +25,3 @@ Detailed docs and example usage can be found [here](https://atlaskit.atlassian.c
 - [ ] Examples (form validation)
 - [ ] code mod / upgrade guide
 - [ ] Use `useState`
-- [ ] Profit. Get it.
-- [ ] ?????????????
-- [ ] Profit
-- [ ] Kick Vito off the maintainers list
-- [ ] Keep Charles on the maintainers list
-- [ ] (react-select) => text-field

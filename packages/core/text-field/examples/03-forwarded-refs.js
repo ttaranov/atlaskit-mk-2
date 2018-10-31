@@ -21,11 +21,11 @@ class TextFieldExample extends Component<Props> {
     return (
       <div>
         <TextField ref={ref => (this.input = ref)} />
-        <div style={{ padding: 4 }}>
+        <p>
           <Button appearance="primary" onClick={this.handleFocus}>
             Focus TextField
           </Button>
-        </div>
+        </p>
       </div>
     );
   }
