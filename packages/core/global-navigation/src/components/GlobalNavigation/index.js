@@ -167,11 +167,10 @@ export default class GlobalNavigation
     }
 
     // skip fetch, refresh from local storage if newer
-    const cachedCount = this.getLocalStorageCount();
+    const cachedCount = parseInt(this.getLocalStorageCount(), 10);
     const result = {};
-    /* eslint-disable eqeqeq */
-    if (cachedCount && cachedCount != this.state.notificationCount) {
-      result.countOverride = parseInt(cachedCount, 10);
+    if (cachedCount && cachedCount !== this.state.notificationCount) {
+      result.countOverride = cachedCount;
     } else {
       result.skip = true;
     }
