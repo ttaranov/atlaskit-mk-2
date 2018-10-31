@@ -13,6 +13,10 @@ const eventResultStyle = {
   margin: '0.5em 0',
 };
 
+const Label = ({ title }) => (
+  <div style={{ padding: '0.5em 0 0.2em' }}>{title}</div>
+);
+
 type Props = {};
 type State = {| eventResult: string |};
 
@@ -69,42 +73,32 @@ export default class TextFieldExample extends Component<Props, State> {
         </FormSection>
 
         <FormSection title="Sizes">
-          <div>
-            xsmall
-            <TextField size="xsmall" />
-          </div>
-          <div>
-            small
-            <TextField size="small" />
-          </div>
-          <div>
-            medium
-            <TextField size="medium" />
-          </div>
-          <div>
-            large
-            <TextField size="large" />
-          </div>
-          <div>
-            xlarge
-            <TextField size="xlarge" />
-          </div>
+          <Label title="xsmall" />
+          <TextField size="xsmall" />
+
+          <Label title="small" />
+          <TextField size="small" />
+
+          <Label title="medium" />
+          <TextField size="medium" />
+
+          <Label title="large" />
+          <TextField size="large" />
+
+          <Label title="xlarge" />
+          <TextField size="xlarge" />
         </FormSection>
 
         <FormSection title="HTML5 attributes">
-          <div>
-            Placeholder
-            <TextField placeholder="Click here to input..." />
-          </div>
-          <div>
-            {/* TODO - Not actually autofocusing when inside Form section... */}
-            Autofocus
-            <TextField autoFocus />
-          </div>
-          <div>
-            Usernames must be lowercase and 4-8 characters in length.
-            <TextField pattern="[a-z]{4,8}" />
-          </div>
+          <Label title="Placeholder" />
+          <TextField placeholder="Click here to input..." />
+
+          {/* TODO - Not actually autofocusing when inside Form section... */}
+          <Label title="Autofocus" />
+          <TextField autoFocus />
+
+          <Label title="Pattern" />
+          <TextField pattern="[a-z]{4,8}" />
         </FormSection>
       </div>
     );
