@@ -1,0 +1,1 @@
+- ED-4359: don't change selection when deleting filmstrip item
