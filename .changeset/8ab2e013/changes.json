@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/media-card", "type": "minor" }],
+  "dependents": []
+}
