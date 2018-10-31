@@ -153,6 +153,7 @@ export interface CardState {
   status: CardStatus;
   isCardVisible: boolean;
   previewOrientation: number;
+  readonly isPlayingFile: boolean;
   metadata?: MediaItemDetails;
   dataURI?: string;
   progress?: number;

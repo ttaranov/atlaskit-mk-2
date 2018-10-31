@@ -13,7 +13,7 @@ const onClick = () => console.log('onClick');
 
 export default () => (
   <InlineCardVideoWrapper>
-    <Card
+    {/* <Card
       context={context}
       identifier={videoFileId}
       disableOverlay={true}
@@ -25,7 +25,7 @@ export default () => (
       dimensions={{ width: 500, height: 300 }}
       disableOverlay={true}
       onClick={onClick}
-    />
+    /> */}
     <Card
       context={context}
       identifier={videoLargeFileId}
@@ -33,7 +33,7 @@ export default () => (
       disableOverlay={true}
       onClick={onClick}
     />
-    <Card
+    {/* <Card
       context={context}
       identifier={videoHorizontalFileId}
       dimensions={{ width: 500, height: 300 }}
@@ -50,6 +50,6 @@ export default () => (
       context={context}
       identifier={videoHorizontalFileId}
       onClick={onClick}
-    />
+    /> */}
   </InlineCardVideoWrapper>
 );

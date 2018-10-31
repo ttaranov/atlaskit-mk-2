@@ -61,3 +61,13 @@ export const Wrapper: ComponentClass<
     `;
   }};
 `;
+
+export const InlinePlayerWrapper = styled.div`
+  overflow: hidden;
+
+  video {
+    /* max-width: 100%; */
+    width: 100%;
+    height: 100%;
+  }
+`;
