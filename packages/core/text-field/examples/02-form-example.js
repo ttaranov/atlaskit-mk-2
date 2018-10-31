@@ -17,8 +17,6 @@ const iframeStyles = {
   margin: '0.5em',
 };
 
-type Props = {};
-
 export default function() {
   return (
     <div>
