@@ -38,7 +38,9 @@ export const Animation = ({
       // when we first render, we want to finish the 'entering' state render
       // then jump to the 'entered' state as quick as possible.
       const adjustedStatus =
-        hasEntered && status === 'exited' ? 'entering' : unadjustedStatus;
+        hasEntered && unadjustedStatus === 'exited'
+          ? 'entering'
+          : unadjustedStatus;
       // Fade styles
       const fadeBase = {
         transition: `opacity ${duration / 2}ms`,
