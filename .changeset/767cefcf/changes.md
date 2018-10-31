@@ -1,0 +1,1 @@
+- ED-5552: Adds shadow to overflow elements in the renderer.
