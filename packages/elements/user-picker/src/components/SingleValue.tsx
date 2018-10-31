@@ -28,6 +28,7 @@ export const SingleValue = props => {
     },
     selectProps: { appearance },
   } = props;
+  const displayName = name || nickname;
   return (
     <AvatarItem
       backgroundColor="transparent"
@@ -35,11 +36,11 @@ export const SingleValue = props => {
         <Avatar
           src={avatarUrl}
           size={appearance === 'normal' ? 'small' : 'xsmall'}
-          name={name}
+          name={displayName}
           isHover={false}
         />
       }
-      primaryText={name || nickname}
+      primaryText={displayName}
       component={AvatarItemComponent}
     />
   );

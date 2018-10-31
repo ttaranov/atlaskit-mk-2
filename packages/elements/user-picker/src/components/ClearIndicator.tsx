@@ -11,6 +11,8 @@ export class ClearIndicator extends React.PureComponent<any> {
     this.props.selectProps.onClearIndicatorHover(false);
   };
 
+  // We are overriding handleMouseDown to avoid focusing in the
+  // input after clearing the value
   private handleMouseDown = event => {
     if (event && event.type === 'mousedown' && event.button !== 0) {
       return;

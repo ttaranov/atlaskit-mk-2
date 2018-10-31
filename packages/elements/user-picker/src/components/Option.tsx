@@ -6,9 +6,11 @@ import styled from 'styled-components';
 import { HighlightRange } from '../types';
 import { HighlightText } from './HighlightText';
 
+type AvatarTextData = [string, HighlightRange[] | undefined];
+
 interface AvatarText {
-  primaryText: string;
-  secondaryText?: string;
+  primaryText: AvatarTextData;
+  secondaryText?: AvatarTextData;
 }
 
 const AvatarComponent = styled.div`
@@ -22,7 +24,7 @@ const AvatarComponent = styled.div`
   }
 `;
 
-const TextWrapper = styled.div`
+export const TextWrapper = styled.div`
   color: ${({ color }) => color};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,23 +52,34 @@ export class Option extends React.PureComponent<any> {
   private generateAvatarText = (): AvatarText => {
     const {
       data: {
-        user: { name, nickname },
+        user: { name, nickname, highlight },
       },
     } = this.props;
+
+    const nameData: [string, HighlightRange[]] = [
+      name,
+      highlight && highlight.name,
+    ];
+    const nicknameData: [string, HighlightRange[]] = [
+      nickname,
+      highlight && highlight.nickname,
+    ];
+
     if (name) {
       return {
-        primaryText: name,
-        secondaryText: nickname,
+        primaryText: nameData,
+        secondaryText: nicknameData,
       };
     }
-    return { primaryText: nickname };
+    return { primaryText: nicknameData };
   };
 
-  private highlightText = (text?: string, highlights?: HighlightRange[]) => {
+  private highlightText = (textData?: AvatarTextData) => {
     const { isSelected } = this.props;
-    if (!text) {
+    if (!textData) {
       return undefined;
     }
+    const [text, highlights] = textData;
     return (
       <TextWrapper color={isSelected ? colors.N0 : colors.N800}>
         {highlights ? (
@@ -79,13 +92,6 @@ export class Option extends React.PureComponent<any> {
   };
 
   render() {
-    const {
-      data: {
-        user: { highlight },
-      },
-    } = this.props;
-    const primaryHighlights = highlight && highlight.name;
-    const secondaryHighlights = highlight && highlight.nickname;
     const { primaryText, secondaryText } = this.generateAvatarText();
 
     return (
@@ -94,8 +100,8 @@ export class Option extends React.PureComponent<any> {
           backgroundColor="transparent"
           avatar={this.renderAvatar()}
           component={AvatarComponent}
-          primaryText={this.highlightText(primaryText, primaryHighlights)}
-          secondaryText={this.highlightText(secondaryText, secondaryHighlights)}
+          primaryText={this.highlightText(primaryText)}
+          secondaryText={this.highlightText(secondaryText)}
         />
       </components.Option>
     );

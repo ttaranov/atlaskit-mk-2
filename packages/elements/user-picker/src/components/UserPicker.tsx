@@ -125,13 +125,6 @@ export class UserPicker extends React.PureComponent<Props, State> {
     },
   );
 
-  private handleBlur = () => {
-    const { onBlur } = this.props;
-    if (onBlur) {
-      onBlur();
-    }
-  };
-
   private executeLoadOptions = debounce((search?: string) => {
     const { loadUsers } = this.props;
     if (loadUsers) {
@@ -206,7 +199,6 @@ export class UserPicker extends React.PureComponent<Props, State> {
       anchor,
       users,
       isLoading,
-      blurInputOnSelect,
       appearance,
       subtle,
     } = this.props;
@@ -230,8 +222,6 @@ export class UserPicker extends React.PureComponent<Props, State> {
         onBlur={this.handleBlur}
         isLoading={count > 0 || isLoading}
         onInputChange={this.handleInputChange}
-        onBlur={this.handleBlur}
-        blurInputOnSelect={blurInputOnSelect}
         menuPlacement="auto"
         placeholder="Find a person..." // TODO i18n
         classNamePrefix="atlassian-user-picker"

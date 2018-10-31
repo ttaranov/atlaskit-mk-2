@@ -9,35 +9,20 @@ const PlaceholderIconContainer = styled.span`
   line-height: 0;
 `;
 
-const PlaceHolderIcon = ({ hasValue, label, inputValue, appearance }) => {
-  if (!hasValue || (inputValue && inputValue.length > 0)) {
-    return (
-      <PlaceholderIconContainer>
-        <Avatar
-          size={appearance === 'normal' ? 'small' : 'xsmall'}
-          name={label}
-          isHover={false}
-        />
-      </PlaceholderIconContainer>
-    );
-  }
-  return null;
-};
-
 export const Placeholder: React.StatelessComponent<any> = props => {
   const {
-    selectProps: { placeholder, inputValue, appearance },
-    hasValue,
+    selectProps: { placeholder, appearance },
     children,
   } = props;
   return (
     <components.Placeholder {...props}>
-      <PlaceHolderIcon
-        label={placeholder}
-        inputValue={inputValue}
-        hasValue={hasValue}
-        appearance={appearance}
-      />
+      <PlaceholderIconContainer>
+        <Avatar
+          size={appearance === 'normal' ? 'small' : 'xsmall'}
+          name={placeholder}
+          isHover={false}
+        />
+      </PlaceholderIconContainer>
       <div>{children}</div>
     </components.Placeholder>
   );

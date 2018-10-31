@@ -2,7 +2,7 @@ import { components } from '@atlaskit/select';
 import * as React from 'react';
 import styled from 'styled-components';
 
-const ScrollAnchor = styled.div`
+export const ScrollAnchor = styled.div`
   align-self: flex-end;
 `;
 
@@ -14,7 +14,7 @@ export type State = {
 export class ValueContainer extends React.PureComponent<any, State> {
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
-      valueSize: nextProps.getValue().length,
+      valueSize: nextProps.getValue ? nextProps.getValue().length : 0,
       previousValueSize: prevState.valueSize,
     };
   }
@@ -29,9 +29,9 @@ export class ValueContainer extends React.PureComponent<any, State> {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     const { previousValueSize, valueSize } = this.state;
-    if (previousValueSize && valueSize > previousValueSize) {
+    if (valueSize > previousValueSize) {
       setTimeout(() => this.bottomAnchor.scrollIntoView());
     }
   }
@@ -43,10 +43,7 @@ export class ValueContainer extends React.PureComponent<any, State> {
   render() {
     const { children, ...valueContainerProps } = this.props;
     return (
-      <components.ValueContainer
-        data-test="hey! it is me!!"
-        {...valueContainerProps}
-      >
+      <components.ValueContainer {...valueContainerProps}>
         {children}
         <ScrollAnchor innerRef={this.handleBottomAnchor} />
       </components.ValueContainer>

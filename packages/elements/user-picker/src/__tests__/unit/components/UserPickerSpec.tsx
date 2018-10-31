@@ -87,31 +87,31 @@ describe('UserPicker', () => {
     });
   });
 
+  it('should set hovering clear indicator', () => {
+    const component = shallowUserPicker();
+    const select = component.find(Select);
+    select.simulate('clearIndicatorHover', true);
+    expect(component.state()).toHaveProperty('hoveringClearIndicator', true);
+  });
+
+  it('should open menu onFocus', () => {
+    const component = shallowUserPicker();
+    const select = component.find(Select);
+    select.simulate('focus');
+    expect(component.state()).toHaveProperty('menuIsOpen', true);
+  });
+
+  it('should close menu onBlur', () => {
+    const component = shallowUserPicker();
+    component.setState({ menuIsOpen: true });
+    const select = component.find(Select);
+    select.simulate('blur');
+    expect(component.state()).toHaveProperty('menuIsOpen', false);
+  });
+
   describe('async load', () => {
     beforeEach(() => jest.useFakeTimers());
     afterEach(() => jest.useRealTimers());
-
-    it('should load users Async on focus', () => {
-      const usersPromise = new Promise<User[]>(resolve =>
-        setTimeout(() => resolve(users), 500),
-      );
-
-      const loadUsers = jest.fn(() => usersPromise);
-      const component = shallowUserPicker({ loadUsers });
-
-      const select = component.find(Select);
-      select.simulate('focus');
-      jest.runAllTimers();
-
-      expect(loadUsers).toHaveBeenCalled();
-
-      return usersPromise.then(() => {
-        jest.runAllTimers();
-        expect(component.state()).toMatchObject({
-          users,
-        });
-      });
-    });
 
     it('should load users when picker open', () => {
       const usersPromise = new Promise<User[]>(resolve =>
