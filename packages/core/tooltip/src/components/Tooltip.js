@@ -12,6 +12,8 @@ import React, {
 import NodeResolver from 'react-node-resolver';
 import flushable from 'flushable';
 import { Popper } from '@atlaskit/popper';
+import Portal from '@atlaskit/portal';
+import { layers } from '@atlaskit/theme';
 
 import {
   withAnalyticsEvents,
@@ -290,16 +292,18 @@ class Tooltip extends Component<Props, State> {
                 in={isVisible}
               >
                 {getAnimationStyles => (
-                  <TooltipContainer
-                    innerRef={ref}
-                    style={{
-                      ...getAnimationStyles(placement),
-                      ...style,
-                    }}
-                    truncate={truncate}
-                  >
-                    {content}
-                  </TooltipContainer>
+                  <Portal zIndex={layers.tooltip()}>
+                    <TooltipContainer
+                      innerRef={ref}
+                      style={{
+                        ...getAnimationStyles(placement),
+                        ...style,
+                      }}
+                      truncate={truncate}
+                    >
+                      {content}
+                    </TooltipContainer>
+                  </Portal>
                 )}
               </Animation>
             )}
