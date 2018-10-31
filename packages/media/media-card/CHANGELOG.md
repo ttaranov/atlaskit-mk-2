@@ -1,5 +1,10 @@
 # @atlaskit/media-image
 
+## 41.3.0
+- [minor] [4718333](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4718333):
+
+  - Add play icon for video files in MediaCard
+
 ## 41.2.0
 - [minor] [439dde6"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/439dde6"
