@@ -12,8 +12,8 @@ export interface StatusDefinition {
      */
     text: string;
     color: 'neutral' | 'purple' | 'blue' | 'red' | 'yellow' | 'green';
-    localId: string;
-    style: 'bold' | 'subtle';
+    localId?: string;
+    style?: 'bold' | 'subtle';
   };
 }
 
