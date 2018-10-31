@@ -1,5 +1,40 @@
 # @atlaskit/media-viewer
 
+## 25.0.0
+- [major] [023cb45"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/023cb45"
+d):
+
+  - Add i18n support to MediaViewer
+
+## 24.1.11
+- [patch] [12afe80"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12afe80"
+d):
+
+  - Move mocks directory structure to fix dist build issues
+
+## 24.1.10
+- [patch] [4b84e8b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b84e8b"
+d):
+
+  - Avoid unnecessary render cycle in ItemViewer
+
+## 24.1.9
+- [patch] [a787ee9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a787ee9):
+
+  Add analytics for downloads
+
+## 24.1.8
+- [patch] Make DocViewer inherit from BaseViewer [a2ee570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2ee570)
+
+## 24.1.7
+- [patch] Make VideoViewer inherit from BaseViewer [2faedda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2faedda)
+
+## 24.1.6
+- [patch] Make AudioViewer inherit from BaseViewer [5f7e58b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f7e58b)
+
 ## 24.1.5
 - [patch] Add analytics for the header download button [4e8cacc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8cacc)
 

@@ -1,5 +1,69 @@
 # @atlaskit/onboarding
 
+## 6.1.4
+- [patch] [9f91ea0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f91ea0):
+
+  - Adds visual regression test for ie11
+
+## 6.1.3
+- [patch] [4872a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4872a19):
+
+  * actions prop officially accepts Node type for text. Adds optional key to action type.
+
+  Previously if you were using the actions prop like:
+
+  ```jsx
+  <Spotlight
+    actions={[
+      {
+        text: <FormattedMessage defaultMessage="Next" />,
+      },
+      {
+        text: <FormattedMessage defaultMessage="Skip" />,
+      },
+    ]}
+  >
+    Look at this feature
+  </Spotlight>
+  ```
+
+  React would complain about duplicate keys. Now you can pass in
+  a key for the action like:
+
+  ```jsx
+  <Spotlight
+    actions={[
+      {
+        text: <FormattedMessage defaultMessage="Next" />,
+        key: 'next',
+      },
+      {
+        text: <FormattedMessage defaultMessage="Skip" />,
+        key: 'skip',
+      },
+    ]}
+  >
+    Look at this feature
+  </Spotlight>
+  ```
+
+## 6.1.2
+- [patch] [2482922"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2482922"
+d):
+
+  - Remove unecessary alt text for modal image to avoid redundancy for screenreaders
+
+## 6.1.1
+- [patch] [0c7a57d"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c7a57d"
+d):
+
+  - Fixes layering of blanket and spotlight components in IE11 and Edge
+
+## 6.1.0
+- [minor] Creates new SpotlightCard component. Internal refactor of Spotlight components. Spotlight state managed through context rather than local variable. [f9ba552](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9ba552)
+
 ## 6.0.4
 - [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
   - @atlaskit/modal-dialog@7.0.4

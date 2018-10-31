@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "11.0.2",
+  "version": "11.1.0",
   "config": {
     "access": "public"
   },
@@ -32,6 +32,7 @@
     "@atlaskit/reactions": "^15.0.1",
     "@atlaskit/renderer": "^29.0.0",
     "date-fns": "^1.29.0",
+    "lodash.debounce": "^4.0.8",
     "prop-types": "^15.5.10",
     "react": "^16.4.0",
     "react-redux": "^5.0.0",

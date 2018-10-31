@@ -1,6 +1,8 @@
 // @flow
+import { type Node } from 'react';
 
 export type ActionsType = Array<{
   onClick?: any => void,
-  text?: string,
+  key?: string,
+  text?: Node,
 }>;

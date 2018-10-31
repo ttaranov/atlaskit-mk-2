@@ -78,7 +78,7 @@ export default class WithPluginState extends React.Component<Props, State> {
       props.eventDispatcher ||
       (this.context &&
         this.context.editorActions &&
-        this.context.editorActions._privateGetEventDispathcer())
+        this.context.editorActions._privateGetEventDispatcher())
     );
   }
 

@@ -1,5 +1,18 @@
 # @atlaskit/adf-utils
 
+## 4.0.2
+- [patch] [6201223"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6201223"
+d):
+
+  - Add examples.
+
+## 4.0.1
+- [patch] Fix floating number validation [ea027b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea027b8)
+
+## 4.0.0
+- [major] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
+
 ## 3.0.1
 - [patch] Updated dependencies [b1ce691](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1ce691)
   - @atlaskit/editor-common@20.0.0

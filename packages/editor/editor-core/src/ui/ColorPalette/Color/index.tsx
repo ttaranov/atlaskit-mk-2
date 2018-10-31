@@ -56,6 +56,7 @@ export interface Props {
   isSelected?: boolean;
   onClick: (value: string) => void;
   borderColor: string;
+  checkMarkColor?: string;
 }
 
 class Color extends PureComponent<Props & InjectedIntlProps> {
@@ -66,6 +67,7 @@ class Color extends PureComponent<Props & InjectedIntlProps> {
       label,
       isSelected,
       borderColor,
+      checkMarkColor = colors.N0,
       intl: { formatMessage },
     } = this.props;
     const borderStyle = `1px solid ${borderColor}`;
@@ -86,7 +88,7 @@ class Color extends PureComponent<Props & InjectedIntlProps> {
         >
           {isSelected && (
             <EditorDoneIcon
-              primaryColor={colors.N0}
+              primaryColor={checkMarkColor}
               label={formatMessage(messages.selected)}
             />
           )}

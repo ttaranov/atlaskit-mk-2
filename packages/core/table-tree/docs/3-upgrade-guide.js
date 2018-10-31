@@ -3,6 +3,16 @@ import React from 'react';
 import { code, Example, md } from '@atlaskit/docs';
 
 export default md`
+## Upgrade from 4.x to 5.x
+
+In the v5 release was added ability to control expansion state of the tree-table.
+
+## Changes to the Props
+
+## Row
+- v5 - **isExpanded**: If set to true or false, turns component into stateless, that requires to control it's behavior with onExpand / onCollapse handlers.
+- v5 - **isDefaultExpanded**: New property that allows to control default expansion state of the row.
+
 ## Upgrade from 1.x to 2.x
 
 In the v2 release the table-tree component does not maintain state anymore. A helper class \`TableTreeDataHelper\`

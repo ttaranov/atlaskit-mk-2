@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import * as deepEqual from 'deep-equal';
 import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../domain';
 import { ErrorMessage, MediaViewerError } from '../error';
 import { Spinner } from '../loading';
-import { renderDownloadButton } from '../domain/download';
+import { ErrorViewDownloadButton } from '../download';
 
 export type BaseProps = {
   context: Context;
@@ -55,16 +57,25 @@ export abstract class BaseViewer<
       successful: content => this.renderSuccessful(content),
       failed: err => (
         <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton()}
+          <p>
+            <FormattedMessage {...messages.try_downloading_file} />
+          </p>
+          {this.renderDownloadButton(err)}
         </ErrorMessage>
       ),
     });
   }
 
-  private renderDownloadButton() {
+  private renderDownloadButton(err: MediaViewerError) {
     const { item, context, collectionName } = this.props;
-    return renderDownloadButton(item, context, collectionName);
+    return (
+      <ErrorViewDownloadButton
+        state={item}
+        context={context}
+        err={err}
+        collectionName={collectionName}
+      />
+    );
   }
 
   protected needsReset(propsA: Props, propsB: Props) {

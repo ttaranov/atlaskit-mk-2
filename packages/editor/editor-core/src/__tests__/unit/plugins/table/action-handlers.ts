@@ -20,17 +20,16 @@ import tablesPlugin from '../../../../plugins/table';
 import {
   handleSetFocus,
   handleSetTableRef,
-  handleSetTargetCellRef,
   handleSetTargetCellPosition,
   handleClearSelection,
   handleHoverColumns,
   handleHoverRows,
   handleHoverTable,
-  handleDocChanged,
+  handleDocOrSelectionChanged,
   handleToggleContextualMenu,
-  handleSelectionChanged,
   handleShowInsertColumnButton,
   handleShowInsertRowButton,
+  handleHideInsertColumnOrRowButton,
 } from '../../../../plugins/table/action-handlers';
 import { TableDecorations } from '../../../../plugins/table/types';
 
@@ -88,24 +87,6 @@ describe('table action handlers', () => {
       });
     });
   });
-  describe('#handleSetTargetCellRef', () => {
-    it('should return a new state with updated targetCellRef and isContextualMenuOpen props', () => {
-      const pluginState = {
-        ...defaultPluginState,
-        isContextualMenuOpen: true,
-      };
-      const targetCellRef = document.createElement('td');
-      const newState = handleSetTargetCellRef(targetCellRef)(
-        pluginState,
-        dispatch,
-      );
-      expect(newState).toEqual({
-        ...pluginState,
-        targetCellRef,
-        isContextualMenuOpen: false,
-      });
-    });
-  });
   describe('#handleSetTargetCellPosition', () => {
     it('should return a new state with updated targetCellPosition and isContextualMenuOpen props', () => {
       const pluginState = {
@@ -136,8 +117,6 @@ describe('table action handlers', () => {
         dangerRows: [1, 2, 3],
         isTableInDanger: true,
         isTableHovered: true,
-        insertColumnButtonIndex: 4,
-        insertRowButtonIndex: 2,
       };
       const newState = handleClearSelection(pluginState, dispatch);
       expect(newState).toEqual({
@@ -262,19 +241,34 @@ describe('table action handlers', () => {
     });
   });
   describe('#handleToggleContextualMenu', () => {
-    it('should return a new state with updated isContextualMenuOpen prop', () => {
-      const pluginState = {
-        ...defaultPluginState,
-        isContextualMenuOpen: false,
-      };
-      const newState = handleToggleContextualMenu(true)(pluginState, dispatch);
-      expect(newState).toEqual({
-        ...pluginState,
-        isContextualMenuOpen: true,
+    describe('when isContextualMenuOpen === false', () => {
+      it('should return a new state with isContextualMenuOpen = true', () => {
+        const pluginState = {
+          ...defaultPluginState,
+          isContextualMenuOpen: false,
+        };
+        const newState = handleToggleContextualMenu(pluginState, dispatch);
+        expect(newState).toEqual({
+          ...pluginState,
+          isContextualMenuOpen: true,
+        });
+      });
+    });
+    describe('when isContextualMenuOpen === true', () => {
+      it('should return a new state with isContextualMenuOpen = false', () => {
+        const pluginState = {
+          ...defaultPluginState,
+          isContextualMenuOpen: true,
+        };
+        const newState = handleToggleContextualMenu(pluginState, dispatch);
+        expect(newState).toEqual({
+          ...pluginState,
+          isContextualMenuOpen: false,
+        });
       });
     });
   });
-  describe('#handleDocChanged', () => {
+  describe('#handleDocOrSelectionChanged', () => {
     it('should return a new state with updated tableNode prop and reset selection', () => {
       const pluginState = {
         ...defaultPluginState,
@@ -283,25 +277,7 @@ describe('table action handlers', () => {
         isTableInDanger: true,
         isTableHovered: true,
         tableNode: undefined,
-      };
-      const { editorView } = editor(
-        doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
-      );
-      const newState = handleDocChanged(editorView.state.tr)(
-        pluginState,
-        dispatch,
-      );
-      expect(newState).toEqual({
-        ...pluginState,
-        ...defaultTableSelection,
-        tableNode: editorView.state.doc.firstChild,
-      });
-    });
-  });
-  describe('#handleSelectionChanged', () => {
-    it('should return a new state with updated targetCellPosition', () => {
-      const pluginState = {
-        ...defaultPluginState,
+        targetCellPosition: undefined,
       };
       const { editorView } = editor(
         doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
@@ -311,12 +287,14 @@ describe('table action handlers', () => {
       editorView.dispatch(
         state.tr.setSelection(new TextSelection(state.doc.resolve(cursorPos))),
       );
-      const newState = handleSelectionChanged(editorView.state)(
+      const newState = handleDocOrSelectionChanged(editorView.state.tr)(
         pluginState,
         dispatch,
       );
       expect(newState).toEqual({
         ...pluginState,
+        ...defaultTableSelection,
+        tableNode: editorView.state.doc.firstChild,
         targetCellPosition: cursorPos - 2,
       });
     });
@@ -352,6 +330,21 @@ describe('table action handlers', () => {
       expect(newState).toEqual({
         ...pluginState,
         insertRowButtonIndex,
+      });
+    });
+  });
+  describe('#handleHideInsertColumnOrRowButton', () => {
+    it('should return a new state with insertColumnButtonIndex and insertRowButtonIndex set to undefined', () => {
+      const pluginState = {
+        ...defaultPluginState,
+        insertColumnButtonIndex: 1,
+        insertRowButtonIndex: 1,
+      };
+      const newState = handleHideInsertColumnOrRowButton(pluginState, dispatch);
+      expect(newState).toEqual({
+        ...pluginState,
+        insertColumnButtonIndex: undefined,
+        insertRowButtonIndex: undefined,
       });
     });
   });

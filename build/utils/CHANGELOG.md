@@ -1,5 +1,16 @@
 # @atlaskit/build-utils
 
+## 2.0.3
+- [patch] [536456a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/536456a):
+
+  - Fix getCommitThatAddsFile function to not have quotes, use entire first line
+
+## 2.0.2
+- Updated dependencies [44ec8bf"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44ec8bf"
+d):
+  - @atlaskit/build-releases@3.0.0
+
 ## 2.0.0
 
 * [major] Safety bump, some refactoring of utils, but we don't want to break consumers [ecada97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecada97)

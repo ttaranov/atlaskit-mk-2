@@ -1,5 +1,72 @@
 # @atlaskit/editor-common
 
+## 20.2.4
+- [patch] [6a0a6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a0a6f8):
+
+  - ED-5448, ED-5613, ED-5582: smart card UX improvements; allow blockCard in tableCell
+
+## 20.2.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
+## 20.2.2
+- [patch] [67325ee"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67325ee"
+d):
+
+  - fixing image size inside tables
+
+## 20.2.1
+- [patch] [534f6ab"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/534f6ab"
+d):
+
+  - ED-5615: Fix block element padding inside table cells.
+
+## 20.2.0
+- [minor] [03947b2"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03947b2"
+d):
+
+  - Change selected state for horizontal rule
+
+## 20.1.9
+- [patch] [ef26075"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef26075"
+d):
+
+  - ED-5622: fix table selection when adding columns/rows very fast
+
+## 20.1.8
+- [patch] [08e6a0c"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08e6a0c"
+d):
+
+  - Fix panel icon shrinking when a lot of text in a panel
+
+## 20.1.7
+- [patch] [25cdb93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25cdb93):
+
+  Fix copying codeblock from renderer
+
+## 20.1.6
+- [patch] [1662ae0"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1662ae0"
+d):
+
+  - ED-5440 convert sections to use percentages
+
+## 20.1.5
+- [patch] [f271431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f271431):
+
+  ED-5179: fix context menu when table has scroll
+
+## 20.1.4
+- [patch] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
+
 ## 20.1.3
 - [patch] ED-5513: render table that respects columns widths except on mobile [716bb9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/716bb9d)
 

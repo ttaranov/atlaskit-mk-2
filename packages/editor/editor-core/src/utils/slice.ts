@@ -74,3 +74,21 @@ export function flatmap(
   }
   return Fragment.fromArray(fragmentContent);
 }
+
+export type MapWithCallback<T> = (
+  node: Node,
+  index: number,
+  fragment: Fragment,
+) => T;
+
+export function mapChildren<T>(
+  node: Node,
+  callback: MapWithCallback<T>,
+): Array<T> {
+  const array: Array<T> = [];
+  for (let i = 0; i < node.childCount; i++) {
+    array.push(callback(node.child(i), i, node.content));
+  }
+
+  return array;
+}

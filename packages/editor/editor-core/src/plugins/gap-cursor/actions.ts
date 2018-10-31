@@ -10,7 +10,7 @@ import { isIgnored } from './utils';
 import { Command } from '../../types';
 import { pluginKey } from './pm-plugins/main';
 
-export const enum Direction {
+export enum Direction {
   BACKWARD,
   FORWARD,
 }
@@ -130,7 +130,7 @@ export const setGapCursorAtPos = (
 
 // This function captures clicks outside of the ProseMirror contentEditable area
 // see also description of "handleClick" in gap-cursor pm-plugin
-const captureGapCursorCoords = (
+const captureCursorCoords = (
   event: MouseEvent,
   editorRef: HTMLElement,
   posAtCoords: (
@@ -173,7 +173,7 @@ const captureGapCursorCoords = (
   return null;
 };
 
-export const setGapCursorForTopLevelBlocks = (
+export const setCursorForTopLevelBlocks = (
   event: MouseEvent,
   editorRef: HTMLElement,
   posAtCoords: (
@@ -187,31 +187,43 @@ export const setGapCursorForTopLevelBlocks = (
   if (!pluginKey.get(state)) {
     return false;
   }
-  const gapCursorCoords = captureGapCursorCoords(
+  const cursorCoords = captureCursorCoords(
     event,
     editorRef,
     posAtCoords,
     state,
   );
-  if (!gapCursorCoords) {
+  if (!cursorCoords) {
     return false;
   }
 
-  const $pos = state.doc.resolve(gapCursorCoords.position);
-  const isAllowed =
-    gapCursorCoords.side === Side.LEFT
+  const $pos = state.doc.resolve(cursorCoords.position);
+  const isGapCursorAllowed =
+    cursorCoords.side === Side.LEFT
       ? $pos.nodeAfter && !isIgnored($pos.nodeAfter)
       : $pos.nodeBefore && !isIgnored($pos.nodeBefore);
 
-  if (isAllowed && GapCursorSelection.valid($pos)) {
+  if (isGapCursorAllowed && GapCursorSelection.valid($pos)) {
     // this forces PM to re-render the decoration node if we change the side of the gap cursor, it doesn't do it by default
     if (state.selection instanceof GapCursorSelection) {
       dispatch(state.tr.setSelection(Selection.near($pos)));
     }
     dispatch(
-      state.tr.setSelection(new GapCursorSelection($pos, gapCursorCoords.side)),
+      state.tr.setSelection(new GapCursorSelection($pos, cursorCoords.side)),
     );
     return true;
+  }
+  // try to set text selection
+  else {
+    const selection = Selection.findFrom(
+      $pos,
+      cursorCoords.side === Side.LEFT ? 1 : -1,
+      true,
+    );
+    if (selection) {
+      dispatch(state.tr.setSelection(selection));
+      return true;
+    }
   }
 
   return false;

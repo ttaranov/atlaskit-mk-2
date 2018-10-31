@@ -293,7 +293,7 @@ describe('block-type', () => {
       const { editorView } = editor(doc(p()));
       const { state, dispatch } = editorView;
       insertBlockType('codeblock')(state, dispatch);
-      expect(editorView.state.doc).toEqualDocument(doc(code_block()()));
+      expect(editorView.state.doc).toEqualDocument(doc(p(), code_block()()));
       editorView.destroy();
     });
 

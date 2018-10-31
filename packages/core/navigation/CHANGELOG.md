@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 33.3.0
+- [minor] [90f4995](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90f4995):
+
+  Update drawer width with 'medium' width
+
 ## 33.2.1
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

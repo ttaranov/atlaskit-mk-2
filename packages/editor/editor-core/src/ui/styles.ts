@@ -54,12 +54,14 @@ export const TriggerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
 export const MenuWrapper: ComponentClass<HTMLAttributes<{}>> = Wrapper;
 
-export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
+export const ButtonContent: ComponentClass = styled.span`
   display: flex;
-  width: 80px;
+  min-width: 80px;
   height: 24px;
+  line-height: 24px;
   align-items: center;
   padding: ${(props: any) => (props.width ? 0 : '0 8px')};
+  flex-direction: column;
 `;
 
 // Taken from the style of inline dialog components

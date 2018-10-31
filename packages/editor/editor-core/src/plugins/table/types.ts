@@ -29,8 +29,7 @@ export interface TablePluginState {
   decorationSet: DecorationSet;
   pluginConfig: PluginConfig;
   editorHasFocus?: boolean;
-  // context menu button is positioned relatively to this DOM node.
-  targetCellRef?: HTMLElement;
+  // position of a cell PM node that has cursor
   targetCellPosition?: number;
   // controls need to be re-rendered when table content changes
   // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
@@ -82,6 +81,8 @@ export const TableCssClassName = {
   CONTROLS_INSERT_BUTTON_INNER: `${clPrefix}controls__insert-button-inner`,
   CONTROLS_INSERT_BUTTON_WRAP: `${clPrefix}controls__insert-button-wrap`,
   CONTROLS_INSERT_LINE: `${clPrefix}controls__insert-line`,
+  CONTROLS_BUTTON_OVERLAY: `${clPrefix}controls__button-overlay`,
+  LAYOUT_BUTTON: `${clPrefix}layout-button`,
 
   CONTROLS_INSERT_MARKER: `${clPrefix}controls__insert-marker`,
   CONTROLS_INSERT_COLUMN: `${clPrefix}controls__insert-column`,
@@ -103,8 +104,11 @@ export const TableCssClassName = {
   TABLE_RIGHT_SHADOW: `${clPrefix}with-right-shadow`,
 
   CONTEXTUAL_SUBMENU: `${clPrefix}contextual-submenu`,
-  CONTEXTUAL_MENU_TRIGGER: `${clPrefix}contextual-menu-trigger`,
+  CONTEXTUAL_MENU_BUTTON: `${clPrefix}contextual-menu-button`,
   CONTEXTUAL_MENU_ICON: `${clPrefix}contextual-submenu-icon`,
+
+  CELL_NODEVIEW_WRAPPER: `${clPrefix}cell-nodeview-wrapper`,
+  CELL_NODEVIEW_CONTENT_DOM: `${clPrefix}cell-nodeview-content-dom`,
 
   // come from prosemirror-table
   COLUMN_RESIZE_HANDLE: 'column-resize-handle',

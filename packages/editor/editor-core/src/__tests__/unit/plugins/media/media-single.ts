@@ -11,15 +11,11 @@ import {
   insertMediaSingleNode,
   insertMediaAsMediaSingle,
 } from '../../../../plugins/media/utils/media-single';
-import {
-  MediaState,
-  MediaStateStatus,
-} from '../../../../plugins/media/pm-plugins/main';
+import { MediaState } from '../../../../plugins/media/pm-plugins/main';
 import mediaPlugin from '../../../../plugins/media';
 
 const createMediaState = (
   id: string,
-  status: MediaStateStatus = 'preview',
   width = 100,
   height = 200,
 ): MediaState => ({
@@ -274,6 +270,33 @@ describe('media-single', () => {
           );
         });
       });
+    });
+
+    it('should respect scaleFactor', () => {
+      const { editorView } = editor(doc(p('text{<>}')));
+
+      insertMediaSingleNode(
+        editorView,
+        { ...createMediaState(temporaryFileId), scaleFactor: 2 },
+        testCollectionName,
+      );
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('text'),
+          mediaSingle({ layout: 'center' })(
+            media({
+              id: temporaryFileId,
+              __key: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+              width: 50,
+              height: 100,
+            })(),
+          ),
+          p(),
+        ),
+      );
     });
   });
 

@@ -1,5 +1,37 @@
 # @atlaskit/editor-test-helpers
 
+## 6.2.14
+- [patch] [798cff1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/798cff1):
+
+  - Adds an Import option in full-page example
+
+## 6.2.13
+- [patch] [7fc0ffb"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fc0ffb"
+d):
+
+  - ED-5619 Change "Loren ipsun" to "Lorem ipsum" in the example
+
+## 6.2.12
+- [patch] [44d9c5b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44d9c5b"
+d):
+
+  - ED-5632: mock Selection API globally; allows dispatching before Editor finishes mounting
+
+## 6.2.11
+- [patch] [1662ae0"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1662ae0"
+d):
+
+  - ED-5440 convert sections to use percentages
+
+## 6.2.10
+- [patch] ED-5439: add block smart cards, toolbar switcher [5f8bdfe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f8bdfe)
+
+## 6.2.9
+- [patch] Wrap invalid node with unsupported node [fb60e39](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb60e39)
+
 ## 6.2.8
 - [patch] Updated dependencies [052ce89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/052ce89)
   - @atlaskit/editor-core@87.0.0

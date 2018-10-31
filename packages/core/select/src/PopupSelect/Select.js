@@ -23,6 +23,14 @@ import { colors } from '@atlaskit/theme';
 
 import { MenuDialog, DummyControl, defaultComponents } from './components';
 
+/** Are we rendering on the client or server? */
+const canUseDom = () =>
+  Boolean(
+    typeof window !== 'undefined' &&
+      window.document &&
+      window.document.createElement,
+  );
+
 // ==============================
 // Types
 // ==============================
@@ -249,7 +257,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
     const { footer, maxMenuWidth, minMenuWidth, target, ...props } = this.props;
     const { isOpen, mergedComponents, mergedPopperProps } = this.state;
     const showSearchControl = this.showSearchControl();
-    const portalDestination = document.body;
+    const portalDestination = canUseDom() ? document.body : null;
     const components = {
       ...mergedComponents,
       Control: showSearchControl ? mergedComponents.Control : DummyControl,

@@ -18,7 +18,7 @@ describe(`${name}/schema layout-column node`, () => {
 
   it('matches <div data-layout-column /> inside layoutSection', () => {
     const doc = fromHTML(
-      '<div data-layout-type="two_equal"><div data-layout-column/></div>',
+      '<div data-layout-section="true"><div data-layout-column/></div>',
       schema,
     );
     const node = doc.firstChild!.firstChild!;
@@ -27,7 +27,10 @@ describe(`${name}/schema layout-column node`, () => {
 
   it('should not match <div data-layout-column /> when pasted inside layoutSection/layoutColumn', () => {
     const document = doc(
-      layoutSection()(layoutColumn(p('{<>}')), layoutColumn(p(''))),
+      layoutSection(
+        layoutColumn({ width: 50 })(p('{<>}')),
+        layoutColumn({ width: 50 })(p('')),
+      ),
     );
     const context = toContext(document, schema);
     const pmDoc = fromHTML(

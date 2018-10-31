@@ -1,34 +1,18 @@
-const { generateMarkdownTemplate } = require('./template');
+const generateMarkdownTemplate = require('./template');
 const fs = require('fs');
 const bolt = require('bolt');
 const path = require('path');
-const os = require('os');
 const util = require('util');
-const { sep } = require('path');
 const logger = require('@atlaskit/build-utils/logger');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
 }
 
-async function getRepoUrl(cwd, opts) {
-  if (opts.repoUrl) return opts.repoUrl;
-  const project = await bolt.getProject({ cwd });
-  if (
-    project &&
-    project.config.bolt &&
-    project.config.bolt.releases &&
-    project.config.bolt.releases.baseCommitUrl
-  )
-    return project.config.bolt.releases.baseCommitUrl;
-  return '';
-}
-
-async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
+async function updateChangelog(releaseObject, opts) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
-  const repoUrl = await getRepoUrl(cwd, opts);
-  let udpatedChangelogs = [];
+  const udpatedChangelogs = [];
   // Updating ChangeLog files for each package
   for (const release of releaseObject.releases) {
     const pkg = allPackages.find(a => a.name === release.name);
@@ -41,11 +25,13 @@ async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
     }
     const changelogPath = path.join(pkg.dir, 'CHANGELOG.md');
 
-    const templateString = `\n\n${generateMarkdownTemplate(
+    const markdown = await generateMarkdownTemplate(
       release,
       releaseObject,
-      repoUrl,
-    ).trim('\n')}\n`;
+      opts,
+    );
+
+    const templateString = `\n\n${markdown.trim('\n')}\n`;
     try {
       if (fs.existsSync(changelogPath)) {
         await prependFile(changelogPath, templateString, pkg);
@@ -74,6 +60,4 @@ async function prependFile(filePath, data, pkg) {
   fs.writeFileSync(filePath, newChangelog);
 }
 
-module.exports = {
-  updateChangelog,
-};
+module.exports = updateChangelog;

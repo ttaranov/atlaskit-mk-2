@@ -3,12 +3,14 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Component } from 'react';
+import { Component, CSSProperties } from 'react';
+import { getCssFromImageOrientation } from '@atlaskit/media-ui';
 import { ImageComponent } from './styled';
 
 export interface MediaImageProps {
   dataURI: string;
   crop?: boolean;
+  previewOrientation?: number;
 }
 
 export interface MediaImageState {
@@ -69,7 +71,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   };
 
   render() {
-    const { crop, dataURI } = this.props;
+    const { crop, dataURI, previewOrientation } = this.props;
     const {
       parentWidth,
       parentHeight,
@@ -142,7 +144,9 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
      */
     const showImage = isImageLoaded || isFitStrategy;
 
-    const style: React.CSSProperties = {};
+    const style: CSSProperties = {
+      transform: 'translate(-50%, -50%)',
+    };
 
     if (isStretchingAllowed) {
       if (isFitStrategy && isImageMoreLandscapyThanContainer) {
@@ -229,6 +233,12 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
     if (!showImage) {
       style.display = 'none';
+    }
+
+    if (previewOrientation && previewOrientation > 1) {
+      const transform = getCssFromImageOrientation(previewOrientation);
+
+      style.transform += ` ${transform}`;
     }
 
     return (

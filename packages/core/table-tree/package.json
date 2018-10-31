@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/table-tree",
-  "version": "4.1.11",
+  "version": "5.0.0",
   "description": "A React Component for displaying expandable tables with tree-like hierarchies",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

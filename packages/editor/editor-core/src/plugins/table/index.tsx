@@ -14,6 +14,7 @@ import {
   tableRow,
 } from '@atlaskit/editor-common';
 
+import LayoutButton from './ui/LayoutButton';
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
@@ -27,6 +28,7 @@ import {
 } from './pm-plugins/table-resizing';
 import { getToolbarConfig } from './toolbar';
 import FloatingContextualMenu from './ui/FloatingContextualMenu';
+import { isLayoutSupported } from './utils';
 
 export const CELL_MIN_WIDTH = 128;
 export const getCellMinWidth = newResizing =>
@@ -102,28 +104,37 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
     ];
   },
 
-  contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
-    const config = pluginConfig(options);
-
-    if (!config.allowMergeCells && !config.allowBackgroundColor) {
-      return null;
-    }
-
+  contentComponent({
+    editorView,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    popupsScrollableElement,
+  }) {
     return (
       <WithPluginState
         plugins={{
-          tablesState: pluginKey,
+          pluginState: pluginKey,
         }}
-        render={({ tablesState }) => (
-          <FloatingContextualMenu
-            editorView={editorView}
-            mountPoint={popupsMountPoint}
-            boundariesElement={popupsBoundariesElement}
-            targetCellRef={tablesState.targetCellRef}
-            targetCellPosition={tablesState.targetCellPosition}
-            isOpen={tablesState.isContextualMenuOpen}
-            pluginConfig={tablesState.pluginConfig}
-          />
+        render={({ pluginState }) => (
+          <>
+            <FloatingContextualMenu
+              editorView={editorView}
+              mountPoint={popupsMountPoint}
+              boundariesElement={popupsBoundariesElement}
+              targetCellPosition={pluginState.targetCellPosition}
+              isOpen={pluginState.isContextualMenuOpen}
+              pluginConfig={pluginState.pluginConfig}
+            />
+            {isLayoutSupported(editorView.state) && (
+              <LayoutButton
+                editorView={editorView}
+                mountPoint={popupsMountPoint}
+                boundariesElement={popupsBoundariesElement}
+                scrollableElement={popupsScrollableElement}
+                targetRef={pluginState.tableFloatingToolbarTarget}
+              />
+            )}
+          </>
         )}
       />
     );

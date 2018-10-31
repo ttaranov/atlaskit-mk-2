@@ -116,9 +116,9 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
   it('should not have layout options if media single inside layoutSection', () => {
     const { editorView } = editor(
       doc(
-        layoutSection()(
-          layoutColumn(p('')),
-          layoutColumn(
+        layoutSection(
+          layoutColumn({ width: 50 })(p('')),
+          layoutColumn({ width: 50 })(
             mediaSingle({ layout: 'center' })(
               media({
                 id: temporaryFileId,

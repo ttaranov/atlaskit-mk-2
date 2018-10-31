@@ -6,8 +6,8 @@ import {
   createEditor,
 } from '@atlaskit/editor-test-helpers';
 import {
-  setActiveLayoutType,
   deleteActiveLayoutNode,
+  setPresetLayout,
 } from '../../../../plugins/layout/actions';
 
 const editor = doc =>
@@ -18,19 +18,19 @@ describe('layout actions', () => {
     it('should update layout type of active layoutSection', () => {
       const { editorView } = editor(
         doc(
-          layoutSection({ layoutType: 'two_equal' })(
-            layoutColumn(p('{<>}')),
-            layoutColumn(p('')),
+          layoutSection(
+            layoutColumn({ width: 50 })(p('{<>}')),
+            layoutColumn({ width: 50 })(p('')),
           ),
         ),
       );
-      setActiveLayoutType('three_equal')(editorView.state, editorView.dispatch);
+      setPresetLayout('three_equal')(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(
-          layoutSection({ layoutType: 'three_equal' })(
-            layoutColumn(p('')),
-            layoutColumn(p('')),
-            layoutColumn(p('')),
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('')),
+            layoutColumn({ width: 33.33 })(p('')),
+            layoutColumn({ width: 33.33 })(p('')),
           ),
         ),
       );
@@ -38,10 +38,7 @@ describe('layout actions', () => {
     it('should do nothing if selection not in layout', () => {
       const { editorView } = editor(doc(p('')));
       expect(
-        setActiveLayoutType('three_equal')(
-          editorView.state,
-          editorView.dispatch,
-        ),
+        setPresetLayout('three_equal')(editorView.state, editorView.dispatch),
       ).toBe(false);
     });
   });
@@ -49,9 +46,9 @@ describe('layout actions', () => {
     it('should deletes  active layoutSection', () => {
       const { editorView } = editor(
         doc(
-          layoutSection({ layoutType: 'two_equal' })(
-            layoutColumn(p('{<>}')),
-            layoutColumn(p('')),
+          layoutSection(
+            layoutColumn({ width: 50 })(p('{<>}')),
+            layoutColumn({ width: 50 })(p('')),
           ),
         ),
       );
@@ -61,10 +58,7 @@ describe('layout actions', () => {
     it('should do nothing if selection not in layout', () => {
       const { editorView } = editor(doc(p('')));
       expect(
-        setActiveLayoutType('three_equal')(
-          editorView.state,
-          editorView.dispatch,
-        ),
+        setPresetLayout('three_equal')(editorView.state, editorView.dispatch),
       ).toBe(false);
     });
   });

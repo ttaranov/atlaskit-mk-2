@@ -108,14 +108,13 @@ const menuStyles = {
   overflowY: 'auto',
 };
 
-const FixedLayerMenu = ({ selectProps, ...props }: Object) => {
-  return (
-    <FixedLayer
-      containerRef={selectProps.fixedLayerRef}
-      content={<components.Menu {...props} menuShouldScrollIntoView={false} />}
-    />
-  );
-};
+const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
+  <FixedLayer
+    inputValue={selectProps.inputValue}
+    containerRef={selectProps.fixedLayerRef}
+    content={<components.Menu {...rest} menuShouldScrollIntoView={false} />}
+  />
+);
 
 class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;

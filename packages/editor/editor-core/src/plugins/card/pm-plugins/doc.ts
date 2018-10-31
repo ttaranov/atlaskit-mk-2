@@ -1,9 +1,12 @@
+import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
+
 import { pluginKey } from './main';
-import { CardPluginState, Request } from '../types';
-import { Command } from '../../../types';
-import { processRawValue } from '../../../utils';
-import { Transaction, EditorState } from 'prosemirror-state';
+import { CardPluginState, Request, CardAppearance } from '../types';
 import { resolveCard, queueCards } from './actions';
+import { appearanceForNodeType } from '../utils';
+
+import { Command } from '../../../types';
+import { processRawValue, getStepRange } from '../../../utils';
 
 export const replaceQueuedUrlWithCard = (
   url: string,
@@ -50,26 +53,6 @@ export const replaceQueuedUrlWithCard = (
   return true;
 };
 
-const getStepRange = (
-  transaction: Transaction,
-): { from: number; to: number } | null => {
-  let from = -1;
-  let to = -1;
-
-  transaction.steps.forEach(step => {
-    step.getMap().forEach((_oldStart, _oldEnd, newStart, newEnd) => {
-      from = newStart < from || from === -1 ? newStart : from;
-      to = newEnd < to || to === -1 ? newEnd : to;
-    });
-  });
-
-  if (from !== -1) {
-    return { from, to };
-  }
-
-  return null;
-};
-
 export const queueCardsFromChangedTr = (
   state: EditorState,
   tr: Transaction,
@@ -108,4 +91,65 @@ export const queueCardsFromChangedTr = (
   });
 
   return queueCards(requests)(tr);
+};
+
+export const changeSelectedCardToLink: Command = (state, dispatch) => {
+  const selectedNode =
+    state.selection instanceof NodeSelection && state.selection.node;
+  if (!selectedNode) {
+    return false;
+  }
+
+  const { link } = state.schema.marks;
+
+  const tr = state.tr.replaceSelectionWith(
+    state.schema.text(selectedNode.attrs.url, [
+      link.create({ href: selectedNode.attrs.url }),
+    ]),
+    false,
+  );
+
+  dispatch(tr.scrollIntoView());
+  return true;
+};
+
+export const setSelectedCardAppearance: (
+  appearance: CardAppearance,
+) => Command = appearance => (state, dispatch) => {
+  const selectedNode =
+    state.selection instanceof NodeSelection && state.selection.node;
+  if (!selectedNode) {
+    return false;
+  }
+
+  if (appearanceForNodeType(selectedNode.type) === appearance) {
+    return false;
+  }
+
+  const { inlineCard, blockCard } = state.schema.nodes;
+  const pos = state.selection.from;
+
+  if (appearance === 'block' && state.selection.$from.parent.childCount === 1) {
+    const tr = state.tr.replaceRangeWith(
+      pos - 1,
+      pos + selectedNode.nodeSize + 1,
+      blockCard.createChecked(
+        selectedNode.attrs,
+        undefined,
+        selectedNode.marks,
+      ),
+    );
+    dispatch(tr.scrollIntoView());
+    return true;
+  }
+
+  const tr = state.tr.setNodeMarkup(
+    pos,
+    appearance === 'inline' ? inlineCard : blockCard,
+    selectedNode.attrs,
+    selectedNode.marks,
+  );
+  dispatch(tr.scrollIntoView());
+
+  return true;
 };

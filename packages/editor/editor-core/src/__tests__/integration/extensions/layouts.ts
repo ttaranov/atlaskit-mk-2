@@ -5,15 +5,10 @@ import {
   fullpage,
   editable,
   insertBlockMenuItem,
+  changeSelectedNodeLayout,
 } from '../_helpers';
 
 import commonMessages from '../../../messages';
-
-const changeSelectedNodeLayout = async (page, layoutName) => {
-  const buttonSelector = `div[aria-label="Floating Toolbar"] span[aria-label="${layoutName}"]`;
-  await page.waitForSelector(buttonSelector, 3000);
-  await page.click(buttonSelector);
-};
 
 [
   commonMessages.layoutFixedWidth.defaultMessage,

@@ -58,17 +58,20 @@ const datePlugin: EditorPlugin = {
           dateState: pluginKey,
         }}
         render={({ dateState = {} as DateState }) => {
-          if (dateState.showDatePickerAt === null) {
+          const { showDatePickerAt } = dateState;
+
+          if (!showDatePickerAt) {
             return null;
           }
 
           const element = findDomRefAtPos(
-            dateState.showDatePickerAt,
+            showDatePickerAt,
             editorView.domAtPos.bind(editorView),
           ) as HTMLElement;
 
           return (
             <DatePicker
+              key={showDatePickerAt}
               element={element}
               onSelect={date => insertDate(date)(editorView.state, dispatch)}
               closeDatePicker={() =>

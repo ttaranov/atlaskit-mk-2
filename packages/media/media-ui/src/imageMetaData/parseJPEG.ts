@@ -6,8 +6,10 @@ let loadImage: any;
 
 export function readJPEGExifMetaData(file: File): Promise<ImageMetaDataTags> {
   return new Promise(async (resolve, reject) => {
-    // load 3rd party libs on demand
-    loadImage = loadImage || (await import('blueimp-load-image'));
+    if (!loadImage) {
+      const module = await import('blueimp-load-image');
+      loadImage = module.default || module;
+    }
 
     loadImage.parseMetaData(file, (data: any) => {
       try {

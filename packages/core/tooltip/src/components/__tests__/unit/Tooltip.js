@@ -3,8 +3,6 @@
 import React, { type Node } from 'react';
 import { mount } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import Portal from '@atlaskit/portal';
-import { layers } from '@atlaskit/theme';
 import Tooltip from '../../Tooltip';
 import { Tooltip as StyledTooltip } from '../../../styled';
 import { hoveredPayload } from '../../utils/analytics-payloads';
@@ -217,17 +215,6 @@ test('tooltips should show and hide immediately once one has opened', () => {
   wrapper.update();
   expect(wrapper.find(StyledTooltip).text()).toEqual('button two tooltip');
 });
-
-test('tooltip should render popup in Portal with specific z-index', () => {
-  wrapper = mount(
-    <Tooltip content="Tooltip content">
-      <Target>foo</Target>
-    </Tooltip>,
-  );
-  simulate(wrapper, Target, 'mouseover');
-  expect(wrapper.find(Portal).prop('zIndex')).toEqual(layers.tooltip());
-});
-
 describe('TooltipWithAnalytics', () => {
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');
@@ -303,4 +290,20 @@ test('tooltip should not show when content is an empty string', () => {
   simulate(wrapper, Target, 'mouseover');
   expect(wrapper.find('Animation')).toHaveLength(0);
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+});
+
+test('tooltip should not call setState on after unmount', () => {
+  jest.spyOn(console, 'error').mockImplementation(e => {
+    throw new Error(e);
+  });
+  wrapper = mount(
+    <Tooltip content="Hello">
+      <Target>foo</Target>
+    </Tooltip>,
+  );
+  wrapper.find(Target).simulate('mouseover');
+  wrapper.unmount();
+  expect(() => {
+    jest.runAllTimers();
+  }).not.toThrowError();
 });

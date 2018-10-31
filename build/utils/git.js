@@ -205,6 +205,22 @@ async function getLastPublishCommit() {
   return commit;
 }
 
+async function getCommitThatAddsFile(path) {
+  const gitCmd = await spawn('git', [
+    'log',
+    '--reverse',
+    '--max-count=1',
+    '--pretty=format:%h',
+    '-p',
+    path,
+  ]);
+  // For reasons I do not understand, passing pretty format through this is not working
+  // The slice below is aimed at achieving the same thing.
+  const commit = gitCmd.stdout.split('\n')[0];
+
+  return commit;
+}
+
 async function getUnpublishedChangesetCommits(since) {
   // Start one commit before the "since" if it's passed in so that we can find that commit if required
   const releaseCommits = await getAllReleaseCommits(
@@ -226,6 +242,7 @@ async function getUnpublishedChangesetCommits(since) {
 }
 
 module.exports = {
+  getCommitThatAddsFile,
   getCommitsSince,
   getChangedFilesSince,
   getBranchName,

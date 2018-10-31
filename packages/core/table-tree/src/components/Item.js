@@ -10,56 +10,32 @@ type Props = {
   render: RenderFunction,
 };
 
-type State = {
-  isExpanded: boolean,
-};
-
-export default class Item extends Component<Props, State> {
-  state: State = {
-    isExpanded: false,
-  };
-
+export default class Item extends Component<Props> {
   static defaultProps = {
     depth: 0,
   };
 
-  handleExpandToggleClick = () => {
-    this.setState({
-      isExpanded: !this.state.isExpanded,
-    });
-  };
-
   render() {
     const { depth, data, render } = this.props;
-    const { isExpanded } = this.state;
 
     const renderedRow = render(data);
     if (!renderedRow) {
       return null;
     }
-    const { hasChildren, itemId, items } = renderedRow.props;
-    const wrappedRow = React.cloneElement(renderedRow, {
-      onExpandToggle: this.handleExpandToggleClick,
+    const { itemId, items } = renderedRow.props;
+    return React.cloneElement(renderedRow, {
       depth,
-      isExpanded,
       data,
+      renderChildren: () => (
+        <div id={toItemId(itemId)}>
+          <Items
+            parentData={data}
+            depth={depth}
+            items={items}
+            render={render}
+          />
+        </div>
+      ),
     });
-    return (
-      <div>
-        {wrappedRow}
-        {hasChildren && (
-          <div id={toItemId(itemId)}>
-            {isExpanded && (
-              <Items
-                parentData={data}
-                depth={depth}
-                items={items}
-                render={render}
-              />
-            )}
-          </div>
-        )}
-      </div>
-    );
   }
 }

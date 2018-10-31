@@ -4,6 +4,7 @@ import Select from '@atlaskit/select';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import { Checkbox } from '@atlaskit/checkbox';
+import { RadioGroup } from '@atlaskit/radio';
 import FieldTextArea from '@atlaskit/field-text-area';
 
 import Form, {
@@ -29,6 +30,12 @@ type State = {
   eventResult: string,
 };
 
+const options = [
+  { name: 'color', value: 'red', label: 'Red' },
+  { name: 'color', value: 'blue', label: 'Blue' },
+  { name: 'color', value: 'yellow', label: 'Yellow' },
+  { name: 'color', value: 'green', label: 'Green' },
+];
 export default class LayoutExample extends PureComponent<void, State> {
   state = {
     eventResult:
@@ -108,24 +115,22 @@ export default class LayoutExample extends PureComponent<void, State> {
               <Select />
             </Field>
 
-            <FieldGroup label="Field Group">
-              <Field
-                label="Field 1"
-                validMessage="Valid Message"
-                isInvalid={false}
-              >
-                <Select />
-              </Field>
+            <Field
+              label="Field 1"
+              validMessage="Valid Message"
+              isInvalid={false}
+            >
+              <Select />
+            </Field>
 
-              <Field
-                label="Field 2"
-                invalidMessage="Invalid Message"
-                validMessage="valid Message"
-                isRequired
-              >
-                <Select />
-              </Field>
-            </FieldGroup>
+            <Field
+              label="Field 2"
+              invalidMessage="Invalid Message"
+              validMessage="valid Message"
+              isRequired
+            >
+              <Select />
+            </Field>
 
             <FieldGroup label="Checkboxes">
               <Field>
@@ -136,7 +141,6 @@ export default class LayoutExample extends PureComponent<void, State> {
                   name="checkbox-valid"
                 />
               </Field>
-
               <Field isInvalid invalidMessage="Invalid Message">
                 <Checkbox
                   label="Checkbox - Invalid"
@@ -146,6 +150,11 @@ export default class LayoutExample extends PureComponent<void, State> {
                 />
               </Field>
             </FieldGroup>
+
+            <Field isRequired label="Radio Group">
+              <RadioGroup options={options} onChange={this.onChangeHandler} />
+            </Field>
+
             <Field isInvalid invalidMessage="An invalid message example">
               <FieldTextArea label="Is Invalid & showing message" />
             </Field>

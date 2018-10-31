@@ -11,6 +11,7 @@ export interface Props {
   onClick: (value: string) => void;
   cols?: number;
   className?: string;
+  checkMarkColor?: string;
 }
 
 export default class ColorPalette extends PureComponent<Props, any> {
@@ -22,6 +23,7 @@ export default class ColorPalette extends PureComponent<Props, any> {
       selectedColor,
       borderColors,
       className,
+      checkMarkColor,
     } = this.props;
 
     const colors: [string, string][] = [];
@@ -39,6 +41,7 @@ export default class ColorPalette extends PureComponent<Props, any> {
             label={label}
             onClick={onClick}
             isSelected={color === selectedColor}
+            checkMarkColor={checkMarkColor}
           />
         ))}
       </ColorPaletteWrapper>

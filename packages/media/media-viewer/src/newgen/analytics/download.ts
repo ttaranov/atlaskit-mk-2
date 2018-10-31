@@ -6,30 +6,39 @@ import {
   PackageContext,
 } from './index';
 import { FileState, FileStatus } from '@atlaskit/media-core';
+import { MediaViewerError } from '../error';
 
 interface DownloadAttributes extends FileGasPayload {
   fileSupported?: boolean;
   fileProcessingStatus: FileStatus;
 }
-interface DownloadGasPayload extends GasPayload {
-  attributes: DownloadAttributes & PackageContext;
-}
 
-export function downloadButtonEvent(file: FileState): DownloadGasPayload {
-  const basePayload: GasPayload = {
-    eventType: 'ui',
-    action: 'clicked',
-    actionSubject: 'button',
-    actionSubjectId: 'downloadButton',
-  };
+const getBasePayload = (actionSubjectId: string): GasPayload => ({
+  eventType: 'ui',
+  action: 'clicked',
+  actionSubject: 'button',
+  actionSubjectId,
+});
 
-  const baseAttributes = {
-    ...fileStateToFileGasPayload(file),
-    fileProcessingStatus: file.status,
-    ...context,
-  };
+const getBaseAttributes = (state: FileState) => ({
+  ...fileStateToFileGasPayload(state),
+  fileProcessingStatus: state.status,
+  ...context,
+});
 
-  switch (file.status) {
+const downloadEvent = (
+  state: FileState,
+  actionSubjectId: string,
+  failReason?: string,
+) => {
+  const basePayload = getBasePayload(actionSubjectId);
+  const baseAttributes = failReason
+    ? {
+        ...getBaseAttributes(state),
+        failReason,
+      }
+    : getBaseAttributes(state);
+  switch (state.status) {
     case 'processed':
     case 'uploading':
     case 'processing':
@@ -38,7 +47,7 @@ export function downloadButtonEvent(file: FileState): DownloadGasPayload {
         ...basePayload,
         attributes: {
           ...baseAttributes,
-          fileSupported: file.mediaType !== 'unknown',
+          fileSupported: state.mediaType !== 'unknown',
         },
       };
     case 'error':
@@ -49,4 +58,19 @@ export function downloadButtonEvent(file: FileState): DownloadGasPayload {
         },
       };
   }
+};
+
+export interface DownloadGasPayload extends GasPayload {
+  attributes: DownloadAttributes & PackageContext;
+}
+
+export function downloadErrorButtonEvent(
+  state: FileState,
+  err: MediaViewerError,
+): DownloadGasPayload {
+  return downloadEvent(state, 'failedPreviewDownloadButton', err.errorName);
+}
+
+export function downloadButtonEvent(state: FileState): DownloadGasPayload {
+  return downloadEvent(state, 'downloadButton');
 }

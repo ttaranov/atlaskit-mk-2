@@ -52,6 +52,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly dataURI?: string;
   readonly progress?: number;
   readonly disableOverlay?: boolean;
+  readonly previewOrientation?: number;
 }
 
 export interface CardViewState {
@@ -213,6 +214,7 @@ export class CardViewBase extends React.Component<
       selected,
       disableOverlay,
       mediaItemType,
+      previewOrientation,
     } = this.props;
 
     return (
@@ -230,6 +232,7 @@ export class CardViewBase extends React.Component<
         selected={selected}
         disableOverlay={disableOverlay}
         mediaItemType={mediaItemType}
+        previewOrientation={previewOrientation}
       />
     );
   };

@@ -1,4 +1,4 @@
-import { HTMLAttributes, ComponentClass } from 'react';
+import { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -60,7 +60,8 @@ const fullPageStyles = ({ theme, appearance }) => {
   `;
 };
 
-export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+// prettier-ignore
+export const Wrapper = styled.div<Props & HTMLAttributes<{}>>`
   ${fullPageStyles}
 
   font-size: ${editorFontSize}px;
@@ -241,47 +242,13 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
 
     table[data-number-column='true'] {
-      counter-reset: row-number;
-
-      /**
-       * Don't show the row increment on header rows.
-       */
-      tr:first-child {
-        th:first-child::before {
-          content: '';
-        }
-
-        /*
-        * Only increment the row number if its a standard cell.
-        * When we have a header row that should count as the 0th row.
-        */  
-        th:first-child {
-          counter-reset: row-number;
-        }
-      }
-
-      tr td:first-child,
-      tr th:first-child {
-        counter-increment: row-number;
-        position: relative;
-        font-weight: normal;
-        padding-left: ${akEditorTableNumberColumnWidth + 10}px;
-      }
-
-      tr td:first-child::before,
-      tr th:first-child::before {
-        content: counter(row-number);
-        display: table-cell;
-        box-sizing: border-box;
-        text-align: center;
+      .${RendererCssClassName.NUMBER_COLUMN} {
         background-color: ${akEditorTableToolbar};
         border-right: 1px solid ${akEditorTableBorder};
         width: ${akEditorTableNumberColumnWidth}px;
-        height: 100%;
-        padding: 10px 2px;
-        position: absolute;
-        top: 0;
-        left: 0;
+        text-align: center;
+        color: ${colors.N200};
+        font-size: ${fontSize()}px;
       }
     }
   }

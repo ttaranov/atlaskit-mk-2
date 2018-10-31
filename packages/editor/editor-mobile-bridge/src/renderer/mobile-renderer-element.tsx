@@ -12,7 +12,7 @@ export interface MobileRendererState {
   document: any;
 }
 
-(window as any).rendererBridge = new RendererBridgeImpl();
+const toNativeBridge = ((window as any).rendererBridge = new RendererBridgeImpl());
 
 export default class MobileRenderer extends React.Component<
   {},
@@ -40,13 +40,39 @@ export default class MobileRenderer extends React.Component<
     });
   }
 
+  private onLinkClick(url) {
+    if (!url) {
+      return;
+    }
+
+    toNativeBridge.onLinkClick(url);
+  }
+
   render() {
     try {
+      // If we haven't received a document yet, don't pass null.
+      // We'll get a flash of 'unsupported content'.
+      // Could add a loader here if needed.
+      if (!this.state.document) {
+        return null;
+      }
+
       return (
         <ReactRenderer
           dataProviders={this.providerFactory}
           appearance="mobile"
           document={this.state.document}
+          eventHandlers={{
+            link: {
+              onClick: (event, url) => {
+                event.preventDefault();
+                this.onLinkClick(url);
+              },
+            },
+            smartCard: {
+              onClick: this.onLinkClick,
+            },
+          }}
         />
       );
     } catch (ex) {

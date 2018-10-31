@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as debounce from 'lodash.debounce';
 import styled from 'styled-components';
 import AkAvatar from '@atlaskit/avatar';
 import { ProviderFactory } from '@atlaskit/editor-common';
@@ -26,6 +27,7 @@ export interface Props {
   onClose?: () => void;
   onOpen?: () => void;
   isEditing?: boolean;
+  onChange?: (value: any) => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -160,6 +162,13 @@ export default class Editor extends React.Component<Props, State> {
     }
   };
 
+  private onChange = async (actions: EditorActions) => {
+    if (this.props.onChange) {
+      const value = await actions.getValue();
+      this.props.onChange(value);
+    }
+  };
+
   private renderEditor = (actions: EditorActions) => {
     const {
       dataProviders,
@@ -184,6 +193,7 @@ export default class Editor extends React.Component<Props, State> {
       allowLists: true,
       onSave: () => this.onSave(actions),
       onCancel: this.onCancel,
+      onChange: debounce(() => this.onChange(actions), 250),
       defaultValue,
       allowHelpDialog: allowFeedbackAndHelpButtons,
       primaryToolbarComponents: allowFeedbackAndHelpButtons

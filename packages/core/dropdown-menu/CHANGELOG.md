@@ -1,5 +1,12 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.20
+- [patch] [fe943bb"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe943bb"
+d):
+
+  - Make sure we check userAgent only if we have a DOM
+
 ## 6.1.19
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

@@ -1,13 +1,13 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement } from '../_helpers';
 import {
-  messageEditor,
+  getDocFromElement,
   editable,
   insertMention,
-  lozenge,
-  picker,
-} from './_mention-helpers';
+  mentionPicker,
+} from '../_helpers';
+
+import { messageEditor, lozenge } from './_message-renderer-helpers';
 
 /*
  * Safari does not understand webdriver keyboard actions so a
@@ -104,7 +104,7 @@ BrowserTestCase(
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
-    await browser.waitForSelector(picker);
+    await browser.waitForSelector(mentionPicker);
     await browser.type(editable, 'ArrowDown');
     await browser.type(editable, 'Enter');
     const doc = await browser.$eval(editable, getDocFromElement);

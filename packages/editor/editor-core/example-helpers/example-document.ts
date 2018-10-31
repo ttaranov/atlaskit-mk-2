@@ -1160,7 +1160,6 @@ System.out.println("There are " + count + " values >= 5");`,
       attrs: {
         extensionType: 'com.atlassian.fabric',
         extensionKey: 'clock',
-        bodyType: 'rich',
       },
       content: [
         {
@@ -1169,6 +1168,55 @@ System.out.println("There are " + count + " values >= 5");`,
             {
               type: 'text',
               text: 'This is the default content of the extension',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Sections',
+        },
+      ],
+    },
+    {
+      type: 'layoutSection',
+      content: [
+        {
+          type: 'layoutColumn',
+          attrs: {
+            width: 33.33,
+          },
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This column is a 1/3rd.',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'layoutColumn',
+          attrs: {
+            width: 66.66,
+          },
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This column is 2/3rds.',
+                },
+              ],
             },
           ],
         },

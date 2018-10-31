@@ -53,7 +53,10 @@ describe('Card', () => {
     props?: Partial<CardProps>,
   ) => {
     (getDataURIFromFileState as any).mockReset();
-    (getDataURIFromFileState as any).mockReturnValue('some-data-uri');
+    (getDataURIFromFileState as any).mockReturnValue({
+      src: 'some-data-uri',
+      orientation: 6,
+    });
     const component = shallow(
       <Card
         context={context}
@@ -493,6 +496,15 @@ describe('Card', () => {
     expect(component.state('dataURI')).toEqual('some-data-uri');
   });
 
+  it('should set preview orientation and pass it down do view', async () => {
+    const { component } = setup();
+    await nextTick();
+
+    expect(component.state('previewOrientation')).toEqual(6);
+    component.update();
+    expect(component.find(CardView).prop('previewOrientation')).toEqual(6);
+  });
+
   it('should set right state when file is uploading', async () => {
     const context = createContextWithGetFile({
       status: 'uploading',
@@ -506,6 +518,7 @@ describe('Card', () => {
       dataURI: 'some-data-uri',
       isCardVisible: true,
       progress: 0.2,
+      previewOrientation: 6,
       metadata: {
         id: '123',
         mediaType: 'image',
@@ -528,6 +541,7 @@ describe('Card', () => {
       dataURI: 'some-data-uri',
       progress: undefined,
       isCardVisible: true,
+      previewOrientation: 6,
       metadata: {
         id: '123',
         mediaType: 'image',
@@ -552,6 +566,7 @@ describe('Card', () => {
       dataURI: 'mock result of URL.createObjectURL()',
       progress: undefined,
       isCardVisible: true,
+      previewOrientation: 6,
       metadata: {
         id: '123',
         mediaType: 'image',

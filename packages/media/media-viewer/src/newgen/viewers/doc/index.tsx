@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
-import { ErrorMessage, createError, MediaViewerError } from '../../error';
+import { createError, MediaViewerError } from '../../error';
 import { Spinner } from '../../loading';
 import { constructAuthTokenUrl } from '../../utils';
 import { Props as RendererProps } from './pdfRenderer';
 import { ComponentClass } from 'react';
-import { renderDownloadButton } from '../../domain/download';
 import { getArtifactUrl } from '@atlaskit/media-store';
+import { BaseViewer } from '../base-viewer';
 
 const moduleLoader = () =>
   import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
@@ -23,23 +23,19 @@ export type Props = {
 };
 
 export type State = {
-  src: Outcome<string, MediaViewerError>;
+  content: Outcome<string, MediaViewerError>;
 };
 
-const initialState: State = {
-  src: Outcome.pending(),
-};
-
-export class DocViewer extends React.Component<Props, State> {
+export class DocViewer extends BaseViewer<string, Props> {
   static PDFComponent: ComponentClass<RendererProps>;
 
-  state: State = initialState;
-
-  componentDidMount() {
-    this.init();
+  protected get initialState() {
+    return {
+      content: Outcome.pending<string, MediaViewerError>(),
+    };
   }
 
-  private async init() {
+  protected async init() {
     if (!DocViewer.PDFComponent) {
       await this.loadDocViewer();
     }
@@ -48,7 +44,7 @@ export class DocViewer extends React.Component<Props, State> {
     const pdfArtifactUrl = getArtifactUrl(item.artifacts, 'document.pdf');
     if (!pdfArtifactUrl) {
       this.setState({
-        src: Outcome.failed(
+        content: Outcome.failed(
           createError('noPDFArtifactsFound', undefined, item),
         ),
       });
@@ -61,11 +57,11 @@ export class DocViewer extends React.Component<Props, State> {
         collectionName,
       );
       this.setState({
-        src: Outcome.successful(src),
+        content: Outcome.successful(src),
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', err, item)),
+        content: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }
@@ -75,28 +71,15 @@ export class DocViewer extends React.Component<Props, State> {
     this.forceUpdate();
   }
 
-  private renderDownloadButton() {
-    const { item, context, collectionName } = this.props;
-    return renderDownloadButton(item, context, collectionName);
-  }
+  protected release() {}
 
-  render() {
+  protected renderSuccessful(content: string) {
     const { onClose } = this.props;
     const { PDFComponent } = DocViewer;
 
     if (!PDFComponent) {
       return <Spinner />;
     }
-
-    return this.state.src.match({
-      pending: () => <Spinner />,
-      successful: src => <PDFComponent src={src} onClose={onClose} />,
-      failed: err => (
-        <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
-          {this.renderDownloadButton()}
-        </ErrorMessage>
-      ),
-    });
+    return <PDFComponent src={content} onClose={onClose} />;
   }
 }

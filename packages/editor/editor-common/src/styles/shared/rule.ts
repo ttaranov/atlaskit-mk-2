@@ -10,5 +10,10 @@ export const ruleSharedStyles = css`
     margin: 1.714em 0;
     height: 2px;
     border-radius: 1px;
+
+    &.ProseMirror-selectednode {
+      outline: none;
+      background-color: ${colors.B300};
+    }
   }
 `;

@@ -1,5 +1,4 @@
 // image data uris
-export * from './dataURIs/gifImageURI';
 export * from './dataURIs/tallImageURI';
 export * from './dataURIs/smallImageURI';
 export * from './dataURIs/smallTransparentImageURI';

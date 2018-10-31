@@ -52,12 +52,15 @@ describe('codeBlock utils', () => {
     it('should join nested adjacent code-blocks in a slice with a newline', () => {
       const slice = new Slice(
         fragment(
-          layoutSection()(
-            layoutColumn(
+          layoutSection(
+            layoutColumn({ width: 50 })(
               code_block()('hello world'),
               code_block()('goodbye world'),
             ),
-            layoutColumn(code_block()('left'), code_block()('right')),
+            layoutColumn({ width: 50 })(
+              code_block()('left'),
+              code_block()('right'),
+            ),
           ),
         ),
         0,
@@ -66,9 +69,11 @@ describe('codeBlock utils', () => {
       expect(transformSliceToJoinAdjacentCodeBlocks(slice)).toEqual(
         new Slice(
           fragment(
-            layoutSection()(
-              layoutColumn(code_block()('hello world\ngoodbye world')),
-              layoutColumn(code_block()('left\nright')),
+            layoutSection(
+              layoutColumn({ width: 50 })(
+                code_block()('hello world\ngoodbye world'),
+              ),
+              layoutColumn({ width: 50 })(code_block()('left\nright')),
             ),
           ),
           0,

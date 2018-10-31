@@ -1,5 +1,20 @@
 # @atlaskit/navigation-next
 
+## 3.20.0
+- [minor] [3f17176](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f17176):
+
+  - Make GoToItem display arrow icon on focus event
+
+## 3.19.1
+- [patch] [f3d0351"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3d0351"
+d):
+
+  - Removing animations on first page load
+
+## 3.19.0
+- [minor] Export the following view renderer components as standalone UI components: BackItem, ConnectedItem, GoToItem, HeaderSection, MenuSection, Wordmark [459c2dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/459c2dd)
+
 ## 3.18.4
 - [patch] Fix LayoutManager's onExpandStart, onExpandEnd, onCollapseStart and onCollapseEnd callbacks being called when the flyout opens or closes. [7b78219](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b78219)
 

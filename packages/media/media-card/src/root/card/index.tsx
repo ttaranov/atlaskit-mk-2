@@ -39,6 +39,7 @@ export class Card extends Component<CardProps, CardState> {
   state: CardState = {
     status: 'loading',
     isCardVisible: !this.props.isLazy,
+    previewOrientation: 1,
   };
 
   componentDidMount() {
@@ -156,8 +157,12 @@ export class Card extends Component<CardProps, CardState> {
           let dataURI: string | undefined;
 
           if (!currentDataURI) {
-            dataURI = await getDataURIFromFileState(state);
-            this.notifyStateChange({ dataURI });
+            const {
+              src: dataURI,
+              orientation: previewOrientation,
+            } = await getDataURIFromFileState(state);
+
+            this.notifyStateChange({ dataURI, previewOrientation });
           }
 
           switch (state.status) {
@@ -286,12 +291,13 @@ export class Card extends Component<CardProps, CardState> {
       disableOverlay,
       identifier,
     } = this.props;
-    const { progress, metadata, dataURI } = this.state;
+    const { progress, metadata, dataURI, previewOrientation } = this.state;
     const { analyticsContext, onRetry, actions } = this;
+    const status = getCardStatus(this.state, this.props);
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
-          status={getCardStatus(this.state, this.props)}
+          status={status}
           metadata={metadata}
           dataURI={dataURI}
           mediaItemType={identifier.mediaItemType}
@@ -307,6 +313,7 @@ export class Card extends Component<CardProps, CardState> {
           disableOverlay={disableOverlay}
           progress={progress}
           onRetry={onRetry}
+          previewOrientation={previewOrientation}
         />
       </AnalyticsContext>
     );

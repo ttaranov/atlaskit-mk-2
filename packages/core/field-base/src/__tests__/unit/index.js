@@ -265,7 +265,7 @@ describe('ak-field-base', () => {
       expect(spy).toHaveBeenCalledTimes(1);
     });
     it('should close the dialog when focus goes away from both the element and the dialog', () => {
-      const invalidMessage = <snap className="errorMessage">foo</snap>;
+      const invalidMessage = <div className="errorMessage">foo</div>;
       const wrapper = mount(
         <FieldBase isInvalid invalidMessage={invalidMessage} />,
       );

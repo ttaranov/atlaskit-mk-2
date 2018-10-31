@@ -1,5 +1,12 @@
 # @atlaskit/media-image
 
+## 41.2.0
+- [minor] [439dde6"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/439dde6"
+d):
+
+  - rotate local image preview in cards based on the file orientation
+
 ## 41.1.2
 - [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
   - @atlaskit/media-test-helpers@18.2.10

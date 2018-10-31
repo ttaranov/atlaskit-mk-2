@@ -1,5 +1,15 @@
 # @atlaskit/tooltip
 
+## 12.1.7
+- [patch] [3b03f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b03f52):
+
+  - Use @atlaskit/popper internally instead of a custom approach to position management
+
+## 12.1.6
+- [patch] [7f1ff28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1ff28):
+
+  Fixes error when Tooltip attempts to setState on an unmounted component
+
 ## 12.1.5
 - [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
   - @atlaskit/portal@0.0.12

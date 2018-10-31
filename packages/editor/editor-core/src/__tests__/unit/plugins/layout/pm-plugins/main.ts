@@ -7,15 +7,18 @@ import {
   doc,
   p,
   RefsNode,
-  hr,
   createEditor,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import {
   default as layoutPlugin,
   pluginKey,
-  enforceLayoutColumnConstraints,
 } from '../../../../../plugins/layout/pm-plugins/main';
+import {
+  forceSectionToPresetLayout,
+  PresetLayout,
+} from '../../../../../plugins/layout/actions';
+import { Node } from 'prosemirror-model';
 
 const editor = doc =>
   createEditor({ doc, editorProps: { allowLayouts: true } });
@@ -32,9 +35,9 @@ describe('layout', () => {
     describe('#init', () => {
       it('should set pos when selection in layout', () => {
         const document = doc(
-          layoutSection({ layoutType: 'two_equal' })(
-            layoutColumn(p('{<>}')),
-            layoutColumn(p('')),
+          layoutSection(
+            layoutColumn({ width: 50 })(p('{<>}')),
+            layoutColumn({ width: 50 })(p('')),
           ),
         )(defaultSchema);
         const state = toState(document);
@@ -63,9 +66,9 @@ describe('layout', () => {
         } = editor(
           doc(
             p('{<>}'),
-            layoutSection({ layoutType: 'two_equal' })(
-              layoutColumn(p('{layoutPos}')),
-              layoutColumn(p('')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('{layoutPos}')),
+              layoutColumn({ width: 50 })(p('')),
             ),
           ),
         );
@@ -85,9 +88,9 @@ describe('layout', () => {
         } = editor(
           doc(
             p('{pPos}'),
-            layoutSection({ layoutType: 'two_equal' })(
-              layoutColumn(p('{<>}')),
-              layoutColumn(p('')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('{<>}')),
+              layoutColumn({ width: 50 })(p('')),
             ),
           ),
         );
@@ -106,9 +109,9 @@ describe('layout', () => {
       it('should render a Node decoration when cursor inside layout', () => {
         const { editorView } = editor(
           doc(
-            layoutSection({ layoutType: 'two_equal' })(
-              layoutColumn(p('{<>}')),
-              layoutColumn(p('')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('{<>}')),
+              layoutColumn({ width: 50 })(p('')),
             ),
           ),
         );
@@ -138,9 +141,9 @@ describe('layout', () => {
             refs: { secondColumnPos },
           } = editor(
             doc(
-              layoutSection({ layoutType: 'two_equal' })(
-                layoutColumn(p('content{<>}')),
-                layoutColumn(p('{secondColumnPos}content')),
+              layoutSection(
+                layoutColumn({ width: 50 })(p('content{<>}')),
+                layoutColumn({ width: 50 })(p('{secondColumnPos}content')),
               ),
             ),
           );
@@ -153,9 +156,9 @@ describe('layout', () => {
         it('should not do anything when in the last column', () => {
           const { editorView, sel } = editor(
             doc(
-              layoutSection({ layoutType: 'two_equal' })(
-                layoutColumn(p('')),
-                layoutColumn(p('content{<>}')),
+              layoutSection(
+                layoutColumn({ width: 50 })(p('')),
+                layoutColumn({ width: 50 })(p('content{<>}')),
               ),
               p(''),
             ),
@@ -168,224 +171,185 @@ describe('layout', () => {
       });
     });
   });
-  describe('#enforceLayoutColumnConstraints', () => {
-    ['two-equal', 'two-left-sidebar', 'two-right-sidebar'].forEach(
-      layoutType => {
-        it(`should merge the third column when layout is ${layoutType}`, () => {
-          const document = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Mi{<>}ddle')),
-              layoutColumn(p('Last')),
-            ),
-          )(defaultSchema);
-          const state = toState(document);
-          const newState = state.apply(enforceLayoutColumnConstraints(state)!);
-          expect(newState.doc).toEqualDocument(
-            doc(
-              layoutSection({ layoutType })(
-                layoutColumn(p('First')),
-                layoutColumn(p('Middle'), p('Last')),
-              ),
-            ),
-          );
-          expect(newState.selection.from).toBe(document.refs['<>']);
-        });
-
-        it(`should keep selection after merging third column when layout is ${layoutType}`, () => {
-          const document = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('La{<>}st')),
-            ),
-          )(defaultSchema);
-          const state = toState(document);
-          const newState = state.apply(enforceLayoutColumnConstraints(state)!);
-          const expectedDocument = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle'), p('La{<>}st')),
-            ),
-          )(defaultSchema);
-          expect(newState.doc).toEqualDocument(expectedDocument);
-          expect(newState.selection.from).toBe(expectedDocument.refs['<>']);
-        });
-
-        it(`should keep selection after merging empty third column when layout is ${layoutType}`, () => {
-          const document = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('{<>}')),
-            ),
-          )(defaultSchema);
-          const state = toState(document);
-          const newState = state.apply(enforceLayoutColumnConstraints(state)!);
-          const expectedDocument = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle{<>}')),
-            ),
-          )(defaultSchema);
-          expect(newState.doc).toEqualDocument(expectedDocument);
-          expect(newState.selection.from).toBe(expectedDocument.refs['<>']);
-        });
-
-        it(`should should drop the third column when empty and layout is ${layoutType}`, () => {
-          const document = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Mi{<>}ddle')),
-              layoutColumn(p('')),
-            ),
-          )(defaultSchema);
-          const state = toState(document);
-          const newState = state.apply(enforceLayoutColumnConstraints(state)!);
-          expect(newState.doc).toEqualDocument(
-            doc(
-              layoutSection({ layoutType })(
-                layoutColumn(p('First')),
-                layoutColumn(p('Middle')),
-              ),
-            ),
-          );
-          expect(newState.selection.from).toBe(document.refs['<>']);
-        });
-
-        it(`should handle multiple merges when layout is ${layoutType}`, () => {
-          const document = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('Last')),
-            ),
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Mid{<>}dle'), hr()),
-              layoutColumn(p('Last')),
-            ),
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('Last')),
-            ),
-          )(defaultSchema);
-
-          const state = toState(document);
-          const tr = enforceLayoutColumnConstraints(state)!;
-          const newState = state.apply(tr);
-
-          expect(newState.doc).toEqualDocument(
-            doc(
-              layoutSection({ layoutType })(
-                layoutColumn(p('First')),
-                layoutColumn(p('Middle'), p('Last')),
-              ),
-              layoutSection({ layoutType })(
-                layoutColumn(p('First')),
-                layoutColumn(p('Middle'), hr(), p('Last')),
-              ),
-              layoutSection({ layoutType })(
-                layoutColumn(p('First')),
-                layoutColumn(p('Middle'), p('Last')),
-              ),
-            ),
-          );
-          expect(newState.selection.from).toBe(
-            tr.mapping.map(document.refs['<>']),
-          );
-        });
-
-        it(`should not add a third column when layout is ${layoutType}`, () => {
-          const document = doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Last')),
-            ),
-          )(defaultSchema);
-          const state = toState(document);
-          expect(enforceLayoutColumnConstraints(state)).toBeUndefined();
-        });
-      },
-    );
-    ['three-equal', 'three-with-sidebars'].forEach(layoutType => {
-      it(`should not merge the third column when layout is ${layoutType}`, () => {
+  describe('#forceSectionToPresetLayout', () => {
+    ['two_equal'].forEach((layoutType: PresetLayout) => {
+      it(`should merge the third column when layout is ${layoutType}`, () => {
         const document = doc(
-          layoutSection({ layoutType })(
-            layoutColumn(p('First')),
-            layoutColumn(p('Middle')),
-            layoutColumn(p('Last')),
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('First')),
+            layoutColumn({ width: 33.33 })(p('Mi{<>}ddle')),
+            layoutColumn({ width: 33.33 })(p('Last')),
           ),
         )(defaultSchema);
         const state = toState(document);
-        expect(enforceLayoutColumnConstraints(state)!).toBeUndefined();
-      });
-
-      it(`should add a third column when layout is ${layoutType}`, () => {
-        const document = doc(
-          layoutSection({ layoutType })(
-            layoutColumn(p('First')),
-            layoutColumn(p('Mid{<>}dle')),
-          ),
-        )(defaultSchema);
-        const state = toState(document);
-        const newState = state.apply(enforceLayoutColumnConstraints(state)!);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        const newState = state.apply(
+          forceSectionToPresetLayout(state, node, pos, layoutType)!,
+        );
         expect(newState.doc).toEqualDocument(
           doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('First')),
+              layoutColumn({ width: 50 })(p('Middle'), p('Last')),
             ),
           ),
         );
         expect(newState.selection.from).toBe(document.refs['<>']);
       });
 
-      it(`should handle adding a third column multiple times when layout is ${layoutType}`, () => {
+      it(`should keep selection after merging third column when layout is ${layoutType}`, () => {
         const document = doc(
-          layoutSection({ layoutType })(
-            layoutColumn(p('First')),
-            layoutColumn(p('Middle')),
-          ),
-          layoutSection({ layoutType })(
-            layoutColumn(p('First')),
-            layoutColumn(p('Mid{<>}dle'), hr()),
-          ),
-          layoutSection({ layoutType })(
-            layoutColumn(p('First')),
-            layoutColumn(p('Middle')),
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('First')),
+            layoutColumn({ width: 33.33 })(p('Middle')),
+            layoutColumn({ width: 33.33 })(p('La{<>}st')),
           ),
         )(defaultSchema);
-
         const state = toState(document);
-        const tr = enforceLayoutColumnConstraints(state)!;
-        const newState = state.apply(tr);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        const newState = state.apply(
+          forceSectionToPresetLayout(state, node, pos, layoutType)!,
+        );
+        const expectedDocument = doc(
+          layoutSection(
+            layoutColumn({ width: 50 })(p('First')),
+            layoutColumn({ width: 50 })(p('Middle'), p('La{<>}st')),
+          ),
+        )(defaultSchema);
+        expect(newState.doc).toEqualDocument(expectedDocument);
+        expect(newState.selection.from).toBe(expectedDocument.refs['<>']);
+      });
 
+      it(`should keep selection after merging empty third column when layout is ${layoutType}`, () => {
+        const document = doc(
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('First')),
+            layoutColumn({ width: 33.33 })(p('Middle')),
+            layoutColumn({ width: 33.33 })(p('{<>}')),
+          ),
+        )(defaultSchema);
+        const state = toState(document);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        const newState = state.apply(
+          forceSectionToPresetLayout(state, node, pos, layoutType)!,
+        );
+        const expectedDocument = doc(
+          layoutSection(
+            layoutColumn({ width: 50 })(p('First')),
+            layoutColumn({ width: 50 })(p('Middle{<>}')),
+          ),
+        )(defaultSchema);
+        expect(newState.doc).toEqualDocument(expectedDocument);
+        expect(newState.selection.from).toBe(expectedDocument.refs['<>']);
+      });
+
+      it(`should should drop the third column when empty and layout is ${layoutType}`, () => {
+        const document = doc(
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('First')),
+            layoutColumn({ width: 33.33 })(p('Mi{<>}ddle')),
+            layoutColumn({ width: 33.33 })(p('')),
+          ),
+        )(defaultSchema);
+        const state = toState(document);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        const newState = state.apply(
+          forceSectionToPresetLayout(state, node, pos, layoutType)!,
+        );
         expect(newState.doc).toEqualDocument(
           doc(
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('')),
-            ),
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle'), hr()),
-              layoutColumn(p('')),
-            ),
-            layoutSection({ layoutType })(
-              layoutColumn(p('First')),
-              layoutColumn(p('Middle')),
-              layoutColumn(p('')),
+            layoutSection(
+              layoutColumn({ width: 50 })(p('First')),
+              layoutColumn({ width: 50 })(p('Middle')),
             ),
           ),
         );
-        expect(newState.selection.from).toBe(
-          tr.mapping.map(document.refs['<>']),
-        );
+        expect(newState.selection.from).toBe(document.refs['<>']);
       });
+
+      it(`should not add a third column when layout is ${layoutType}`, () => {
+        const document = doc(
+          layoutSection(
+            layoutColumn({ width: 50 })(p('First')),
+            layoutColumn({ width: 50 })(p('Last')),
+          ),
+        )(defaultSchema);
+        const state = toState(document);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        expect(
+          forceSectionToPresetLayout(state, node, pos, layoutType).docChanged,
+        ).toBe(false);
+      });
+    });
+    ['three_equal'].forEach((layoutType: PresetLayout) => {
+      it(`should not merge the third column when layout is ${layoutType}`, () => {
+        const document = doc(
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('First')),
+            layoutColumn({ width: 33.33 })(p('Middle')),
+            layoutColumn({ width: 33.33 })(p('Last')),
+          ),
+        )(defaultSchema);
+        const state = toState(document);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        expect(
+          forceSectionToPresetLayout(state, node, pos, layoutType).docChanged,
+        ).toBe(false);
+      });
+
+      it(`should add a third column when layout is ${layoutType}`, () => {
+        const document = doc(
+          layoutSection(
+            layoutColumn({ width: 50 })(p('First')),
+            layoutColumn({ width: 50 })(p('Mid{<>}dle')),
+          ),
+        )(defaultSchema);
+        const state = toState(document);
+        const pos = 0;
+        const node = document.nodeAt(pos) as Node;
+        const newState = state.apply(
+          forceSectionToPresetLayout(state, node, pos, layoutType)!,
+        );
+        expect(newState.doc).toEqualDocument(
+          doc(
+            layoutSection(
+              layoutColumn({ width: 33.33 })(p('First')),
+              layoutColumn({ width: 33.33 })(p('Middle')),
+              layoutColumn({ width: 33.33 })(p('')),
+            ),
+          ),
+        );
+        expect(newState.selection.from).toBe(document.refs['<>']);
+      });
+    });
+  });
+  describe('appendTransaction', () => {
+    it(`ensure all column sizes add to 100%`, () => {
+      const { editorView } = editor(
+        doc(
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('Over')),
+            layoutColumn({ width: 33.33 })(p('Fl{<>}ow')),
+            layoutColumn({ width: 50 })(p('Column')),
+          ),
+        ),
+      );
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          layoutSection(
+            layoutColumn({ width: 33.33 })(p('Over')),
+            layoutColumn({ width: 33.33 })(p('Flow')),
+            layoutColumn({ width: 33.33 })(p('Column')),
+          ),
+        ),
+      );
     });
   });
 });

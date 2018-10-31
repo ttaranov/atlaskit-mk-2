@@ -48,11 +48,11 @@ export const LoaderStyle: ComponentClass<
   ${({
     progress,
     maxWidth,
-    showCancel,
   }: {
     progress: number;
     maxWidth: number;
     showCancel: boolean;
+    width: number;
   }) =>
     css`
       width: ${progress * maxWidth}px;

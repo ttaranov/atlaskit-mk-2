@@ -1,5 +1,12 @@
 # @atlaskit/inline-dialog
 
+## 9.0.9
+- [patch] [d296df8"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d296df8"
+d):
+
+  - Inline-dialog now has useCapture: true for the outside click event listeners to avoid closing when clicking on child content that might disappear, such as a select or dropdown-menu
+
 ## 9.0.8
 - [patch] Updated dependencies [1a752e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1a752e6)
   - @atlaskit/datetime-picker@6.3.13

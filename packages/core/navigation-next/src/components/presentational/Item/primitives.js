@@ -49,6 +49,7 @@ class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
     isDragging: false,
     isHover: false,
     isSelected: false,
+    isFocused: false,
     spacing: 'default',
     styles: styleReducerNoOp,
     text: '',
@@ -67,6 +68,7 @@ class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
       isHover,
       isSelected,
       onClick,
+      isFocused,
       spacing,
       styles: styleReducer,
       subText,
@@ -74,18 +76,17 @@ class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
       text,
       theme,
     } = this.props;
-
     const { mode, context } = theme;
     const presentationProps = {
       isActive,
       isDragging,
       isHover,
       isSelected,
+      isFocused,
       spacing,
     };
     const defaultStyles = mode.item(presentationProps)[context];
     const styles = styleReducer(defaultStyles, presentationProps, theme);
-
     // base element switch
 
     let itemComponent = 'div';
@@ -127,4 +128,5 @@ class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   }
 }
 
+export { ItemPrimitive as ItemPrimitiveBase };
 export default withContentTheme(ItemPrimitive);

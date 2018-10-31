@@ -1,116 +1,94 @@
 // @flow
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
+import { mount } from 'enzyme';
 
-import { name } from '../../../../package.json';
 import { Spotlight, SpotlightManager, SpotlightTarget } from '../../..';
+import Clone from '../../Clone';
 
-function render(jsx) {
-  return ReactDOMServer.renderToStaticMarkup(jsx);
-}
-function assertEqual(actual, expected) {
-  expect(render(actual)).toBe(render(expected));
-}
+test('should show spotlight', () => {
+  const ref = jest.fn();
+  const wrapper = mount(
+    <SpotlightManager>
+      <SpotlightTarget name="target">
+        <div ref={ref}>target</div>
+      </SpotlightTarget>
+      <Spotlight target="target">Check this out</Spotlight>
+    </SpotlightManager>,
+  );
+  const clone = wrapper.find(Clone);
+  expect(clone).toHaveLength(1);
+  expect(ref).toHaveBeenCalledWith(clone.prop('targetNode'));
+});
 
-/* eslint-disable jest/no-disabled-tests */
-describe(name, () => {
-  describe('manager', () => {
-    it('should render as a div by default', () => {
-      assertEqual(
+test('should spotlight different targets', () => {
+  const ref = jest.fn();
+  const NextButton = props => <button {...props} />;
+  class SpotlightDemo extends React.Component<{}, { target: string }> {
+    state = {
+      target: 'target-one',
+    };
+    render() {
+      return (
         <SpotlightManager>
-          <span>foo</span>
-        </SpotlightManager>,
-        // should equal
-        <div>
-          <span>foo</span>
-        </div>,
-      );
-    });
-    it('should accept component as a prop', () => {
-      assertEqual(
-        <SpotlightManager component="section">
-          <span>foo</span>
-        </SpotlightManager>,
-        // should equal
-        <section>
-          <span>foo</span>
-        </section>,
-      );
-    });
-    it('should accept complex component as a prop', () => {
-      assertEqual(
-        <SpotlightManager component={props => <blockquote {...props} />}>
-          <span>foo</span>
-        </SpotlightManager>,
-        // should equal
-        <blockquote>
-          <span>foo</span>
-        </blockquote>,
-      );
-    });
-  });
-  describe('target', () => {
-    it('should render its children only', () => {
-      assertEqual(
-        <SpotlightManager>
-          <SpotlightTarget name="foo">
-            <span>foo</span>
+          <SpotlightTarget name="target-one">
+            <div>target</div>
           </SpotlightTarget>
-        </SpotlightManager>,
-        // should equal
-        <div>
-          <span>foo</span>
-        </div>,
+          <SpotlightTarget name="target-two">
+            <div ref={ref}>target</div>
+          </SpotlightTarget>
+          <Spotlight target={this.state.target}>Check this out</Spotlight>
+          <NextButton onClick={() => this.setState({ target: 'target-two' })} />
+        </SpotlightManager>
       );
-    });
+    }
+  }
+  const wrapper = mount(<SpotlightDemo />);
+  wrapper.find(NextButton).simulate('click');
+  const clone = wrapper.find(Clone);
+  expect(clone).toHaveLength(1);
+  expect(ref).toHaveBeenCalledWith(clone.prop('targetNode'));
+});
+
+test('should be able to render a SpotlightTarget without SpotlightManager', () => {
+  expect(() =>
+    mount(
+      <SpotlightTarget name="target">
+        <div>Hi</div>
+      </SpotlightTarget>,
+    ),
+  ).not.toThrowError();
+});
+
+test('should be able to render a Spotlight without SpotlightManager', () => {
+  expect(() =>
+    mount(
+      <Spotlight>
+        <div>Hi</div>
+      </Spotlight>,
+    ),
+  ).not.toThrowError();
+});
+
+test('should ensure key is set correctly on spotlight action', () => {
+  jest.spyOn(console, 'error').mockImplementation(e => {
+    throw new Error(e);
   });
-  describe.skip('spotlight', () => {
-    it('should render content', () => {
-      assertEqual(
-        <SpotlightManager>
-          <div>
-            <SpotlightTarget name="qux">
-              <span>qux</span>
-            </SpotlightTarget>
-            <Spotlight
-              header={() => <span>foo</span>}
-              footer={() => <span>baz</span>}
-              target="qux"
-            >
-              <span>bar</span>
-            </Spotlight>
-          </div>
-        </SpotlightManager>,
-        // should equal
-        <div>
-          <span>foo</span>
-          <span>bar</span>
-          <span>baz</span>
-        </div>,
-      );
-    });
-    it('should render SpotlightTarget in Spotlight', () => {
-      assertEqual(
-        <SpotlightManager>
-          <div>
-            <section>
-              <Spotlight target="foo">
-                <span>dialog</span>
-              </Spotlight>
-            </section>
-            <SpotlightTarget name="foo">
-              <span>target</span>
-            </SpotlightTarget>
-          </div>
-        </SpotlightManager>,
-        // should equal
-        <div>
-          <section>
-            <span>dialog</span>
-          </section>
-          <span>target</span>
-        </div>,
-      );
-    });
-  });
+  expect(() =>
+    mount(
+      <SpotlightManager>
+        <SpotlightTarget name="target">
+          <div>target</div>
+        </SpotlightTarget>
+        <Spotlight
+          target="target"
+          actions={[
+            { text: <p>Got it</p>, key: 'got-it' },
+            { text: <p>Cancel</p>, key: 'cancel' },
+          ]}
+        >
+          Check this out
+        </Spotlight>
+      </SpotlightManager>,
+    ),
+  ).not.toThrowError();
 });

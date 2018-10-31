@@ -52,6 +52,8 @@ export default createSchema({
     'layoutColumn',
     'inlineCard',
     'blockCard',
+    'unsupportedBlock',
+    'unsupportedInline',
   ],
   marks: [
     'em',

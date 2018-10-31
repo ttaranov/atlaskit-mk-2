@@ -2,6 +2,7 @@ import * as React from 'react';
 import Context from '../Context';
 import { Client, ObjectState } from '../Client';
 import { v4 } from 'uuid';
+import { Provider } from '../Provider';
 
 export interface WithObjectRenderProps {
   state: ObjectState;
@@ -115,7 +116,10 @@ export function WithObject(props: WithObjectProps) {
   return (
     <Context.Consumer>
       {clientFromContext => {
-        const client = clientFromProps || clientFromContext;
+        // TODO: Remove the last fallback - this is a temporary workaround for React context not penetrating the <Editor />
+        //       https://product-fabric.atlassian.net/browse/ED-5565
+        const client =
+          clientFromProps || clientFromContext || Provider.defaultClient;
         if (!client) {
           throw new Error(
             '@atlaskit/smart-card: No client provided. Provide a client like <Card client={new Client()} url=""/> or <Provider client={new Client()}><Card url=""/></Provider>.',
