@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.11
+- [patch] [0e0a126](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e0a126):
+
+  - Fixed cursor when adding hyperlink on existing piece of text using Cmd-K
+
 ## 87.6.10
 - [patch] [941a687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/941a687):
 
