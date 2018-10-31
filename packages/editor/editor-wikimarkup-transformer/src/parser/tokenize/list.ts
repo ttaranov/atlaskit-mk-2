@@ -1,21 +1,26 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { getType as getListType, ListBuilder } from '../builder/list-builder';
 import { parseString } from '../text';
-import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
+import { normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType, TokenErrCallback } from './';
 import { parseNewlineOnly } from './whitespace';
+import { macro } from './macro';
 
-const LIST_ITEM_REGEXP = /^ *([*\-#]+) (.*)/;
-const NEWLINE = /\r?\n/;
+const LIST_ITEM_REGEXP = /^ *([*\-#]+) /;
+const EMPTY_LINE_REGEXP = /^[ \t]*\r?\n/;
+
+const processState = {
+  NEW_LINE: 0,
+  BUFFER: 1,
+  END: 2,
+  MACRO: 3,
+};
 
 export function list(
   input: string,
   schema: Schema,
   tokenErrCallback?: TokenErrCallback,
 ): Token {
-  let index = 0;
-  const output: PMNode[] = [];
-
   /**
    * The following token types will be ignored in parsing
    * the content of a listItem
@@ -28,93 +33,179 @@ export function list(
     TokenType.RULER,
   ];
 
+  let index = 0;
+  let state = processState.NEW_LINE;
+  let buffer = '';
+  let lastListSymbols: string | null = null;
   let builder: ListBuilder | null = null;
-  let lineBuffer: string[] = [];
-  let preStyle: string = '';
-  for (const line of input.split(NEWLINE)) {
-    const match = line.match(LIST_ITEM_REGEXP);
+  let contentBuffer: PMNode[] = [];
+  const output: PMNode[] = [];
 
-    if (match) {
-      // This would be starting of a new list item
-      const [, style, rawContent] = match;
+  while (index < input.length) {
+    const char = input.charAt(index);
 
-      if (!builder) {
-        // This is the first list item
-        builder = new ListBuilder(schema, style);
+    switch (state) {
+      case processState.NEW_LINE: {
+        const substring = input.substring(index);
+        const listMatch = substring.match(LIST_ITEM_REGEXP);
+        if (listMatch) {
+          const [, symbols] = listMatch;
+          if (!builder) {
+            /**
+             * It happens because this is the first item of the list
+             */
+            builder = new ListBuilder(schema, symbols);
+            lastListSymbols = symbols;
+          } else {
+            /**
+             * There is a builder, so we are in the middle of building a list
+             * and now there is a new list item
+             */
+            if (buffer.length > 0) {
+              /** Wrap up previous list item and clear buffer */
+              const content = parseString(
+                buffer,
+                schema,
+                ignoreTokenTypes,
+                tokenErrCallback,
+              );
+              const normalizedContent = normalizePMNodes(content, schema);
+              contentBuffer.push(...normalizedContent);
+              builder.add([
+                {
+                  style: lastListSymbols,
+                  content: sanitize(contentBuffer, schema),
+                },
+              ]);
+              buffer = '';
+              contentBuffer = [];
+            }
+
+            /** We finished last list item here, going to the new one */
+            lastListSymbols = symbols;
+            const type = getListType(symbols);
+            /** If it's top level and doesn't match, create a new list */
+            if (type !== builder.type && symbols.length === 1) {
+              output.push(...builder.buildPMNode());
+              builder = new ListBuilder(schema, symbols);
+            }
+          }
+
+          index += listMatch[0].length;
+        }
+
+        /**
+         * If we encounter an empty line, we should end the list
+         */
+        const emptyLineMatch = substring.match(EMPTY_LINE_REGEXP);
+        if (emptyLineMatch) {
+          state = processState.END;
+          continue;
+        }
+
+        state = processState.BUFFER;
+        continue;
       }
+      case processState.BUFFER: {
+        const length = parseNewlineOnly(input.substring(index));
+        if (length) {
+          buffer += input.substr(index, length);
+          state = processState.NEW_LINE;
+          index += length;
+          continue;
+        }
 
-      if (lineBuffer.length > 0) {
-        // Wrap up previous node and empty lineBuffer
-        const content = parseString(
-          lineBuffer.join('\n'),
-          schema,
-          ignoreTokenTypes,
-          tokenErrCallback,
-        );
-        const normalizedContent = normalizePMNodes(content, schema);
+        if (char === '{') {
+          state = processState.MACRO;
+          continue;
+        } else {
+          buffer += char;
+        }
+        break;
+      }
+      case processState.MACRO: {
+        const token = macro(input.substring(index), schema);
+        if (token.type === 'text') {
+          buffer += token.text;
+        } else {
+          /**
+           * We found a macro in the list...
+           */
+          if (!builder) {
+            /** Something is really wrong here */
+            return fallback(input);
+          }
+          if (buffer.length > 0) {
+            /**
+             * Wrapup what is already in the string buffer and save it to
+             * contentBuffer
+             */
+            const content = parseString(
+              buffer,
+              schema,
+              ignoreTokenTypes,
+              tokenErrCallback,
+            );
+            const normalizedContent = normalizePMNodes(content, schema);
+            contentBuffer.push(...sanitize(normalizedContent, schema));
+            buffer = '';
+          }
+
+          const normalizedContent = normalizePMNodes(token.nodes, schema);
+          contentBuffer.push(...sanitize(normalizedContent, schema));
+        }
+        index += token.length;
+        state = processState.BUFFER;
+        continue;
+      }
+      case processState.END: {
+        if (!builder) {
+          /** Something is really wrong here */
+          return fallback(input);
+        }
+
+        if (buffer.length > 0) {
+          /** Wrap up previous list item and clear buffer */
+          const content = parseString(
+            buffer,
+            schema,
+            ignoreTokenTypes,
+            tokenErrCallback,
+          );
+          const normalizedContent = normalizePMNodes(content, schema);
+          contentBuffer.push(...normalizedContent);
+        }
+
         builder.add([
-          { style: preStyle, content: sanitize(normalizedContent, schema) },
+          { style: lastListSymbols, content: sanitize(contentBuffer, schema) },
         ]);
-        lineBuffer = [];
-      }
-
-      const type = getListType(style);
-      preStyle = style;
-      // If it's top level and doesn't match, create a new list
-      if (type !== builder.type && style.length === 1) {
         output.push(...builder.buildPMNode());
-        builder = new ListBuilder(schema, style);
+        return {
+          type: 'pmnode',
+          nodes: output,
+          length: index,
+        };
       }
-
-      lineBuffer.push(rawContent);
-      index += line.length;
-      // Finding the length of the line break at the end of this line
-      const length = parseNewlineOnly(input.substring(index));
-      if (length) {
-        index += length;
-      }
-      continue;
     }
-
-    if (!isNextLineEmpty(line)) {
-      lineBuffer.push(line);
-      index += line.length;
-      // Finding the length of the line break at the end of this line
-      const length = parseNewlineOnly(input.substring(index));
-      if (length) {
-        index += length;
-      }
-      continue;
-    }
-
-    /**
-     * When we reach here, it means its an empty line,
-     * so we would break out of the list builder
-     */
-
-    index += line.length;
-    // Finding the length of the line break
-    const lengthOfLineBreak = parseNewlineOnly(input.substring(index));
-    if (lengthOfLineBreak) {
-      index += lengthOfLineBreak;
-    }
-    break;
+    index++;
   }
 
-  if (builder && lineBuffer.length > 0) {
-    // Wrap up previous node and empty lineBuffer
+  if (buffer.length > 0) {
+    /** Wrap up what's left in the buffer */
     const content = parseString(
-      lineBuffer.join('\n'),
+      buffer,
       schema,
       ignoreTokenTypes,
       tokenErrCallback,
     );
     const normalizedContent = normalizePMNodes(content, schema);
-    builder.add([
-      { style: preStyle, content: sanitize(normalizedContent, schema) },
-    ]);
+    contentBuffer.push(...normalizedContent);
   }
+
   if (builder) {
+    builder.add([
+      { style: lastListSymbols, content: sanitize(contentBuffer, schema) },
+    ]);
     output.push(...builder.buildPMNode());
   }
 
@@ -166,4 +257,12 @@ function sanitize(nodes: PMNode[], schema: Schema) {
     }
     return result;
   }, []);
+}
+
+function fallback(input: string): Token {
+  return {
+    type: 'text',
+    text: input.substr(0, 1),
+    length: length,
+  };
 }
