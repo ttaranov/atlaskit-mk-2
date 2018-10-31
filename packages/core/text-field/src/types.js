@@ -14,8 +14,6 @@ export type InputProps = {
   isDisabled?: boolean,
   /** Sets styling to indicate that the input is focused. */
   isFocused?: boolean,
-  /** Sets styling to indicate that the input is invalid. */
-  isInvalid?: boolean,
   /** Sets content text value to monospace */
   isMonospaced?: boolean,
   /** If true, prevents the value of the input from being edited. */

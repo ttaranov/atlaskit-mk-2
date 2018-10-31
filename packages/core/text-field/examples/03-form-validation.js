@@ -2,7 +2,7 @@
 
 import React, { Component, type ElementRef } from 'react';
 import Button from '@atlaskit/button';
-import Form, { Field, FormHeader } from '@atlaskit/form';
+import Form, { Field, FormHeader, Validator } from '@atlaskit/form';
 import TextField from '../src';
 
 const iframeStyles = {
@@ -17,6 +17,11 @@ const iframeStyles = {
 };
 
 type Props = {};
+
+function openSesame(value) {
+  if (value === 'open sesame') return true;
+  else return false;
+}
 
 export default class extends Component<Props> {
   formRef: ElementRef<*>;
@@ -53,8 +58,18 @@ export default class extends Component<Props> {
           target="submitFrame"
         >
           <FormHeader title="Validation" />
-          <Field>
-            <TextField name="valid-text" />
+          <Field
+            label="Only validates on input = open sesame"
+            isRequired
+            validators={[
+              <Validator
+                func={openSesame}
+                invalid="Incorrect, try 'open sesame'"
+                valid="Your wish granted"
+              />,
+            ]}
+          >
+            <TextField name="command" />
           </Field>
         </Form>
         <p>The data submitted by the form will appear below:</p>

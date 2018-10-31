@@ -73,7 +73,22 @@ class TextField extends Component<TextFieldProps, State> {
 
   render() {
     const { isFocused } = this.state;
-    const { size, forwardedRef, input: Input, ...rest } = this.props;
+    const {
+      size,
+      forwardedRef,
+      input: Input,
+      // Start of redundant props (mostly from 'form field').
+      isInvalid,
+      invalidMessage,
+      isLabelHidden,
+      isValidationHidden,
+      validationMessage,
+      validationState,
+      onUpdate,
+      createAnalyticsEvent,
+      // End of redundant props.
+      ...rest
+    } = this.props;
 
     return (
       <Wrapper size={size}>
