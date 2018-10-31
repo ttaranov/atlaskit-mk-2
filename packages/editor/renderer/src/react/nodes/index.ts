@@ -208,7 +208,7 @@ export const mergeTextNodes = (nodes: (Node | NodeSimple)[]) => {
     }
 
     // Append node to previous node, if it was a text wrapper
-    if (acc.length > 0 && isTextWrapper(acc[acc.length - 1].type.name)) {
+    if (acc.length > 0 && isTextWrapper(acc[acc.length - 1])) {
       (acc[acc.length - 1] as TextWrapper).content!.push(current as Node);
     } else {
       acc.push({
@@ -227,8 +227,10 @@ export const isText = (type: string): type is 'text' => {
   return type === 'text';
 };
 
-export const isTextWrapper = (type: string): type is 'textWrapper' => {
-  return type === 'textWrapper';
+export const isTextWrapper = (
+  node: Node | TextWrapper | NodeSimple,
+): node is TextWrapper => {
+  return node.type.name === 'textWrapper';
 };
 
 const whitespaceRegex = /^\s*$/;

@@ -7,7 +7,7 @@ import {
   ExtensionLayout,
   WidthConsumer,
 } from '@atlaskit/editor-common';
-import { calcExtensionWidth } from '@atlaskit/editor-common';
+import { calcBreakoutWidth } from '@atlaskit/editor-common';
 import { RendererCssClassName } from '../../consts';
 
 export interface Props {
@@ -27,7 +27,7 @@ export const renderExtension = (content: any, layout: string) => (
       <div
         className={RendererCssClassName.EXTENSION}
         style={{
-          width: calcExtensionWidth(layout, width),
+          width: calcBreakoutWidth(layout, width),
         }}
         data-layout={layout}
       >

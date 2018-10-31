@@ -116,7 +116,6 @@ export default class Renderer extends PureComponent<Props, {}> {
         onComplete(stat);
       }
       const rendererOutput = (
-        // <Wrapper appearance={appearance}>{result}</Wrapper>
         <RendererWrapper
           appearance={appearance}
           dynamicTextSizing={allowDynamicTextSizing}
