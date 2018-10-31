@@ -60,6 +60,8 @@ export default class DatePicker extends React.Component<Props, State> {
       <PopupWithListeners
         target={element!}
         offset={[0, 8]}
+        fitHeight={327}
+        fitWidth={340}
         handleClickOutside={closeDatePicker}
         handleEscapeKeydown={closeDatePicker}
         zIndex={akEditorFloatingDialogZIndex}
