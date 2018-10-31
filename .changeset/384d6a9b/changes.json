@@ -1,0 +1,24 @@
+{
+  "releases": [{ "name": "@atlaskit/profilecard", "type": "major" }],
+  "dependents": [
+    {
+      "name": "@atlaskit/editor-common",
+      "type": "patch",
+      "dependencies": ["@atlaskit/profilecard"]
+    },
+    {
+      "name": "@atlaskit/editor-wikimarkup-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/renderer",
+        "@atlaskit/profilecard"
+      ]
+    },
+    {
+      "name": "@atlaskit/renderer",
+      "type": "patch",
+      "dependencies": ["@atlaskit/editor-common", "@atlaskit/profilecard"]
+    }
+  ]
+}
