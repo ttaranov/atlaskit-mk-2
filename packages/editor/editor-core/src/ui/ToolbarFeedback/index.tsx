@@ -180,9 +180,20 @@ export const getDeviceInfo = (nAgt, nVersion) => {
 type State = { isOpen: boolean; displayFlag: boolean };
 
 const EMBEDDABLE_KEY = 'b76a0ea3-48e9-4cfe-ba43-b004ec935dd0';
-const REQUEST_TYPE_ID = '173';
+const REQUEST_TYPE_ID = '176';
 // const name = 'Feedback Sender';
+
 // const email = 'fsender@atlassian.com';
+
+/*
+fields: [{id: "description", label: "Description",…}, {id: "customfield_11703", label: "Customer Name",…},…]
+0: {id: "description", label: "Description", value: {,…}}
+1: {id: "customfield_11703", label: "Customer Name",…}
+2: {id: "customfield_11704", label: "Feedback Context",…}
+3: {id: "customfield_11705", label: "Feedback Type", value: {text: "Leave a comment"}}
+4: {id: "customfield_11708", label: "Can be contacted", value: {text: "Yes"}}
+5: {id: "customfield_11709", label: "Can be researched", value: {text: "Yes"}}
+*/
 
 export default class ToolbarFeedback extends PureComponent<Props, State> {
   state = { isOpen: false, displayFlag: false };
@@ -208,6 +219,10 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
             // name={name}
             requestTypeId={REQUEST_TYPE_ID}
             embeddableKey={EMBEDDABLE_KEY}
+            customerNameFieldId={'customfield_11703'}
+            typeFiedlId={'customfield_11705'}
+            canBeContactedFieldId={'customfield_11708'}
+            enrollInResearchFieldId={'customfield_11709'}
           />
         )}
 
