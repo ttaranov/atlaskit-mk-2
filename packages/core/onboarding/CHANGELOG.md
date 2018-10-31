@@ -1,5 +1,10 @@
 # @atlaskit/onboarding
 
+## 6.1.4
+- [patch] [9f91ea0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f91ea0):
+
+  - Adds visual regression test for ie11
+
 ## 6.1.3
 - [patch] [4872a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4872a19):
 

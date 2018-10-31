@@ -74,3 +74,33 @@ export const Wrapper: ComponentClass<WrapperProps> = styled(Root)`
     }
   }
 `;
+
+export const PlayIconWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+  /* we want to override default icon size and hover state */
+  &:hover > * {
+    width: 64px;
+    height: 64px;
+  }
+
+  > * {
+    background: rgba(23, 43, 77, 0.7);
+    width: 56px;
+    height: 56px;
+    border-radius: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+  }
+`;

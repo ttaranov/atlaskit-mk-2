@@ -1,5 +1,10 @@
 # @atlaskit/website
 
+## 4.1.19
+- Updated dependencies [2da04ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2da04ed):
+  - @atlaskit/navigation@33.3.1
+  - @atlaskit/quick-search@5.0.0
+
 ## 4.1.18
 - [patch] Updated dependencies [e7bb74d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7bb74d)
   - @atlaskit/icon-object@1.0.4

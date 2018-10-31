@@ -1,8 +1,8 @@
 declare var global: any;
 
 class MockFileReader {
-  loadEvent: () => void = () => {};
-  errorEvent: ({}) => void = () => {};
+  loadEvent = () => {};
+  errorEvent = (_: {}) => {};
   result: string | null | ArrayBuffer;
 
   constructor(result: string | null | ArrayBuffer = 'mockResult') {
@@ -36,11 +36,11 @@ class MockFileReaderWithError extends MockFileReader {
   });
 }
 
-const GloblFileReader = global.FileReader;
+const GlobalFileReader = global.FileReader;
 
 const FileReader = jest
   .spyOn(global, 'FileReader')
-  .mockImplementation(() => new GloblFileReader());
+  .mockImplementation(() => new GlobalFileReader());
 
 const mockFileReader = (result: string | null | ArrayBuffer) => {
   const fileReader = new MockFileReader(result);
@@ -55,7 +55,7 @@ const mockFileReaderWithError = () => {
 };
 
 const unmockFileReader = () =>
-  FileReader.mockImplementation(() => new GloblFileReader());
+  FileReader.mockImplementation(() => new GlobalFileReader());
 
 export {
   mockFileReader,

@@ -1,5 +1,10 @@
 # @atlaskit/analytics-next
 
+## 3.0.11
+- [patch] [d903ab5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d903ab5):
+
+  - Updates list of instrumented components
+
 ## 3.0.10
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

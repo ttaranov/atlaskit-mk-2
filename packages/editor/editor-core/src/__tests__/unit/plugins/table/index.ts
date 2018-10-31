@@ -1,10 +1,5 @@
 import { CellSelection, TableMap } from 'prosemirror-tables';
-import {
-  selectRow,
-  selectColumn,
-  selectTable,
-  findTable,
-} from 'prosemirror-utils';
+import { selectRow, selectColumn, selectTable } from 'prosemirror-utils';
 import {
   doc,
   p,
@@ -26,7 +21,6 @@ import {
   sendKeyToPm,
   randomId,
 } from '@atlaskit/editor-test-helpers';
-import { TableLayout } from '@atlaskit/editor-common';
 import {
   pluginKey,
   getPluginState,
@@ -44,7 +38,6 @@ import {
   insertRow,
   deleteSelectedColumns,
   deleteSelectedRows,
-  setTableLayout,
 } from '../../../../plugins/table/actions';
 import {
   checkIfNumberColumnEnabled,
@@ -1031,87 +1024,6 @@ describe('table plugin', () => {
         doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
       );
       expect(checkIfHeaderRowEnabled(editorView.state)).toBe(false);
-      editorView.destroy();
-    });
-  });
-
-  describe('table layouts', () => {
-    it('should update the table node layout attribute', () => {
-      const { editorView } = editor(
-        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-
-      const nodeInitial = findTable(editorView.state.selection)!.node;
-      expect(nodeInitial).toBeDefined();
-      expect(nodeInitial!.attrs.layout).toBe('default');
-
-      setTableLayout('full-width')(editorView.state, editorView.dispatch);
-
-      const { node } = findTable(editorView.state.selection)!;
-
-      expect(node).toBeDefined();
-      expect(node!.attrs.layout).toBe('full-width');
-
-      editorView.destroy();
-    });
-
-    it('can set the data-layout attribute on the table DOM element', () => {
-      const { editorView } = editor(
-        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-
-      let tableElement = editorView.dom.querySelector('table');
-      expect(tableElement!.getAttribute('data-layout')).toBe('default');
-
-      setTableLayout('full-width')(editorView.state, editorView.dispatch);
-      tableElement = editorView.dom.querySelector('table');
-      expect(tableElement!.getAttribute('data-layout')).toBe('full-width');
-
-      editorView.destroy();
-    });
-
-    it('applies the initial data-layout attribute on the table DOM element', () => {
-      const { editorView } = editor(
-        doc(table({ layout: 'full-width' })(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-
-      const tables = editorView.dom.getElementsByTagName('table');
-      expect(tables.length).toBe(1);
-      const tableElement = tables[0];
-
-      expect(tableElement.getAttribute('data-layout')).toBe('full-width');
-
-      editorView.destroy();
-    });
-
-    ['default', 'wide', 'full-width'].forEach(nextLayout => {
-      describe(`when setTableLayout(${nextLayout}) is called`, () => {
-        it(`should set table layout attribute to ${nextLayout}`, () => {
-          const { editorView } = editor(
-            doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
-          );
-          setTableLayout(nextLayout as TableLayout)(
-            editorView.state,
-            editorView.dispatch,
-          );
-          const { tableNode } = getPluginState(editorView.state);
-          expect(tableNode.attrs.layout).toBe(nextLayout);
-          editorView.destroy();
-        });
-      });
-    });
-
-    it('applies the initial data-layout attribute on the table DOM element', () => {
-      const { editorView } = editor(
-        doc(table({ layout: 'full-width' })(tr(tdCursor, tdEmpty, tdEmpty))),
-      );
-
-      const tables = editorView.dom.getElementsByTagName('table');
-      expect(tables.length).toBe(1);
-      const tableElement = tables[0];
-
-      expect(tableElement.getAttribute('data-layout')).toBe('full-width');
-
       editorView.destroy();
     });
   });

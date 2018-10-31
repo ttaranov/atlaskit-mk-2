@@ -1,7 +1,15 @@
 import Select from '@atlaskit/select';
 import * as debounce from 'lodash.debounce';
 import * as React from 'react';
-import { InputActionTypes, LoadOptions, OnChange, User } from '../types';
+import {
+  InputActionTypes,
+  LoadOptions,
+  OnChange,
+  OnInputChange,
+  OnPicker,
+  OnUser,
+  User,
+} from '../types';
 import { batchByKey } from './batch';
 import { getComponents } from './components';
 import { getStyles } from './styles';
@@ -22,6 +30,11 @@ export type Props = {
   anchor?: React.ComponentType<any>;
   open?: boolean;
   isLoading?: boolean;
+  onInputChange?: OnInputChange;
+  onSelection?: OnUser;
+  onFocus?: OnPicker;
+  onBlur?: OnPicker;
+  blurInputOnSelect?: boolean;
 };
 
 export type State = {
@@ -67,9 +80,12 @@ export class UserPicker extends React.PureComponent<Props, State> {
   });
 
   private handleChange = (value, { action }) => {
-    const { onChange } = this.props;
+    const { onChange, onSelection } = this.props;
     if (onChange) {
       onChange(extractUserValue(value), action);
+    }
+    if (action === 'select-option' && onSelection) {
+      onSelection(value.user);
     }
   };
 
@@ -97,6 +113,13 @@ export class UserPicker extends React.PureComponent<Props, State> {
     },
   );
 
+  private handleBlur = () => {
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur();
+    }
+  };
+
   private executeLoadOptions = debounce((search?: string) => {
     const { loadUsers } = this.props;
     if (loadUsers) {
@@ -123,14 +146,22 @@ export class UserPicker extends React.PureComponent<Props, State> {
   }, 200);
 
   private handleFocus = () => {
+    const { onFocus } = this.props;
     this.executeLoadOptions();
+    if (onFocus) {
+      onFocus();
+    }
   };
 
   private handleInputChange = (
     search: string,
     { action }: { action: InputActionTypes },
   ) => {
+    const { onInputChange } = this.props;
     if (action === 'input-change') {
+      if (onInputChange) {
+        onInputChange(search);
+      }
       this.executeLoadOptions(search);
     }
   };
@@ -160,6 +191,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
       anchor,
       users,
       isLoading,
+      blurInputOnSelect,
     } = this.props;
     const { users: usersFromState, count } = this.state;
     return (
@@ -176,6 +208,9 @@ export class UserPicker extends React.PureComponent<Props, State> {
         onFocus={this.handleFocus}
         isLoading={count > 0 || isLoading}
         onInputChange={this.handleInputChange}
+        onBlur={this.handleBlur}
+        blurInputOnSelect={blurInputOnSelect}
+        menuPlacement="auto"
       />
     );
   }

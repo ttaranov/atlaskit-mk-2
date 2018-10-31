@@ -29,6 +29,7 @@ import {
   handleToggleContextualMenu,
   handleShowInsertColumnButton,
   handleShowInsertRowButton,
+  handleHideInsertColumnOrRowButton,
 } from '../../../../plugins/table/action-handlers';
 import { TableDecorations } from '../../../../plugins/table/types';
 
@@ -116,8 +117,6 @@ describe('table action handlers', () => {
         dangerRows: [1, 2, 3],
         isTableInDanger: true,
         isTableHovered: true,
-        insertColumnButtonIndex: 4,
-        insertRowButtonIndex: 2,
       };
       const newState = handleClearSelection(pluginState, dispatch);
       expect(newState).toEqual({
@@ -331,6 +330,21 @@ describe('table action handlers', () => {
       expect(newState).toEqual({
         ...pluginState,
         insertRowButtonIndex,
+      });
+    });
+  });
+  describe('#handleHideInsertColumnOrRowButton', () => {
+    it('should return a new state with insertColumnButtonIndex and insertRowButtonIndex set to undefined', () => {
+      const pluginState = {
+        ...defaultPluginState,
+        insertColumnButtonIndex: 1,
+        insertRowButtonIndex: 1,
+      };
+      const newState = handleHideInsertColumnOrRowButton(pluginState, dispatch);
+      expect(newState).toEqual({
+        ...pluginState,
+        insertColumnButtonIndex: undefined,
+        insertRowButtonIndex: undefined,
       });
     });
   });

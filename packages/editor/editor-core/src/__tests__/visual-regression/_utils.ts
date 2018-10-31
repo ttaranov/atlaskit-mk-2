@@ -112,6 +112,10 @@ export const getSelectorForTableCell = ({
   return `${rowSelector} > ${cellType}:nth-child(${cell})`;
 };
 
+export const getSelectorForTableRow = (row: number) => {
+  return `table tr:nth-child(${row})`;
+};
+
 export const insertMenuSelector = `span[aria-label="${
   insertBlockMessages.insertMenu.defaultMessage
 }"]`;

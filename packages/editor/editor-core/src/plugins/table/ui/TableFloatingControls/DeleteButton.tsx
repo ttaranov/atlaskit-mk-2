@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { TableCssClassName as ClassName } from '../../types';
-import tableMessages from '../messages';
+import { MessageDescriptor } from '../../../../types/i18n';
 
 export interface ButtonProps {
+  removeLabel: MessageDescriptor;
   style?: object;
   onClick?: () => void;
   onMouseEnter?: (SyntheticEvent) => void;
@@ -15,6 +16,7 @@ const DeleteButton = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  removeLabel,
   intl: { formatMessage },
 }: ButtonProps & InjectedIntlProps) => (
   <div
@@ -25,7 +27,7 @@ const DeleteButton = ({
   >
     <button
       type="button"
-      title={formatMessage(tableMessages.removeColumns, { 0: 1 })}
+      title={formatMessage(removeLabel, { 0: 1 })}
       className={ClassName.CONTROLS_DELETE_BUTTON}
       onClick={onClick}
       onMouseMove={e => e.preventDefault()}

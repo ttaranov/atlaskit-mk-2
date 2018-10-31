@@ -1,5 +1,10 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.22
+- [patch] [674b3d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/674b3d9):
+
+  - convert unknow macros to plain text
+
 ## 2.1.21
 - [patch] [c6763e2"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6763e2"
