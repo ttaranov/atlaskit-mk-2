@@ -126,7 +126,8 @@ exports[`navigation-next view renderer SortableGroup should render the SortableG
   heading="Sortable Group"
   id="sortable-group"
 >
-  <ItemsRenderer
+  <RenderBlocker
+    blockOnChange={false}
     items={
       Array [
         Object {
@@ -146,7 +147,29 @@ exports[`navigation-next view renderer SortableGroup should render the SortableG
         },
       ]
     }
-  />
+  >
+    <ItemsRenderer
+      items={
+        Array [
+          Object {
+            "id": "backlog",
+            "text": "Backlog",
+            "type": "SortableItem",
+          },
+          Object {
+            "id": "active-sprints",
+            "text": "Active sprints",
+            "type": "SortableItem",
+          },
+          Object {
+            "id": "issues",
+            "text": "Issues",
+            "type": "SortableItem",
+          },
+        ]
+      }
+    />
+  </RenderBlocker>
 </SortableGroup>
 `;
 

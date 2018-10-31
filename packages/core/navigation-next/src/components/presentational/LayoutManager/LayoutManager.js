@@ -38,6 +38,7 @@ import {
   GLOBAL_NAV_WIDTH,
   FLYOUT_DELAY,
 } from '../../../common/constants';
+import RenderBlocker from '../../common/RenderBlocker';
 import { LayoutEventListener } from './LayoutEvent';
 
 type RenderContentNavigationArgs = {
@@ -49,7 +50,7 @@ type RenderContentNavigationArgs = {
 type State = {
   flyoutIsOpen: boolean,
   mouseIsOverNavigation: boolean,
-  isItemDragging: boolean,
+  itemIsDragging: boolean,
 };
 
 function defaultTooltipContent(isCollapsed: boolean) {
@@ -131,7 +132,7 @@ export default class LayoutManager extends Component<
   state = {
     flyoutIsOpen: false,
     mouseIsOverNavigation: false,
-    isItemDragging: false,
+    itemIsDragging: false,
   };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
@@ -203,11 +204,11 @@ export default class LayoutManager extends Component<
   };
 
   onItemDragStart = () => {
-    this.setState({ isItemDragging: true });
+    this.setState({ itemIsDragging: true });
   };
 
   onItemDragEnd = () => {
-    this.setState({ isItemDragging: false });
+    this.setState({ itemIsDragging: false });
   };
 
   renderGlobalNavigation = () => {
@@ -299,7 +300,7 @@ export default class LayoutManager extends Component<
 
   renderNavigation = () => {
     const { navigationUIController, experimental_flyoutOnHover } = this.props;
-    const { flyoutIsOpen, mouseIsOverNavigation, isItemDragging } = this.state;
+    const { flyoutIsOpen, mouseIsOverNavigation, itemIsDragging } = this.state;
     const {
       isCollapsed,
       isResizeDisabled,
@@ -355,7 +356,7 @@ export default class LayoutManager extends Component<
                     experimental_flyoutOnHover={experimental_flyoutOnHover}
                     isDisabled={isResizeDisabled}
                     flyoutIsOpen={flyoutIsOpen}
-                    isGrabAreaDisabled={isItemDragging}
+                    isGrabAreaDisabled={itemIsDragging}
                     mouseIsOverNavigation={mouseIsOverNavigation}
                     mutationRefs={[
                       { ref: this.pageRef, property: 'padding-left' },
@@ -372,16 +373,21 @@ export default class LayoutManager extends Component<
                           : null;
                       return (
                         <ContainerNavigationMask
-                          isItemDragging={isItemDragging}
+                          disableInteraction={itemIsDragging}
                           onMouseOver={onMouseOver}
                         >
-                          {this.renderGlobalNavigation()}
-                          {this.renderContentNavigation({
-                            isDragging,
-                            transitionState,
-                            transitionStyle,
-                            width,
-                          })}
+                          <RenderBlocker
+                            blockOnChange
+                            itemIsDragging={itemIsDragging}
+                          >
+                            {this.renderGlobalNavigation()}
+                            {this.renderContentNavigation({
+                              isDragging,
+                              transitionState,
+                              transitionStyle,
+                              width,
+                            })}
+                          </RenderBlocker>
                         </ContainerNavigationMask>
                       );
                     }}

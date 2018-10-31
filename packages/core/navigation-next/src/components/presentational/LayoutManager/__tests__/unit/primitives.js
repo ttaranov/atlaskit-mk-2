@@ -13,8 +13,8 @@ describe('LayoutManager primitives', () => {
       expect(wrapper).toMatchSnapshot();
     });
 
-    it('should set pointerEvents to none while dragging', () => {
-      const wrapper = shallow(<ContainerNavigationMask isItemDragging />);
+    it('should set pointerEvents to none when interaction is disabled', () => {
+      const wrapper = shallow(<ContainerNavigationMask disableInteraction />);
 
       expect(wrapper).toMatchSnapshot();
     });

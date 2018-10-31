@@ -5,6 +5,8 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
 
+import RenderBlocker from '../components/common/RenderBlocker';
+
 import ContainerHeaderComponent from '../components/presentational/ContainerHeader';
 import GroupComponent from '../components/presentational/Group';
 import GroupHeadingComponent from '../components/presentational/GroupHeading';
@@ -104,7 +106,9 @@ const SortableGroup = ({
       hasSeparator={hasSeparator}
       id={id}
     >
-      <ItemsRenderer items={items} customComponents={customComponents} />
+      <RenderBlocker items={items} customComponents={customComponents}>
+        <ItemsRenderer items={items} customComponents={customComponents} />
+      </RenderBlocker>
     </SortableGroupComponent>
   ) : null;
 

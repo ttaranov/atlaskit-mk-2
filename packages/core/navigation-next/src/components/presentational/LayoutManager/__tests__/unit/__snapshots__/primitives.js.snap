@@ -18,7 +18,7 @@ exports[`LayoutManager primitives ContainerNavigationMask should render correctl
 />
 `;
 
-exports[`LayoutManager primitives ContainerNavigationMask should set pointerEvents to none while dragging 1`] = `
+exports[`LayoutManager primitives ContainerNavigationMask should set pointerEvents to none when interaction is disabled 1`] = `
 .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -30,6 +30,10 @@ exports[`LayoutManager primitives ContainerNavigationMask should set pointerEven
   overflow: hidden;
   height: 100%;
   pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 <div

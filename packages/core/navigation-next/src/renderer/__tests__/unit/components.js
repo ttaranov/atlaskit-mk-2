@@ -292,6 +292,47 @@ describe('navigation-next view renderer', () => {
         items,
       });
     });
+
+    it('should block render of the items unless `items` or `customComponents` have changed', () => {
+      const customComponents = { foo: () => null };
+      // We cannot setProps on non-root instance, so create render prop component to allow us to change
+      const Harness = ({ rootItems, children }: any) => children({ rootItems });
+      // Need to render sortable section for react-beautiful-dnd to work when mounting
+      const wrapper = mount(
+        <Harness rootItems={items}>
+          {({ rootItems }) => (
+            <SortableSectionComponent onDragEnd={() => {}}>
+              {({ className }) => (
+                <div className={className}>
+                  <SortableGroup
+                    customComponents={customComponents}
+                    id="sortable-group"
+                    heading="Sortable Group"
+                    items={rootItems}
+                  />,
+                </div>
+              )}
+            </SortableSectionComponent>
+          )}
+        </Harness>,
+      );
+
+      const renderSpy = jest.spyOn(
+        // Can only retrieve a child instance if mounting instead of shallowing
+        wrapper.find(ItemsRenderer).instance(),
+        'render',
+      );
+
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+
+      wrapper.setProps({ rootItems: items });
+
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+
+      wrapper.setProps({ rootItems: [...items] });
+
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('ItemsRenderer', () => {
