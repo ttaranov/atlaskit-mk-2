@@ -6,8 +6,8 @@ import Spinner from '@atlaskit/spinner';
 import { externalContent, spinnerWrapper } from './styles';
 import addParamToUrl from '../../add-param-to-url';
 
+export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 type Props = {|
-  externalContentUrl: string,
   locale?: string,
   product?: string,
 |};
@@ -51,8 +51,8 @@ class NotificationDrawer extends Component<Props, State> {
   };
 
   render() {
-    const { externalContentUrl, locale, product } = this.props;
-    let drawerUrl = externalContentUrl;
+    const { locale, product } = this.props;
+    let drawerUrl = CONTENT_URL;
     drawerUrl = locale ? addParamToUrl(drawerUrl, 'locale', locale) : drawerUrl;
     drawerUrl = product
       ? addParamToUrl(drawerUrl, 'product', product)

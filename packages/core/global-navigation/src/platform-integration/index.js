@@ -1,3 +1,5 @@
 // @flow
 
-export { default as notificationIntegration } from './notification';
+export {
+  default,
+} from './notification/components/notification-drawer-contents';

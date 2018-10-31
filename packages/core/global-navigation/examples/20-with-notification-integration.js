@@ -1,53 +1,98 @@
 // @flow
 
 import React, { Component } from 'react';
+import fetchMock from 'fetch-mock';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
+import Button from '@atlaskit/button';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
-import { NotificationLogClient } from '@atlaskit/notification-log-client';
 
 import GlobalNavigation from '../src';
 
 const fabricNotificationLogUrl = '/gateway/api/notification-log/';
 const cloudId = 'DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b';
 
-const count = 8;
+const Global = ({
+  resetNotificationCount,
+}: {
+  resetNotificationCount: () => void,
+}) => (
+  <GlobalNavigation
+    productIcon={EmojiAtlassianIcon}
+    productHref="#"
+    fabricNotificationLogUrl={fabricNotificationLogUrl}
+    onNotificationDrawerClose={() => {
+      // setTimeout is required to let the drawer close animation end in the example.
+      setTimeout(resetNotificationCount, 350);
+    }}
+    cloudId={cloudId}
+  />
+);
 
-class MockNotificationLogClient extends NotificationLogClient {
-  countUnseenNotifications = () => Promise.resolve({ count });
-}
+// Need two components because both have state
+// eslint-disable-next-line react/no-multi-comp
+export default class GlobalNavigationWithNotificationIntegration extends Component<
+  {},
+  { count: number },
+> {
+  state = { count: 5 };
 
-// TODO: make onClicks targets show up on page instead of console.logs
-class Global extends Component<*, *> {
-  notificationClient: any;
-
-  constructor() {
-    super();
-    this.notificationClient = new MockNotificationLogClient(
-      fabricNotificationLogUrl,
-      cloudId,
+  componentDidMount() {
+    const { count } = this.state;
+    fetchMock.mock(
+      new RegExp(fabricNotificationLogUrl),
+      Promise.resolve({ count }),
     );
   }
+
+  componentDidUpdate() {
+    const { count } = this.state;
+    fetchMock.restore();
+    fetchMock.mock(
+      new RegExp(fabricNotificationLogUrl),
+      Promise.resolve({ count }),
+    );
+  }
+
+  componentWillUnmount() {
+    fetchMock.restore();
+  }
+
+  resetNotificationCount = () => {
+    this.setState({
+      count: 0,
+    });
+  };
+
+  randomiseNotificationCount = () => {
+    this.setState({
+      count: Math.floor(1 + Math.random() * 18), // To ensure equal probability of count above and below 9
+    });
+  };
 
   render() {
     return (
-      <GlobalNavigation
-        productIcon={EmojiAtlassianIcon}
-        productHref="#"
-        fabricNotificationLogUrl={fabricNotificationLogUrl}
-        cloudId={cloudId}
-      />
+      <NavigationProvider>
+        <LayoutManager
+          globalNavigation={() => (
+            <Global resetNotificationCount={this.resetNotificationCount} />
+          )}
+          productNavigation={() => null}
+          containerNavigation={() => null}
+        >
+          <div css={{ padding: '32px 40px' }}>
+            <p>
+              <Button onClick={this.randomiseNotificationCount}>
+                Randomise Notification Count
+              </Button>
+            </p>
+            <p>
+              <Button onClick={this.resetNotificationCount}>
+                Reset Notification Count
+              </Button>
+            </p>
+          </div>
+        </LayoutManager>
+      </NavigationProvider>
     );
   }
 }
-
-export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={Global}
-      productNavigation={() => null}
-      containerNavigation={() => null}
-    >
-      <div css={{ padding: '32px 40px' }}>Page content</div>
-    </LayoutManager>
-  </NavigationProvider>
-);

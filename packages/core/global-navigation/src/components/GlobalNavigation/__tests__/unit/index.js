@@ -247,7 +247,7 @@ describe('GlobalNavigation', () => {
             const wrapper = mount(<GlobalNavigation {...props} />);
 
             wrapper.setProps({
-              isSearchDrawerOpen: false,
+              [`is${capitalisedName}DrawerOpen`]: false,
             });
             wrapper.update();
             escKeyDown();
@@ -581,49 +581,47 @@ describe('GlobalNavigation', () => {
       ).toBeFalsy();
     });
 
-    it('should poll for notification every 180 seconds when there is no badge', () => {
+    it('should poll for notification every 1 minute when there is no badge', () => {
       const wrapper = mount(
         <GlobalNavigation
           product="jira"
           locale="en"
           fabricNotificationLogUrl={fabricNotificationLogUrl}
           cloudId={cloudId}
-          notificationDrawerContents={DrawerContents}
         />,
       );
 
       wrapper.setState({
-        notificationBadgeCount: 5,
+        notificationCount: 5,
       });
       wrapper.update();
 
       wrapper.setState({
-        notificationBadgeCount: 0,
+        notificationCount: 0,
       });
       wrapper.update();
       expect(wrapper.find('NotificationIndicator').props().refreshRate).toEqual(
-        180000,
+        60000,
       );
     });
 
-    it('should poll for notification every 60 seconds when there is a badge', () => {
+    it('should poll for notification every 3 minutes when there is a badge', () => {
       const wrapper = mount(
         <GlobalNavigation
           product="jira"
           locale="en"
           fabricNotificationLogUrl={fabricNotificationLogUrl}
           cloudId={cloudId}
-          notificationDrawerContents={DrawerContents}
         />,
       );
 
       wrapper.update();
       wrapper.setState({
-        notificationBadgeCount: 5,
+        notificationCount: 5,
       });
 
       expect(wrapper.find('NotificationIndicator').props().refreshRate).toEqual(
-        60000,
+        180000,
       );
     });
   });

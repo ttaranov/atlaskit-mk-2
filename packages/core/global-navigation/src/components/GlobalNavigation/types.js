@@ -62,7 +62,7 @@ export type GlobalNavDrawerProps = {
   onNotificationDrawerClose?: () => void,
 
   locale?: string,
-  product?: string,
+  product?: 'jira' | 'confluence',
   fabricNotificationLogUrl?: string,
   cloudId?: string,
 

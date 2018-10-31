@@ -3,6 +3,8 @@
 import React, { Component, Fragment } from 'react';
 import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { NotificationIndicator } from '@atlaskit/notification-indicator';
+import { NotificationLogClient } from '@atlaskit/notification-log-client';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
 import {
@@ -14,11 +16,10 @@ import generateProductConfig from '../../config/product-config';
 import ItemComponent from '../ItemComponent';
 import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
-import { notificationIntegration } from '../../platform-integration';
+import NotificationDrawerContents from '../../platform-integration';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
-import type { NotificationIntegration } from '../../platform-integration/notification/types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
@@ -56,7 +57,7 @@ type GlobalNavigationState = {
   isSearchDrawerOpen: boolean,
   isNotificationDrawerOpen: boolean,
   isStarredDrawerOpen: boolean,
-  notificationBadgeCount: number,
+  notificationCount: number,
   isCreateDrawerOpen: boolean,
   isSearchDrawerOpen: boolean,
   isNotificationDrawerOpen: boolean,
@@ -76,7 +77,6 @@ export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
-  notificationIntegrationInstance: NotificationIntegration;
   isNotificationInbuilt = false;
 
   constructor(props: GlobalNavigationProps) {
@@ -87,7 +87,7 @@ export default class GlobalNavigation
       isSearchDrawerOpen: false,
       isNotificationDrawerOpen: false,
       isStarredDrawerOpen: false,
-      notificationBadgeCount: 0,
+      notificationCount: 0,
     };
 
     this.drawers.forEach((drawer: DrawerName) => {
@@ -109,25 +109,18 @@ export default class GlobalNavigation
       this.state[`is${capitalisedDrawerName}Open`] =
         props[`is${capitalisedDrawerName}Open`];
     });
-    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
-    this.notificationIntegrationInstance = notificationIntegration(
-      fabricNotificationLogUrl,
+    const {
       cloudId,
-      locale,
-      product,
-      60000,
-      this.onNotificationBadgeCountUpdated,
-      this.onNotificationBadgeCountUpdating,
-    );
-    this.isNotificationInbuilt = !!this.notificationIntegrationInstance
-      .notificationDrawerContents;
+      fabricNotificationLogUrl,
+      notificationDrawerContents,
+    } = this.props;
+    if (!notificationDrawerContents && cloudId && fabricNotificationLogUrl) {
+      this.isNotificationInbuilt = true;
+    }
   }
 
-  componentDidUpdate(
-    prevProps: GlobalNavigationProps,
-    prevState: GlobalNavigationState,
-  ) {
+  componentDidUpdate(prevProps: GlobalNavigationProps) {
     this.drawers.forEach(drawer => {
       this.updateDrawerControlledStatus(drawer, this.props);
 
@@ -150,44 +143,34 @@ export default class GlobalNavigation
       }
     });
 
-    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
-
-    if (
-      prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl ||
-      prevProps.cloudId !== cloudId ||
-      prevProps.locale !== locale ||
-      prevProps.product !== product ||
-      !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount
-    ) {
-      const refreshRate = this.state.notificationBadgeCount ? 180000 : 60000;
-
-      this.notificationIntegrationInstance = notificationIntegration(
-        fabricNotificationLogUrl,
-        cloudId,
-        locale,
-        product,
-        refreshRate,
-        this.onNotificationBadgeCountUpdated,
-        this.onNotificationBadgeCountUpdating,
-      );
-      this.isNotificationInbuilt = !!this.notificationIntegrationInstance
-        .notificationDrawerContents;
+    const {
+      cloudId,
+      fabricNotificationLogUrl,
+      notificationDrawerContents,
+    } = this.props;
+    if (!notificationDrawerContents && cloudId && fabricNotificationLogUrl) {
+      this.isNotificationInbuilt = true;
     }
   }
 
-  onNotificationBadgeCountUpdating = (
-    param: { visibilityChangesSinceTimer?: number | void } = {},
+  onCountUpdating = (
+    param: { visibilityChangesSinceTimer: number } = {
+      visibilityChangesSinceTimer: 0,
+    },
   ) => {
-    const { visibilityChangesSinceTimer = 0 } = param;
-    if (!this.state.count || visibilityChangesSinceTimer <= 1) {
-      // fetch the count
+    if (
+      !this.state.notificationCount ||
+      param.visibilityChangesSinceTimer <= 1
+    ) {
+      // fetch the notificationCount
       return {};
     }
 
     // skip fetch, refresh from local storage if newer
     const cachedCount = this.getLocalStorageCount();
     const result = {};
-    if (cachedCount && cachedCount !== this.state.notificationBadgeCount) {
+    /* eslint-disable eqeqeq */
+    if (cachedCount && cachedCount != this.state.notificationCount) {
       result.countOverride = parseInt(cachedCount, 10);
     } else {
       result.skip = true;
@@ -195,11 +178,10 @@ export default class GlobalNavigation
     return result;
   };
 
-  onNotificationBadgeCountUpdated = (param: { newCount?: number } = {}) => {
-    const { newCount = 0 } = param;
-    this.updateLocalStorageCount(newCount);
+  onCountUpdated = (param: { newCount: number } = { newCount: 0 }) => {
+    this.updateLocalStorageCount(param.newCount);
     this.setState({
-      notificationBadgeCount: newCount,
+      notificationCount: param.newCount,
     });
   };
 
@@ -247,8 +229,7 @@ export default class GlobalNavigation
     }
 
     if (drawerName === 'notification' && this.isNotificationInbuilt) {
-      onOpenCallback = this.notificationIntegrationInstance
-        .onNotificationDrawerOpen;
+      this.onCountUpdated({ newCount: 0 });
     }
 
     // Update the state only if it's a controlled drawer.
@@ -277,11 +258,6 @@ export default class GlobalNavigation
       onCloseCallback = this.props[`on${capitalisedDrawerName}Close`];
     }
 
-    if (drawerName === 'notification' && this.isNotificationInbuilt) {
-      onCloseCallback = this.notificationIntegrationInstance
-        .onNotificationDrawerClose;
-    }
-
     fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
     // Update the state only if it's a controlled drawer.
@@ -299,6 +275,36 @@ export default class GlobalNavigation
     }
   };
 
+  renderNotificationBadge = () => {
+    const { cloudId, fabricNotificationLogUrl } = this.props;
+
+    if (this.isNotificationInbuilt) {
+      const refreshRate = this.state.notificationCount ? 180000 : 60000;
+      return (
+        <NotificationIndicator
+          notificationLogProvider={
+            new NotificationLogClient(fabricNotificationLogUrl, cloudId)
+          }
+          refreshRate={refreshRate}
+          onCountUpdated={this.onCountUpdated}
+          onCountUpdating={this.onCountUpdating}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  renderNotificationDrawerContents = () => {
+    const { locale, product } = this.props;
+
+    if (this.isNotificationInbuilt) {
+      return <NotificationDrawerContents product={product} locale={locale} />;
+    }
+
+    return null;
+  };
+
   constructNavItems = () => {
     const productConfig = generateProductConfig(
       this.props,
@@ -306,8 +312,7 @@ export default class GlobalNavigation
       this.isNotificationInbuilt,
     );
     const defaultConfig = generateDefaultConfig();
-
-    const { badge } = this.notificationIntegrationInstance;
+    const badge = this.renderNotificationBadge;
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
@@ -336,7 +341,6 @@ export default class GlobalNavigation
   render() {
     // TODO: Look into memoizing this to avoid memory bloat
     const { primaryItems, secondaryItems } = this.constructNavItems();
-    const { notificationDrawerContents } = this.notificationIntegrationInstance;
 
     return (
       <NavigationAnalyticsContext
@@ -354,14 +358,14 @@ export default class GlobalNavigation
           />
           {this.drawers.map(drawer => {
             const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-            const DrawerContents =
-              drawer === 'notification' &&
-              !this.props[`${drawer}DrawerContents`]
-                ? notificationDrawerContents
-                : this.props[`${drawer}DrawerContents`];
             const shouldUnmountOnExit = this.props[
               `should${capitalisedDrawerName}UnmountOnExit`
             ];
+
+            const DrawerContents =
+              drawer === 'notification' && this.isNotificationInbuilt
+                ? this.renderNotificationDrawerContents
+                : this.props[`${drawer}DrawerContents`];
 
             if (!DrawerContents) {
               return null;
