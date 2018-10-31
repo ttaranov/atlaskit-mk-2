@@ -155,8 +155,10 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
   renderFullScreenButton = () => {
     const { isFullScreenEnabled } = this.state;
     const icon = isFullScreenEnabled ? (
+      // TODO [i18n]
       <FullScreenIconOff label="disable fullscreen" />
     ) : (
+      // TODO [i18n]
       <FullScreenIconOn label="enable fullscreen" />
     );
 
@@ -190,8 +192,10 @@ export class CustomVideo extends Component<CustomVideoProps, CustomVideoState> {
             } = videoState;
             const isPlaying = status === 'playing';
             const toggleButtonIcon = isPlaying ? (
+              // TODO [i18n]
               <PauseIcon label="play" />
             ) : (
+              // TODO [i18n]
               <PlayIcon label="pause" />
             );
             const toggleButtonAction = isPlaying ? actions.pause : actions.play;

@@ -9,8 +9,12 @@ export async function readImageMetaTags(
   const type = file.type;
   try {
     if (type === ImageType.PNG) {
-      const xmpMetaData = await readPNGXMPMetaData(file);
-      return parseXMPMetaData(xmpMetaData);
+      // http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.Summary-of-standard-chunks
+      // iTXt = XML text with metadata
+      // pHYs = Physical pixel dimensions
+      const { iTXt, pHYs } = await readPNGXMPMetaData(file);
+      const xmpMetaData = { ...parseXMPMetaData(iTXt), ...pHYs };
+      return xmpMetaData;
     } else if (file.type === ImageType.JPEG) {
       return await readJPEGExifMetaData(file);
     }

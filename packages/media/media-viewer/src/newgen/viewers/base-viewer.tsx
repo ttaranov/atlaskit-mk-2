@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import * as deepEqual from 'deep-equal';
 import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome } from '../domain';
@@ -55,7 +57,9 @@ export abstract class BaseViewer<
       successful: content => this.renderSuccessful(content),
       failed: err => (
         <ErrorMessage error={err}>
-          <p>Try downloading the file to view it.</p>
+          <p>
+            <FormattedMessage {...messages.try_downloading_file} />
+          </p>
           {this.renderDownloadButton(err)}
         </ErrorMessage>
       ),

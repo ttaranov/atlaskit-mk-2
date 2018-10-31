@@ -21,7 +21,7 @@ import {
 import { MediaViewer, MediaViewerItem } from '../src';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
-
+import { I18NWrapper } from '@atlaskit/media-test-helpers';
 const context = createStorybookContext();
 
 const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
@@ -58,60 +58,65 @@ export default class Example extends React.Component<{}, State> {
 
   render() {
     return (
-      <Container>
-        <Group>
-          <h2>Image</h2>
-          <ButtonList>
-            <li>{this.createItem(imageItem, 'Picture')}</li>
-            <li>{this.createItem(smallImageItem, 'Icon')}</li>
-            <li>{this.createItem(wideImageItem, 'Wide')}</li>
-            <li>{this.createItem(largeImageItem, 'Large')}</li>
-          </ButtonList>
-        </Group>
-        <Group>
-          <h2>Document</h2>
-          <ButtonList>
-            <li>{this.createItem(docItem, 'Normal')}</li>
-          </ButtonList>
-        </Group>
-        <Group>
-          <h2>Video</h2>
-          <ButtonList>
-            <li>{this.createItem(videoHorizontalFileItem, 'Horizontal')}</li>
-            <li>{this.createItem(videoLargeFileItem, 'Large')}</li>
-            <li>{this.createItem(videoItem, 'Normal')}</li>
-          </ButtonList>
-        </Group>
-        <Group>
-          <h2>Audio</h2>
-          <ButtonList>
-            <li>{this.createItem(audioItem, 'Normal')}</li>
-            <li>{this.createItem(audioItemNoCover, 'Song without cover')}</li>
-          </ButtonList>
-        </Group>
-        <Group>
-          <h2>Errors</h2>
-          <ButtonList>
-            <li>{this.createItem(unsupportedItem, 'Unsupported item')}</li>
-            <li>{this.createItem(archiveItem, 'Archive has no preview')}</li>
-            <li>
-              {this.createItem(videoProcessingFailedItem, 'Failed processing')}
-            </li>
-          </ButtonList>
-        </Group>
-        {this.state.selectedItem && (
-          <AnalyticsListener channel="media" onEvent={handleEvent}>
-            <MediaViewer
-              featureFlags={{ customVideoPlayer: true }}
-              context={context}
-              selectedItem={this.state.selectedItem}
-              dataSource={{ list: [this.state.selectedItem] }}
-              collectionName={defaultCollectionName}
-              onClose={() => this.setState({ selectedItem: undefined })}
-            />
-          </AnalyticsListener>
-        )}
-      </Container>
+      <I18NWrapper>
+        <Container>
+          <Group>
+            <h2>Image</h2>
+            <ButtonList>
+              <li>{this.createItem(imageItem, 'Picture')}</li>
+              <li>{this.createItem(smallImageItem, 'Icon')}</li>
+              <li>{this.createItem(wideImageItem, 'Wide')}</li>
+              <li>{this.createItem(largeImageItem, 'Large')}</li>
+            </ButtonList>
+          </Group>
+          <Group>
+            <h2>Document</h2>
+            <ButtonList>
+              <li>{this.createItem(docItem, 'Normal')}</li>
+            </ButtonList>
+          </Group>
+          <Group>
+            <h2>Video</h2>
+            <ButtonList>
+              <li>{this.createItem(videoHorizontalFileItem, 'Horizontal')}</li>
+              <li>{this.createItem(videoLargeFileItem, 'Large')}</li>
+              <li>{this.createItem(videoItem, 'Normal')}</li>
+            </ButtonList>
+          </Group>
+          <Group>
+            <h2>Audio</h2>
+            <ButtonList>
+              <li>{this.createItem(audioItem, 'Normal')}</li>
+              <li>{this.createItem(audioItemNoCover, 'Song without cover')}</li>
+            </ButtonList>
+          </Group>
+          <Group>
+            <h2>Errors</h2>
+            <ButtonList>
+              <li>{this.createItem(unsupportedItem, 'Unsupported item')}</li>
+              <li>{this.createItem(archiveItem, 'Archive has no preview')}</li>
+              <li>
+                {this.createItem(
+                  videoProcessingFailedItem,
+                  'Failed processing',
+                )}
+              </li>
+            </ButtonList>
+          </Group>
+          {this.state.selectedItem && (
+            <AnalyticsListener channel="media" onEvent={handleEvent}>
+              <MediaViewer
+                featureFlags={{ customVideoPlayer: true }}
+                context={context}
+                selectedItem={this.state.selectedItem}
+                dataSource={{ list: [this.state.selectedItem] }}
+                collectionName={defaultCollectionName}
+                onClose={() => this.setState({ selectedItem: undefined })}
+              />
+            </AnalyticsListener>
+          )}
+        </Container>
+      </I18NWrapper>
     );
   }
 }

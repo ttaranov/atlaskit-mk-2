@@ -1,0 +1,1 @@
+- ED-4979 When in the an unindentable list item, tab should do nothing
