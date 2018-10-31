@@ -1,21 +1,8 @@
 // @flow
 import React from 'react';
 import styled from 'styled-components';
-import tickInlineSvg from '../examples-util/tick.svg';
-import WithAllAvatarSizes from '../examples-util/withAllAvatarSizes';
-
-// the raw tick svg is wrapped in " quotation marks so we will clean it:
-
-const cleanTickInlineSvg: string = tickInlineSvg.replace(/"/g, '');
-
-const Tick = () => (
-  <img
-    alt="tick"
-    src={cleanTickInlineSvg}
-    role="presentation"
-    style={{ height: '100%', width: '100%' }}
-  />
-);
+import Avatar from '../src';
+import { Block } from '../examples-util/helpers';
 
 const DivPresence = styled.div`
   align-items: center;
@@ -31,22 +18,36 @@ const DivPresence = styled.div`
 `;
 
 export default () => (
-  <div>
-    <p>
-      You are able to provide a react element to the <code>status</code>{' '}
-      property. For best results, it is recommended that whatever you pass in is
-      square and has its height and width set to 100%
-    </p>
-    <h4>SVG</h4>
-    <p>Using a custom svg as the status</p>
-    <WithAllAvatarSizes status={<Tick />} />
-    <WithAllAvatarSizes appearance="square" status={<Tick />} />
-    <h4>Your own component</h4>
-    <p>This example shows using a styled div as a status.</p>
-    <WithAllAvatarSizes status={<DivPresence>1</DivPresence>} />
-    <WithAllAvatarSizes
+  <Block heading="Custom div as status">
+    <Avatar
+      size="xxlarge"
       appearance="square"
       status={<DivPresence>1</DivPresence>}
     />
-  </div>
+    <Avatar
+      size="xlarge"
+      appearance="square"
+      status={<DivPresence>1</DivPresence>}
+    />
+    <Avatar
+      size="large"
+      appearance="square"
+      status={<DivPresence>1</DivPresence>}
+    />
+    <Avatar
+      size="medium"
+      appearance="square"
+      status={<DivPresence>1</DivPresence>}
+    />
+    <Avatar
+      size="small"
+      appearance="square"
+      status={<DivPresence>1</DivPresence>}
+    />
+    <Avatar
+      size="xsmall"
+      appearance="square"
+      status={<DivPresence>1</DivPresence>}
+    />
+  </Block>
 );
