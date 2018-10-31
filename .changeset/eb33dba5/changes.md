@@ -1,0 +1,1 @@
+- Migrate component from flow to TypeScript. Upgrading should not cause any problems but we are releasing a new major version because of the amount of changes that were being made internally. Please reach out to the maintainers in case you are having trouble uprading to the latest version.

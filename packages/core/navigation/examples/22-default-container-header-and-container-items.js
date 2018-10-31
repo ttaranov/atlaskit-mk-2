@@ -10,6 +10,7 @@ import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
+// $FlowFixMe: cannot resolve TS module
 import { AkSearch } from '@atlaskit/quick-search';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
