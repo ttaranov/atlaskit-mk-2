@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { canUseDom } from 'exenv';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -14,7 +15,6 @@ import {
 } from '../../package.json';
 
 import { WIDTH_ENUM } from '../shared-variables';
-import canUseDom from '../utils/can-use-dom';
 
 import {
   PositionerAbsolute,
@@ -74,7 +74,7 @@ class Modal extends Component<Props, State> {
 
   state = {
     dialogNode: null,
-    scrollDistance: canUseDom() ? getScrollDistance() : 0,
+    scrollDistance: canUseDom ? getScrollDistance() : 0,
     isExiting: false,
   };
 
