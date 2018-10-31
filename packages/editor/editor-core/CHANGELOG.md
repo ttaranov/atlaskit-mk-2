@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.12
+- [patch] [12855b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12855b9):
+
+  - ED-5511: tweaked quickInsert so that query can match space-separated items
+
 ## 87.6.11
 - [patch] [0e0a126](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e0a126):
 
