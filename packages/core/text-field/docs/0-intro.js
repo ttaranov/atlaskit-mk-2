@@ -21,4 +21,13 @@ export default md`
       source={require('!!raw-loader!../examples/00-basic')}
     />
   )}
+
+  ${(
+    <Example
+      packageName="@atlaskit/text-field"
+      Component={require('../examples/01-sizes').default}
+      title="Sizes"
+      source={require('!!raw-loader!../examples/01-sizes')}
+    />
+  )}
 `;

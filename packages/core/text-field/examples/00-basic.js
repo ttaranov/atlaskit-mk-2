@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { FormSection } from '@atlaskit/form';
+import Form, { Field } from '@atlaskit/form';
 import TextField from '../src';
 
 const eventResultStyle = {
@@ -12,10 +12,6 @@ const eventResultStyle = {
   color: '#ccc',
   margin: '0.5em 0',
 };
-
-const Label = ({ title }) => (
-  <div style={{ padding: '0.5em 0 0.2em' }}>{title}</div>
-);
 
 type Props = {};
 type State = {| eventResult: string |};
@@ -45,61 +41,42 @@ export default class TextFieldExample extends Component<Props, State> {
 
     return (
       <div>
-        <FormSection title="onChange handlers">
+        <Field label="Event handlers">
           <TextField
             onChange={this.handleOnChange}
             onBlur={this.handleOnBlur}
             onFocus={this.handleOnFocus}
           />
-          <div style={eventResultStyle}>{eventResult}</div>
-        </FormSection>
+        </Field>
+        <div style={eventResultStyle}>{eventResult}</div>
 
-        <FormSection title="Default value">
+        <Field label="Default value">
           <TextField defaultValue="candy" />
-        </FormSection>
+        </Field>
 
-        <FormSection title="Disabled">
+        <Field label="Disabled">
           <TextField isDisabled defaultValue="can't touch this..." />
-        </FormSection>
+        </Field>
 
-        {/* TODO - we don't have a label so how do we indicate `required`??? */}
-        <FormSection title="Required">
+        <Field label="Required" isRequired>
           <TextField isRequired />
-        </FormSection>
+        </Field>
 
-        {/* TODO - validation */}
-        <FormSection title="Invalid">
-          <TextField autoFocus />
-        </FormSection>
+        <Field label="Invalid">
+          <TextField isInvalid />
+        </Field>
 
-        <FormSection title="Sizes">
-          <Label title="xsmall" />
-          <TextField size="xsmall" />
-
-          <Label title="small" />
-          <TextField size="small" />
-
-          <Label title="medium" />
-          <TextField size="medium" />
-
-          <Label title="large" />
-          <TextField size="large" />
-
-          <Label title="xlarge" />
-          <TextField size="xlarge" />
-        </FormSection>
-
-        <FormSection title="HTML5 attributes">
-          <Label title="Placeholder" />
+        <Field label="Placeholder">
           <TextField placeholder="Click here to input..." />
+        </Field>
 
-          {/* TODO - Not actually autofocusing when inside Form section... */}
-          <Label title="Autofocus" />
+        <Field label="Autofocus">
           <TextField autoFocus />
+        </Field>
 
-          <Label title="Pattern" />
-          <TextField pattern="[a-z]{4,8}" />
-        </FormSection>
+        <Field label="Spell check">
+          <TextField spellCheck />
+        </Field>
       </div>
     );
   }
