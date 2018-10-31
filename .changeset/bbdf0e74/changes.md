@@ -1,1 +1,0 @@
-- FS-3035 make user picker dynamically anchored
