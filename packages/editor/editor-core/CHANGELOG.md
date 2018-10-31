@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.15
+- [patch] [e8052e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8052e1):
+
+  - Add main field to adf-utils package.json
+
 ## 87.6.14
 - [patch] [7787595](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7787595):
 
