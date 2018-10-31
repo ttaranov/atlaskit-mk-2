@@ -58,19 +58,27 @@ const Animation = ({
   children,
   immediatelyHide,
   immediatelyShow,
+  onExited,
   in: inProp,
 }: {
   children: GetAnimationStyles => Node,
   immediatelyHide: boolean,
   immediatelyShow: boolean,
   in: boolean,
+  onExited: () => mixed,
 }) => {
   const timeout = {
     enter: immediatelyShow ? 1 : ENTER_DURATION,
     exit: immediatelyHide ? 1 : EXIT_DURATION,
   };
   return (
-    <Transition timeout={timeout} in={inProp} unmountOnExit appear>
+    <Transition
+      timeout={timeout}
+      in={inProp}
+      onExited={onExited}
+      unmountOnExit
+      appear
+    >
       {state => children(getStyle(timeout, state))}
     </Transition>
   );
