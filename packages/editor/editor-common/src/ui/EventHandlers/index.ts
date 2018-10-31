@@ -1,6 +1,6 @@
 import { CardEvent, Identifier } from '@atlaskit/media-card';
 import { SyntheticEvent } from 'react';
-import { AppCardAction, ActionMarkAction } from '../../schema';
+import { ActionMarkAction } from '../../schema';
 
 export interface CardSurroundings {
   collectionName: string;
@@ -17,9 +17,12 @@ export type CardEventClickHandler = (
   surroundings?: CardSurroundings,
   analyticsEvent?: any,
 ) => void;
-export type AppCardEventClickHandler = (url?: string) => void;
-export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
 export type ActionEventClickHandler = (action: ActionMarkAction) => void;
+export type LinkEventClickHandler = (
+  event: SyntheticEvent<HTMLAnchorElement>,
+  url?: string,
+) => void;
+export type SmartCardEventClickHandler = (url?: string) => void;
 
 export interface MentionEventHandlers {
   onClick?: MentionEventHandler;
@@ -32,9 +35,11 @@ export interface EventHandlers {
   media?: {
     onClick?: CardEventClickHandler;
   };
-  applicationCard?: {
-    onClick?: AppCardEventClickHandler;
-    onActionClick?: AppCardActionEventClickHandler;
+  link?: {
+    onClick?: LinkEventClickHandler;
+  };
+  smartCard?: {
+    onClick?: SmartCardEventClickHandler;
   };
   action?: {
     onClick?: ActionEventClickHandler;

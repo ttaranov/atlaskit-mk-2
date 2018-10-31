@@ -50,7 +50,8 @@ import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { outdentList } from '../lists/commands';
 import { mapSlice } from '../../utils/slice';
-import { Cell } from './types';
+import { Cell, TableCssClassName as ClassName } from './types';
+import { closestElement } from '../../utils';
 
 export const clearHoverSelection: Command = (
   state: EditorState,
@@ -792,4 +793,50 @@ export const handleCut = (
   }
 
   return tr;
+};
+
+export const handleShiftSelection = (event: MouseEvent): Command => (
+  state,
+  dispatch,
+) => {
+  if (!(state.selection instanceof CellSelection) || !event.shiftKey) {
+    return false;
+  }
+  const { selection } = state;
+  if (selection.isRowSelection() || selection.isColSelection()) {
+    const selector = selection.isRowSelection()
+      ? `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`
+      : `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}`;
+    const button = closestElement(event.target as HTMLElement, selector);
+    if (!button) {
+      return false;
+    }
+
+    const buttons = document.querySelectorAll(selector);
+    const index = Array.from(buttons).indexOf(button);
+    const rect = getSelectionRect(selection)!;
+    const startCells = selection.isRowSelection()
+      ? getCellsInRow(index >= rect.bottom ? rect.top : rect.bottom - 1)(
+          selection,
+        )
+      : getCellsInColumn(index >= rect.right ? rect.left : rect.right - 1)(
+          selection,
+        );
+    const endCells = selection.isRowSelection()
+      ? getCellsInRow(index)(selection)
+      : getCellsInColumn(index)(selection);
+    if (startCells && endCells) {
+      event.stopPropagation();
+      event.preventDefault();
+      dispatch(
+        state.tr.setSelection(new CellSelection(
+          state.doc.resolve(startCells[startCells.length - 1].pos),
+          state.doc.resolve(endCells[0].pos),
+        ) as any),
+      );
+      return true;
+    }
+  }
+
+  return false;
 };

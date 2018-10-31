@@ -4,8 +4,12 @@ import { css, Styles, StyledComponentClass, InterpolationFunction, ThemeProps } 
 import { gridSize, borderRadius } from '@atlaskit/theme';
 import { relativeSize, akEditorElementMinWidth } from '../consts';
 
+export const PanelSharedCssClassName = {
+  PANEL_CONTAINER: 'ak-editor-panel',
+};
+
 export const panelSharedStyles = css`
-  & .ak-editor-panel {
+  & .${PanelSharedCssClassName.PANEL_CONTAINER} {
     border-radius: ${borderRadius()}px;
     margin: ${relativeSize(1.142)}px 0;
     padding: ${gridSize()}px;
@@ -15,6 +19,7 @@ export const panelSharedStyles = css`
 
     .ak-editor-panel__icon {
       display: block;
+      flex-shrink: 0;
       height: ${gridSize() * 3}px;
       width: ${gridSize() * 3}px;
       padding-right: ${gridSize()}px;

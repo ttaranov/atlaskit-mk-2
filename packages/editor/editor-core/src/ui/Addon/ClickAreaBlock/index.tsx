@@ -3,7 +3,7 @@ import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import { createParagraphAtEnd } from '../../../commands';
-import { setGapCursorForTopLevelBlocks } from '../../../plugins/gap-cursor';
+import { setCursorForTopLevelBlocks } from '../../../plugins/gap-cursor';
 import { closestElement } from '../../../utils';
 
 const ClickWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -57,7 +57,7 @@ export default class ClickAreaBlock extends React.Component<Props> {
       const isParagrpahAppended = bottomAreaClicked
         ? createParagraphAtEnd()(view.state, dispatch)
         : false;
-      const isGapCursorSet = setGapCursorForTopLevelBlocks(
+      const isGapCursorSet = setCursorForTopLevelBlocks(
         event,
         dom as HTMLElement,
         view.posAtCoords.bind(view),

@@ -22,11 +22,13 @@ import {
   handleShowInsertRowButton,
 } from '../action-handlers';
 import {
+  handleMouseDown,
   handleMouseOver,
   handleMouseLeave,
   handleBlur,
   handleFocus,
   handleClick,
+  handleTripleClick,
 } from '../event-handlers';
 import { findControlsHoverDecoration } from '../utils';
 
@@ -216,10 +218,13 @@ export const createPlugin = (
       handleDOMEvents: {
         blur: handleBlur,
         focus: handleFocus,
+        mousedown: handleMouseDown,
         mouseover: handleMouseOver,
         mouseleave: handleMouseLeave,
         click: handleClick,
       },
+
+      handleTripleClick,
     },
   });
 

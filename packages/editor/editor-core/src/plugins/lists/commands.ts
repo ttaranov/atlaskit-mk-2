@@ -312,7 +312,8 @@ export function indentList(): Command {
     const { listItem } = state.schema.nodes;
     const { $from } = state.selection;
     if ($from.node(-1).type === listItem) {
-      return baseListCommand.sinkListItem(listItem)(state, dispatch);
+      baseListCommand.sinkListItem(listItem)(state, dispatch);
+      return true;
     }
     return false;
   };

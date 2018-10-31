@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-mobile-bridge",
-  "version": "5.0.4",
+  "version": "5.1.0",
   "description": "Mobile destribution of the Editor",
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
@@ -28,7 +28,7 @@
     "@atlaskit/editor-json-transformer": "^4.0.19",
     "@atlaskit/media-core": "^24.3.0",
     "@atlaskit/mention": "^15.0.6",
-    "@atlaskit/renderer": "^29.0.4",
+    "@atlaskit/renderer": "^29.3.0",
     "@atlaskit/task-decision": "^11.0.1",
     "@babel/polyfill": "^7.0.0",
     "@types/prosemirror-view": "^1.0.0",

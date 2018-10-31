@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import { akEditorTableNumberColumnWidth } from '@atlaskit/editor-common';
 import { TableCssClassName as ClassName } from '../../types';
 import { tableToolbarSize } from '../styles';
@@ -16,7 +15,7 @@ export interface ButtonProps {
   onMouseDown: (event: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
-const getInsertLineheight = (tableRef: HTMLElement) => {
+const getInsertLineHeight = (tableRef: HTMLElement) => {
   return tableRef.offsetHeight + tableToolbarSize;
 };
 
@@ -64,18 +63,21 @@ const InsertButton = ({
         <div className={ClassName.CONTROLS_INSERT_BUTTON_INNER}>
           <button
             type="button"
+            title={formatMessage(
+              type === 'row'
+                ? tableMessages.insertRow
+                : tableMessages.insertColumn,
+            )}
             className={ClassName.CONTROLS_INSERT_BUTTON}
             onMouseDown={onMouseDown}
           >
-            <span className={ClassName.CONTROLS_BUTTON_ICON}>
-              <AddIcon
-                label={formatMessage(
-                  type === 'row'
-                    ? tableMessages.insertRow
-                    : tableMessages.insertColumn,
-                )}
+            <svg className={ClassName.CONTROLS_BUTTON_ICON}>
+              <path
+                d="M10 4a1 1 0 0 1 1 1v4h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H5a1 1 0 1 1 0-2h4V5a1 1 0 0 1 1-1z"
+                fill="currentColor"
+                fillRule="evenodd"
               />
-            </span>
+            </svg>
           </button>
         </div>
         <div
@@ -83,7 +85,7 @@ const InsertButton = ({
           style={
             type === 'row'
               ? { width: getInsertLineWidth(tableRef) }
-              : { height: getInsertLineheight(tableRef) }
+              : { height: getInsertLineHeight(tableRef) }
           }
         />
       </>

@@ -101,7 +101,7 @@ describe('Floating toolbar: Toolbar resolution', () => {
         tagName: 'span',
         text: 'Block macro (EH)',
       });
-      await page.click(`${endCellSelector} > .extensionView-content-wrap`);
+      await page.click(`${endCellSelector} .extensionView-content-wrap`);
     });
 
     it('should render the inline extension toolbar', async () => {
@@ -113,7 +113,7 @@ describe('Floating toolbar: Toolbar resolution', () => {
         tagName: 'span',
         text: 'Inline macro (EH)',
       });
-      await page.click(`${endCellSelector} > p`);
+      await page.click(`${endCellSelector} .inlineExtensionView-content-wrap`);
     });
   });
 });

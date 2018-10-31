@@ -1,12 +1,7 @@
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { findPositionOfNodeBefore, findDomRefAtPos } from 'prosemirror-utils';
-import {
-  tableMarginTop,
-  tableMarginBottom,
-  // akEditorTableNumberColumnWidth,
-  // akEditorTableToolbarSize,
-} from '@atlaskit/editor-common';
+import { tableMarginTop } from '@atlaskit/editor-common';
 
 import { GapCursorSelection, Side } from './selection';
 import { TableCssClassName } from '../table/types';
@@ -54,8 +49,19 @@ const isMediaSingle = (node?: HTMLElement | null): boolean => {
   const firstChild = node.firstChild as HTMLElement;
   return (
     !!firstChild &&
-    firstChild.nodeType === 1 &&
+    firstChild.nodeType === Node.ELEMENT_NODE &&
     firstChild.classList.contains('media-single')
+  );
+};
+
+const isNodeViewWrapper = (node?: HTMLElement | null): boolean => {
+  if (!node) {
+    return false;
+  }
+  return (
+    !!node &&
+    node.nodeType === Node.ELEMENT_NODE &&
+    node.className.indexOf('-content-wrap') !== -1
   );
 };
 
@@ -85,7 +91,6 @@ export const fixCursorAlignment = (view: EditorView) => {
 
   const gapCursorParentNodeRef = gapCursorRef.parentNode! as HTMLElement;
   const previousSibling = gapCursorParentNodeRef.previousSibling as HTMLElement;
-  const firstChild = targetNodeRef.firstChild as HTMLElement;
   const isTargetNodeMediaSingle = isMediaSingle(targetNodeRef);
   const isMediaWithWrapping =
     isTargetNodeMediaSingle &&
@@ -104,13 +109,22 @@ export const fixCursorAlignment = (view: EditorView) => {
 
   // gets width and height of the prevNode DOM element, or its nodeView wrapper DOM element
   do {
+    const isTargetNodeNodeViewWrapper = isNodeViewWrapper(targetNodeRef);
+    const firstChild = targetNodeRef.firstChild as HTMLElement;
     const css = window.getComputedStyle(
-      isTargetNodeMediaSingle ? firstChild : targetNodeRef,
+      isTargetNodeMediaSingle || isTargetNodeNodeViewWrapper
+        ? firstChild
+        : targetNodeRef,
     );
     const isInTableCell = /td|th/i.test(targetNodeRef.parentNode!.nodeName);
 
     height = parseInt(css.height!, 10);
     width = parseInt(css.width!, 10);
+
+    width += parseInt(css.paddingLeft!, 10);
+    width += parseInt(css.paddingRight!, 10);
+    height += parseInt(css.paddingTop!, 10);
+    height += parseInt(css.paddingBottom!, 10);
 
     // padding is cumulative
     paddingLeft += parseInt(css.paddingLeft!, 10);
@@ -125,7 +139,7 @@ export const fixCursorAlignment = (view: EditorView) => {
       }
     }
 
-    if (/table/i.test(targetNodeRef.nodeName) || isTargetNodeMediaSingle) {
+    if (isTargetNodeNodeViewWrapper || isTargetNodeMediaSingle) {
       breakoutWidth = width;
     }
 
@@ -140,7 +154,7 @@ export const fixCursorAlignment = (view: EditorView) => {
 
   // table nodeView margin fix
   if (targetNode.type === schema.nodes.table) {
-    height -= tableMarginTop + tableMarginBottom;
+    height -= tableMarginTop;
     marginTop = tableMarginTop;
     gapCursorRef.style.paddingLeft = `${paddingLeft}px`;
   }

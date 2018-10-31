@@ -9,7 +9,6 @@ const mediaSingleSharedStyle = css`
 
   table .media-single {
     margin: 0;
-    width: inherit;
   }
 `;
 

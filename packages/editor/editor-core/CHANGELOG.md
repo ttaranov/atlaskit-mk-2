@@ -1,5 +1,120 @@
 # @atlaskit/editor-core
 
+## 87.6.3
+- [patch] [563c4da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563c4da):
+
+  - ED-5149 Fixed DatePicker calendar shadow in table
+
+## 87.6.2
+- [patch] [7459970](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7459970):
+
+  - ED-5263: handle rows and columns shift selection
+
+## 87.6.1
+- [patch] [bdc9961"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdc9961"
+d):
+
+  - Fixes the codeblock insert rules
+
+## 87.6.0
+- [minor] [bb3336a"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb3336a"
+d):
+
+  - Make text formatting toolbar account for different item titles legnths
+
+## 87.5.0
+- [minor] [d182ad9"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d182ad9"
+d):
+
+  - Add <-> to ↔︎ convertion rule
+
+## 87.4.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
+## 87.4.2
+- [patch] [4cc767e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cc767e"
+d):
+
+  - ED-5030: Fixed gap-cursor on nodeviews in breakout mode.
+
+## 87.4.1
+- [patch] [abd19cd"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abd19cd"
+d):
+
+  - ED-5616: fix inline cursor navigation
+
+## 87.4.0
+- [minor] [5981cec"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5981cec"
+d):
+
+  - TypeAhead to preserve marks
+
+## 87.3.2
+- [patch] [14d581b"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14d581b"
+d):
+
+  - Disable clear formatting menu when there is no formatting
+
+## 87.3.1
+- [patch] [52f5b51"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52f5b51"
+d):
+
+  - ED-4366: fix text selection inside table cell on triple click
+
+## 87.3.0
+- [minor] [b911028"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b911028"
+d):
+
+  - Show selected color in a table contextual menu
+
+## 87.2.0
+- [minor] [746c927"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/746c927"
+d):
+
+  - Add buffer to the bottom fullpage editor
+
+## 87.1.13
+- [patch] [f3d067d"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3d067d"
+d):
+
+  - Fix font size for numbered column in tables with dynamic text sizing
+
+## 87.1.12
+- [patch] [534f6ab"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/534f6ab"
+d):
+
+  - ED-5615: Fix block element padding inside table cells.
+
+## 87.1.11
+- [patch] [cb4168f"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb4168f"
+d):
+
+  - ED-5307: make text white for selected heading menu item
+
+## 87.1.10
+- [patch] [db65837"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db65837"
+d):
+
+  - ED-3762: fix setting text cursor when clicking on editor gutter
+
 ## 87.1.9
 - [patch] [25cdb93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25cdb93):
 
