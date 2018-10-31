@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/analytics-next", "type": "patch" }],
+  "dependents": []
+}
