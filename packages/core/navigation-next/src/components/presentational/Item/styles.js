@@ -110,7 +110,7 @@ const getItemBackgroundColor = (
   background,
   { isActive, isSelected, isHover, isDragging },
 ) => {
-  if (isDragging) return background.interact;
+  if (isDragging) return background.hint;
   if (isActive) return background.interact;
   if (isSelected) return background.static;
   if (isHover) return background.hint;

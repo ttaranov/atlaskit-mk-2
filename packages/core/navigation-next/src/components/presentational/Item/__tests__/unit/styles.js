@@ -48,10 +48,10 @@ describe('Navigation Next: Item styles', () => {
     ).toEqual('#0F63E0');
   });
 
-  it('should add the active background into the base item styles if element state is dragging', () => {
+  it('should add the hover background into the base item styles if element state is dragging', () => {
     expect(
       themeMode({ ...commonArgs, isDragging: true }).product.itemBase
         .backgroundColor,
-    ).toEqual('#104493');
+    ).toEqual('#0F63E0');
   });
 });
