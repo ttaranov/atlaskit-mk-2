@@ -1,4 +1,4 @@
-import { codeBlock, createSchema, paragraph } from '../../../../..';
+import { codeBlock, createSchema } from '../../../../..';
 import { DEFAULT_LANGUAGES } from '../../../../utils';
 import { fromHTML, toHTML } from '../../../../../test-helpers';
 import { name } from '../../../../../package.json';
@@ -124,7 +124,7 @@ describe(`${name}/schema codeBlock node`, () => {
         '<meta charset="utf-8"><div style="white-space: pre-wrap;">Hello</div>',
         schema,
       );
-      expect(doc.firstChild!.type.spec).toEqual(paragraph);
+      expect(doc.firstChild!.type.name).toEqual('paragraph');
     });
 
     describe('when language is set', () => {

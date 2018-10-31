@@ -381,11 +381,15 @@ describe('Renderer - React/Nodes', () => {
 
   describe('isTextWrapper', () => {
     it('should return true if type equals "textWrapper"', () => {
-      expect(isTextWrapper('textWrapper')).to.equal(true);
+      expect(isTextWrapper({ type: { name: 'textWrapper' } } as any)).to.equal(
+        true,
+      );
     });
 
     it('should return false if type does not equal "textWrapper"', () => {
-      expect(isTextWrapper('mention')).to.equal(false);
+      expect(isTextWrapper({ type: { name: 'mention' } } as any)).to.equal(
+        false,
+      );
     });
   });
 
