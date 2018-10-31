@@ -11,6 +11,7 @@ const entry = require.resolve('./entry');
 const browserFetcher = puppeteer.createBrowserFetcher();
 
 const webpackConfig = {
+  mode: 'development',
   module: {
     rules: [
       {

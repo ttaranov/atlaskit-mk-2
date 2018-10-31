@@ -5,7 +5,7 @@ import {
   LinkAction,
   canLinkBeCreatedInRange,
 } from './pm-plugins/main';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Selection } from 'prosemirror-state';
 import { filter } from '../../utils/commands';
 import { Mark, Node } from 'prosemirror-model';
 
@@ -62,7 +62,7 @@ export function insertLink(
   return filter(canLinkBeCreatedInRange(from, to), (state, dispatch) => {
     const link = state.schema.marks.link;
     if (href.trim()) {
-      const tr = state.tr;
+      const { tr } = state;
       if (from === to) {
         const textContent = text || href;
         tr.insertText(textContent, from, to);
@@ -73,6 +73,7 @@ export function insertLink(
         );
       } else {
         tr.addMark(from, to, link.create({ href: normalizeUrl(href) }));
+        tr.setSelection(Selection.near(tr.doc.resolve(to)));
       }
       dispatch(tr);
       return true;

@@ -43,6 +43,7 @@ const editorTeam = [
   'ahixon_atlassian',
   'wangjerome',
   'nathanflew',
+  'fghilini',
 ];
 const elementsTeam = [
   'sguillope',

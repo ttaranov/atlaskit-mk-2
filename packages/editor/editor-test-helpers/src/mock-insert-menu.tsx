@@ -1,8 +1,22 @@
 import * as React from 'react';
 import { bodiedExtensionData } from './mock-extension-data';
 import DevIcon from '@atlaskit/icon/glyph/editor/code';
+import { EditorActions } from '@atlaskit/editor-core';
 
 export const customInsertMenuItems = [
+  {
+    content: 'Import',
+    value: { name: 'import' },
+    tooltipDescription: 'import',
+    tooltipPosition: 'right',
+    elemBefore: <DevIcon label="dev" />,
+    onClick: async (editorActions: EditorActions) => {
+      const input = prompt('Import from?');
+      if (input !== null) {
+        editorActions.replaceDocument(input);
+      }
+    },
+  },
   {
     content: 'Inline macro (EH)',
     value: { name: 'inline-eh' },
