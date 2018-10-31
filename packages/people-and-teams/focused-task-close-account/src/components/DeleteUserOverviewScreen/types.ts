@@ -1,20 +1,8 @@
 import { User } from '../../types';
 
 export interface DeleteUserOverviewScreenProps {
-  accessibleSites: AvailableSitesResponse;
+  accessibleSites: string[];
   isCurrentUser: boolean;
   user: User;
-}
-
-interface AvailableSitesResponse {
-  sites: Sites[];
-}
-
-interface Sites {
-  cloudId: string;
-  url: string;
-  products: string[];
-  avatarUrl: string;
-  displayName: string;
-  isVertigo: boolean;
+  deactivateUserHandler: () => void;
 }
