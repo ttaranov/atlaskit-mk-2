@@ -40,7 +40,7 @@ export type StatelessProps = {
   isRankable?: boolean,
   isRankingDisabled?: boolean,
   onRankStart?: RankStart => void,
-  onRankEnd?: (RankEnd, UIAnalyticsEvent) => void,
+  onRankEnd?: (RankEnd, ?UIAnalyticsEvent) => void,
   paginationi18n?: i18nShape,
 };
 
