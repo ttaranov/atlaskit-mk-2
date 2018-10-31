@@ -2,11 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import exenv from 'exenv';
 import Portal from '../..';
 
 jest.mock('exenv', () => ({
-  canUseDom: jest.fn(),
+  canUseDom: false,
 }));
 
 afterAll(() =>
@@ -24,13 +23,11 @@ const App = () => (
 );
 
 test('should ssr then hydrate portal correctly', () => {
-  exenv.canUseDom = false;
   // server-side
   const serverHTML = ReactDOMServer.renderToString(<App />);
   // client-side
   const elem = document.createElement('div');
   elem.innerHTML = serverHTML;
-  exenv.canUseDom = true;
   ReactDOM.hydrate(<App />, elem);
   expect(elem.getElementsByTagName('h1')).toHaveLength(0);
   expect(document.getElementsByClassName('atlaskit-portal')).toHaveLength(1);
