@@ -14,7 +14,12 @@ export { default as tableRow } from './tableRow';
 export { default as tableCell } from './tableCell';
 export { default as tableHeader } from './tableHeader';
 export { default as text } from './text';
-export { default as codeBlock } from './codeBlock';
+export { default as breakout } from './breakout';
+export { default as codeBlock_base } from './codeBlock_base';
+export { default as codeBlock_no_marks } from './codeBlock_no_marks';
+export {
+  default as code_block_with_breakout,
+} from './code_block_with_breakout';
 export { default as mediaGroup } from './mediaGroup';
 export { default as applicationCard } from './applicationCard';
 export { default as decisionItem } from './decisionItem';

@@ -259,3 +259,30 @@ Object {
   "version": 1,
 }
 `;
+
+exports[`Builders should be able to generate correct ADF for example #4 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {},
+      "content": Array [
+        Object {
+          "text": "some code",
+          "type": "text",
+        },
+      ],
+      "marks": Array [
+        Object {
+          "attrs": Object {
+            "mode": "wide",
+          },
+          "type": "breakout",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+  "version": 1,
+}
+`;

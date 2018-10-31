@@ -1518,7 +1518,7 @@
       ],
       "additionalProperties": false
     },
-    "codeBlock_node": {
+    "codeBlockBase_node": {
       "type": "object",
       "properties": {
         "type": {
@@ -1545,6 +1545,9 @@
               }
             ]
           }
+        },
+        "marks": {
+          "type": "array"
         },
         "attrs": {
           "type": "object",
@@ -1629,6 +1632,23 @@
         "type"
       ],
       "additionalProperties": false
+    },
+    "codeBlock_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/codeBlockBase_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
     },
     "table_cell_content": {
       "type": "array",

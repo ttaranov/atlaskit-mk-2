@@ -1,4 +1,16 @@
-import { doc, p, emoji, a, em, b, u, mention } from '../../../builders';
+import {
+  doc,
+  p,
+  emoji,
+  a,
+  em,
+  b,
+  u,
+  mention,
+  breakout,
+  codeBlock,
+  text,
+} from '../../../builders';
 
 describe('Builders', () => {
   const nodes = [
@@ -48,6 +60,7 @@ describe('Builders', () => {
         p(emoji({ shortName: ':flag_ru:', text: '🇷🇺' }), ' '),
         p(emoji({ shortName: ':wtf:', text: ':wtf:' }), ' '),
       ),
+    () => doc(breakout({ mode: 'wide' })(codeBlock({})(text('some code')))),
   ];
 
   nodes.forEach((node, idx) => {

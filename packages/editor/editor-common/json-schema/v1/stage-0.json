@@ -1712,7 +1712,37 @@
       ],
       "additionalProperties": false
     },
-    "codeBlock_node": {
+    "breakout_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "breakout"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "wide",
+                "full-width"
+              ]
+            }
+          },
+          "required": [
+            "mode"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "codeBlockBase_node": {
       "type": "object",
       "properties": {
         "type": {
@@ -1739,6 +1769,9 @@
               }
             ]
           }
+        },
+        "marks": {
+          "type": "array"
         },
         "attrs": {
           "type": "object",
@@ -1824,6 +1857,42 @@
       ],
       "additionalProperties": false
     },
+    "codeBlock_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/codeBlockBase_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "code_block_with_breakout_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/codeBlockBase_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/breakout_mark"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
     "block_content": {
       "anyOf": [
         {
@@ -1876,6 +1945,9 @@
         },
         {
           "$ref": "#/definitions/codeBlock_node"
+        },
+        {
+          "$ref": "#/definitions/code_block_with_breakout_node"
         }
       ]
     },
@@ -2162,6 +2234,9 @@
               },
               {
                 "$ref": "#/definitions/codeBlock_node"
+              },
+              {
+                "$ref": "#/definitions/code_block_with_breakout_node"
               }
             ]
           }

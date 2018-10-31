@@ -10,7 +10,7 @@ export default {
       'panel',
       'blockquote',
       'rule',
-      'codeBlock',
+      'codeBlock_no_marks',
       'mediaGroup',
       'applicationCard',
       'decisionList',

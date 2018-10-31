@@ -5,5 +5,5 @@ export const tableCell = (attrs?: CellAttributes) => (
 ): TableCellDefinition => ({
   type: 'tableCell',
   attrs,
-  content: content,
+  content,
 });

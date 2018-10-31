@@ -4,6 +4,9 @@ import { TextDefinition as Text } from './text';
 import { NoMark, MarksObject } from './doc';
 import { BreakoutMarkDefinition } from '../marks/breakout';
 
+/**
+ * @name codeBlock_base_node
+ */
 export type CodeBlockBaseDefinition = {
   type: 'codeBlock';
   content?: Array<Text & NoMark>;
@@ -82,7 +85,7 @@ export type CodeBlockBaseDefinition = {
 };
 
 /**
- * @name codeBlock_node
+ * @name codeBlock_no_marks_node
  */
 export type CodeBlockDefinition = CodeBlockBaseDefinition & NoMark;
 

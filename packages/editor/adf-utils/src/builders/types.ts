@@ -3,3 +3,5 @@ export type WithMark = {
   marks?: Array<any>;
   [prop: string]: any;
 };
+
+export type WithAppliedMark<T, M> = T & { marks?: Array<M> };
