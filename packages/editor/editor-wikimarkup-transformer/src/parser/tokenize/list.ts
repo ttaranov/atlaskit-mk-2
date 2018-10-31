@@ -2,9 +2,9 @@ import { Node as PMNode, Schema } from 'prosemirror-model';
 import { getType as getListType, ListBuilder } from '../builder/list-builder';
 import { parseString } from '../text';
 import { normalizePMNodes } from '../utils/normalize';
-import { Token, TokenType, TokenErrCallback } from './';
+import { parseMacroKeyword } from './keyword';
+import { Token, TokenType, TokenErrCallback, parseToken } from './';
 import { parseNewlineOnly } from './whitespace';
-import { macro } from './macro';
 
 const LIST_ITEM_REGEXP = /^ *([*\-#]+) /;
 const EMPTY_LINE_REGEXP = /^[ \t]*\r?\n/;
@@ -124,7 +124,13 @@ export function list(
         break;
       }
       case processState.MACRO: {
-        const token = macro(input.substring(index), schema);
+        const match = parseMacroKeyword(input.substring(index));
+        if (!match) {
+          buffer += char;
+          state = processState.BUFFER;
+          break;
+        }
+        const token = parseToken(input.substring(index), match.type, schema);
         if (token.type === 'text') {
           buffer += token.text;
         } else {
