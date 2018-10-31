@@ -1,0 +1,1 @@
+- ED-2043: Added table keyboard shortcut
