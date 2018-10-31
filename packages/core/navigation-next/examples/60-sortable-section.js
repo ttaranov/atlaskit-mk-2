@@ -58,6 +58,11 @@ const DEFAULT_ITEMS = [
     onClick: () => console.log('viewed-recently'),
   },
   {
+    id: 'anchor',
+    text: 'anchor',
+    href: '#',
+  },
+  {
     component: ({ children, className, draggableProps, innerRef }: *) => (
       <div className={className} to="/" {...draggableProps} ref={innerRef}>
         {children}

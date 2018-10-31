@@ -7,19 +7,6 @@ import { Draggable } from 'react-beautiful-dnd';
 import Item from '../Item';
 import type { SortableItemProps } from './types';
 
-/* We use a DivWrapper item custom component to override the default Item DOM elements
- * as draggable button elements cause rbdnd to render a placeholder that is styled with
- * native button styling.
- *
- * If consumers pass a custom component themselves, they must spread the innerRef and
- * draggableProps properties onto their nearest DOM element.
- */
-const DivWrapper = ({ className, children, draggableProps, innerRef }: any) => (
-  <div className={className} ref={innerRef} {...draggableProps}>
-    {children}
-  </div>
-);
-
 const getStyles = (provided, { isDragging }) => {
   return {
     ...provided,
@@ -59,7 +46,6 @@ export default class SortableItem extends Component<SortableItemProps> {
               innerRef={draggableProvided.innerRef}
               isDragging={draggableSnapshot.isDragging}
               styles={getStyles}
-              component={DivWrapper}
               {...itemProps}
               onClick={onClick}
             />

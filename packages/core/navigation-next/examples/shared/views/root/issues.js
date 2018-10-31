@@ -6,6 +6,8 @@ import { LinkItem } from '../../components';
 
 import ViewRegistrar from '../common/view-registrar';
 
+const logToConsole = () => console.log('item clicked');
+
 const getItems = () => [
   {
     id: 'root/issues:header',
@@ -39,22 +41,78 @@ const getItems = () => [
         id: 'heading-starred-filters',
         text: 'Starred filters',
       },
-      { type: 'Item', id: 'older-than-90-days', text: 'Older than 90 days' },
-      { type: 'Item', id: 'critical-bugs', text: 'Critical bugs' },
+      {
+        type: 'Item',
+        id: 'older-than-90-days',
+        text: 'Older than 90 days',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'critical-bugs',
+        text: 'Critical bugs',
+        onClick: logToConsole,
+      },
       {
         type: 'GroupHeading',
         id: 'heading-other-filters',
         text: 'Other filters',
+        onClick: logToConsole,
       },
-      { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
-      { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
-      { type: 'Item', id: 'all-issues', text: 'All issues' },
-      { type: 'Item', id: 'open-issues', text: 'Open issues' },
-      { type: 'Item', id: 'done-issues', text: 'Done issues' },
-      { type: 'Item', id: 'viewed-recently', text: 'Viewed recently' },
-      { type: 'Item', id: 'created-recently', text: 'Created recently' },
-      { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
-      { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
+      {
+        type: 'Item',
+        id: 'my-open-issues',
+        text: 'My open issues',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'reported-by-me',
+        text: 'Reported by me',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'all-issues',
+        text: 'All issues',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'open-issues',
+        text: 'Open issues',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'done-issues',
+        text: 'Done issues',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'viewed-recently',
+        text: 'Viewed recently',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'created-recently',
+        text: 'Created recently',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'resolved-recently',
+        text: 'Resolved recently',
+        onClick: logToConsole,
+      },
+      {
+        type: 'Item',
+        id: 'updated-recently',
+        text: 'Updated recently',
+        onClick: logToConsole,
+      },
     ],
     nestedGroupKey: 'menu',
     parentId: 'root/index:menu',

@@ -88,9 +88,6 @@ describe('SortableGroup', () => {
       </SortableGroup>,
     ).dive();
 
-    expect(wrapper.prop('style')).toEqual({
-      minHeight: 64,
-      paddingTop: 400,
-    });
+    expect(wrapper).toMatchSnapshot();
   });
 });

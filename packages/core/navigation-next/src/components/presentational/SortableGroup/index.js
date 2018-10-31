@@ -8,6 +8,12 @@ import type { SortableGroupProps } from './types';
 
 const defaultStyles = {
   minHeight: 64,
+  // Remove browser default button styles for rbdnd placeholder
+  '& > button': {
+    background: 'none',
+    border: 'none',
+    padding: 'none',
+  },
 };
 
 export default class SortableGroup extends Component<SortableGroupProps> {
@@ -18,7 +24,7 @@ export default class SortableGroup extends Component<SortableGroupProps> {
         {droppableProvided => (
           <div
             ref={droppableProvided.innerRef}
-            style={{ ...defaultStyles, ...innerStyle }}
+            css={{ ...defaultStyles, ...innerStyle }}
             {...droppableProvided.droppableProps}
           >
             <Group {...groupProps}>

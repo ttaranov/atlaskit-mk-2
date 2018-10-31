@@ -62,7 +62,6 @@ describe('SortableItem', () => {
       innerRef: draggableRef,
       isDragging: false,
       styles: expect.any(Function),
-      component: expect.any(Function),
       onClick: baseProps.onClick,
       text: 'My item',
       id: 'my-item',
@@ -94,38 +93,6 @@ describe('SortableItem', () => {
     expect(wrapper.find(Item).prop('onClick')).toBeUndefined();
     expect(wrapper.find(Item).prop('isDragging')).toBe(true);
     expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should pass in a custom DivWrapper component to Item', () => {
-    const wrapper = shallow(<SortableItem {...baseProps} />).dive();
-
-    const ItemComponent = wrapper.find(Item).prop('component');
-
-    expect(ItemComponent).toHaveLength(1);
-    const children = () => null;
-    const itemComponent = shallow(
-      <ItemComponent
-        className="foo"
-        innerRef={draggableRef}
-        draggableProps={{
-          tabIndex: 0,
-          mySpecialProp: 'foo',
-          anotherProp: 'bar',
-        }}
-      >
-        {children}
-      </ItemComponent>,
-    );
-
-    expect(itemComponent.is('div')).toBe(true);
-    expect(itemComponent.props()).toEqual({
-      className: 'foo',
-      tabIndex: 0,
-      mySpecialProp: 'foo',
-      anotherProp: 'bar',
-      children,
-    });
-    expect(itemComponent).toMatchSnapshot();
   });
 
   it('should supply some extra styling', () => {

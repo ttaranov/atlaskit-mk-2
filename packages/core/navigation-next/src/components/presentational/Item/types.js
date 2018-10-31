@@ -73,7 +73,8 @@ export type ItemProps = ItemBaseProps & {
   /** A custom component to render instead of the default wrapper component.
    * Could used to render a router Link, for example. The component will be
    * provided with a className, children and onClick props, which should be passed on to the
-   * element you render. */
+   * element you render. If this is a SortableItem, you will also need to spread `draggableProps` and
+   * set ref of `innerRef` to your outermost DOM element. */
   component?: ComponentType<ItemRenderComponentProps>,
 };
 

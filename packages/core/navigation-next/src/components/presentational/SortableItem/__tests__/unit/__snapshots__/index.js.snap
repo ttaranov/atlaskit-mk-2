@@ -2,7 +2,6 @@
 
 exports[`SortableItem should not trigger onClick if the item is dragged 1`] = `
 <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Item)))
-  component={[Function]}
   draggableProps={
     Object {
       "anotherProp": "bar",
@@ -18,20 +17,8 @@ exports[`SortableItem should not trigger onClick if the item is dragged 1`] = `
 />
 `;
 
-exports[`SortableItem should pass in a custom DivWrapper component to Item 1`] = `
-<div
-  anotherProp="bar"
-  className="foo"
-  mySpecialProp="foo"
-  tabIndex={0}
->
-  <unknown />
-</div>
-`;
-
 exports[`SortableItem should render an Item component 1`] = `
 <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Item)))
-  component={[Function]}
   draggableProps={
     Object {
       "anotherProp": "bar",

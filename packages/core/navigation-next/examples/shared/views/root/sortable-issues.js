@@ -28,23 +28,47 @@ const initialSortableIssueItems: ItemsByGroup = {
       type: 'SortableItem',
       id: 'older-than-90-days',
       text: 'Older than 90 days',
+      onClick: () => console.log('sortable item clicked'),
     },
-    { type: 'SortableItem', id: 'critical-bugs', text: 'Critical bugs' },
+    {
+      type: 'SortableItem',
+      id: 'critical-bugs',
+      text: 'Critical bugs',
+      onClick: () => console.log('sortable item clicked'),
+    },
   ],
   'other-filters-group': [
     {
       type: 'SortableItem',
       id: 'my-open-issues',
       text: 'My open issues',
+      onClick: () => console.log('sortable item clicked'),
     },
     {
       type: 'SortableItem',
       id: 'reported-by-me',
       text: 'Reported by me',
+
+      onClick: () => console.log('sortable item clicked'),
     },
-    { type: 'SortableItem', id: 'all-issues', text: 'All issues' },
-    { type: 'SortableItem', id: 'open-issues', text: 'Open issues' },
-    { type: 'SortableItem', id: 'done-issues', text: 'Done issues' },
+    {
+      type: 'SortableItem',
+      id: 'all-issues',
+      text: 'All issues',
+      onClick: () => console.log('sortable item clicked'),
+    },
+    {
+      type: 'SortableItem',
+      id: 'open-issues',
+      text: 'Open issues',
+      onClick: () => console.log('sortable item clicked'),
+    },
+    {
+      type: 'SortableItem',
+      id: 'anchor',
+      text: 'anchor',
+      href: '#',
+    },
     {
       type: LinkItem,
       id: 'go-to-projects',
