@@ -1,5 +1,5 @@
 // @flow
-import * as sample from 'lodash.sample';
+import sample from 'lodash.sample';
 import { getWeekday, getTimeString } from './util';
 
 const avatarImages = [
