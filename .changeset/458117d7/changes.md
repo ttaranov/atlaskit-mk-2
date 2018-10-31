@@ -1,0 +1,1 @@
+- removed optional attributes from adf-builder module for status node 
