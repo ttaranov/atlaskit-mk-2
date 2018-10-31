@@ -5,8 +5,8 @@ import Portal from '../..';
 
 const App = ({ children }: { children: Node }) => <div>{children}</div>;
 
-const zIndex = (elem: HTMLElement) =>
-  parseInt(elem.style.getPropertyValue('z-index'), 10);
+const zIndex = (elem: HTMLElement | void) =>
+  elem ? parseInt(elem.style.getPropertyValue('z-index'), 10) : 0;
 
 let wrapper: any;
 
@@ -38,8 +38,10 @@ test('should use z-index to stack nested portals', () => {
     </App>,
   );
   const elements = document.getElementsByClassName('atlaskit-portal');
-  expect(elements).toHaveLength(2);
-  const [front, back] = elements;
+  const getElement = text =>
+    [...elements].find(e => e.innerHTML.indexOf(text) > -1);
+  const front = getElement('front');
+  const back = getElement('back');
   expect(zIndex(front)).toBeGreaterThan(zIndex(back));
 });
 

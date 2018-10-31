@@ -2,7 +2,7 @@
 import React, { type Node } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
-import canUseDOM from '../utils/canUseDom';
+import { canUseDom } from 'exenv';
 
 type Props = {
   /* Children to render in the React Portal. */
@@ -52,7 +52,7 @@ class Portal extends React.Component<Props, State> {
   };
 
   state = {
-    container: canUseDOM() ? createContainer(this.props.zIndex) : undefined,
+    container: canUseDom ? createContainer(this.props.zIndex) : undefined,
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {

@@ -20,6 +20,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "babel-runtime": "^6.26.0",
+    "exenv": "^1.2.2",
     "tiny-invariant": "^0.0.3"
   },
   "peerDependencies": {
