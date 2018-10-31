@@ -162,7 +162,7 @@ export default class Example extends Component<{}, State> {
   state = {
     groups: {
       first: (DEFAULT_ITEMS.slice(0, 4): typeof DEFAULT_ITEMS),
-      second: (DEFAULT_ITEMS.slice(4, 8): typeof DEFAULT_ITEMS),
+      second: (DEFAULT_ITEMS.slice(4, 9): typeof DEFAULT_ITEMS),
     },
     showContainer: true,
   };
