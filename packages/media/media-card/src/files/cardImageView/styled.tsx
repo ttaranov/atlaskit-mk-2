@@ -86,6 +86,7 @@ export const PlayIconWrapper = styled.div`
   justify-content: center;
   color: white;
 
+  /* we want to override default icon size and hover state */
   &:hover > * {
     width: 64px;
     height: 64px;
