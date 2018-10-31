@@ -1,0 +1,1 @@
+- Updates list of instrumented components
