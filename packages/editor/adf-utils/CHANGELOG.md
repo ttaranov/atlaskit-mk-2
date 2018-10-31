@@ -1,5 +1,13 @@
 # @atlaskit/adf-utils
 
+## 4.0.3
+- [patch] [653b6a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/653b6a9):
+
+  - removed optional attributes from adf-builder module for status node
+- [patch] [cd5471b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd5471b):
+
+  - added style attribute for Status node in ADF schema
+
 ## 4.0.2
 - [patch] [6201223"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6201223"

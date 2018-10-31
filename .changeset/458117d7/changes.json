@@ -1,7 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/adf-utils", "type": "patch" },
-    { "name": "@atlaskit/editor-common", "type": "patch" }
-  ],
-  "dependents": []
-}
