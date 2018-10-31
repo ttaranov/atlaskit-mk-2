@@ -93,9 +93,7 @@ export function createPlugin(
               newState.doc,
               adjacentNodePos,
             );
-            return newState.tr
-              .setMeta('isLocal', true)
-              .deleteRange($from.pos, $to.pos);
+            return newState.tr.deleteRange($from.pos, $to.pos);
           }
         }
       }
