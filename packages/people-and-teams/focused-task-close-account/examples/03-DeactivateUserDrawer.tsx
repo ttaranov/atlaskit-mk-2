@@ -7,11 +7,7 @@ import { Checkbox } from '@atlaskit/checkbox';
 import accessibleSites from '../src/mocks/accessibleSites';
 import { catherineHirons } from '../src/mocks/users';
 import StatefulInlineDialog from '../src/components/StatefulInlineDialog';
-import {
-  FocusedTaskCloseAccount,
-  DeactivateUserOverviewScreen,
-  DeactivateUserContentPreviewScreen,
-} from '../src';
+import { FocusedTaskCloseAccount, DeactivateUserOverviewScreen } from '../src';
 
 const Controls = styled.div`
   display: flex;
@@ -46,10 +42,6 @@ export default class DeactivateUserDrawerExample extends React.Component {
       isCurrentUser={this.state.isCurrentUser}
       user={catherineHirons}
     />
-  );
-
-  renderDeactivateUserContentPreviewScreen = () => (
-    <DeactivateUserContentPreviewScreen user={catherineHirons} />
   );
 
   render() {

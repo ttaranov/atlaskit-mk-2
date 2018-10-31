@@ -8,6 +8,8 @@ export const UserInfoOuter = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: ${gridSizeTimes(2)}px;
+  margin-top: ${gridSizeTimes(1.5)}px;
+  margin-left: ${gridSizeTimes(2)}px;
 `;
 
 export const UserDetails = styled.div`

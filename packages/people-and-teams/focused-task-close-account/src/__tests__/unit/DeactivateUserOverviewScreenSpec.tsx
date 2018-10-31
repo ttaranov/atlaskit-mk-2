@@ -17,22 +17,10 @@ const defaultProps = {
 const render = (props = {}) =>
   shallow(<DeactivateUserOverviewScreen {...defaultProps} {...props} />);
 
-test('DeactivateUserOverviewScreen', () => {
-  expect(render()).toMatchSnapshot();
+test('DeactivateUserOverviewScreen as Admin', () => {
+  expect(render({ isCurrentUser: false })).toMatchSnapshot();
 });
 
-describe('selectAdminOrSelfCopy', () => {
-  test('selects admin copy if deactivate candidate is not current user', () => {
-    const selectAdminOrSelfCopy = (render({
-      isCurrentUser: false,
-    }).instance() as DeactivateUserOverviewScreen).selectAdminOrSelfCopy;
-    expect(selectAdminOrSelfCopy('admin', 'self')).toBe('admin');
-  });
-
-  test('selects self copy if deactivate candidate is current user', () => {
-    const selectAdminOrSelfCopy = (render({
-      isCurrentUser: true,
-    }).instance() as DeactivateUserOverviewScreen).selectAdminOrSelfCopy;
-    expect(selectAdminOrSelfCopy('admin', 'self')).toBe('self');
-  });
+test('DeactivateUserOverviewScreen as Self', () => {
+  expect(render({ isCurrentUser: true })).toMatchSnapshot();
 });

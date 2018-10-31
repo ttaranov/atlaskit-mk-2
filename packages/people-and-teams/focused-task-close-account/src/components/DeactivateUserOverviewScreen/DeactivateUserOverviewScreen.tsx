@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import Button from '@atlaskit/button';
-import SectionMessage from '@atlaskit/section-message';
+
 import InfoIcon from '@atlaskit/icon/glyph/info';
 
-import { commonMessages, deactivateOverviewMessages } from '../../messages';
+import { deactivateOverviewMessages } from '../../messages';
 import StatefulInlineDialog from '../StatefulInlineDialog';
 import UserInfo from '../UserInfo';
 import { DeactivateUserOverviewScreenProps } from './types';
@@ -35,6 +34,7 @@ export class DeactivateUserOverviewScreen extends React.Component<
           <FormattedMessage {...deactivateOverviewMessages.heading} />
         </Styled.Title>
         <FormattedMessage
+          tagName="p"
           {...this.selectAdminOrSelfCopy(
             deactivateOverviewMessages.paragraphAboutToDeactivateAdmin,
             deactivateOverviewMessages.paragraphAboutToDeactivateSelf,
@@ -42,12 +42,13 @@ export class DeactivateUserOverviewScreen extends React.Component<
         />
         <UserInfo user={user} />
         <FormattedMessage
+          tagName="p"
           {...this.selectAdminOrSelfCopy(
             deactivateOverviewMessages.paragraphWhenDeactivateAccountAdmin,
             deactivateOverviewMessages.paragraphWhenDeactivateAccountSelf,
           )}
         />
-        <Styled.MainInformationList>
+        <ul>
           <li>
             <FormattedMessage
               {...this.selectAdminOrSelfCopy(
@@ -98,8 +99,9 @@ export class DeactivateUserOverviewScreen extends React.Component<
               )}
             />
           </li>
-        </Styled.MainInformationList>
+        </ul>
         <FormattedMessage
+          tagName="p"
           {...this.selectAdminOrSelfCopy(
             deactivateOverviewMessages.paragraphReactivateAtAnyTimeAdmin,
             deactivateOverviewMessages.paragraphReactivateAtAnyTimeSelf,

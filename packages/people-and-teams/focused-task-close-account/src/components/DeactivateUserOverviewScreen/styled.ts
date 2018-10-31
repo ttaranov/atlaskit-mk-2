@@ -24,12 +24,6 @@ export const SectionMessageOuter = styled.div`
   margin: ${gridSizeTimes(3)}px 0;
 `;
 
-export const MainInformationList = styled.ul`
-  > li {
-    margin-top: 16px;
-  }
-`;
-
 export const AccessibleSitesList = styled.ul`
   list-style: none;
   padding-left: 0;
@@ -38,7 +32,4 @@ export const AccessibleSitesList = styled.ul`
 
 export const InfoIconWrapper = styled.span`
   color: ${colors.B300};
-  div {
-    display: inline-block;
-  }
 `;

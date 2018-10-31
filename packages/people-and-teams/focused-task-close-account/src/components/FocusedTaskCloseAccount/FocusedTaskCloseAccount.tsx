@@ -77,12 +77,12 @@ export class FocusedTaskCloseAccount extends React.Component<Props> {
               learnMoreLink && (
                 <Button
                   appearance="subtle-link"
+                  iconAfter={<ShortcutIcon size="small" label="" />}
                   spacing="none"
                   href={learnMoreLink}
                   target="_blank"
                 >
                   <FormattedMessage {...commonMessages.learnMore} />{' '}
-                  <ShortcutIcon size="small" label="" />
                 </Button>
               )
             }

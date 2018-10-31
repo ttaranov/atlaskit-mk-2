@@ -8,8 +8,5 @@ export {
   default as DeleteUserOverviewScreen,
 } from './components/DeleteUserOverviewScreen';
 export {
-  default as DeactivateUserContentPreviewScreen,
-} from './components/DeactivateUserContentPreviewScreen';
-export {
   default as DeactivateUserOverviewScreen,
 } from './components/DeactivateUserOverviewScreen';

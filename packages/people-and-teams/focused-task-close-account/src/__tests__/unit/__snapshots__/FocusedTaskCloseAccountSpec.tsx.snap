@@ -19,6 +19,12 @@ exports[`isOpen snapshot 1`] = `
         <ForwardRef
           appearance="subtle-link"
           href="https://hello.atlassian.net"
+          iconAfter={
+            <ShortcutIcon
+              label=""
+              size="small"
+            />
+          }
           spacing="none"
           target="_blank"
         >
@@ -29,10 +35,6 @@ exports[`isOpen snapshot 1`] = `
             values={Object {}}
           />
            
-          <ShortcutIcon
-            label=""
-            size="small"
-          />
         </ForwardRef>
       }
       submitButton={
@@ -49,6 +51,12 @@ exports[`learnMoreLink display Learn more link is displayed when the link is pas
 <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))
   appearance="subtle-link"
   href="https://hello.atlassian.net"
+  iconAfter={
+    <ShortcutIcon
+      label=""
+      size="small"
+    />
+  }
   spacing="none"
   target="_blank"
 >
@@ -59,9 +67,5 @@ exports[`learnMoreLink display Learn more link is displayed when the link is pas
     values={Object {}}
   />
    
-  <ShortcutIcon
-    label=""
-    size="small"
-  />
 </ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))>
 `;
