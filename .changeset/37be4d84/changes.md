@@ -1,0 +1,1 @@
+- Fixing section animation on first-page load

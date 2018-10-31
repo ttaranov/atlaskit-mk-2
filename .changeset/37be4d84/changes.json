@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/navigation-next", "type": "patch" }],
+  "dependents": []
+}
