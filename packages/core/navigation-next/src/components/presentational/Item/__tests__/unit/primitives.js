@@ -25,6 +25,7 @@ describe('ItemPrimitiveBase', () => {
       isFocused: false,
       spacing: 'default',
       text: 'item content',
+      createAnalyticsEvent: (): any => ({}),
       theme: {
         context: 'default',
         mode: ({
@@ -52,14 +53,25 @@ describe('ItemPrimitiveBase', () => {
     expect(wrapper.find('button').length).toBe(0);
   });
 
-  it('should pass all props and innerRef as ref prop to component if present', () => {
+  it('should pass all component props and innerRef as ref prop to component if present', () => {
     const wrapper = mount(
       <ItemPrimitiveBase {...defaultProps} component={TestComponent} />,
     );
     const componentWrapper = wrapper.find(TestComponent);
 
+    const {
+      createAnalyticsEvent,
+      theme,
+      isActive,
+      isHover,
+      isSelected,
+      isFocused,
+      isDragging,
+      ...componentProps
+    } = wrapper.props();
+
     expect(componentWrapper.props()).toEqual(
-      expect.objectContaining(wrapper.props()),
+      expect.objectContaining(componentProps),
     );
     expect(componentWrapper.prop('ref')).toEqual(wrapper.prop('innerRef'));
   });
@@ -136,6 +148,7 @@ describe('ItemPrimitiveBase', () => {
       isSelected: false,
       spacing: 'default',
       isFocused: false,
+      isDragging: false,
     });
   });
 
@@ -150,6 +163,7 @@ describe('ItemPrimitiveBase', () => {
       isSelected: false,
       spacing: 'default',
       isFocused: false,
+      isDragging: false,
     });
   });
 

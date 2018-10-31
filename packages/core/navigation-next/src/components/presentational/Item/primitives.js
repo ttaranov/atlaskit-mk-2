@@ -35,6 +35,8 @@ const getItemComponentProps = (props: ItemPrimitiveProps) => {
     isActive,
     isHover,
     isSelected,
+    isFocused,
+    isDragging,
     theme,
     ...componentProps
   } = props;
@@ -44,7 +46,6 @@ const getItemComponentProps = (props: ItemPrimitiveProps) => {
 
 class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   static defaultProps = {
-    draggableProps: {},
     isActive: false,
     isDragging: false,
     isHover: false,
