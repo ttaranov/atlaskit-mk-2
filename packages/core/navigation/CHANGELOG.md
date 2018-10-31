@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 33.3.1
+- Updated dependencies [2da04ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2da04ed):
+  - @atlaskit/quick-search@5.0.0
+
 ## 33.3.0
 - [minor] [90f4995](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90f4995):
 

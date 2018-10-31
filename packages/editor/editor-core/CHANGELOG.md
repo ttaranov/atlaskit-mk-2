@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 87.6.14
+- [patch] [7787595](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7787595):
+
+  - ED-4359: don't change selection when deleting filmstrip item
+
+## 87.6.13
+- [patch] [71b59ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71b59ae):
+
+  - Fixed Datepicker showing rendering outside viewport
+
 ## 87.6.12
 - [patch] [12855b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12855b9):
 
