@@ -5,7 +5,7 @@ import TextField from '../src';
 
 const TextFieldExample = () => (
   <div>
-    <TextField maxWidth="300" />
+    <TextField />
   </div>
 );
 

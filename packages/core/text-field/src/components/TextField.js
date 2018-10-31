@@ -13,29 +13,14 @@ import {
 
 import DefaultInput from './Input';
 import { Wrapper } from '../styled';
+import type { TextFieldProps } from '../types';
 
 type State = {
   value: string,
   isFocused: boolean,
 };
 
-type Props = {
-  /** Controls the appearance of the field. `subtle` shows styling on hover. `none` hides all field styling. */
-  appearance?: 'standard' | 'none' | 'subtle',
-  /** applies compact styling, making the field smaller */
-  defaultValue: string,
-  input: typeof DefaultInput,
-  isCompact?: boolean,
-  isFocused: boolean,
-  isReadOnly: boolean,
-  onBlur?: (SyntheticEvent<*>) => void,
-  onChange: (SyntheticEvent<*>) => void,
-  onFocus?: (SyntheticEvent<*>) => void,
-  maxWidth: number,
-  value?: string | number,
-};
-
-class TextField extends Component<Props, State> {
+class TextField extends Component<TextFieldProps, State> {
   static defaultProps = {
     appearance: 'standard',
     input: DefaultInput,
@@ -67,7 +52,7 @@ class TextField extends Component<Props, State> {
     }
   };
 
-  handleOnChange = (e: SyntheticEvent<*>) => {
+  handleOnChange = (e: SyntheticInputEvent<*>) => {
     this.setState({ value: e.currentTarget.value });
     if (this.props.onChange) {
       this.props.onChange(e);
@@ -88,14 +73,14 @@ class TextField extends Component<Props, State> {
 
   render() {
     const { isFocused } = this.state;
-    const { maxWidth, input: Input, ...rest } = this.props;
+    const { size, forwardedRef, input: Input, ...rest } = this.props;
 
     return (
-      <Wrapper maxWidth={maxWidth}>
+      <Wrapper size={size}>
         <Input
           {...rest}
           isFocused={isFocused}
-          ref={this.setInputRef}
+          forwardedRef={forwardedRef}
           onFocus={this.handleOnFocus}
           onBlur={this.handleOnBlur}
           onChange={this.handleOnChange}
@@ -106,7 +91,12 @@ class TextField extends Component<Props, State> {
   }
 }
 
-export { TextField as TextFieldWithoutAnalytics };
+// $FlowFixMe - flow 0.67 doesn't know about forwardRef
+const ForwardRefTextField = React.forwardRef((props, ref) => (
+  <TextField {...props} forwardedRef={ref} />
+));
+
+export { ForwardRefTextField as TextFieldWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
@@ -136,5 +126,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-  })(TextField),
+  })(ForwardRefTextField),
 );
