@@ -34,13 +34,11 @@ export const Animation = ({
     onEntered={onEntered}
     appear
   >
-    {status => {
+    {unadjustedStatus => {
       // when we first render, we want to finish the 'entering' state render
       // then jump to the 'entered' state as quick as possible.
-      let adjustedStatus = status;
-      if (hasEntered && status === 'exited') {
-        adjustedStatus = 'entering';
-      }
+      const adjustedStatus =
+        hasEntered && status === 'exited' ? 'entering' : unadjustedStatus;
       // Fade styles
       const fadeBase = {
         transition: `opacity ${duration / 2}ms`,
