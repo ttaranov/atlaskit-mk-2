@@ -1,7 +1,7 @@
 // @flow
 
 import type { ElementConfig } from 'react';
-import Item from '../Item';
+import Item from '../../presentational/Item';
 
 export type SortableItemProps = {
   ...$Exact<ElementConfig<typeof Item>>,

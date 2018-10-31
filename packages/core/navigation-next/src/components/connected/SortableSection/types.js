@@ -7,7 +7,7 @@ import type {
   OnDragUpdateHook,
 } from 'react-beautiful-dnd';
 
-import Section from '../Section';
+import Section from '../../presentational/Section';
 
 export type SortableSectionProps = {
   ...$Exact<ElementConfig<typeof Section>>,

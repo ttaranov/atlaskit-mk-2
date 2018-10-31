@@ -291,7 +291,7 @@ Takes the same props as [Item](#item) as well as some additional props documente
 ${(
       <Props
         heading="SortableItem props"
-        props={require('!!extract-react-types-loader!../src/components/presentational/SortableItem')}
+        props={require('!!extract-react-types-loader!../src/components/connected/SortableItem')}
       />
     )}
 
@@ -305,7 +305,7 @@ Takes the same props as [Group](#group) as well as some additional props documen
 ${(
       <Props
         heading="SortableGroup props"
-        props={require('!!extract-react-types-loader!../src/components/presentational/SortableGroup')}
+        props={require('!!extract-react-types-loader!../src/components/connected/SortableGroup')}
       />
     )}
 
@@ -328,7 +328,7 @@ ${(
 ${(
       <Props
         heading="SortableSection props"
-        props={require('!!extract-react-types-loader!../src/components/presentational/SortableSection')}
+        props={require('!!extract-react-types-loader!../src/components/connected/SortableSection')}
       />
     )}
 

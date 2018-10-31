@@ -1,7 +1,7 @@
 // @flow
 
 import type { ElementConfig } from 'react';
-import Group from '../Group';
+import Group from '../../presentational/Group';
 
 export type SortableGroupProps = {
   ...$Exact<ElementConfig<typeof Group>>,

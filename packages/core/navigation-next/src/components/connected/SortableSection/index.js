@@ -7,10 +7,10 @@ import {
   type DragStart,
   type HookProvided,
 } from 'react-beautiful-dnd';
-import { LayoutEventEmitter } from '../LayoutManager/LayoutEvent';
+import { LayoutEventEmitter } from '../../presentational/LayoutManager/LayoutEvent';
 
 import type { SortableSectionProps } from './types';
-import Section from '../Section';
+import Section from '../../presentational/Section';
 
 export default class SortableSection extends Component<SortableSectionProps> {
   onDragStart = (

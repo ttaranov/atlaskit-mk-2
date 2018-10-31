@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { colors } from '@atlaskit/theme';
 import { Draggable } from 'react-beautiful-dnd';
 
-import Item from '../Item';
+import Item from '../../presentational/Item';
 import type { SortableItemProps } from './types';
 
 const getStyles = (provided, { isDragging }) => {

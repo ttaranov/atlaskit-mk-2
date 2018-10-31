@@ -13,15 +13,15 @@ import MenuSectionComponent from '../components/presentational/MenuSection';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
 import Separator from '../components/presentational/Separator';
-import SortableGroupComponent from '../components/presentational/SortableGroup';
-import SortableItem from '../components/presentational/SortableItem';
-import SortableSectionComponent from '../components/presentational/SortableSection';
 import Switcher from '../components/presentational/Switcher';
 import Wordmark from '../components/presentational/Wordmark';
 
 import BackItem from '../components/connected/BackItem';
 import ConnectedItem from '../components/connected/ConnectedItem';
 import GoToItem from '../components/connected/GoToItem';
+import SortableGroupComponent from '../components/connected/SortableGroup';
+import SortableItem from '../components/connected/SortableItem';
+import SortableSectionComponent from '../components/connected/SortableSection';
 
 import type {
   GroupProps,

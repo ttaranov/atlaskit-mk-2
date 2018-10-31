@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Droppable } from 'react-beautiful-dnd';
 
-import Group from '../../../Group';
+import Group from '../../../../presentational/Group';
 import SortableGroup from '../../index';
 
 jest.mock('react-beautiful-dnd', () => {

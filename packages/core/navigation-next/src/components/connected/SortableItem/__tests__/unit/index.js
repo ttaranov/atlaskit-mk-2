@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Draggable } from 'react-beautiful-dnd';
 
-import Item from '../../../Item';
+import Item from '../../../../presentational/Item';
 import SortableItem from '../../index';
 
 jest.mock('react-beautiful-dnd', () => {

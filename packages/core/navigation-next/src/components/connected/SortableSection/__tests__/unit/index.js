@@ -4,11 +4,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import { LayoutEventEmitter } from '../../../LayoutManager/LayoutEvent';
-import Section from '../../../Section';
+import { LayoutEventEmitter } from '../../../../presentational/LayoutManager/LayoutEvent';
+import Section from '../../../../presentational/Section';
 import SortableSection from '../../index';
 
-jest.mock('../../../LayoutManager/LayoutEvent', () => {
+jest.mock('../../../../presentational/LayoutManager/LayoutEvent', () => {
   const mock: any = jest.fn();
   mock.displayName = 'MockLayoutEventEmitter';
   return {

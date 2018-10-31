@@ -48,15 +48,6 @@ export {
 export {
   default as SkeletonContainerView,
 } from './components/presentational/SkeletonContainerView';
-export {
-  default as SortableGroup,
-} from './components/presentational/SortableGroup';
-export {
-  default as SortableItem,
-} from './components/presentational/SortableItem';
-export {
-  default as SortableSection,
-} from './components/presentational/SortableSection';
 export { default as Switcher } from './components/presentational/Switcher';
 export { default as Wordmark } from './components/presentational/Wordmark';
 
@@ -67,6 +58,11 @@ export { default as GoToItem } from './components/connected/GoToItem';
 export {
   default as LayoutManagerWithViewController,
 } from './components/connected/LayoutManagerWithViewController';
+export { default as SortableGroup } from './components/connected/SortableGroup';
+export { default as SortableItem } from './components/connected/SortableItem';
+export {
+  default as SortableSection,
+} from './components/connected/SortableSection';
 
 /** State */
 export { NavigationProvider } from './provider';

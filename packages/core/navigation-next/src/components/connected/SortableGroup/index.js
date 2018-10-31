@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-import Group from '../Group';
+import Group from '../../presentational/Group';
 import type { SortableGroupProps } from './types';
 
 const defaultStyles = {

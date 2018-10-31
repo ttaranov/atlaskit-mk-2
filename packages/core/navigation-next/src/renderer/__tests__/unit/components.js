@@ -9,9 +9,9 @@ import ConnectedItemComponent from '../../../components/connected/ConnectedItem'
 import GoToItemComponent from '../../../components/connected/GoToItem';
 import HeaderSectionComponent from '../../../components/presentational/HeaderSection';
 import MenuSectionComponent from '../../../components/presentational/MenuSection';
-import SortableGroupComponent from '../../../components/presentational/SortableGroup';
-import SortableItemComponent from '../../../components/presentational/SortableItem';
-import SortableSectionComponent from '../../../components/presentational/SortableSection';
+import SortableGroupComponent from '../../../components/connected/SortableGroup';
+import SortableItemComponent from '../../../components/connected/SortableItem';
+import SortableSectionComponent from '../../../components/connected/SortableSection';
 import ItemsRenderer, { components } from '../../components';
 
 const {
