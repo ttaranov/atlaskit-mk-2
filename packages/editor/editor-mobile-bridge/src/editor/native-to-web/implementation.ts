@@ -138,8 +138,8 @@ export default class WebBridgeImpl implements NativeToWebBridge {
       }
     }
   }
-  onPromiseResolved(uuid: string, paylaod: string) {
-    resolvePromise(uuid, JSON.parse(paylaod));
+  onPromiseResolved(uuid: string, payload: string) {
+    resolvePromise(uuid, JSON.parse(payload));
   }
 
   onPromiseRejected(uuid: string) {

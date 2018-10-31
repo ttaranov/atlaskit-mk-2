@@ -4,7 +4,7 @@
  */
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 
-export default class MentionProviderImpl implements MentionProvider {
+class MentionProviderImpl implements MentionProvider {
   filter(query?: string): void {}
 
   recordMentionSelection(mention: MentionDescription): void {}
@@ -27,3 +27,5 @@ export default class MentionProviderImpl implements MentionProvider {
 
   unsubscribe(key: string): void {}
 }
+
+export default Promise.resolve(new MentionProviderImpl());
