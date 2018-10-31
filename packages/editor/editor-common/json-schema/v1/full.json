@@ -1304,65 +1304,6 @@
       ],
       "additionalProperties": false
     },
-    "layoutColumn_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "layoutColumn"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "width": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 100
-            }
-          },
-          "required": [
-            "width"
-          ],
-          "additionalProperties": false
-        },
-        "content": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/block_content"
-          },
-          "minItems": 1
-        }
-      },
-      "required": [
-        "type",
-        "attrs",
-        "content"
-      ],
-      "additionalProperties": false
-    },
-    "layoutSection_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "layoutSection"
-          ]
-        },
-        "content": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/layoutColumn_node"
-          },
-          "minItems": 1
-        }
-      },
-      "required": [
-        "type",
-        "content"
-      ],
-      "additionalProperties": false
-    },
     "em_mark": {
       "type": "object",
       "properties": {
@@ -1689,58 +1630,6 @@
       ],
       "additionalProperties": false
     },
-    "block_content": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/paragraph_node"
-        },
-        {
-          "$ref": "#/definitions/bulletList_node"
-        },
-        {
-          "$ref": "#/definitions/mediaSingle_node"
-        },
-        {
-          "$ref": "#/definitions/orderedList_node"
-        },
-        {
-          "$ref": "#/definitions/heading_node"
-        },
-        {
-          "$ref": "#/definitions/panel_node"
-        },
-        {
-          "$ref": "#/definitions/blockquote_node"
-        },
-        {
-          "$ref": "#/definitions/rule_node"
-        },
-        {
-          "$ref": "#/definitions/mediaGroup_node"
-        },
-        {
-          "$ref": "#/definitions/table_node"
-        },
-        {
-          "$ref": "#/definitions/applicationCard_node"
-        },
-        {
-          "$ref": "#/definitions/decisionList_node"
-        },
-        {
-          "$ref": "#/definitions/taskList_node"
-        },
-        {
-          "$ref": "#/definitions/extension_node"
-        },
-        {
-          "$ref": "#/definitions/bodiedExtension_node"
-        },
-        {
-          "$ref": "#/definitions/codeBlock_node"
-        }
-      ]
-    },
     "table_cell_content": {
       "type": "array",
       "items": {
@@ -2003,9 +1892,6 @@
               },
               {
                 "$ref": "#/definitions/bodiedExtension_node"
-              },
-              {
-                "$ref": "#/definitions/layoutSection_node"
               },
               {
                 "$ref": "#/definitions/codeBlock_node"

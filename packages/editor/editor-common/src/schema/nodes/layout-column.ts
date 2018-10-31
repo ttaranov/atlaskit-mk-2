@@ -3,6 +3,7 @@ import { BlockContent } from './doc';
 
 /**
  * @name layoutColumn_node
+ * @stage 0
  */
 export interface LayoutColumnDefinition {
   type: 'layoutColumn';

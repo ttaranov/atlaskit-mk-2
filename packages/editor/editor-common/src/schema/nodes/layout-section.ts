@@ -3,6 +3,7 @@ import { LayoutColumnDefinition } from './layout-column';
 
 /**
  * @name layoutSection_node
+ * @stage 0
  */
 export interface LayoutSectionDefinition {
   type: 'layoutSection';
