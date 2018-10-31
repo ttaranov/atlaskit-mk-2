@@ -1,23 +1,47 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { parseString } from '../text';
-import { normalizePMNodes } from '../utils/normalize';
-import { TokenErrCallback } from '../tokenize';
+import { Token, TokenErrCallback } from '.';
+import { commonMacro } from './common-macro';
 import { hasAnyOfMarks } from '../utils/text';
+import { normalizePMNodes } from '../utils/normalize';
+import { parseString } from '../text';
 
-export function blockquoteMacro(
-  attrs: { [key: string]: string },
-  rawContent: string,
+export function quoteMacro(
+  input: string,
   schema: Schema,
   tokenErrCallback?: TokenErrCallback,
-): PMNode[] {
-  if (!rawContent.length) {
-    const empty = emptyBlockquote(schema);
-    return [empty];
-  }
-  const content = parseString(rawContent, schema, [], tokenErrCallback);
-  const normalizedContent = normalizePMNodes(content, schema);
-  return sanitize(normalizedContent, schema);
+): Token {
+  return commonMacro(input, schema, {
+    opening: /^\{quote(?::([^\{\n\}]*))?\}/,
+    closing: /\{quote\}/,
+    rawContentProcessor,
+    tokenErrCallback,
+  });
 }
+
+export const rawContentProcessor = (
+  rawAttrs: string,
+  rawContent: string,
+  length: number,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): Token => {
+  if (!rawContent.length) {
+    const emptyQuote = emptyBlockquote(schema);
+    return {
+      type: 'pmnode',
+      nodes: [emptyQuote],
+      length,
+    };
+  }
+  const parsedContent = parseString(rawContent, schema, [], tokenErrCallback);
+  const normalizedContent = normalizePMNodes(parsedContent, schema);
+
+  return {
+    type: 'pmnode',
+    nodes: sanitize(normalizedContent, schema),
+    length,
+  };
+};
 
 function emptyBlockquote(schema: Schema) {
   const p = schema.nodes.paragraph.createChecked({}, []);

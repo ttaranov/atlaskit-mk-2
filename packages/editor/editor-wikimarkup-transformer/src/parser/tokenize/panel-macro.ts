@@ -1,32 +1,48 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Token, TokenErrCallback } from '.';
+import { commonMacro } from './common-macro';
 import { parseString } from '../text';
+import { parseAttrs } from '../utils/attrs';
 import { normalizePMNodes } from '../utils/normalize';
+import { getPanelType } from '../utils/panel-type';
 import { title } from '../utils/title';
-
-import { getPanelType } from './panel-type';
-import { TokenErrCallback } from '../tokenize';
 
 const allowedNodeType = ['paragraph', 'heading', 'orderedList', 'bulletList'];
 
 export function panelMacro(
-  attrs: { [key: string]: string },
-  rawContent: string,
+  input: string,
   schema: Schema,
   tokenErrCallback?: TokenErrCallback,
-): PMNode[] {
-  const output: PMNode[] = [];
+): Token {
+  return commonMacro(input, schema, {
+    opening: /^\{panel(?::([^\{\n\}]*))?\}/,
+    closing: /\{panel\}/,
+    rawContentProcessor,
+    tokenErrCallback,
+  });
+}
 
+const rawContentProcessor = (
+  rawAttrs: string,
+  rawContent: string,
+  length: number,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): Token => {
+  const output: PMNode[] = [];
+  const parsedAttrs = parseAttrs(rawAttrs);
   const nodeAttrs = {
-    ...attrs,
-    panelType: getPanelType(attrs),
+    ...parsedAttrs,
+    panelType: getPanelType(parsedAttrs),
   };
 
-  if (attrs.title) {
-    output.push(title(attrs.title, schema));
+  if (parsedAttrs.title) {
+    output.push(title(parsedAttrs.title, schema));
   }
 
-  const content = parseString(rawContent, schema, [], tokenErrCallback);
-  const normalizedContent = normalizePMNodes(content, schema);
+  const parsedContent = parseString(rawContent, schema, [], tokenErrCallback);
+
+  const normalizedContent = normalizePMNodes(parsedContent, schema);
   let contentBuffer: PMNode[] = [];
 
   for (const n of normalizedContent) {
@@ -53,8 +69,12 @@ export function panelMacro(
     output.push(panelNode);
   }
 
-  return output.length ? output : [emptyPanel(schema)];
-}
+  return {
+    type: 'pmnode',
+    nodes: output.length ? output : [emptyPanel(schema)],
+    length,
+  };
+};
 
 function emptyPanel(schema: Schema) {
   const p = schema.nodes.paragraph.createChecked();
