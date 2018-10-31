@@ -10,7 +10,7 @@ import {
   pluginKey as widthPluginKey,
   WidthPluginState,
 } from '../../../../width';
-import { calcExtensionWidth } from '@atlaskit/editor-common';
+import { calcBreakoutWidth } from '@atlaskit/editor-common';
 import WithPluginState from '../../../../../ui/WithPluginState';
 
 export interface Props {
@@ -50,7 +50,7 @@ export default class Extension extends Component<Props, any> {
               data-layout={node.attrs.layout}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
-                width: calcExtensionWidth(node.attrs.layout, widthState.width),
+                width: calcBreakoutWidth(node.attrs.layout, widthState.width),
               }}
             >
               <Overlay className="extension-overlay" />

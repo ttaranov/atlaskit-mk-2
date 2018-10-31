@@ -2,9 +2,9 @@ import {
   akEditorFullPageMaxWidth,
   akEditorWideLayoutWidth,
   akEditorBreakoutPadding,
-} from '../../styles';
+} from '../styles';
 
-export const calcExtensionWidth = (layout, containerWidth: number) => {
+export const calcBreakoutWidth = (layout, containerWidth: number) => {
   switch (layout) {
     case 'full-width':
       const effectiveFullWidth = containerWidth - akEditorBreakoutPadding;

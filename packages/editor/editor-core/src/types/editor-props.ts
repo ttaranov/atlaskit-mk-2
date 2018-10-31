@@ -90,6 +90,10 @@ export interface EditorProps {
   // To enable, you need to also provide a `taskDecisionProvider`. You will most likely need backend ADF storage for this feature.
   allowTasksAndDecisions?: boolean;
 
+  // Enables new breakout mark.
+  // This mark is being used for making code-blocks breakout.
+  allowBreakout?: boolean;
+
   // Enables horizontal rules.
   allowRule?: boolean;
 

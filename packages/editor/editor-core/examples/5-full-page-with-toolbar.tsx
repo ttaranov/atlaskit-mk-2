@@ -86,6 +86,7 @@ export class ExampleEditor extends React.Component<Props> {
                 quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
                 allowCodeBlocks={{ enableKeybindingsForIDE: true }}
                 allowLists={true}
+                allowBreakout={true}
                 allowTextColor={true}
                 allowTables={{
                   allowColumnResizing: true,

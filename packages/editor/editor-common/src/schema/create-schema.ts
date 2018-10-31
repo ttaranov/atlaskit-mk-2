@@ -15,6 +15,7 @@ import {
   textColor,
   confluenceInlineComment,
   action,
+  breakout,
 } from './marks';
 
 import {
@@ -185,6 +186,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'action', spec: action },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },
   ...markGroupDeclarations,
+  { name: 'breakout', spec: breakout },
 ];
 
 /**

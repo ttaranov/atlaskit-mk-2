@@ -1,6 +1,7 @@
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
+  breakoutPlugin,
   blockTypePlugin,
   clearMarksOnChangeToEmptyDocumentPlugin,
   codeBlockPlugin,
@@ -68,6 +69,10 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
  */
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList(props);
+
+  if (props.allowBreakout) {
+    plugins.push(breakoutPlugin);
+  }
 
   if (props.quickInsert) {
     plugins.push(quickInsertPlugin);

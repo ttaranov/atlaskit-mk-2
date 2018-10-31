@@ -143,6 +143,7 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
               allowTables={{
                 advanced: true,
               }}
+              allowBreakout={true}
               allowJiraIssue={true}
               allowUnsupportedContent={true}
               allowPanel={true}

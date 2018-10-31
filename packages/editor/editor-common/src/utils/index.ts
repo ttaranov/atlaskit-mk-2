@@ -12,4 +12,5 @@ export {
 } from './error-reporter';
 export * from './date';
 export * from './imageLoader';
+export * from './calc-breakout-width';
 export { default as ADFTraversor } from './traversor';

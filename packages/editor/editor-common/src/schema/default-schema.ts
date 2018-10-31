@@ -60,5 +60,6 @@ export const defaultSchema: Schema = createSchema({
     'emojiQuery',
     'textColor',
     'confluenceInlineComment',
+    'breakout',
   ],
 });

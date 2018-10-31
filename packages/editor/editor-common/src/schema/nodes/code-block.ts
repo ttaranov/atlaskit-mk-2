@@ -1,14 +1,13 @@
 import { NodeSpec, Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 import { browser } from '../../utils';
 import { TextDefinition as Text } from './text';
-import { NoMark } from './doc';
+import { NoMark, MarksObject } from './doc';
+import { BreakoutMarkDefinition } from '../marks/breakout';
 
-/**
- * @name codeBlock_node
- */
-export interface CodeBlockDefinition {
+export type CodeBlockBaseDefinition = {
   type: 'codeBlock';
   content?: Array<Text & NoMark>;
+  marks?: Array<any>;
   attrs?: {
     language?:
       | 'abap'
@@ -80,7 +79,19 @@ export interface CodeBlockDefinition {
       | 'xml'
       | 'xquery';
   };
-}
+};
+
+/**
+ * @name codeBlock_node
+ */
+export type CodeBlockDefinition = CodeBlockBaseDefinition & NoMark;
+
+/**
+ * @name code_block_with_breakout_node
+ * @stage 0
+ */
+export type CodeBlockWithBreakoutDefinition = CodeBlockBaseDefinition &
+  MarksObject<BreakoutMarkDefinition>;
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.getAttribute('data-language') || undefined;
