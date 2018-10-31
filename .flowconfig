@@ -3,6 +3,7 @@
 .*/website/dist/sandbox/.*
 .*/website/.*
 .*/docs/templates/.*
+.*/src/entrypoints/.*
 .*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
 .*/packages/elements/icon/es5/.*
 .*/node_modules/stylelint/.*
