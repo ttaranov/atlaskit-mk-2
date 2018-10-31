@@ -554,6 +554,57 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Macros should render {anchor} as empty string 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "You cannot see this ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros should render {loremipsum} as plain text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is plain text {loremipsum}",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros should render macro likes {macrolike} as plain text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is plain text {macrolike}",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Macros should render rule node if it is on the top level 1`] = `
 Object {
   "content": Array [
@@ -577,35 +628,6 @@ Object {
         },
       ],
       "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`JIRA wiki markup - Macros should render unsupported macro as bodiedExtension 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "text": "this is ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-    Object {
-      "attrs": Object {
-        "extensionKey": "unknown",
-        "extensionType": "com.atlassian.jira.macro",
-        "layout": "default",
-        "parameters": Object {
-          "rawAttrs": undefined,
-        },
-        "text": "no macro",
-      },
-      "type": "extension",
     },
   ],
   "type": "doc",

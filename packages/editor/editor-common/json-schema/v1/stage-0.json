@@ -1419,12 +1419,17 @@
             },
             "localId": {
               "type": "string"
+            },
+            "style": {
+              "enum": [
+                "bold",
+                "subtle"
+              ]
             }
           },
           "required": [
             "text",
-            "color",
-            "localId"
+            "color"
           ],
           "additionalProperties": false
         }

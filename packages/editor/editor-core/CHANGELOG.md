@@ -1,5 +1,25 @@
 # @atlaskit/editor-core
 
+## 87.6.14
+- [patch] [7787595](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7787595):
+
+  - ED-4359: don't change selection when deleting filmstrip item
+
+## 87.6.13
+- [patch] [71b59ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71b59ae):
+
+  - Fixed Datepicker showing rendering outside viewport
+
+## 87.6.12
+- [patch] [12855b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12855b9):
+
+  - ED-5511: tweaked quickInsert so that query can match space-separated items
+
+## 87.6.11
+- [patch] [0e0a126](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e0a126):
+
+  - Fixed cursor when adding hyperlink on existing piece of text using Cmd-K
+
 ## 87.6.10
 - [patch] [941a687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/941a687):
 

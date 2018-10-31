@@ -22,6 +22,7 @@ import Tooltip from '@atlaskit/tooltip';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import WorldIcon from '@atlaskit/icon/glyph/world';
 import QuestionIcon from '@atlaskit/icon/glyph/question';
+// $FlowFixMe: cannot resolve TS module
 import { AkSearch } from '@atlaskit/quick-search';
 
 import { getProvided } from '../src/theme/util';

@@ -1,1 +1,0 @@
-- Fixed cursor when adding hyperlink on existing piece of text using Cmd-K

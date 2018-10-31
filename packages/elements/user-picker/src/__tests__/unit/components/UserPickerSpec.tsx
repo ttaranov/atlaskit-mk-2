@@ -52,6 +52,8 @@ describe('UserPicker', () => {
       flexGrow: 1,
       overflow: 'hidden',
     });
+
+    expect(select.prop('menuPlacement')).toBeTruthy();
   });
 
   it('should set width', () => {

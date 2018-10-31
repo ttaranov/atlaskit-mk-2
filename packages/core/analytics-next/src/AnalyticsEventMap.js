@@ -315,6 +315,19 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'dynamic-table/__tests__/Stateless.js',
   },
   {
+    path: 'dynamic-table/src/components/Stateless.js',
+    testPath: 'dynamic-table/__tests__/analytics.js',
+    actionSubject: 'pageNumber',
+    component: 'DynamicTable',
+    props: {
+      onSetPage: 'changed',
+    },
+    attributes: {
+      componentName: 'pagination',
+    },
+    componentTestPath: 'dynamic-table/__tests__/Stateless.js',
+  },
+  {
     path: 'field-radio-group/src/RadioGroupStateless.js',
     testPath: 'field-radio-group/src/__tests__/analytics-radio-group.js',
     actionSubject: 'radioItem',

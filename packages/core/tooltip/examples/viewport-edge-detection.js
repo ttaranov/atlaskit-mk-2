@@ -156,10 +156,10 @@ export default class PositionExample extends Component<Props, State> {
           </ButtonDiv>
           <ButtonDiv>
             <Button onClick={this.changeTooltipSize}>
-              Change tooltip size
+              Change tooltip content
             </Button>
           </ButtonDiv>
-          <ButtonDiv>Size: {tooltipSize[tooltipContent]}</ButtonDiv>
+          <ButtonDiv>Content: {tooltipSize[tooltipContent]}</ButtonDiv>
         </CenterDiv>
         <div
           onClick={this.changeDirection}

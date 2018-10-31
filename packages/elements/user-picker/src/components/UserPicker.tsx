@@ -5,10 +5,10 @@ import {
   InputActionTypes,
   LoadOptions,
   OnChange,
-  User,
   OnInputChange,
   OnPicker,
   OnUser,
+  User,
 } from '../types';
 import { batchByKey } from './batch';
 import { getComponents } from './components';
@@ -210,6 +210,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
         onInputChange={this.handleInputChange}
         onBlur={this.handleBlur}
         blurInputOnSelect={blurInputOnSelect}
+        menuPlacement="auto"
       />
     );
   }

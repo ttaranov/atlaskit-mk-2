@@ -5,7 +5,7 @@ import { Target } from './styled';
 import type { Color } from './styled';
 import Tooltip from '../src';
 
-const VALID_POSITIONS = ['top', 'right', 'bottom', 'left', 'mouse'];
+const VALID_POSITIONS = ['mouse', 'top', 'right', 'bottom', 'left'];
 
 type Props = { color: Color };
 type State = { position: number };
@@ -29,7 +29,7 @@ export default class PositionExample extends Component<Props, State> {
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div style={{ padding: '20px 40px' }} onClick={this.changeDirection}>
+      <div style={{ padding: '40px 40px' }} onClick={this.changeDirection}>
         <Tooltip content={position} position={position}>
           <Target color={this.props.color}>Target</Target>
         </Tooltip>
