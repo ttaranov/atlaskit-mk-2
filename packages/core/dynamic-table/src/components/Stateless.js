@@ -112,8 +112,8 @@ class DynamicTable extends Component<Props, State> {
     onSort({ key, item, sortOrder: sortOrderFormatted });
   };
 
-  onSetPage = (...args: [number, ?UIAnalyticsEvent]) => {
-    this.props.onSetPage(...args);
+  onSetPage = (page: number, event: ?UIAnalyticsEvent) => {
+    this.props.onSetPage(page, event);
   };
 
   onRankStart = (params: RankStart) => {

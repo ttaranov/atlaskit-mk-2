@@ -45,9 +45,9 @@ export default class DynamicTable extends Component<Props, State> {
     });
   }
 
-  onSetPage = (...args: [number, ?UIAnalyticsEvent]) => {
-    this.props.onSetPage(...args);
-    this.setState({ page: args[0] });
+  onSetPage = (page: number, event: ?UIAnalyticsEvent) => {
+    this.props.onSetPage(page, event);
+    this.setState({ page });
   };
 
   onSort = ({ key, item, sortOrder }: Object) => {
