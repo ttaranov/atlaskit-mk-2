@@ -8,6 +8,7 @@ const isStr = (value: any): boolean => typeof value === 'string';
 
 export interface ImageProps {
   src?: string;
+  orientation: number; //todo:remove
   x: number;
   y: number;
   width: number;
@@ -43,7 +44,6 @@ export class Image extends React.Component<ImageProps, ImageState> {
   onError = (e: ReactEvent) => {
     this.props.onError(e);
   };
-
   render() {
     const { src, x, y, width, height } = this.props;
 

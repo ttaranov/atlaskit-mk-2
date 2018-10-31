@@ -26,6 +26,10 @@ export interface MarginProps {
   margin: number;
 }
 
+export interface TransformProps {
+  transform?: string;
+}
+
 export const ImagePlacerWrapper: ComponentClass<
   ColorProps & HTMLAttributes<{}>
 > = styled.div`
@@ -43,31 +47,35 @@ export const ContainerWrapper: ComponentClass<
 > = styled.div`
   background: url('${checkeredBg}');
   position: relative;
-  width: ${({ width, margin }: ContainerWrapperProps) =>
-    isNum(width) ? width! + margin * 2 : 0}px;
-  height: ${({ height, margin }: ContainerWrapperProps) =>
+  width: ${({ width, margin }) => (isNum(width) ? width! + margin * 2 : 0)}px;
+  height: ${({ height, margin }) =>
     isNum(height) ? height! + margin * 2 : 0}px;
   cursor: move;
   user-select: none;
   overflow: hidden;
 `;
 
-const EASING = 0.33;
+export const EASING = 0.33;
 
-export const ImageWrapper: ComponentClass<
-  ImgHTMLAttributes<{}> & BoundsProps
-> = styled.img.attrs<BoundsProps>({
-  style: (props: BoundsProps) => ({
-    left: props.x,
-    top: props.y,
-    width: props.width,
-    height: props.height,
+export type ImageWrapperProps = ImgHTMLAttributes<{}> &
+  TransformProps &
+  BoundsProps;
+
+export const ImageWrapper: ComponentClass<ImageWrapperProps> = styled.img.attrs<
+  BoundsProps
+>({
+  style: ({ x, y, width, height }: ImageWrapperProps) => ({
+    left: x,
+    top: y,
+    width: width,
+    height: height,
   }),
 })`
-  background-color: blue;
+  transform: ${({ transform }) => transform};
   position: absolute;
-  transition: left ${EASING}s ease-out, top ${EASING}s ease-out,
-    width ${EASING}s ease-out, height ${EASING}s ease-out;
+  transition: margin-left ${EASING}s ease-out, margin-top ${EASING}s ease-out,
+    left ${EASING}s ease-out, top ${EASING}s ease-out, width ${EASING}s ease-out,
+    height ${EASING}s ease-out;
   user-select: none;
   pointer-events: none;
 `;

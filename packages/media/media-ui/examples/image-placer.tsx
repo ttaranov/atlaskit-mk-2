@@ -18,6 +18,8 @@ export interface ExampleState {
   useConstraints: boolean;
   circular: boolean;
   src?: string;
+  file?: File;
+  orientation: number;
   exportedDataURI?: string;
 }
 
@@ -27,6 +29,7 @@ const MARGIN = 'Margin';
 
 class Example extends React.Component<{}, ExampleState> {
   zoomSlider?: HTMLInputElement;
+
   toDataURI?: () => string;
 
   state: ExampleState = {
@@ -36,7 +39,8 @@ class Example extends React.Component<{}, ExampleState> {
     zoom: 0,
     maxZoom: 2,
     useConstraints: true,
-    circular: true,
+    circular: false,
+    orientation: 1,
   };
 
   onZoomSliderChange = (e: any) => {
@@ -72,8 +76,10 @@ class Example extends React.Component<{}, ExampleState> {
 
   onFileInputChange = async (e: any) => {
     const files = [...e.target.files];
-    const dataUri = await fileToDataURI(files[0]);
-    this.setState({ src: dataUri });
+    const file = files[0];
+    // const src = await fileToDataURI(file);
+    // this.setState({ src, file: undefined });
+    this.setState({ src: undefined, file });
   };
 
   onExport = (api: ImagePlacerAPI) => {
@@ -95,15 +101,17 @@ class Example extends React.Component<{}, ExampleState> {
       maxZoom,
       useConstraints,
       circular,
+      file,
       src,
+      exportedDataURI,
     } = this.state;
-    const { exportedDataURI } = this.state;
 
     return (
       <Page>
         <Grid>
           <GridColumn>
             <h1>Image Placer</h1>
+            <p>todo: orientation</p>
             {this.slider(CONTAINER_WIDTH, containerWidth)}
             {this.slider(CONTAINER_HEIGHT, containerHeight)}
             {this.slider(MARGIN, margin, 0, 100, 5)}
@@ -131,6 +139,7 @@ class Example extends React.Component<{}, ExampleState> {
               containerWidth={containerWidth}
               containerHeight={containerHeight}
               src={src}
+              file={file}
               margin={margin}
               zoom={zoom}
               maxZoom={maxZoom}
@@ -158,7 +167,7 @@ class Example extends React.Component<{}, ExampleState> {
         <Grid>
           <GridColumn>
             <input type="file" onChange={this.onFileInputChange} />
-            {src ? (
+            {typeof src === 'string' || typeof file !== 'undefined' ? (
               <p>
                 <button onClick={this.onExportClick}>Export DataURI</button>
               </p>

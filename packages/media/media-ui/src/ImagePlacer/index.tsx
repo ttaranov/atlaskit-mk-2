@@ -4,11 +4,19 @@ import { Container } from './container';
 import { Image } from './image';
 import { Margin } from './margin';
 import { ImagePlacerWrapper } from './styled';
-import { dataURItoFile } from '../util';
+import { dataURItoFile, fileToDataURI, loadImage } from '../util';
+import { getOrientation } from '../imageMetaData';
 
 const isNum = (value: any): boolean => typeof value === 'number';
 const isBool = (value: any): boolean => typeof value === 'boolean';
 const isStr = (value: any): boolean => typeof value === 'string';
+const isFile = (value: any): boolean => value instanceof File;
+
+export interface ImagePlacerAPI {
+  toCanvas: () => HTMLCanvasElement;
+  toDataURI: () => string;
+  toFile: () => File;
+}
 
 export interface ImagePlacerProps {
   containerWidth: number;
@@ -16,11 +24,13 @@ export interface ImagePlacerProps {
   imageWidth?: number;
   imageHeight?: number;
   src?: string;
+  file?: File;
   margin: number;
   zoom: number;
   maxZoom: number;
   useConstraints: boolean;
   circular: boolean;
+  orientation: number;
   backgroundColor: string;
   onZoomChange?: (zoom: number) => void;
   onExport?: (api: ImagePlacerAPI) => void;
@@ -34,33 +44,31 @@ const defaultProps: Partial<ImagePlacerProps> = {
   zoom: 0,
   useConstraints: false,
   circular: false,
+  orientation: 1,
   imageWidth: 0,
   imageHeight: 0,
   backgroundColor: 'transparent',
 };
 
-export interface ImagePlacerAPI {
-  toCanvas: () => HTMLCanvasElement;
-  toDataURI: () => string;
-  toFile: () => File;
-}
-
 export interface ImagePlacerState {
-  imageWidth: number; // changes with zoom, this.imageRect for original src rect
-  imageHeight: number; // changes with zoom, this.imageRect for original src rect
+  imageWidth: number; // changes with zoom, this.imageSourceRect for original src rect
+  imageHeight: number; // changes with zoom, this.imageSourceRect for original src rect
   originX: number;
   originY: number;
   zoom: number;
   errorMessage?: string;
   dragOrigin?: Vector2;
+  orientation: number;
+  src?: string;
 }
 
 export class ImagePlacer extends React.Component<
   ImagePlacerProps,
   ImagePlacerState
 > {
-  imageRect: Rectangle = new Rectangle(0, 0); // the natural size of the image, without zoom scaling
+  imageSourceRect: Rectangle = new Rectangle(0, 0); // the natural size of the image, without zoom scaling
   imageElement?: HTMLImageElement;
+  lastFile?: File;
 
   state: ImagePlacerState = {
     originX: 0,
@@ -68,9 +76,15 @@ export class ImagePlacer extends React.Component<
     imageWidth: 0,
     imageHeight: 0,
     zoom: this.props.zoom,
+    orientation: this.props.orientation,
+    src: this.props.src,
   };
 
   static defaultProps = defaultProps;
+
+  static getOrientation(file: File): Promise<number> {
+    return getOrientation(file);
+  }
 
   private get imageBounds(): Bounds {
     const { margin, maxZoom } = this.props;
@@ -99,7 +113,7 @@ export class ImagePlacer extends React.Component<
     return new Bounds(originX, originY, cornerX - originX, cornerY - originY);
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: ImagePlacerProps) {
+  async UNSAFE_componentWillReceiveProps(nextProps: ImagePlacerProps) {
     const { zoom } = this.state;
     if (isNum(nextProps.zoom) && nextProps.zoom !== zoom) {
       this.setZoom(nextProps.zoom);
@@ -129,7 +143,20 @@ export class ImagePlacer extends React.Component<
       }
     }
     if (isStr(nextProps.src) && nextProps.src != this.props.src) {
-      this.setState({ zoom: 0 }, () => this.reset());
+      const src = nextProps.src as string;
+      this.setState({ src, orientation: 1, zoom: 0 }, () => this.reset());
+      if (this.props.onZoomChange) {
+        this.props.onZoomChange(0);
+      }
+    }
+    if (isFile(nextProps.file) && nextProps.file != this.lastFile) {
+      const file = nextProps.file as File;
+      const { src, orientation } = await this.preprocessImage(file);
+      this.setState({ src, orientation, zoom: 0, originX: 0, originY: 0 }, () =>
+        this.reset(),
+      );
+      this.lastFile = file;
+
       if (this.props.onZoomChange) {
         this.props.onZoomChange(0);
       }
@@ -137,11 +164,11 @@ export class ImagePlacer extends React.Component<
   }
 
   private reset() {
-    const { imageRect } = this;
+    const { imageSourceRect } = this;
     this.setState(
       {
-        imageWidth: imageRect.width,
-        imageHeight: imageRect.height,
+        imageWidth: imageSourceRect.width,
+        imageHeight: imageSourceRect.height,
         zoom: 0,
         originX: 0,
         originY: 0,
@@ -253,12 +280,80 @@ export class ImagePlacer extends React.Component<
   }
 
   mapCoords(xGlobal: number, yGlobal: number): Vector2 {
-    const { imageRect, visibleBounds, imageBounds } = this;
+    const { imageSourceRect, visibleBounds, imageBounds } = this;
     const offset = visibleBounds.origin.sub(imageBounds.origin);
     const rect = imageBounds.rect;
     const px = (offset.x + xGlobal) / rect.width;
     const py = (offset.y + yGlobal) / rect.height;
-    return new Vector2(imageRect.width * px, imageRect.height * py).rounded();
+    return new Vector2(
+      imageSourceRect.width * px,
+      imageSourceRect.height * py,
+    ).rounded();
+  }
+
+  async preprocessImage(
+    file: File,
+  ): Promise<{ src: string; orientation: number }> {
+    const orientation = await ImagePlacer.getOrientation(file);
+    let dataURI = await fileToDataURI(file);
+    const img = await loadImage(dataURI);
+
+    if (img) {
+      const { containerWidth, containerHeight, maxZoom } = this.props;
+      const { naturalWidth, naturalHeight } = img;
+      const srcRect = new Rectangle(naturalWidth, naturalHeight);
+      const maxRect = new Rectangle(
+        containerWidth * maxZoom,
+        containerHeight * maxZoom,
+      );
+      const scaleFactor = srcRect.scaleToFitLargestSide(maxRect);
+      const rect = scaleFactor < 1 ? srcRect.scaled(scaleFactor) : srcRect;
+      let width = rect.width;
+      let height = rect.height;
+      if (orientation === 6) {
+        let temp = width;
+        width = height;
+        height = temp;
+      }
+      this.getCanvas(width, height, (context, canvas) => {
+        if (orientation === 6) {
+          context.translate(width, 0);
+          context.rotate(1.5708); // 90deg
+        }
+        context.drawImage(
+          img,
+          0,
+          0,
+          srcRect.width,
+          srcRect.height,
+          0,
+          0,
+          width,
+          height,
+        );
+
+        dataURI = canvas.toDataURL();
+      });
+    }
+    this.setState({ src: dataURI, zoom: 0, originX: 0, originY: 0 });
+    return { src: dataURI, orientation };
+  }
+
+  getCanvas(
+    width: number,
+    height: number,
+    fn: (context: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void,
+  ) {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+
+    if (context) {
+      fn(context, canvas);
+    }
+
+    return canvas;
   }
 
   toCanvas(): HTMLCanvasElement {
@@ -269,14 +364,10 @@ export class ImagePlacer extends React.Component<
       useConstraints,
       circular,
     } = this.props;
-    const { imageElement } = this;
 
-    const canvas = document.createElement('canvas');
-    canvas.width = containerWidth;
-    canvas.height = containerHeight;
-    const context = canvas.getContext('2d');
+    return this.getCanvas(containerWidth, containerHeight, context => {
+      const { imageElement } = this;
 
-    if (context) {
       context.fillStyle = backgroundColor;
       context.fillRect(0, 0, containerWidth, containerHeight);
 
@@ -328,8 +419,7 @@ export class ImagePlacer extends React.Component<
           );
         }
       }
-    }
-    return canvas;
+    });
   }
 
   toDataURI(): string {
@@ -354,7 +444,7 @@ export class ImagePlacer extends React.Component<
     width: number,
     height: number,
   ) => {
-    this.imageRect = new Rectangle(width, height);
+    this.imageSourceRect = new Rectangle(width, height);
     this.imageElement = imageElement;
     this.setState({ imageWidth: width, imageHeight: height }, () =>
       this.zoomToFit(),
@@ -402,11 +492,10 @@ export class ImagePlacer extends React.Component<
       backgroundColor,
       containerWidth,
       containerHeight,
-      src,
       margin,
       circular,
     } = this.props;
-    const { errorMessage } = this.state;
+    const { errorMessage, src, orientation } = this.state;
     const { imageBounds } = this;
 
     return (
@@ -424,6 +513,7 @@ export class ImagePlacer extends React.Component<
           >
             <Image
               src={src}
+              orientation={orientation}
               x={imageBounds.x}
               y={imageBounds.y}
               width={imageBounds.width}

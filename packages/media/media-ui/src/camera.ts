@@ -97,18 +97,16 @@ export class Bounds extends Rectangle {
     super(width, height);
   }
 
-  get center(): Vector2 {
-    return new Vector2(this.x, this.y).add(
-      new Vector2(this.width * 0.5, this.height * 0.5),
-    );
-  }
-
   get origin(): Vector2 {
     return new Vector2(this.x, this.y);
   }
 
   get corner(): Vector2 {
     return new Vector2(this.x + this.width, this.y + this.height);
+  }
+
+  get center(): Vector2 {
+    return new Vector2(this.x + this.width * 0.5, this.y + this.height * 0.5);
   }
 
   get rect(): Rectangle {
