@@ -13775,9 +13775,9 @@ react-side-effect@^1.1.0:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
 
-react-syntax-highlighter@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-9.0.1.tgz#cad91692e1976f68290f24762ac3451b1fec3d26"
+react-syntax-highlighter@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-10.0.0.tgz#0908ae3d8436ff54a1322073105141d79f37edb4"
   dependencies:
     babel-runtime "^6.18.0"
     highlight.js "~9.12.0"

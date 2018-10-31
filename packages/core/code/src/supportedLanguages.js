@@ -1,99 +1,14 @@
 // @flow
 /* eslint import/no-dynamic-require: 0, global-require: 0 */
-import SyntaxHighlighter from 'react-syntax-highlighter/prism-async-light';
 import memoizeOne from 'memoize-one';
 
 /*
  * Only load the base languages required to get other languages to work.
  */
-
-import markup from 'react-syntax-highlighter/languages/prism/markup';
-import markupTemplating from 'react-syntax-highlighter/languages/prism/markup-templating';
-import clike from 'react-syntax-highlighter/languages/prism/clike';
-
 /*
   Markup, markup-templating & clike are base languages required to get the others to work.
   Technically we could probably also async load those, but for simplicity sake we're just always loading them.
 */
-SyntaxHighlighter.registerLanguage('markup', markup);
-SyntaxHighlighter.registerLanguage('markup-templating', markupTemplating);
-SyntaxHighlighter.registerLanguage('clike', clike);
-
-const createAsyncLanguageLoader = (name, loader) => {
-  return async () => {
-    const { default: language } = await loader();
-    SyntaxHighlighter.registerLanguage(name, language);
-  };
-};
-
-export const languageLoaders = {
-  coffeescript: createAsyncLanguageLoader('cofeescript', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_coffeescript" */ 'react-syntax-highlighter/languages/prism/coffeescript'),
-  ),
-  cpp: createAsyncLanguageLoader('cpp', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_cpp" */ 'react-syntax-highlighter/languages/prism/cpp'),
-  ),
-  csharp: createAsyncLanguageLoader('csharp', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_csharp" */ 'react-syntax-highlighter/languages/prism/csharp'),
-  ),
-  css: createAsyncLanguageLoader('css', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_css" */ 'react-syntax-highlighter/languages/prism/css'),
-  ),
-  d: createAsyncLanguageLoader('d', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_d" */ 'react-syntax-highlighter/languages/prism/d'),
-  ),
-  go: createAsyncLanguageLoader('go', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_go" */ 'react-syntax-highlighter/languages/prism/go'),
-  ),
-  groovy: createAsyncLanguageLoader('groovy', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_groovy" */ 'react-syntax-highlighter/languages/prism/groovy'),
-  ),
-  java: createAsyncLanguageLoader('java', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_java" */ 'react-syntax-highlighter/languages/prism/java'),
-  ),
-  javascript: createAsyncLanguageLoader('javascript', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_javascript" */ 'react-syntax-highlighter/languages/prism/javascript'),
-  ),
-  kotlin: createAsyncLanguageLoader('kotlin', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_kotlin" */ 'react-syntax-highlighter/languages/prism/kotlin'),
-  ),
-  lua: createAsyncLanguageLoader('lua', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_lua" */ 'react-syntax-highlighter/languages/prism/lua'),
-  ),
-  objectivec: createAsyncLanguageLoader('objectivec', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_objectivec" */ 'react-syntax-highlighter/languages/prism/objectivec'),
-  ),
-  php: createAsyncLanguageLoader('php', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_php" */ 'react-syntax-highlighter/languages/prism/php'),
-  ),
-  python: createAsyncLanguageLoader('python', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_python" */ 'react-syntax-highlighter/languages/prism/python'),
-  ),
-  ruby: createAsyncLanguageLoader('ruby', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_ruby" */ 'react-syntax-highlighter/languages/prism/ruby'),
-  ),
-  rust: createAsyncLanguageLoader('rust', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_rust" */ 'react-syntax-highlighter/languages/prism/rust'),
-  ),
-  scala: createAsyncLanguageLoader('scala', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_scala" */ 'react-syntax-highlighter/languages/prism/scala'),
-  ),
-  shell: createAsyncLanguageLoader('shell', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_bash" */ 'react-syntax-highlighter/languages/prism/bash'),
-  ),
-  sql: createAsyncLanguageLoader('sql', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_sql" */ 'react-syntax-highlighter/languages/prism/sql'),
-  ),
-  swift: createAsyncLanguageLoader('swift', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_swift" */ 'react-syntax-highlighter/languages/prism/swift'),
-  ),
-  typescript: createAsyncLanguageLoader('typescript', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_typescript" */ 'react-syntax-highlighter/languages/prism/typescript'),
-  ),
-  yaml: createAsyncLanguageLoader('yaml', () =>
-    import(/* webpackChunkName: "react-syntax-highlighter_languages_prism_yaml" */ 'react-syntax-highlighter/languages/prism/yaml'),
-  ),
-};
 
 /*
  * These values all those are supported by ADF.

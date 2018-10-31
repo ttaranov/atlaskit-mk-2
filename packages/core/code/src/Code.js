@@ -1,11 +1,11 @@
 // @flow
 import React, { PureComponent } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter/prism-async-light';
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+
 import { withTheme, ThemeProvider } from 'styled-components';
 import {
   normalizeLanguage,
   type ADFSupportedLanguages,
-  languageLoaders,
 } from './supportedLanguages';
 import { type Theme, type ThemeProps, applyTheme } from './themes/themeBuilder';
 
@@ -22,11 +22,7 @@ type CodeProps = {
   codeTagProps?: {},
 };
 
-type CodeState = {
-  language: string,
-};
-
-export class Code extends PureComponent<CodeProps, CodeState> {
+export class Code extends PureComponent<CodeProps, {}> {
   static defaultProps = {
     language: '',
     theme: {},
@@ -35,48 +31,12 @@ export class Code extends PureComponent<CodeProps, CodeState> {
     codeTagProps: {},
   };
 
-  state = {
-    language: normalizeLanguage(''),
-  };
-
-  async registerLanguage(language: string) {
-    if (!SyntaxHighlighter.astGenerator) {
-      await SyntaxHighlighter.astGeneratorPromise;
-    }
-
-    if (SyntaxHighlighter.astGenerator.registered(language)) {
-      return this.setState({ language });
-    }
-
-    if (!languageLoaders[language]) {
-      return undefined;
-    }
-
-    await languageLoaders[language]();
-
-    // Once the language has been loaded we need to force a re-render
-    // Because react-syntax-highlighter internals are not react
-    return this.setState({ language });
-  }
-
-  componentDidMount() {
-    const language = normalizeLanguage(this.props.language);
-    this.registerLanguage(language);
-  }
-
-  componentDidUpdate({ language: prevLanguage }: CodeProps) {
-    const language = normalizeLanguage(this.props.language);
-
-    if (prevLanguage !== language) {
-      this.registerLanguage(language);
-    }
-  }
-
   render() {
     const { inlineCodeStyle } = applyTheme(this.props.theme);
+    const language = normalizeLanguage(this.props.language);
 
     const props = {
-      language: this.state.language,
+      language,
       PreTag: 'span',
       style: this.props.codeStyle || inlineCodeStyle,
       showLineNumbers: this.props.showLineNumbers,
