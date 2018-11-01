@@ -5,8 +5,7 @@ import { shallow } from 'enzyme';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { LayoutEventEmitter } from '../../../../presentational/LayoutManager/LayoutEvent';
-import Section from '../../../../presentational/Section';
-import SortableSection from '../../index';
+import SortableContext from '../../index';
 
 jest.mock('../../../../presentational/LayoutManager/LayoutEvent', () => {
   const mock: any = jest.fn();
@@ -18,7 +17,7 @@ jest.mock('../../../../presentational/LayoutManager/LayoutEvent', () => {
 
 const MockLayoutEventEmitter: any = LayoutEventEmitter;
 
-describe('SortableSection', () => {
+describe('SortableContext', () => {
   let baseProps;
   let sectionChildren;
   const layoutEventEmitters = {
@@ -34,54 +33,36 @@ describe('SortableSection', () => {
       id: 'my-section',
       onDragEnd: () => {},
     };
-    sectionChildren = ({ className }: { className: string }) => (
-      <div className={className}>My section</div>
-    );
+    sectionChildren = <div>Children</div>;
   });
 
-  it('should render a Section component', () => {
-    const wrapper = shallow(
-      <SortableSection {...baseProps}>{sectionChildren}</SortableSection>,
-    ).dive();
-
-    const section = wrapper.find(Section);
-
-    expect(section).toHaveLength(1);
-    expect(section.props()).toEqual({
-      id: 'my-section',
-      alwaysShowScrollHint: false,
-      shouldGrow: false,
-      styles: expect.any(Function),
-      children: sectionChildren,
-    });
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should wrap Section with a DragDropContext Component', () => {
+  it('should render a DragDropContext Component', () => {
     const onDragUpdate = () => {};
     const wrapper = shallow(
-      <SortableSection {...baseProps} onDragUpdate={onDragUpdate}>
+      <SortableContext {...baseProps} onDragUpdate={onDragUpdate}>
         {sectionChildren}
-      </SortableSection>,
+      </SortableContext>,
     ).dive();
 
     const dragDropContext = wrapper.find(DragDropContext);
     expect(dragDropContext).toHaveLength(1);
     expect(dragDropContext.props()).toEqual({
-      children: wrapper.find(Section).get(0),
+      children: sectionChildren,
       onDragStart: expect.any(Function),
       onDragUpdate,
       onDragEnd: expect.any(Function),
     });
+
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should emit a drag start event and call `onDragStart` when a drag has started', () => {
     const onDragStartArgs = [{}, {}];
     const onDragStart = jest.fn();
     const wrapper = shallow(
-      <SortableSection {...baseProps} onDragStart={onDragStart}>
+      <SortableContext {...baseProps} onDragStart={onDragStart}>
         {sectionChildren}
-      </SortableSection>,
+      </SortableContext>,
     ).dive();
 
     expect(onDragStart).not.toHaveBeenCalled();
@@ -98,9 +79,9 @@ describe('SortableSection', () => {
     const onDragEndArgs = [{}, {}];
     const onDragEnd = jest.fn();
     const wrapper = shallow(
-      <SortableSection {...baseProps} onDragEnd={onDragEnd}>
+      <SortableContext {...baseProps} onDragEnd={onDragEnd}>
         {sectionChildren}
-      </SortableSection>,
+      </SortableContext>,
     ).dive();
 
     expect(onDragEnd).not.toHaveBeenCalled();
@@ -117,9 +98,9 @@ describe('SortableSection', () => {
     const onDragUpdateArgs = [{}, {}];
     const onDragUpdate = jest.fn();
     const wrapper = shallow(
-      <SortableSection {...baseProps} onDragUpdate={onDragUpdate}>
+      <SortableContext {...baseProps} onDragUpdate={onDragUpdate}>
         {sectionChildren}
-      </SortableSection>,
+      </SortableContext>,
     ).dive();
 
     expect(onDragUpdate).not.toHaveBeenCalled();

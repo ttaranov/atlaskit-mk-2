@@ -12,7 +12,7 @@ type Spacing = 'compact' | 'default';
 export type ItemPresentationProps = {
   /** Whether the Item is currently in the 'active' interaction state. */
   isActive: boolean,
-  /** Whether the Item is part of a SortableSection, and is being dragged. */
+  /** Whether the Item is inside a SortableContext, and is being dragged. */
   isDragging?: boolean,
   /** Whether the Item is currently in the 'hover' interaction state. */
   isHover: boolean,
@@ -32,7 +32,7 @@ export type ItemBaseProps = {
    * an avatar. This component will be passed the current UI state of the Item.
    * */
   before?: ComponentType<ItemPresentationProps>,
-  /** Properties exclusive to Items within a SortableSection. */
+  /** Properties exclusive to Items within a SortableContext. */
   draggableProps?: DraggableProps,
   /** An href which this Item links to. If this prop is provided the Item will
    * render as an <a>. */
@@ -45,7 +45,7 @@ export type ItemBaseProps = {
   index?: number,
   /* React ref to the outer-most wrapping element */
   innerRef?: Ref<*>,
-  /** Whether the Item is part of a SortableSection, and is being dragged. */
+  /** Whether the Item is part of a SortableContext, and is being dragged. */
   isDragging?: boolean,
   /** Whether this Item should display as being selected. */
   isSelected: boolean,

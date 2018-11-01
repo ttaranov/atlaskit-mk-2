@@ -5,8 +5,8 @@ import type { ComponentType, ElementConfig, Node } from 'react';
 import {
   HeaderSection,
   MenuSection,
+  SortableContext,
   SortableGroup,
-  SortableSection,
 } from '../';
 import type { ViewData } from '../../src/view-controller/types';
 
@@ -42,15 +42,14 @@ export type SectionProps = SharedGroupTypeProps & {
   shouldGrow?: boolean,
 };
 
+export type SortableContextProps = {|
+  ...$Exact<SharedGroupTypeProps>,
+  ...$Exact<$Diff<ElementConfig<typeof SortableContext>, { children: Node }>>,
+|};
+
 export type SortableGroupProps = {|
   ...$Exact<SharedGroupTypeProps>,
   ...$Exact<$Diff<ElementConfig<typeof SortableGroup>, { children: Node }>>,
-|};
-
-export type SortableSectionProps = {|
-  ...$Exact<SharedGroupTypeProps>,
-  ...$Exact<$Diff<ElementConfig<typeof SortableSection>, { children: Node }>>,
-  nestedGroupKey?: string,
 |};
 
 export type HeaderSectionProps = SharedGroupTypeProps &

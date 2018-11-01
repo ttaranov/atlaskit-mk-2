@@ -21,9 +21,9 @@ import Wordmark from '../components/presentational/Wordmark';
 import BackItem from '../components/connected/BackItem';
 import ConnectedItem from '../components/connected/ConnectedItem';
 import GoToItem from '../components/connected/GoToItem';
+import SortableContextComponent from '../components/connected/SortableContext';
 import SortableGroupComponent from '../components/connected/SortableGroup';
 import SortableItem from '../components/connected/SortableItem';
-import SortableSectionComponent from '../components/connected/SortableSection';
 
 import type {
   GroupProps,
@@ -33,8 +33,8 @@ import type {
   MenuSectionProps,
   SectionHeadingProps,
   SectionProps,
+  SortableContextProps,
   SortableGroupProps,
-  SortableSectionProps,
 } from './types';
 
 const gridSize = gridSizeFn();
@@ -176,41 +176,24 @@ const MenuSection = ({
   </MenuSectionComponent>
 );
 
-const SortableSection = ({
-  alwaysShowScrollHint = false,
+const SortableContext = ({
   customComponents,
   id,
   items,
-  nestedGroupKey,
   onDragStart,
   onDragUpdate,
   onDragEnd,
-  parentId,
-  shouldGrow,
-  styles,
-}: SortableSectionProps) => {
-  const key = typeof nestedGroupKey === 'string' ? nestedGroupKey : id;
-
-  return items.length ? (
-    <SortableSectionComponent
-      alwaysShowScrollHint={alwaysShowScrollHint}
+}: SortableContextProps) =>
+  items && items.length ? (
+    <SortableContextComponent
       id={id}
-      key={key}
-      parentId={parentId}
-      shouldGrow={shouldGrow}
       onDragStart={onDragStart}
       onDragUpdate={onDragUpdate}
       onDragEnd={onDragEnd}
-      styles={styles}
     >
-      {({ className }) => (
-        <div className={className}>
-          <ItemsRenderer items={items} customComponents={customComponents} />
-        </div>
-      )}
-    </SortableSectionComponent>
+      <ItemsRenderer items={items} customComponents={customComponents} />
+    </SortableContextComponent>
   ) : null;
-};
 
 const itemComponents = {
   BackItem,
@@ -231,8 +214,8 @@ const groupComponents = {
   HeaderSection,
   MenuSection,
   Section,
+  SortableContext,
   SortableGroup,
-  SortableSection,
 };
 
 // Exported for testing purposes only.

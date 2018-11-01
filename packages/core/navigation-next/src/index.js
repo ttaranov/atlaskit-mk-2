@@ -61,8 +61,8 @@ export {
 export { default as SortableGroup } from './components/connected/SortableGroup';
 export { default as SortableItem } from './components/connected/SortableItem';
 export {
-  default as SortableSection,
-} from './components/connected/SortableSection';
+  default as SortableContext,
+} from './components/connected/SortableContext';
 
 /** State */
 export { NavigationProvider } from './provider';

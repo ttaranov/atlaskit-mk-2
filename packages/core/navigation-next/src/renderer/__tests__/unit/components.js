@@ -9,9 +9,9 @@ import ConnectedItemComponent from '../../../components/connected/ConnectedItem'
 import GoToItemComponent from '../../../components/connected/GoToItem';
 import HeaderSectionComponent from '../../../components/presentational/HeaderSection';
 import MenuSectionComponent from '../../../components/presentational/MenuSection';
+import SortableContextComponent from '../../../components/connected/SortableContext';
 import SortableGroupComponent from '../../../components/connected/SortableGroup';
 import SortableItemComponent from '../../../components/connected/SortableItem';
-import SortableSectionComponent from '../../../components/connected/SortableSection';
 import ItemsRenderer, { components } from '../../components';
 
 const {
@@ -20,9 +20,9 @@ const {
   Item,
   HeaderSection,
   MenuSection,
+  SortableContext,
   SortableGroup,
   SortableItem,
-  SortableSection,
 } = components;
 
 describe('navigation-next view renderer', () => {
@@ -158,10 +158,10 @@ describe('navigation-next view renderer', () => {
     });
   });
 
-  describe('SortableSection', () => {
-    let sectionItems;
+  describe('SortableContext', () => {
+    let items;
     beforeEach(() => {
-      sectionItems = [
+      items = [
         {
           type: 'SortableGroup',
           id: 'sortable-group',
@@ -177,45 +177,28 @@ describe('navigation-next view renderer', () => {
         },
       ];
     });
-    it('should render the SortableSection UI component', () => {
+    it('should render the SortableContext UI component', () => {
       const wrapper = shallow(
-        <SortableSection
-          id="sortable"
-          items={sectionItems}
-          onDragEnd={() => {}}
-        />,
+        <SortableContext id="sortable" items={items} onDragEnd={() => {}} />,
       );
 
-      expect(wrapper.find(SortableSectionComponent)).toHaveLength(1);
+      expect(wrapper.find(SortableContextComponent)).toHaveLength(1);
       expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render the SortableSection UI component correctly with all optional props', () => {
+    it('should render the SortableContext UI component correctly with all optional props', () => {
       const dragHooks = {
         onDragStart: () => {},
         onDragUpdate: () => {},
         onDragEnd: () => {},
       };
-      const styles = s => s;
       const wrapper = shallow(
-        <SortableSection
-          id="sortable"
-          items={sectionItems}
-          alwaysShowScrollHint
-          shouldGrow
-          parentId="menu"
-          styles={styles}
-          {...dragHooks}
-        />,
+        <SortableContext id="sortable" items={items} {...dragHooks} />,
       );
 
-      expect(wrapper.find(SortableSectionComponent).props()).toEqual({
-        children: expect.any(Function),
+      expect(wrapper.find(SortableContextComponent).props()).toEqual({
+        children: wrapper.find(ItemsRenderer).get(0),
         id: 'sortable',
-        parentId: 'menu',
-        alwaysShowScrollHint: true,
-        shouldGrow: true,
-        styles,
         ...dragHooks,
       });
     });
@@ -223,15 +206,15 @@ describe('navigation-next view renderer', () => {
     it('should render the items using ItemsRenderer', () => {
       const customComponents = { foo: () => null };
       const wrapper = mount(
-        <SortableSection
+        <SortableContext
           customComponents={customComponents}
           id="menu"
-          items={sectionItems}
+          items={items}
           onDragEnd={() => {}}
         />,
       );
 
-      // More than 1 ItemsRenderer will render due to SortableGroup existing in sectionItems
+      // More than 1 ItemsRenderer will render due to SortableGroup existing in items
       expect(wrapper.find(ItemsRenderer).length).toBeGreaterThanOrEqual(1);
       expect(
         wrapper
@@ -240,13 +223,13 @@ describe('navigation-next view renderer', () => {
           .props(),
       ).toEqual({
         customComponents,
-        items: sectionItems,
+        items,
       });
     });
 
     it('should not render anything if items is empty', () => {
       const wrapper = shallow(
-        <SortableSection id="sortable" items={[]} onDragEnd={() => {}} />,
+        <SortableContext id="sortable" items={[]} onDragEnd={() => {}} />,
       );
 
       expect(wrapper.html()).toBeNull();
@@ -297,22 +280,18 @@ describe('navigation-next view renderer', () => {
       const customComponents = { foo: () => null };
       // We cannot setProps on non-root instance, so create render prop component to allow us to change
       const Harness = ({ rootItems, children }: any) => children({ rootItems });
-      // Need to render sortable section for react-beautiful-dnd to work when mounting
+      // Need to render sortable context for react-beautiful-dnd to work when mounting
       const wrapper = mount(
         <Harness rootItems={items}>
           {({ rootItems }) => (
-            <SortableSectionComponent onDragEnd={() => {}}>
-              {({ className }) => (
-                <div className={className}>
-                  <SortableGroup
-                    customComponents={customComponents}
-                    id="sortable-group"
-                    heading="Sortable Group"
-                    items={rootItems}
-                  />,
-                </div>
-              )}
-            </SortableSectionComponent>
+            <SortableContextComponent onDragEnd={() => {}}>
+              <SortableGroup
+                customComponents={customComponents}
+                id="sortable-group"
+                heading="Sortable Group"
+                items={rootItems}
+              />,
+            </SortableContextComponent>
           )}
         </Harness>,
       );

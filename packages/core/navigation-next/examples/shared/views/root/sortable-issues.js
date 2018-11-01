@@ -112,8 +112,8 @@ const getRootSortableIssues = ({ sortableItems, onDragEnd }: *) => () => [
         to: '/issues/search',
       },
       {
-        type: 'SortableSection',
-        id: 'section-filters',
+        type: 'SortableContext',
+        id: 'sortable-context-filters',
         onDragEnd,
         items: [
           {

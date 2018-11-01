@@ -62,9 +62,9 @@ Array [
         "Section": [Function],
         "SectionHeading": [Function],
         "Separator": [Function],
+        "SortableContext": [Function],
         "SortableGroup": [Function],
         "SortableItem": [Function],
-        "SortableSection": [Function],
         "Switcher": [Function],
         "Wordmark": [Function],
       }
@@ -93,9 +93,9 @@ Array [
         "Section": [Function],
         "SectionHeading": [Function],
         "Separator": [Function],
+        "SortableContext": [Function],
         "SortableGroup": [Function],
         "SortableItem": [Function],
-        "SortableSection": [Function],
         "Switcher": [Function],
         "Wordmark": [Function],
       }
@@ -119,6 +119,41 @@ exports[`navigation-next view renderer MenuSection should render the MenuSection
 >
   <unknown />
 </MenuSection>
+`;
+
+exports[`navigation-next view renderer SortableContext should render the SortableContext UI component 1`] = `
+<SortableContext
+  id="sortable"
+  onDragEnd={[Function]}
+>
+  <ItemsRenderer
+    items={
+      Array [
+        Object {
+          "id": "sortable-group",
+          "items": Array [
+            Object {
+              "id": "backlog",
+              "text": "Backlog",
+              "type": "SortableItem",
+            },
+            Object {
+              "id": "active-sprints",
+              "text": "Active sprints",
+              "type": "SortableItem",
+            },
+            Object {
+              "id": "issues",
+              "text": "Issues",
+              "type": "SortableItem",
+            },
+          ],
+          "type": "SortableGroup",
+        },
+      ]
+    }
+  />
+</SortableContext>
 `;
 
 exports[`navigation-next view renderer SortableGroup should render the SortableGroup UI Component 1`] = `
@@ -171,15 +206,4 @@ exports[`navigation-next view renderer SortableGroup should render the SortableG
     />
   </RenderBlocker>
 </SortableGroup>
-`;
-
-exports[`navigation-next view renderer SortableSection should render the SortableSection UI component 1`] = `
-<SortableSection
-  alwaysShowScrollHint={false}
-  id="sortable"
-  key="sortable"
-  onDragEnd={[Function]}
->
-  <unknown />
-</SortableSection>
 `;

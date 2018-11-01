@@ -283,9 +283,31 @@ ${(
 
 ${<Hr />}
 
+${<H>SortableContext</H>}
+
+Adds the ability to drag-and-drop items within a section. You must compose [SortableGroup](#sortablegroup) and [SortableItem](#sortableitem) components to achieve drag-and-drop behaviour.
+
+${(
+      <Example
+        packageName="@atlaskit/navigation-next"
+        Component={require('../examples/60-sortable-items').default}
+        title="Sortable items"
+        source={require('!!raw-loader!../examples/60-sortable-items')}
+      />
+    )}
+
+${(
+      <Props
+        heading="SortableContext props"
+        props={require('!!extract-react-types-loader!../src/components/connected/SortableContext')}
+      />
+    )}
+
+${<Hr />}
+
 ${<H>SortableItem</H>}
 
-Sortable items are draggable versions of [Items](#item) and should be used within a [SortableGroup](#sortablegroup) that is inside a [SortableSection](#sortablesection).
+Sortable items are draggable versions of [Items](#item) and should be used within a [SortableGroup](#sortablegroup) that is inside a [SortableContext](#sortablecontext).
 Takes the same props as [Item](#item) as well as some additional props documented below.
 
 ${(
@@ -299,36 +321,13 @@ ${<Hr />}
 
 ${<H>SortableGroup</H>}
 
-Sortable groups are used to represent droppable areas within a [SortableSection](#sortablesection). The items within this group must be [SortableItems](#sortableitem) to achieve drag-and-drop behaviour.
+Sortable groups are used to represent droppable areas within [SortableContext](#sortablecontext). The items within this group must be [SortableItems](#sortableitem) to achieve drag-and-drop behaviour.
 Takes the same props as [Group](#group) as well as some additional props documented below.
 
 ${(
       <Props
         heading="SortableGroup props"
         props={require('!!extract-react-types-loader!../src/components/connected/SortableGroup')}
-      />
-    )}
-
-${<Hr />}
-
-${<H>SortableSection</H>}
-
-Adds the ability to drag-and-drop items within a section. You must compose [SortableGroup](#sortablegroup) and [SortableItem](#sortableitem) components to achieve drag-and-drop behaviour.
-Takes the same props as [Section](#section) as well as some additional props documented below.
-
-${(
-      <Example
-        packageName="@atlaskit/navigation-next"
-        Component={require('../examples/60-sortable-section').default}
-        title="SortableSection"
-        source={require('!!raw-loader!../examples/60-sortable-section')}
-      />
-    )}
-
-${(
-      <Props
-        heading="SortableSection props"
-        props={require('!!extract-react-types-loader!../src/components/connected/SortableSection')}
       />
     )}
 

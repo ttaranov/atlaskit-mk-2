@@ -1,10 +1,10 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import type { DropResult } from 'react-beautiful-dnd';
 import { colors } from '@atlaskit/theme';
 
-import { SortableItem, SortableGroup, SortableSection } from '../src';
+import { SortableItem, SortableGroup, SortableContext } from '../src';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const SectionWrapper = (props: *) => (
@@ -13,7 +13,7 @@ const SectionWrapper = (props: *) => (
       backgroundColor: colors.N20,
       height: '100%',
       overflow: 'hidden',
-      paddingBottom: 8,
+      padding: '8px 16px',
       position: 'relative',
       width: `${CONTENT_NAV_WIDTH}px`,
     }}
@@ -178,23 +178,18 @@ export default class Example extends Component<{}, State> {
     const { groups } = this.state;
     return (
       <SectionWrapper>
-        {/* <ViewRenderer items={this.props.items} /> */}
-        <SortableSection onDragEnd={this.onDragEnd}>
-          {({ css }) => (
-            <Fragment>
-              <SortableGroup id="first" heading="First" innerStyle={css}>
-                {groups.first.map((itemProps, i) => (
-                  <SortableItem key={itemProps.id} index={i} {...itemProps} />
-                ))}
-              </SortableGroup>
-              <SortableGroup id="second" heading="Second" innerStyle={css}>
-                {groups.second.map((itemProps, i) => (
-                  <SortableItem key={itemProps.id} index={i} {...itemProps} />
-                ))}
-              </SortableGroup>
-            </Fragment>
-          )}
-        </SortableSection>
+        <SortableContext onDragEnd={this.onDragEnd}>
+          <SortableGroup id="first" heading="First">
+            {groups.first.map((itemProps, i) => (
+              <SortableItem key={itemProps.id} index={i} {...itemProps} />
+            ))}
+          </SortableGroup>
+          <SortableGroup id="second" heading="Second">
+            {groups.second.map((itemProps, i) => (
+              <SortableItem key={itemProps.id} index={i} {...itemProps} />
+            ))}
+          </SortableGroup>
+        </SortableContext>
       </SectionWrapper>
     );
   }

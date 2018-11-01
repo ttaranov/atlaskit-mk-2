@@ -9,10 +9,9 @@ import {
 } from 'react-beautiful-dnd';
 import { LayoutEventEmitter } from '../../presentational/LayoutManager/LayoutEvent';
 
-import type { SortableSectionProps } from './types';
-import Section from '../../presentational/Section';
+import type { SortableContextProps } from './types';
 
-export default class SortableSection extends Component<SortableSectionProps> {
+export default class SortableContext extends Component<SortableContextProps> {
   onDragStart = (
     [start, provided]: [DragStart, HookProvided],
     emit: () => void,
@@ -34,13 +33,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
   };
 
   render() {
-    const {
-      children,
-      onDragStart,
-      onDragUpdate,
-      onDragEnd,
-      ...sectionProps
-    } = this.props;
+    const { children, onDragUpdate } = this.props;
     return (
       <LayoutEventEmitter>
         {({ emitItemDragStart, emitItemDragEnd }) => (
@@ -49,7 +42,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
             onDragStart={(...args) => this.onDragStart(args, emitItemDragStart)}
             onDragEnd={(...args) => this.onDragEnd(args, emitItemDragEnd)}
           >
-            <Section {...sectionProps}>{children}</Section>
+            {children}
           </DragDropContext>
         )}
       </LayoutEventEmitter>
