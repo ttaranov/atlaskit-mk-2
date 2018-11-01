@@ -1,4 +1,4 @@
-//flow
+//@flow
 import { addNamedImport, removeNamedImport } from '../utils';
 
 export default function fontSizeTransformation(root: any, j: any) {
