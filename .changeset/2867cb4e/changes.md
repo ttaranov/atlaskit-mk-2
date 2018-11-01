@@ -1,1 +1,0 @@
-- adding editor image alignment icons
