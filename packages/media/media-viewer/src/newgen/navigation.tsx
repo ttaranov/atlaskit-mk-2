@@ -11,15 +11,15 @@ import {
   Arrow,
   hideControlsClassName,
 } from './styled';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 import { getSelectedIndex } from './utils';
 import { Shortcut } from './shortcut';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { channel } from './analytics';
 import {
   createNavigationEvent,
   NavigationGasPayload,
 } from './analytics/navigation';
-import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
 export type NavigationDirection = 'prev' | 'next';
 
