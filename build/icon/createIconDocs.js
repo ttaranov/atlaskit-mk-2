@@ -9,6 +9,7 @@ module.exports = (
 ) =>
   prettier.format(
     `
+// @flow
 /* eslint-disable global-require */
 /**
  * NOTE:
@@ -19,13 +20,6 @@ module.exports = (
  * To change the format of this file, modify icon/build/createIconsDocs.js.
  * Add synonyms in icon/icons/synonyms.js.
  */
-
-${icons
-      .map(
-        ({ fileKey, displayName }) =>
-          `import ${displayName} from '../glyph/${fileKey}';`,
-      )
-      .join('')}
 
 export default {
   ${icons
@@ -42,7 +36,6 @@ export default {
       return `
       '${fileKey}': {
         keywords: [${keywords.join(', ')}],
-        component: ${displayName},
         componentName: '${displayName}',
         package: '${packageName}/glyph/${fileKey}',
       },`;

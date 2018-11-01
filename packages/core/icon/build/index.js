@@ -23,5 +23,5 @@ buildIcons(config).then(icons => {
     synonyms,
     ['icon', 'core'],
   );
-  return fs.outputFile(path.resolve(root, 'utils/icons.js'), iconDocs);
+  return fs.outputFile(path.resolve(root, 'src/metadata.js'), iconDocs);
 });

@@ -45,5 +45,5 @@ tidy(config16)
       'icon-file-type',
     ]);
     console.log('@atlaskit-icon-file-type built');
-    return fs.outputFile(path.resolve(root, 'utils/icons.js'), iconDocs);
+    return fs.outputFile(path.resolve(root, 'src/metadata.js'), iconDocs);
   });

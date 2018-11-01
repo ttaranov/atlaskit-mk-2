@@ -1,3 +1,3 @@
 // @flow
 export { default } from './components/Icon';
-export { default as iconInfo } from '../utils/icons';
+export { default as metadata } from './metadata';

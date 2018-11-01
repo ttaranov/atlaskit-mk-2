@@ -11,13 +11,13 @@ Object.defineProperty(exports, "default", {
     return _Icon.default;
   }
 });
-Object.defineProperty(exports, "iconInfo", {
+Object.defineProperty(exports, "metadata", {
   enumerable: true,
   get: function get() {
-    return _icons.default;
+    return _metadata.default;
   }
 });
 
 var _Icon = _interopRequireDefault(require("./components/Icon"));
 
-var _icons = _interopRequireDefault(require("../utils/icons"));
+var _metadata = _interopRequireDefault(require("./metadata"));

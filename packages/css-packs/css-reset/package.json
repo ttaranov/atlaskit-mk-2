@@ -17,7 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
-    "build": "babel-node build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"
+    "build": "babel-node --ignore WE_WILL_NOT_IGNORE_ANYTHING build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"
   },
   "dependencies": {
     "@atlaskit/theme": "^6.0.3",

@@ -5,9 +5,8 @@ import { mount, shallow } from 'enzyme';
 import path from 'path';
 import fs from 'fs';
 import { name } from '../../../../package.json';
-import * as bundle from '../../..';
 import BookIcon from '../../../../glyph/blog/24';
-import components from '../../../../utils/icons';
+import DefaultIcon, { metadata } from '../../../../src';
 
 // List all files in a directory in Node.js recursively in a synchronous fashion
 const walkSync = (dir: string, filelist: string[]) => {
@@ -94,22 +93,25 @@ describe(name, () => {
 
     describe('bundle', () => {
       it('exports the Icon component', () => {
-        const { default: Icon } = bundle;
-        expect(new Icon({ label: 'My icon' })).toBeInstanceOf(Component);
+        expect(new DefaultIcon({ label: 'My icon' })).toBeInstanceOf(Component);
       });
     });
   });
 
   describe('component structure', () => {
-    it('should be possible to create the components', () => {
-      Object.keys(components)
-        .map(index => components[index])
-        .forEach(iconData => {
-          const Icon = iconData.component;
-          const wrapper = shallow(<Icon label="My icon" />);
-          expect(wrapper).not.toBe(undefined);
-          expect(Icon).toBeInstanceOf(Function);
-        });
+    it('should be possible to create the components', async () => {
+      const components = await Promise.all(
+        Object.keys(metadata).map(async (
+          key, // $FlowFixMe - we are fine with this being dynamic
+        ) => import(`../../../../glyph/${key}`)),
+      );
+
+      for (const icon of components) {
+        const Icon = icon.default;
+        const wrapper = shallow(<Icon label="My icon" />);
+        expect(wrapper).not.toBe(undefined);
+        expect(Icon).toBeInstanceOf(Function);
+      }
     });
   });
 

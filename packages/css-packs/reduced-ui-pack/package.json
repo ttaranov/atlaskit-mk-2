@@ -39,8 +39,8 @@
   },
   "scripts": {
     "build": "mkdir -p dist && cp src/bundle.css dist/bundle.css && cp src/icons-sprite.svg dist/icons-sprite.svg",
-    "update": "BABEL_ENV=production:cjs yarn build-css && yarn run sprite",
+    "update": "yarn build-css && yarn run sprite",
     "sprite": "node ./bin/buildSprite.js",
-    "build-css": "babel-node build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"
+    "build-css": "babel-node --ignore WE_WILL_NOT_IGNORE_ANYTHING build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"
   }
 }
