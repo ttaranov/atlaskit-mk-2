@@ -1,4 +1,18 @@
 import { NodeSpec } from 'prosemirror-model';
+import { LayoutColumnDefinition } from './layout-column';
+
+/**
+ * @name layoutSection_node
+ * @stage 0
+ */
+export interface LayoutSectionDefinition {
+  type: 'layoutSection';
+
+  /**
+   * @minItems 1
+   */
+  content: LayoutColumnDefinition[];
+}
 
 export const layoutSection: NodeSpec = {
   content: 'layoutColumn{2,3}',
