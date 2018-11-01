@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 20.3.2
+- [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
+
+  - Removing extra padding inside the comment editor
+
 ## 20.3.1
 - Updated dependencies [a6dd6e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6dd6e3):
   - @atlaskit/profilecard@5.0.0

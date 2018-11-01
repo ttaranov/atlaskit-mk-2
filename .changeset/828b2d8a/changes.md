@@ -1,1 +1,0 @@
-- Removing extra padding inside the comment editor

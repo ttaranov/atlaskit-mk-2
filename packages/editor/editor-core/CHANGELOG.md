@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.18
+- [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
+
+  - Removing extra padding inside the comment editor
+
 ## 87.6.17
 - [patch] [aef4235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aef4235):
 
