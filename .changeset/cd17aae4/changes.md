@@ -1,0 +1,1 @@
+- Revert "Add buffer to the bottom of fullpage editor"
