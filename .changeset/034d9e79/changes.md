@@ -1,0 +1,1 @@
+- Fix range selection
