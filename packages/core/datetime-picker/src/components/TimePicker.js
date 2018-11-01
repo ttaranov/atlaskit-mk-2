@@ -7,7 +7,7 @@ import Select, {
 } from '@atlaskit/select';
 import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
-import React, { Component, type Node } from 'react';
+import React, { Component, type Node, type ElementConfig } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -317,7 +317,7 @@ class TimePicker extends Component<Props, State> {
 export { TimePicker as TimePickerWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const TimePickerWithAnalytics = withAnalyticsContext({
   componentName: 'timePicker',
   packageName,
   packageVersion,
@@ -334,4 +334,8 @@ export default withAnalyticsContext({
       },
     }),
   })(TimePicker),
+);
+
+export default (props: ElementConfig<typeof TimePickerWithAnalytics>) => (
+  <TimePickerWithAnalytics {...props} />
 );

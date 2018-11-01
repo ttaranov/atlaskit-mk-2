@@ -11,7 +11,12 @@ import {
 } from '@atlaskit/analytics-next';
 import { format, isValid, parse, getDaysInMonth } from 'date-fns';
 import pick from 'lodash.pick';
-import React, { Component, type Node, type ElementRef } from 'react';
+import React, {
+  Component,
+  type Node,
+  type ElementRef,
+  type ElementConfig,
+} from 'react';
 import styled from 'styled-components';
 
 import {
@@ -406,7 +411,7 @@ class DatePicker extends Component<Props, State> {
 export { DatePicker as DatePickerWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const DatePickerWithAnalytics = withAnalyticsContext({
   componentName: 'datePicker',
   packageName,
   packageVersion,
@@ -423,4 +428,8 @@ export default withAnalyticsContext({
       },
     }),
   })(DatePicker),
+);
+
+export default (props: ElementConfig<typeof DatePicker>) => (
+  <DatePickerWithAnalytics {...props} />
 );

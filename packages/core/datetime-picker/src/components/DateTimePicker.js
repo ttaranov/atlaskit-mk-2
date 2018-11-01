@@ -9,7 +9,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import pick from 'lodash.pick';
-import React, { Component } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -328,7 +328,7 @@ class DateTimePicker extends Component<Props, State> {
 export { DateTimePicker as DateTimePickerWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const DateTimePickerWithAnalytics = withAnalyticsContext({
   componentName: 'dateTimePicker',
   packageName,
   packageVersion,
@@ -345,4 +345,8 @@ export default withAnalyticsContext({
       },
     }),
   })(DateTimePicker),
+);
+
+export default (props: ElementConfig<typeof DateTimePicker>) => (
+  <DateTimePickerWithAnalytics {...props} />
 );
