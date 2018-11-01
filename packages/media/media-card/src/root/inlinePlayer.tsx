@@ -4,6 +4,7 @@ import { Context } from '@atlaskit/media-core';
 import { FileIdentifier } from './domain';
 import { InlinePlayerWrapper } from './styled';
 import { CardDimensions } from '..';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface InlinePlayerProps {
   identifier: FileIdentifier;
@@ -25,6 +26,7 @@ export class InlinePlayer extends Component<
   InlinePlayerProps,
   InlinePlayerState
 > {
+  subscription?: Subscription;
   state: InlinePlayerState = {};
 
   async componentDidMount() {
@@ -32,34 +34,36 @@ export class InlinePlayer extends Component<
     const { id, collectionName } = identifier;
 
     // TODO: unsubscribe
-    context.file.getFileState(await id, { collectionName }).subscribe({
-      next: async state => {
-        if (state.status !== 'error' && state.preview) {
-          const { blob } = state.preview;
+    // TODO: unsubscribe when we got the fileSrc
+    // TODO: dont change fileSrc if we already have one
+    this.subscription = context.file
+      .getFileState(await id, { collectionName })
+      .subscribe({
+        next: async state => {
+          if (state.status !== 'error' && state.preview) {
+            const { blob } = state.preview;
 
-          if (blob.type.indexOf('video/') === 0) {
-            console.log(state.preview);
-            console.log(state.preview.blob.type);
-            const fileSrc = URL.createObjectURL(state.preview.blob);
+            if (blob.type.indexOf('video/') === 0) {
+              const fileSrc = URL.createObjectURL(state.preview.blob);
 
-            this.setState({
-              fileSrc,
-            });
+              this.setState({
+                fileSrc,
+              });
+            }
           }
-        }
 
-        if (state.status === 'processed') {
-          const { artifacts } = state;
-          const fileSrc = await context.file.getArtifactURL(
-            artifacts,
-            'video_1280.mp4',
-            collectionName,
-          );
+          if (state.status === 'processed') {
+            const { artifacts } = state;
+            const fileSrc = await context.file.getArtifactURL(
+              artifacts,
+              'video_1280.mp4',
+              collectionName,
+            );
 
-          this.setState({ fileSrc });
-        }
-      },
-    });
+            this.setState({ fileSrc });
+          }
+        },
+      });
   }
 
   render() {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card } from '../src';
+import { Card, CardProps } from '../src';
 import {
   createStorybookContext,
   videoFileId,
@@ -32,6 +32,7 @@ export default () => (
       dimensions={{ width: 500, height: 300 }}
       disableOverlay={true}
       onClick={onClick}
+      useInlinePlayer={true}
     />
     {/* <Card
       context={context}

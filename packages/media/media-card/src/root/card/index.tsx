@@ -282,13 +282,13 @@ export class Card extends Component<CardProps, CardState> {
   }
 
   onClick = (result: CardEvent, analyticsEvent?: UIAnalyticsEventInterface) => {
-    const { onClick } = this.props;
+    const { onClick, useInlinePlayer } = this.props;
     const { mediaItemDetails } = result;
     if (onClick) {
       onClick(result, analyticsEvent);
     }
 
-    if (mediaItemDetails) {
+    if (useInlinePlayer && mediaItemDetails) {
       const { mediaType } = mediaItemDetails as FileDetails;
       if (mediaType === 'video') {
         this.setState({

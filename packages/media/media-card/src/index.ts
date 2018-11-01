@@ -147,6 +147,7 @@ export interface CardProps extends SharedCardProps, CardEventProps {
 
   // only relevant to file card with image appearance
   readonly disableOverlay?: boolean;
+  readonly useInlinePlayer?: boolean;
 }
 
 export interface CardState {
