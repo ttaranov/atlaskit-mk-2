@@ -1,5 +1,10 @@
 # @atlaskit/global-navigation
 
+## 5.1.0
+- [minor] [96a854f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96a854f):
+
+  - This release makes the notification icon and badge a built-in into global-navigation. Introduces 4 new props which let the products configure the notification.
+
 ## 5.0.5
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

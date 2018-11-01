@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/global-navigation", "type": "minor" }],
-  "dependents": []
-}

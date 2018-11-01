@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 20.3.3
+- [patch] [825d4e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/825d4e9):
+
+  Fix copying codeblock from renderer
+
 ## 20.3.2
 - [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
 

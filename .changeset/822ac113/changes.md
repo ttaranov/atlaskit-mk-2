@@ -1,1 +1,0 @@
-- This release makes the notification icon and badge a built-in into global-navigation. Introduces 4 new props which let the products configure the notification.

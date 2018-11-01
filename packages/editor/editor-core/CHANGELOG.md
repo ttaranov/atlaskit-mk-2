@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 87.7.3
+- [patch] [825d4e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/825d4e9):
+
+  Fix copying codeblock from renderer
+- [patch] [9489ed2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9489ed2):
+
+  ED-4544 Added integration tests for panel
+
 ## 87.7.2
 - [patch] [c032914](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c032914):
 
