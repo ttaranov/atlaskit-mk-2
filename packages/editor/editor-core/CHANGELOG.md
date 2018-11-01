@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.16
+- [patch] [7bc4461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc4461):
+
+  - ED-5565: support connecting external React.Context to nodeviews
+
 ## 87.6.15
 - [patch] [e8052e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8052e1):
 

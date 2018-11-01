@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "87.6.15",
+  "version": "87.6.16",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -51,7 +51,7 @@
     "@atlaskit/modal-dialog": "^7.0.2",
     "@atlaskit/select": "^6.0.2",
     "@atlaskit/size-detector": "^5.0.7",
-    "@atlaskit/smart-card": "^8.5.2",
+    "@atlaskit/smart-card": "^8.6.1",
     "@atlaskit/spinner": "^9.0.6",
     "@atlaskit/status": "^0.2.1",
     "@atlaskit/task-decision": "^11.0.1",
