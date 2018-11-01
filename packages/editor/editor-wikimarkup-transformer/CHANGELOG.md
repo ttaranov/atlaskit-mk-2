@@ -1,5 +1,10 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.23
+- [patch] [7ca5551](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7ca5551):
+
+  - allow list to jump over empty lines in macro successfully
+
 ## 2.1.22
 - [patch] [674b3d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/674b3d9):
 
