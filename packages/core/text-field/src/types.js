@@ -41,4 +41,14 @@ export type TextFieldProps = {
   value?: string | number,
   /** Forwarded ref */
   forwardedRef: ElementRef<*>,
+
+  /** Redundant types */
+  isInvalid?: boolean,
+  invalidMessage?: string,
+  isLabelHidden?: boolean,
+  isValidationHidden?: boolean,
+  validationMessage?: string,
+  validationState?: {},
+  onUpdate?: (e: SyntheticEvent<>) => mixed,
+  createAnalyticsEvent?: (e: SyntheticEvent<>) => mixed,
 };
