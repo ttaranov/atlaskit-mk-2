@@ -1,5 +1,10 @@
 # @atlaskit/media-avatar-picker
 
+## 12.0.0
+- [major] [b758737](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b758737):
+
+  - add i18n support to media-avatar-picker
+
 ## 11.0.5
 - [patch] Updated dependencies [ced32d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced32d0)
   - @atlaskit/media-test-helpers@18.2.10
