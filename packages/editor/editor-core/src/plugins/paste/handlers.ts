@@ -22,9 +22,6 @@ export const handlePasteIntoTaskAndDecision = (slice: Slice) => (
   if (decisionItem && decisionList && taskList && taskItem) {
     if (hasParentNodeOfType([decisionItem, taskItem])(state.selection)) {
       if (state.selection.empty) {
-        analyticsService.trackEvent(
-          'atlassian.fabric.action-decision.editor.paste',
-        );
         slice = taskDecisionSliceFilter(slice, state.schema);
         slice = linkifyContent(state.schema, slice);
         const tr = closeHistory(state.tr)
