@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/mention", "type": "patch" }],
+  "dependents": []
+}

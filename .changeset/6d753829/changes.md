@@ -1,0 +1,1 @@
+- Fix tests in MentionPickerSpec
