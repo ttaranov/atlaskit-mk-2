@@ -113,16 +113,8 @@ describe('TextField', () => {
       test('should get focus when onFocus() is called', () => {
         const focusSpy = jest.fn();
         const wrapper = mount(<TextField onFocus={focusSpy} />);
-
-        // The onFocus prop doesn't actualy get fired by enzyme for some reason, so attaching
-        // the spy directly to the input.
-        wrapper
-          .find('input')
-          .getDOMNode()
-          .addEventListener('focus', focusSpy);
-
         expect(focusSpy).toHaveBeenCalledTimes(0);
-        wrapper.instance().focus();
+        wrapper.find('input').prop('onFocus')();
         expect(focusSpy).toHaveBeenCalledTimes(1);
       });
     });
