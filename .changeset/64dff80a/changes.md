@@ -1,0 +1,1 @@
+- Simplify the icons build process
