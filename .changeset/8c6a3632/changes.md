@@ -1,1 +1,0 @@
-- Removes reference to window in initial state to properly support ssr

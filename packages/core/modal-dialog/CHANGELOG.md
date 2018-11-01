@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 7.0.5
+- [patch] [72bc8da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/72bc8da):
+
+  - Removes reference to window in initial state to properly support ssr
+- [patch] [b332c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b332c91):
+
+  - upgrades verison of react-scrolllock to SSR safe version
+
 ## 7.0.4
 - [patch] Updated dependencies [aaab348](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aaab348)
   - @atlaskit/portal@0.0.12

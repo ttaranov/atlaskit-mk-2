@@ -1,5 +1,10 @@
 # @atlaskit/onboarding
 
+## 6.1.5
+- [patch] [b332c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b332c91):
+
+  - upgrades verison of react-scrolllock to SSR safe version
+
 ## 6.1.4
 - [patch] [9f91ea0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f91ea0):
 
