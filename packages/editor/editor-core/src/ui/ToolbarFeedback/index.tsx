@@ -38,6 +38,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  issueLabels?: string[];
 }
 
 /**
@@ -204,6 +205,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   hideFlag = () => this.setState({ displayFlag: false });
 
   render() {
+    const labels = ['label1', 'label2'];
     const { isOpen, displayFlag } = this.state;
     return (
       <div>
@@ -222,7 +224,26 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
             customerNameFieldId={'customfield_11703'}
             typeFiedlId={'customfield_11705'}
             canBeContactedFieldId={'customfield_11708'}
+            canBeContactedDefaultValue={'10805'}
             enrollInResearchFieldId={'customfield_11709'}
+            enrollInResearchDefaultValue={'10807'}
+            typeBugDefaultValue={'10796'}
+            typeCommentDefaultValue={'10797'}
+            typeSuggestionDefaultValue={'10798'}
+            typeQuestionDefaultValue={'10799'}
+            //   additionalFields={[
+            //   {
+            //     id: "customfield_11704",
+            //     value: "hello feedback context"
+            //   }
+            // ]}
+
+            //   additionalFields={[
+            //   {
+            //     id: "labels",
+            //     value: labels
+            //   }
+            // ]}
           />
         )}
 
