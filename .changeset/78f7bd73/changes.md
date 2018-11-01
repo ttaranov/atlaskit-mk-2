@@ -1,0 +1,1 @@
+- ED-5527: apply max-width: 100% and pass container size to Card as dimension
