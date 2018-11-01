@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import styled from 'styled-components';
 import {
   withAnalyticsEvents,
@@ -220,7 +220,7 @@ export const ButtonBase = Button;
 export const ButtonWithoutAnalytics = withDeprecationWarnings(Button);
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const ButtonWithAnalytics = withAnalyticsContext({
   componentName: 'button',
   packageName,
   packageVersion,
@@ -237,4 +237,8 @@ export default withAnalyticsContext({
       },
     }),
   })(ButtonWithoutAnalytics),
+);
+
+export default (props: ElementConfig<typeof Button>) => (
+  <ButtonWithAnalytics {...props} />
 );

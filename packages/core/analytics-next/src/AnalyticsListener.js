@@ -6,8 +6,8 @@ import UIAnalyticsEvent from './UIAnalyticsEvent';
 import type { UIAnalyticsEventHandler } from './types';
 
 type Props = {
-  /** Children! */
-  children?: Node,
+  /** Children to render inside the listener */
+  children: Node,
   /** The channel to listen for events on. */
   channel?: string,
   /** A function which will be called when an event is fired on this Listener's

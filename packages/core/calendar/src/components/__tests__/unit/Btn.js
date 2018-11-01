@@ -2,12 +2,17 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
+import ArrowleftIcon from '@atlaskit/icon/glyph/chevron-left-large';
 import Button from '@atlaskit/button';
 
 import Btn from '../../Btn';
 
 test('children', () => {
-  const wrapper = mount(<Btn>children</Btn>);
+  const wrapper = mount(
+    <Btn>
+      <ArrowleftIcon />
+    </Btn>,
+  );
   const props = wrapper.find(Button).props();
   expect(props).toEqual(
     expect.objectContaining({
