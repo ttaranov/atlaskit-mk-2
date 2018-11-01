@@ -8,6 +8,7 @@ import React, {
   type Node,
   type Element,
   type ComponentType,
+  type ElementConfig,
 } from 'react';
 import NodeResolver from 'react-node-resolver';
 import flushable from 'flushable';
@@ -319,7 +320,7 @@ const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export type TooltipType = Tooltip;
 
-export default withAnalyticsContext({
+const TooltipWithAnalytics = withAnalyticsContext({
   componentName: 'tooltip',
   packageName,
   packageVersion,
@@ -328,4 +329,8 @@ export default withAnalyticsContext({
     onHide: unhoveredPayload,
     onShow: createAndFireEventOnAtlaskit({ ...hoveredPayload }),
   })(Tooltip),
+);
+
+export default (props: ElementConfig<typeof Tooltip>) => (
+  <TooltipWithAnalytics {...props} />
 );
