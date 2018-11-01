@@ -1,7 +1,7 @@
 //@flow
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   ak-grid {
     align-content: flex-start;
     align-items: flex-start;

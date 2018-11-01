@@ -320,6 +320,7 @@
     "emotion-theming": "^9.0.0",
     "enzyme-to-json": "^3.3.0",
     "es6-object-assign": "^1.1.0",
+    "evaluate-inner-styles": "^0.0.1",
     "eventemitter2": "^4.1.0",
     "execa": "^0.10.0",
     "exenv": "^1.2.2",

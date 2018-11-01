@@ -1,6 +1,6 @@
 //@flow
 import { colors } from '@atlaskit/theme';
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
 /**
  * This exits as @ak-color-B75A: fade(@ak-color-B75, 60%);
@@ -13,7 +13,7 @@ const colorB75A = 'rgba(179, 212, 255, 0.6)';
  */
 const colorB200A = 'rgba(38, 132, 255, 0.6)';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   .ak-button {
     align-items: baseline;
     box-sizing: border-box;

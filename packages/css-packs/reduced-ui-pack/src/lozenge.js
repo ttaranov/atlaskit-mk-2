@@ -1,10 +1,10 @@
 //@flow
 import { colors, fontSizeSmall } from '@atlaskit/theme';
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
 const lozengeBorderRadius = '3px';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   .ak-lozenge {
     border-radius: ${lozengeBorderRadius};
     box-sizing: border-box;

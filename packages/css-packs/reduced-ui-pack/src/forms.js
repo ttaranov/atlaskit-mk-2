@@ -1,7 +1,7 @@
 //@flow
 import { colors, gridSize, fontSize } from '@atlaskit/theme';
+import evaluateInerStyles from 'evaluate-inner-styles';
 import dataUri from './utils/data-uri';
-import evaluateInner from './utils/evaluate-inner';
 
 const labelFontSize = 12;
 const baseBorderRadius = '3px';
@@ -10,7 +10,7 @@ const baseTransitionDuration = '0.2s'; // Transition speed
 const basePaddingY = 10;
 const basePaddingX = 8;
 
-module.exports = evaluateInner`
+module.exports = evaluateInerStyles()`
   .ak-field-group {
     border: 0;
     margin: 0;

@@ -1,7 +1,7 @@
 //@flow
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   /* global rule that sets the default fill that will cascade into 2 colour icons */
   .ak-icon {
     fill: white;

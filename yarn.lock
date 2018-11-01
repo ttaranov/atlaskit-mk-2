@@ -6243,6 +6243,13 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
 
+evaluate-inner-styles@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/evaluate-inner-styles/-/evaluate-inner-styles-0.0.1.tgz#7d195637c1b1ca5e9b61c64f7ef91189f77f3b0d"
+  integrity sha512-PnGRgqFulnWULkm6a8oXfZFCza7WDkPx+XtIPxzFpkCVtFT7KvrnfnttDVppb6Ej/WQ4/fvJocYcl6qQNYfr7A==
+  dependencies:
+    fbjs "^1.0.0"
+
 event-stream@~0.5:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/event-stream/-/event-stream-0.5.3.tgz#b77b9309f7107addfeab63f0c0eafd8db0bd8c1c"

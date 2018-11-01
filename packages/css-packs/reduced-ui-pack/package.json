@@ -20,6 +20,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/theme": "^6.2.0",
+    "evaluate-inner-styles": "^0.0.1",
     "fbjs": "^1.0.0"
   },
   "peerDependencies": {

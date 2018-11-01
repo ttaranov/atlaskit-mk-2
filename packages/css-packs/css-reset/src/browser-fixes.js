@@ -1,7 +1,7 @@
 // @flow
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   /* IE11 doesn't support <template> elements which shouldn't be displayed */
   template {
     display: none;

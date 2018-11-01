@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@atlaskit/theme": "^6.0.3",
+    "evaluate-inner-styles": "^0.0.1",
     "fbjs": "^1.0.0",
     "mkdirp": "^0.5.1"
   },

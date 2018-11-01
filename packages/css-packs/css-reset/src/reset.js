@@ -1,7 +1,7 @@
 //@flow
-import css from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 // Reset
-export default css`
+export default evaluateInerStyles()`
   html,
   body,
   p,

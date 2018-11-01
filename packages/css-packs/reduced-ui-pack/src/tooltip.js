@@ -1,6 +1,6 @@
 //@flow
 import { colors, gridSize } from '@atlaskit/theme';
-import css from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
 const grid = gridSize() / 2;
 const fontSize = 3 * grid;
@@ -12,7 +12,7 @@ const leftAndRightTextPadding = 2 * grid;
 const topAndBottomPadding = grid / 2;
 const marginDistance = 2 * grid;
 
-export default css`
+export default evaluateInerStyles()`
   a[href][data-ak-tooltip],
   button[data-ak-tooltip] {
     overflow: visible;

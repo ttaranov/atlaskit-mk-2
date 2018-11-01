@@ -1,7 +1,7 @@
 //@flow
 import { colors, gridSize } from '@atlaskit/theme';
+import evaluateInerStyles from 'evaluate-inner-styles';
 import dataUri from './utils/data-uri';
-import evaluateInner from './utils/evaluate-inner';
 
 const borderWidth = 2;
 const toggleTransition = 0.2;
@@ -18,7 +18,7 @@ const toggleWidthLarge = gridSize() * 5;
 const toggleHeightDefault = gridSize() * 2;
 const toggleWidthDefault = gridSize() * 4;
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   .ak-field-toggle {
     display: inline-block;
     overflow: hidden;

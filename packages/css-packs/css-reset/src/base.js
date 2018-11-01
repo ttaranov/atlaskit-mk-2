@@ -6,9 +6,9 @@ import {
   fontFamily,
   codeFontFamily,
 } from '@atlaskit/theme';
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   body,
   html {
     height: 100%;

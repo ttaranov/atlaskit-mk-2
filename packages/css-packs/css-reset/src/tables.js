@@ -1,10 +1,10 @@
 //@flow
 import { colors, gridSize, typography } from '@atlaskit/theme';
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
 const tableBorderWdth = 2;
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   table {
     border-collapse: collapse;
     width: 100%;

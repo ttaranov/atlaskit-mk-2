@@ -1,7 +1,7 @@
 //@flow
-import evaluateInner from './utils/evaluate-inner';
+import evaluateInerStyles from 'evaluate-inner-styles';
 
-export default evaluateInner`
+export default evaluateInerStyles()`
   .assistive {
     border: 0 !important;
     clip: rect(1px, 1px, 1px, 1px) !important;
