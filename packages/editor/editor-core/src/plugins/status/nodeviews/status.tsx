@@ -11,9 +11,9 @@ import { colors } from '@atlaskit/theme';
 
 const { B100 } = colors;
 
-interface StatusContainerProps {
+export interface StatusContainerProps {
   selected: boolean;
-  placeholder: boolean;
+  placeholderStyle: boolean;
 }
 
 export const StatusContainer = styled.span`
@@ -23,7 +23,8 @@ export const StatusContainer = styled.span`
   line-height: 1;
   border-radius: 5px;
 
-  opacity: ${(props: StatusContainerProps) => (props.placeholder ? 0.5 : 1)};
+  opacity: ${(props: StatusContainerProps) =>
+    props.placeholderStyle ? 0.5 : 1};
 
   border: 2px solid ${(props: StatusContainerProps) =>
     props.selected ? B100 : 'transparent'};
@@ -100,7 +101,7 @@ default class StatusNodeView extends React.Component<Props & InjectedIntlProp, S
     const statusText = text ? text : formatMessage(messages.placeholder);
 
     return (
-      <StatusContainer onClick={this.handleClick} selected={selected} placeholder={!text}>
+      <StatusContainer onClick={this.handleClick} selected={selected} placeholderStyle={!text}>
         <Status text={statusText} color={color} localId={localId} />
       </StatusContainer>
     );
