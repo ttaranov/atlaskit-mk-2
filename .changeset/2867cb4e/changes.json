@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/icon", "type": "patch" },
+    { "name": "@atlaskit/reduced-ui-pack", "type": "patch" }
+  ],
+  "dependents": []
+}
