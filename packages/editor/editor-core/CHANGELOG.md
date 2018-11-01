@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.6.17
+- [patch] [aef4235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aef4235):
+
+  - Fix range selection
+
 ## 87.6.16
 - [patch] [7bc4461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc4461):
 
