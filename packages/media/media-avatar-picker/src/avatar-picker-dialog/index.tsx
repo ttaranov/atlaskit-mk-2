@@ -2,8 +2,10 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import ModalDialog, { ModalFooter } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
+import { FormattedMessage, intlShape, IntlProvider } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { Avatar } from '../avatar-list';
-import { ImageNavigator, CropProperties } from '../image-navigator';
+import ImageNavigator, { CropProperties } from '../image-navigator';
 import { PredefinedAvatarList } from '../predefined-avatar-list';
 import {
   AvatarPickerViewWrapper,
@@ -42,9 +44,9 @@ export enum Mode {
 export const MAX_SIZE_MB = 10;
 
 export const ERROR = {
-  URL: 'Could not load image, the url is invalid.',
-  FORMAT: 'Could not load image, the format is invalid.',
-  SIZE: `Image is too large, must be no larger than ${MAX_SIZE_MB}Mb`,
+  URL: messages.image_url_invalid_error,
+  FORMAT: messages.image_format_invalid_error,
+  SIZE: messages.image_size_too_large_error,
 };
 
 export const ACCEPT = ['image/gif', 'image/jpeg', 'image/png'];
@@ -81,13 +83,14 @@ export class AvatarPickerDialog extends PureComponent<
     errorMessage: this.props.errorMessage,
   };
 
-  setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
+  setSelectedImageState = async (selectedImage: File, crop: CropProperties) => {
     // this is the main method to update the image state,
     // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded
-    this.setState({ selectedImage, crop });
-    fileToDataURI(selectedImage).then(dataURI => {
+    try {
+      this.setState({ selectedImage, crop });
+      const dataURI = await fileToDataURI(selectedImage);
       this.setState({ selectedImageSource: dataURI });
-    });
+    } catch (e) {}
   };
 
   setSelectedAvatarState = (avatar: Avatar) => {
@@ -184,8 +187,12 @@ export class AvatarPickerDialog extends PureComponent<
     this.setErrorState(errorMessage);
   };
 
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
-    return (
+    const content = (
       <ModalDialog
         height={`${AVATAR_DIALOG_HEIGHT}px`}
         width={`${AVATAR_DIALOG_WIDTH}px`}
@@ -197,11 +204,21 @@ export class AvatarPickerDialog extends PureComponent<
         <AvatarPickerViewWrapper>{this.renderBody()}</AvatarPickerViewWrapper>
       </ModalDialog>
     );
+
+    return this.context.intl ? (
+      content
+    ) : (
+      <IntlProvider locale="en">{content}</IntlProvider>
+    );
   }
 
   headerContent = () => {
     const { title } = this.props;
-    return <ModalHeader>{title || 'Upload an avatar'}</ModalHeader>;
+    return (
+      <ModalHeader>
+        {title || <FormattedMessage {...messages.upload_an_avatar} />}
+      </ModalHeader>
+    );
   };
 
   footerContent = () => {
@@ -215,10 +232,10 @@ export class AvatarPickerDialog extends PureComponent<
             onClick={onSaveClick}
             isDisabled={isDisabled}
           >
-            {primaryButtonText || 'Save'}
+            {primaryButtonText || <FormattedMessage {...messages.save} />}
           </Button>
           <Button appearance="default" onClick={onCancel}>
-            Cancel
+            <FormattedMessage {...messages.cancel} />
           </Button>
         </ModalFooterButtons>
       </ModalFooter>

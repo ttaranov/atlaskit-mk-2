@@ -1,0 +1,1 @@
+- add i18n support to media-avatar-picker

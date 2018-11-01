@@ -24,14 +24,31 @@ export default {
   'fabric.media.connect_to': 'Pripojiť k {name}',
   'fabric.media.connect_account_description':
     'Otvoríme novú stránku, aby sme vám pomohli pri pripojení k vášmu účtu {name}',
-  'fabric.media.something_went_wrong': 'Something went wrong.',
-  'fabric.media.might_be_a_hiccup': 'It might just be a hiccup.',
+  'fabric.media.upload_an_avatar': 'Upload an avatar',
+  'fabric.media.save': 'Save',
+  'fabric.media.or': 'or',
+  'fabric.media.upload_photo': 'Upload a photo',
+  'fabric.media.default_avatars': 'Default avatars',
+  'fabric.media.drag_and_drop_images_here': 'Drag and drop your images here',
+  'fabric.media.upload_image': 'Upload image',
+  'fabric.media.image_url_invalid_error':
+    'Could not load image, the url is invalid.',
+  'fabric.media.image_format_invalid_error':
+    'Could not load image, the format is invalid.',
+  'fabric.media.image_size_too_large_error':
+    'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+  'fabric.media.something_went_wrong': 'Vyskytol sa problém.',
+  'fabric.media.might_be_a_hiccup':
+    'Môže to byť len nejaký nepodstatný problém.',
   'fabric.media.couldnt_generate_preview':
-    "We couldn't generate a preview for this file.",
-  'fabric.media.cant_preview_file_type': "We can't preview this file type.",
+    'Nepodarilo sa vytvoriť náhľad tohto súboru.',
+  'fabric.media.cant_preview_file_type':
+    'Nemôžeme zobraziť náhľad tohto typu súboru.',
   'fabric.media.item_not_found_in_list':
-    'The selected item was not found on the list.',
-  'fabric.media.no_pdf_artifacts': 'No PDF artifacts found for this file.',
-  'fabric.media.give_feedback': 'Give feedback',
-  'fabric.media.try_downloading_file': 'Try downloading the file to view it.',
+    'Vybraná položka sa nenašla v zozname.',
+  'fabric.media.no_pdf_artifacts':
+    'Pre tento súbor sa nenašli žiadne časti PDF.',
+  'fabric.media.give_feedback': 'Poskytnúť spätnú väzbu',
+  'fabric.media.try_downloading_file':
+    'Skúste prevziať tento súbor na jeho zobrazenie.',
 };

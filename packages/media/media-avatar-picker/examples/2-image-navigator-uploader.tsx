@@ -1,6 +1,6 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
-import { ImageNavigator } from '../src/image-navigator';
+import ImageNavigator from '../src/image-navigator';
 
 let onLoadParams: any;
 let imageElement: any;

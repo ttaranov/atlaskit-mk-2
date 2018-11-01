@@ -24,14 +24,29 @@ export default {
   'fabric.media.connect_to': 'Połącz z {name}',
   'fabric.media.connect_account_description':
     'Otworzymy nową stronę, aby pomóc Ci połączyć swoje konto {name}',
-  'fabric.media.something_went_wrong': 'Something went wrong.',
-  'fabric.media.might_be_a_hiccup': 'It might just be a hiccup.',
+  'fabric.media.upload_an_avatar': 'Upload an avatar',
+  'fabric.media.save': 'Save',
+  'fabric.media.or': 'or',
+  'fabric.media.upload_photo': 'Upload a photo',
+  'fabric.media.default_avatars': 'Default avatars',
+  'fabric.media.drag_and_drop_images_here': 'Drag and drop your images here',
+  'fabric.media.upload_image': 'Upload image',
+  'fabric.media.image_url_invalid_error':
+    'Could not load image, the url is invalid.',
+  'fabric.media.image_format_invalid_error':
+    'Could not load image, the format is invalid.',
+  'fabric.media.image_size_too_large_error':
+    'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+  'fabric.media.something_went_wrong': 'Coś poszło nie tak.',
+  'fabric.media.might_be_a_hiccup': 'To musi być przejściowy problem.',
   'fabric.media.couldnt_generate_preview':
-    "We couldn't generate a preview for this file.",
-  'fabric.media.cant_preview_file_type': "We can't preview this file type.",
+    'Nie udało się wygenerować podglądu tego pliku.',
+  'fabric.media.cant_preview_file_type':
+    'Podgląd plików tego typu nie jest możliwy.',
   'fabric.media.item_not_found_in_list':
-    'The selected item was not found on the list.',
-  'fabric.media.no_pdf_artifacts': 'No PDF artifacts found for this file.',
-  'fabric.media.give_feedback': 'Give feedback',
-  'fabric.media.try_downloading_file': 'Try downloading the file to view it.',
+    'Zaznaczony element nie został odnaleziony na liście.',
+  'fabric.media.no_pdf_artifacts': 'Nie znaleziono artefaktów PDF w tym pliku.',
+  'fabric.media.give_feedback': 'Prześlij opinię',
+  'fabric.media.try_downloading_file':
+    'Spróbuj pobrać plik, aby go wyświetlić.',
 };
