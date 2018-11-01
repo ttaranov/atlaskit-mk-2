@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { Card } from '@atlaskit/smart-card';
-
+import * as PropTypes from 'prop-types';
 import { EditorView } from 'prosemirror-view';
 import wrapComponentWithClickArea from '../../../nodeviews/legacy-nodeview-factory/ui/wrapper-click-area';
 import { stateKey as ReactNodeViewState } from '../../../plugins/base/pm-plugins/react-nodeview';
@@ -14,17 +14,25 @@ export interface Props {
   selected?: boolean;
 }
 
-class BlockCardNode extends React.PureComponent<Props, {}> {
+class BlockCardNode extends React.Component<Props, {}> {
   onClick = () => {};
+
+  static contextTypes = {
+    contextAdapter: PropTypes.object,
+  };
 
   render() {
     const { node, selected } = this.props;
     const { url, data } = node.attrs;
 
+    const cardContext = this.context.contextAdapter
+      ? this.context.contextAdapter.card
+      : undefined;
+
     // render an empty span afterwards to get around Webkit bug
     // that puts caret in next editable text element
-    return (
-      <div>
+    const cardInner = (
+      <>
         <Card
           url={url}
           data={data}
@@ -33,6 +41,18 @@ class BlockCardNode extends React.PureComponent<Props, {}> {
           onClick={this.onClick}
         />
         <span contentEditable={true} />
+      </>
+    );
+
+    return (
+      <div>
+        {cardContext ? (
+          <cardContext.Provider value={cardContext.value}>
+            {cardInner}
+          </cardContext.Provider>
+        ) : (
+          cardInner
+        )}
       </div>
     );
   }

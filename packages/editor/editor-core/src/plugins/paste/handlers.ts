@@ -8,6 +8,7 @@ import { EditorView } from 'prosemirror-view';
 import { runMacroAutoConvert } from '../macro';
 import { closeHistory } from 'prosemirror-history';
 import { getPasteSource } from './util';
+import { queueCardsFromChangedTr } from '../card/pm-plugins/doc';
 
 export const handlePasteIntoTaskAndDecision = (slice: Slice) => (
   state: EditorState,
@@ -26,12 +27,12 @@ export const handlePasteIntoTaskAndDecision = (slice: Slice) => (
         );
         slice = taskDecisionSliceFilter(slice, state.schema);
         slice = linkifyContent(state.schema, slice);
+        const tr = closeHistory(state.tr)
+          .replaceSelection(slice)
+          .scrollIntoView();
 
-        dispatch(
-          closeHistory(state.tr)
-            .replaceSelection(slice)
-            .scrollIntoView(),
-        );
+        queueCardsFromChangedTr(state, tr);
+        dispatch(tr);
         return true;
       }
     }

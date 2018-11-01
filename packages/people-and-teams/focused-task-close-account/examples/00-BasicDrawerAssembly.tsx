@@ -32,6 +32,7 @@ export default function Example() {
           <DeleteUserContentPreviewScreen user={catherineHirons} />,
         ]}
         submitButton={submitButton}
+        learnMoreLink={''}
       />
     </>
   );

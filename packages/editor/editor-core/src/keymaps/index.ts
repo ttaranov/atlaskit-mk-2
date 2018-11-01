@@ -62,6 +62,22 @@ export const escape = makeKeyMapWithCommon('Escape', 'Escape');
 export const nextCell = makeKeyMapWithCommon('Next cell', 'Tab');
 export const previousCell = makeKeyMapWithCommon('Previous cell', 'Shift-Tab');
 export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-t');
+export const addRowBefore = makeKeyMapWithCommon(
+  'Add Row Above',
+  'Ctrl-Alt-ArrowUp',
+);
+export const addRowAfter = makeKeyMapWithCommon(
+  'Add Row Below',
+  'Ctrl-Alt-ArrowDown',
+);
+export const addColumnAfter = makeKeyMapWithCommon(
+  'Add Column After',
+  'Ctrl-Alt-ArrowRight',
+);
+export const addColumnBefore = makeKeyMapWithCommon(
+  'Add Column Before',
+  'Ctrl-Alt-ArrowLeft',
+);
 export const cut = makeKeyMapWithCommon('Cut', 'Mod-x');
 export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
 export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');

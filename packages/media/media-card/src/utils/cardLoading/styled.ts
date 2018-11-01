@@ -26,6 +26,8 @@ export const Wrapper = styled.div`
   ${center} background: ${akColorN20};
   color: #cfd4db;
   border-radius: inherit;
+  max-height: 100%;
+  max-width: 100%;
  
   ${(props: WrapperProps) => {
     return `

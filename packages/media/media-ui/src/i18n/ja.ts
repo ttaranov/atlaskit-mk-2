@@ -24,4 +24,30 @@ export default {
   'fabric.media.connect_to': '{name} に接続',
   'fabric.media.connect_account_description':
     '{name} アカウントを接続するため、新ページを開きます',
+  'fabric.media.upload_an_avatar': 'Upload an avatar',
+  'fabric.media.save': 'Save',
+  'fabric.media.or': 'or',
+  'fabric.media.upload_photo': 'Upload a photo',
+  'fabric.media.default_avatars': 'Default avatars',
+  'fabric.media.drag_and_drop_images_here': 'Drag and drop your images here',
+  'fabric.media.upload_image': 'Upload image',
+  'fabric.media.image_url_invalid_error':
+    'Could not load image, the url is invalid.',
+  'fabric.media.image_format_invalid_error':
+    'Could not load image, the format is invalid.',
+  'fabric.media.image_size_too_large_error':
+    'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+  'fabric.media.something_went_wrong': '問題が発生しました。',
+  'fabric.media.might_be_a_hiccup': '一時的な障害の可能性があります。',
+  'fabric.media.couldnt_generate_preview':
+    'このファイル形式はプレビュー表示できません。',
+  'fabric.media.cant_preview_file_type':
+    'このファイル形式はプレビュー表示できません。',
+  'fabric.media.item_not_found_in_list':
+    '選択されたアイテムがリストに見つかりませんでした。',
+  'fabric.media.no_pdf_artifacts':
+    'このファイルのPDFアーティファクトが見つかりません。',
+  'fabric.media.give_feedback': 'フィードバックを送信',
+  'fabric.media.try_downloading_file':
+    'ファイルを表示するにはダウンロードしてください。',
 };

@@ -1,7 +1,7 @@
 /* tslint:disable no-console */
 import * as React from 'react';
 import { smallImage } from '@atlaskit/media-test-helpers';
-import { ImageNavigator } from '../src/image-navigator';
+import ImageNavigator from '../src/image-navigator';
 
 let onLoadParams: any;
 let imageElement: any;

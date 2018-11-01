@@ -37,6 +37,8 @@ export default class DeleteUserDrawerExample extends React.Component {
 
   closeDrawer = () => this.setState({ isOpen: false });
 
+  handleDeactivateUser = () => <></>;
+
   toggleIsCurrentUser = event =>
     this.setState({ isCurrentUser: event.target.checked });
 
@@ -45,6 +47,7 @@ export default class DeleteUserDrawerExample extends React.Component {
       accessibleSites={accessibleSites}
       isCurrentUser={this.state.isCurrentUser}
       user={catherineHirons}
+      deactivateUserHandler={this.handleDeactivateUser}
     />
   );
 

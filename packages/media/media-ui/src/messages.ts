@@ -110,4 +110,102 @@ export const messages = defineMessages({
     description:
       'Explains what will happen when the users connects to a new account',
   },
+  upload_an_avatar: {
+    id: 'fabric.media.upload_an_avatar',
+    defaultMessage: 'Upload an avatar',
+    description: 'Indicates that the user can upload a new avatar',
+  },
+  save: {
+    id: 'fabric.media.save',
+    defaultMessage: 'Save',
+    description: 'Just the "save" word',
+  },
+  or: {
+    id: 'fabric.media.or',
+    defaultMessage: 'or',
+    description: 'Just the "or" word',
+  },
+  upload_photo: {
+    id: 'fabric.media.upload_photo',
+    defaultMessage: 'Upload a photo',
+    description: 'Call to action for the user to upload a new photo',
+  },
+  default_avatars: {
+    id: 'fabric.media.default_avatars',
+    defaultMessage: 'Default avatars',
+    description: 'Showed above the default avatar list',
+  },
+  drag_and_drop_images_here: {
+    id: 'fabric.media.drag_and_drop_images_here',
+    defaultMessage: 'Drag and drop your images here',
+    description:
+      'Indicates that the user can drag and drop images in that area',
+  },
+  upload_image: {
+    id: 'fabric.media.upload_image',
+    defaultMessage: 'Upload image',
+    description: 'Call to action for the user to upload a new image',
+  },
+  image_url_invalid_error: {
+    id: 'fabric.media.image_url_invalid_error',
+    defaultMessage: 'Could not load image, the url is invalid.',
+    description: 'There was an error parsing the image url',
+  },
+  image_format_invalid_error: {
+    id: 'fabric.media.image_format_invalid_error',
+    defaultMessage: 'Could not load image, the format is invalid.',
+    description: 'The provided image format is not valid',
+  },
+  image_size_too_large_error: {
+    id: 'fabric.media.image_size_too_large_error',
+    defaultMessage:
+      'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+    description: 'The provided image size is too big',
+  },
+  something_went_wrong: {
+    id: 'fabric.media.something_went_wrong',
+    defaultMessage: 'Something went wrong.',
+    description:
+      'Showed when an error happen but we dont have more info about it',
+  },
+  might_be_a_hiccup: {
+    id: 'fabric.media.might_be_a_hiccup',
+    defaultMessage: 'It might just be a hiccup.',
+    description:
+      'Used when an unknow error happens, just in a funny way of saying that we dont have more info about it',
+  },
+  couldnt_generate_preview: {
+    id: 'fabric.media.couldnt_generate_preview',
+    defaultMessage: "We couldn't generate a preview for this file.",
+    description:
+      'Error case for when the backend cant generate a preview for that file',
+  },
+  cant_preview_file_type: {
+    id: 'fabric.media.cant_preview_file_type',
+    defaultMessage: "We can't preview this file type.",
+    description:
+      'Error case for when we have no available preview for that file',
+  },
+  item_not_found_in_list: {
+    id: 'fabric.media.item_not_found_in_list',
+    defaultMessage: 'The selected item was not found on the list.',
+    description:
+      'Error case for when a provided item is not found within the list of items',
+  },
+  no_pdf_artifacts: {
+    id: 'fabric.media.no_pdf_artifacts',
+    defaultMessage: 'No PDF artifacts found for this file.',
+    description: 'Error case for when we cant preview a PDF file',
+  },
+  give_feedback: {
+    id: 'fabric.media.give_feedback',
+    defaultMessage: 'Give feedback',
+    description:
+      'Call to action that opens a popup to get feedback from the users',
+  },
+  try_downloading_file: {
+    id: 'fabric.media.try_downloading_file',
+    defaultMessage: 'Try downloading the file to view it.',
+    description: 'We show this message to allow users to download a file',
+  },
 });

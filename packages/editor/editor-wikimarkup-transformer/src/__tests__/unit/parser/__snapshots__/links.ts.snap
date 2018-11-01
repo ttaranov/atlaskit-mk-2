@@ -396,28 +396,7 @@ Object {
     Object {
       "content": Array [
         Object {
-          "text": "Anchor ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-    Object {
-      "attrs": Object {
-        "extensionKey": "anchor",
-        "extensionType": "com.atlassian.jira.macro",
-        "layout": "default",
-        "parameters": Object {
-          "rawAttrs": "anchorname",
-        },
-        "text": "",
-      },
-      "type": "extension",
-    },
-    Object {
-      "content": Array [
-        Object {
-          "text": " here",
+          "text": "Anchor  here",
           "type": "text",
         },
       ],

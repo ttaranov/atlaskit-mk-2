@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import DynamicTableStateless from './Stateless';
 import type { SortOrderType, StatelessProps, RankEnd, RowType } from '../types';
 import { reorderRows } from '../internal/helpers';
@@ -44,8 +45,8 @@ export default class DynamicTable extends Component<Props, State> {
     });
   }
 
-  onSetPage = (page: number) => {
-    this.props.onSetPage(page);
+  onSetPage = (page: number, event: ?UIAnalyticsEvent) => {
+    this.props.onSetPage(page, event);
     this.setState({ page });
   };
 

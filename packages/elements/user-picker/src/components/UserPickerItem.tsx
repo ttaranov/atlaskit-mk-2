@@ -48,15 +48,15 @@ export default class UserPickerItem extends React.PureComponent<Props> {
     );
   };
 
-  private renderLozenge = () => {
+  private renderBadge = () => {
     const {
-      user: { lozenge },
+      user: { badge },
       context,
     } = this.props;
-    if (lozenge && context === 'menu') {
+    if (badge && context === 'menu') {
       return (
         <LozengeWrapper>
-          <Lozenge>{lozenge}</Lozenge>
+          <Lozenge>{badge}</Lozenge>
         </LozengeWrapper>
       );
     }
@@ -107,7 +107,7 @@ export default class UserPickerItem extends React.PureComponent<Props> {
             )}
           />
         </AvatarItemWrapper>
-        {this.renderLozenge()}
+        {this.renderBadge()}
       </Container>
     );
   }

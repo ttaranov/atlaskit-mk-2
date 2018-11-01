@@ -17,6 +17,7 @@ const commonArgs = {
   isActive: false,
   isSelected: false,
   isHover: false,
+  isFocused: false,
   spacing: 'compact',
 };
 

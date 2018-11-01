@@ -214,18 +214,20 @@ export default class PickerFacade {
   ) => {
     let { file, preview } = event;
 
-    /** Check if error event occured even before preview */
+    /** Check if error event occurred even before preview */
     const existingImage = this.stateManager.getState(file.id);
     if (existingImage && existingImage.status === 'error') {
       return;
     }
 
+    const { dimensions, scaleFactor } = preview as ImagePreview;
     const states = this.stateManager.newState(file.id, {
       fileName: file.name,
       fileSize: file.size,
       fileMimeType: file.type,
       fileId: file.upfrontId,
-      dimensions: (<ImagePreview>preview).dimensions,
+      dimensions,
+      scaleFactor,
     });
 
     this.resolvePublicId(file);

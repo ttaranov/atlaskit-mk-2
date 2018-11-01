@@ -65,10 +65,6 @@ const worstCaseProfile = fakeData({
   presenceMessage: null,
 });
 
-const censoredCaseProfile = fakeData({
-  isCensored: true,
-});
-
 const botCaseProfile = fakeData({
   fullName: 'Awesome Thing Bot',
   nickname: 'awesomebot',
@@ -120,10 +116,6 @@ export default function Example() {
       <Section>
         <h4>Best case</h4>
         <AkProfilecard {...bestCaseProfile} />
-      </Section>
-      <Section>
-        <h4>Censored case</h4>
-        <AkProfilecard {...censoredCaseProfile} />
       </Section>
       <Section>
         <h4>Bot case</h4>

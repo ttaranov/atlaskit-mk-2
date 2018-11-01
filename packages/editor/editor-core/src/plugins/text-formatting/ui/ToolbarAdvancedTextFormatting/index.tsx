@@ -250,19 +250,26 @@ class ToolbarAdvancedTextFormatting extends PureComponent<
         formatMessage(messages.clearFormatting),
         'clearFormatting',
         tooltip(clearFormattingKeymap),
+        !clearFormattingState.formattingIsPresent,
       );
     }
     return [{ items }];
   };
 
-  private addRecordToItems = (items, content, value, tooltip?) => {
+  private addRecordToItems = (
+    items,
+    content,
+    value,
+    tooltip?,
+    isDisabled?: boolean,
+  ) => {
     items.push({
       key: value,
       content,
       elemAfter: <Shortcut>{tooltip}</Shortcut>,
       value,
       isActive: this.state[`${value}Active`],
-      isDisabled: this.state[`${value}Disabled`],
+      isDisabled: isDisabled || this.state[`${value}Disabled`],
     });
   };
 

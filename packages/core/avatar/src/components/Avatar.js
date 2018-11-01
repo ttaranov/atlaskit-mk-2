@@ -132,9 +132,17 @@ class Avatar extends Component<AvatarPropTypes> {
       }
 
       // showStatus
+      const customStatusNode = typeof status === 'object' ? status : null;
+
       return (
         <StatusWrapper appearance={appearance} size={size}>
-          <Status status={status} borderColor={borderColor} size={size} />
+          <Status
+            borderColor={borderColor}
+            status={!customStatusNode && status}
+            size={size}
+          >
+            {customStatusNode}
+          </Status>
         </StatusWrapper>
       );
     })();

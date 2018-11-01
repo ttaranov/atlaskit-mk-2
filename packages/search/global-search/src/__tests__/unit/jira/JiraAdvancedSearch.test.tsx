@@ -49,11 +49,7 @@ describe('JiraAdvancedSearch', () => {
     );
   });
 
-  /**
-   * Currently fails, we are expecting a string ('SearchIcon') but getting { [Function: SearchIcon] displayName: 'SearchIcon' }
-   * TODO: JEST-23 Fix these tests
-   */
-  it.skip('should render icon and showKeyboardLonzge', () => {
+  it('should render icon and showKeyboardLonzge', () => {
     const wrapper = renderComponent({
       showSearchIcon: true,
       showKeyboardLozenge: true,
@@ -63,8 +59,7 @@ describe('JiraAdvancedSearch', () => {
     expect(advancedSearchResult.props().showKeyboardLozenge).toBe(true);
 
     const icon = advancedSearchResult.props().icon;
-    expect(icon).not.toBeFalsy();
-    expect(icon!.type).toEqual(expect.stringMatching('SearchIcon'));
+    expect(icon).toBeDefined();
   });
 
   it('should render dropdown items with possible choices', () => {

@@ -10,6 +10,7 @@ import {
 } from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
+import { mutateTree } from '../../../../utils/tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../../../../mockdata/treeWithTwoBranches';
 
@@ -40,6 +41,7 @@ const dropResult: DropResult = {
 };
 
 jest.mock('css-box-model');
+jest.useFakeTimers();
 
 describe('@atlaskit/tree - Tree', () => {
   const mockRender = jest.fn(({ provided }) => (
@@ -194,6 +196,102 @@ describe('@atlaskit/tree - Tree', () => {
     });
   });
 
+  describe('#onDragUpdate', () => {
+    it('updates dragState', () => {
+      const instance = mount(
+        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      instance.onDragUpdate(dragUpdate);
+      expect(instance.dragState).toEqual({
+        source: dragUpdate.source,
+        destination: dragUpdate.destination,
+        mode: dragUpdate.mode,
+      });
+      expect(instance.state.draggedItemId).toBe(dragUpdate.draggableId);
+    });
+
+    it('expands parent after timeout', () => {
+      const treeWithClosedParent = mutateTree(treeWithTwoBranches, '1-2', {
+        isExpanded: false,
+      });
+      const onExpand = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithClosedParent}
+          renderItem={mockRender}
+          onExpand={onExpand}
+        />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      instance.onDragUpdate({
+        ...dragUpdate,
+        combine: {
+          draggableId: '1-2',
+        },
+        destination: null,
+      });
+
+      jest.runAllTimers();
+
+      expect(onExpand).toHaveBeenCalledWith('1-2', [1]);
+    });
+  });
+
+  describe('#onPointerMove', () => {
+    it('calculates horizontal level based on the horizontal position', () => {
+      // $ExpectError: mockReturnValue is missing in function
+      getBox.mockReturnValue({
+        contentBox: {
+          left: 120,
+        },
+        borderBox: {
+          left: 120,
+        },
+      });
+      const instance = mount(
+        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      instance.onPointerMove();
+      expect(instance.dragState).toEqual({
+        source: dragStart.source,
+        destination: dragStart.source,
+        mode: dragStart.mode,
+        horizontalLevel: 1,
+      });
+    });
+  });
+
+  describe('#onDropAnimating', () => {
+    it('stops expansion timer for hovered ', () => {
+      const treeWithClosedParent = mutateTree(treeWithTwoBranches, '1-2', {
+        isExpanded: false,
+      });
+      const onExpand = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithClosedParent}
+          renderItem={mockRender}
+          onExpand={onExpand}
+        />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      instance.onDragUpdate({
+        ...dragUpdate,
+        combine: {
+          draggableId: '1-2',
+        },
+        destination: null,
+      });
+      instance.onDropAnimating();
+
+      jest.runAllTimers();
+
+      expect(onExpand).not.toHaveBeenCalled();
+    });
+  });
+
   describe('#onDragEnd', () => {
     it('calls props.onDragEnd when drag ends successfully', () => {
       const mockOnDragEnd = jest.fn();
@@ -235,47 +333,6 @@ describe('@atlaskit/tree - Tree', () => {
         { parentId: '1-1', index: 0 },
         { parentId: '1-2' },
       );
-    });
-  });
-
-  describe('#onDragUpdate', () => {
-    it('updates dragState', () => {
-      const instance = mount(
-        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
-      ).instance();
-      instance.onDragStart(dragStart);
-      instance.onDragUpdate(dragUpdate);
-      expect(instance.dragState).toEqual({
-        source: dragUpdate.source,
-        destination: dragUpdate.destination,
-        mode: dragUpdate.mode,
-      });
-      expect(instance.state.draggedItemId).toBe(dragUpdate.draggableId);
-    });
-  });
-
-  describe('#onPointerMove', () => {
-    it('calculates horizontal level based on the horizontal position', () => {
-      // $ExpectError: mockReturnValue is missing in function
-      getBox.mockReturnValue({
-        contentBox: {
-          left: 120,
-        },
-        borderBox: {
-          left: 120,
-        },
-      });
-      const instance = mount(
-        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
-      ).instance();
-      instance.onDragStart(dragStart);
-      instance.onPointerMove();
-      expect(instance.dragState).toEqual({
-        source: dragStart.source,
-        destination: dragStart.source,
-        mode: dragStart.mode,
-        horizontalLevel: 1,
-      });
     });
   });
 });

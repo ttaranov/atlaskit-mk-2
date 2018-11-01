@@ -96,6 +96,23 @@ export const overviewMessages = {
       'A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access.',
   },
 
+  paragraphLoseAccessAdminNoSites: {
+    id:
+      'focused-task-close-account.delete-account.overview.paragraph.loseAccess.admin.noSites',
+    defaultMessage:
+      'They will immediately lose access to all Atlassian services.',
+    description:
+      'A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access. {fullName} is filled in by the web app.',
+  },
+  paragraphLoseAccessSelfNoSites: {
+    id:
+      'focused-task-close-account.delete-account.overview.paragraph.loseAccess.self.noSites',
+    defaultMessage:
+      'You will immediately lose access to all Atlassian services.',
+    description:
+      'A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access.',
+  },
+
   paragraphLoseAccessFootnoteAdmin: {
     id:
       'focused-task-close-account.delete-account.overview.paragraph.loseAccess.footnote.admin',

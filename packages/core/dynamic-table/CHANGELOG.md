@@ -1,5 +1,10 @@
 # @atlaskit/dynamic-table
 
+## 10.0.16
+- [patch] [85b3592](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85b3592):
+
+  - Passes analytics event through onSetPage prop when pagination component is clicked on
+
 ## 10.0.15
 - [patch] Fixing blank state for datetime-picker in Firefox.  [0e6d838](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e6d838)
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { PredefinedAvatarViewWrapper, LargeAvatarImage } from './styled';
 import { Avatar } from '../avatar-list';
 
@@ -37,7 +38,6 @@ export class PredefinedAvatarView extends PureComponent<
 > {
   static defaultProps: PredefinedAvatarViewProps = {
     avatars: [],
-    predefinedAvatarsText: 'Default avatars',
     onAvatarSelected() {},
   };
 
@@ -65,7 +65,11 @@ export class PredefinedAvatarView extends PureComponent<
       <PredefinedAvatarViewWrapper>
         <div className="header">
           <BackBtn onClick={onGoBack} />
-          <div className="description">{predefinedAvatarsText}</div>
+          <div className="description">
+            {predefinedAvatarsText || (
+              <FormattedMessage {...messages.default_avatars} />
+            )}
+          </div>
         </div>
         <ul>{cards}</ul>
       </PredefinedAvatarViewWrapper>

@@ -46,6 +46,7 @@ exports[`GlobalItem GlobalItemBase should render the GlobalItem primitive 1`] = 
 <WithTheme(GlobalNavigationItemPrimitive)
   icon={[Function]}
   isActive={false}
+  isFocused={false}
   isHover={false}
   label=""
   size="large"

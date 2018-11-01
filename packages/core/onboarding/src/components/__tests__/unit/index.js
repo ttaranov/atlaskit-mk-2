@@ -68,3 +68,27 @@ test('should be able to render a Spotlight without SpotlightManager', () => {
     ),
   ).not.toThrowError();
 });
+
+test('should ensure key is set correctly on spotlight action', () => {
+  jest.spyOn(console, 'error').mockImplementation(e => {
+    throw new Error(e);
+  });
+  expect(() =>
+    mount(
+      <SpotlightManager>
+        <SpotlightTarget name="target">
+          <div>target</div>
+        </SpotlightTarget>
+        <Spotlight
+          target="target"
+          actions={[
+            { text: <p>Got it</p>, key: 'got-it' },
+            { text: <p>Cancel</p>, key: 'cancel' },
+          ]}
+        >
+          Check this out
+        </Spotlight>
+      </SpotlightManager>,
+    ),
+  ).not.toThrowError();
+});

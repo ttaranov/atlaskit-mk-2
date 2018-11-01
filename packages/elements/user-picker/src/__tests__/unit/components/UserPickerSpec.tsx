@@ -52,6 +52,8 @@ describe('UserPicker', () => {
       flexGrow: 1,
       overflow: 'hidden',
     });
+
+    expect(select.prop('menuPlacement')).toBeTruthy();
   });
 
   it('should set width', () => {
@@ -83,6 +85,20 @@ describe('UserPicker', () => {
     expect(onChange).toHaveBeenCalledWith(users[0], 'select-option');
   });
 
+  it('should trigger props.onSelection if onChange with select-option action', () => {
+    const onSelection = jest.fn();
+    const component = shallowUserPicker({ onSelection });
+
+    const select = component.find(Select);
+    select.simulate(
+      'change',
+      { value: 'abc-123', user: users[0] },
+      { action: 'select-option' },
+    );
+
+    expect(onSelection).toHaveBeenCalledWith(users[0]);
+  });
+
   it('should render UserPickerItem as label', () => {
     const component = shallowUserPicker({ users });
     const formatOptionLabel: Function = component
@@ -95,6 +111,22 @@ describe('UserPicker', () => {
         { context: 'menu' },
       ),
     ).toEqual(<UserPickerItem user={users[0]} context="menu" />);
+  });
+
+  it('should call onFocus handler', () => {
+    const onFocus = jest.fn();
+    const component = shallowUserPicker({ onFocus });
+
+    component.simulate('focus');
+    expect(onFocus).toHaveBeenCalled();
+  });
+
+  it('should call onBlur handler', () => {
+    const onBlur = jest.fn();
+    const component = shallowUserPicker({ onBlur });
+
+    component.simulate('blur');
+    expect(onBlur).toHaveBeenCalled();
   });
 
   describe('Multiple users select', () => {
@@ -199,6 +231,14 @@ describe('UserPicker', () => {
             users,
           });
         });
+      });
+
+      it('should call props.onInputChange', () => {
+        const onInputChange = jest.fn();
+        const component = shallowUserPicker({ onInputChange });
+        const select = component.find(Select);
+        select.simulate('inputChange', 'some text', { action: 'input-change' });
+        expect(onInputChange).toHaveBeenCalled();
       });
 
       it('should debounce input change events', () => {

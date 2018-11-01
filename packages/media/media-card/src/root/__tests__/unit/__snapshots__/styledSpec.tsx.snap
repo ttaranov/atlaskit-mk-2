@@ -175,7 +175,9 @@ exports[`Root Wrapper File should render properly with different appeareances 5`
 exports[`Root Wrapper File should render properly with passed dimensions 1`] = `
 .c0 {
   height: 300px;
+  max-height: 100%;
   width: 400px;
+  max-width: 100%;
 }
 
 .c0 .title {
@@ -197,6 +199,7 @@ exports[`Root Wrapper File should render properly with passed dimensions 2`] = `
   display: inline-block;
   min-width: 200px;
   width: 400px;
+  max-width: 100%;
   height: 42px;
 }
 
@@ -208,7 +211,9 @@ exports[`Root Wrapper File should render properly with passed dimensions 2`] = `
 exports[`Root Wrapper File should render properly with passed dimensions 3`] = `
 .c0 {
   height: 300px;
+  max-height: 100%;
   width: 400px;
+  max-width: 100%;
 }
 
 .c0 .title {
@@ -315,6 +320,7 @@ exports[`Root Wrapper Link should render properly with passed dimensions 2`] = `
   display: inline-block;
   min-width: 200px;
   width: 400px;
+  max-width: 100%;
   height: 42px;
 }
 

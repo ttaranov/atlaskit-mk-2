@@ -1,36 +1,25 @@
 import * as React from 'react';
-import { ResultBase } from '@atlaskit/quick-search';
+import { ResultBase, ResultBaseProps } from '@atlaskit/quick-search';
 
 import ShiftReturn from '../assets/ShiftReturn';
-import ShiftReturnHighlighted from '../assets/ShiftReturnHighlighted';
 
-export interface Props {
-  href: string;
-  resultId: string;
-  text: string | JSX.Element;
-  icon?: JSX.Element;
-  type: string;
-  isSelected?: boolean; // injected by quick-search
+export interface Props extends ResultBaseProps {
   showKeyboardLozenge?: boolean;
-  target?: string;
-  analyticsData?: object;
-  isCompact?: boolean;
 }
 
 export default class AdvancedSearchResult extends React.Component<Props> {
   static defaultProps = {
-    isSelected: false,
-    isCompact: false,
     showKeyboardLozenge: false,
   };
 
   getElemAfter() {
-    const { showKeyboardLozenge, isSelected } = this.props;
+    const { showKeyboardLozenge } = this.props;
     if (!showKeyboardLozenge) {
       return null;
     }
 
-    return isSelected ? <ShiftReturnHighlighted /> : <ShiftReturn />;
+    // Supposed to render ShiftReturnHighlighted when the result isSelected, but that doesn't work anymore. See QS-281.
+    return <ShiftReturn />;
   }
 
   render() {

@@ -4,7 +4,7 @@ export { confluenceUnsupportedInline } from './confluence-unsupported-inline';
 export {
   doc,
   DocNode,
-  TopLevel,
+  BlockContent,
   Inline,
   ExtensionContent,
   NoMark,
@@ -94,8 +94,8 @@ export {
 } from './bodied-extension';
 export { date, DateDefinition } from './date';
 export { placeholder, PlaceholderDefinition } from './placeholder';
-export { layoutSection } from './layout-section';
-export { layoutColumn } from './layout-column';
+export { layoutSection, LayoutSectionDefinition } from './layout-section';
+export { layoutColumn, LayoutColumnDefinition } from './layout-column';
 export { inlineCard, InlineCardDefinition } from './inline-card';
 export { blockCard, CardAttributes, BlockCardDefinition } from './block-card';
 export { unsupportedBlock } from './unsupported-block';

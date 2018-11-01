@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
-import { Outer } from '../styled/Icon';
+import { Inner, Outer } from '../styled/Icon';
 import getStatusSVG from '../helpers/getStatusSVG';
 import type { StatusType, SizeType } from '../types';
 
@@ -25,7 +25,7 @@ export default class Status extends Component<Props> {
 
     return (
       <Outer size={size} bgColor={borderColor}>
-        {children || (status && getStatusSVG(status))}
+        <Inner>{children || (status && getStatusSVG(status))}</Inner>
       </Outer>
     );
   }

@@ -21,6 +21,7 @@ export class CardNodeView extends ReactNodeView {
         portalProviderAPI,
         props,
         component,
+        true,
       ).init();
   }
 }

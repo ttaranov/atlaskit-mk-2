@@ -63,7 +63,9 @@ describe('Analytics', () => {
 
       expect(mockEvent.clone).toHaveBeenCalled();
       expect(clonedEvent.update).toHaveBeenCalled();
+
       const updateFn = clonedEvent.update.mock.calls[0][0];
+
       expect(updateFn()).toEqual({
         action: 'pressed',
         actionSubject: 'keyboardShortcut',

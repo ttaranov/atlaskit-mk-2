@@ -24,4 +24,30 @@ export default {
   'fabric.media.connect_to': 'Conectar-se ao {name}',
   'fabric.media.connect_account_description':
     'Abriremos uma nova página para ajudar você a conectar sua conta do {name}',
+  'fabric.media.upload_an_avatar': 'Upload an avatar',
+  'fabric.media.save': 'Save',
+  'fabric.media.or': 'or',
+  'fabric.media.upload_photo': 'Upload a photo',
+  'fabric.media.default_avatars': 'Default avatars',
+  'fabric.media.drag_and_drop_images_here': 'Drag and drop your images here',
+  'fabric.media.upload_image': 'Upload image',
+  'fabric.media.image_url_invalid_error':
+    'Could not load image, the url is invalid.',
+  'fabric.media.image_format_invalid_error':
+    'Could not load image, the format is invalid.',
+  'fabric.media.image_size_too_large_error':
+    'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+  'fabric.media.something_went_wrong': 'Algo deu errado.',
+  'fabric.media.might_be_a_hiccup': 'Deve ser algo temporário.',
+  'fabric.media.couldnt_generate_preview':
+    'Não foi possível gerar uma visualização para este arquivo.',
+  'fabric.media.cant_preview_file_type':
+    'Não é possível visualizar este tipo de arquivo.',
+  'fabric.media.item_not_found_in_list':
+    'O item selecionado não foi encontrado na lista.',
+  'fabric.media.no_pdf_artifacts':
+    'Nenhum artefato de PDF foi encontrado para este arquivo.',
+  'fabric.media.give_feedback': 'Enviar feedback',
+  'fabric.media.try_downloading_file':
+    'Tente baixar o arquivo para visualizá-lo.',
 };

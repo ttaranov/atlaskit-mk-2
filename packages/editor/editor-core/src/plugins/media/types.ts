@@ -18,6 +18,7 @@ export interface MediaState {
     width: number | undefined;
     height: number | undefined;
   };
+  scaleFactor?: number;
   fileId: Promise<string>;
   publicId?: string;
   error?: {

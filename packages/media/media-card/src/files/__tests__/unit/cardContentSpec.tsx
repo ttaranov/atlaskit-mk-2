@@ -3,8 +3,9 @@ import { shallow } from 'enzyme';
 
 import { CardContent } from '../../cardImageView/cardContent';
 import { MediaImage } from '../../../utils/mediaImage';
+import { PlayIconWrapper } from '../../../files/cardImageView/styled';
 
-describe('CardOverlay', () => {
+describe('<CardContent />', () => {
   it('should render the image preview when mediaType is "video"', function() {
     const card = shallow(
       <CardContent mediaType="video" dataURI="some-data-uri" />,
@@ -36,5 +37,13 @@ describe('CardOverlay', () => {
   it('should NOT render the image preview when data URI is undefined', function() {
     const card = shallow(<CardContent mediaType="video" />);
     expect(card.find(MediaImage)).toHaveLength(0);
+  });
+
+  it('should render play icon for video files', () => {
+    const card = shallow(
+      <CardContent mediaType="video" dataURI={'some-preview'} />,
+    );
+
+    expect(card.find(PlayIconWrapper)).toHaveLength(1);
   });
 });

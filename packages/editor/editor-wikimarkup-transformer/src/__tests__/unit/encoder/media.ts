@@ -44,4 +44,18 @@ describe('ADF => WikiMarkup - Media', () => {
     )(defaultSchema);
     expect(transformer.encode(node)).toMatchSnapshot();
   });
+
+  test('should convert external image', () => {
+    const node = doc(
+      mediaSingle()(
+        media({
+          url: 'https://www.atlassian.com/nice.jpg',
+          type: 'external',
+          width: 100,
+          height: 100,
+        })(),
+      ),
+    )(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
 });

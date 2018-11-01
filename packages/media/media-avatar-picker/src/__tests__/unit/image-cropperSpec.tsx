@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
-import { ImageCropper, ImageCropperProp } from '../../../src/image-cropper';
+import ImageCropper, { ImageCropperProp } from '../../../src/image-cropper';
 import { ERROR } from '../../../src/avatar-picker-dialog';
 import {
   Container,
@@ -8,7 +7,7 @@ import {
   RemoveImageButton,
   Image,
 } from '../../../src/image-cropper/styled';
-import { smallImage } from '@atlaskit/media-test-helpers';
+import { smallImage, mountWithIntlContext } from '@atlaskit/media-test-helpers';
 
 const imageWidth = 600;
 const imageHeight = 400;
@@ -39,7 +38,7 @@ describe('Image cropper', () => {
       onImageError: onImageErrorSpy,
       ...props,
     };
-    const component = mount(<ImageCropper {...allProps} />);
+    const component = mountWithIntlContext(<ImageCropper {...allProps} />);
     const img = component.find('img');
     const container = component.find(Container);
     const removeImageButton = component.find(RemoveImageButton);
@@ -135,7 +134,7 @@ describe('Image cropper', () => {
         imageSource: 'some-bad-url',
       });
       expect(onImageErrorSpy).toHaveBeenCalledTimes(1);
-      expect(onImageErrorSpy).toHaveBeenCalledWith(ERROR.URL);
+      expect(onImageErrorSpy).toHaveBeenCalledWith(ERROR.URL.defaultMessage);
     });
 
     it('should call onImageError prop with bad format message when bad image url given', () => {
@@ -147,7 +146,7 @@ describe('Image cropper', () => {
       onError({} as React.SyntheticEvent<HTMLImageElement>);
 
       expect(onImageErrorSpy).toHaveBeenCalledTimes(1);
-      expect(onImageErrorSpy).toHaveBeenCalledWith(ERROR.FORMAT);
+      expect(onImageErrorSpy).toHaveBeenCalledWith(ERROR.FORMAT.defaultMessage);
     });
   });
 });

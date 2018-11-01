@@ -111,9 +111,8 @@ it('should pass the correct properties to ObjectResult for Confluence results', 
     analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 
-  const avatar: { type: string } = wrapper
-    .find(ObjectResultComponent)
-    .prop('avatar');
+  const avatar = wrapper.find(ObjectResultComponent).prop('avatar');
+  // @ts-ignore TS can't find type
   expect(avatar.type).toEqual(PageIcon);
 });
 
@@ -192,9 +191,7 @@ describe('Jira Avatar default Icons', () => {
       analyticsData: DUMMY_ANALYTICS_DATA,
     });
 
-    const avatar: { type: string } = wrapper
-      .find(ObjectResultComponent)
-      .prop('avatar');
+    const avatar = wrapper.find(ObjectResultComponent).prop('avatar');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(avatar).toEqual(BoardIcon);
   });
