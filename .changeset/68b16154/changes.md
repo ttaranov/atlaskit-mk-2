@@ -1,0 +1,1 @@
+- fixes problem with using wrong checkbox prop
