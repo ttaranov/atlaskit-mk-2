@@ -4,15 +4,26 @@ These are entrypoints for specific components to be used carefully by the consum
 
 ## Creating an entrypoint
 
-By default all the entrypoints should link `./dist/cjs` instead of `src`. This is required because we're moving the content of `./entrypoints` folder to the root of `dist` after bundle before publish.
+By default all the entrypoints should link `./dist/esm` instead of `../`. This is required because we're moving the content of `./entrypoints` folder to the root of `dist` after bundle before publish.
 
 EX:
 
+At `src/entrypoints/LayoutManagerWithViewController.js` we have a file with content of
+
 ```js
 // @flow
-import MyComponent from './dist/cjs/components/MyComponent';
+import LayoutManagerWithViewController from '../components/LayoutManagerWithViewController';
 
-export default MyComponent;
+export default LayoutManagerWithViewController;
+```
+
+And, in build time, the import will be changed to point to `./dist/esm`
+
+```js
+// @flow
+import LayoutManagerWithViewController from './dist/esm/components/LayoutManagerWithViewController';
+
+export default LayoutManagerWithViewController;
 ```
 
 ## How to use it

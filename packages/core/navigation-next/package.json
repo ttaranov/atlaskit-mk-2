@@ -65,6 +65,9 @@
     "react-router-dom": "^4.2.2"
   },
   "scripts": {
-    "build": "mkdir -p dist/cjs/entrypoints && touch dist/cjs/entrypoints/a.js && cp -r dist/cjs/entrypoints/*.js ./dist && rm -rf dist/esm/entrypoints dist/cjs/entrypoints dist/a.js"
+    "prebuild": "mkdir -p dist/esm/entrypoints && touch dist/esm/entrypoints/a.js",
+    "build": "yarn replace-entrypoint-imports-to-dist && cp -r dist/esm/entrypoints/*.js ./dist",
+    "replace-entrypoint-imports-to-dist": "grep -rl \"'../\" ./dist/esm/entrypoints | xargs sed -i '' -e \"s@'../@'./dist/esm@g\"",
+    "postbuild": "rm -rf dist/esm/entrypoints dist/cjs/entrypoints dist/a.js"
   }
 }
