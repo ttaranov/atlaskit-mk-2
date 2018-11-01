@@ -1,0 +1,1 @@
+- Adds roundtrip for external image
