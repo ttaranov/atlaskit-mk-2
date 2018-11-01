@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import { mount } from 'enzyme';
 
 import TextField from '../../TextField';
@@ -89,7 +89,8 @@ describe('TextField', () => {
     describe('native input events', () => {
       // TODO - fix events
       const nativeEvents = [
-        /*'onBlur', 'onChange', 'onFocus',*/ 'onKeyDown',
+        /*'onBlur', 'onChange', 'onFocus',*/
+        'onKeyDown',
         'onKeyPress',
         'onKeyUp',
       ];
@@ -105,6 +106,49 @@ describe('TextField', () => {
 
           expect(eventSpy).toHaveBeenCalledTimes(1);
         });
+      });
+    });
+
+    describe('onFocus', () => {
+      test('should get focus when onFocus() is called', () => {
+        const focusSpy = jest.fn();
+        const wrapper = mount(<TextField onFocus={focusSpy} />);
+
+        // The onFocus prop doesn't actualy get fired by enzyme for some reason, so attaching
+        // the spy directly to the input.
+        wrapper
+          .find('input')
+          .getDOMNode()
+          .addEventListener('focus', focusSpy);
+
+        expect(focusSpy).toHaveBeenCalledTimes(0);
+        wrapper.instance().focus();
+        expect(focusSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('defaultValue', () => {
+      test('should have defaultValue="test default value"', () => {
+        const wrapper = mount(
+          <TextField defaultValue="test default value" />,
+        ).prop('defaultValue');
+        expect(wrapper).toBe('test default value');
+      });
+    });
+
+    describe('value', () => {
+      test('should have value="test value"', () => {
+        const wrapper = mount(<TextField value="test value" />).prop('value');
+        expect(wrapper).toBe('test value');
+      });
+    });
+
+    describe('onChange', () => {
+      test('should update input value when called', () => {
+        const spy = jest.fn();
+        const wrapper = mount(<TextField value="" onChange={spy} />);
+        wrapper.find('input').simulate('change');
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
   });
