@@ -1,0 +1,1 @@
+- ED-5310: fix inline code background appearing when wrapping
