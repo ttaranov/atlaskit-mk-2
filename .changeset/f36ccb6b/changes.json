@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/icon", "type": "minor" }],
+  "dependents": []
+}
