@@ -49,7 +49,7 @@ export const messages = defineMessages({
   no_recent_activity_body: {
     id: 'global_search.no_recent_activity_body',
     defaultMessage:
-      'Or use <a href={url}>Advanced Search</a> (`shift + enter`) to focus your results.',
+      'Or use <a href={url}>advanced search</a> (`shift + enter`) to focus your results.',
     description: '',
   },
   no_results_title: {
@@ -130,7 +130,7 @@ export const messages = defineMessages({
   },
   jira_advanced_search: {
     id: 'global_search.jira.advanced_search',
-    defaultMessage: 'Go to Advanced search for',
+    defaultMessage: 'Go to advanced search for',
     description: '',
   },
   jira_advanced_search_issues: {
@@ -160,7 +160,7 @@ export const messages = defineMessages({
   },
   jira_advanced_issue_search: {
     id: 'global_search.jira.advanced_issue_search',
-    defaultMessage: 'View all issues',
+    defaultMessage: 'Advanced search for issues',
     description: '',
   },
   jira_no_results_title: {
