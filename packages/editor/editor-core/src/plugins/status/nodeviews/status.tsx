@@ -13,6 +13,7 @@ const { B100 } = colors;
 
 interface StatusContainerProps {
   selected: boolean;
+  placeholder: boolean;
 }
 
 export const StatusContainer = styled.span`
@@ -21,6 +22,8 @@ export const StatusContainer = styled.span`
   display: inline-block;
   line-height: 1;
   border-radius: 5px;
+
+  opacity: ${(props: StatusContainerProps) => (props.placeholder ? 0.5 : 1)};
 
   border: 2px solid ${(props: StatusContainerProps) =>
     props.selected ? B100 : 'transparent'};
@@ -97,7 +100,7 @@ default class StatusNodeView extends React.Component<Props & InjectedIntlProp, S
     const statusText = text ? text : formatMessage(messages.placeholder);
 
     return (
-      <StatusContainer onClick={this.handleClick} selected={selected}>
+      <StatusContainer onClick={this.handleClick} selected={selected} placeholder={!text}>
         <Status text={statusText} color={color} localId={localId} />
       </StatusContainer>
     );
