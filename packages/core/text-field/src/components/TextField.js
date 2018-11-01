@@ -77,7 +77,8 @@ class TextField extends Component<TextFieldProps, State> {
       size,
       forwardedRef,
       input: Input,
-      // Start of redundant props (mostly from 'form field').
+      // These props come from 'form field' bc backwards compat.
+      //  We don't need them tho.
       isInvalid,
       invalidMessage,
       isLabelHidden,
@@ -86,7 +87,6 @@ class TextField extends Component<TextFieldProps, State> {
       validationState,
       onUpdate,
       createAnalyticsEvent,
-      // End of redundant props.
       ...rest
     } = this.props;
 
