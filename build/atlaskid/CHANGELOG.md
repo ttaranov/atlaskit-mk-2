@@ -4,6 +4,10 @@ This changelog is manually curated.
 
 We don't publish this package, so we'll be doing versions based on the docker image
 
+## v28 (2018-10-30)
+
+* Adding one new user
+
 ## v27 (2018-10-24)
 
 * Adding Bitbucket team

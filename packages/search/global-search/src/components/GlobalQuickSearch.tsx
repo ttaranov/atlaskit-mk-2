@@ -14,7 +14,6 @@ import {
   SelectedSearchResultEvent,
   AdvancedSearchSelectedEvent,
   KeyboardControlEvent,
-  SearchResultEvent,
   fireSelectedAdvancedSearch,
   fireTextEnteredEvent,
   fireDismissedEvent,
@@ -126,10 +125,7 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
     }
   };
 
-  fireSearchResultEvents = (
-    eventName: string,
-    eventData: SearchResultEvent,
-  ) => {
+  fireSearchResultEvents = (eventName: string, eventData: Object) => {
     const { createAnalyticsEvent, searchSessionId } = this.props;
     if (eventName === QS_ANALYTICS_EV_SUBMIT) {
       this.fireSearchResultSelectedEvent(

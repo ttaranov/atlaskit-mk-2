@@ -215,3 +215,16 @@ export const handleShowInsertRowButton = (insertRowButtonIndex?: number) => (
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;
 };
+
+export const handleHideInsertColumnOrRowButton = (
+  pluginState: TablePluginState,
+  dispatch: Dispatch,
+): TablePluginState => {
+  const nextPluginState = {
+    ...pluginState,
+    insertColumnButtonIndex: undefined,
+    insertRowButtonIndex: undefined,
+  };
+  dispatch(pluginKey, nextPluginState);
+  return nextPluginState;
+};

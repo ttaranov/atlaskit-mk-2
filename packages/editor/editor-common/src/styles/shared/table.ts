@@ -8,9 +8,10 @@ import {
   akEditorTableNumberColumnWidth,
   akEditorBreakoutPadding,
 } from '../consts';
+import { PanelSharedCssClassName } from './panel';
 
-export const tableMarginTop = 32;
-export const tableMarginBottom = 20;
+export const tableMarginTop = 24;
+export const tableMarginBottom = 16;
 export const tableMarginSides = 8;
 
 export const TableSharedCssClassName = {
@@ -23,6 +24,16 @@ const tableSharedStyle = css`
     position: relative;
     margin: 0 auto ${tableMarginBottom}px;
     box-sizing: border-box;
+
+    /**
+     * Fix block top alignment inside table cells.
+     */
+    .code-block,
+    .${PanelSharedCssClassName.PANEL_CONTAINER},
+    .taskItemView-content-wrap > div,
+    .decisionItemView-content-wrap > div {
+      margin-top: 0;
+    }
   }
   .${TableSharedCssClassName.TABLE_CONTAINER}[data-number-column='true'] {
     padding-left: ${akEditorTableNumberColumnWidth - 1}px;

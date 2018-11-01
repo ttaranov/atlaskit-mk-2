@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 
 import { navigationItemClicked } from '../../../common/analytics';
 import InteractionStateManager from '../InteractionStateManager';
+import type { InteractionState } from '../InteractionStateManager/types';
 import { styleReducerNoOp, withGlobalTheme } from '../../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
@@ -14,7 +15,9 @@ export class GlobalItemBase extends PureComponent<GlobalItemProps> {
     size: 'large',
     styles: styleReducerNoOp,
   };
-  renderItem = (state: *) => <GlobalItemPrimitive {...state} {...this.props} />;
+  renderItem = (state: InteractionState) => (
+    <GlobalItemPrimitive {...state} {...this.props} />
+  );
 
   render() {
     const {

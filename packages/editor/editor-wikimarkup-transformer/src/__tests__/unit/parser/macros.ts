@@ -68,10 +68,6 @@ this is a text as well{panel}`,
 this is a text as well`,
     ],
     [
-      'should render unsupported macro as bodiedExtension',
-      'this is {unknown}no macro{unknown}',
-    ],
-    [
       'should transform h1 to Bold and Uppercase under blockquote',
       '{quote}h1. header one{quote}',
     ],
@@ -100,6 +96,18 @@ this is a text as well`,
       `{quote}something
 * list item
 {quote}`,
+    ],
+    [
+      'should render {anchor} as empty string',
+      `You cannot see this {anchor:here}`,
+    ],
+    [
+      'should render {loremipsum} as plain text',
+      `This is plain text {loremipsum}`,
+    ],
+    [
+      'should render macro likes {macrolike} as plain text',
+      `This is plain text {macrolike}`,
     ],
   ];
 

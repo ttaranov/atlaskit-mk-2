@@ -12,6 +12,7 @@ import Tooltip from '@atlaskit/tooltip';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { FieldTextStateless } from '@atlaskit/field-text';
 import { Checkbox } from '@atlaskit/checkbox';
+// $FlowFixMe: cannot resolve TS module
 import { AkSearch } from '@atlaskit/quick-search';
 
 import Navigation, {

@@ -22,7 +22,6 @@ import {
   genericLinkDetails,
   genericFileDetails,
   imageFileDetails,
-  gifDataUri,
   wideImage,
   genericUrlPreview,
 } from '@atlaskit/media-test-helpers';
@@ -243,7 +242,7 @@ export const createSelectableCards = (
   metadata: MediaItemDetails,
   mediaItemType: MediaItemType,
 ) => {
-  const dataURI = mediaItemType === 'file' ? gifDataUri : undefined;
+  const dataURI = mediaItemType === 'file' ? wideImage : undefined;
 
   return [
     {
@@ -321,7 +320,7 @@ export const createSelectableCardsWithMenu = (
   metadata: MediaItemDetails,
   mediaItemType: MediaItemType,
 ) => {
-  const dataURI = mediaItemType === 'file' ? gifDataUri : undefined;
+  const dataURI = mediaItemType === 'file' ? wideImage : undefined;
 
   return [
     {
@@ -382,7 +381,7 @@ export const createMissingMetadataFileCards = (appearance: CardAppearance) => {
           appearance={appearance}
           status="complete"
           metadata={missingNameDetails}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
         />
       ),
     },
@@ -393,7 +392,7 @@ export const createMissingMetadataFileCards = (appearance: CardAppearance) => {
           appearance={appearance}
           status="complete"
           metadata={missingFileSizeDetails}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
         />
       ),
     },
@@ -404,7 +403,7 @@ export const createMissingMetadataFileCards = (appearance: CardAppearance) => {
           appearance={appearance}
           status="complete"
           metadata={missingMediaTypeDetails}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
         />
       ),
     },
@@ -524,7 +523,7 @@ export const createApiCards = (
           status="complete"
           appearance={appearance}
           metadata={metadata}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
           onClick={clickHandler}
           onMouseEnter={mouseEnterHandler}
           actions={actions}
@@ -538,7 +537,7 @@ export const createApiCards = (
           status="error"
           appearance={appearance}
           metadata={metadata}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
           onClick={clickHandler}
           onMouseEnter={mouseEnterHandler}
           actions={actions}
@@ -552,7 +551,7 @@ export const createApiCards = (
           status="loading"
           appearance={appearance}
           metadata={metadata}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
           onClick={clickHandler}
           onMouseEnter={mouseEnterHandler}
           actions={actions}
@@ -568,7 +567,7 @@ export const createApiCards = (
         status="uploading"
         appearance={appearance}
         metadata={metadata}
-        dataURI={gifDataUri}
+        dataURI={wideImage}
         onClick={clickHandler}
         onMouseEnter={mouseEnterHandler}
         actions={actions}
@@ -592,7 +591,7 @@ const createImageCardsWithNoOverlay = () => {
         appearance="image"
         metadata={imageFileDetails}
         disableOverlay={true}
-        dataURI={gifDataUri}
+        dataURI={wideImage}
         progress={0.4}
       />
     ),
@@ -606,7 +605,7 @@ const createImageCardsWithNoOverlay = () => {
         appearance="image"
         metadata={imageFileDetails}
         disableOverlay={true}
-        dataURI={gifDataUri}
+        dataURI={wideImage}
       />
     ),
   };
@@ -619,7 +618,7 @@ const createImageCardsWithNoOverlay = () => {
         appearance="image"
         metadata={imageFileDetails}
         disableOverlay={true}
-        dataURI={gifDataUri}
+        dataURI={wideImage}
         selectable={true}
         selected={true}
       />
@@ -657,7 +656,7 @@ export const generateStoriesForFilesWithAppearance = (
           status="uploading"
           appearance={appearance}
           metadata={genericFileDetails}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
           progress={0.1}
         />
       ),
@@ -669,7 +668,7 @@ export const generateStoriesForFilesWithAppearance = (
           status="uploading"
           appearance={appearance}
           metadata={genericFileDetails}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
           progress={0.5}
         />
       ),
@@ -681,7 +680,7 @@ export const generateStoriesForFilesWithAppearance = (
           status="uploading"
           appearance={appearance}
           metadata={genericFileDetails}
-          dataURI={gifDataUri}
+          dataURI={wideImage}
           progress={0.9}
         />
       ),
@@ -741,7 +740,7 @@ export const generateStoriesForFilesWithAppearance = (
 
       <h3>Sizes (Breakpoints check)</h3>
       <StoryList>
-        {createCardsOfDifferentSize(appearance, genericFileDetails, gifDataUri)}
+        {createCardsOfDifferentSize(appearance, genericFileDetails, wideImage)}
       </StoryList>
 
       <h4>Media Types - no thumbnails (placeholders)</h4>

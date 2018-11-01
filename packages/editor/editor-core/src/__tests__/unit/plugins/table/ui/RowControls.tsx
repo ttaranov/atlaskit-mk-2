@@ -29,6 +29,7 @@ import {
 } from '../../../../../plugins/table/actions';
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
+import { getSelectionRect } from '../../../../../plugins/table/utils';
 
 const RowControlsButtonWrap = `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`;
 const DeleteRowButton = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP}`;
@@ -490,6 +491,59 @@ describe('RowControls', () => {
       expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 
       floatingControls.unmount();
+    });
+  });
+
+  describe('rows shift selection', () => {
+    const createEvent = (target: Element) => ({
+      stopPropagation: () => {},
+      preventDefault: () => {},
+      shiftKey: true,
+      target,
+    });
+
+    it('should shift select rows below the currently selected row', () => {
+      const { editorView, plugin } = editor(
+        doc(
+          table()(
+            tr(thEmpty, thEmpty, thEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      editorView.dispatch(selectRows([0])(editorView.state.tr));
+      const target = document.querySelectorAll(
+        `.${ClassName.ROW_CONTROLS} .${ClassName.CONTROLS_BUTTON}`,
+      )[2];
+
+      plugin.props.handleDOMEvents.mousedown(editorView, createEvent(target));
+      const rect = getSelectionRect(editorView.state.selection);
+      expect(rect).toEqual({ left: 0, top: 0, right: 3, bottom: 3 });
+    });
+
+    it('should shift select rows above the currently selected row', () => {
+      const { editorView, plugin } = editor(
+        doc(
+          table()(
+            tr(thEmpty, thEmpty, thEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty, tdEmpty),
+          ),
+        ),
+      );
+
+      editorView.dispatch(selectRows([2])(editorView.state.tr));
+      const target = document.querySelectorAll(
+        `.${ClassName.ROW_CONTROLS} .${ClassName.CONTROLS_BUTTON}`,
+      )[0];
+
+      plugin.props.handleDOMEvents.mousedown(editorView, createEvent(target));
+      const rect = getSelectionRect(editorView.state.selection);
+      expect(rect).toEqual({ left: 0, top: 0, right: 3, bottom: 3 });
     });
   });
 });

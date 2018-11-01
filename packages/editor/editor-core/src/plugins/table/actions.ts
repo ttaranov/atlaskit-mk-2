@@ -35,7 +35,6 @@ import {
   selectColumn as selectColumnTransform,
   selectRow as selectRowTransform,
 } from 'prosemirror-utils';
-import { TableLayout } from '@atlaskit/editor-common';
 import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
   createControlsHoverDecoration,
@@ -50,7 +49,8 @@ import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
 import { outdentList } from '../lists/commands';
 import { mapSlice } from '../../utils/slice';
-import { Cell } from './types';
+import { Cell, TableCssClassName as ClassName } from './types';
+import { closestElement } from '../../utils';
 
 export const clearHoverSelection: Command = (
   state: EditorState,
@@ -450,7 +450,7 @@ export const deleteSelectedRows: Command = (
   return true;
 };
 
-export const setTableLayout = (layout: TableLayout): Command => (
+export const toggleTableLayout: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
@@ -458,9 +458,20 @@ export const setTableLayout = (layout: TableLayout): Command => (
   if (!table) {
     return false;
   }
-  const { schema, tr } = state;
+  let layout;
+  switch (table.node.attrs.layout) {
+    case 'default':
+      layout = 'wide';
+      break;
+    case 'wide':
+      layout = 'full-width';
+      break;
+    case 'full-width':
+      layout = 'default';
+      break;
+  }
   dispatch(
-    tr.setNodeMarkup(table.pos, schema.nodes.table, {
+    state.tr.setNodeMarkup(table.pos, state.schema.nodes.table, {
       ...table.node.attrs,
       layout,
     }),
@@ -757,7 +768,7 @@ export const showInsertColumnButton = (columnIndex: number): Command => (
   dispatch,
 ) => {
   const { insertColumnButtonIndex } = getPluginState(state);
-  if (typeof insertColumnButtonIndex !== 'number') {
+  if (columnIndex > -1 && insertColumnButtonIndex !== columnIndex) {
     dispatch(
       state.tr
         .setMeta(pluginKey, {
@@ -778,7 +789,7 @@ export const showInsertRowButton = (rowIndex: number): Command => (
   dispatch,
 ) => {
   const { insertRowButtonIndex } = getPluginState(state);
-  if (typeof insertRowButtonIndex !== 'number') {
+  if (rowIndex > -1 && insertRowButtonIndex !== rowIndex) {
     dispatch(
       state.tr
         .setMeta(pluginKey, {
@@ -791,6 +802,27 @@ export const showInsertRowButton = (rowIndex: number): Command => (
     );
     return true;
   }
+  return false;
+};
+
+export const hideInsertColumnOrRowButton: Command = (state, dispatch) => {
+  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
+    state,
+  );
+  if (
+    typeof insertColumnButtonIndex === 'number' ||
+    typeof insertRowButtonIndex === 'number'
+  ) {
+    dispatch(
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.HIDE_INSERT_COLUMN_OR_ROW_BUTTON,
+        })
+        .setMeta('addToHistory', false),
+    );
+    return true;
+  }
+
   return false;
 };
 
@@ -820,4 +852,50 @@ export const handleCut = (
   }
 
   return tr;
+};
+
+export const handleShiftSelection = (event: MouseEvent): Command => (
+  state,
+  dispatch,
+) => {
+  if (!(state.selection instanceof CellSelection) || !event.shiftKey) {
+    return false;
+  }
+  const { selection } = state;
+  if (selection.isRowSelection() || selection.isColSelection()) {
+    const selector = selection.isRowSelection()
+      ? `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`
+      : `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}`;
+    const button = closestElement(event.target as HTMLElement, selector);
+    if (!button) {
+      return false;
+    }
+
+    const buttons = document.querySelectorAll(selector);
+    const index = Array.from(buttons).indexOf(button);
+    const rect = getSelectionRect(selection)!;
+    const startCells = selection.isRowSelection()
+      ? getCellsInRow(index >= rect.bottom ? rect.top : rect.bottom - 1)(
+          selection,
+        )
+      : getCellsInColumn(index >= rect.right ? rect.left : rect.right - 1)(
+          selection,
+        );
+    const endCells = selection.isRowSelection()
+      ? getCellsInRow(index)(selection)
+      : getCellsInColumn(index)(selection);
+    if (startCells && endCells) {
+      event.stopPropagation();
+      event.preventDefault();
+      dispatch(
+        state.tr.setSelection(new CellSelection(
+          state.doc.resolve(startCells[startCells.length - 1].pos),
+          state.doc.resolve(endCells[0].pos),
+        ) as any),
+      );
+      return true;
+    }
+  }
+
+  return false;
 };

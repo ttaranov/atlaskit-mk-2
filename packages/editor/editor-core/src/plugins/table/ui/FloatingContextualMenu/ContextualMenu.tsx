@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import { splitCell, mergeCells } from 'prosemirror-tables';
-
+import { colors } from '@atlaskit/theme';
 import {
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
@@ -139,6 +139,8 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
         isOpen && targetCellPosition
           ? state.doc.nodeAt(targetCellPosition)
           : null;
+      const background =
+        node && node.attrs.background ? node.attrs.background : '#ffffff';
       items.push({
         content: formatMessage(messages.cellBackground),
         value: { name: 'background' },
@@ -146,9 +148,7 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
           <div>
             <div
               className={ClassName.CONTEXTUAL_MENU_ICON}
-              style={{
-                background: `${node ? node.attrs.background : 'white'}`,
-              }}
+              style={{ background }}
             />
             {isSubmenuOpen && (
               <div
@@ -159,6 +159,8 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
                   palette={tableBackgroundColorPalette}
                   borderColors={tableBackgroundBorderColors}
                   onClick={this.setColor}
+                  selectedColor={background}
+                  checkMarkColor={colors.N500}
                 />
               </div>
             )}

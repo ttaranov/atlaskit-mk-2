@@ -4,6 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Pagination from '@atlaskit/pagination';
 
@@ -94,7 +95,7 @@ class DynamicTable extends Component<Props, State> {
     const { sortKey, sortOrder, onSort, isRankable } = this.props;
     const { key } = item;
     if (!key) return;
-    this.onSetPage(1);
+    this.onSetPage(1, undefined);
 
     if (isRankable && key === sortKey && sortOrder === DESC) {
       onSort({
@@ -111,7 +112,9 @@ class DynamicTable extends Component<Props, State> {
     onSort({ key, item, sortOrder: sortOrderFormatted });
   };
 
-  onSetPage = (page?: number) => this.props.onSetPage(page);
+  onSetPage = (page: number, event: ?UIAnalyticsEvent) => {
+    this.props.onSetPage(page, event);
+  };
 
   onRankStart = (params: RankStart) => {
     this.setState({

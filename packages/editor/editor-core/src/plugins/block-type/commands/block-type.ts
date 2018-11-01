@@ -93,9 +93,10 @@ function wrapSelectionIn(type): Command {
     if (range && wrapping) {
       tr.wrap(range, wrapping).scrollIntoView();
     } else {
+      /** We always want to append a block type */
       tr.replaceRangeWith(
-        $to.pos,
-        $to.pos,
+        $to.pos + 1,
+        $to.pos + 1,
         type.createAndFill({}, paragraph.create()),
       );
       tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + 1)));
@@ -113,10 +114,18 @@ function insertCodeBlock(): Command {
     const { tr } = state;
     const { $to } = state.selection;
     const { codeBlock } = state.schema.nodes;
-    const moveSel = $to.node($to.depth).textContent ? 1 : 0;
-    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill() as PMNode);
+
+    const getNextNode = state.doc.nodeAt($to.pos + 1);
+    const addPos = getNextNode && getNextNode.isText ? 0 : 1;
+
+    /** We always want to append a block type */
+    tr.replaceRangeWith(
+      $to.pos + addPos,
+      $to.pos + addPos,
+      codeBlock.createAndFill() as PMNode,
+    );
     tr.setSelection(
-      Selection.near(tr.doc.resolve(state.selection.to + moveSel)),
+      Selection.near(tr.doc.resolve(state.selection.to + addPos)),
     );
     dispatch(tr);
     return true;
