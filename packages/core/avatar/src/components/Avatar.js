@@ -1,7 +1,7 @@
 // @flow
 
 import { Theme } from '@atlaskit/theme';
-import React, { Component } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import type { Node } from 'react';
 import {
   withAnalyticsEvents,
@@ -204,8 +204,12 @@ export const AvatarWithoutAnalytics = mapProps({
     ), // 2
 })(withPseudoState(Avatar));
 
-export default withAnalyticsContext({
+const AvatarWithAnalytics = withAnalyticsContext({
   componentName: 'avatar',
   packageName,
   packageVersion,
 })(withAnalyticsEvents()(AvatarWithoutAnalytics));
+
+export default (props: ElementConfig<typeof Avatar>) => (
+  <AvatarWithAnalytics {...props} />
+);

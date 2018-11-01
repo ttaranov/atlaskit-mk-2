@@ -1,6 +1,10 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component, type ElementConfig } from 'react';
+import React, {
+  Component,
+  type ComponentType,
+  type ElementConfig,
+} from 'react';
 import { ThemeProvider } from 'styled-components';
 import DropdownMenu, { DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar, {
@@ -26,8 +30,8 @@ type Props = {
   /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
    can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
-  /** Component used to render each avatar */
-  avatar: ElementConfig<typeof Avatar>,
+  /** Component used to render each avatar. Defaults to an @atlaskit/avatar */
+  avatar?: ComponentType<ElementConfig<typeof Avatar>>,
   /** The maximum number of avatars allowed in the grid */
   maxCount: number,
   /** Defines the size of the avatar */
@@ -53,7 +57,6 @@ type Props = {
 export default class AvatarGroup extends Component<Props> {
   static defaultProps = {
     appearance: 'stack',
-    avatar: Avatar,
     maxCount: 0,
     showMoreButtonProps: {},
     size: 'medium',
@@ -120,7 +123,6 @@ export default class AvatarGroup extends Component<Props> {
 
   render() {
     const {
-      avatar: Item,
       appearance,
       borderColor,
       data,
@@ -135,6 +137,8 @@ export default class AvatarGroup extends Component<Props> {
 
     // Render (max - 1) avatars to leave space for moreIndicator
     const maxAvatar = total > max ? max - 1 : max;
+
+    const Item = this.props.avatar || Avatar;
 
     const items = data
       .slice(0, maxAvatar)

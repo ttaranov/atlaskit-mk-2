@@ -192,7 +192,7 @@ export default class Profilecard extends PureComponent<ProfilecardProps, void> {
         <ProfileImage>
           <AkAvatar
             size="xlarge"
-            src={this.props.isActive ? this.props.avatarUrl : null}
+            src={this.props.isActive ? this.props.avatarUrl : undefined}
             borderColor={colors.N0}
           />
         </ProfileImage>

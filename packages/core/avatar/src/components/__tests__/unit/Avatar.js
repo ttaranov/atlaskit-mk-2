@@ -163,9 +163,10 @@ test('theming - can change background color based on appearance prop', () => {
       isLoading
       appearance="square"
       src={src}
-      theme={() => ({
+      theme={parent => ({
         avatar(props) {
           return {
+            ...(parent.avatar ? parent.avatar(props) : {}),
             backgroundColor: props.appearance === 'square' ? 'red' : 'green',
           };
         },
