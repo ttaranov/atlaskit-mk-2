@@ -110,17 +110,26 @@ We believe in open contributions and the power of a strong development community
 
 # Contributors
 
-Pull requests, issues and comments are welcomed. For pull requests:
+Pull requests, issues and comments are welcomed. 
 
+For pull requests:
+
+* Do not raise pull requests from forks because our CI builds do not run on forks. Create a pull request from a branch instead.
 * Add tests for new features and bug fixes
 * Follow the existing style
 * Separate unrelated changes into multiple pull requests
 * Read [Contributing guidelines][contributing] for more details
 
-See the existing issues for things to start contributing.
+See the existing issues for things to start contributing. For bigger changes, make sure you start a discussion first by creating an issue and explaining the intended change.
 
-For bigger changes, make sure you start a discussion first by creating
-an issue and explaining the intended change.
+#### Become a contributor
+
+ If this is your _first time_ to raise a pull request, you need to be added to the 'atlaskit contributor' team in order to create branches for your pull requests. To be added, create an [issue](https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open) and include the following:
+
+1. Issue title - __"Become an Atlaskit contributor"__
+2. Your Bitbucket username and
+3. Reasons you'd want to be a contributor - e.g. Reference another issue that you'd like to provide a PR for.
+4. Have signed or be ready to sign the Contributor License Agreement(CLA). See below.
 
 Atlassian requires contributors to sign a Contributor License Agreement,
 known as a CLA. This serves as a record stating that the contributor is

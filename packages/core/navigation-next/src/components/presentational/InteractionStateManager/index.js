@@ -11,14 +11,15 @@ export default class InteractionStateManager extends Component<
   state = {
     isActive: false,
     isHover: false,
+    isFocused: false,
   };
 
-  onMouseDown = (e: Event) => {
+  onMouseDown = (e: SyntheticMouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     this.setState({ isActive: true });
   };
 
-  onMouseUp = (e: Event) => {
+  onMouseUp = (e: SyntheticMouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     this.setState({ isActive: false, isHover: true });
   };
@@ -33,6 +34,10 @@ export default class InteractionStateManager extends Component<
     this.setState({ isActive: false, isHover: false });
   };
 
+  onFocus = () => this.setState({ isFocused: true });
+
+  onBlur = () => this.setState({ isFocused: false });
+
   render() {
     const { styles } = this.props;
     return (
@@ -41,6 +46,8 @@ export default class InteractionStateManager extends Component<
         onMouseOver={this.onMouseOver}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         role="presentation"
         css={{
           width: '100%',

@@ -20,13 +20,16 @@ import {
   handleToggleContextualMenu,
   handleShowInsertColumnButton,
   handleShowInsertRowButton,
+  handleHideInsertColumnOrRowButton,
 } from '../action-handlers';
 import {
+  handleMouseDown,
   handleMouseOver,
   handleMouseLeave,
   handleBlur,
   handleFocus,
   handleClick,
+  handleTripleClick,
 } from '../event-handlers';
 import { findControlsHoverDecoration } from '../utils';
 
@@ -37,8 +40,6 @@ export const defaultTableSelection = {
   dangerRows: [],
   isTableInDanger: false,
   isTableHovered: false,
-  insertColumnButtonIndex: undefined,
-  insertRowButtonIndex: undefined,
 };
 
 export enum ACTIONS {
@@ -52,6 +53,7 @@ export enum ACTIONS {
   TOGGLE_CONTEXTUAL_MENU,
   SHOW_INSERT_COLUMN_BUTTON,
   SHOW_INSERT_ROW_BUTTON,
+  HIDE_INSERT_COLUMN_OR_ROW_BUTTON,
 }
 
 export const createPlugin = (
@@ -65,6 +67,8 @@ export const createPlugin = (
       init: (): TablePluginState => {
         return {
           pluginConfig,
+          insertColumnButtonIndex: undefined,
+          insertRowButtonIndex: undefined,
           decorationSet: DecorationSet.empty,
           ...defaultTableSelection,
         };
@@ -150,6 +154,9 @@ export const createPlugin = (
               dispatch,
             );
 
+          case ACTIONS.HIDE_INSERT_COLUMN_OR_ROW_BUTTON:
+            return handleHideInsertColumnOrRowButton(pluginState, dispatch);
+
           default:
             break;
         }
@@ -216,10 +223,13 @@ export const createPlugin = (
       handleDOMEvents: {
         blur: handleBlur,
         focus: handleFocus,
+        mousedown: handleMouseDown,
         mouseover: handleMouseOver,
         mouseleave: handleMouseLeave,
         click: handleClick,
       },
+
+      handleTripleClick,
     },
   });
 

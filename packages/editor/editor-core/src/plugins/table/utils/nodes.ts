@@ -1,7 +1,8 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
-import { findTable } from 'prosemirror-utils';
+import { findTable, hasParentNodeOfType } from 'prosemirror-utils';
+import { pluginKey } from '../pm-plugins/main';
 
 export const isIsolating = (node: PmNode): boolean => {
   return !!node.type.spec.isolating;
@@ -62,3 +63,17 @@ export const checkIfNumberColumnEnabled = (state: EditorState): boolean =>
     (_, table) => !!table.attrs.isNumberColumnEnabled,
     false,
   );
+
+export const isLayoutSupported = (state: EditorState): boolean => {
+  const { permittedLayouts } = pluginKey.getState(state).pluginConfig;
+  const { bodiedExtension, layoutSection } = state.schema.nodes;
+
+  return (
+    !hasParentNodeOfType([layoutSection, bodiedExtension])(state.selection) &&
+    permittedLayouts &&
+    (permittedLayouts === 'all' ||
+      (permittedLayouts.indexOf('default') > -1 &&
+        permittedLayouts.indexOf('wide') > -1 &&
+        permittedLayouts.indexOf('full-page') > -1))
+  );
+};

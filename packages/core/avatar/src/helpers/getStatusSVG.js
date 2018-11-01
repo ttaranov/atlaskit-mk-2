@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors, themed, withTheme } from '@atlaskit/theme';
+import type { StatusType } from '../types';
 
 const Svg = props => (
   <svg
@@ -34,7 +35,7 @@ const LockedPath = withTheme(styled.path`
   fill: ${themed({ light: colors.N500, dark: colors.DN30 })};
 `);
 
-export default function getStatusSvg(status: string) {
+export default function getStatusSvg(status: StatusType) {
   switch (status) {
     case 'approved':
       return (

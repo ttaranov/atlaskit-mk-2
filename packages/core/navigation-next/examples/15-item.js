@@ -88,6 +88,12 @@ const CloseButton = () => (
 
 const BadgeOrCloseOnHover = ({ isHover }: { isHover: boolean }) =>
   isHover ? <CloseButton /> : <ConfiguredBadge />;
+const OnFocusLozenge = ({ isFocused }: { isFocused: boolean }) =>
+  isFocused ? (
+    <Lozenge appearance="success">focus on</Lozenge>
+  ) : (
+    <Lozenge appearance="default">focus off</Lozenge>
+  );
 
 type ItemType = *;
 type VariationCategory = {
@@ -192,7 +198,7 @@ const variations: Array<VariationCategory> = [
         after: BadgeOrCloseOnHover,
         before: ConfiguredAvatar,
         isSelected: true,
-        text: 'Selected',
+        text: 'Selected 2',
         subText: 'Sub text',
       },
       {
@@ -350,6 +356,16 @@ const variations: Array<VariationCategory> = [
     itemComponent: ({ render: RenderComponent, ...itemProps }: ItemType) => (
       <RenderComponent {...itemProps} />
     ),
+  },
+  {
+    title: 'Conditional rendering on focus',
+    items: [
+      {
+        after: OnFocusLozenge,
+        before: ConfiguredAvatar,
+        text: 'Tab me!',
+      },
+    ],
   },
   {
     itemComponent: ({

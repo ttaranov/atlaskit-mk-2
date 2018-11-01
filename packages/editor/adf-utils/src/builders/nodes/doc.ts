@@ -1,6 +1,6 @@
-import { DocNode, TopLevel } from '@atlaskit/editor-common';
+import { DocNode, BlockContent } from '@atlaskit/editor-common';
 
-export const doc = (...content: TopLevel): DocNode => ({
+export const doc = (...content: Array<BlockContent>): DocNode => ({
   type: 'doc',
   version: 1,
   content,

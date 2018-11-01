@@ -22,6 +22,7 @@ const walkView = (selector: ItemSelector) => (modifier: ItemModifier) => (
     if (item.items && item.items.length) {
       item = { ...item, items: walk(item.items) };
     }
+
     if (selector(item)) {
       item = modifier(item);
     }

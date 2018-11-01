@@ -8,5 +8,6 @@ export const mediaSingle = (attrs: MediaSingleAttributes | undefined) => (
   content: MediaDefinition,
 ): MediaSingleDefinition => ({
   type: 'mediaSingle',
+  attrs,
   content: [content],
 });

@@ -103,8 +103,7 @@ export function createPlugin(
             return;
           }
 
-          const dispatch = editorView.dispatch;
-          const state = editorView.state;
+          const { state, dispatch } = editorView;
           const { doc, selection } = state;
           const { from, to } = selection;
           const { typeAheadQuery } = state.schema.marks;

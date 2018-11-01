@@ -21,27 +21,29 @@ const readFilesSync = (path: string) =>
   );
 
 describe('validate', () => {
-  const valid = readFilesSync(`${BASE_DIR}/valid`);
-  valid.forEach(file => {
-    // Don't test Application Card
-    if (file.name.indexOf('applicationCard') === 0) {
-      return;
-    }
-    it(`validates '${file.name}`, () => {
-      const run = () => {
-        validate(file.data);
-      };
-      expect(run).not.toThrowError();
+  ['full', 'stage-0'].forEach(schemaType => {
+    const valid = readFilesSync(`${BASE_DIR}/${schemaType}/valid`);
+    valid.forEach(file => {
+      // Don't test Application Card
+      if (file.name.indexOf('applicationCard') === 0) {
+        return;
+      }
+      it(`validates '${file.name}`, () => {
+        const run = () => {
+          validate(file.data);
+        };
+        expect(run).not.toThrowError();
+      });
     });
-  });
 
-  const invalid = readFilesSync(`${BASE_DIR}/invalid`);
-  invalid.forEach(file => {
-    it(`does not validate '${file.name}'`, () => {
-      const run = () => {
-        validate(file.data);
-      };
-      expect(run).toThrowError();
+    const invalid = readFilesSync(`${BASE_DIR}/${schemaType}/invalid`);
+    invalid.forEach(file => {
+      it(`does not validate '${file.name}'`, () => {
+        const run = () => {
+          validate(file.data);
+        };
+        expect(run).toThrowError();
+      });
     });
   });
 });

@@ -3,19 +3,38 @@ const Listr = require('listr');
 const globby = require('globby');
 const { msg2pot } = require('babel-plugin-react-intl-pot');
 
-const { extractMessagesFromFile } = require('../utils');
+const { extractMessagesFromFile, isTypeScript } = require('../utils');
 const { pushTranslations } = require('../utils/transifex');
 
+const getExtensions = type => (isTypeScript(type) ? '.ts{,x}' : '.js{,x}');
+
 function pushCommand(options) {
-  const { absPathToPackage, searchDir, dry, project, resource } = options;
+  const {
+    absPathToPackage,
+    searchDir,
+    dry,
+    project,
+    resource,
+    type,
+    ignore,
+  } = options;
+  const typeName = isTypeScript(type) ? 'TypeScript' : 'JavaScript';
   const dirToSearch = path.join(absPathToPackage, searchDir);
   return new Listr([
     {
-      title: 'Finding JavaScript files',
+      title: `Finding ${typeName} files`,
       task: async (context, task) => {
-        const files = await globby(['**/*.js'], { cwd: dirToSearch });
+        const files = await globby(
+          [
+            '**/*' + getExtensions(type),
+            ...ignore.split(',').map(s => '!' + s),
+          ],
+          {
+            cwd: dirToSearch,
+          },
+        );
         if (files.length === 0) {
-          throw new Error(`No JavaScript files in ${searchDir} directory...`);
+          throw new Error(`No ${typeName} files in ${searchDir} directory...`);
         }
         task.title = `Found ${files.length} files in ${searchDir} directory...`;
         context.files = files.map(file => path.join(dirToSearch, file));

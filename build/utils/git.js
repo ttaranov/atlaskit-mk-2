@@ -210,13 +210,13 @@ async function getCommitThatAddsFile(path) {
     'log',
     '--reverse',
     '--max-count=1',
-    '--pretty=format:"%h"',
+    '--pretty=format:%h',
     '-p',
     path,
   ]);
   // For reasons I do not understand, passing pretty format through this is not working
   // The slice below is aimed at achieving the same thing.
-  const commit = gitCmd.stdout.slice(1, 11);
+  const commit = gitCmd.stdout.split('\n')[0];
 
   return commit;
 }

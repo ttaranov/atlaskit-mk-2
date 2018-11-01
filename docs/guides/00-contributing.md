@@ -19,12 +19,14 @@ Although it's our job to look after all the components in our repo, we rely heav
 
 ## Open source contribution model
 
+If this is your first time or if you don't have permission to create a branch, follow the instructions under 'Become a contributor' in our [README.md](https://bitbucket.org/atlassian/atlaskit-mk-2/src) to request permission.
+
 We want to keep this model very simple. At it's core, we make the assumptions that developers looking to contribute will look at the `README.md` and thus, be directed to the `CONTRIBUTING.md`. Even so, both of those files are widely known as convention in an open source project and developers will be able to direct themselves there.
 
 The process consists of:
 
 1. Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
-2. Submit a PR resolving the raised issue.
+2. Submit a PR resolving the raised issue.  
 
 This is super simple and the PR guidelines can be derived from the rest of our conventions and documentation. It's also compatible with the inter-team model, because, at the very worst, internal teams would still be able to follow this process.
 

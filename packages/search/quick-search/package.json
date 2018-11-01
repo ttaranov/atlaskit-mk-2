@@ -1,11 +1,13 @@
 {
   "name": "@atlaskit/quick-search",
-  "version": "4.2.13",
+  "version": "5.0.0",
   "description": "A quick-search component",
   "license": "Apache-2.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "atlaskit:src": "src/index.js",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
+  "atlaskit:src": "src/index.ts",
   "files": [
     "dist"
   ],
@@ -33,9 +35,10 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/avatar": "^14.1.2",
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/drawer": "^2.1.0",
-    "@atlaskit/navigation": "^33.1.11",
+    "@atlaskit/navigation": "^33.3.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "prop-types": "^15.5.10",
     "react": "^16.4.0",

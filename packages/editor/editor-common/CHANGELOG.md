@@ -1,5 +1,65 @@
 # @atlaskit/editor-common
 
+## 20.3.0
+- [minor] [4f5830f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5830f):
+
+  - ED-4200: add page layout support to generator and ADF schema
+
+## 20.2.5
+- [patch] [653b6a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/653b6a9):
+
+  - removed optional attributes from adf-builder module for status node
+- [patch] [cd5471b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd5471b):
+
+  - added style attribute for Status node in ADF schema
+
+## 20.2.4
+- [patch] [6a0a6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a0a6f8):
+
+  - ED-5448, ED-5613, ED-5582: smart card UX improvements; allow blockCard in tableCell
+
+## 20.2.3
+- [patch] [8fb4b1e"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"
+d):
+
+  * ED-5274 Fixes tables have excessive margin above
+
+## 20.2.2
+- [patch] [67325ee"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67325ee"
+d):
+
+  - fixing image size inside tables
+
+## 20.2.1
+- [patch] [534f6ab"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/534f6ab"
+d):
+
+  - ED-5615: Fix block element padding inside table cells.
+
+## 20.2.0
+- [minor] [03947b2"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03947b2"
+d):
+
+  - Change selected state for horizontal rule
+
+## 20.1.9
+- [patch] [ef26075"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef26075"
+d):
+
+  - ED-5622: fix table selection when adding columns/rows very fast
+
+## 20.1.8
+- [patch] [08e6a0c"
+d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08e6a0c"
+d):
+
+  - Fix panel icon shrinking when a lot of text in a panel
+
 ## 20.1.7
 - [patch] [25cdb93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25cdb93):
 

@@ -702,6 +702,14 @@ System.out.println("There are " + count + " values >= 5");`,
             collection: 'MediaServicesSample',
           },
         },
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '2afaf845-4385-431f-9a15-3e21520cf896',
+            collection: 'MediaServicesSample',
+          },
+        },
       ],
     },
     {
