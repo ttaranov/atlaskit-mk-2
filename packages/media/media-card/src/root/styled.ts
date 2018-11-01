@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { HTMLAttributes, ComponentClass } from 'react';
 import { MediaItemType } from '@atlaskit/media-core';
 import { CardDimensions, CardAppearance } from '../';
@@ -64,6 +64,7 @@ export const Wrapper: ComponentClass<
 
 export const InlinePlayerWrapper = styled.div`
   overflow: hidden;
+  border-radius: ${akBorderRadius};
 
   video {
     /* max-width: 100%; */

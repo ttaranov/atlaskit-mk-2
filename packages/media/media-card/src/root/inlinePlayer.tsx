@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, CSSProperties } from 'react';
 import { Context } from '@atlaskit/media-core';
 import { FileIdentifier } from './domain';
 import { InlinePlayerWrapper } from './styled';
@@ -28,9 +28,9 @@ export class InlinePlayer extends Component<
     const { context, identifier } = this.props;
     const { id, collectionName } = identifier;
 
-    // TODO: unsubscribe
-    // TODO: unsubscribe when we got the fileSrc
-    // TODO: dont change fileSrc if we already have one
+    this.revoke();
+    this.unsubscribe();
+
     this.subscription = context.file
       .getFileState(await id, { collectionName })
       .subscribe({
@@ -41,9 +41,8 @@ export class InlinePlayer extends Component<
             if (blob.type.indexOf('video/') === 0) {
               const fileSrc = URL.createObjectURL(state.preview.blob);
 
-              this.setState({
-                fileSrc,
-              });
+              this.setState({ fileSrc });
+              setImmediate(this.unsubscribe);
             }
           }
 
@@ -56,25 +55,35 @@ export class InlinePlayer extends Component<
             );
 
             this.setState({ fileSrc });
+            setImmediate(this.unsubscribe);
           }
         },
       });
   }
 
   unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  };
+
+  revoke = () => {
     const { fileSrc } = this.state;
     if (fileSrc) {
       URL.revokeObjectURL(fileSrc);
     }
-
-    setImmediate(() => this.subscription && this.subscription.unsubscribe());
   };
 
-  get dimensions() {
+  componentWillUnmount() {
+    this.unsubscribe();
+    this.revoke();
+  }
+
+  get dimensions(): CardDimensions {
     return this.props.dimensions || defaultImageCardDimensions;
   }
 
-  get style() {
+  get style(): CSSProperties {
     const { width, height } = this.dimensions;
     return {
       width,
