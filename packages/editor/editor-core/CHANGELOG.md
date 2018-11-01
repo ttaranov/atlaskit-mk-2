@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.7.0
+- [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
+
+  - ED-5527: apply max-width: 100% and pass container size to Card as dimension
+
 ## 87.6.18
 - [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
 

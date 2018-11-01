@@ -1,5 +1,10 @@
 # @atlaskit/media-image
 
+## 41.4.0
+- [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
+
+  - ED-5527: apply max-width: 100% and pass container size to Card as dimension
+
 ## 41.3.0
 - [minor] [4718333](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4718333):
 

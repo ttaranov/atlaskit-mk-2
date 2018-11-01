@@ -1,8 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/editor-core", "type": "minor" },
-    { "name": "@atlaskit/renderer", "type": "minor" },
-    { "name": "@atlaskit/media-card", "type": "minor" }
-  ],
-  "dependents": []
-}
