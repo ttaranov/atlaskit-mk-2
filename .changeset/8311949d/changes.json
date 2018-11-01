@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/reduced-ui-pack", "type": "patch" }],
+  "dependents": []
+}
