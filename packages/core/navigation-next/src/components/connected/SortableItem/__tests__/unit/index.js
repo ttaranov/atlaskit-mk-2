@@ -118,7 +118,4 @@ describe('SortableItem', () => {
     });
     expect(nonDraggingStyles).toMatchSnapshot('not dragging');
   });
-
-  // E.g. GoToItem
-  // it('allows user to specify their own item component', () => {});
 });
