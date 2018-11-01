@@ -1,5 +1,5 @@
 // @flow
-import * as sample from 'lodash.sample';
+import sample from 'lodash.sample';
 import { getWeekday, getTimeString } from './util';
 
 const avatarImages = [
@@ -18,7 +18,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Kramer Hatfield',
       nickname: 'khatfield',
       email: 'khatfield@gluid.com',
@@ -35,7 +34,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Schwartz Mclaughlin',
       nickname: 'smclaughlin',
       email: 'smclaughlin@corecom.com',
@@ -52,7 +50,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Nichole Walter',
       nickname: 'nwalter',
       email: 'nwalter@limage.com',
@@ -69,7 +66,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Cleveland Rodriquez',
       nickname: 'crodriquez',
       email: 'crodriquez@slofast.com',
@@ -82,7 +78,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Rosalyn Franklin',
       nickname: 'rfranklin',
       email: 'rfranklin@assurity.com',
@@ -99,7 +94,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Hess Stone',
       nickname: 'hstone',
       email: 'hstone@hawkster.com',
@@ -116,7 +110,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Lewis Cervantes',
       nickname: 'lcervantes',
       email: 'lcervantes@apextri.com',
@@ -133,7 +126,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Abbott Lamb',
       nickname: 'alamb',
       email: 'alamb@xeronk.com',
@@ -150,7 +142,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Conner Duncan',
       nickname: 'cduncan',
       email: 'cduncan@magmina.com',
@@ -167,7 +158,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Bauer Burch',
       nickname: 'bburch',
       email: 'bburch@xleen.com',
@@ -184,7 +174,6 @@ const profiles = [
   {
     User: {
       avatarUrl: getAvatar(),
-      isCensored: 'visible',
       fullName: 'Mcbride Haynes',
       nickname: 'mhaynes',
       email: 'mhaynes@geeky.com',
