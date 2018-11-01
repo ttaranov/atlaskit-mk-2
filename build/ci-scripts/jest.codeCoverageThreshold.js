@@ -8,9 +8,9 @@ module.exports = {
     lines: 68,
   },
   'packages/core/global-navigation/src': {
-    statements: 96,
-    branches: 98,
-    functions: 97,
-    lines: 96,
+    statements: 85,
+    branches: 85,
+    functions: 85,
+    lines: 85,
   },
 };

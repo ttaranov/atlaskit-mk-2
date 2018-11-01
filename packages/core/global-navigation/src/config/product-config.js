@@ -44,7 +44,12 @@ type OtherConfig = {
   href?: string,
   badge?: ?StatelessFunctionalComponent<*>,
 };
-function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
+
+function configFactory(
+  onClick: ?() => void,
+  tooltip,
+  otherConfig: OtherConfig = {},
+) {
   const { href } = otherConfig;
   const shouldNotRenderItem = !onClick && !href;
 
@@ -118,9 +123,41 @@ function profileConfigFactory(
   };
 }
 
+function notificationBadge(notificationCount) {
+  return {
+    badge: notificationCount
+      ? () => (
+          <Badge
+            max={MAX_NOTIFICATIONS_COUNT}
+            appearance="important"
+            value={notificationCount}
+          />
+        )
+      : null,
+  };
+}
+
+function notificationConfigFactory(
+  notificationTooltip,
+  notificationCount,
+  notificationDrawerContents,
+  onNotificationClick,
+  isNotificationInbuilt,
+  openDrawer,
+) {
+  return isNotificationInbuilt
+    ? configFactory(openDrawer, notificationTooltip)
+    : configFactory(
+        onNotificationClick || (notificationDrawerContents && openDrawer),
+        notificationTooltip,
+        notificationBadge(notificationCount),
+      );
+}
+
 export default function generateProductConfig(
   props: GlobalNavigationProps,
   openDrawer: DrawerName => () => void,
+  isNotificationInbuilt: boolean,
 ): ProductConfigShape {
   const {
     onProductClick,
@@ -140,10 +177,10 @@ export default function generateProductConfig(
     starredTooltip,
     starredDrawerContents,
 
-    onNotificationClick,
     notificationTooltip,
     notificationCount,
     notificationDrawerContents,
+    onNotificationClick,
 
     appSwitcherComponent,
     appSwitcherTooltip,
@@ -156,18 +193,6 @@ export default function generateProductConfig(
     loginHref,
     profileIconUrl,
   } = props;
-
-  const notificationBadge = {
-    badge: notificationCount
-      ? () => (
-          <Badge
-            max={MAX_NOTIFICATIONS_COUNT}
-            appearance="important"
-            value={notificationCount}
-          />
-        )
-      : null,
-  };
 
   return {
     product: configFactory(onProductClick, productTooltip, {
@@ -186,11 +211,13 @@ export default function generateProductConfig(
       onStarredClick || (starredDrawerContents && openDrawer('starred')),
       starredTooltip,
     ),
-    notification: configFactory(
-      onNotificationClick ||
-        (notificationDrawerContents && openDrawer('notification')),
+    notification: notificationConfigFactory(
       notificationTooltip,
-      notificationBadge,
+      notificationCount,
+      notificationDrawerContents,
+      onNotificationClick,
+      isNotificationInbuilt,
+      openDrawer('notification'),
     ),
     help: helpConfigFactory(helpItems, helpTooltip),
     profile: profileConfigFactory(
