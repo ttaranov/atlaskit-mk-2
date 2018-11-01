@@ -1,0 +1,1 @@
+- Flow consumers will now get static type safety for Avatar component
