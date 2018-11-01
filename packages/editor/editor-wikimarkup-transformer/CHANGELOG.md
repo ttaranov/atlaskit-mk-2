@@ -1,5 +1,10 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.25
+- [patch] [b64fc55](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b64fc55):
+
+  - Adds roundtrip for external image
+
 ## 2.1.24
 - Updated dependencies [a6dd6e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6dd6e3):
   - @atlaskit/editor-common@20.3.1
