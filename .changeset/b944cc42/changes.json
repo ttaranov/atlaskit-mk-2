@@ -1,0 +1,9 @@
+{
+  "releases": [
+    { "name": "@atlaskit/analytics-next", "type": "patch" },
+    { "name": "@atlaskit/calendar", "type": "patch" },
+    { "name": "@atlaskit/modal-dialog", "type": "patch" },
+    { "name": "@atlaskit/select", "type": "patch" }
+  ],
+  "dependents": []
+}
