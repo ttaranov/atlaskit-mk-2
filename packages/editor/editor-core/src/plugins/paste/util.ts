@@ -6,11 +6,11 @@ export function isPastedFromDropboxPaper(html?: string): boolean {
   return !!html && !!html.match(/class=\"\s?author-d-.+"/gim);
 }
 
-export function isPastedFromGoolgeDocs(html?: string): boolean {
+export function isPastedFromGoogleDocs(html?: string): boolean {
   return !!html && !!html.match(/id=\"docs-internal-guid-.+"/gim);
 }
 
-export function isPastedFromGoolgeSpreadSheets(html?: string): boolean {
+export function isPastedFromGoogleSpreadSheets(html?: string): boolean {
   return !!html && !!html.match(/data-sheets-.+=/gim);
 }
 
@@ -33,9 +33,9 @@ export function getPasteSource(event: ClipboardEvent): string {
     return 'dropbox-paper';
   } else if (isPastedFromWord(html)) {
     return 'microsoft-word';
-  } else if (isPastedFromGoolgeDocs(html)) {
+  } else if (isPastedFromGoogleDocs(html)) {
     return 'google-docs';
-  } else if (isPastedFromGoolgeSpreadSheets(html)) {
+  } else if (isPastedFromGoogleSpreadSheets(html)) {
     return 'google-spreadsheets';
   } else if (isPastedFromPages(html)) {
     return 'apple-pages';
