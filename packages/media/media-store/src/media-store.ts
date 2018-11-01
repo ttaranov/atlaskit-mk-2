@@ -218,9 +218,13 @@ export class MediaStore {
     artifacts: MediaFileArtifacts,
     artifactName: keyof MediaFileArtifacts,
     collectionName?: string,
-  ): Promise<string> => {
-    const auth = await this.config.authProvider({ collectionName });
+  ): Promise<string | undefined> => {
     const artifactUrl = getArtifactUrl(artifacts, artifactName);
+    if (!artifactUrl) {
+      return undefined;
+    }
+
+    const auth = await this.config.authProvider({ collectionName });
 
     return createUrl(`${auth.baseUrl}${artifactUrl}`, {
       params: { collection: collectionName },

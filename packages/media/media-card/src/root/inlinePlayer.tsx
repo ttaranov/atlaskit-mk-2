@@ -30,7 +30,6 @@ export class InlinePlayer extends Component<
 
     this.revoke();
     this.unsubscribe();
-
     this.subscription = context.file
       .getFileState(await id, { collectionName })
       .subscribe({
@@ -40,7 +39,6 @@ export class InlinePlayer extends Component<
 
             if (blob.type.indexOf('video/') === 0) {
               const fileSrc = URL.createObjectURL(state.preview.blob);
-
               this.setState({ fileSrc });
               setImmediate(this.unsubscribe);
             }

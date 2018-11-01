@@ -15,6 +15,7 @@ import {
   EmptyFile,
   ImageMetadata,
 } from '../../media-store';
+import { MediaFileArtifacts } from '../../models/artifacts';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -588,6 +589,41 @@ describe('MediaStore', () => {
         expect(authProvider).toHaveBeenCalledWith({
           collectionName: 'some-collection-name',
         });
+      });
+    });
+
+    describe('getArtifactURL()', () => {
+      it('should return the right artifact url', async () => {
+        const url = await mediaStore.getArtifactURL(
+          {
+            'video_640.mp4': {
+              processingStatus: 'succeeded',
+              url: '/sd-video',
+            },
+          },
+          'video_640.mp4',
+          'some-collection',
+        );
+
+        expect(url).toEqual(
+          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&token=some-token`,
+        );
+      });
+
+      it('should return undefined if the artifact is not valid', async () => {
+        const artifacts = {
+          'audio.mp3': {
+            processingStatus: 'pending',
+            url: '/sd-video',
+          },
+        } as MediaFileArtifacts;
+
+        expect(
+          await mediaStore.getArtifactURL(artifacts, 'video_640.mp4'),
+        ).toBeUndefined();
+        expect(
+          await mediaStore.getArtifactURL(artifacts, 'audio.mp3'),
+        ).toBeUndefined();
       });
     });
   });
