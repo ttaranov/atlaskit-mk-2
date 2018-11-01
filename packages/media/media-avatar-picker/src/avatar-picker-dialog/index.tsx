@@ -83,13 +83,14 @@ export class AvatarPickerDialog extends PureComponent<
     errorMessage: this.props.errorMessage,
   };
 
-  setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
+  setSelectedImageState = async (selectedImage: File, crop: CropProperties) => {
     // this is the main method to update the image state,
     // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded
-    this.setState({ selectedImage, crop });
-    fileToDataURI(selectedImage).then(dataURI => {
+    try {
+      this.setState({ selectedImage, crop });
+      const dataURI = await fileToDataURI(selectedImage);
       this.setState({ selectedImageSource: dataURI });
-    });
+    } catch (e) {}
   };
 
   setSelectedAvatarState = (avatar: Avatar) => {
