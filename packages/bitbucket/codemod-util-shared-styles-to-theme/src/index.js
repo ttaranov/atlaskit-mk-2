@@ -6,6 +6,7 @@ import borderRadiusTransform from './transforms/borderRadius';
 import typographyTransform from './transforms/typography';
 import codeFontTransform from './transforms/codeFont';
 import fixRedundantRenamesTransform from './transforms/fixRedundantRenames';
+import fontSize from './transforms/fontSize';
 import fontFamily from './transforms/fontFamily';
 
 // This function gets called by jscodeshift.
@@ -25,6 +26,7 @@ export default function utilSharedStylesToThemeCodeshift(
     borderRadiusTransform,
     typographyTransform,
     codeFontTransform,
+    fontSize,
     fixRedundantRenamesTransform,
   ];
 
