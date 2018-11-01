@@ -71,17 +71,17 @@ export class NavigationBase extends Component<NavigationProps, {}> {
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
-    const prev = (source: NavigationSource) => this.navigate('prev', source);
-    const next = (source: NavigationSource) => this.navigate('next', source);
-
     return (
       <ArrowsWrapper>
         <LeftWrapper>
           {isLeftVisible ? (
             <Arrow className={hideControlsClassName}>
-              <Shortcut keyCode={37} handler={prev('keyboard')} />
+              <Shortcut
+                keyCode={37}
+                handler={this.navigate('prev', 'keyboard')}
+              />
               <ArrowLeftCircleIcon
-                onClick={prev('mouse')}
+                onClick={this.navigate('prev', 'mouse')}
                 primaryColor={colors.N800}
                 size="xlarge"
                 label="Previous"
@@ -93,9 +93,12 @@ export class NavigationBase extends Component<NavigationProps, {}> {
         <RightWrapper>
           {isRightVisible ? (
             <Arrow className={hideControlsClassName}>
-              <Shortcut keyCode={39} handler={next('keyboard')} />
+              <Shortcut
+                keyCode={39}
+                handler={this.navigate('next', 'keyboard')}
+              />
               <ArrowRightCircleIcon
-                onClick={next('mouse')}
+                onClick={this.navigate('next', 'mouse')}
                 primaryColor={colors.N800}
                 size="xlarge"
                 label="Next"
