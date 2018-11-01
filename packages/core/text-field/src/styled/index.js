@@ -65,16 +65,9 @@ const getHoverState = props => {
 const getBorderStyle = ({ appearance }) =>
   appearance === 'none' ? 'none' : 'solid';
 
-const getMinHeight = ({ isCompact }) => {
-  const minHeight = isCompact ? heightCompact : heightBase;
-  return css`
-    min-height: ${minHeight}px;
-  `;
-};
-
 const getPlaceholderColor = ({ isDisabled }) => {
   if (isDisabled) return themed({ light: colors.N70, dark: colors.DN90 });
-  else return themed({ light: colors.N100, dark: colors.DN90 });
+  return themed({ light: colors.N100, dark: colors.DN90 });
 };
 
 // can't group these placeholder styles into one block because browsers drop

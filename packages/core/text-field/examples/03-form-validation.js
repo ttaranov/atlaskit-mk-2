@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, type ElementRef } from 'react';
-import Button from '@atlaskit/button';
 import Form, { Field, FormHeader, Validator } from '@atlaskit/form';
 import TextField from '../src';
 
@@ -17,18 +16,22 @@ const iframeStyles = {
 };
 
 type Props = {};
+type FormRef = {
+  validate: () => any,
+  submit: () => any,
+};
 
 function openSesame(value) {
   if (value === 'open sesame') return true;
-  else return false;
+  return false;
 }
 
 export default class extends Component<Props> {
-  formRef: ElementRef<*>;
-  constructor(props: Props) {
-    super(props);
-    this.formRef = React.createRef();
-  }
+  formRef: FormRef;
+
+  handleRef = (ref: ElementRef<*>) => {
+    this.formRef = ref;
+  };
 
   handleSubmit = () => {
     const validatedResult = this.formRef.validate();
@@ -49,10 +52,10 @@ export default class extends Component<Props> {
     return (
       <div>
         <Form
+          ref={this.handleRef}
           name="validation-example"
           onSubmit={this.handleSubmit}
           onReset={this.handleReset}
-          ref={ref => (this.formRef = ref)}
           action="//httpbin.org/get"
           method="GET"
           target="submitFrame"

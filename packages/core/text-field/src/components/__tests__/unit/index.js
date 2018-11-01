@@ -1,14 +1,12 @@
 // @flow
 
-import React, { Component } from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 
 import TextField from '../../TextField';
-import Input from '../../Input';
 
 describe('TextField', () => {
   test('should show defaults', () => {
-    const ref = jest.fn();
     const wrapper = mount(<TextField />);
     expect(wrapper).toHaveLength(1);
   });

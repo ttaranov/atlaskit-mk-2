@@ -1,5 +1,5 @@
 // @flow
-import type { Node, ElementRef } from 'react';
+import type { ElementRef } from 'react';
 import DefaultInput from './components/Input';
 
 export type InputProps = {

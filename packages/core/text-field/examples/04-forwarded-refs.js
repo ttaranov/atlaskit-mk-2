@@ -5,13 +5,16 @@ import Button from '@atlaskit/button';
 import TextField from '../src';
 
 type Props = {};
+type FormRef = {
+  focus: () => any,
+};
 
 class TextFieldExample extends Component<Props> {
-  input: ElementRef<*>;
-  constructor(props: Props) {
-    super(props);
-    this.input = React.createRef();
-  }
+  input: FormRef;
+
+  handleRef = (ref: ElementRef<*>) => {
+    this.input = ref;
+  };
 
   handleFocus = () => {
     this.input.focus();
@@ -20,7 +23,7 @@ class TextFieldExample extends Component<Props> {
   render() {
     return (
       <div>
-        <TextField ref={ref => (this.input = ref)} />
+        <TextField ref={this.handleRef} />
         <p>
           <Button appearance="primary" onClick={this.handleFocus}>
             Focus TextField

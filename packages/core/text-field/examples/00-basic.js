@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import Form, { Field } from '@atlaskit/form';
+import { Field } from '@atlaskit/form';
 import TextField from '../src';
 
 const eventResultStyle = {
