@@ -399,6 +399,21 @@ ${(
       />
     )}
 
+${<H> Changing Switcher's style</H>}
+
+The switcher component takes a styles prop which is a wrapper around ![react-select styles]. It can be used to override some of the default styles.
+
+${(
+      <Example
+        packageName="@atlaskit/navigation-next"
+        Component={
+          require('./examples/ui-components/Switcher').CustomStyleSwitcher
+        }
+        title="Switcher"
+        source={require('!!raw-loader!./examples/ui-components/Switcher')}
+      />
+    )}
+
 ${<Hr />}
 
 ${<H>Wordmark</H>}

@@ -8,53 +8,10 @@ import React, {
 } from 'react';
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 import Avatar from '@atlaskit/avatar';
+import { components } from '@atlaskit/select';
 
 const gridSize = gridSizeFn();
 
-type ElementProps = {
-  innerRef: Ref<*>,
-  isFocused: boolean,
-  isSelected: boolean,
-};
-
-const OptionElement = ({
-  innerRef,
-  isFocused,
-  isSelected,
-  ...props
-}: ElementProps) => {
-  return (
-    <div
-      ref={innerRef}
-      css={{
-        alignItems: 'center',
-        border: 'none',
-        backgroundColor: isFocused ? colors.N30 : 'transparent',
-        boxSizing: 'border-box',
-        color: 'inherit',
-        cursor: 'default',
-        display: 'flex',
-        flexShrink: 0,
-        fontSize: 'inherit',
-        height: gridSize * 6,
-        outline: 'none',
-        paddingRight: gridSize,
-        paddingLeft: gridSize,
-        textAlign: 'left',
-        textDecoration: 'none',
-        width: '100%',
-
-        '&:hover': {
-          textDecoration: 'none',
-        },
-        '&:active': {
-          backgroundColor: colors.B50,
-        },
-      }}
-      {...props}
-    />
-  );
-};
 const ContentWrapper = (props: *) => (
   <div
     css={{
@@ -133,35 +90,39 @@ type InnerProps = {
   tabIndex: number,
 };
 type ItemProps = {
+  innerRef: Ref<*>,
   data: DataType,
   innerProps: InnerProps,
   isFocused: boolean,
   isSelected: boolean,
   onClick?: (SyntheticEvent<MouseEvent>) => void,
+  getStyles: () => void,
+  theme: any,
+  cx: any,
 };
 
 export default class Option extends PureComponent<ItemProps> {
   render() {
-    const { data, innerProps, isFocused, isSelected } = this.props;
-    const { avatar, subText, text, ...dataProps } = data;
-    const presentationProps = { isFocused, isSelected };
-
+    const { data, innerProps, isFocused, innerRef } = this.props;
+    const { avatar, subText, text } = data;
     return (
-      <OptionElement {...presentationProps} {...dataProps} {...innerProps}>
-        {!!avatar && (
-          <ElementWrapper is="before">
-            <Avatar
-              borderColor="transparent"
-              src={avatar}
-              appearance="square"
-            />
-          </ElementWrapper>
-        )}
-        <ContentWrapper>
-          <TextWrapper>{text}</TextWrapper>
-          {!!subText && <SubTextWrapper>{subText}</SubTextWrapper>}
-        </ContentWrapper>
-      </OptionElement>
+      <div ref={innerRef} {...innerProps}>
+        <components.Option {...this.props}>
+          {!!avatar && (
+            <ElementWrapper is="before">
+              <Avatar
+                borderColor="transparent"
+                src={avatar}
+                appearance="square"
+              />
+            </ElementWrapper>
+          )}
+          <ContentWrapper>
+            <TextWrapper>{text}</TextWrapper>
+            {!!subText && <SubTextWrapper>{subText}</SubTextWrapper>}
+          </ContentWrapper>
+        </components.Option>
+      </div>
     );
   }
 }

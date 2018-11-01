@@ -236,9 +236,12 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
     // subtract the control height to maintain consistency
     const showSearchControl = this.showSearchControl();
+    // breaks here if components.Control is commented
     const offsetHeight = showSearchControl
       ? this.selectRef.select.controlRef.offsetHeight
       : 0;
+
+    console.log(offsetHeight);
     const maxHeight = maxMenuHeight - offsetHeight;
 
     return maxHeight;

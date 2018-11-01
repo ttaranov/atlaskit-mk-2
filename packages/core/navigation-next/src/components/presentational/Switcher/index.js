@@ -76,15 +76,18 @@ const Footer = ({ text, onClick }: *) => (
 );
 
 const defaultComponents = { Control, Option };
-
 const isEmpty = obj => Object.keys(obj).length === 0;
 
 // ==============================
 // Class
 // ==============================
 
-// internal `navWidth` property isn't part of the public API
-type SwitcherPropsExtended = SwitcherProps & { navWidth: number };
+type SwitcherPropsExtended = SwitcherProps & {
+  // internal `navWidth` property isn't part of the public API
+  navWidth: number,
+  // styles overrides for react-select
+  styles: Object,
+};
 
 class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
   state = {
@@ -97,6 +100,32 @@ class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
   static defaultProps = {
     closeMenuOnCreate: true,
     components: {},
+    styles: {
+      option: (provided, { isFocused }) => ({
+        alignItems: 'center',
+        border: 'none',
+        backgroundColor: isFocused ? colors.N30 : 'transparent',
+        boxSizing: 'border-box',
+        color: 'inherit',
+        cursor: 'default',
+        display: 'flex',
+        flexShrink: 0,
+        fontSize: 'inherit',
+        height: gridSize * 6,
+        outline: 'none',
+        paddingRight: gridSize,
+        paddingLeft: gridSize,
+        textAlign: 'left',
+        textDecoration: 'none',
+        width: '100%',
+        '&:hover': {
+          textDecoration: 'none',
+        },
+        '&:active': {
+          backgroundColor: colors.B50,
+        },
+      }),
+    },
   };
   static getDerivedStateFromProps(
     props: SwitcherPropsExtended,
@@ -123,7 +152,7 @@ class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
       this.setTargetWidth();
     }
   }
-  getTargetRef = ref => {
+  getTargetRef = (ref: Element) => {
     this.targetRef = ref;
   };
   setTargetWidth = () => {
@@ -186,6 +215,7 @@ class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
   }
 }
 
+export { Switcher as BaseSwitcher };
 export default (props: SwitcherProps) => (
   <UIControllerSubscriber>
     {({ state }) => <Switcher navWidth={state.productNavWidth} {...props} />}
