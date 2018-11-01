@@ -20,11 +20,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
-    "build": "mkdir -p dist && build:babel:esm",
     "update": "node ./build/index.js && yarn build:babel:cjs",
-    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d cjs --root-mode=\"upward\"",
-    "build:babel:esm": "NODE_ENV=production BABEL_ENV=production:esm babel src -d dist/esm --root-mode=\"upward\""
-
+    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d cjs --root-mode=\"upward\""
   },
   "dependencies": {
     "@atlaskit/theme": "^6.1.1",
