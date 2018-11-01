@@ -1,0 +1,29 @@
+{
+  "releases": [{ "name": "@atlaskit/icon-build-process", "type": "minor" }],
+  "dependents": [
+    {
+      "name": "@atlaskit/icon",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/icon-file-type",
+        "@atlaskit/icon-object",
+        "@atlaskit/icon-build-process"
+      ]
+    },
+    {
+      "name": "@atlaskit/icon-file-type",
+      "type": "patch",
+      "dependencies": ["@atlaskit/icon-build-process"]
+    },
+    {
+      "name": "@atlaskit/icon-object",
+      "type": "patch",
+      "dependencies": ["@atlaskit/icon-build-process"]
+    },
+    {
+      "name": "@atlaskit/website",
+      "type": "patch",
+      "dependencies": ["@atlaskit/icon", "@atlaskit/icon-object"]
+    }
+  ]
+}
