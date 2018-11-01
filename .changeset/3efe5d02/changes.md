@@ -1,1 +1,0 @@
-- Update Avatar to allow to use a custom icon as status.
