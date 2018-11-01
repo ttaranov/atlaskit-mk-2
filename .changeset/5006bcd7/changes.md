@@ -1,0 +1,1 @@
+- Flow consumers will get static type safety when using Tooltip
