@@ -224,13 +224,14 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
             customerNameFieldId={'customfield_11703'}
             typeFiedlId={'customfield_11705'}
             canBeContactedFieldId={'customfield_11708'}
-            canBeContactedDefaultValue={'10805'}
+            canBeContactedDefaultValue={[{ id: '10805' }]}
             enrollInResearchFieldId={'customfield_11709'}
-            enrollInResearchDefaultValue={'10807'}
-            typeBugDefaultValue={'10796'}
-            typeCommentDefaultValue={'10797'}
-            typeSuggestionDefaultValue={'10798'}
-            typeQuestionDefaultValue={'10799'}
+            enrollInResearchDefaultValue={[{ id: '10807' }]}
+            typeBugDefaultValue={{ id: '10796' }}
+            typeCommentDefaultValue={{ id: '10797' }}
+            typeSuggestionDefaultValue={{ id: '10798' }}
+            typeQuestionDefaultValue={{ id: '10799' }}
+
             //   additionalFields={[
             //   {
             //     id: "customfield_11704",
