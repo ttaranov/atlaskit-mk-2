@@ -1,1 +1,0 @@
-- Add analytics for navigation events in MediaViewer
