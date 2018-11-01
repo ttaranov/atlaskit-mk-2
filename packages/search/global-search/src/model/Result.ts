@@ -1,5 +1,4 @@
 import { ABTest } from '../api/CrossProductSearchClient';
-import { messages } from '../messages';
 import { FormattedMessage } from 'react-intl';
 
 export enum ResultType {
