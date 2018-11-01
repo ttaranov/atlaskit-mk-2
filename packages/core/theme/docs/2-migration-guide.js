@@ -6,8 +6,15 @@ import migrateInJsImage from './assets/migrate-in-js.jpg';
 import lessToCssCompileImage from './assets/less-to-css-compile.jpg';
 import nestedStylesThemePackage from './assets/nested-styles-theme-package.jpg';
 
-function Image({ src }) {
-  return <img src={src} style={{ width: '100%', marginTop: '8px' }} />;
+type ImageProps = {
+  src: string,
+  alt: string,
+};
+
+function Image({ src, alt }: ImageProps) {
+  return (
+    <img src={src} alt={alt} style={{ width: '100%', marginTop: '8px' }} />
+  );
 }
 
 export default md`
@@ -21,7 +28,12 @@ styled-components so that styles are evaluated properly. However, If you are usi
 have styled-components as it is peer dependency in the packages, so why not utilize it and there should
 no impact on the size of the bundle.
 
-${<Image src={migrateInJsImage} />}
+${(
+  <Image
+    src={migrateInJsImage}
+    alt="code before and after of importing gridsize from theme package"
+  />
+)}
 
 ## Migrating from less
 
@@ -40,7 +52,7 @@ Steps to migrate:
     Please declare them with string on top so that we remember to replace them, for example, → if you are using color
     @ak-color-B400 then add a new variable on top as  @ak-color-B400: \${colors.B400}.
 
-${<Image src={lessToCssCompileImage} />}
+${<Image src={lessToCssCompileImage} alt="less compiled to css" />}
 
 2. Create a JS file which imports the default exported function from [evaluate-inner-styles](https://www.npmjs.com/package/evaluate-inner-styles)
 which is a tagged template, you can then pass in your styles to this function. The syntax is same as offered by other css-in-js libraries like
@@ -120,7 +132,12 @@ to call.
 
 Let's take an example of typography styles:
 
-${<Image src={nestedStylesThemePackage} />}
+${(
+  <Image
+    src={nestedStylesThemePackage}
+    alt="nested styles in the theme package"
+  />
+)}
 
 ***(Not digging into details but we can see that heading is a function, look at the return in themed function.)***
 
