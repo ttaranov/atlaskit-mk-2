@@ -1,0 +1,1 @@
+- Rename `iconsInfo` to `metadata` to more accurately reflect its role
