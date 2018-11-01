@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Card, CardProps } from '../src';
+import { Card } from '../src';
 import {
   createStorybookContext,
   videoFileId,
+  imageFileId,
   videoLargeFileId,
   videoHorizontalFileId,
 } from '@atlaskit/media-test-helpers';
@@ -13,19 +14,27 @@ const onClick = () => console.log('onClick');
 
 export default () => (
   <InlineCardVideoWrapper>
-    {/* <Card
+    <Card
       context={context}
-      identifier={videoFileId}
+      identifier={imageFileId}
       disableOverlay={true}
       onClick={onClick}
     />
     <Card
       context={context}
       identifier={videoFileId}
-      dimensions={{ width: 500, height: 300 }}
       disableOverlay={true}
       onClick={onClick}
-    /> */}
+      useInlinePlayer={true}
+    />
+    <Card
+      context={context}
+      identifier={videoFileId}
+      dimensions={{ width: '100%', height: 300 }}
+      disableOverlay={true}
+      onClick={onClick}
+      useInlinePlayer={true}
+    />
     <Card
       context={context}
       identifier={videoLargeFileId}

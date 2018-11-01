@@ -3,8 +3,9 @@ import { Component } from 'react';
 import { Context } from '@atlaskit/media-core';
 import { FileIdentifier } from './domain';
 import { InlinePlayerWrapper } from './styled';
-import { CardDimensions } from '..';
+import { CardDimensions, defaultImageCardDimensions } from '..';
 import { Subscription } from 'rxjs/Subscription';
+import { CardLoading } from '../utils/cardLoading';
 
 export interface InlinePlayerProps {
   identifier: FileIdentifier;
@@ -15,12 +16,6 @@ export interface InlinePlayerProps {
 export interface InlinePlayerState {
   fileSrc?: string;
 }
-
-// TODO: Use local preview.blob if file is not processed
-// TODO: Loading state?
-// TODO: dimensions
-// TODO: close icon
-// TODO: onClose callback
 
 export class InlinePlayer extends Component<
   InlinePlayerProps,
@@ -66,23 +61,36 @@ export class InlinePlayer extends Component<
       });
   }
 
-  render() {
+  unsubscribe = () => {
     const { fileSrc } = this.state;
-    const { dimensions } = this.props;
-
-    if (!fileSrc) {
-      return <div>loading...</div>;
+    if (fileSrc) {
+      URL.revokeObjectURL(fileSrc);
     }
 
-    console.log(dimensions);
+    setImmediate(() => this.subscription && this.subscription.unsubscribe());
+  };
+
+  get dimensions() {
+    return this.props.dimensions || defaultImageCardDimensions;
+  }
+
+  get style() {
+    const { width, height } = this.dimensions;
+    return {
+      width,
+      height,
+    };
+  }
+
+  render() {
+    const { fileSrc } = this.state;
+
+    if (!fileSrc) {
+      return <CardLoading mediaItemType="file" dimensions={this.dimensions} />;
+    }
 
     return (
-      <InlinePlayerWrapper
-        style={{
-          width: `${dimensions.width}px`,
-          height: `${dimensions.height}px`,
-        }}
-      >
+      <InlinePlayerWrapper style={this.style}>
         <video src={fileSrc} autoPlay controls />
       </InlinePlayerWrapper>
     );
