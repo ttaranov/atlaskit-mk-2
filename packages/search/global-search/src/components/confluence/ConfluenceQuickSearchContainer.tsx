@@ -28,6 +28,7 @@ import {
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
 import QuickSearchContainer from '../common/QuickSearchContainer';
+import { messages } from '../../messages';
 import { sliceResults } from './ConfluenceSearchResultsMapper';
 import NoResultsState from './NoResultsState';
 import SearchResultsComponent from '../common/SearchResults';
@@ -271,7 +272,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         referralContextIdentifiers={this.props.referralContextIdentifiers}
         renderNoRecentActivity={() => (
           <FormattedHTMLMessage
-            id="global-search.no-recent-activity-body"
+            {...messages.no_recent_activity_body}
             values={{ url: getConfluenceAdvancedSearchLink() }}
           />
         )}
@@ -294,9 +295,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     return (
       <QuickSearchContainer
-        placeholder={this.props.intl.formatMessage({
-          id: 'global-search.confluence.search-placeholder',
-        })}
+        placeholder={this.props.intl.formatMessage(
+          messages.confluence_search_placeholder,
+        )}
         linkComponent={linkComponent}
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}

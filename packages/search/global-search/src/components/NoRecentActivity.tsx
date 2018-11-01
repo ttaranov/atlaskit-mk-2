@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
+import { messages } from '../messages';
 import MaginfyingGlassImage from '../assets/MagnifyingGlassImage';
 
 const Wrapper = styled.div`
@@ -40,7 +41,7 @@ export interface Props {
 const Text = ({ children }) => (
   <TextWrapper>
     <Title>
-      <FormattedMessage id="global-search.no-recent-activity-title" />
+      <FormattedMessage {...messages.no_recent_activity_title} />
     </Title>
     {children}
   </TextWrapper>

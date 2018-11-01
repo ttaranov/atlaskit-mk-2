@@ -5,6 +5,7 @@ import {
   Result,
 } from '../../model/Result';
 import { take } from '../SearchResultsUtil';
+import { messages } from '../../messages';
 
 const MAX_OBJECTS = 8;
 const MAX_CONTAINERS = 6;
@@ -46,17 +47,17 @@ export const mapRecentResultsToUIGroups = (
     {
       items: objectsToDisplay,
       key: 'issues',
-      titleI18nId: 'global-search.jira.recent-issues-heading',
+      title: messages.jira_recent_issues_heading,
     },
     {
       items: containersToDisplay,
       key: 'containers',
-      titleI18nId: 'global-search.jira.recent-containers',
+      title: messages.jira_recent_containers,
     },
     {
       items: peopleToDisplay,
       key: 'people',
-      titleI18nId: 'global-search.jira.recent-people-heading',
+      title: messages.jira_recent_people_heading,
     },
   ];
 };
@@ -73,17 +74,17 @@ export const mapSearchResultsToUIGroups = (
     {
       items: objectsToDisplay,
       key: 'issues',
-      titleI18nId: 'global-search.jira.seach-result-issues-heading',
+      title: messages.jira_search_result_issues_heading,
     },
     {
       items: containersToDisplay,
       key: 'containers',
-      titleI18nId: 'global-search.jira.seach-result-containers-heading',
+      title: messages.jira_search_result_containers_heading,
     },
     {
       items: peopleToDisplay,
       key: 'people',
-      titleI18nId: 'global-search.jira.seach-result-people-heading',
+      title: messages.jira_search_result_people_heading,
     },
   ];
 };

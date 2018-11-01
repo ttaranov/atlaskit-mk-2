@@ -32,7 +32,7 @@ const QS_ANALYTICS_EV_SUBMIT = `${ATLASKIT_QUICKSEARCH_NS}.submit`;
 export interface Props {
   onMount();
   onSearch(query: string);
-  onSearchSubmit?();
+  onSearchSubmit?(event: React.KeyboardEvent<HTMLInputElement>);
 
   isLoading: boolean;
   placeholder?: string;

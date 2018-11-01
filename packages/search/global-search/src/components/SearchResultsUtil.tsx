@@ -81,7 +81,7 @@ export function handlePromiseError<T>(
       if (errorHandler) {
         errorHandler(error);
       }
-    } catch {}
+    } catch (e) {}
     return defaultValue;
   });
 }

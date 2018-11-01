@@ -4,6 +4,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { gridSize, math } from '@atlaskit/theme';
+import { messages } from '../../messages';
 import StickyFooter from '../common/StickyFooter';
 import SearchPeopleItem from '../SearchPeopleItem';
 import SearchConfluenceItem from '../SearchConfluenceItem';
@@ -23,10 +24,10 @@ export default class AdvancedSearchGroup extends React.Component<Props> {
     const { query, analyticsData } = this.props;
     const text =
       query.length === 0 ? (
-        <FormattedMessage id="global-search.confluence.advanced-search" />
+        <FormattedMessage {...messages.confluence_advanced_search} />
       ) : (
         <FormattedMessage
-          id="global-search.confluence.advanced-search-for"
+          {...messages.confluence_advanced_search_for}
           values={{ query }}
         />
       );
@@ -36,7 +37,7 @@ export default class AdvancedSearchGroup extends React.Component<Props> {
         <SearchPeopleItem
           analyticsData={analyticsData}
           query={query}
-          text={<FormattedMessage id="global-search.people.advanced-search" />}
+          text={<FormattedMessage {...messages.people_advanced_search} />}
           icon={
             <Icon glyph={PeopleIconGlyph} size="medium" label="Search people" />
           }

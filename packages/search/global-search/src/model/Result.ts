@@ -1,4 +1,6 @@
 import { ABTest } from '../api/CrossProductSearchClient';
+import { messages } from '../messages';
+import { FormattedMessage } from 'react-intl';
 
 export enum ResultType {
   JiraObjectResult = 'jira-object-result',
@@ -64,7 +66,7 @@ export interface ConfluenceObjectResult extends Result {
 export type ResultsGroup = {
   items: Result[];
   key: string;
-  titleI18nId: string;
+  title: FormattedMessage.MessageDescriptor;
 };
 
 export interface JiraResult extends Result {

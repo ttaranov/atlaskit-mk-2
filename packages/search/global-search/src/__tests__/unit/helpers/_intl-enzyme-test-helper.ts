@@ -10,7 +10,7 @@
 import * as React from 'react';
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount, shallow } from 'enzyme';
-import { getMessagesForLocale } from '../../../i18n';
+import { getMessagesForLocale } from '../../../util/i18n-util';
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const intlProvider = new IntlProvider(

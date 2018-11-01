@@ -17,17 +17,21 @@ function render(partialProps: Partial<Props>) {
 
 it('should render advanced search text when no query is entered', () => {
   const wrapper = render({ query: '' });
-  expect(wrapper.find(SearchConfluenceItem).prop('text')).toEqual(
-    <FormattedMessage id="global-search.confluence.advanced-search" />,
-  );
+  expect(wrapper.find(SearchConfluenceItem).prop('text')).toMatchObject({
+    type: FormattedMessage,
+    props: {
+      id: 'global_search.confluence.advanced_search',
+    },
+  });
 });
 
 it('should render advanced search text when a query is entered', () => {
   const wrapper = render({ query: 'foo foo' });
-  expect(wrapper.find(SearchConfluenceItem).prop('text')).toEqual(
-    <FormattedMessage
-      id="global-search.confluence.advanced-search-for"
-      values={{ query: 'foo foo' }}
-    />,
-  );
+  expect(wrapper.find(SearchConfluenceItem).prop('text')).toMatchObject({
+    type: FormattedMessage,
+    props: {
+      id: 'global_search.confluence.advanced_search_for',
+      values: { query: 'foo foo' },
+    },
+  });
 });
