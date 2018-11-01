@@ -11,7 +11,6 @@ import {
   createEditor,
   sendKeyToPm,
   table,
-  th,
   thCursor,
   tr,
   td,
