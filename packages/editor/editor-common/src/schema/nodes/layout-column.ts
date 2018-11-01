@@ -1,4 +1,25 @@
 import { NodeSpec } from 'prosemirror-model';
+import { BlockContent } from './doc';
+
+/**
+ * @name layoutColumn_node
+ * @stage 0
+ */
+export interface LayoutColumnDefinition {
+  type: 'layoutColumn';
+  attrs: {
+    /**
+     * @minimum 0
+     * @maximum 100
+     */
+    width: number;
+  };
+
+  /**
+   * @minItems 1
+   */
+  content: Array<BlockContent>;
+}
 
 export const layoutColumn: NodeSpec = {
   content: 'block+',

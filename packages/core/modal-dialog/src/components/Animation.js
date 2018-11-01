@@ -29,13 +29,18 @@ export const Animation = ({
 }: AnimationProps) => (
   <Transition
     in={hasEntered}
-    timeout={duration}
+    timeout={{ enter: 0, exit: duration }}
     onExited={onExited}
     onEntered={onEntered}
     appear
   >
-    {status => {
-      if (status === 'exited') return null;
+    {unadjustedStatus => {
+      // when we first render, we want to finish the 'entering' state render
+      // then jump to the 'entered' state as quick as possible.
+      const adjustedStatus =
+        hasEntered && unadjustedStatus === 'exited'
+          ? 'entering'
+          : unadjustedStatus;
       // Fade styles
       const fadeBase = {
         transition: `opacity ${duration / 2}ms`,
@@ -55,6 +60,7 @@ export const Animation = ({
         transform: `translate3d(0, ${verticalOffset * 2}px, 0)`,
       };
       const slideTransitions = {
+        entering: {},
         entered: {
           transform:
             stackIndex > 0
@@ -66,8 +72,8 @@ export const Animation = ({
         },
       };
       return children({
-        fade: { ...fadeBase, ...fadeTransitions[status] },
-        slide: { ...slideBase, ...slideTransitions[status] },
+        fade: { ...fadeBase, ...fadeTransitions[adjustedStatus] },
+        slide: { ...slideBase, ...slideTransitions[adjustedStatus] },
       });
     }}
   </Transition>

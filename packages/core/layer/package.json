@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer",
-  "version": "5.0.8",
+  "version": "5.0.9",
   "description": "A React layer component responsible for the position of an element on a page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -23,7 +23,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "raf-schd": "^2.1.0",
-    "react-scrolllock": "^3.0.1"
+    "react-scrolllock": "^3.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",

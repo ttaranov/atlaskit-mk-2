@@ -1,1 +1,0 @@
-- Passes analytics event through onSetPage prop when pagination component is clicked on

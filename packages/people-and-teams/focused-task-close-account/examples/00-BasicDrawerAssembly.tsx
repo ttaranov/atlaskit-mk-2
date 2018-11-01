@@ -8,7 +8,7 @@ import {
   FocusedTaskCloseAccount,
   DeleteUserOverviewScreen,
   DeleteUserContentPreviewScreen,
-} from '..';
+} from '../src';
 
 const submitButton = (
   <Button appearance="primary" onClick={() => null}>
@@ -32,6 +32,7 @@ export default function Example() {
           <DeleteUserContentPreviewScreen user={catherineHirons} />,
         ]}
         submitButton={submitButton}
+        learnMoreLink={''}
       />
     </>
   );

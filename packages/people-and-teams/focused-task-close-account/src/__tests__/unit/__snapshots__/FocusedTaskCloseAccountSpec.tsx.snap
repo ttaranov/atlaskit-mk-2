@@ -18,7 +18,9 @@ exports[`isOpen snapshot 1`] = `
       secondaryActions={
         <ForwardRef
           appearance="subtle-link"
+          href="https://hello.atlassian.net"
           spacing="none"
+          target="_blank"
         >
           <FormattedMessage
             defaultMessage="Learn more"
@@ -41,4 +43,25 @@ exports[`isOpen snapshot 1`] = `
     />
   </styled.div>
 </ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(DrawerBase)))>
+`;
+
+exports[`learnMoreLink display Learn more link is displayed when the link is passed in the props 1`] = `
+<ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))
+  appearance="subtle-link"
+  href="https://hello.atlassian.net"
+  spacing="none"
+  target="_blank"
+>
+  <FormattedMessage
+    defaultMessage="Learn more"
+    description="Text for a link to a page where a user can learn more about a particular topic"
+    id="focused-task-close-account.learnMore"
+    values={Object {}}
+  />
+   
+  <ShortcutIcon
+    label=""
+    size="small"
+  />
+</ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))>
 `;

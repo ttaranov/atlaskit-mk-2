@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ADF => WikiMarkup - Extension should convert extension node back to macro if it is a macro type 1`] = `"{foo}string{foo}"`;
-
-exports[`ADF => WikiMarkup - Extension should convert extension node to {adf} macro if it is not a macro type 1`] = `
-"{adf:display=block}
-{\\"type\\":\\"extension\\",\\"attrs\\":{\\"extensionType\\":\\"com.atlassian.jira.things\\",\\"extensionKey\\":\\"foo\\",\\"parameters\\":null,\\"text\\":\\"string\\",\\"layout\\":\\"default\\"}}
-{adf}"
-`;

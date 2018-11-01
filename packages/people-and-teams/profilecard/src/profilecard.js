@@ -13,17 +13,17 @@ import presences from './internal/presences';
 import type { ProfilecardProps } from './types';
 
 import {
+  ActionButtonGroup,
+  ActionsFlexSpacer,
+  AppTitleLabel,
   CardContainer,
-  SpinnerContainer,
-  ProfileImage,
   CardContent,
+  DeactivatedInfo,
   DetailsGroup,
   FullNameLabel,
   JobTitleLabel,
-  AppTitleLabel,
-  ActionsFlexSpacer,
-  ActionButtonGroup,
-  DeactivatedInfo,
+  ProfileImage,
+  SpinnerContainer,
 } from './styled/Card';
 
 export default class Profilecard extends PureComponent<ProfilecardProps, void> {
@@ -138,22 +138,10 @@ export default class Profilecard extends PureComponent<ProfilecardProps, void> {
   }
 
   renderCardDetailsDeactivated() {
-    const userName = this.props.isCensored
-      ? this.props.nickname
-      : this.props.fullName;
-
     return (
       <DetailsGroup>
-        <FullNameLabel noMeta>{userName}</FullNameLabel>
+        <FullNameLabel noMeta>{this.props.fullName}</FullNameLabel>
         <DeactivatedInfo>This user is no longer available</DeactivatedInfo>
-      </DetailsGroup>
-    );
-  }
-
-  renderCardDetailsCensored() {
-    return (
-      <DetailsGroup>
-        <FullNameLabel noMeta>{this.props.nickname}</FullNameLabel>
       </DetailsGroup>
     );
   }
@@ -175,8 +163,6 @@ export default class Profilecard extends PureComponent<ProfilecardProps, void> {
       return this.renderCardDetailsApp();
     } else if (!this.props.isActive) {
       return this.renderCardDetailsDeactivated();
-    } else if (this.props.isCensored) {
-      return this.renderCardDetailsCensored();
     }
 
     return this.renderCardDetailsDefault();

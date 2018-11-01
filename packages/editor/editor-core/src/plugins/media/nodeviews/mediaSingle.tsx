@@ -60,7 +60,8 @@ export default class MediaSingleNode extends Component<
       this.props.node.attrs.width !== nextProps.node.attrs.width ||
       this.props.selected() !== nextProps.selected() ||
       this.props.node.attrs.layout !== nextProps.node.attrs.layout ||
-      this.props.width !== nextProps.width
+      this.props.width !== nextProps.width ||
+      this.props.lineLength !== nextProps.lineLength
     ) {
       return true;
     }
@@ -162,6 +163,13 @@ export default class MediaSingleNode extends Component<
       height = DEFAULT_HEIGHT;
     }
 
+    const cardWidth = this.props.width;
+    const cardHeight = height / width * cardWidth;
+    const cardDimensions = {
+      width: `${cardWidth}px`,
+      height: `${cardHeight}px`,
+    };
+
     const props = {
       layout,
       width,
@@ -183,10 +191,7 @@ export default class MediaSingleNode extends Component<
               node={this.child}
               view={this.props.view}
               getPos={this.props.getPos}
-              cardDimensions={{
-                width: '100%',
-                height: '100%',
-              }}
+              cardDimensions={cardDimensions}
               mediaProvider={mediaProvider}
               selected={selected()}
               onClick={this.selectMediaSingle}

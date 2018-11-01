@@ -31,6 +31,8 @@ export { hardBreak } from './nodes/hard-break';
 export { hardBreak as br } from './nodes/hard-break';
 export { heading } from './nodes/heading';
 export { inlineExtension } from './nodes/inline-extension';
+export { layoutColumn } from './nodes/layout-column';
+export { layoutSection } from './nodes/layout-section';
 export { listItem } from './nodes/list-item';
 export { listItem as li } from './nodes/list-item';
 export { mediaGroup } from './nodes/media-group';

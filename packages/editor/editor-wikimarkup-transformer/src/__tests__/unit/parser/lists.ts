@@ -83,6 +83,15 @@ describe('JIRA wiki markup - Lists', () => {
       `* nested
        spaces in front of me`,
     ],
+    [
+      'should jump over empty lines in macro successfully',
+      `* list with macro
+{code}
+sadfsadf
+
+{code}
+* list 2`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

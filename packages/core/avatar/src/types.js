@@ -16,7 +16,7 @@ export type SizeType =
   | 'xxlarge';
 export type SupportedSizeWithAnIcon = 'small' | 'medium' | 'large' | 'xlarge';
 
-export type StatusType = 'approved' | 'declined' | 'locked';
+export type StatusType = ('approved' | 'declined' | 'locked') | Node;
 export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
 export type AvatarClickType = (

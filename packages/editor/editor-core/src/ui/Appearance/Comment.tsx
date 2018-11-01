@@ -12,19 +12,30 @@ import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main'
 import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 import WithFlash from '../WithFlash';
-import { akEditorMenuZIndex } from '@atlaskit/editor-common';
+import {
+  akEditorMenuZIndex,
+  WidthConsumer,
+  akEditorMobileBreakoutPoint,
+} from '@atlaskit/editor-common';
 import WidthEmitter from '../WidthEmitter';
 import { GRID_GUTTER } from '../../plugins/grid';
+import * as classnames from 'classnames';
 
 export interface CommentEditorProps {
   isMaxContentSizeReached?: boolean;
   maxHeight?: number;
 }
+const CommentEditorMargin = 14;
+const CommentEditorSmallerMargin = 8;
 
 // tslint:disable-next-line:variable-name
 const CommentEditor: any = styled.div`
   display: flex;
   flex-direction: column;
+
+  .less-margin .ProseMirror {
+    margin: 12px ${CommentEditorSmallerMargin}px ${CommentEditorSmallerMargin}px;
+  }
 
   min-width: 272px;
   /* Border + Toolbar + Footer + (Paragraph + ((Parahraph + Margin) * (DefaultLines - 1)) */
@@ -43,9 +54,7 @@ const CommentEditor: any = styled.div`
   word-wrap: break-word;
 `;
 CommentEditor.displayName = 'CommentEditor';
-
 const TableControlsPadding = 16;
-const CommentEditorMargin = 20;
 
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
@@ -60,6 +69,10 @@ const MainToolbar = styled.div`
 
   & > div > *:first-child {
     margin-left: 0;
+  }
+
+  .block-type-btn {
+    padding-left: 0;
   }
 `;
 MainToolbar.displayName = 'MainToolbar';
@@ -158,7 +171,6 @@ export default class Editor extends React.Component<
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
-
     return (
       <WithFlash animate={maxContentSizeReached}>
         <CommentEditor maxHeight={maxHeight} className="akEditor">
@@ -180,26 +192,34 @@ export default class Editor extends React.Component<
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
           <ClickAreaBlock editorView={editorView}>
-            <ContentArea
-              innerRef={ref => (this.containerElement = ref)}
-              className="ak-editor-content-area"
-            >
-              {customContentComponents}
-              <PluginSlot
-                editorView={editorView}
-                editorActions={editorActions}
-                eventDispatcher={eventDispatcher}
-                providerFactory={providerFactory}
-                appearance={this.appearance}
-                items={contentComponents}
-                popupsMountPoint={popupsMountPoint}
-                popupsBoundariesElement={popupsBoundariesElement}
-                popupsScrollableElement={popupsScrollableElement}
-                containerElement={this.containerElement}
-                disabled={!!disabled}
-              />
-              {editorDOMElement}
-            </ContentArea>
+            <WidthConsumer>
+              {({ width }) => {
+                return (
+                  <ContentArea
+                    innerRef={ref => (this.containerElement = ref)}
+                    className={classnames('ak-editor-content-area', {
+                      'less-margin': width < akEditorMobileBreakoutPoint,
+                    })}
+                  >
+                    {customContentComponents}
+                    <PluginSlot
+                      editorView={editorView}
+                      editorActions={editorActions}
+                      eventDispatcher={eventDispatcher}
+                      providerFactory={providerFactory}
+                      appearance={this.appearance}
+                      items={contentComponents}
+                      popupsMountPoint={popupsMountPoint}
+                      popupsBoundariesElement={popupsBoundariesElement}
+                      popupsScrollableElement={popupsScrollableElement}
+                      containerElement={this.containerElement}
+                      disabled={!!disabled}
+                    />
+                    {editorDOMElement}
+                  </ContentArea>
+                );
+              }}
+            </WidthConsumer>
           </ClickAreaBlock>
           <WidthEmitter
             editorView={editorView!}

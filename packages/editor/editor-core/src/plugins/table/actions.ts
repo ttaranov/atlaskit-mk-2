@@ -289,6 +289,34 @@ export const insertRow = (row: number): Command => (
   return true;
 };
 
+export const triggerUnlessTableHeader = (command: Command): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const {
+    selection,
+    schema: {
+      nodes: { tableHeader },
+    },
+  } = state;
+
+  if (selection instanceof TextSelection) {
+    const cell = findCellClosestToPos(selection.$from);
+    if (cell && cell.node.type !== tableHeader) {
+      return command(state, dispatch);
+    }
+  }
+
+  if (selection instanceof CellSelection) {
+    const rect = getSelectionRect(selection);
+    if (!checkIfHeaderRowEnabled(state) || (rect && rect.top > 0)) {
+      return command(state, dispatch);
+    }
+  }
+
+  return false;
+};
+
 export function transformSliceToAddTableHeaders(
   slice: Slice,
   schema: Schema,

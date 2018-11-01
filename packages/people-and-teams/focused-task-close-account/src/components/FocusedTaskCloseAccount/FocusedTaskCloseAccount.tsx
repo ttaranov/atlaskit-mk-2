@@ -14,6 +14,7 @@ interface Props {
   onClose: () => void;
   screens: React.ReactNode[];
   submitButton: React.ReactNode;
+  learnMoreLink: string;
 }
 
 export class FocusedTaskCloseAccount extends React.Component<Props> {
@@ -44,7 +45,13 @@ export class FocusedTaskCloseAccount extends React.Component<Props> {
   };
 
   render() {
-    const { isOpen, onClose, screens, submitButton } = this.props;
+    const {
+      isOpen,
+      onClose,
+      screens,
+      submitButton,
+      learnMoreLink,
+    } = this.props;
     const { currentScreenIdx } = this.state;
     return (
       <Drawer
@@ -63,10 +70,17 @@ export class FocusedTaskCloseAccount extends React.Component<Props> {
             onNext={this.nextScreen}
             onPrevious={this.previousScreen}
             secondaryActions={
-              <Button appearance="subtle-link" spacing="none">
-                <FormattedMessage {...commonMessages.learnMore} />{' '}
-                <ShortcutIcon size="small" label="" />
-              </Button>
+              learnMoreLink && (
+                <Button
+                  appearance="subtle-link"
+                  spacing="none"
+                  href={learnMoreLink}
+                  target="_blank"
+                >
+                  <FormattedMessage {...commonMessages.learnMore} />{' '}
+                  <ShortcutIcon size="small" label="" />
+                </Button>
+              )
             }
             submitButton={submitButton}
           />
