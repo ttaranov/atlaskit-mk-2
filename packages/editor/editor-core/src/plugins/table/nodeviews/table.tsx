@@ -94,6 +94,7 @@ export default class TableView extends ReactNodeView {
             {...props}
             {...pluginStates}
             node={this.node}
+            width={pluginStates.containerWidth.width}
             contentDOM={forwardRef}
             onComponentMount={this.componentDidMount}
           />
