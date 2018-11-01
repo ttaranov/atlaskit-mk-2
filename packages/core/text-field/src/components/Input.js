@@ -6,13 +6,13 @@ import type { InputProps } from '../types';
 
 export default ({
   appearance,
+  forwardedRef,
   isCompact,
   isDisabled,
   isFocused,
+  isMonospaced,
   isReadOnly,
   isRequired,
-  isMonospaced,
-  forwardedRef,
   ...props
 }: InputProps) => (
   <InputWrapper

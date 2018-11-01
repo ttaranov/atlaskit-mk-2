@@ -19,9 +19,9 @@ Detailed docs and example usage can be found [here](https://atlaskit.atlassian.c
 - [x] forwardRefs
 - [x] Backwards compat with field-text
 - [x] Backwards compat with field-base (where it makes sense)
+- [x] Examples (form validation)
 - [ ] Theming
 - [ ] Tests
 - [ ] Styles prop?
-- [ ] Examples (form validation)
 - [ ] code mod / upgrade guide
 - [ ] Use `useState`
