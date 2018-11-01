@@ -1,0 +1,1 @@
+- allow list to jump over empty lines in macro successfully

@@ -1,0 +1,6 @@
+{
+  "releases": [
+    { "name": "@atlaskit/editor-wikimarkup-transformer", "type": "patch" }
+  ],
+  "dependents": []
+}
