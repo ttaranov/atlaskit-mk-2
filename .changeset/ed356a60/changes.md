@@ -1,0 +1,1 @@
+- Flow consumers of Button now get static typing
