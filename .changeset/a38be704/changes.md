@@ -1,0 +1,1 @@
+- Updates prop types provide more type information
