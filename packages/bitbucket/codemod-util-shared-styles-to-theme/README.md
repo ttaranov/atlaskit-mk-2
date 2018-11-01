@@ -14,13 +14,13 @@ Codemod for converting `@atlaskit/util-shared-styles` to `@atlaskit/theme`
 - `akCodeFontFamily` > `codeFontFamily()`
 - `akFontFamily` > `fontFamily()`
 - `akFontSizeDefault` > `` `${fontSize()}px`
+- `akZIndexXYZ` > `layers.XYZ()`
 
 ### Not supported yet
 
 PRs welcome :)
 
 - `akHelperMixins` > ?
-- `akZIndexXYZ` > `layers.XYZ()`
 
 ## Setup
 

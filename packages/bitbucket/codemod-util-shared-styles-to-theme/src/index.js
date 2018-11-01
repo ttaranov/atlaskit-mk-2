@@ -8,6 +8,7 @@ import codeFontTransform from './transforms/codeFont';
 import fixRedundantRenamesTransform from './transforms/fixRedundantRenames';
 import fontSize from './transforms/fontSize';
 import fontFamily from './transforms/fontFamily';
+import layers from './transforms/layers';
 
 // This function gets called by jscodeshift.
 // It gets passed the file info and a reference to the jscodeshift API.
@@ -27,6 +28,7 @@ export default function utilSharedStylesToThemeCodeshift(
     typographyTransform,
     codeFontTransform,
     fontSize,
+    layers,
     fixRedundantRenamesTransform,
   ];
 
