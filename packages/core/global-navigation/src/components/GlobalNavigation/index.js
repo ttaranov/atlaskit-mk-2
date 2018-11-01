@@ -115,9 +115,11 @@ export default class GlobalNavigation
       fabricNotificationLogUrl,
       notificationDrawerContents,
     } = this.props;
-    if (!notificationDrawerContents && cloudId && fabricNotificationLogUrl) {
-      this.isNotificationInbuilt = true;
-    }
+    this.isNotificationInbuilt = !!(
+      !notificationDrawerContents &&
+      cloudId &&
+      fabricNotificationLogUrl
+    );
   }
 
   componentDidUpdate(prevProps: GlobalNavigationProps) {
@@ -148,9 +150,11 @@ export default class GlobalNavigation
       fabricNotificationLogUrl,
       notificationDrawerContents,
     } = this.props;
-    if (!notificationDrawerContents && cloudId && fabricNotificationLogUrl) {
-      this.isNotificationInbuilt = true;
-    }
+    this.isNotificationInbuilt = !!(
+      !notificationDrawerContents &&
+      cloudId &&
+      fabricNotificationLogUrl
+    );
   }
 
   onCountUpdating = (

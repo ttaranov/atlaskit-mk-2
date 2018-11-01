@@ -1,5 +1,6 @@
 // @flow
 
+// TODO: Check if we really need to use this package below
 import UrlParse from 'url-parse';
 
 export default (url: string, key: string, value: string) => {
