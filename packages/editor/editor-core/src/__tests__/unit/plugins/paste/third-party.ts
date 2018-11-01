@@ -9,6 +9,8 @@ import googleTextPlain from './__third-party__/google-docs/text/plain';
 import msWordTextHTML from './__third-party__/microsoft-word/text/html';
 import msWordTextPlain from './__third-party__/microsoft-word/text/plain';
 import reactSyntaxHighlighterHTML from './__third-party__/react-syntax-highlighter/text/html';
+import vsCodeMultiLine from './__third-party__/vs-code/multi-line/html';
+import vsCodeSingleLine from './__third-party__/vs-code/single-line/html';
 
 import { toJSON } from '../../../../utils';
 import {
@@ -97,5 +99,23 @@ describe('paste plugin: third-party', () => {
     }) as CustomEvent;
 
     expect(event.cancelBubble).toBe(true);
+  });
+
+  it('should convert multiple lines to a code-block when pasting content from Visual Studio Code', () => {
+    const { editorView } = editor(doc(p('')));
+    dispatchPasteEvent(editorView, {
+      html: vsCodeMultiLine,
+    });
+
+    expect(toJSON(editorView.state.doc)).toMatchDocSnapshot();
+  });
+
+  it('should convert single line to a code mark when pasting content from Visual Studio Code', () => {
+    const { editorView } = editor(doc(p('')));
+    dispatchPasteEvent(editorView, {
+      html: vsCodeSingleLine,
+    });
+
+    expect(toJSON(editorView.state.doc)).toMatchDocSnapshot();
   });
 });
