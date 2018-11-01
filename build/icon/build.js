@@ -33,7 +33,7 @@ module.exports = function(config /*: Config */) {
         const wayHome = filepath
           .split('/')
           .map(a => '..')
-          .concat('es5/index')
+          .concat('cjs/index')
           .join('/');
         const fileKey = filepath.replace(/\.svg$/, '');
         const displayName = fileKey

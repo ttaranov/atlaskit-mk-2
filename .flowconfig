@@ -4,7 +4,7 @@
 .*/website/.*
 .*/docs/templates/.*
 .*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
-.*/packages/elements/icon/es5/.*
+.*/packages/elements/icon/cjs/.*
 .*/node_modules/stylelint/.*
 .*/node_modules/babel-flow-types/.*
 .*/node_modules/babel-normalize-comments/.*
