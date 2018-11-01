@@ -1,0 +1,1 @@
+- Export metadata more cleanly - fix break in accessing metadata
