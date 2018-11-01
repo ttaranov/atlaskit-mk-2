@@ -66,8 +66,9 @@ export class ZoomControlsBase extends Component<ZoomControlsProps, {}> {
   }
 
   private fireAnalytics = (payload: ZoomControlsGasPayload) => {
-    if (this.props.createAnalyticsEvent) {
-      const ev = this.props.createAnalyticsEvent(payload);
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const ev = createAnalyticsEvent(payload);
       ev.fire(channel);
     }
   };

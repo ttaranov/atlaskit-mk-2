@@ -49,8 +49,9 @@ export class NavigationBase extends Component<NavigationProps, {}> {
   }
 
   private fireAnalytics = (payload: NavigationGasPayload) => {
-    if (this.props.createAnalyticsEvent) {
-      const ev = this.props.createAnalyticsEvent(payload);
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const ev = createAnalyticsEvent(payload);
       ev.fire(channel);
     }
   };

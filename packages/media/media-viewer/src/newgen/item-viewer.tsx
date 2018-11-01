@@ -206,8 +206,9 @@ export class ItemViewerBase extends React.Component<Props, State> {
   }
 
   private fireAnalytics = (payload: GasPayload | GasScreenEventPayload) => {
-    if (this.props.createAnalyticsEvent) {
-      const ev = this.props.createAnalyticsEvent(payload);
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const ev = createAnalyticsEvent(payload);
       ev.fire(channel);
     }
   };
