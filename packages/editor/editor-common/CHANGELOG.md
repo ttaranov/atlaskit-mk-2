@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 20.3.1
+- Updated dependencies [a6dd6e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6dd6e3):
+  - @atlaskit/profilecard@5.0.0
+
 ## 20.3.0
 - [minor] [4f5830f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5830f):
 

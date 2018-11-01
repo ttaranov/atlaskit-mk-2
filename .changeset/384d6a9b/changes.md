@@ -1,1 +1,0 @@
-- Removed isCensored prop as this state no longer exists
