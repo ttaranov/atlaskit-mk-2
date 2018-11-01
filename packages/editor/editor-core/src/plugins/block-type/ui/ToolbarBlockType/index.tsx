@@ -101,6 +101,7 @@ class ToolbarBlockType extends React.PureComponent<
         <ToolbarButton
           spacing={isReducedSpacing ? 'none' : 'default'}
           selected={active}
+          className="block-type-btn"
           disabled={disabled}
           onClick={this.handleTriggerClick}
           title={labelTextStyles}

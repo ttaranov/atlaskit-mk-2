@@ -188,6 +188,14 @@ export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle}
 
+    .less-padding {
+      padding: 0 8px;
+
+      .${ClassName.ROW_CONTROLS_WRAPPER} {
+         padding: 0 8px;
+      }
+    }
+
     /* Breakout only works on top level */
     > .${ClassName.NODEVIEW_WRAPPER} .${
   ClassName.TABLE_CONTAINER
