@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.7.2
+- [patch] [c032914](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c032914):
+
+  - ED-2043: Added table keyboard shortcut
+
 ## 87.7.1
 - [patch] [e8afbf1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8afbf1):
 
