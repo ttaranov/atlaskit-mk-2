@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -126,7 +126,7 @@ class InlineDialog extends Component<Props, {}> {
 export { InlineDialog as InlineDialogWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const InlineDialogWithAnalytics = withAnalyticsContext({
   componentName: 'inlineDialog',
   packageName,
   packageVersion,
@@ -143,4 +143,8 @@ export default withAnalyticsContext({
       },
     }),
   })(InlineDialog),
+);
+
+export default (props: ElementConfig<typeof InlineDialog>) => (
+  <InlineDialogWithAnalytics {...props} />
 );

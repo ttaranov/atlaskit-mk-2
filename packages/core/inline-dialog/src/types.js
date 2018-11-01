@@ -26,11 +26,11 @@ export type Props = {
   /** Sets whether to show or hide the dialog. */
   isOpen: boolean,
   /** Function called when you lose focus on the object. */
-  onContentBlur: () => void,
+  onContentBlur: (e: FocusEvent) => void,
   /** Function called when you click on the open dialog. */
-  onContentClick: () => void,
+  onContentClick: (e: MouseEvent) => void,
   /** Function called when you focus on the open dialog. */
-  onContentFocus: () => void,
+  onContentFocus: (e: FocusEvent) => void,
   /** Function called when the dialog is open and a click occurs anywhere outside
    the dialog. */
   onClose: ({ isOpen: false, event: any }) => void,

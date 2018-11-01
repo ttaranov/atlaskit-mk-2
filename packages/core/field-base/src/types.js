@@ -35,11 +35,11 @@ export type FieldBaseStatelessProps = {
   /** handler for the onBlur event on the field element */
   onBlur: (event: any) => mixed,
   /** handler for the onBlur event on the dialog element */
-  onDialogBlur?: (event: any) => mixed,
+  onDialogBlur?: (event: FocusEvent) => any,
   /** handler for the click event on the dialog element */
-  onDialogClick?: (event: any) => mixed,
+  onDialogClick?: (event: MouseEvent) => any,
   /** handler for the focus event on the dialog element */
-  onDialogFocus?: (event: any) => mixed,
+  onDialogFocus?: (event: FocusEvent) => any,
   /** handler for the focus event on the field element */
   onFocus: (event: any) => mixed,
   /** whether to call the onBlur handler inside componentDidUpdate */
