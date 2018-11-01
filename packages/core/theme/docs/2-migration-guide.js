@@ -22,6 +22,10 @@ export default md`
 
 ### Migrating in JS
 
+P.S → [codemod-util-shared-styles-to-theme](https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/packages/bitbucket/codemod-util-shared-styles-to-theme/)
+is a codemod build by the bitbicket team it is to covert all the imports from @atlaskit/util-shared-styles to @atlaskit/theme.
+
+
 This migration is a breeze. We can straight away remove the import of values from util-shared-styles and
 use @atlaskit/theme. Since, both export values as JS variables, The only caveat is we should be using
 styled-components so that styles are evaluated properly. However, If you are using Atlaskit you already
