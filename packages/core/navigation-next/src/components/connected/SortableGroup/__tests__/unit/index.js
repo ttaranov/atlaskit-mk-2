@@ -17,19 +17,22 @@ jest.mock('react-beautiful-dnd', () => {
 
 describe('SortableGroup', () => {
   let baseProps;
-  let droppableRenderArg;
+  let droppableRenderArgs;
   const droppableRef = {};
   beforeEach(() => {
     jest.clearAllMocks();
-    droppableRenderArg = {
-      droppableProps: {
-        mySpecialProp: 'foo',
+    droppableRenderArgs = [
+      {
+        droppableProps: {
+          mySpecialProp: 'foo',
+        },
+        placeholder: () => <span>Placeholder</span>,
+        innerRef: droppableRef,
       },
-      placeholder: () => <span>Placeholder</span>,
-      innerRef: droppableRef,
-    };
+      { isDraggingOver: false },
+    ];
     Droppable.mockImplementation(({ children }) =>
-      children(droppableRenderArg),
+      children(...droppableRenderArgs),
     );
     baseProps = {
       heading: 'My group',
@@ -49,7 +52,7 @@ describe('SortableGroup', () => {
       hasSeparator: false,
       heading: 'My group',
       id: 'my-group',
-      children: ['Group children', droppableRenderArg.placeholder],
+      children: ['Group children', droppableRenderArgs[0].placeholder],
     });
     expect(wrapper).toMatchSnapshot();
   });
@@ -76,7 +79,7 @@ describe('SortableGroup', () => {
     expect(wrapper.is('div')).toBe(true);
     expect(wrapper.props()).toEqual(
       expect.objectContaining({
-        ...droppableRenderArg.droppableProps,
+        ...droppableRenderArgs[0].droppableProps,
       }),
     );
   });
@@ -86,6 +89,19 @@ describe('SortableGroup', () => {
       <SortableGroup {...baseProps} innerStyle={{ paddingTop: 400 }}>
         Group children
       </SortableGroup>,
+    ).dive();
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should disable pointerEvents on the group while it is being dragged over', () => {
+    droppableRenderArgs[1].isDraggingOver = true;
+
+    Droppable.mockImplementation(({ children }) =>
+      children(...droppableRenderArgs),
+    );
+    const wrapper = shallow(
+      <SortableGroup {...baseProps}>Group children</SortableGroup>,
     ).dive();
 
     expect(wrapper).toMatchSnapshot();

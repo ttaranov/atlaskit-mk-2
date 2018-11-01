@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, type DroppableStateSnapshot } from 'react-beautiful-dnd';
 
 import Group from '../../presentational/Group';
 import type { SortableGroupProps } from './types';
@@ -16,15 +16,24 @@ const defaultStyles = {
   },
 };
 
+// This will automatically be applied for us as part of react-beautiful-dnd v10
+const applyDraggingStyles = (snapshot: DroppableStateSnapshot) => ({
+  pointerEvents: snapshot.isDraggingOver ? 'none' : undefined,
+});
+
 export default class SortableGroup extends Component<SortableGroupProps> {
   render() {
     const { children, innerStyle, ...groupProps } = this.props;
     return (
       <Droppable droppableId={groupProps.id}>
-        {droppableProvided => (
+        {(droppableProvided, snapshot) => (
           <div
             ref={droppableProvided.innerRef}
-            css={{ ...defaultStyles, ...innerStyle }}
+            css={{
+              ...defaultStyles,
+              ...innerStyle,
+              ...applyDraggingStyles(snapshot),
+            }}
             {...droppableProvided.droppableProps}
           >
             <Group {...groupProps}>
