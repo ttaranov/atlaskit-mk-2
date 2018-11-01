@@ -1,0 +1,1 @@
+- Flow consumers now get static type safety for DatePicker, TimePicker and DateTimePicker 
