@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.7.1
+- [patch] [e8afbf1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8afbf1):
+
+  - ED-5310: fix inline code background appearing when wrapping
+
 ## 87.7.0
 - [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
 
