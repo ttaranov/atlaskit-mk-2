@@ -1,0 +1,1 @@
+- ED-5565: support connecting external React.Context to nodeviews

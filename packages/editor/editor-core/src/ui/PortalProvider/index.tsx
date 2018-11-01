@@ -14,17 +14,43 @@ export type PortalRendererState = {
   portals: Map<HTMLElement, React.ReactChild>;
 };
 
+type MountedPortal = {
+  children: () => React.ReactChild | null;
+  hasReactContext: boolean;
+};
+
 export class PortalProviderAPI extends EventDispatcher {
-  portals = new Map();
+  portals: Map<HTMLElement, MountedPortal> = new Map();
   context: any;
 
   setContext = context => {
     this.context = context;
   };
 
-  render(children: React.ReactChild, container: HTMLElement) {
-    this.portals.set(container, children);
-    unstable_renderSubtreeIntoContainer(this.context, children, container);
+  render(
+    children: () => React.ReactChild | null,
+    container: HTMLElement,
+    hasReactContext: boolean = false,
+  ) {
+    this.portals.set(container, { children, hasReactContext });
+    unstable_renderSubtreeIntoContainer(this.context, children(), container);
+  }
+
+  // TODO: until https://product-fabric.atlassian.net/browse/ED-5013
+  // we (unfortunately) need to re-render to pass down any updated context.
+  // selectively do this for nodeviews that opt-in via `hasReactContext`
+  forceUpdate() {
+    this.portals.forEach((portal, container) => {
+      if (!portal.hasReactContext) {
+        return;
+      }
+
+      unstable_renderSubtreeIntoContainer(
+        this.context,
+        portal.children(),
+        container,
+      );
+    });
   }
 
   remove(container: HTMLElement) {
@@ -43,6 +69,10 @@ export class PortalProvider extends React.Component<PortalProviderProps> {
 
   render() {
     return this.props.render(this.portalProviderAPI);
+  }
+
+  componentDidUpdate() {
+    this.portalProviderAPI.forceUpdate();
   }
 }
 

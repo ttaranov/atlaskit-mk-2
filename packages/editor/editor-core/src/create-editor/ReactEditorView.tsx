@@ -49,7 +49,7 @@ export interface EditorViewProps {
   ) => void;
 }
 
-export default class ReactEditorView<T = {}> extends React.PureComponent<
+export default class ReactEditorView<T = {}> extends React.Component<
   EditorViewProps & T
 > {
   view?: EditorView;
