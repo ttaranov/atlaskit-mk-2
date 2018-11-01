@@ -634,14 +634,18 @@ class ToolbarInsertBlock extends React.PureComponent<
   @analyticsDecorator('atlassian.editor.format.horizontalrule.button')
   private insertHorizontalRule = (): boolean => {
     const { editorView } = this.props;
-    editorView.dispatch(
-      createHorizontalRule(
-        editorView.state,
-        editorView.state.selection.from,
-        editorView.state.selection.to,
-      ),
+    const tr = createHorizontalRule(
+      editorView.state,
+      editorView.state.selection.from,
+      editorView.state.selection.to,
     );
-    return true;
+
+    if (tr) {
+      editorView.dispatch(tr);
+      return true;
+    }
+
+    return false;
   };
 
   @analyticsDecorator('atlassian.editor.emoji.button')
