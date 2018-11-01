@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 10.2.1
+- [patch] [d15caa6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d15caa6):
+
+  - adding editor image alignment icons
+
 ## 10.2.0
 - [minor] [fe3c283"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe3c283"

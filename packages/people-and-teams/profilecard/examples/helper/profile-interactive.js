@@ -49,7 +49,6 @@ type State = {
 
   isBot: boolean,
   isActive: boolean,
-  isCensored: boolean,
 
   hasDarkTheme: boolean,
   hasWeekday: boolean,
@@ -79,7 +78,6 @@ export default class ProfilecardInteractive extends Component<Props, State> {
 
     isBot: false,
     isActive: true,
-    isCensored: false,
 
     hasDarkTheme: false,
     hasWeekday: false,
@@ -160,7 +158,6 @@ export default class ProfilecardInteractive extends Component<Props, State> {
               actions={this.state.hasNoActions ? [] : actions}
               isBot={this.state.isBot}
               isActive={this.state.isActive}
-              isCensored={this.state.isCensored}
               avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
               email={this.state.email}
               fullName={
@@ -205,7 +202,6 @@ export default class ProfilecardInteractive extends Component<Props, State> {
               <li>{this.createCheckboxBooleanAttribute('hasErrorState')}</li>
               <li>{this.createCheckboxBooleanAttribute('isBot')}</li>
               <li>{this.createCheckboxBooleanAttribute('isActive')}</li>
-              <li>{this.createCheckboxBooleanAttribute('isCensored')}</li>
               <li>{this.createCheckboxBooleanAttribute('hasDarkTheme')}</li>
             </ul>
 

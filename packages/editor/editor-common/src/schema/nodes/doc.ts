@@ -28,6 +28,7 @@ import { StatusDefinition as Status } from './status';
 import { PlaceholderDefinition as Placeholder } from './placeholder';
 import { InlineCardDefinition as InlineCard } from './inline-card';
 import { BlockCardDefinition as BlockCard } from './block-card';
+import { LayoutSectionDefinition as LayoutSection } from './layout-section';
 
 // Marks
 import { LinkDefinition as Link } from '../marks/link';
@@ -41,10 +42,9 @@ import { TextColorDefinition as TextColor } from '../marks/text-color';
 import { ActionDefinition as Action } from '../marks/action';
 
 /**
- * @name top_level_node
- * @allowUnsupportedBlock true
+ * @name block_content
  */
-export type TopLevel = Array<
+export type BlockContent =
   | Panel
   | Paragraph
   | Blockquote
@@ -61,8 +61,7 @@ export type TopLevel = Array<
   | Table
   | Extension
   | BodiedExtension
-  | BlockCard
->;
+  | BlockCard;
 
 /**
  * @name table_cell_content
@@ -171,7 +170,10 @@ export type Inline = InlineFormattedText | InlineCode | InlineAtomic;
 export interface DocNode {
   version: 1;
   type: 'doc';
-  content: TopLevel;
+  /**
+   * @allowUnsupportedBlock true
+   */
+  content: Array<BlockContent | LayoutSection>;
 }
 
 export const doc: NodeSpec = {

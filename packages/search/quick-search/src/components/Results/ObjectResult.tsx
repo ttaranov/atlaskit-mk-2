@@ -27,6 +27,7 @@ export default class ObjectResult extends React.PureComponent<Props> {
 
     return (
       <Avatar
+        borderColor="transparent"
         src={this.props.avatarUrl}
         appearance="square"
         size="small"

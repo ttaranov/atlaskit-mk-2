@@ -11,6 +11,7 @@ export default class ReactNodeView implements NodeView {
   private contentDOMWrapper: Node | null;
   private reactComponent?: React.ComponentType<any>;
   private portalProviderAPI: PortalProviderAPI;
+  private hasContext: boolean;
 
   reactComponentProps: ReactComponentProps = {};
 
@@ -26,6 +27,7 @@ export default class ReactNodeView implements NodeView {
     portalProviderAPI: PortalProviderAPI,
     reactComponentProps: ReactComponentProps = {},
     reactComponent?: React.ComponentType<any>,
+    hasContext: boolean = false,
   ) {
     this.node = node;
     this.view = view;
@@ -33,6 +35,7 @@ export default class ReactNodeView implements NodeView {
     this.portalProviderAPI = portalProviderAPI;
     this.reactComponentProps = reactComponentProps;
     this.reactComponent = reactComponent;
+    this.hasContext = hasContext;
   }
 
   /**
@@ -65,19 +68,21 @@ export default class ReactNodeView implements NodeView {
     // difference between them and it kills the nodeView
     this.domRef.className = `${this.node.type.name}View-content-wrap`;
 
-    this.renderReactComponent(
+    this.renderReactComponent(() =>
       this.render(this.reactComponentProps, this.handleRef),
     );
 
     return this;
   }
 
-  private renderReactComponent(component: React.ReactElement<any> | null) {
+  private renderReactComponent(
+    component: () => React.ReactElement<any> | null,
+  ) {
     if (!this.domRef || !component) {
       return;
     }
 
-    this.portalProviderAPI.render(component, this.domRef!);
+    this.portalProviderAPI.render(component, this.domRef!, this.hasContext);
   }
 
   createDomRef(): HTMLElement {
@@ -137,7 +142,7 @@ export default class ReactNodeView implements NodeView {
 
     this.node = node;
 
-    this.renderReactComponent(
+    this.renderReactComponent(() =>
       this.render(this.reactComponentProps, this.handleRef),
     );
 

@@ -1,5 +1,40 @@
 # @atlaskit/editor-core
 
+## 87.7.2
+- [patch] [c032914](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c032914):
+
+  - ED-2043: Added table keyboard shortcut
+
+## 87.7.1
+- [patch] [e8afbf1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8afbf1):
+
+  - ED-5310: fix inline code background appearing when wrapping
+
+## 87.7.0
+- [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
+
+  - ED-5527: apply max-width: 100% and pass container size to Card as dimension
+
+## 87.6.18
+- [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
+
+  - Removing extra padding inside the comment editor
+
+## 87.6.17
+- [patch] [aef4235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aef4235):
+
+  - Fix range selection
+
+## 87.6.16
+- [patch] [7bc4461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc4461):
+
+  - ED-5565: support connecting external React.Context to nodeviews
+
+## 87.6.15
+- [patch] [e8052e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8052e1):
+
+  - Add main field to adf-utils package.json
+
 ## 87.6.14
 - [patch] [7787595](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7787595):
 

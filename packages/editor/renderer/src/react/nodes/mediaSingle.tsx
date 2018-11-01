@@ -37,10 +37,10 @@ const ExtendedUIMediaSingle = styled(UIMediaSingle)`
 export default class MediaSingle extends Component<
   {
     layout: MediaSingleLayout;
-    width: number;
+    width?: number;
     allowDynamicTextSizing?: boolean;
     appearance: RendererAppearance;
-  } & React.Props<any>,
+  },
   State
 > {
   constructor(props) {
@@ -81,40 +81,44 @@ export default class MediaSingle extends Component<
       hideProgress = true;
     }
 
-    const media = React.cloneElement(child, {
-      cardDimensions: {
-        width: '100%',
-        height: '100%',
-      },
-      onExternalImageLoaded: this.onExternalImageLoaded,
-      disableOverlay: true,
-      hideProgress,
-    });
-
     // TODO: put appearance-based padding into theme instead
     const padding =
       this.props.appearance === 'full-page' ? FullPagePadding * 2 : 0;
 
     return (
       <WidthConsumer>
-        {({ width: containerWidth, breakpoint }) => (
-          <ExtendedUIMediaSingle
-            layout={props.layout}
-            width={width}
-            height={height}
-            containerWidth={containerWidth}
-            lineLength={
-              containerWidth - padding >= akEditorFullPageMaxWidth
-                ? this.props.allowDynamicTextSizing
-                  ? mapBreakpointToLayoutMaxWidth(breakpoint)
-                  : akEditorFullPageMaxWidth
-                : containerWidth - padding
-            }
-            pctWidth={props.width}
-          >
-            {media}
-          </ExtendedUIMediaSingle>
-        )}
+        {({ width: containerWidth, breakpoint }) => {
+          const cardWidth = containerWidth;
+          const cardHeight = height / width * cardWidth;
+          const cardDimensions = {
+            width: `${cardWidth}px`,
+            height: `${cardHeight}px`,
+          };
+
+          return (
+            <ExtendedUIMediaSingle
+              layout={props.layout}
+              width={width}
+              height={height}
+              containerWidth={containerWidth}
+              lineLength={
+                containerWidth - padding >= akEditorFullPageMaxWidth
+                  ? this.props.allowDynamicTextSizing
+                    ? mapBreakpointToLayoutMaxWidth(breakpoint)
+                    : akEditorFullPageMaxWidth
+                  : containerWidth - padding
+              }
+              pctWidth={props.width}
+            >
+              {React.cloneElement(child, {
+                cardDimensions,
+                onExternalImageLoaded: this.onExternalImageLoaded,
+                disableOverlay: true,
+                hideProgress,
+              })}
+            </ExtendedUIMediaSingle>
+          );
+        }}
       </WidthConsumer>
     );
   }

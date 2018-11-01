@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { canUseDom } from 'exenv';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -45,13 +46,6 @@ function getScrollDistance() {
     0
   );
 }
-function getInitialState() {
-  return {
-    dialogNode: null,
-    scrollDistance: getScrollDistance(),
-    isExiting: false,
-  };
-}
 
 type Props = OuterProps & {
   /**
@@ -78,9 +72,18 @@ class Modal extends Component<Props, State> {
     isHeadingMultiline: true,
   };
 
-  state: State = getInitialState();
+  state = {
+    dialogNode: null,
+    scrollDistance: canUseDom ? getScrollDistance() : 0,
+    isExiting: false,
+  };
 
   componentDidMount() {
+    const scrollDistance = getScrollDistance();
+    if (getScrollDistance() !== this.state.scrollDistance) {
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({ scrollDistance });
+    }
     window.addEventListener('scroll', this.handleWindowScroll);
   }
 

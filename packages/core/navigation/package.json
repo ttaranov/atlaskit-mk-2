@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "33.3.1",
+  "version": "33.3.2",
   "description": "A React component that renders a sidebar, for navigation purposes.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -43,7 +43,7 @@
     "memoize-one": "^3.0.1",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
-    "react-scrolllock": "^3.0.1",
+    "react-scrolllock": "^3.0.2",
     "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {

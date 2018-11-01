@@ -94,6 +94,9 @@ import EditorAddIcon from '../glyph/editor/add';
 import EditorAddonIcon from '../glyph/editor/addon';
 import EditorAdvancedIcon from '../glyph/editor/advanced';
 import EditorAlignCenterIcon from '../glyph/editor/align-center';
+import EditorAlignImageCenterIcon from '../glyph/editor/align-image-center';
+import EditorAlignImageLeftIcon from '../glyph/editor/align-image-left';
+import EditorAlignImageRightIcon from '../glyph/editor/align-image-right';
 import EditorAlignLeftIcon from '../glyph/editor/align-left';
 import EditorAlignRightIcon from '../glyph/editor/align-right';
 import EditorAttachmentIcon from '../glyph/editor/attachment';
@@ -866,6 +869,24 @@ export default {
     component: EditorAlignCenterIcon,
     componentName: 'EditorAlignCenterIcon',
     package: '@atlaskit/icon/glyph/editor/align-center',
+  },
+  'editor/align-image-center': {
+    keywords: ['editor/align-image-center', 'editoralignimagecenter', 'icon', 'core'],
+    component: EditorAlignImageCenterIcon,
+    componentName: 'EditorAlignImageCenterIcon',
+    package: '@atlaskit/icon/glyph/editor/align-image-center',
+  },
+  'editor/align-image-left': {
+    keywords: ['editor/align-image-left', 'editoralignimageleft', 'icon', 'core'],
+    component: EditorAlignImageLeftIcon,
+    componentName: 'EditorAlignImageLeftIcon',
+    package: '@atlaskit/icon/glyph/editor/align-image-left',
+  },
+  'editor/align-image-right': {
+    keywords: ['editor/align-image-right', 'editoralignimageright', 'icon', 'core'],
+    component: EditorAlignImageRightIcon,
+    componentName: 'EditorAlignImageRightIcon',
+    package: '@atlaskit/icon/glyph/editor/align-image-right',
   },
   'editor/align-left': {
     keywords: ['editor/align-left', 'editoralignleft', 'icon', 'core'],

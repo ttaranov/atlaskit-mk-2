@@ -87,7 +87,8 @@ class MediaNode extends Component<
     if (
       this.props.selected !== nextProps.selected ||
       this.state.viewContext !== nextState.viewContext ||
-      this.props.node.attrs.id !== nextProps.node.attrs.id
+      this.props.node.attrs.id !== nextProps.node.attrs.id ||
+      this.props.cardDimensions !== nextProps.cardDimensions
     ) {
       return true;
     }

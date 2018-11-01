@@ -1,5 +1,15 @@
 # @atlaskit/renderer
 
+## 29.4.0
+- [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
+
+  - ED-5527: apply max-width: 100% and pass container size to Card as dimension
+
+## 29.3.1
+- Updated dependencies [a6dd6e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6dd6e3):
+  - @atlaskit/editor-common@20.3.1
+  - @atlaskit/profilecard@5.0.0
+
 ## 29.3.0
 - [minor] [d793999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d793999):
 
