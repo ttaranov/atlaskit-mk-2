@@ -1,1 +1,0 @@
-- ED-5606: Added support for sending task update events to native for handling

@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.2.0
+- [minor] [f5696d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5696d5):
+
+  - ED-5606: Added support for sending task update events to native for handling
+
 ## 5.1.0
 - [minor] [d793999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d793999):
 
