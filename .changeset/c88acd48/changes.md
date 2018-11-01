@@ -1,0 +1,1 @@
+- Fix exports of icon packages
