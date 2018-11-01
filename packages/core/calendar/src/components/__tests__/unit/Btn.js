@@ -19,7 +19,7 @@ test('children', () => {
       appearance: 'subtle',
       spacing: 'none',
       tabIndex: -1,
-      iconBefore: 'children',
+      iconBefore: <ArrowleftIcon />,
     }),
   );
 });
