@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -181,7 +181,7 @@ class Checkbox extends Component<CheckboxProps, State> {
 export { Checkbox as CheckboxWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const CheckboxWithAnalytics = withAnalyticsContext({
   componentName: 'checkbox',
   packageName,
   packageVersion,
@@ -198,4 +198,8 @@ export default withAnalyticsContext({
       },
     }),
   })(Checkbox),
+);
+
+export default (props: ElementConfig<typeof Checkbox>) => (
+  <CheckboxWithAnalytics {...props} />
 );
