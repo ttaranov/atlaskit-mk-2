@@ -2,7 +2,7 @@
 
 import { Calendar as CalendarBase } from 'calendar-base';
 import pick from 'lodash.pick';
-import React, { Component } from 'react';
+import React, { Component, type ElementConfig } from 'react';
 import uuid from 'uuid/v1';
 import {
   withAnalyticsEvents,
@@ -466,7 +466,7 @@ class Calendar extends Component<Props, State> {
 export { Calendar as CalendarWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+const CalendarWithAnalytics = withAnalyticsContext({
   componentName: 'calendar',
   packageName,
   packageVersion,
@@ -494,4 +494,8 @@ export default withAnalyticsContext({
       },
     }),
   })(Calendar),
+);
+
+export default (props: ElementConfig<typeof Calendar>) => (
+  <CalendarWithAnalytics {...props} />
 );
