@@ -10,24 +10,33 @@ import {
   hideControlsClassName,
   ZoomLevelIndicator,
 } from './styled';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import { channel } from './analytics';
+import { ZoomControlsGasPayload, createZoomEvent } from './analytics/zoom';
 
-export interface ZoomControlsProps {
+export type ZoomControlsProps = Readonly<{
   onChange: (newZoomLevel: ZoomLevel) => void;
   zoomLevel: ZoomLevel;
-}
+}> &
+  WithAnalyticsEventProps;
 
-export class ZoomControls extends Component<ZoomControlsProps, {}> {
+export class ZoomControlsBase extends Component<ZoomControlsProps, {}> {
   zoomIn = () => {
     const { onChange, zoomLevel } = this.props;
     if (zoomLevel.canZoomIn) {
-      onChange(zoomLevel.zoomIn());
+      const zoom = zoomLevel.zoomIn();
+      this.fireAnalytics(createZoomEvent('zoomIn', zoom.value));
+      onChange(zoom);
     }
   };
 
   zoomOut = () => {
     const { onChange, zoomLevel } = this.props;
     if (zoomLevel.canZoomOut) {
-      onChange(zoomLevel.zoomOut());
+      const zoom = zoomLevel.zoomOut();
+      this.fireAnalytics(createZoomEvent('zoomOut', zoom.value));
+      onChange(zoom);
     }
   };
 
@@ -55,4 +64,13 @@ export class ZoomControls extends Component<ZoomControlsProps, {}> {
       </ZoomWrapper>
     );
   }
+
+  private fireAnalytics = (payload: ZoomControlsGasPayload) => {
+    if (this.props.createAnalyticsEvent) {
+      const ev = this.props.createAnalyticsEvent(payload);
+      ev.fire(channel);
+    }
+  };
 }
+
+export const ZoomControls = withAnalyticsEvents({})(ZoomControlsBase);
