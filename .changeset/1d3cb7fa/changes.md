@@ -1,0 +1,1 @@
+- Flow consumers get static type safety for InlineDialog component
