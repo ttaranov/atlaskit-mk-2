@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Plugin } from 'prosemirror-state';
 import { PluginKey } from 'prosemirror-state';
-import { EditorPlugin, Command } from '../../types';
+import { EditorPlugin } from '../../types';
 import {
   akEditorFullPageMaxWidth,
   akEditorWideLayoutWidth,
@@ -14,90 +13,26 @@ export const stateKey = new PluginKey('gridPlugin');
 import { GridPluginState, GridType } from './types';
 import { pluginKey as widthPlugin, WidthPluginState } from '../width/index';
 import WithPluginState from '../../ui/WithPluginState';
+import { EventDispatcher, createDispatch } from '../../event-dispatcher';
 
 export const DEFAULT_GRID_SIZE = 12;
 
-const calcGridSize = (width: number | undefined) => {
-  return DEFAULT_GRID_SIZE;
-};
-
-export const displayGrid = (show: boolean, type: GridType): Command => {
-  return (state, dispatch) => {
-    dispatch(
-      state.tr.setMeta(stateKey, {
-        visible: show,
-        gridType: type,
-      }),
-    );
-    return true;
+export const createDisplayGrid = (eventDispatcher: EventDispatcher) => {
+  const dispatch = createDispatch(eventDispatcher);
+  return (show: boolean, type: GridType, highlight: number[] = []) => {
+    return dispatch(stateKey, {
+      visible: show,
+      gridType: type,
+      highlight: highlight,
+    } as GridPluginState);
   };
 };
 
 export const gridTypeForLayout = (layout: MediaSingleLayout): GridType =>
   layout === 'wrap-left' || layout === 'wrap-right' ? 'wrapped' : 'full';
 
-export const createPlugin = ({ dispatch }) =>
-  new Plugin({
-    key: stateKey,
-    state: {
-      init: (_, state): GridPluginState => {
-        const editorWidth = widthPlugin.getState(state) as WidthPluginState;
-        return {
-          gridSize: editorWidth
-            ? calcGridSize(editorWidth.width)
-            : DEFAULT_GRID_SIZE,
-          visible: false,
-          gridType: 'full',
-        };
-      },
-      apply: (tr, pluginState: GridPluginState, oldState, newState) => {
-        let newGridSize = pluginState.gridSize;
-
-        // check to see if we have to change the grid size
-        const newWidth = tr.getMeta(widthPlugin);
-        if (typeof newWidth !== 'undefined') {
-          // have broadcasted new width, try to recalculate grid size
-          newGridSize = calcGridSize(newWidth);
-        }
-
-        const meta = tr.getMeta(stateKey);
-        let newVisible = pluginState.visible;
-        let newGridType = pluginState.gridType;
-        if (typeof meta !== 'undefined') {
-          newVisible = meta.visible;
-          newGridType = meta.gridType || 'full';
-        }
-
-        if (
-          newGridSize !== pluginState.gridSize ||
-          newVisible !== pluginState.visible ||
-          newGridType !== pluginState.gridType
-        ) {
-          const newPluginState = {
-            gridSize: newGridSize,
-            visible: newVisible,
-            gridType: newGridType,
-          };
-
-          dispatch(stateKey, newPluginState);
-          return newPluginState;
-        }
-
-        return pluginState;
-      },
-    },
-  });
-
 const gridPlugin: EditorPlugin = {
-  pmPlugins() {
-    return [{ name: 'grid', plugin: createPlugin }];
-  },
-
-  contentComponent: ({
-    editorView: { state: editorState },
-    appearance,
-    containerElement,
-  }) => {
+  contentComponent: ({ editorView, appearance, containerElement }) => {
     return (
       <WithPluginState
         plugins={{
@@ -108,10 +43,10 @@ const gridPlugin: EditorPlugin = {
           grid,
           widthState = { width: akEditorFullPageMaxWidth },
         }: {
-          grid: GridPluginState;
+          grid?: GridPluginState;
           widthState?: WidthPluginState;
         }) => {
-          if (!grid.visible || !grid.gridSize) {
+          if (!grid) {
             return null;
           }
 
@@ -120,14 +55,19 @@ const gridPlugin: EditorPlugin = {
           );
 
           const gridLines: JSX.Element[] = [];
-          const gridSpacing = 100 / grid.gridSize;
+          const gridSpacing = 100 / DEFAULT_GRID_SIZE;
 
-          for (let i = 0; i < grid.gridSize; i++) {
+          for (let i = 0; i <= DEFAULT_GRID_SIZE; i++) {
+            const style = {
+              paddingLeft: `${gridSpacing}%`,
+            };
             gridLines.push(
               <div
                 key={i}
-                className="gridLine"
-                style={{ paddingLeft: `${gridSpacing}%` }}
+                className={`gridLine ${
+                  grid.highlight.indexOf(i) > -1 ? 'highlight' : ''
+                }`}
+                style={i < DEFAULT_GRID_SIZE ? style : undefined}
               />,
             );
           }
@@ -135,21 +75,31 @@ const gridPlugin: EditorPlugin = {
           // wide grid lines
           if (appearance === 'full-page') {
             const wideSpacing = (akEditorWideLayoutWidth - editorMaxWidth) / 2;
-            ['left', 'right'].forEach(side =>
+            ['left', 'right'].forEach(side => {
+              const highlight =
+                grid.highlight.length &&
+                (side === 'left'
+                  ? grid.highlight[0] < 0 && grid.highlight[0] > -4
+                  : grid.highlight[grid.highlight.length - 1] >
+                      DEFAULT_GRID_SIZE &&
+                    grid.highlight[grid.highlight.length - 1] <
+                      DEFAULT_GRID_SIZE + 4);
               gridLines.push(
                 <div
                   key={side}
-                  className="gridLine"
+                  className={`gridLine ${highlight ? 'highlight' : ''}`}
                   style={{ position: 'absolute', [side]: `-${wideSpacing}px` }}
                 />,
-              ),
-            );
+              );
+            });
           }
 
           return (
             <div className="gridParent">
               <div
-                className={`gridContainer ${grid.gridType}`}
+                className={`gridContainer ${grid.gridType} ${
+                  !grid.visible ? 'hidden' : ''
+                }`}
                 style={{
                   height: containerElement
                     ? `${containerElement.scrollHeight}px`

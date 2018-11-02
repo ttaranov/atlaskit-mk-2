@@ -15,6 +15,7 @@ import {
 import MediaSingle from '../../../../../../plugins/media/nodeviews/mediaSingle';
 import Media from '../../../../../../plugins/media/nodeviews/media';
 import { ProviderFactory } from '@atlaskit/editor-common';
+import { EventDispatcher } from '../../../../../../event-dispatcher';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -44,6 +45,10 @@ describe('nodeviews/mediaSingle', () => {
     url: 'http://image.jpg',
   })();
 
+  const view = {} as EditorView;
+  const eventDispatcher = {} as EventDispatcher;
+  const getPos = jest.fn();
+
   beforeEach(() => {
     const mediaProvider = getFreshMediaProvider();
     const providerFactory = ProviderFactory.create({ mediaProvider });
@@ -65,8 +70,6 @@ describe('nodeviews/mediaSingle', () => {
   });
 
   it('notifies plugin if node layout is updated', () => {
-    const getPos = jest.fn();
-    const view = {} as EditorView;
     const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
     const updatedMediaSingleNode = mediaSingle({ layout: 'center' })(mediaNode)(
       defaultSchema,
@@ -78,6 +81,7 @@ describe('nodeviews/mediaSingle', () => {
     const wrapper = mount(
       <MediaSingle
         view={view}
+        eventDispatcher={eventDispatcher}
         node={mediaSingleNode(defaultSchema)}
         lineLength={680}
         getPos={getPos}
@@ -92,13 +96,11 @@ describe('nodeviews/mediaSingle', () => {
   });
 
   it('sets "onExternalImageLoaded" for external images', () => {
-    const getPos = jest.fn();
-    const view = {} as EditorView;
     const mediaSingleNode = mediaSingle()(externalMediaNode);
-
     const wrapper = mount(
       <MediaSingle
         view={view}
+        eventDispatcher={eventDispatcher}
         node={mediaSingleNode(defaultSchema)}
         lineLength={680}
         getPos={getPos}
@@ -111,13 +113,11 @@ describe('nodeviews/mediaSingle', () => {
   });
 
   it('passes the editor width down as cardDimensions', () => {
-    const getPos = jest.fn();
-    const view = {} as EditorView;
     const mediaSingleNode = mediaSingle()(mediaNode);
-
     const wrapper = mount(
       <MediaSingle
         view={view}
+        eventDispatcher={eventDispatcher}
         node={mediaSingleNode(defaultSchema)}
         lineLength={680}
         getPos={getPos}

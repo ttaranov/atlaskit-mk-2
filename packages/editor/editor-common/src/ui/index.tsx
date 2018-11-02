@@ -14,6 +14,7 @@ export {
   calcPxFromColumns,
   calcPctFromPx,
   calcPxFromPct,
+  calcColumnsFromPx,
   snapToGrid,
 } from './MediaSingle/grid';
 

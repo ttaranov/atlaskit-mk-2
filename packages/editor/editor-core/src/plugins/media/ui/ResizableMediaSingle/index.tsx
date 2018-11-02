@@ -8,6 +8,7 @@ import {
   calcPxFromPct,
   MediaSingleLayout,
   akEditorBreakoutPadding,
+  calcColumnsFromPx,
 } from '@atlaskit/editor-common';
 
 import { Wrapper } from './styled';
@@ -84,8 +85,7 @@ export default class ResizableMediaSingle extends React.Component<
       : gridSize;
   }
 
-  wrapper: HTMLElement | null;
-  get snapPoints() {
+  calcOffsetLeft() {
     let offsetLeft = 0;
     if (this.wrapper && this.insideInlineLike) {
       let currentNode: HTMLElement | null = this.wrapper;
@@ -104,6 +104,26 @@ export default class ResizableMediaSingle extends React.Component<
       offsetLeft -= pm.offsetLeft;
     }
 
+    return offsetLeft;
+  }
+
+  calcColumnLeft = () => {
+    const offsetLeft = this.calcOffsetLeft();
+    return this.insideInlineLike
+      ? Math.floor(
+          calcColumnsFromPx(
+            offsetLeft,
+            this.props.lineLength,
+            this.props.gridSize,
+          ),
+        )
+      : 0;
+  };
+
+  wrapper: HTMLElement | null;
+  get snapPoints() {
+    const offsetLeft = this.calcOffsetLeft();
+
     const { containerWidth, lineLength, appearance } = this.props;
     const snapTargets: number[] = [];
     for (let i = this.gridMin; i < this.gridMax; i++) {
@@ -115,7 +135,7 @@ export default class ResizableMediaSingle extends React.Component<
     // full width
     snapTargets.push(lineLength - offsetLeft);
 
-    const minimumWidth = calcPxFromColumns(2, lineLength, 12);
+    const minimumWidth = calcPxFromColumns(2, lineLength, this.props.gridSize);
     const snapPoints = snapTargets.filter(width => width >= minimumWidth);
 
     const $pos = this.$pos;
@@ -201,6 +221,8 @@ export default class ResizableMediaSingle extends React.Component<
           calcNewSize={this.calcNewSize}
           snapPoints={this.snapPoints}
           scaleFactor={!this.wrappedLayout && !this.insideInlineLike ? 2 : 1}
+          isInlineLike={this.insideInlineLike}
+          getColumnLeft={this.calcColumnLeft}
         >
           {React.cloneElement(React.Children.only(this.props.children), {
             onSelection: selected => {

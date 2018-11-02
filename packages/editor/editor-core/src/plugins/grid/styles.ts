@@ -16,7 +16,6 @@ export const gridStyles = css`
     position: fixed;
     height: 100vh;
     width: 100%;
-    border-right: 1px solid ${colors.N30};
     pointer-events: none;
   }
 
@@ -26,10 +25,20 @@ export const gridStyles = css`
     box-sizing: border-box;
     height: 100%;
     margin-left: -1px;
+
+    transition: border-color 0.15s linear;
+  }
+
+  .gridContainer.hidden .gridLine {
+    border-left: 1px solid transparent;
   }
 
   .gridContainer.wrapped .gridLine:nth-child(12),
   .gridContainer.wrapped .gridLine:nth-child(2) {
     visibility: hidden;
+  }
+
+  .highlight {
+    border-left: 1px solid ${colors.B200};
   }
 `;

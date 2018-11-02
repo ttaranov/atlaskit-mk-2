@@ -84,7 +84,10 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               providerFactory,
               nodeViews: {
                 mediaGroup: ReactMediaGroupNode(portalProviderAPI),
-                mediaSingle: ReactMediaSingleNode(portalProviderAPI),
+                mediaSingle: ReactMediaSingleNode(
+                  portalProviderAPI,
+                  eventDispatcher,
+                ),
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,

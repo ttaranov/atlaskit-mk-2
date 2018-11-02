@@ -7,7 +7,7 @@ export type EnabledHandles = { left?: boolean; right?: boolean };
 
 export type Props = MediaSingleProps & {
   updateSize: (width: number | null, layout: MediaSingleLayout) => void;
-  displayGrid: (show: boolean, type: GridType) => void;
+  displayGrid: (show: boolean, type: GridType, highlight?: number[]) => void;
   getPos: () => number | undefined;
   state: EditorState;
   lineLength: number;
