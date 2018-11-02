@@ -32,11 +32,17 @@ type Props = {|
   additionalFields: FieldType[],
   /**  Override the default id for the "can be contacted" custom field in your widget service **/
   canBeContactedFieldId: string,
-  /**  Override the default value for the "can be contacted" custom field in your widget service **/
+  /**
+   * Override the default value for the "can be contacted" custom field in your widget service.
+   * This should be the "yes" value; in the no (empty checkbox) case undefined is sent
+   **/
   canBeContactedDefaultValue: FieldValueType,
   /**  Override the default id for the "customer name" custom field in your widget service **/
   customerNameFieldId: string,
-  /**  Override the default value for the "customer name" custom field in your widget service **/
+  /**
+   * Override the default value for the "customer name" custom field in your widget service.
+   * This should be the "yes" value; in the no (empty checkbox) case undefined is sent
+   **/
   customerNameDefaultValue: FieldValueType,
   /**  Override the default id for the "description" custom field in your widget service **/
   descriptionFieldId: string,
