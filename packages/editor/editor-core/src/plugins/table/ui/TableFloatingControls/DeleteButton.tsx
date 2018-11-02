@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SyntheticEvent } from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { TableCssClassName as ClassName } from '../../types';
 import { MessageDescriptor } from '../../../../types/i18n';
@@ -6,9 +7,9 @@ import { MessageDescriptor } from '../../../../types/i18n';
 export interface ButtonProps {
   removeLabel: MessageDescriptor;
   style?: object;
-  onClick?: () => void;
-  onMouseEnter?: (SyntheticEvent) => void;
-  onMouseLeave?: (SyntheticEvent) => void;
+  onClick?: (event: SyntheticEvent) => void;
+  onMouseEnter?: (event: SyntheticEvent) => void;
+  onMouseLeave?: (event: SyntheticEvent) => void;
 }
 
 const DeleteButton = ({
@@ -29,7 +30,7 @@ const DeleteButton = ({
       type="button"
       title={formatMessage(removeLabel, { 0: 1 })}
       className={ClassName.CONTROLS_DELETE_BUTTON}
-      onClick={onClick}
+      onMouseDown={onClick}
       onMouseMove={e => e.preventDefault()}
     >
       <svg className={ClassName.CONTROLS_BUTTON_ICON}>
