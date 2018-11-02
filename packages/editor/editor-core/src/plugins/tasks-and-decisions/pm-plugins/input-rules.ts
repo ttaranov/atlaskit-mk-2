@@ -54,7 +54,7 @@ const createListRule = (
         $end.parent.type !== paragraph ||
         !canInsert($endOfParent, list.createAndFill() as Node)
       ) {
-        return;
+        return null;
       }
 
       const where = $from.before($from.depth);

@@ -1,6 +1,6 @@
 import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { Schema, MarkType } from 'prosemirror-model';
-import { Plugin, Transaction } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { transformToCodeAction } from '../commands/transform-to-code';
 import { InputRuleHandler, createInputRule } from '../../../utils/input-rules';
@@ -33,7 +33,7 @@ function addMark(
   charSize: number,
   char: string,
 ): InputRuleHandler {
-  return (state, match, start, end): Transaction | undefined => {
+  return (state, match, start, end) => {
     const [, prefix, textWithCombo] = match;
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
@@ -48,7 +48,7 @@ function addMark(
       !validRegex(char, prefix) &&
       !(nodeBefore && nodeBefore.type === state.schema.nodes.hardBreak)
     ) {
-      return;
+      return null;
     }
     // fixes the following case: my `*name` is *
     // expected result: should ignore special characters inside "code"
@@ -56,7 +56,7 @@ function addMark(
       state.schema.marks.code &&
       state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())
     ) {
-      return;
+      return null;
     }
 
     // Prevent autoformatting across hardbreaks
@@ -69,14 +69,14 @@ function addMark(
       return !containsHardBreak;
     });
     if (containsHardBreak) {
-      return;
+      return null;
     }
 
     // fixes autoformatting in heading nodes: # Heading *bold*
     // expected result: should not autoformat *bold*; <h1>Heading *bold*</h1>
     if (state.doc.resolve(from).sameParent(state.doc.resolve(to))) {
       if (!state.doc.resolve(from).parent.type.allowsMarkType(markType)) {
-        return;
+        return null;
       }
     }
 
@@ -107,18 +107,18 @@ function addCodeMark(
   schema: Schema,
   specialChar: string,
 ): InputRuleHandler {
-  return (state, match, start, end): Transaction | undefined => {
+  return (state, match, start, end) => {
     if (match[1] && match[1].length > 0) {
       const nodeBefore = state.doc.resolve(start + match[1].length).nodeBefore;
       if (!(nodeBefore && nodeBefore.type === state.schema.nodes.hardBreak)) {
-        return;
+        return null;
       }
     }
     // fixes autoformatting in heading nodes: # Heading `bold`
     // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
     if (state.doc.resolve(start).sameParent(state.doc.resolve(end))) {
       if (!state.doc.resolve(start).parent.type.allowsMarkType(markType)) {
-        return;
+        return null;
       }
     }
     analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');

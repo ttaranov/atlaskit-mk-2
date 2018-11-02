@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { inputRules } from 'prosemirror-inputrules';
-import { Transaction, Plugin } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import {
   createInputRule,
   leafNodeReplacementCharacter,
@@ -22,9 +22,7 @@ export function inputRulePlugin(
     `(^|[.!?\\s${leafNodeReplacementCharacter}])(${triggers})$`,
   );
 
-  const typeAheadInputRule = createInputRule(regex, (state, match, start, end):
-    | Transaction
-    | undefined => {
+  const typeAheadInputRule = createInputRule(regex, (state, match) => {
     const mark = schema.mark('typeAheadQuery', { trigger: match[2] });
     const { tr, selection } = state;
     const marks = selection.$from.marks();

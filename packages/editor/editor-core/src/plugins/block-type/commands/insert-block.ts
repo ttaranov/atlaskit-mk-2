@@ -14,16 +14,16 @@ export const insertBlock = (
   start,
   end,
   attrs?: { [key: string]: any },
-): Transaction | undefined => {
+): Transaction | null => {
   // To ensure that match is done after HardBreak.
   const { hardBreak } = state.schema.nodes;
   if (state.doc.resolve(start).nodeAfter!.type !== hardBreak) {
-    return;
+    return null;
   }
 
   // To ensure no nesting is done.
   if (state.doc.resolve(start).depth > 1) {
-    return;
+    return null;
   }
 
   // Track event

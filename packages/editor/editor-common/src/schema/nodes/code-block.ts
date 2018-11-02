@@ -156,16 +156,15 @@ export const codeBlock: NodeSpec = {
         }
         return false;
       },
-      // TODO: Upgrade prosemirror types and remove `any`
       // @see ED-5682
-      getContent: ((dom: HTMLElement, schema: Schema) => {
+      getContent: (dom: HTMLElement, schema: Schema) => {
         const code = Array.from(dom.children)
           .map(child => child.textContent)
           // tslint:disable-next-line:triple-equals
           .filter(x => x != undefined)
           .join('\n');
         return code ? Fragment.from(schema.text(code)) : Fragment.empty;
-      }) as any,
+      },
     },
     // Handle GitHub/Gist paste
     {
