@@ -1,13 +1,6 @@
 // @flow
 
-import React, {
-  Component,
-  Fragment,
-  PureComponent,
-  type ElementRef,
-  type Ref,
-  type Node,
-} from 'react';
+import React, { Component, Fragment, type ElementRef } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { colors } from '@atlaskit/theme';
 
@@ -17,7 +10,8 @@ import {
 } from '../../../../package.json';
 import { Shadow } from '../../../common/primitives';
 import { light, ThemeProvider } from '../../../theme';
-import ContentNavigation from './ContentNavigation';
+import ContentNavigation from '../ContentNavigation';
+import PageContent from '../PageContent';
 import ResizeTransition, {
   isTransitioning,
   type TransitionState,
@@ -28,9 +22,8 @@ import {
   ContentNavigationWrapper,
   LayoutContainer,
   NavigationContainer,
-  PageWrapper,
 } from './primitives';
-import type { LayoutManagerProps, CollapseListeners } from './types';
+import type { LayoutManagerProps } from './types';
 
 import {
   CONTENT_NAV_WIDTH_COLLAPSED,
@@ -57,68 +50,6 @@ function defaultTooltipContent(isCollapsed: boolean) {
   return isCollapsed
     ? { text: 'Expand', char: '[' }
     : { text: 'Collapse', char: '[' };
-}
-
-type PageProps = CollapseListeners & {
-  children: Node,
-  flyoutIsOpen: boolean,
-  innerRef: Ref<'div'>,
-  isResizing: boolean,
-  isCollapsed: boolean,
-  productNavWidth: number,
-};
-
-// FIXME: Move to separate file
-// eslint-disable-next-line react/no-multi-comp
-class PageInner extends PureComponent<{ children: Node }> {
-  render() {
-    return this.props.children;
-  }
-}
-
-// FIXME: Move to separate file
-// eslint-disable-next-line react/no-multi-comp
-export class Page extends PureComponent<PageProps> {
-  render() {
-    const {
-      flyoutIsOpen,
-      innerRef,
-      isResizing,
-      isCollapsed,
-      productNavWidth,
-      onExpandStart,
-      onExpandEnd,
-      onCollapseStart,
-      onCollapseEnd,
-    } = this.props;
-    return (
-      <ResizeTransition
-        from={[CONTENT_NAV_WIDTH_COLLAPSED]}
-        in={!isCollapsed}
-        productNavWidth={productNavWidth}
-        properties={['paddingLeft']}
-        to={[flyoutIsOpen ? CONTENT_NAV_WIDTH_FLYOUT : productNavWidth]}
-        userIsDragging={isResizing}
-        /* Attach expand/collapse callbacks to the page resize transition to ensure they are only
-         * called when the nav is permanently expanded/collapsed, i.e. when page content position changes. */
-        onExpandStart={onExpandStart}
-        onExpandEnd={onExpandEnd}
-        onCollapseStart={onCollapseStart}
-        onCollapseEnd={onCollapseEnd}
-      >
-        {({ transitionStyle, transitionState }) => (
-          <PageWrapper
-            disableInteraction={isResizing || isTransitioning(transitionState)}
-            innerRef={innerRef}
-            offset={GLOBAL_NAV_WIDTH}
-            style={transitionStyle}
-          >
-            <PageInner>{this.props.children}</PageInner>
-          </PageWrapper>
-        )}
-      </ResizeTransition>
-    );
-  }
 }
 
 /* NOTE: experimental props use an underscore */
@@ -401,13 +332,14 @@ export default class LayoutManager extends Component<
     );
   };
 
-  render() {
+  renderPageContent = () => {
     const {
       navigationUIController,
       onExpandStart,
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      children,
     } = this.props;
     const { flyoutIsOpen } = this.state;
     const {
@@ -417,21 +349,27 @@ export default class LayoutManager extends Component<
     } = navigationUIController.state;
 
     return (
+      <PageContent
+        flyoutIsOpen={flyoutIsOpen}
+        innerRef={this.getPageRef}
+        isResizing={isResizing}
+        isCollapsed={isCollapsed}
+        productNavWidth={productNavWidth}
+        onExpandStart={onExpandStart}
+        onExpandEnd={onExpandEnd}
+        onCollapseStart={onCollapseStart}
+        onCollapseEnd={onCollapseEnd}
+      >
+        {children}
+      </PageContent>
+    );
+  };
+
+  render() {
+    return (
       <LayoutContainer>
         {this.renderNavigation()}
-        <Page
-          flyoutIsOpen={flyoutIsOpen}
-          innerRef={this.getPageRef}
-          isResizing={isResizing}
-          isCollapsed={isCollapsed}
-          productNavWidth={productNavWidth}
-          onExpandStart={onExpandStart}
-          onExpandEnd={onExpandEnd}
-          onCollapseStart={onCollapseStart}
-          onCollapseEnd={onCollapseEnd}
-        >
-          {this.props.children}
-        </Page>
+        {this.renderPageContent()}
       </LayoutContainer>
     );
   }

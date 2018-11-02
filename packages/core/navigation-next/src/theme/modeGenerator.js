@@ -6,7 +6,7 @@ import chromatism from 'chromatism';
 
 import globalItemStyles from '../components/presentational/GlobalItem/styles';
 import globalNavStyles from '../components/presentational/GlobalNav/styles';
-import contentNavStyles from '../components/presentational/LayoutManager/ContentNavigation/styles';
+import contentNavStyles from '../components/presentational/ContentNavigation/styles';
 import itemStyles from '../components/presentational/Item/styles';
 import headingStyles from '../components/presentational/GroupHeading/styles';
 import separatorStyles from '../components/presentational/Separator/styles';

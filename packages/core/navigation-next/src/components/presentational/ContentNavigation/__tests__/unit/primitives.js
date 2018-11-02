@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { ContainerNavigation, ProductNavigation } from '../../primitives';
-import { light } from '../../../../../../theme';
+import { light } from '../../../../../theme';
 
 describe('NavigationNext components: ContentNavigation primitives', () => {
   describe('ContainerNavigation', () => {

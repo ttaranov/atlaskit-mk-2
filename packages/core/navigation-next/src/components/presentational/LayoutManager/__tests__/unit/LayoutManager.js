@@ -4,9 +4,9 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
-import ContentNavigation from '../../ContentNavigation';
-import LayoutManager, { Page } from '../../LayoutManager';
-import ResizeControl from '../../ResizeControl';
+import ContentNavigation from '../../../ContentNavigation';
+import LayoutManager from '../../LayoutManager';
+import Page from '../../../PageContent';
 import ResizeTransition from '../../ResizeTransition';
 import { LayoutEventListener } from '../../LayoutEvent';
 

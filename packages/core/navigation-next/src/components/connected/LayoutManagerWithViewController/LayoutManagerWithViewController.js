@@ -7,17 +7,11 @@ import ViewRenderer from '../../../renderer';
 import { withNavigationUI } from '../../../ui-controller';
 import { withNavigationViewController } from '../../../view-controller';
 import LayoutManager from '../../presentational/LayoutManager';
-import SkeletonContainerView from '../../presentational/SkeletonContainerView';
 import type {
   LayoutManagerWithViewControllerProps,
   LayoutManagerWithViewControllerState,
 } from './types';
 import LayerInitialised from './LayerInitialised';
-import {
-  ProductNavigationTheme,
-  ContainerNavigationTheme,
-} from '../../presentational/LayoutManager/ContentNavigation/primitives';
-
 /* NOTE: experimental props use an underscore */
 /* eslint-disable camelcase */
 
@@ -42,25 +36,8 @@ class LayoutManagerWithViewControllerBase extends Component<
   };
 
   renderSkeleton = () => {
-    const { firstSkeletonToRender } = this.props;
-    let Wrapper;
-
-    if (firstSkeletonToRender === 'product' && !this.state.hasInitialised) {
-      Wrapper = ProductNavigationTheme;
-    } else if (
-      firstSkeletonToRender === 'container' &&
-      !this.state.hasInitialised
-    ) {
-      Wrapper = ContainerNavigationTheme;
-    } else {
-      Wrapper = Fragment;
-    }
-
-    return (
-      <Wrapper>
-        <SkeletonContainerView />
-      </Wrapper>
-    );
+    const { containerSkeleton: ContainerSkeleton } = this.props;
+    return <ContainerSkeleton type={this.props.firstSkeletonToRender} />;
   };
 
   renderContainerNavigation = () => {

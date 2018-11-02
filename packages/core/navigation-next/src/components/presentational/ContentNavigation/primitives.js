@@ -9,14 +9,14 @@ import {
   transitionDuration,
   transitionDurationMs,
   transitionTimingFunction,
-} from '../../../../common/constants';
-import { Shadow } from '../../../../common/primitives';
+} from '../../../common/constants';
+import { Shadow } from '../../../common/primitives';
 import {
   light,
   withContentTheme,
   ThemeProvider,
   type ProductTheme,
-} from '../../../../theme';
+} from '../../../theme';
 
 const animationFade = state => {
   const defaultStyle = {

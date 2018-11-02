@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 import Transition from 'react-transition-group/Transition';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
-import { transitionDurationMs } from '../../../../common/constants';
+import { transitionDurationMs } from '../../../common/constants';
 import {
   ContainerNavigation,
   InnerShadow,
