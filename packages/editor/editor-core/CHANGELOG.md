@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.7.5
+- [patch] [fb6b89b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb6b89b):
+
+  - Revert "Add buffer to the bottom of fullpage editor"
+
 ## 87.7.4
 - [patch] [8f1073c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1073c):
 
