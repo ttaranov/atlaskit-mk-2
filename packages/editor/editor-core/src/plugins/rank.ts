@@ -1,5 +1,6 @@
 export default {
   plugins: [
+    'inlineCursorTargetPlugin',
     'focusHandlerPlugin',
     'submitEditor',
     'imageUpload',
