@@ -2,7 +2,6 @@ import * as React from 'react';
 import EditorDateIcon from '@atlaskit/icon/glyph/editor/date';
 import { date } from '@atlaskit/editor-common';
 import { findDomRefAtPos } from 'prosemirror-utils';
-import { NodeSelection } from 'prosemirror-state';
 
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
@@ -52,6 +51,7 @@ const datePlugin: EditorPlugin = {
 
   contentComponent({ editorView }) {
     const { dispatch } = editorView;
+    const domAtPos = editorView.domAtPos.bind(editorView);
     return (
       <WithPluginState
         plugins={{
@@ -66,7 +66,7 @@ const datePlugin: EditorPlugin = {
 
           const element = findDomRefAtPos(
             showDatePickerAt,
-            editorView.domAtPos.bind(editorView),
+            domAtPos,
           ) as HTMLElement;
 
           return (
@@ -96,10 +96,10 @@ const datePlugin: EditorPlugin = {
             timestamp: Date.now(),
           });
 
-          const tr = insert(dateNode);
-          const showDatePickerAt = tr.selection.from - 2;
-          tr.setSelection(NodeSelection.create(tr.doc, showDatePickerAt));
-          return tr.setMeta(pluginKey, { showDatePickerAt });
+          const tr = insert(dateNode, { selectInlineNode: true });
+          return tr.setMeta(pluginKey, {
+            showDatePickerAt: tr.selection.from - 2,
+          });
         },
       },
     ],

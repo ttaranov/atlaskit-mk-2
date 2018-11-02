@@ -5,6 +5,7 @@ import {
   blockquote,
   typeAheadQuery,
   date,
+  status,
 } from '@atlaskit/editor-test-helpers';
 import {
   selectCurrentItem,
@@ -12,7 +13,7 @@ import {
   selectByIndex,
   selectItem,
 } from '../../../../../plugins/type-ahead/commands/select-item';
-import { datePlugin } from '../../../../../plugins';
+import { datePlugin, statusPlugin } from '../../../../../plugins';
 
 const createTypeAheadPlugin = ({
   getItems,
@@ -132,7 +133,43 @@ describe('selectItemByIndex', () => {
 });
 
 describe('selectItem', () => {
-  it('should add a space when replacing a type ahead query with an inline node', () => {
+  it('should add trailing space when replacing type ahead query specifying addTrailingSpace option', () => {
+    const plugin = createTypeAheadPlugin();
+    const { editorView } = createEditor({
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{Status}'))),
+      editorPlugins: [plugin, statusPlugin],
+    });
+    selectItem(
+      {
+        trigger: '/',
+        selectItem: (state, item, insert) =>
+          insert(
+            state.schema.nodes.status.createChecked({
+              text: 't',
+              color: 'c',
+              localId: 'id',
+            }),
+            { addTrailingSpace: true },
+          ),
+        getItems: () => [],
+      },
+      { title: '1' },
+    )(editorView.state, editorView.dispatch);
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        p(
+          status({
+            text: 't',
+            color: 'c',
+            localId: 'id',
+          }),
+          ' ',
+        ),
+      ),
+    );
+  });
+
+  it('should not add trailing space when replacing type ahead query without addTrailingSpace option', () => {
     const plugin = createTypeAheadPlugin();
     const { editorView } = createEditor({
       doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
@@ -150,7 +187,7 @@ describe('selectItem', () => {
       { title: '1' },
     )(editorView.state, editorView.dispatch);
     expect(editorView.state.doc).toEqualDocument(
-      doc(p(date({ timestamp: '1' }), ' ')),
+      doc(p(date({ timestamp: '1' }))),
     );
   });
 
@@ -260,5 +297,50 @@ describe('selectItem', () => {
     expect(editorView.state.doc).toEqualDocument(
       doc(p('some text '), blockquote(p('quote'))),
     );
+  });
+
+  it('should select inserted inline node when selectInlineNode is specified', () => {
+    const plugin = createTypeAheadPlugin();
+    const { editorView } = createEditor({
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
+      editorPlugins: [plugin, datePlugin],
+    });
+    selectItem(
+      {
+        trigger: '/',
+        selectItem: (state, item, insert) =>
+          insert(
+            state.schema.nodes.date.createChecked({ timestamp: item.title }),
+            { selectInlineNode: true },
+          ),
+        getItems: () => [],
+      },
+      { title: '1' },
+    )(editorView.state, editorView.dispatch);
+
+    expect(editorView.state.selection.from).toEqual(1);
+    expect(editorView.state.selection.to).toEqual(2);
+  });
+
+  it("should move cursor after inline node when selectInlineNode isn't specified", () => {
+    const plugin = createTypeAheadPlugin();
+    const { editorView } = createEditor({
+      doc: doc(p(typeAheadQuery({ trigger: '/' })('/query{<>}'))),
+      editorPlugins: [plugin, datePlugin],
+    });
+    selectItem(
+      {
+        trigger: '/',
+        selectItem: (state, item, insert) =>
+          insert(
+            state.schema.nodes.date.createChecked({ timestamp: item.title }),
+          ),
+        getItems: () => [],
+      },
+      { title: '1' },
+    )(editorView.state, editorView.dispatch);
+
+    expect(editorView.state.selection.from).toEqual(2);
+    expect(editorView.state.selection.to).toEqual(2);
   });
 });

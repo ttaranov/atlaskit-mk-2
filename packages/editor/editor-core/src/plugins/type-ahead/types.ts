@@ -23,7 +23,10 @@ export type TypeAheadHandler = {
   selectItem: (
     state: EditorState,
     item: TypeAheadItem,
-    insert: (node: Node | Object | string) => Transaction,
+    insert: (
+      node: Node | Object | string,
+      opts?: { [key: string]: boolean },
+    ) => Transaction,
   ) => Transaction | false;
 };
 
