@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.8.0
+- [minor] [f17f0a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f17f0a6):
+
+  - ED-5448: support macro autoconversion in actions
+
 ## 87.7.5
 - [patch] [fb6b89b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb6b89b):
 
