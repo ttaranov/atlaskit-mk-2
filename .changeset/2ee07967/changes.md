@@ -1,1 +1,0 @@
-- Add SortableContext, SortableGroup and SortableItem components to enable drag and drop of items within a view.
