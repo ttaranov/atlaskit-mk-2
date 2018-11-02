@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.9.0
+- [minor] [2cc9764](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cc9764):
+
+  - Change the way we deal with transactions in collab edit
+
 ## 87.8.2
 - [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
 
