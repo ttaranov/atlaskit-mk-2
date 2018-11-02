@@ -43,7 +43,7 @@ export class FileFetcher {
     artifacts: MediaFileArtifacts,
     artifactName: keyof MediaFileArtifacts,
     collectionName?: string,
-  ): Promise<string | undefined> {
+  ): Promise<string> {
     return this.mediaStore.getArtifactURL(
       artifacts,
       artifactName,

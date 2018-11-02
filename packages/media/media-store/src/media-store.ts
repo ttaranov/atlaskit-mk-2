@@ -218,10 +218,10 @@ export class MediaStore {
     artifacts: MediaFileArtifacts,
     artifactName: keyof MediaFileArtifacts,
     collectionName?: string,
-  ): Promise<string | undefined> => {
+  ): Promise<string> => {
     const artifactUrl = getArtifactUrl(artifacts, artifactName);
     if (!artifactUrl) {
-      return undefined;
+      throw new Error(`${artifactUrl} does not exist in ${artifacts}`);
     }
 
     const auth = await this.config.authProvider({ collectionName });

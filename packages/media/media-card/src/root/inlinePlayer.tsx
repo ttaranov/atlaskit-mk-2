@@ -10,7 +10,8 @@ import { CardLoading } from '../utils/cardLoading';
 export interface InlinePlayerProps {
   identifier: FileIdentifier;
   context: Context;
-  dimensions?: CardDimensions;
+  dimensions: CardDimensions;
+  onError?: (error: Error) => void;
 }
 
 export interface InlinePlayerState {
@@ -23,6 +24,10 @@ export class InlinePlayer extends Component<
 > {
   subscription?: Subscription;
   state: InlinePlayerState = {};
+
+  static defaultProps = {
+    dimensions: defaultImageCardDimensions,
+  };
 
   async componentDidMount() {
     const { context, identifier } = this.props;
@@ -41,19 +46,29 @@ export class InlinePlayer extends Component<
               const fileSrc = URL.createObjectURL(state.preview.blob);
               this.setState({ fileSrc });
               setImmediate(this.unsubscribe);
+              return;
             }
           }
 
           if (state.status === 'processed') {
             const { artifacts } = state;
-            const fileSrc = await context.file.getArtifactURL(
-              artifacts,
-              'video_1280.mp4',
-              collectionName,
-            );
 
-            this.setState({ fileSrc });
-            setImmediate(this.unsubscribe);
+            try {
+              const fileSrc = await context.file.getArtifactURL(
+                artifacts,
+                'video_1280.mp4',
+                collectionName,
+              );
+
+              this.setState({ fileSrc });
+              setImmediate(this.unsubscribe);
+            } catch (error) {
+              const { onError } = this.props;
+
+              if (onError) {
+                onError(error);
+              }
+            }
           }
         },
       });
@@ -77,12 +92,8 @@ export class InlinePlayer extends Component<
     this.revoke();
   }
 
-  get dimensions(): CardDimensions {
-    return this.props.dimensions || defaultImageCardDimensions;
-  }
-
   get style(): CSSProperties {
-    const { width, height } = this.dimensions;
+    const { width, height } = this.props.dimensions;
     return {
       width,
       height,
@@ -93,7 +104,8 @@ export class InlinePlayer extends Component<
     const { fileSrc } = this.state;
 
     if (!fileSrc) {
-      return <CardLoading mediaItemType="file" dimensions={this.dimensions} />;
+      const { dimensions } = this.props;
+      return <CardLoading mediaItemType="file" dimensions={dimensions} />;
     }
 
     return (

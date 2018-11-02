@@ -298,6 +298,12 @@ export class Card extends Component<CardProps, CardState> {
     }
   };
 
+  onInlinePlayerError = () => {
+    this.setState({
+      isPlayingFile: false,
+    });
+  };
+
   renderInlinePlayer = () => {
     const { identifier, context, dimensions } = this.props;
 
@@ -306,6 +312,7 @@ export class Card extends Component<CardProps, CardState> {
         context={context}
         dimensions={dimensions}
         identifier={identifier as FileIdentifier}
+        onError={this.onInlinePlayerError}
       />
     );
   };
