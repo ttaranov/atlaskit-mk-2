@@ -32,7 +32,7 @@
     "@atlaskit/task-decision": "^11.0.1",
     "@babel/polyfill": "^7.0.0",
     "@types/prosemirror-view": "^1.0.0",
-    "prosemirror-view": "^1.6.0"
+    "prosemirror-view": "^1.6.5"
   },
   "peerDependencies": {
     "react": "^16.4.0",

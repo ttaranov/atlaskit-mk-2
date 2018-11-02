@@ -1,0 +1,1 @@
+- ED-5510: fix deleting last character in a cell in Safari
