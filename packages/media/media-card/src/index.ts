@@ -1,7 +1,6 @@
 import { MouseEvent } from 'react';
 import {
   MediaItemDetails,
-  MediaCollectionItem,
   MediaType,
   FileProcessingStatus,
   Context,
