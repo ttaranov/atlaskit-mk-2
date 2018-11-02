@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.8.1
+- [patch] [1764e1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764e1c):
+
+  - ED-5215: don't insert paragraph when inserting rule if another follows
+
 ## 87.8.0
 - [minor] [f17f0a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f17f0a6):
 
