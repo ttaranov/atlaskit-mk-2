@@ -50,12 +50,12 @@ TitleInput.displayName = 'TitleInput';
 export const Wrapper: any = styled.div`
   box-sizing: border-box;
   padding: 2px;
-  height: 100vh;
+  height: calc(100vh - 32px);
 `;
 Wrapper.displayName = 'Wrapper';
 
 export const Content: any = styled.div`
-  padding: 0;
+  padding: 0 20px;
   height: 100%;
   background: #fff;
   box-sizing: border-box;
