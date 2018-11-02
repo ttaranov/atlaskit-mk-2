@@ -343,11 +343,7 @@ describe('<UploadView />', () => {
   describe('pagination', () => {
     const simulateThresholdReached = (
       component: ReactWrapper<UploadViewProps, UploadViewState>,
-    ) =>
-      component
-        .find(InfiniteScroll)
-        .props()
-        .onThresholdReached();
+    ) => component.find(InfiniteScroll).props().onThresholdReached!();
 
     it('should load next collection page when threshold is reached', () => {
       const { component, context } = createConnectedComponent(state);

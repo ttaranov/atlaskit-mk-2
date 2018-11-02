@@ -5,6 +5,7 @@ export const REMOVE_FILES_FROM_RECENTS = 'REMOVE_FILES_FROM_RECENTS';
 export interface RemoveFileFromRecentsAction extends Action {
   type: 'REMOVE_FILES_FROM_RECENTS';
   id: string;
+  idForApiCall?: string;
   occurrenceKey?: string;
 }
 
@@ -17,10 +18,12 @@ export const isRemoveFileFromRecentsAction = (
 export const removeFileFromRecents = (
   id: string,
   occurrenceKey?: string,
+  idForApiCall?: string,
 ): RemoveFileFromRecentsAction => {
   return {
     type: REMOVE_FILES_FROM_RECENTS,
     id,
+    idForApiCall,
     occurrenceKey,
   };
 };

@@ -28,7 +28,7 @@ export class InfiniteScroll extends Component<
 
   static defaultProps = {
     width: '100%',
-    delay: 1000,
+    delay: 500,
     threshold: 100,
   };
 

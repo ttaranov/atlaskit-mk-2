@@ -1,20 +1,57 @@
 import removeFileFromRecents from '../../removeFileFromRecents';
-import {
-  removeFileFromRecents as removeFileFromRecentsAction,
-  RemoveFileFromRecentsAction,
-} from '../../../actions/removeFileFromRecents';
+import { removeFileFromRecents as removeFileFromRecentsAction } from '../../../actions/removeFileFromRecents';
 import { mockState } from '../../../mocks';
 import { State } from '../../../domain';
 
 describe('removeFileFromRecents reducer', () => {
-  let action: RemoveFileFromRecentsAction;
   let state: State;
   let resultState: State;
 
   beforeEach(() => {
-    action = removeFileFromRecentsAction('some-id', 'occurrence-key');
+    const removeFromRecents = removeFileFromRecentsAction(
+      'some-id',
+      'occurrence-key',
+    );
+    const removeFromLocalUploads = removeFileFromRecentsAction(
+      'some-local-upfront-file-id',
+      'occurrence-key',
+    );
     state = {
       ...mockState,
+      uploads: {
+        'local-upload-id': {
+          file: {
+            metadata: {
+              id: 'some-local-file-id',
+              mimeType: 'some-type',
+              upfrontId: Promise.resolve('some-local-upfront-file-id'),
+              name: 'some-name',
+              size: 42,
+            },
+          },
+          events: [],
+          tenant: {} as any,
+          index: 0,
+          timeStarted: 42,
+          progress: null,
+        },
+        'other-upload-id': {
+          file: {
+            metadata: {
+              id: 'some-other-local-file-id',
+              mimeType: 'some-type',
+              upfrontId: Promise.resolve('some-other-local-upfront-file-id'),
+              name: 'some-name',
+              size: 42,
+            },
+          },
+          events: [],
+          tenant: {} as any,
+          index: 0,
+          timeStarted: 42,
+          progress: null,
+        },
+      },
       recents: {
         items: [
           {
@@ -56,7 +93,8 @@ describe('removeFileFromRecents reducer', () => {
         },
       ],
     };
-    resultState = removeFileFromRecents(state, action);
+    state = removeFileFromRecents(state, removeFromRecents);
+    resultState = removeFileFromRecents(state, removeFromLocalUploads);
   });
 
   it('should remove file from recents list', () => {
@@ -66,5 +104,9 @@ describe('removeFileFromRecents reducer', () => {
   it('should remove item from selected list', () => {
     expect(resultState.selectedItems).toHaveLength(1);
     expect(resultState.selectedItems[0].id).toEqual('other-id');
+  });
+  it('should remove local upload item', () => {
+    expect(Object.keys(resultState.uploads)).toHaveLength(1);
+    expect(Object.keys(resultState.uploads)[0]).toEqual('other-upload-id');
   });
 });

@@ -10,7 +10,7 @@ export const removeFileFromRecents = (store: Store<State>) => (
     store
       .getState()
       .userContext.collection.removeFile(
-        action.id,
+        action.idForApiCall || action.id,
         RECENTS_COLLECTION,
         action.occurrenceKey,
       );

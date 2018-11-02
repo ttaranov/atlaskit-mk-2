@@ -1,6 +1,8 @@
 export type MediaFile = {
   readonly id: string;
   readonly upfrontId: Promise<string>;
+  readonly userUpfrontId?: Promise<string>;
+  readonly userOccurrenceKey?: Promise<string>;
   readonly name: string;
   readonly size: number;
   readonly creationDate: number;
@@ -13,7 +15,15 @@ export type PublicMediaFile = MediaFile & {
 };
 
 export function copyMediaFileForUpload(
-  { name, size, creationDate, type, upfrontId, occurrenceKey }: MediaFile,
+  {
+    name,
+    size,
+    creationDate,
+    type,
+    upfrontId,
+    userUpfrontId,
+    occurrenceKey,
+  }: MediaFile,
   uploadId: string,
 ): MediaFile {
   // We dont' use spread here because user upload events are not sanitized
@@ -24,6 +34,7 @@ export function copyMediaFileForUpload(
     creationDate,
     type,
     upfrontId,
+    userUpfrontId,
     occurrenceKey,
   };
 }
@@ -36,6 +47,7 @@ export function copyPublicMediaFileForUpload(
     type,
     publicId,
     upfrontId,
+    userUpfrontId,
     occurrenceKey,
   }: PublicMediaFile,
   uploadId: string,
@@ -49,6 +61,7 @@ export function copyPublicMediaFileForUpload(
     type,
     publicId,
     upfrontId,
+    userUpfrontId,
     occurrenceKey,
   };
 }

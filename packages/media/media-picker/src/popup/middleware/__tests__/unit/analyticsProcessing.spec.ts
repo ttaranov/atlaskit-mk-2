@@ -42,6 +42,7 @@ const testFile1: MediaFile = {
   size: 1,
   creationDate: 1,
   type: 'type1',
+  userUpfrontId: Promise.resolve('id1'),
   upfrontId: Promise.resolve('id1'),
 };
 

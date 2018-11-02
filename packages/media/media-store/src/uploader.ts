@@ -14,7 +14,7 @@ export type UploadableFile = {
 
 export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
-  onId?: (id: string) => void;
+  onId?: (id: string, occurrenceKey: string) => void;
 };
 
 export interface UploadFileResult {
@@ -92,7 +92,7 @@ export const uploadFile = (
   if (onId) {
     deferredEmptyFile.then(emptyFile => {
       const fileId = emptyFile.data.id;
-      onId(fileId);
+      onId(fileId, occurrenceKey);
     });
   }
 

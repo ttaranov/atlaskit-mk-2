@@ -36,6 +36,7 @@ import {
   LocalUploads,
   Recents,
   SelectedItem,
+  ServiceFile,
   State,
 } from '../../../domain';
 import { menuDelete, menuEdit } from '../editor/phrases';
@@ -82,10 +83,7 @@ export interface UploadViewStateProps {
 }
 
 export interface UploadViewDispatchProps {
-  readonly onFileClick: (
-    metadata: LocalUploadFileMetadata,
-    serviceName: string,
-  ) => void;
+  readonly onFileClick: (serviceFile: ServiceFile, serviceName: string) => void;
   readonly onEditorShowImage: (file: FileReference, dataUri: string) => void;
   readonly onEditRemoteImage: (
     file: FileReference,
@@ -96,7 +94,11 @@ export interface UploadViewDispatchProps {
     resolver: (id: string) => void,
     rejecter: Function,
   ) => void;
-  readonly removeFileFromRecents: (id: string, occurrenceKey?: string) => void;
+  readonly removeFileFromRecents: (
+    id: string,
+    occurrenceKey?: string,
+    idForApiCall?: string,
+  ) => void;
 }
 
 export type UploadViewProps = UploadViewOwnProps &
@@ -252,13 +254,39 @@ export class StatelessUploadView extends Component<
         ...file.metadata,
         mimeType: mediaType,
       };
-      const { id, occurrenceKey } = fileMetadata;
+      const {
+        id,
+        userOccurrenceKey,
+        userUpfrontId,
+        size,
+        name,
+        upfrontId,
+      } = fileMetadata;
       const selected = selectedUploadIds.indexOf(id) > -1;
-      const onClick = () => onFileClick(fileMetadata, 'upload');
+      const serviceFile: ServiceFile = {
+        id,
+        mimeType: mediaType,
+        name,
+        size,
+        upfrontId,
+        occurrenceKey: fileMetadata.occurrenceKey,
+        date: 0,
+      };
+      const onClick = () => onFileClick(serviceFile, 'upload');
       const actions: CardAction[] = [
-        createDeleteCardAction(() => removeFileFromRecents(id, occurrenceKey)),
+        createDeleteCardAction(async () => {
+          console.log('removing!');
+          const userFileId = await userUpfrontId;
+          const occurrenceKey = await userOccurrenceKey;
+          console.log(
+            'user file id and occurrence Key are',
+            userFileId,
+            occurrenceKey,
+          );
+          removeFileFromRecents(id, occurrenceKey, userFileId);
+        }),
       ]; // TODO [MS-1017]: allow file annotation for uploading files
-      const { upfrontId } = file.metadata;
+
       const identifier: FileIdentifier = {
         id: upfrontId,
         mediaItemType: 'file',
@@ -308,6 +336,7 @@ export class StatelessUploadView extends Component<
         onFileClick(
           {
             id,
+            date: 0,
             name: fileDetails.name || '',
             mimeType: fileDetails.mimeType || '',
             size: fileDetails.size || 0,
@@ -394,32 +423,16 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
 const mapDispatchToProps = (
   dispatch: Dispatch<any>,
 ): UploadViewDispatchProps => ({
-  onFileClick: (
-    { id, mimeType, name, size, upfrontId, occurrenceKey },
-    serviceName,
-  ) =>
-    dispatch(
-      fileClick(
-        {
-          date: 0,
-          id,
-          mimeType,
-          name,
-          size,
-          upfrontId,
-          occurrenceKey,
-        },
-        serviceName,
-      ),
-    ),
+  onFileClick: (serviceFile, serviceName) =>
+    dispatch(fileClick(serviceFile, serviceName)),
   onEditorShowImage: (file, dataUri) =>
     dispatch(editorShowImage(dataUri, file)),
   onEditRemoteImage: (file, collectionName) =>
     dispatch(editRemoteImage(file, collectionName)),
   setUpfrontIdDeferred: (id, resolver, rejecter) =>
     dispatch(setUpfrontIdDeferred(id, resolver, rejecter)),
-  removeFileFromRecents: (id, occurrenceKey) =>
-    dispatch(removeFileFromRecents(id, occurrenceKey)),
+  removeFileFromRecents: (id, occurrenceKey, idForApiCall) =>
+    dispatch(removeFileFromRecents(id, occurrenceKey, idForApiCall)),
 });
 
 export default connect<
