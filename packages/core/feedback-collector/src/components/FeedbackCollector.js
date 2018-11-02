@@ -164,7 +164,6 @@ export default class FeedbackCollector extends Component<Props> {
   }
 
   mapFormToJSD(formValues: FormFields) {
-    console.log('Formvalues are', formValues);
     const fields = [
       {
         id: this.props.typeFiedlId,
