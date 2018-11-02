@@ -20,8 +20,9 @@ export const findSpecialNodeAfter = ($pos: ResolvedPos, tr: Transaction) => {
   }
 
   const { parentOffset, parent } = $pos;
+  const docSize = tr.doc.nodeSize - 2;
 
-  if (parentOffset === parent.content.size) {
+  if (parentOffset === parent.content.size && $pos.pos + 1 < docSize - 2) {
     const { nodeAfter } = tr.doc.resolve($pos.pos + 1);
     if (nodeAfter && isSpecial(nodeAfter.firstChild)) {
       return $pos.pos + 2;
