@@ -35,6 +35,8 @@ const config = {
     '/__tests__\\/_.*?',
     // ignore files under __tests__ that start with an underscore
     '/__tests__\\/.*?\\/_.*?',
+    // ignore tests under __tests__/flow
+    '/__tests__\\/flow/',
     // ignore tests under __tests__/integration (we override this if the INTEGRATION_TESTS flag is set)
     '/__tests__\\/integration/',
     // ignore tests under __tests__/vr (we override this if the VISUAL_REGRESSION flag is set)

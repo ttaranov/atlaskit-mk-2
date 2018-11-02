@@ -22,6 +22,9 @@ packages/core/icon-object/es5/**
 packages/core/icon-object/utils/**
 packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__
 
+# flow tests
+packages/**/__tests__/flow/
+
 # tmp
 build
 website
