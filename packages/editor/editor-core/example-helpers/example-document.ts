@@ -1222,5 +1222,12 @@ System.out.println("There are " + count + " values >= 5");`,
         },
       ],
     },
+    {
+      type: 'blockCard',
+      attrs: {
+        url:
+          'https://docs.google.com/document/d/1fUgIrY5s_iJpmA25np2BjLvDK5QEXAjNvaaYAmMrJuc/edit',
+      },
+    },
   ],
 };

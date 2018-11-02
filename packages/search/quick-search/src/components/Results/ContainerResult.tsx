@@ -26,6 +26,7 @@ export default class ContainerResult extends React.PureComponent<Props> {
 
     return (
       <Avatar
+        borderColor="transparent"
         src={this.props.avatarUrl}
         appearance="square"
         size="small"

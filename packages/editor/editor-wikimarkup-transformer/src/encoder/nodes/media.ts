@@ -9,9 +9,11 @@ export const media: NodeEncoder = (node: PMNode): string => {
   if (node.attrs.height) {
     wikiAttrs.push(`height=${node.attrs.height}`);
   }
+  const fileName =
+    node.attrs.type === 'external' ? node.attrs.url : node.attrs.id;
   if (wikiAttrs.length) {
-    return `!${node.attrs.id}|${wikiAttrs.join(',')}!`;
+    return `!${fileName}|${wikiAttrs.join(',')}!`;
   }
   // default to thumbnail if no width or height is set
-  return `!${node.attrs.id}|thumbnail!`;
+  return `!${fileName}|thumbnail!`;
 };

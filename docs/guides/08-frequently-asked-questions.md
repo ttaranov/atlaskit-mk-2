@@ -9,6 +9,10 @@ Related reading:
 * [versioning](./versioning)
 * [releasing-packages](./releasing-packages)
 
+## Why can't I create a branch to create a pull request? Should I fork this repository?
+
+Please don't fork this repository for pull requests. Instead, request permission to create branches by follwing the instructions under "Become a contributor" section in our [README.md](https://bitbucket.org/atlassian/atlaskit-mk-2/src).
+
 ## How do I release a change once it's merged?
 
 See the related reading above^ ([releasing-packages](./releasing-packages)) (hopefully before you've merged...).

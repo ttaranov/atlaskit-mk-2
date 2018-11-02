@@ -11,6 +11,7 @@ import {
   createEditor,
   sendKeyToPm,
   table,
+  thCursor,
   tr,
   td,
   tdEmpty,
@@ -44,6 +45,7 @@ describe('table keymap', () => {
       },
       pluginKey,
     });
+
   const editorWithPlugins = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
@@ -62,14 +64,16 @@ describe('table keymap', () => {
       },
       pluginKey,
     });
+
   let trackEvent;
+
   beforeEach(() => {
     trackEvent = jest.fn();
   });
 
   describe('Tab keypress', () => {
     describe('when the whole row is selected', () => {
-      it('it should select the first cell of the next row', () => {
+      it('should select the first cell of the next row', () => {
         const { editorView, refs } = editor(
           doc(
             table()(tr(tdCursor, tdEmpty), tr(td({})(p('{nextPos}')), tdEmpty)),
@@ -89,7 +93,7 @@ describe('table keymap', () => {
     });
 
     describe('when the whole column is selected', () => {
-      it('it should select the last cell of the next column', () => {
+      it('should select the last cell of the next column', () => {
         const { editorView, refs } = editor(
           doc(
             table()(tr(tdCursor, tdEmpty), tr(tdEmpty, td({})(p('{nextPos}')))),
@@ -110,7 +114,7 @@ describe('table keymap', () => {
     });
 
     describe('when the cursor is at the first cell of the first row', () => {
-      it('it should select next cell of the current row', () => {
+      it('should select next cell of the current row', () => {
         const { editorView, refs } = editor(
           doc(table()(tr(tdCursor, td({})(p('{nextPos}')), tdEmpty))),
           trackEvent,
@@ -127,7 +131,7 @@ describe('table keymap', () => {
     });
 
     describe('when the cursor is at the last cell of the first row', () => {
-      it('it should select first cell of the next row', () => {
+      it('should select first cell of the next row', () => {
         const { editorView, refs } = editor(
           doc(
             table()(
@@ -149,7 +153,7 @@ describe('table keymap', () => {
     });
 
     describe('when the cursor is at the last cell of the last row', () => {
-      it('it should create a new row and select the first cell of the new row', () => {
+      it('should create a new row and select the first cell of the new row', () => {
         const { editorView } = editor(
           doc(
             table()(
@@ -175,7 +179,7 @@ describe('table keymap', () => {
 
   describe('Shift-Tab keypress', () => {
     describe('when the cursor is at the last cell of the first row', () => {
-      it('it should select previous cell of the current row', () => {
+      it('should select previous cell of the current row', () => {
         const { editorView, refs } = editor(
           doc(table()(tr(tdEmpty, td({})(p('{nextPos}')), tdCursor))),
           trackEvent,
@@ -192,7 +196,7 @@ describe('table keymap', () => {
     });
 
     describe('when the cursor is at the first cell of the second row', () => {
-      it('it should select the last cell of the first row', () => {
+      it('should select the last cell of the first row', () => {
         const { editorView, refs } = editor(
           doc(
             table()(
@@ -214,7 +218,7 @@ describe('table keymap', () => {
     });
 
     describe('when the cursor is at the first cell of the first row', () => {
-      it('it should create a new row and select the first cell of the new row', () => {
+      it('should create a new row and select the first cell of the new row', () => {
         const { editorView } = editor(
           doc(
             table()(
@@ -238,7 +242,7 @@ describe('table keymap', () => {
     });
 
     describe('Shift-Alt-T keypress', () => {
-      it('it should insert 3x3 table', () => {
+      it('should insert 3x3 table', () => {
         const tableNode = table()(
           tr(thEmpty, thEmpty, thEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),
@@ -254,7 +258,7 @@ describe('table keymap', () => {
 
   describe('Backspace keypress', () => {
     describe('when cursor is immediately after the table', () => {
-      it('it should move cursor to the last cell', () => {
+      it('should move cursor to the last cell', () => {
         const { editorView, refs } = editor(
           doc(
             p('text'),
@@ -340,7 +344,7 @@ describe('table keymap', () => {
     });
 
     describe('when table is selected', () => {
-      it('it should empty table cells and move cursor to the last selected cell', () => {
+      it('should empty table cells and move cursor to the last selected cell', () => {
         const { editorView } = editor(
           doc(
             table()(
@@ -372,7 +376,7 @@ describe('table keymap', () => {
 
     [0, 1, 2].forEach(index => {
       describe(`when row ${index + 1} is selected`, () => {
-        it(`it should empty cells in the row ${index +
+        it(`should empty cells in the row ${index +
           1} and move cursor to the last selected cell`, () => {
           const { editorView } = editor(
             doc(
@@ -411,7 +415,7 @@ describe('table keymap', () => {
       });
 
       describe(`when column ${index + 1} is selected`, () => {
-        it(`it should empty cells in the column ${index +
+        it(`should empty cells in the column ${index +
           1} and move cursor to the last selected cell`, () => {
           const emptyRow = tr(tdEmpty, tdEmpty, tdEmpty);
           const { editorView } = editor(
@@ -455,7 +459,7 @@ describe('table keymap', () => {
 
   describe('Cmd-A keypress', () => {
     describe('when a table cell is selected', () => {
-      it('it should select whole editor', () => {
+      it('should select whole editor', () => {
         const { editorView } = editor(
           doc(
             p('testing'),
@@ -473,7 +477,7 @@ describe('table keymap', () => {
     });
 
     describe('when a table row is selected', () => {
-      it('it should select whole editor', () => {
+      it('should select whole editor', () => {
         const { editorView } = editor(
           doc(
             p('testing'),
@@ -488,6 +492,132 @@ describe('table keymap', () => {
         );
         editorView.destroy();
       });
+    });
+  });
+
+  describe('Ctrl-Alt-Arrows', () => {
+    it('should add row before any table row', () => {
+      const { editorView } = editor(
+        doc(table()(tr(tdCursor, td()(p('text'))))),
+      );
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(tdEmpty, tdEmpty), tr(tdCursor, td()(p('text'))))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should not add row before when cursor in table header', () => {
+      const { editorView } = editor(doc(table()(tr(thCursor, thEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(thCursor, thEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should not add row before when selected table header', () => {
+      const { editorView } = editor(doc(table()(tr(thEmpty, thEmpty))));
+
+      editorView.dispatch(selectRow(0)(editorView.state.tr));
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowUp');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(thEmpty, thEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should add row after any table row', () => {
+      const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowDown');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(tdCursor, tdEmpty), tr(tdEmpty, tdEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should add row after table header', () => {
+      const { editorView } = editor(doc(table()(tr(thCursor, thEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowDown');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(thCursor, thEmpty), tr(tdEmpty, tdEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should add column before any table column', () => {
+      const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowLeft');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(tdEmpty, tdCursor, tdEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should not add column before when cursor in table header', () => {
+      const { editorView } = editor(doc(table()(tr(thCursor, thEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowLeft');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(thCursor, thEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should not add column before when selected table header', () => {
+      const { editorView } = editor(doc(table()(tr(thEmpty, thEmpty))));
+
+      editorView.dispatch(selectRow(0)(editorView.state.tr));
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowLeft');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(thEmpty, thEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should add column after any table column', () => {
+      const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowRight');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
+      );
+
+      editorView.destroy();
+    });
+
+    it('should add column after table header', () => {
+      const { editorView } = editor(doc(table()(tr(thCursor, thEmpty))));
+
+      sendKeyToPm(editorView, 'Ctrl-Alt-ArrowRight');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(table()(tr(thCursor, thEmpty, thEmpty))),
+      );
+
+      editorView.destroy();
     });
   });
 });

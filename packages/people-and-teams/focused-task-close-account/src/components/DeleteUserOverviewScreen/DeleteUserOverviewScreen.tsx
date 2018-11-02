@@ -27,7 +27,7 @@ export class DeleteUserOverviewScreen extends React.Component<
   };
 
   render() {
-    const { accessibleSites, user } = this.props;
+    const { accessibleSites, user, deactivateUserHandler } = this.props;
 
     return (
       <Styled.Screen>
@@ -35,16 +35,22 @@ export class DeleteUserOverviewScreen extends React.Component<
           <FormattedMessage {...overviewMessages.heading} />
         </Styled.Title>
         <UserInfo user={user} />
-        <Styled.SectionMessageOuter>
-          <SectionMessage appearance="warning">
-            <FormattedMessage {...overviewMessages.warningSectionBody} />
-            <p>
-              <Button appearance="link" spacing="none">
-                <FormattedMessage {...commonMessages.deactivateAccount} />
-              </Button>
-            </p>
-          </SectionMessage>
-        </Styled.SectionMessageOuter>
+        {deactivateUserHandler && (
+          <Styled.SectionMessageOuter>
+            <SectionMessage appearance="warning">
+              <FormattedMessage {...overviewMessages.warningSectionBody} />
+              <p>
+                <Button
+                  appearance="link"
+                  spacing="none"
+                  onClick={deactivateUserHandler}
+                >
+                  <FormattedMessage {...commonMessages.deactivateAccount} />
+                </Button>
+              </p>
+            </SectionMessage>
+          </Styled.SectionMessageOuter>
+        )}
         <FormattedMessage
           {...this.selectAdminOrSelfCopy(
             overviewMessages.paragraphAboutToDeleteAdmin,
@@ -53,25 +59,34 @@ export class DeleteUserOverviewScreen extends React.Component<
         />
         <Styled.MainInformationList>
           <li>
-            <FormattedMessage
-              {...this.selectAdminOrSelfCopy(
-                overviewMessages.paragraphLoseAccessAdmin,
-                overviewMessages.paragraphLoseAccessSelf,
-              )}
-              values={{ fullName: user.fullName }}
-            />
-            <Styled.AccessibleSitesList>
-              {accessibleSites.sites.map(({ url }, idx) => (
-                <li key={idx}>{url}</li>
-              ))}
-            </Styled.AccessibleSitesList>
-            <FormattedMessage
-              {...this.selectAdminOrSelfCopy(
-                overviewMessages.paragraphLoseAccessFootnoteAdmin,
-                overviewMessages.paragraphLoseAccessFootnoteSelf,
-              )}
-              tagName="small"
-            />
+            {!accessibleSites || accessibleSites.length === 0 ? (
+              <FormattedMessage
+                {...this.selectAdminOrSelfCopy(
+                  overviewMessages.paragraphLoseAccessAdminNoSites,
+                  overviewMessages.paragraphLoseAccessSelfNoSites,
+                )}
+              />
+            ) : (
+              <>
+                <FormattedMessage
+                  {...this.selectAdminOrSelfCopy(
+                    overviewMessages.paragraphLoseAccessAdmin,
+                    overviewMessages.paragraphLoseAccessSelf,
+                  )}
+                  values={{ fullName: user.fullName }}
+                />
+                <Styled.AccessibleSitesList>
+                  {accessibleSites.map((url, idx) => <li key={idx}>{url}</li>)}
+                </Styled.AccessibleSitesList>
+                <FormattedMessage
+                  {...this.selectAdminOrSelfCopy(
+                    overviewMessages.paragraphLoseAccessFootnoteAdmin,
+                    overviewMessages.paragraphLoseAccessFootnoteSelf,
+                  )}
+                  tagName="small"
+                />
+              </>
+            )}
           </li>
           <li>
             <FormattedMessage

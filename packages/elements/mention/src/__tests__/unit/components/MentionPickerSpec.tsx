@@ -70,32 +70,34 @@ function createMentionErrorShownTest(
     mentionsComponent.find(MentionListError).length > 0;
 }
 
+function hasExpectedItems(
+  mentionsComponent: ReactWrapper<Props, State>,
+  numItems: number,
+) {
+  return () =>
+    mentionsComponent.update() &&
+    mentionsComponent.find(MentionItem).length === numItems;
+}
+
 describe('MentionPicker', () => {
   it('should accept all mention names by default', () => {
     const component = setupPicker();
-    const hasExpectedItems = () =>
-      component.update() &&
-      component.find(MentionItem).length === MAX_NOTIFIED_ITEMS;
 
-    return waitUntil(hasExpectedItems);
+    return waitUntil(hasExpectedItems(component, MAX_NOTIFIED_ITEMS));
   });
 
   it('should accept limit result to starting with s', () => {
     const component = setupPicker({
       query: 's',
     } as Props);
-    const hasExpectedItems = () =>
-      component.update() && component.find(MentionItem).length === 5;
-    return waitUntil(hasExpectedItems);
+    return waitUntil(hasExpectedItems(component, 5));
   });
 
   it('should accept limit result to starting with shae', () => {
     const component = setupPicker({
       query: 'shae',
     } as Props);
-    const hasExpectedItems = () =>
-      component.update() && component.find(MentionItem).length === 1;
-    return waitUntil(hasExpectedItems);
+    return waitUntil(hasExpectedItems(component, 1));
   });
 
   it('should report error when service fails', () => {
@@ -152,9 +154,8 @@ describe('MentionPicker', () => {
 
   it('should display previous mention if error straight after', () => {
     const component = setupPicker();
-    const defaultMentionItemsShowTest = createDefaultMentionItemsShowTest(
-      component,
-    );
+    const defaultMentionItemsShowTest = () =>
+      createDefaultMentionItemsShowTest(component);
     const mentionErrorProcessed = () => {
       component.update();
       const mentionList = component.find(MentionList);
@@ -164,7 +165,7 @@ describe('MentionPicker', () => {
     return waitUntil(defaultMentionItemsShowTest)
       .then(() => {
         component.setProps({ query: 'error' });
-        return waitUntil(mentionErrorProcessed);
+        return waitUntil(() => mentionErrorProcessed());
       })
       .then(() => waitUntil(defaultMentionItemsShowTest));
   });
@@ -290,15 +291,13 @@ describe('MentionPicker', () => {
       onOpen: onOpen as OnOpen,
       onClose: onClose as OnClose,
     } as Props);
-    const noMentionItemsShown = () =>
-      component.update() && component.find(MentionItem).length === 0;
 
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
         expect(onOpen).toHaveBeenCalledTimes(1);
         expect(onClose).toHaveBeenCalledTimes(0);
         component.setProps({ query: 'nothing' });
-        return waitUntil(noMentionItemsShown);
+        return waitUntil(hasExpectedItems(component, 0));
       })
       .then(() => {
         expect(onOpen).toHaveBeenCalledTimes(1);

@@ -1,8 +1,9 @@
 import { Schema } from 'prosemirror-model';
 import { Token } from './';
-import { macro } from './macro';
 import { linkFormat } from './link-format';
 import { parseNewlineOnly } from './whitespace';
+import { parseMacroKeyword } from './keyword';
+import { parseToken } from '.';
 
 export interface FormatterOption {
   /** The opening symbol */
@@ -107,7 +108,13 @@ export function commonFormatter(
         return opt.rawContentProcessor(buffer, index);
       }
       case processState.INLINE_MACRO: {
-        const token = macro(input.substr(index), schema);
+        const match = parseMacroKeyword(input.substring(index));
+        if (!match) {
+          buffer += char;
+          state = processState.BUFFER;
+          break;
+        }
+        const token = parseToken(input.substring(index), match.type, schema);
         if (token.type === 'text') {
           buffer += token.text;
           index += token.length;

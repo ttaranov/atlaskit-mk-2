@@ -7,7 +7,7 @@ import {
   randomId,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-common';
+import { defaultSchema, MediaAttributes } from '@atlaskit/editor-common';
 import {
   stateKey as mediaStateKey,
   DefaultMediaStateManager,
@@ -30,11 +30,15 @@ const getFreshMediaProvider = () =>
 describe('nodeviews/mediaSingle', () => {
   let pluginState;
   const stateManager = new DefaultMediaStateManager();
-  const mediaNode = media({
+  const mediaNodeAttrs = {
     id: 'foo',
     type: 'file',
     collection: 'collection',
-  })();
+    width: 250,
+    height: 250,
+  };
+
+  const mediaNode = media(mediaNodeAttrs as MediaAttributes)();
   const externalMediaNode = media({
     type: 'external',
     url: 'http://image.jpg',
@@ -104,6 +108,33 @@ describe('nodeviews/mediaSingle', () => {
     );
 
     expect(wrapper.find(Media).props().onExternalImageLoaded).toBeDefined();
+  });
+
+  it('passes the editor width down as cardDimensions', () => {
+    const getPos = jest.fn();
+    const view = {} as EditorView;
+    const mediaSingleNode = mediaSingle()(mediaNode);
+
+    const wrapper = mount(
+      <MediaSingle
+        view={view}
+        node={mediaSingleNode(defaultSchema)}
+        lineLength={680}
+        getPos={getPos}
+        width={123}
+        selected={() => 1}
+      />,
+    );
+
+    const { cardDimensions } = wrapper.find(Media).props();
+    const imageAspectRatio = mediaNodeAttrs.height / mediaNodeAttrs.width;
+
+    expect(cardDimensions.width).toEqual('123px');
+    const cardHeight: string = cardDimensions.height as string;
+
+    expect(Number(cardHeight.substring(0, cardHeight.length - 2))).toBeCloseTo(
+      123 * imageAspectRatio,
+    );
   });
 
   afterEach(() => {

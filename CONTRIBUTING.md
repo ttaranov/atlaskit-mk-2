@@ -50,8 +50,7 @@ little while. So bear with us for a little while as we work out all the
 problems.
 
 Don't worry though, we're making it easier than ever to work on Atlaskit from
-end to end. If you have any questions/problems, feel free to contact James Kyle
-or Luke Batchelor.
+end to end. If you have any questions/problems, feel free to contact Luke Batchelor.
 
 A more in-depth view of how we want to work with other teams and open source
 contributions can be found on the

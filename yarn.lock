@@ -13141,9 +13141,9 @@ prosemirror-utils@^0.6.7:
   version "0.6.7"
   resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.7.tgz#2a54de0883a609442b83fe5c076073b828c58f19"
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.6.0.tgz#1005b55bd4a529be25683f3858b880a854844a61"
+prosemirror-view@^1.0.0, prosemirror-view@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.6.5.tgz#0427775fd68006a2270dfad549707e5a3d9880db"
   dependencies:
     prosemirror-model "^1.1.0"
     prosemirror-state "^1.0.0"
@@ -13356,6 +13356,10 @@ querystring@0.2.0:
 querystringify@0.0.x:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-0.0.4.tgz#0cf7f84f9463ff0ae51c4c4b142d95be37724d9c"
+
+querystringify@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/querystringify/-/querystringify-2.0.0.tgz#fa3ed6e68eb15159457c89b37bc6472833195755"
 
 querystringify@~1.0.0:
   version "1.0.0"
@@ -13750,9 +13754,9 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-scrolllock@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-3.0.1.tgz#76955fef2de5bfba677166b36ce4eb28231b37a9"
+react-scrolllock@^3.0.1, react-scrolllock@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-3.0.2.tgz#b1607cb5f6b8a3bce02c78e7dfb1cbe564c1e992"
   dependencies:
     exenv "^1.2.2"
 
@@ -14461,7 +14465,7 @@ requireindex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.1.0.tgz#e5404b81557ef75db6e49c5a72004893fe03e162"
 
-requires-port@1.0.x, requires-port@1.x.x, requires-port@~1.0.0:
+requires-port@1.0.x, requires-port@1.x.x, requires-port@^1.0.0, requires-port@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
@@ -16888,6 +16892,13 @@ url-parse@^1.1.8, url-parse@^1.2.0:
   dependencies:
     querystringify "~1.0.0"
     requires-port "~1.0.0"
+
+url-parse@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.npmjs.org/url-parse/-/url-parse-1.4.3.tgz#bfaee455c889023219d757e045fa6a684ec36c15"
+  dependencies:
+    querystringify "^2.0.0"
+    requires-port "^1.0.0"
 
 url-search-params@^0.10.0:
   version "0.10.0"

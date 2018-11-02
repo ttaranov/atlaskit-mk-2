@@ -10,5 +10,4 @@ export type InteractionState = {
 
 export type InteractionStateProps = {
   children: InteractionState => Node,
-  styles?: {},
 };

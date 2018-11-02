@@ -35,7 +35,7 @@ describe('InteractionStateManager', () => {
       </InteractionStateManager>,
     );
 
-    wrapper.simulate('mouseover');
+    wrapper.simulate('mouseenter');
 
     expect(wrapper.state()).toEqual({
       isHover: true,
@@ -56,7 +56,7 @@ describe('InteractionStateManager', () => {
       </InteractionStateManager>,
     );
     const preventDefault = jest.fn();
-    wrapper.simulate('mouseover');
+    wrapper.simulate('mouseenter');
     wrapper.simulate('mousedown', { preventDefault });
 
     expect(wrapper.state()).toEqual({
@@ -80,7 +80,7 @@ describe('InteractionStateManager', () => {
     );
 
     const preventDefault = jest.fn();
-    wrapper.simulate('mouseover');
+    wrapper.simulate('mouseenter');
     wrapper.simulate('mousedown', { preventDefault });
     wrapper.simulate('mouseup', { preventDefault });
 

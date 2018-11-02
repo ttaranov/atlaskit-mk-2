@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 33.3.2
+- [patch] [b332c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b332c91):
+
+  - upgrades verison of react-scrolllock to SSR safe version
+
 ## 33.3.1
 - Updated dependencies [2da04ed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2da04ed):
   - @atlaskit/quick-search@5.0.0

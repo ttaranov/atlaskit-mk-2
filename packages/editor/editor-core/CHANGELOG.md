@@ -1,5 +1,88 @@
 # @atlaskit/editor-core
 
+## 87.9.0
+- [minor] [2cc9764](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cc9764):
+
+  - Change the way we deal with transactions in collab edit
+
+## 87.8.2
+- [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
+
+  - ED-5510: fix deleting last character in a cell in Safari
+
+## 87.8.1
+- [patch] [1764e1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764e1c):
+
+  - ED-5215: don't insert paragraph when inserting rule if another follows
+
+## 87.8.0
+- [minor] [f17f0a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f17f0a6):
+
+  - ED-5448: support macro autoconversion in actions
+
+## 87.7.5
+- [patch] [fb6b89b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb6b89b):
+
+  - Revert "Add buffer to the bottom of fullpage editor"
+
+## 87.7.4
+- [patch] [8f1073c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1073c):
+
+  * ED-5572 Fixes copying 2+ lines from vs-code pastes as inline code
+
+## 87.7.3
+- [patch] [825d4e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/825d4e9):
+
+  Fix copying codeblock from renderer
+- [patch] [9489ed2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9489ed2):
+
+  ED-4544 Added integration tests for panel
+
+## 87.7.2
+- [patch] [c032914](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c032914):
+
+  - ED-2043: Added table keyboard shortcut
+
+## 87.7.1
+- [patch] [e8afbf1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8afbf1):
+
+  - ED-5310: fix inline code background appearing when wrapping
+
+## 87.7.0
+- [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
+
+  - ED-5527: apply max-width: 100% and pass container size to Card as dimension
+
+## 87.6.18
+- [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
+
+  - Removing extra padding inside the comment editor
+
+## 87.6.17
+- [patch] [aef4235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aef4235):
+
+  - Fix range selection
+
+## 87.6.16
+- [patch] [7bc4461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc4461):
+
+  - ED-5565: support connecting external React.Context to nodeviews
+
+## 87.6.15
+- [patch] [e8052e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8052e1):
+
+  - Add main field to adf-utils package.json
+
+## 87.6.14
+- [patch] [7787595](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7787595):
+
+  - ED-4359: don't change selection when deleting filmstrip item
+
+## 87.6.13
+- [patch] [71b59ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/71b59ae):
+
+  - Fixed Datepicker showing rendering outside viewport
+
 ## 87.6.12
 - [patch] [12855b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12855b9):
 

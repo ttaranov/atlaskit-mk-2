@@ -79,7 +79,7 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
       >
         <Transition
           key={id}
-          timeout={this.isMounted ? 0 : transitionDurationMs}
+          timeout={this.isMounted ? transitionDurationMs : 0}
         >
           {state => {
             const { traversalDirection } = this.state;

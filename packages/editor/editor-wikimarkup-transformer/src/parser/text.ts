@@ -1,12 +1,12 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { createTextNode } from './nodes/text';
-import { parseToken, TokenType, TokenErrCallback } from './tokenize';
 import {
   parseOtherKeyword,
   parseLeadingKeyword,
   parseFormatterKeyword,
   parseMacroKeyword,
 } from './tokenize/keyword';
+import { parseToken, TokenType, TokenErrCallback } from './tokenize';
 import { parseWhitespaceOnly } from './tokenize/whitespace';
 
 const processState = {

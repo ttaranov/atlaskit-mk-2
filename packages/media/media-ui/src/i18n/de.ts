@@ -24,14 +24,31 @@ export default {
   'fabric.media.connect_to': 'Mit {name} verbinden',
   'fabric.media.connect_account_description':
     'Es wird eine neue Seite geöffnet, auf der Sie Ihren {name}-Account verbinden können.',
-  'fabric.media.something_went_wrong': 'Something went wrong.',
-  'fabric.media.might_be_a_hiccup': 'It might just be a hiccup.',
+  'fabric.media.upload_an_avatar': 'Upload an avatar',
+  'fabric.media.save': 'Save',
+  'fabric.media.or': 'or',
+  'fabric.media.upload_photo': 'Upload a photo',
+  'fabric.media.default_avatars': 'Default avatars',
+  'fabric.media.drag_and_drop_images_here': 'Drag and drop your images here',
+  'fabric.media.upload_image': 'Upload image',
+  'fabric.media.image_url_invalid_error':
+    'Could not load image, the url is invalid.',
+  'fabric.media.image_format_invalid_error':
+    'Could not load image, the format is invalid.',
+  'fabric.media.image_size_too_large_error':
+    'Image is too large, must be no larger than {MAX_SIZE_MB}Mb',
+  'fabric.media.something_went_wrong': 'Irgendetwas ist schiefgelaufen.',
+  'fabric.media.might_be_a_hiccup':
+    'Wahrscheinlich ist es nur ein vorübergehendes Problem.',
   'fabric.media.couldnt_generate_preview':
-    "We couldn't generate a preview for this file.",
-  'fabric.media.cant_preview_file_type': "We can't preview this file type.",
+    'Für diese Datei kann keine Vorschau generiert werden.',
+  'fabric.media.cant_preview_file_type':
+    'Für diesen Dateityp kann keine Vorschau angezeigt werden.',
   'fabric.media.item_not_found_in_list':
-    'The selected item was not found on the list.',
-  'fabric.media.no_pdf_artifacts': 'No PDF artifacts found for this file.',
-  'fabric.media.give_feedback': 'Give feedback',
-  'fabric.media.try_downloading_file': 'Try downloading the file to view it.',
+    'Das ausgewählte Element wurde nicht auf der Liste gefunden.',
+  'fabric.media.no_pdf_artifacts':
+    'Keine PDF-Artifakte für diese Datei gefunden.',
+  'fabric.media.give_feedback': 'Feedback geben',
+  'fabric.media.try_downloading_file':
+    'Laden Sie die Datei herunter, um sie anzusehen.',
 };

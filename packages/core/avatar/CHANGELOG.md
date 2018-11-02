@@ -1,5 +1,10 @@
 # @atlaskit/avatar
 
+## 14.1.3
+- [patch] [a981c43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a981c43):
+
+  - Update Avatar to allow to use a custom icon as status.
+
 ## 14.1.2
 - [patch] Adds missing implicit @babel/runtime dependency [b71751b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b71751b)
 

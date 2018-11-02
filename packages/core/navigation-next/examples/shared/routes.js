@@ -10,7 +10,6 @@ import {
   withNavigationUI,
 } from '../../src';
 
-import { containerViews, rootViews } from './mock-data';
 import ShortcutsPlugin from './shortcuts-plugin';
 
 class SetActiveViewBase extends Component<{
@@ -34,40 +33,11 @@ const SetActiveView = withNavigationUI(
   withNavigationViewController(SetActiveViewBase),
 );
 
-class ViewRegistrarBase extends Component<{
-  navigationViewController: *,
-  view: *,
-}> {
-  componentDidMount() {
-    const { navigationViewController, view } = this.props;
-    if (!navigationViewController.views[view.id]) {
-      navigationViewController.addView(view);
-    }
-  }
-  render() {
-    return null;
-  }
-}
-const ViewRegistrar = withNavigationViewController(ViewRegistrarBase);
-
-const RootViews = () => (
-  <Fragment>
-    {rootViews.map(view => <ViewRegistrar key={view.id} view={view} />)}
-  </Fragment>
-);
-const ContainerViews = () => (
-  <Fragment>
-    {containerViews.map(view => <ViewRegistrar key={view.id} view={view} />)}
-  </Fragment>
-);
-const CoreViews = () => <RootViews />;
-
 /**
  * Root-level routes
  */
 export const DashboardsView = () => (
   <Fragment>
-    <CoreViews />
     <SetActiveView id="root/index" />
     <h1>Dashboards</h1>
     <p>Hello here are your dashboards.</p>
@@ -76,7 +46,6 @@ export const DashboardsView = () => (
 
 export const ProjectsView = () => (
   <Fragment>
-    <CoreViews />
     <SetActiveView id="root/index" />
     <h1>Projects</h1>
     <p>Hello here are your projects.</p>
@@ -88,7 +57,6 @@ export const ProjectsView = () => (
 
 export const SearchIssuesView = () => (
   <Fragment>
-    <CoreViews />
     <SetActiveView id="root/issues" />
     <h1>Search issues</h1>
     <p>Hello search for your issues here.</p>
@@ -106,8 +74,6 @@ class BacklogViewBase extends Component<*> {
   render() {
     return (
       <Fragment>
-        <CoreViews />
-        <ContainerViews />
         <SetActiveView id="container/project/index" />
         <h1>Backlog</h1>
         <p>Hello this is the backlog.</p>

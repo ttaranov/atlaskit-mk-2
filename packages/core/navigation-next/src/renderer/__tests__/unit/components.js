@@ -9,9 +9,21 @@ import ConnectedItemComponent from '../../../components/connected/ConnectedItem'
 import GoToItemComponent from '../../../components/connected/GoToItem';
 import HeaderSectionComponent from '../../../components/presentational/HeaderSection';
 import MenuSectionComponent from '../../../components/presentational/MenuSection';
+import SortableContextComponent from '../../../components/connected/SortableContext';
+import SortableGroupComponent from '../../../components/connected/SortableGroup';
+import SortableItemComponent from '../../../components/connected/SortableItem';
 import ItemsRenderer, { components } from '../../components';
 
-const { BackItem, GoToItem, Item, HeaderSection, MenuSection } = components;
+const {
+  BackItem,
+  GoToItem,
+  Item,
+  HeaderSection,
+  MenuSection,
+  SortableContext,
+  SortableGroup,
+  SortableItem,
+} = components;
 
 describe('navigation-next view renderer', () => {
   describe('Item component', () => {
@@ -29,6 +41,12 @@ describe('navigation-next view renderer', () => {
   describe('Back Item component', () => {
     it('should be the BackItem UI component', () => {
       expect(BackItem).toBe(BackItemComponent);
+    });
+  });
+
+  describe('Sortable Item component', () => {
+    it('should be the SortableItem UI component', () => {
+      expect(SortableItem).toBe(SortableItemComponent);
     });
   });
 
@@ -137,6 +155,162 @@ describe('navigation-next view renderer', () => {
         customComponents,
         items,
       });
+    });
+  });
+
+  describe('SortableContext', () => {
+    let items;
+    beforeEach(() => {
+      items = [
+        {
+          type: 'SortableGroup',
+          id: 'sortable-group',
+          items: [
+            { type: 'SortableItem', id: 'backlog', text: 'Backlog' },
+            {
+              type: 'SortableItem',
+              id: 'active-sprints',
+              text: 'Active sprints',
+            },
+            { type: 'SortableItem', id: 'issues', text: 'Issues' },
+          ],
+        },
+      ];
+    });
+    it('should render the SortableContext UI component', () => {
+      const wrapper = shallow(
+        <SortableContext id="sortable" items={items} onDragEnd={() => {}} />,
+      );
+
+      expect(wrapper.find(SortableContextComponent)).toHaveLength(1);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the SortableContext UI component correctly with all optional props', () => {
+      const dragHooks = {
+        onDragStart: () => {},
+        onDragUpdate: () => {},
+        onDragEnd: () => {},
+      };
+      const wrapper = shallow(
+        <SortableContext id="sortable" items={items} {...dragHooks} />,
+      );
+
+      expect(wrapper.find(SortableContextComponent).props()).toEqual({
+        children: wrapper.find(ItemsRenderer).get(0),
+        id: 'sortable',
+        ...dragHooks,
+      });
+    });
+
+    it('should render the items using ItemsRenderer', () => {
+      const customComponents = { foo: () => null };
+      const wrapper = mount(
+        <SortableContext
+          customComponents={customComponents}
+          id="menu"
+          items={items}
+          onDragEnd={() => {}}
+        />,
+      );
+
+      // More than 1 ItemsRenderer will render due to SortableGroup existing in items
+      expect(wrapper.find(ItemsRenderer).length).toBeGreaterThanOrEqual(1);
+      expect(
+        wrapper
+          .find(ItemsRenderer)
+          .first()
+          .props(),
+      ).toEqual({
+        customComponents,
+        items,
+      });
+    });
+
+    it('should not render anything if items is empty', () => {
+      const wrapper = shallow(
+        <SortableContext id="sortable" items={[]} onDragEnd={() => {}} />,
+      );
+
+      expect(wrapper.html()).toBeNull();
+    });
+  });
+
+  describe('SortableGroup', () => {
+    let items;
+    beforeEach(() => {
+      items = [
+        { type: 'SortableItem', text: 'Backlog', id: 'backlog' },
+        { type: 'SortableItem', text: 'Active sprints', id: 'active-sprints' },
+        { type: 'SortableItem', text: 'Issues', id: 'issues' },
+      ];
+    });
+    it('should render the SortableGroup UI Component', () => {
+      const wrapper = shallow(
+        <SortableGroup
+          id="sortable-group"
+          heading="Sortable Group"
+          items={items}
+        />,
+      );
+
+      expect(wrapper.find(SortableGroupComponent)).toHaveLength(1);
+      expect(wrapper).toMatchSnapshot();
+    });
+
+    it('should render the items using ItemsRenderer', () => {
+      const customComponents = { foo: () => null };
+      const wrapper = shallow(
+        <SortableGroup
+          customComponents={customComponents}
+          id="sortable-group"
+          heading="Sortable Group"
+          items={items}
+        />,
+      );
+
+      expect(wrapper.find(ItemsRenderer)).toHaveLength(1);
+      expect(wrapper.find(ItemsRenderer).props()).toEqual({
+        customComponents,
+        items,
+      });
+    });
+
+    it('should block render of the items unless `items` or `customComponents` have changed', () => {
+      const customComponents = { foo: () => null };
+      // We cannot setProps on non-root instance, so create render prop component to allow us to change
+      const Harness = ({ rootItems, children }: any) => children({ rootItems });
+      // Need to render sortable context for react-beautiful-dnd to work when mounting
+      const wrapper = mount(
+        <Harness rootItems={items}>
+          {({ rootItems }) => (
+            <SortableContextComponent onDragEnd={() => {}}>
+              <SortableGroup
+                customComponents={customComponents}
+                id="sortable-group"
+                heading="Sortable Group"
+                items={rootItems}
+              />,
+            </SortableContextComponent>
+          )}
+        </Harness>,
+      );
+
+      const renderSpy = jest.spyOn(
+        // Can only retrieve a child instance if mounting instead of shallowing
+        wrapper.find(ItemsRenderer).instance(),
+        'render',
+      );
+
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+
+      wrapper.setProps({ rootItems: items });
+
+      expect(renderSpy).toHaveBeenCalledTimes(0);
+
+      wrapper.setProps({ rootItems: [...items] });
+
+      expect(renderSpy).toHaveBeenCalledTimes(1);
     });
   });
 

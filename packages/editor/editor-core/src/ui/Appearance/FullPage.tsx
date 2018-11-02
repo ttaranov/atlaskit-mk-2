@@ -14,7 +14,6 @@ import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
 import WidthEmitter from '../WidthEmitter';
-import { GUTTER_SIZE } from '../../plugins/base/pm-plugins/scroll-gutter';
 
 const GUTTER_PADDING = 32;
 
@@ -48,6 +47,7 @@ const ContentArea = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding-bottom: 55px;
 
   & .ProseMirror {
     flex-grow: 1;
@@ -69,19 +69,10 @@ const ContentArea = styled.div`
     > h6 {
       clear: none;
     }
-
-    > p:last-child {
-      margin-bottom: 24px;
-    }
   }
   ${tableFullPageEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
-
-const Gutter = styled.div`
-  padding-bottom: ${GUTTER_SIZE}px;
-`;
-Gutter.displayName = 'Gutter';
 
 interface MainToolbarProps {
   showKeyline: boolean;
@@ -261,7 +252,6 @@ export default class Editor extends React.Component<
                   />
                 }
                 {editorDOMElement}
-                <Gutter />
               </div>
             </ContentArea>
           </ClickAreaBlock>

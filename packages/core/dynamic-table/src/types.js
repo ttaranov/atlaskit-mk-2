@@ -1,5 +1,6 @@
 // @flow
 import { type Node, type Element } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export type RowCellType = {
   key?: string | number,
@@ -13,22 +14,33 @@ type i18nShape = {
 
 export type StatelessProps = {
   caption?: Node,
+  /** Object describing the column headings */
   head?: HeadType,
+  /** The data to render in the table */
   rows?: Array<RowType>,
+  /** Component to render when there is no data */
   emptyView?: Element<any>,
+  /** Controls the size of the rendered spinner */
   loadingSpinnerSize?: LoadingSpinnerSizeType,
+  /** Whether to show the loading state or not */
   isLoading?: boolean,
   isFixedSize?: boolean,
+  /** The maximum number of rows per page. No maximum by default. */
   rowsPerPage?: number,
-  onSetPage: Function,
-  onSort: Function,
+  /** Called when the page changes. Provides an analytics event when the page change was from a click on pagination component. */
+  onSetPage: (number, ?UIAnalyticsEvent) => any,
+  /** Called when a column is sorted. Provides information about what was sorted and an analytics event. */
+  onSort: (Object, ?UIAnalyticsEvent) => any,
+  /** The current page number */
   page?: number,
+  /** The property to sort items by */
   sortKey?: string,
+  /** Whether to sort in ascending or descending order */
   sortOrder?: SortOrderType,
   isRankable?: boolean,
   isRankingDisabled?: boolean,
   onRankStart?: RankStart => void,
-  onRankEnd?: RankEnd => void,
+  onRankEnd?: (RankEnd, ?UIAnalyticsEvent) => void,
   paginationi18n?: i18nShape,
 };
 

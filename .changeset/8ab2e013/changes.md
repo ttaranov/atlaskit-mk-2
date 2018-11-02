@@ -1,1 +1,0 @@
-- Add play icon for video files in MediaCard

@@ -20,12 +20,12 @@ export interface WrapperProps {
 
 const getWrapperHeight = (dimensions?: CardDimensions) =>
   dimensions && dimensions.height
-    ? `height: ${getCSSUnitValue(dimensions.height)};`
+    ? `height: ${getCSSUnitValue(dimensions.height)}; max-height: 100%;`
     : '';
 
 const getWrapperWidth = (dimensions?: CardDimensions) =>
   dimensions && dimensions.width
-    ? `width: ${getCSSUnitValue(dimensions.width)};`
+    ? `width: ${getCSSUnitValue(dimensions.width)}; max-width: 100%;`
     : '';
 
 export const Wrapper: ComponentClass<

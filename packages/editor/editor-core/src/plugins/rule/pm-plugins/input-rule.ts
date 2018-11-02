@@ -1,17 +1,31 @@
 import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { Fragment, Schema } from 'prosemirror-model';
-import { Plugin } from 'prosemirror-state';
+import { Plugin, EditorState } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import {
   createInputRule,
   leafNodeReplacementCharacter,
 } from '../../../utils/input-rules';
 
-export const createHorizontalRule = (state, start, end) => {
+export const createHorizontalRule = (state: EditorState, start, end) => {
+  if (!state.selection.empty) {
+    return null;
+  }
+
+  const { $from } = state.selection;
+  const $afterRule = state.doc.resolve($from.after());
+  const { paragraph } = state.schema.nodes;
+
+  if ($afterRule.nodeAfter && $afterRule.nodeAfter.type === paragraph) {
+    // if there's already a paragraph after, just insert the rule into
+    // the current paragraph
+    end = end + 1;
+  }
+
   return state.tr.replaceWith(
     start,
     end,
-    Fragment.from(state.schema.nodes.rule.create()),
+    Fragment.from(state.schema.nodes.rule.createChecked()),
   );
 };
 

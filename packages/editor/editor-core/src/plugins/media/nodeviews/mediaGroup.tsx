@@ -138,6 +138,11 @@ class MediaGroupNodeView extends ReactNodeView {
       />
     );
   }
+
+  stopEvent(event: Event) {
+    event.preventDefault();
+    return true;
+  }
 }
 
 export const ReactMediaGroupNode = (portalProviderAPI: PortalProviderAPI) => (
