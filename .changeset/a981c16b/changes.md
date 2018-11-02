@@ -1,0 +1,1 @@
+- Fixes an issue where using arrow keys to navigate between mention nodes would put the cursor in unexpected locations.
