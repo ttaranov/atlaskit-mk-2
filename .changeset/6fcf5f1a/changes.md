@@ -1,0 +1,1 @@
+- ED-5448: support macro autoconversion in actions
