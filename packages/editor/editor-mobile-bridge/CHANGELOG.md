@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.2.2
+- [patch] [3756327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3756327):
+
+  - ED-5588: Fixes font size changing when rotating viewport on iOS.
+
 ## 5.2.1
 - [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
 

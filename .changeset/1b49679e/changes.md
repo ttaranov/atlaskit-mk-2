@@ -1,1 +1,0 @@
-- ED-5588: Fixes font size changing when rotating viewport on iOS.
