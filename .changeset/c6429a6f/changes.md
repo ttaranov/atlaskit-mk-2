@@ -1,0 +1,1 @@
+- ED-5215: don't insert paragraph when inserting rule if another follows
