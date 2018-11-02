@@ -29,7 +29,7 @@ export interface State {
   readonly accounts: ServiceAccountWithType[];
   readonly editorData?: EditorData;
   readonly recents: Recents;
-  readonly selectedItems: SelectedItem[];
+  readonly selectedItems: SelectedItem[]; // TODO: maybe just {id: string, serviceName: ServiceName }, but we will need to find it later
   readonly tenant: Tenant;
   readonly uploads: LocalUploads;
   readonly remoteUploads: RemoteUploads;
