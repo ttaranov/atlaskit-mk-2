@@ -1,58 +1,50 @@
 import { resolveColors } from '../../components/DateLozenge';
-import * as UtilSharedStyles from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 describe('resolveColors', () => {
   it('return default colors', () => {
-    expect(resolveColors()).toEqual([
-      UtilSharedStyles.akColorN30A,
-      UtilSharedStyles.akColorN800,
-      UtilSharedStyles.akColorN40,
-    ]);
+    expect(resolveColors()).toEqual([colors.N30A, colors.N800, colors.N40]);
 
     expect(resolveColors('grey')).toEqual([
-      UtilSharedStyles.akColorN30A,
-      UtilSharedStyles.akColorN800,
-      UtilSharedStyles.akColorN40,
+      colors.N30A,
+      colors.N800,
+      colors.N40,
     ]);
   });
 
   it('return red colors', () => {
-    expect(resolveColors('red')).toEqual([
-      UtilSharedStyles.akColorR50,
-      UtilSharedStyles.akColorR500,
-      UtilSharedStyles.akColorR75,
-    ]);
+    expect(resolveColors('red')).toEqual([colors.R50, colors.R500, colors.R75]);
   });
 
   it('return blue colors', () => {
     expect(resolveColors('blue')).toEqual([
-      UtilSharedStyles.akColorB50,
-      UtilSharedStyles.akColorB500,
-      UtilSharedStyles.akColorB75,
+      colors.B50,
+      colors.B500,
+      colors.B75,
     ]);
   });
 
   it('return green colors', () => {
     expect(resolveColors('green')).toEqual([
-      UtilSharedStyles.akColorG50,
-      UtilSharedStyles.akColorG500,
-      UtilSharedStyles.akColorG75,
+      colors.G50,
+      colors.G500,
+      colors.G75,
     ]);
   });
 
   it('return purple colors', () => {
     expect(resolveColors('purple')).toEqual([
-      UtilSharedStyles.akColorP50,
-      UtilSharedStyles.akColorP500,
-      UtilSharedStyles.akColorP75,
+      colors.P50,
+      colors.P500,
+      colors.P75,
     ]);
   });
 
   it('return yellow colors', () => {
     expect(resolveColors('yellow')).toEqual([
-      UtilSharedStyles.akColorY50,
-      UtilSharedStyles.akColorY500,
-      UtilSharedStyles.akColorY75,
+      colors.Y50,
+      colors.Y500,
+      colors.Y75,
     ]);
   });
 });

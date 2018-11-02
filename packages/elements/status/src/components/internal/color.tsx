@@ -2,21 +2,17 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { HTMLAttributes, ComponentClass, ButtonHTMLAttributes } from 'react';
-import {
-  akColorN0,
-  akColorN50,
-  akColorN900,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { Color as ColorType } from '../Status';
 
 const Button: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
   height: 24px;
   width: 24px;
-  background: ${akColorN900};
+  background: ${colors.N900};
   padding: 0;
   border-radius: 4px;
-  border: 1px solid ${akColorN0};
+  border: 1px solid ${colors.N0};
   cursor: pointer;
   display: block;
   box-sizing: border-box;
@@ -31,7 +27,7 @@ const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   padding: 1px;
   border-radius: 6px;
   &:hover {
-    border: 1px solid ${akColorN50};
+    border: 1px solid ${colors.N50};
   }
 `;
 

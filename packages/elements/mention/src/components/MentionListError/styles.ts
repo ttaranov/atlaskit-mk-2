@@ -2,11 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import {
-  akBorderRadius,
-  akColorN500,
-  akTypographyMixins,
-} from '@atlaskit/util-shared-styles';
+import { borderRadius, colors, typography } from '@atlaskit/theme';
 
 // tslint:disable:next-line variable-name
 export const MentionListErrorStyle: ComponentClass<
@@ -17,9 +13,9 @@ export const MentionListErrorStyle: ComponentClass<
   justify-content: center;
   flex-direction: column;
   background-color: white;
-  color: ${akColorN500};
+  color: ${colors.N500};
   border: 1px solid #fff;
-  border-radius: ${akBorderRadius};
+  border-radius: ${borderRadius()};
 `;
 
 export const GenericErrorVisualStyle: ComponentClass<
@@ -35,7 +31,7 @@ export const GenericErrorVisualStyle: ComponentClass<
 export const MentionListErrorHeadlineStyle: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
-  ${akTypographyMixins.h400 as any};
+  ${typography.h400()};
   margin-bottom: 8px;
 `;
 
