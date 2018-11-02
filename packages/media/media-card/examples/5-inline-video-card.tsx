@@ -7,22 +7,25 @@ import {
   videoLargeFileId,
   videoHorizontalFileId,
 } from '@atlaskit/media-test-helpers';
-import { InlineCardVideoWrapper } from '../example-helpers/styled';
+import {
+  InlineCardVideoWrapper,
+  InlineCardVideoWrapperItem,
+} from '../example-helpers/styled';
 
 const context = createStorybookContext();
 const onClick = () => console.log('onClick');
 
 export default () => (
   <InlineCardVideoWrapper>
-    <div>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={imageFileId}
         disableOverlay={true}
         onClick={onClick}
       />
-    </div>
-    <div>
+    </InlineCardVideoWrapperItem>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={videoFileId}
@@ -30,8 +33,8 @@ export default () => (
         onClick={onClick}
         useInlinePlayer={true}
       />
-    </div>
-    <div>
+    </InlineCardVideoWrapperItem>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={videoFileId}
@@ -40,8 +43,8 @@ export default () => (
         onClick={onClick}
         useInlinePlayer={true}
       />
-    </div>
-    <div>
+    </InlineCardVideoWrapperItem>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={videoLargeFileId}
@@ -50,8 +53,8 @@ export default () => (
         onClick={onClick}
         useInlinePlayer={true}
       />
-    </div>
-    <div>
+    </InlineCardVideoWrapperItem>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={videoHorizontalFileId}
@@ -60,8 +63,8 @@ export default () => (
         onClick={onClick}
         useInlinePlayer={true}
       />
-    </div>
-    <div>
+    </InlineCardVideoWrapperItem>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={videoHorizontalFileId}
@@ -69,14 +72,14 @@ export default () => (
         onClick={onClick}
         useInlinePlayer={true}
       />
-    </div>
-    <div>
+    </InlineCardVideoWrapperItem>
+    <InlineCardVideoWrapperItem>
       <Card
         context={context}
         identifier={videoHorizontalFileId}
         onClick={onClick}
         useInlinePlayer={true}
       />
-    </div>
+    </InlineCardVideoWrapperItem>
   </InlineCardVideoWrapper>
 );
