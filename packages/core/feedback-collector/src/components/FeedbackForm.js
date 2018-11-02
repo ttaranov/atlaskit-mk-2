@@ -3,6 +3,7 @@
 import React, { Fragment, Component } from 'react';
 import { Checkbox } from '@atlaskit/checkbox';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+import { FieldTextStateless } from '@atlaskit/field-text';
 import Form, { Field } from '@atlaskit/form';
 import Modal from '@atlaskit/modal-dialog';
 import Select from '@atlaskit/select';
@@ -13,6 +14,12 @@ type Props = {|
   onClose: () => void,
   /** Function that will be called immediately after the submit action  */
   onSubmit: (formValues: FormFields) => void,
+
+  /**
+   * Whether to ask for email and name when the user consents to being contacted.
+   * Defaults to false
+   **/
+  contactInfoRequired?: boolean,
 |};
 
 export const fieldLabel = {
@@ -39,6 +46,8 @@ export default class FeedbackForm extends Component<Props, FormFields> {
   state = {
     type: 'empty',
     description: '',
+    name: '',
+    email: '',
     canBeContacted: false,
     enrollInResearchGroup: false,
   };
@@ -51,6 +60,8 @@ export default class FeedbackForm extends Component<Props, FormFields> {
       description,
       canBeContacted,
       enrollInResearchGroup,
+      name,
+      email,
     } = this.state;
 
     this.props.onSubmit({
@@ -58,6 +69,8 @@ export default class FeedbackForm extends Component<Props, FormFields> {
       description,
       canBeContacted,
       enrollInResearchGroup,
+      name,
+      email,
     });
   };
 
@@ -85,6 +98,7 @@ export default class FeedbackForm extends Component<Props, FormFields> {
   };
 
   render() {
+    const { contactInfoRequired = false } = this.props;
     return (
       <Modal
         actions={this.getActions()}
@@ -122,6 +136,27 @@ export default class FeedbackForm extends Component<Props, FormFields> {
                   }
                 />
               </Field>
+
+              {contactInfoRequired && this.state.canBeContacted ? (
+                <Fragment>
+                  <Field label={'Name'}>
+                    <FieldTextStateless
+                      value={this.state.name}
+                      name="name"
+                      onChange={e => this.setState({ name: e.target.value })}
+                    />
+                  </Field>
+                  <Field label={'Email address'}>
+                    <FieldTextStateless
+                      value={this.state.email}
+                      name="email"
+                      onChange={e => this.setState({ email: e.target.value })}
+                    />
+                  </Field>
+                </Fragment>
+              ) : (
+                <Fragment />
+              )}
 
               <Field>
                 <Checkbox

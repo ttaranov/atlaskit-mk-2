@@ -12,4 +12,6 @@ export type FormFields = {
   description: string,
   canBeContacted: boolean,
   enrollInResearchGroup: boolean,
+  name?: string,
+  email?: string,
 };

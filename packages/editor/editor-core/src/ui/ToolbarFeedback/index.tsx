@@ -38,6 +38,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  /** Additional labels to add to the feedback ticket created */
   issueLabels?: string[];
 }
 
@@ -180,21 +181,20 @@ export const getDeviceInfo = (nAgt, nVersion) => {
 
 type State = { isOpen: boolean; displayFlag: boolean };
 
+// You can find the possible fields for this key at
+// https://jsd-widget.atlassian.com/api/embeddable/b76a0ea3-48e9-4cfe-ba43-b004ec935dd0/widget
 const EMBEDDABLE_KEY = 'b76a0ea3-48e9-4cfe-ba43-b004ec935dd0';
 const REQUEST_TYPE_ID = '176';
-// const name = 'Feedback Sender';
 
-// const email = 'fsender@atlassian.com';
-
-/*
-fields: [{id: "description", label: "Description",…}, {id: "customfield_11703", label: "Customer Name",…},…]
-0: {id: "description", label: "Description", value: {,…}}
-1: {id: "customfield_11703", label: "Customer Name",…}
-2: {id: "customfield_11704", label: "Feedback Context",…}
-3: {id: "customfield_11705", label: "Feedback Type", value: {text: "Leave a comment"}}
-4: {id: "customfield_11708", label: "Can be contacted", value: {text: "Yes"}}
-5: {id: "customfield_11709", label: "Can be researched", value: {text: "Yes"}}
-*/
+// Copied from Clemi
+export function browserMetrics() {
+  return {
+    location: location().href,
+    referrer: window.document.referrer,
+    userAgent: navigator.userAgent,
+    screenResolution: `${screen.width} x ${screen.height}`,
+  };
+}
 
 export default class ToolbarFeedback extends PureComponent<Props, State> {
   state = { isOpen: false, displayFlag: false };
@@ -205,8 +205,18 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   hideFlag = () => this.setState({ displayFlag: false });
 
   render() {
-    const labels = ['label1', 'label2'];
     const { isOpen, displayFlag } = this.state;
+    const { issueLabels, packageName, packageVersion } = this.props;
+    const environment = {
+      packageName,
+      packageVersion,
+      browser: getBrowserInfo(navigator.userAgent),
+      os: getDeviceInfo(navigator.userAgent, navigator.appVersion),
+    };
+
+    const environmentString = JSON.stringify(environment, null, 2);
+    console.log('Env string:', environmentString);
+
     return (
       <div>
         <ToolbarButton onClick={this.open} selected={false} spacing="compact">
@@ -217,8 +227,6 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           <FeedbackCollector
             onClose={this.close}
             onSubmit={this.displayFlag}
-            // email={email}
-            // name={name}
             requestTypeId={REQUEST_TYPE_ID}
             embeddableKey={EMBEDDABLE_KEY}
             customerNameFieldId={'customfield_11703'}
@@ -231,20 +239,16 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
             typeCommentDefaultValue={{ id: '10797' }}
             typeSuggestionDefaultValue={{ id: '10798' }}
             typeQuestionDefaultValue={{ id: '10799' }}
-
-            //   additionalFields={[
-            //   {
-            //     id: "customfield_11704",
-            //     value: "hello feedback context"
-            //   }
-            // ]}
-
-            //   additionalFields={[
-            //   {
-            //     id: "labels",
-            //     value: labels
-            //   }
-            // ]}
+            additionalFields={
+              issueLabels
+                ? [
+                    {
+                      id: 'labels',
+                      value: issueLabels,
+                    },
+                  ]
+                : undefined
+            }
           />
         )}
 

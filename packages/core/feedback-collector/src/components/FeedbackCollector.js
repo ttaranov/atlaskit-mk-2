@@ -132,9 +132,10 @@ export default class FeedbackCollector extends Component<Props> {
   }
 
   getEmail(formValues: FormFields) {
-    return formValues.canBeContacted && this.props.email
-      ? this.props.email
-      : this.props.emailDefaultValue;
+    if (!formValues.canBeContacted) {
+      return this.props.emailDefaultValue;
+    }
+    return this.props.email || formValues.email || this.props.emailDefaultValue;
   }
 
   getDescription(formValues: FormFields) {
@@ -150,11 +151,14 @@ export default class FeedbackCollector extends Component<Props> {
     );
   }
 
-  getCustomerName() {
-    return this.props.name || this.props.customerNameDefaultValue;
+  getCustomerName(formValues: FormFields) {
+    return (
+      this.props.name || formValues.name || this.props.customerNameDefaultValue
+    );
   }
 
   mapFormToJSD(formValues: FormFields) {
+    console.log('Formvalues are', formValues);
     const fields = [
       {
         id: this.props.typeFiedlId,
@@ -171,7 +175,7 @@ export default class FeedbackCollector extends Component<Props> {
       { id: this.props.emailFieldId, value: this.getEmail(formValues) },
       {
         id: this.props.customerNameFieldId,
-        value: this.getCustomerName(),
+        value: this.getCustomerName(formValues),
       },
     ];
 
@@ -218,7 +222,11 @@ export default class FeedbackCollector extends Component<Props> {
 
   render() {
     return (
-      <FeedbackForm onSubmit={this.postFeedback} onClose={this.props.onClose} />
+      <FeedbackForm
+        onSubmit={this.postFeedback}
+        onClose={this.props.onClose}
+        contactInfoRequired={!this.props.email}
+      />
     );
   }
 }
