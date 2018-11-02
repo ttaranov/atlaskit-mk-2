@@ -4,24 +4,50 @@ import React, { PureComponent, type ElementType, type Ref } from 'react';
 import { css } from 'emotion';
 
 import { styleReducerNoOp, withContentTheme } from '../../../theme';
-import type { ItemProps } from './types';
+import type { ItemPrimitiveProps } from './types';
 
 const isString = x => typeof x === 'string';
 
 type SwitchProps = {
   as: ElementType,
+  draggableProps: {},
   innerRef: Ref<*>,
 };
-
-const ComponentSwitch = ({ as, innerRef, ...rest }: SwitchProps) => {
-  const props = isString(as) ? rest : { innerRef, ...rest };
+const ComponentSwitch = ({
+  as,
+  draggableProps,
+  innerRef,
+  ...rest
+}: SwitchProps) => {
+  const isElement = isString(as);
+  const props = isElement ? rest : { innerRef, draggableProps, ...rest };
+  // only pass the actual `ref` to an element, it's the responsibility of the
+  // component author to use `innerRef` where applicable
+  const ref = isElement ? innerRef : null;
   const ElementOrComponent = as;
-  return <ElementOrComponent ref={innerRef} {...props} />;
+
+  return <ElementOrComponent ref={ref} {...draggableProps} {...props} />;
 };
 
-class ItemPrimitive extends PureComponent<ItemProps> {
+const getItemComponentProps = (props: ItemPrimitiveProps) => {
+  const {
+    createAnalyticsEvent,
+    isActive,
+    isHover,
+    isSelected,
+    isFocused,
+    isDragging,
+    theme,
+    ...componentProps
+  } = props;
+
+  return componentProps;
+};
+
+class ItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   static defaultProps = {
     isActive: false,
+    isDragging: false,
     isHover: false,
     isSelected: false,
     isFocused: false,
@@ -29,28 +55,32 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     styles: styleReducerNoOp,
     text: '',
   };
+
   render() {
     const {
       after: After,
       before: Before,
-      styles: styleReducer,
-      isActive,
+      component: CustomComponent,
+      draggableProps,
+      href,
       innerRef,
+      isActive,
+      isDragging,
       isHover,
       isSelected,
+      onClick,
       isFocused,
       spacing,
+      styles: styleReducer,
       subText,
+      target,
       text,
       theme,
-      component: CustomComponent,
-      href,
-      onClick,
-      target,
     } = this.props;
     const { mode, context } = theme;
     const presentationProps = {
       isActive,
+      isDragging,
       isHover,
       isSelected,
       isFocused,
@@ -61,17 +91,17 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     // base element switch
 
     let itemComponent = 'div';
-    let itemProps = { innerRef };
+    let itemProps = { draggableProps, innerRef };
 
     if (CustomComponent) {
       itemComponent = CustomComponent;
-      itemProps = this.props;
+      itemProps = getItemComponentProps(this.props);
     } else if (href) {
       itemComponent = 'a';
-      itemProps = { href, onClick, target, innerRef };
+      itemProps = { href, onClick, target, draggableProps, innerRef };
     } else if (onClick) {
       itemComponent = 'button';
-      itemProps = { onClick, innerRef };
+      itemProps = { onClick, draggableProps, innerRef };
     }
 
     return (

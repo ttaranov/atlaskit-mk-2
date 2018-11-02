@@ -108,8 +108,9 @@ const layoutStyles = {
 
 const getItemBackgroundColor = (
   background,
-  { isActive, isSelected, isHover },
+  { isActive, isSelected, isHover, isDragging },
 ) => {
+  if (isDragging) return background.hint;
   if (isActive) return background.interact;
   if (isSelected) return background.static;
   if (isHover) return background.hint;
@@ -119,6 +120,7 @@ const getItemBackgroundColor = (
 // Light theme
 export default ({ product }: ModeColors) => ({
   isActive,
+  isDragging,
   isHover,
   isSelected,
   spacing,
@@ -135,10 +137,12 @@ export default ({ product }: ModeColors) => ({
       isActive,
       isHover,
       isSelected,
+      isDragging,
     },
   );
   const productBackgroundColor = getItemBackgroundColor(product.background, {
     isActive,
+    isDragging,
     isHover,
     isSelected,
   });

@@ -254,6 +254,9 @@ Every item in a view must have a \`type\` property. This can be a component, but
 * \`'Section'\`
 * \`'SectionHeading'\`
 * \`'Separator'\`
+* \`'SortableContext'\`
+* \`'SortableGroup'\`
+* \`'SortableItem'\`
 * \`'Switcher'\`
 * \`'Wordmark'\`
 
@@ -262,7 +265,7 @@ Every item in a view must have a \`type\` property. This can be a component, but
 For the most part these built-in types take exactly the same props as their component counterparts, however there are a few differences:
 
 * All items must have an \`id\` property. This ID is used as the React \`key\`, and should be unique within the view so that reducers can accurately select individual items by ID. It is also used to uniquely identify the item for analytics click events.
-* Rather than passing a \`children\` prop to container types, namely \`'Group'\`, \`'HeaderSection'\`, \`'MenuSection'\` and \`'Section'\`, you should specify their descendants as an array with the \`items\` property. Any item with an \`items\` property will be walked by reducers.
+* Rather than passing a \`children\` prop to container types, namely \`'Group'\`, \`'HeaderSection'\`, \`'MenuSection'\`, \`'Section'\`, \`'SortableGroup'\` and \`'SortableContext'\`, you should specify their descendants as an array with the \`items\` property. Any item with an \`items\` property will be walked by reducers.
 * The Section components take an optional \`nestedGroupKey\` prop to be used as the key of the
 element to allow sections across multiple views to share the same key for nested
 transitions. If not supplied, the id of the sections must match between views where you want

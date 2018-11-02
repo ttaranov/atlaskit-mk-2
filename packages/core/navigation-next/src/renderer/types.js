@@ -1,8 +1,13 @@
 // @flow
 
-import type { ComponentType, ElementConfig } from 'react';
+import type { ComponentType, ElementConfig, Node } from 'react';
 
-import { HeaderSection, MenuSection } from '../';
+import {
+  HeaderSection,
+  MenuSection,
+  SortableContext,
+  SortableGroup,
+} from '../';
 import type { ViewData } from '../../src/view-controller/types';
 
 /**
@@ -36,6 +41,16 @@ export type SectionProps = SharedGroupTypeProps & {
   parentId?: string | null,
   shouldGrow?: boolean,
 };
+
+export type SortableContextProps = {|
+  ...$Exact<SharedGroupTypeProps>,
+  ...$Exact<$Diff<ElementConfig<typeof SortableContext>, { children: Node }>>,
+|};
+
+export type SortableGroupProps = {|
+  ...$Exact<SharedGroupTypeProps>,
+  ...$Exact<$Diff<ElementConfig<typeof SortableGroup>, { children: Node }>>,
+|};
 
 export type HeaderSectionProps = SharedGroupTypeProps &
   ElementConfig<typeof HeaderSection> & {
