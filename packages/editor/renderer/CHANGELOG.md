@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 29.5.0
+- [minor] [ed15858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed15858):
+
+  - ED-5552: Adds shadow to overflow elements in the renderer.
+
 ## 29.4.0
 - [minor] [abef80b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abef80b):
 

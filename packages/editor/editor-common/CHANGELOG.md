@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 20.3.5
+- [patch] [ed15858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed15858):
+
+  - ED-5552: Adds shadow to overflow elements in the renderer.
+
 ## 20.3.4
 - [patch] [8f1073c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1073c):
 
