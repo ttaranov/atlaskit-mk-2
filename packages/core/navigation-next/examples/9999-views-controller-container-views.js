@@ -21,6 +21,7 @@ import {
   NavigationProvider,
   ViewController,
   withNavigationViewController,
+  SkeletonContainerView,
 } from '../src';
 
 const MyGlobalNavigation = () => (
@@ -321,7 +322,10 @@ class App extends Component<{
 
   render() {
     return (
-      <LayoutManagerWithViewController globalNavigation={MyGlobalNavigation}>
+      <LayoutManagerWithViewController
+        globalNavigation={MyGlobalNavigation}
+        containerSkeleton={SkeletonContainerView}
+      >
         <Switch>
           <Route path="/projects/my-project" component={ProjectBacklogRoute} />
           <Route path="/issues" component={IssuesAndFiltersRoute} />

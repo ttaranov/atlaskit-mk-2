@@ -8,6 +8,7 @@ import LayoutManagerWithViewController from '../../LayoutManagerWithViewControll
 import { NavigationProvider } from '../../../../../index';
 
 const GlobalNavigationComponent = () => null;
+const SkeletonContainerView = () => null;
 
 describe('LayoutManagerWithViewController', () => {
   let wrapper;
@@ -39,6 +40,7 @@ describe('LayoutManagerWithViewController', () => {
             onCollapseEnd={onCollapseEnd}
             onExpandStart={onExpandStart}
             onExpandEnd={onExpandEnd}
+            containerSkeleton={SkeletonContainerView}
             getRefs={getRefs}
           >
             <p>
@@ -83,24 +85,28 @@ describe('LayoutManagerWithViewController', () => {
           .firstSkeletonToRender,
       ).toBe('product');
 
-      expect(
-        wrapper
-          .find('SkeletonItem')
-          .first()
-          .props().theme.context,
-      ).toBe('product');
+      expect(wrapper.find('SkeletonContainerView').props().type).toEqual(
+        'product',
+      );
     });
 
     it('should render skeleton using `container` context', () => {
       const containerWrapper = mount(
         <HashRouter>
           <NavigationProvider
+            cache={false}
             initialPeekViewId="root/index"
             isDebugEnabled={false}
           >
             <LayoutManagerWithViewController
               globalNavigation={GlobalNavigationComponent}
               firstSkeletonToRender={'container'}
+              onCollapseStart={onCollapseStart}
+              onCollapseEnd={onCollapseEnd}
+              onExpandStart={onExpandStart}
+              onExpandEnd={onExpandEnd}
+              containerSkeleton={SkeletonContainerView}
+              getRefs={getRefs}
             >
               <p>
                 Children requires to have `NavigationProvider` as a parent
@@ -118,10 +124,10 @@ describe('LayoutManagerWithViewController', () => {
 
       expect(
         containerWrapper
-          .find('SkeletonItem')
+          .find('SkeletonContainerView')
           .first()
-          .props().theme.context,
-      ).toBe('container');
+          .props().type,
+      ).toEqual('container');
     });
   });
 

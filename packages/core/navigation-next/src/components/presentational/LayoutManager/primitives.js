@@ -2,6 +2,7 @@
 
 import React, { type ElementRef } from 'react';
 import { layers } from '@atlaskit/theme';
+import { applyDisabledProperties } from '../../../common/helpers';
 
 export const LayoutContainer = (props: {}) => (
   <div
@@ -36,14 +37,6 @@ export type Resizable = {
   innerRef?: ElementRef<*>,
   disableInteraction: boolean,
 };
-export function applyDisabledProperties(disableInteraction?: boolean) {
-  return disableInteraction
-    ? {
-        pointerEvents: 'none',
-        userSelect: 'none',
-      }
-    : null;
-}
 
 // Content navigation
 
@@ -75,27 +68,6 @@ export const ContainerNavigationMask = ({
       flexDirection: 'row',
       overflow: 'hidden',
       height: '100%',
-      ...applyDisabledProperties(disableInteraction),
-    }}
-    {...props}
-  />
-);
-
-// Page
-
-type PageProps = Resizable & { offset: number };
-export const PageWrapper = ({
-  innerRef,
-  disableInteraction,
-  offset,
-  ...props
-}: PageProps) => (
-  <div
-    ref={innerRef}
-    css={{
-      flex: '1 1 auto',
-      marginLeft: offset,
-      width: 0, // fix flexbox growth to available width instead of 100%
       ...applyDisabledProperties(disableInteraction),
     }}
     {...props}
