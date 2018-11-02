@@ -121,7 +121,6 @@ const Menu = ({ innerProps: menuInnerProps, selectProps }: Object) => (
       disabled={selectProps.calendarDisabled}
       onChange={selectProps.onCalendarChange}
       onSelect={selectProps.onCalendarSelect}
-      // $FlowFixMe - Calendar is not a react component
       ref={selectProps.calendarRef}
       selected={[selectProps.selectedCalendarValue]}
       innerProps={menuInnerProps}
@@ -364,7 +363,6 @@ class DatePicker extends Component<Props, State> {
         ref={this.getContainerRef}
       >
         <input name={name} type="hidden" value={value} />
-        {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
           menuIsOpen={isOpen && !isDisabled}
           openMenuOnFocus

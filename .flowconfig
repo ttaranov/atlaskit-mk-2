@@ -52,5 +52,10 @@ suppress_comment=\\(.\\|\n\\)*\\$ExpectError
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
 suppress_comment=\\(.\\|\n\\)*\\$StringLitteral
 
+# Show warnings when running flow as we run flow with --max-warnings=0 to fail in CI
+include_warnings=true
+
 [lints]
-all=warn
+# Disable standard linting rules so we can fail on warnings caused by 'Unused suppression' only
+# 'Unused suppression' lints cannot be specifically elevated to errors - https://github.com/facebook/flow/issues/6891
+all=off

@@ -21,7 +21,6 @@ const getBaseColor: themedType = themed('appearance', {
   error: { light: colors.R400, dark: colors.R400 },
 });
 
-// $FlowFixMe - theme is not found in props
 const getHoverColor: themedType = themed('appearance', {
   connectivity: { light: colors.B300, dark: colors.B75 },
   confirmation: { light: colors.G200, dark: colors.G200 },

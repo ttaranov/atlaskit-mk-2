@@ -44,7 +44,7 @@
     "lint:tslint:sources": "                 tslint-config-prettier-check ./tslint.sources.json && tslint -c ./tslint.sources.json --format stylish 'packages/*/*/src/**/*.+(ts|tsx)' --exclude '**/__tests__/**'",
     "lint:tslint:supporting": "              tslint-config-prettier-check ./tslint.supporting.json && tslint -c ./tslint.supporting.json --format stylish 'packages/*/*/+(tests|__tests__|examples|docs|example-helpers)/**/*.(ts|tsx)' 'packages/*/*/src/**/__tests__/**/*.+(ts|tsx)'",
     "typecheck": "                           yarn run typecheck:flow && yarn run typecheck:typescript",
-    "typecheck:flow": "                      flow check",
+    "typecheck:flow": "                      flow check --max-warnings=0",
     "typecheck:typescript": "                tsc --noEmit --project ./tsconfig.typecheck.json",
     "website:start": "                       cd website && yarn start",
     "start": "                               yarn run website:start",

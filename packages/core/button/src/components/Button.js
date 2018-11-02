@@ -162,7 +162,6 @@ class Button extends Component<ButtonProps, State> {
       isSelected,
       isDisabled,
     } = this.props;
-    // $FlowFixMe - Cannot call `getButtonProps` with `this` bound to `component` because `Button` [1] is incompatible with `Button` [2].
     const buttonProps = getButtonProps(this);
     const StyledComponent = this.getStyledComponent();
 

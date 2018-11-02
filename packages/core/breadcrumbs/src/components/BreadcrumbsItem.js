@@ -106,7 +106,6 @@ class BreadcrumbsItem extends Component<Props, State> {
     const { hasOverflow } = this.state;
 
     return (
-      // $FlowFixMe - styled components return types have gone crazy
       <Button
         truncationWidth={truncationWidth}
         appearance="subtle-link"
