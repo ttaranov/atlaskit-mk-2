@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.8.2
+- [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
+
+  - ED-5510: fix deleting last character in a cell in Safari
+
 ## 87.8.1
 - [patch] [1764e1c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1764e1c):
 

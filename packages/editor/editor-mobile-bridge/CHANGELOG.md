@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.2.1
+- [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
+
+  - ED-5510: fix deleting last character in a cell in Safari
+
 ## 5.2.0
 - [minor] [f5696d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5696d5):
 
