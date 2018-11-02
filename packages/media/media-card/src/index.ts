@@ -12,7 +12,7 @@ import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import { CardAction } from './actions';
 import { Identifier } from './root/domain';
 
-// the only components we expose to consumers is Card, CardView and CardList
+// the only components we expose to consumers is Card and CardView
 export { default as Card } from './root/card/cardLoader';
 
 export { CardView } from './root/cardViewLoader';
@@ -23,8 +23,6 @@ export {
 } from './root/cardView';
 
 export * from './root/domain';
-export { CardListProps, CardListState } from './list';
-export { default as CardList } from './list/cardListLoader';
 
 export * from './actions';
 export { isUrlPreviewIdentifier } from './utils/identifier';
@@ -55,12 +53,6 @@ export interface CardDimensions {
 export interface CardEvent {
   event: MouseEvent<HTMLElement>;
   mediaItemDetails?: MediaItemDetails;
-}
-
-export interface CardListEvent {
-  event: MouseEvent<HTMLElement>;
-  collectionName: string;
-  mediaCollectionItem: MediaCollectionItem;
 }
 
 export interface OnSelectChangeFuncResult {

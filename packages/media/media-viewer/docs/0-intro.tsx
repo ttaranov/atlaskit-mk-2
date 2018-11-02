@@ -25,7 +25,6 @@ export default md`
     type: 'file',
   };
 
-  // if you use the CardList component, use the same pagination here
   const pageSize = 30;
 
   const dataSource = {
