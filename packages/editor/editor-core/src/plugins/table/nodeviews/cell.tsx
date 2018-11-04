@@ -120,7 +120,11 @@ class CellView extends ReactNodeView {
 
   ignoreMutation(record: MutationRecord) {
     // @see https://github.com/ProseMirror/prosemirror/issues/862
-    if (record.attributeName === 'class') {
+    const target = record.target as HTMLElement;
+    if (
+      record.attributeName === 'class' ||
+      (target && target.classList.contains(ClassName.CELL_NODEVIEW_WRAPPER))
+    ) {
       return true;
     }
     return false;

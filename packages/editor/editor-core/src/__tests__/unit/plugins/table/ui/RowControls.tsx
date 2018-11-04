@@ -300,7 +300,7 @@ describe('RowControls', () => {
     floatingControls
       .find(DeleteRowButton)
       .find('button')
-      .simulate('click');
+      .simulate('mousedown');
 
     // ensure we called remove
     expect(deleteSelectedRowsMock).toBeCalled();

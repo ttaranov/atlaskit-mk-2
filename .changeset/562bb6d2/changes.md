@@ -1,0 +1,1 @@
+- ED-5639: fix deleting columns in Safari
