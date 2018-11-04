@@ -1,1 +1,0 @@
-- remove CardList component from media-card
