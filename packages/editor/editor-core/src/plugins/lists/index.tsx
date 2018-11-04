@@ -8,6 +8,10 @@ import inputRulePlugin from './pm-plugins/input-rule';
 import keymapPlugin from './pm-plugins/keymap';
 import WithPluginState from '../../ui/WithPluginState';
 
+import EditorBulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
+import EditorNumberedListIcon from '@atlaskit/icon/glyph/editor/number-list';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
+
 const listPlugin: EditorPlugin = {
   nodes() {
     return [
@@ -26,6 +30,49 @@ const listPlugin: EditorPlugin = {
       },
       { name: 'listsKeymap', plugin: ({ schema }) => keymapPlugin(schema) },
     ];
+  },
+
+  pluginsOptions: {
+    quickInsert: ({ formatMessage }) => [
+      {
+        title: formatMessage(messages.bulletList),
+        keywords: ['ul', 'unordered list'],
+        priority: 1100,
+        icon: () => (
+          <EditorBulletListIcon label={formatMessage(messages.bulletList)} />
+        ),
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.bulletList.createChecked(
+              {},
+              state.schema.nodes.listItem.createChecked(
+                {},
+                state.schema.nodes.paragraph.createChecked(),
+              ),
+            ),
+          );
+        },
+      },
+      {
+        title: formatMessage(messages.orderedList),
+        keywords: ['ol', 'ordered list', 'numbered list'],
+        priority: 1200,
+        icon: () => (
+          <EditorNumberedListIcon label={formatMessage(messages.orderedList)} />
+        ),
+        action(insert, state) {
+          return insert(
+            state.schema.nodes.orderedList.createChecked(
+              {},
+              state.schema.nodes.listItem.createChecked(
+                {},
+                state.schema.nodes.paragraph.createChecked(),
+              ),
+            ),
+          );
+        },
+      },
+    ],
   },
 
   primaryToolbarComponent({

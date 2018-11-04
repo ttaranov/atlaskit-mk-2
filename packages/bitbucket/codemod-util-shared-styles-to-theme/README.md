@@ -12,15 +12,15 @@ Codemod for converting `@atlaskit/util-shared-styles` to `@atlaskit/theme`
 - `akTypographyMixins.h100` > `typography.h100()`
 - `akGridSize` > `` `${akGridSize()}px` ``
 - `akCodeFontFamily` > `codeFontFamily()`
+- `akFontFamily` > `fontFamily()`
+- `akFontSizeDefault` > `` `${fontSize()}px`
+- `akZIndexXYZ` > `layers.XYZ()`
 
 ### Not supported yet
 
 PRs welcome :)
 
-- `akFontFamily` > `fontFamily()`
-- `akFontSizeDefault` > `` `${fontSize()}px` ``
 - `akHelperMixins` > ?
-- `akZIndexXYZ` > `layers.XYZ()`
 
 ## Setup
 

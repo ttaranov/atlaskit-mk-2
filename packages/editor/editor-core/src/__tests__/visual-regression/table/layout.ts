@@ -1,7 +1,6 @@
 import { initEditor, clearEditor, insertTable, snapshot } from '../_utils';
 import { TableCssClassName as ClassName } from '../../../plugins/table/types';
-import commonMessages from '../../../messages';
-import { insertColumn } from './_table-utils';
+import { insertColumn, setTableLayout } from './_table-utils';
 
 describe('Snapshot Test: table layout', () => {
   let page;
@@ -21,24 +20,13 @@ describe('Snapshot Test: table layout', () => {
     ['wide', 'full-width'].forEach(layout => {
       it(`${layout} layout`, async () => {
         await page.setViewport({ width: 1280, height: 1024 });
-        const layoutName = layout
-          .replace('-', ' ')
-          .replace(/^\w/, c => c.toUpperCase());
-        const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${layoutName}"]`;
-        // Make the images large enough so there is noticeable difference between the table layouts.
-        await page.click(buttonSelector);
-        await page.waitForSelector(
-          `.ProseMirror table[data-layout="${layout}"]`,
-        );
+        await setTableLayout(page, layout);
         await snapshot(page);
       });
     });
     it(`remove row buttons in full width layout mode`, async () => {
       await page.setViewport({ width: 1280, height: 1024 });
-      const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${
-        commonMessages.layoutFullWidth.defaultMessage
-      }"]`;
-      await page.click(buttonSelector);
+      await setTableLayout(page, 'full-width');
       await page.waitForSelector(
         `.ProseMirror table[data-layout="full-width"]`,
       );

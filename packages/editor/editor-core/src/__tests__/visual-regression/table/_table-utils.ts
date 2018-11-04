@@ -41,10 +41,19 @@ export const setTableLayout = async (page, layout) => {
     wide: commonMessages.layoutWide.defaultMessage,
     'full-width': commonMessages.layoutFullWidth.defaultMessage,
   };
-  const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${
-    layoutSelector[layout]
-  }"]`;
-  await page.click(buttonSelector);
+  const getButtonSelector = layout =>
+    `div[aria-label="${layoutSelector[layout]}"] .${
+      ClassName.LAYOUT_BUTTON
+    } button`;
+
+  if (layout === 'wide') {
+    await page.click(getButtonSelector(layout));
+  } else if (layout === 'full-width') {
+    await page.click(getButtonSelector('wide'));
+    await page.waitForSelector(`.ProseMirror table[data-layout="wide"]`);
+    await page.click(getButtonSelector(layout));
+  }
+
   await page.waitForSelector(`.ProseMirror table[data-layout="${layout}"]`);
 };
 

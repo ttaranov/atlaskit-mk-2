@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.9.1
+- [patch] [676a586](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/676a586):
+
+  - ED-5024 Quick insert improvements
+
 ## 87.9.0
 - [minor] [2cc9764](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2cc9764):
 
