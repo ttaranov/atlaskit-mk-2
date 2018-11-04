@@ -1,0 +1,1 @@
+- ED-5024 Quick insert improvements
