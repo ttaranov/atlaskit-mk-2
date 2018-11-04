@@ -4,6 +4,11 @@ exports[`Option should render correctly 1`] = `
 <div
   aria-selected={false}
   id="id"
+  innerRef={
+    Object {
+      "current": null,
+    }
+  }
   onClick={[Function]}
   onMouseMove={[Function]}
   onMouseOver={[Function]}

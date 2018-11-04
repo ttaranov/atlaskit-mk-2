@@ -1,4 +1,0 @@
-1. OptionElement should render a <components.Option />
-1. OptionElement should pass expected props to <components.Option />
-1. PureComponent should pass expected props to <OptionElement />
-1. Switcher should have default option styles passed to downstream

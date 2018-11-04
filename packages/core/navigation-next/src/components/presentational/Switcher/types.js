@@ -17,7 +17,7 @@ export type SwitcherProps = {
   options: Array<Object>,
   /* The target element, which invokes the select menu */
   target: Element<*>,
-  /* A react-select Style object, that overrides the default components styles. */
+  /* A react-select Style object, which overrides the default components styles. */
   styles?: Object,
 };
 

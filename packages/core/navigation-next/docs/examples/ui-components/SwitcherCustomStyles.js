@@ -10,9 +10,9 @@ import {
   SectionHeading,
   Switcher,
   NavigationProvider,
-} from '../src';
+} from '../../../src';
 
-import { CONTENT_NAV_WIDTH } from '../src/common/constants';
+import { CONTENT_NAV_WIDTH } from '../../../src/common/constants';
 
 const Wrapper = (props: *) => (
   <div
@@ -81,34 +81,27 @@ const projects = [
 ];
 const items = new Array(8).fill(1).map((x, i) => ({ text: `Item ${i + 1}` }));
 const customStyles = {
-  option: (provided, state) =>
-    console.log({ provided, state }) || {
-      ...provided,
-      display: 'flex',
-      backgroundColor: colors.N0,
-      paddingLeft: 16,
-      marginBottom: 2,
-      '&:hover': {
-        backgroundColor: colors.N20,
-      },
-      color: state.isSelected ? 'red' : 'blue',
+  option: (base, state) => ({
+    ...base,
+    display: 'flex',
+    backgroundColor: colors.N0,
+    paddingLeft: 16,
+    marginBottom: 2,
+    '&:hover': {
+      backgroundColor: colors.N20,
     },
-  control: provided => ({
-    ...provided,
+    color: state.isSelected ? 'red' : 'blue',
+  }),
+  control: base => ({
+    ...base,
     color: 'red',
   }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
 };
 type State = {
   selected: *,
 };
 
-export default class CustomStyleSwitcher extends React.Component<*, State> {
+export default class SwitcherCustomStyles extends React.Component<*, State> {
   state = { selected: projects[0].options[0] };
   create = () => ({
     onClick: () => {
@@ -142,35 +135,20 @@ export default class CustomStyleSwitcher extends React.Component<*, State> {
   render() {
     const { selected } = this.state;
     return (
-      <div css={{ display: 'flex', alignItems: 'stretch' }}>
-        <NavigationProvider>
-          <Wrapper>
-            <Switcher
-              create={this.create()}
-              onChange={this.onChange}
-              options={projects}
-              target={this.target(selected)}
-              value={selected}
-              styles={customStyles}
-            />
-            <SectionHeading>Section heading</SectionHeading>
-            {items.map(p => <Item key={p.text} {...p} />)}
-          </Wrapper>
-        </NavigationProvider>
-        <NavigationProvider>
-          <Wrapper>
-            <Switcher
-              create={this.create()}
-              onChange={this.onChange}
-              options={projects}
-              target={this.target(selected)}
-              value={selected}
-            />
-            <SectionHeading>Section heading</SectionHeading>
-            {items.map(p => <Item key={p.text} {...p} />)}
-          </Wrapper>
-        </NavigationProvider>
-      </div>
+      <NavigationProvider>
+        <Wrapper>
+          <Switcher
+            create={this.create()}
+            onChange={this.onChange}
+            options={projects}
+            target={this.target(selected)}
+            value={selected}
+            styles={customStyles}
+          />
+          <SectionHeading>Section heading</SectionHeading>
+          {items.map(p => <Item key={p.text} {...p} />)}
+        </Wrapper>
+      </NavigationProvider>
     );
   }
 }

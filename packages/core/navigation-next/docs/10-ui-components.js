@@ -399,7 +399,7 @@ ${(
       />
     )}
 
-${<H>Switcher styles</H>}
+${<H>Changing Switcher styles</H>}
 
 The switcher component takes a styles prop which can be used to override the default styles.
 
@@ -407,10 +407,10 @@ ${(
       <Example
         packageName="@atlaskit/navigation-next"
         Component={
-          require('./examples/ui-components/Switcher').CustomStyleSwitcher
+          require('./examples/ui-components/SwitcherCustomStyles').default
         }
         title="Switcher"
-        source={require('!!raw-loader!./examples/ui-components/Switcher')}
+        source={require('!!raw-loader!./examples/ui-components/SwitcherCustomStyles')}
       />
     )}
 

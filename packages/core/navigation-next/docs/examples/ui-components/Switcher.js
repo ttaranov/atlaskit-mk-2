@@ -80,23 +80,7 @@ const projects = [
   },
 ];
 const items = new Array(8).fill(1).map((x, i) => ({ text: `Item ${i + 1}` }));
-const customStyles = {
-  option: (base, state) => ({
-    ...base,
-    display: 'flex',
-    backgroundColor: colors.N0,
-    paddingLeft: 16,
-    marginBottom: 2,
-    '&:hover': {
-      backgroundColor: colors.N20,
-    },
-    color: state.isSelected ? 'red' : 'blue',
-  }),
-  control: base => ({
-    ...base,
-    color: 'red',
-  }),
-};
+
 type State = {
   selected: *,
 };
@@ -143,58 +127,6 @@ export default class extends React.Component<*, State> {
             options={projects}
             target={this.target(selected)}
             value={selected}
-          />
-          <SectionHeading>Section heading</SectionHeading>
-          {items.map(p => <Item key={p.text} {...p} />)}
-        </Wrapper>
-      </NavigationProvider>
-    );
-  }
-}
-//eslint-disable-next-line
-export class CustomStyleSwitcher extends React.Component<*, State> {
-  state = { selected: projects[0].options[0] };
-  create = () => ({
-    onClick: () => {
-      // eslint-disable-next-line
-      const boardName = window.prompt(
-        'What would you like to call your new board?',
-      );
-      if (boardName && boardName.length) {
-        // eslint-disable-next-line
-        console.log(`You created the board "${boardName}"`);
-      }
-    },
-    text: 'Create board',
-  });
-  target = (selected: *) => {
-    const avatar = s => (
-      <ItemAvatar
-        appearance="square"
-        href={null}
-        isInteractive={false}
-        itemState={s}
-        onClick={null}
-      />
-    );
-
-    return <ContainerHeader before={avatar} after={ChevD} {...selected} />;
-  };
-  onChange = (selected: *) => {
-    this.setState({ selected });
-  };
-  render() {
-    const { selected } = this.state;
-    return (
-      <NavigationProvider>
-        <Wrapper>
-          <Switcher
-            create={this.create()}
-            onChange={this.onChange}
-            options={projects}
-            target={this.target(selected)}
-            value={selected}
-            styles={customStyles}
           />
           <SectionHeading>Section heading</SectionHeading>
           {items.map(p => <Item key={p.text} {...p} />)}
