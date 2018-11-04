@@ -81,28 +81,21 @@ const projects = [
 ];
 const items = new Array(8).fill(1).map((x, i) => ({ text: `Item ${i + 1}` }));
 const customStyles = {
-  option: (provided, state) =>
-    console.log({ provided, state }) || {
-      ...provided,
-      display: 'flex',
-      backgroundColor: colors.N0,
-      paddingLeft: 16,
-      marginBottom: 2,
-      '&:hover': {
-        backgroundColor: colors.N20,
-      },
-      color: state.isSelected ? 'red' : 'blue',
+  option: (base, state) => ({
+    ...base,
+    display: 'flex',
+    backgroundColor: colors.N0,
+    paddingLeft: 16,
+    marginBottom: 2,
+    '&:hover': {
+      backgroundColor: colors.N20,
     },
-  control: provided => ({
-    ...provided,
+    color: state.isSelected ? 'red' : 'blue',
+  }),
+  control: base => ({
+    ...base,
     color: 'red',
   }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
 };
 type State = {
   selected: *,

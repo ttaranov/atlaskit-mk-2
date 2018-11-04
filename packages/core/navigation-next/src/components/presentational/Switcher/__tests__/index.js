@@ -3,7 +3,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { BaseSwitcher } from '..';
+import { PopupSelect } from '@atlaskit/select';
 
+const Target = () => 'A target';
 describe('Switcher', () => {
   let baseProps;
 
@@ -26,7 +28,7 @@ describe('Switcher', () => {
           subText: 'Service desk project',
         },
       ],
-      target: <div> a target </div>,
+      target: <Target />,
     };
   });
 
@@ -41,5 +43,26 @@ describe('Switcher', () => {
         option: expect.any(Function),
       }),
     );
+  });
+
+  it('should pass custom styles to <PopupSelect />', () => {
+    const customStyles = {
+      option: (base, state) => ({
+        ...base,
+        display: 'flex',
+        backgroundColor: 'green',
+        color: 'green',
+        paddingLeft: 16,
+        marginBottom: 2,
+      }),
+      control: base => ({
+        ...base,
+        color: 'red',
+      }),
+    };
+    const wrapper = shallow(
+      <BaseSwitcher {...baseProps} styles={customStyles} />,
+    );
+    expect(wrapper.find(PopupSelect).prop('styles')).toEqual(customStyles);
   });
 });

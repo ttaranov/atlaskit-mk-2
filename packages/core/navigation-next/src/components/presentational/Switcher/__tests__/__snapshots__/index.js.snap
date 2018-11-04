@@ -49,11 +49,9 @@ exports[`Switcher should render correctly 1`] = `
     <NodeResolver
       innerRef={[Function]}
     >
-      <div
+      <Target
         isSelected={false}
-      >
-         a target 
-      </div>
+      />
     </NodeResolver>
   }
 />
