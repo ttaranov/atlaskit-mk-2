@@ -6,6 +6,7 @@ import { BaseSwitcher } from '..';
 import { PopupSelect } from '@atlaskit/select';
 
 const Target = () => 'A target';
+
 describe('Switcher', () => {
   let baseProps;
 
@@ -36,16 +37,23 @@ describe('Switcher', () => {
     expect(shallow(<BaseSwitcher {...baseProps} />)).toMatchSnapshot();
   });
 
-  it('should have a default styles props', () => {
+  it('should render a PopupSelect', () => {
     const wrapper = shallow(<BaseSwitcher {...baseProps} />);
-    expect(wrapper.prop('styles')).toEqual(
+    expect(wrapper.find(PopupSelect)).toHaveLength(1);
+  });
+
+  it('should pass default styles to PopupSelect', () => {
+    const wrapper = shallow(<BaseSwitcher {...baseProps} />);
+    const styles = wrapper.prop('styles');
+    expect(styles).toEqual(
       expect.objectContaining({
         option: expect.any(Function),
       }),
     );
+    expect(wrapper.find(PopupSelect).prop('styles')).toEqual(styles);
   });
 
-  it('should pass custom styles to <PopupSelect />', () => {
+  it('should pass custom styles to PopupSelect', () => {
     const customStyles = {
       option: (base, state) => ({
         ...base,

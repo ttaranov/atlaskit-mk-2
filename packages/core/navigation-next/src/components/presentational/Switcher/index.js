@@ -101,7 +101,7 @@ class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
     closeMenuOnCreate: true,
     components: {},
     styles: {
-      option: ({ isFocused }) => ({
+      option: ({ isFocused }: { isFocused: boolean }) => ({
         alignItems: 'center',
         border: 'none',
         backgroundColor: isFocused ? colors.N30 : 'transparent',
