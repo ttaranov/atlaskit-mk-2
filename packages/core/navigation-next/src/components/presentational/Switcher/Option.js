@@ -103,8 +103,11 @@ type ItemProps = {
 
 export default class Option extends PureComponent<ItemProps> {
   render() {
-    const { data, innerProps, isFocused, innerRef } = this.props;
-    const { avatar, subText, text } = data;
+    const {
+      isFocused,
+      data: { avatar, subText, text },
+      innerProps: { innerRef, ...innerProps },
+    } = this.props;
     return (
       <div ref={innerRef} {...innerProps}>
         <components.Option {...this.props}>
