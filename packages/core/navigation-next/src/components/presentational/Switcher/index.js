@@ -1,6 +1,12 @@
 // @flow
 
-import React, { cloneElement, PureComponent } from 'react';
+import React, {
+  cloneElement,
+  PureComponent,
+  type ComponentType,
+  type Element,
+  type ElementRef,
+} from 'react';
 import NodeResolver from 'react-node-resolver';
 import shallowEqualObjects from 'shallow-equal/objects';
 import { components, PopupSelect } from '@atlaskit/select';
@@ -10,7 +16,6 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import Option from './Option';
 import { UIControllerSubscriber } from '../../../ui-controller';
 import { CONTENT_NAV_WIDTH } from '../../../common/constants';
-import type { SwitcherProps, SwitcherState } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -82,18 +87,42 @@ const isEmpty = obj => Object.keys(obj).length === 0;
 // Class
 // ==============================
 
-type SwitcherPropsExtended = SwitcherProps & {
+type ComponentsType = { [key: string]: ComponentType<any> };
+
+type SwitcherProps = {
+  /* Close the menu when the user clicks create */
+  closeMenuOnCreate?: boolean,
+  /* Replaceable components */
+  components?: ComponentsType,
+  /* The action and text representing a create button as the footer */
+  create?: { onClick: (*) => void, text: string },
+  /* The react element to display as the footer, beneath the list */
+  footer?: Element<*>,
+  /* The options presented in the select menu */
+  options: Array<Object>,
+  /* The target element, which invokes the select menu */
+  target: Element<*>,
+  /* A react-select Style object, which overrides the default components styles. */
+  styles?: Object,
+};
+
+type SwitcherBaseProps = SwitcherProps & {
   // internal `navWidth` property isn't part of the public API
   navWidth: number,
 };
 
-class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
+export type SwitcherState = {
+  isOpen: boolean,
+  mergedComponents: ComponentsType,
+};
+
+class Switcher extends PureComponent<SwitcherBaseProps, SwitcherState> {
   state = {
     isOpen: false,
     mergedComponents: defaultComponents,
   };
   selectRef = React.createRef();
-  targetRef: Element;
+  targetRef: ElementRef<*>;
   targetWidth = 0;
   static defaultProps = {
     closeMenuOnCreate: true,
@@ -125,10 +154,7 @@ class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
       }),
     },
   };
-  static getDerivedStateFromProps(
-    props: SwitcherPropsExtended,
-    state: SwitcherState,
-  ) {
+  static getDerivedStateFromProps(props: SwitcherProps, state: SwitcherState) {
     const newState = {};
 
     // Merge consumer and default components
@@ -144,13 +170,13 @@ class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {
   componentDidMount() {
     this.setTargetWidth();
   }
-  componentDidUpdate({ navWidth }: SwitcherPropsExtended) {
+  componentDidUpdate({ navWidth }: SwitcherBaseProps) {
     // reset the target width if the user has resized the navigation pane
     if (navWidth !== this.props.navWidth) {
       this.setTargetWidth();
     }
   }
-  getTargetRef = (ref: Element) => {
+  getTargetRef = (ref: ElementRef<*>) => {
     this.targetRef = ref;
   };
   setTargetWidth = () => {
