@@ -14,6 +14,7 @@ import {
 } from './styled';
 import { ERROR } from '../avatar-picker-dialog';
 import { CONTAINER_INNER_SIZE } from '../image-navigator';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 export interface LoadParameters {
   export: () => string;
@@ -38,7 +39,10 @@ export interface ImageCropperProp {
 
 const defaultScale = 1;
 
-export class ImageCropper extends Component<ImageCropperProp, {}> {
+export class ImageCropper extends Component<
+  ImageCropperProp & InjectedIntlProps,
+  {}
+> {
   private imageElement?: HTMLImageElement;
 
   static defaultProps = {
@@ -50,7 +54,12 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   };
 
   componentDidMount() {
-    const { onLoad, imageSource, onImageError } = this.props;
+    const {
+      onLoad,
+      imageSource,
+      onImageError,
+      intl: { formatMessage },
+    } = this.props;
     if (onLoad) {
       onLoad({
         export: this.export,
@@ -59,7 +68,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     try {
       isImageRemote(imageSource);
     } catch (e) {
-      onImageError(ERROR.URL);
+      onImageError(formatMessage(ERROR.URL));
     }
   }
 
@@ -76,7 +85,11 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
   };
 
   onImageError = () => {
-    this.props.onImageError(ERROR.FORMAT);
+    const {
+      onImageError,
+      intl: { formatMessage },
+    } = this.props;
+    onImageError(formatMessage(ERROR.FORMAT));
   };
 
   render() {
@@ -119,6 +132,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
         <DragOverlay onMouseDown={this.onDragStarted} />
         <RemoveImageContainer>
           <RemoveImageButton onClick={onRemoveImage}>
+            {/* TODO [i18n] [MS-1089] */}
             <CrossIcon size="small" label="Remove image" />
           </RemoveImageButton>
         </RemoveImageContainer>
@@ -168,3 +182,5 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     return imageData;
   };
 }
+
+export default injectIntl(ImageCropper);

@@ -1,5 +1,52 @@
 # @atlaskit/editor-common
 
+## 20.3.6
+- [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
+
+  - ED-5510: fix deleting last character in a cell in Safari
+
+## 20.3.5
+- [patch] [ed15858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed15858):
+
+  - ED-5552: Adds shadow to overflow elements in the renderer.
+
+## 20.3.4
+- [patch] [8f1073c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1073c):
+
+  * ED-5572 Fixes copying 2+ lines from vs-code pastes as inline code
+
+## 20.3.3
+- [patch] [825d4e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/825d4e9):
+
+  Fix copying codeblock from renderer
+
+## 20.3.2
+- [patch] [9f26f82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f26f82):
+
+  - Removing extra padding inside the comment editor
+
+## 20.3.1
+- Updated dependencies [a6dd6e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6dd6e3):
+  - @atlaskit/profilecard@5.0.0
+
+## 20.3.0
+- [minor] [4f5830f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5830f):
+
+  - ED-4200: add page layout support to generator and ADF schema
+
+## 20.2.5
+- [patch] [653b6a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/653b6a9):
+
+  - removed optional attributes from adf-builder module for status node
+- [patch] [cd5471b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd5471b):
+
+  - added style attribute for Status node in ADF schema
+
+## 20.2.4
+- [patch] [6a0a6f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a0a6f8):
+
+  - ED-5448, ED-5613, ED-5582: smart card UX improvements; allow blockCard in tableCell
+
 ## 20.2.3
 - [patch] [8fb4b1e"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb4b1e"

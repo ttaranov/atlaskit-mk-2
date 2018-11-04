@@ -5,6 +5,8 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
 
+import RenderBlocker from '../components/common/RenderBlocker';
+
 import ContainerHeaderComponent from '../components/presentational/ContainerHeader';
 import GroupComponent from '../components/presentational/Group';
 import GroupHeadingComponent from '../components/presentational/GroupHeading';
@@ -19,6 +21,9 @@ import Wordmark from '../components/presentational/Wordmark';
 import BackItem from '../components/connected/BackItem';
 import ConnectedItem from '../components/connected/ConnectedItem';
 import GoToItem from '../components/connected/GoToItem';
+import SortableContextComponent from '../components/connected/SortableContext';
+import SortableGroupComponent from '../components/connected/SortableGroup';
+import SortableItem from '../components/connected/SortableItem';
 
 import type {
   GroupProps,
@@ -28,6 +33,8 @@ import type {
   MenuSectionProps,
   SectionHeadingProps,
   SectionProps,
+  SortableContextProps,
+  SortableGroupProps,
 } from './types';
 
 const gridSize = gridSizeFn();
@@ -84,6 +91,25 @@ const Group = ({
     <GroupComponent heading={heading} hasSeparator={hasSeparator} id={id}>
       <ItemsRenderer items={items} customComponents={customComponents} />
     </GroupComponent>
+  ) : null;
+
+const SortableGroup = ({
+  customComponents,
+  hasSeparator,
+  heading,
+  items,
+  id,
+}: SortableGroupProps) =>
+  items && items.length ? (
+    <SortableGroupComponent
+      heading={heading}
+      hasSeparator={hasSeparator}
+      id={id}
+    >
+      <RenderBlocker items={items} customComponents={customComponents}>
+        <ItemsRenderer items={items} customComponents={customComponents} />
+      </RenderBlocker>
+    </SortableGroupComponent>
   ) : null;
 
 // Section
@@ -150,6 +176,25 @@ const MenuSection = ({
   </MenuSectionComponent>
 );
 
+const SortableContext = ({
+  customComponents,
+  id,
+  items,
+  onDragStart,
+  onDragUpdate,
+  onDragEnd,
+}: SortableContextProps) =>
+  items && items.length ? (
+    <SortableContextComponent
+      id={id}
+      onDragStart={onDragStart}
+      onDragUpdate={onDragUpdate}
+      onDragEnd={onDragEnd}
+    >
+      <ItemsRenderer items={items} customComponents={customComponents} />
+    </SortableContextComponent>
+  ) : null;
+
 const itemComponents = {
   BackItem,
   ContainerHeader,
@@ -157,6 +202,7 @@ const itemComponents = {
   GoToItem,
   GroupHeading,
   Item: ConnectedItem,
+  SortableItem,
   SectionHeading,
   Separator,
   Switcher,
@@ -168,6 +214,8 @@ const groupComponents = {
   HeaderSection,
   MenuSection,
   Section,
+  SortableContext,
+  SortableGroup,
 };
 
 // Exported for testing purposes only.

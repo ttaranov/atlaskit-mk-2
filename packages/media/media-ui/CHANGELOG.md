@@ -1,5 +1,15 @@
 # @atlaskit/media-ui
 
+## 7.4.0
+- [minor] [b758737](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b758737):
+
+  - add i18n support to media-avatar-picker
+
+## 7.3.1
+- [patch] [941a687](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/941a687):
+
+  Bump i18n-tools and refactor to support babel-plugin-transform-typescript
+
 ## 7.3.0
 - [minor] [023cb45"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/023cb45"

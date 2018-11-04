@@ -32,6 +32,176 @@ exports[`DeleteUserOverviewScreen 1`] = `
       <p>
         <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))
           appearance="link"
+          onClick={[Function]}
+          spacing="none"
+        >
+          <FormattedMessage
+            defaultMessage="Deactivate account"
+            description="Text that appears in a button, link or heading for the action of deactivating an account"
+            id="focused-task-close-account.deactivate-account"
+            values={Object {}}
+          />
+        </ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))>
+      </p>
+    </SectionMessage>
+  </styled.div>
+  <FormattedMessage
+    defaultMessage="You're about to delete a user's account, which means:"
+    description="A paragraph explaining that the admin is about to delete another user"
+    id="focused-task-close-account.delete-account.overview.paragraph.about-to-delete.admin"
+    values={Object {}}
+  />
+  <styled.ul>
+    <li>
+      <Fragment>
+        <FormattedMessage
+          defaultMessage="They will immediately lose access to all Atlassian services. {fullName} currently has access to:"
+          description="A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access. {fullName} is filled in by the web app."
+          id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.admin"
+          values={
+            Object {
+              "fullName": "Catherine Hirons",
+            }
+          }
+        />
+        <styled.ul>
+          <li
+            key="0"
+          >
+            hello.atlassian.net
+          </li>
+          <li
+            key="1"
+          >
+            acme.atlassian.net
+          </li>
+          <li
+            key="2"
+          >
+            test.atlassian.net
+          </li>
+        </styled.ul>
+        <FormattedMessage
+          defaultMessage="They might also have access to other services, such as {atlassianCommunity}"
+          description="A paragraph explaining that upon deletion the user may also lose access to services that weren't listed prior."
+          id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.footnote.admin"
+          tagName="small"
+          values={
+            Object {
+              "atlassianCommunity": "Atlassian Commnuity",
+            }
+          }
+        />
+      </Fragment>
+    </li>
+    <li>
+      <FormattedMessage
+        defaultMessage="The content they've created will remain in Atlassian services"
+        description="A paragraph explaining that although the user's details will be deleted, content they have created will remain."
+        id="focused-task-close-account.delete-account.overview.paragraph.content-created.admin"
+        values={Object {}}
+      />
+       
+      <styled.span>
+        <StatefulInlineDialog
+          content={
+            <FormattedMessage
+              defaultMessage="For example, pages, issues, and comments they've created in products."
+              description="Examples of what constitutes as created content. Appears when the user hovers over the info icon"
+              id="focused-task-close-account.delete-account.overview.inline-dialog.content-created.admin"
+              values={Object {}}
+            />
+          }
+          placement="auto-start"
+        >
+          <InfoIcon
+            label=""
+            size="small"
+          />
+        </StatefulInlineDialog>
+      </styled.span>
+    </li>
+    <li>
+      <FormattedMessage
+        defaultMessage="Their personal data (their full name, email address, etc) will be deleted from Atlassian sites and products."
+        description="A paragraph explaining what parts of the user's personal data will be deleted"
+        id="focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.admin"
+        values={Object {}}
+      />
+      <FormattedMessage
+        defaultMessage="We keep some personal data for legal purposes."
+        description="A note explaining that some personal data is required to be saved from deletion for legal purposes."
+        id="focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.footnote"
+        tagName="small"
+        values={Object {}}
+      />
+       
+      <styled.span>
+        <StatefulInlineDialog
+          content={
+            <div>
+              <FormattedMessage
+                defaultMessage="We keep some personal data for the purposes of legal claims or for other legitimate interests. We might need this data if the user requests a service or we need to comply with a legal obligation. For example, if the user is a billing administrator, we're required to retain their name and purchase history for financial reporting and auditing."
+                description="Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes."
+                id="focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p1.admin"
+                tagName="p"
+                values={Object {}}
+              />
+              <FormattedMessage
+                defaultMessage="Users have the right to submit complaints to a supervisory authority."
+                description="Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes."
+                id="focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p2.admin"
+                tagName="p"
+                values={Object {}}
+              />
+            </div>
+          }
+          placement="auto-start"
+        >
+          <InfoIcon
+            label=""
+            size="small"
+          />
+        </StatefulInlineDialog>
+      </styled.span>
+    </li>
+  </styled.ul>
+</styled.div>
+`;
+
+exports[`accessibleSites display text displayed is different when no accessibleSites prop is passed 1`] = `
+<styled.div>
+  <styled.div>
+    <FormattedMessage
+      defaultMessage="What deleting an account means"
+      description="Heading for the screen that explains what happens when a user's account is deleted"
+      id="focused-task-close-account.delete-account.overview.heading"
+      values={Object {}}
+    />
+  </styled.div>
+  <UserInfo
+    user={
+      Object {
+        "avatarUrl": "",
+        "email": "catherine.hirons@acme.com",
+        "fullName": "Catherine Hirons",
+      }
+    }
+  />
+  <styled.div>
+    <SectionMessage
+      appearance="warning"
+    >
+      <FormattedMessage
+        defaultMessage="You can't undo deleting an account. If you think you'll need the account later, deactivate it instead."
+        description="A warning message shown to users when they try to delete their account."
+        id="focused-task-close-account.delete-account.overview.warning-section.body"
+        values={Object {}}
+      />
+      <p>
+        <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))
+          appearance="link"
+          onClick={[Function]}
           spacing="none"
         >
           <FormattedMessage
@@ -53,43 +223,154 @@ exports[`DeleteUserOverviewScreen 1`] = `
   <styled.ul>
     <li>
       <FormattedMessage
-        defaultMessage="They will immediately lose access to all Atlassian services. {fullName} currently has access to:"
+        defaultMessage="They will immediately lose access to all Atlassian services."
         description="A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access. {fullName} is filled in by the web app."
-        id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.admin"
-        values={
-          Object {
-            "fullName": "Catherine Hirons",
-          }
-        }
+        id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.admin.noSites"
+        values={Object {}}
       />
-      <styled.ul>
-        <li
-          key="0"
-        >
-          https://hello.atlassian.net
-        </li>
-        <li
-          key="1"
-        >
-          https://acme.atlassian.net
-        </li>
-        <li
-          key="2"
-        >
-          https://test.atlassian.net
-        </li>
-      </styled.ul>
+    </li>
+    <li>
       <FormattedMessage
-        defaultMessage="They might also have access to other services, such as {atlassianCommunity}"
-        description="A paragraph explaining that upon deletion the user may also lose access to services that weren't listed prior."
-        id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.footnote.admin"
-        tagName="small"
-        values={
-          Object {
-            "atlassianCommunity": "Atlassian Commnuity",
-          }
-        }
+        defaultMessage="The content they've created will remain in Atlassian services"
+        description="A paragraph explaining that although the user's details will be deleted, content they have created will remain."
+        id="focused-task-close-account.delete-account.overview.paragraph.content-created.admin"
+        values={Object {}}
       />
+       
+      <styled.span>
+        <StatefulInlineDialog
+          content={
+            <FormattedMessage
+              defaultMessage="For example, pages, issues, and comments they've created in products."
+              description="Examples of what constitutes as created content. Appears when the user hovers over the info icon"
+              id="focused-task-close-account.delete-account.overview.inline-dialog.content-created.admin"
+              values={Object {}}
+            />
+          }
+          placement="auto-start"
+        >
+          <InfoIcon
+            label=""
+            size="small"
+          />
+        </StatefulInlineDialog>
+      </styled.span>
+    </li>
+    <li>
+      <FormattedMessage
+        defaultMessage="Their personal data (their full name, email address, etc) will be deleted from Atlassian sites and products."
+        description="A paragraph explaining what parts of the user's personal data will be deleted"
+        id="focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.admin"
+        values={Object {}}
+      />
+      <FormattedMessage
+        defaultMessage="We keep some personal data for legal purposes."
+        description="A note explaining that some personal data is required to be saved from deletion for legal purposes."
+        id="focused-task-close-account.delete-account.overview.paragraph.personal-data-will-be-deleted.footnote"
+        tagName="small"
+        values={Object {}}
+      />
+       
+      <styled.span>
+        <StatefulInlineDialog
+          content={
+            <div>
+              <FormattedMessage
+                defaultMessage="We keep some personal data for the purposes of legal claims or for other legitimate interests. We might need this data if the user requests a service or we need to comply with a legal obligation. For example, if the user is a billing administrator, we're required to retain their name and purchase history for financial reporting and auditing."
+                description="Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes."
+                id="focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p1.admin"
+                tagName="p"
+                values={Object {}}
+              />
+              <FormattedMessage
+                defaultMessage="Users have the right to submit complaints to a supervisory authority."
+                description="Text elaborating on the note that some personal data is required to be saved from deletion for legal purposes."
+                id="focused-task-close-account.delete-account.overview.inline-dialog.personal-data-will-be-deleted.p2.admin"
+                tagName="p"
+                values={Object {}}
+              />
+            </div>
+          }
+          placement="auto-start"
+        >
+          <InfoIcon
+            label=""
+            size="small"
+          />
+        </StatefulInlineDialog>
+      </styled.span>
+    </li>
+  </styled.ul>
+</styled.div>
+`;
+
+exports[`deactivateUserHandler display warning section is not displayed if the deactivateUserHandler prop is not passed 1`] = `
+<styled.div>
+  <styled.div>
+    <FormattedMessage
+      defaultMessage="What deleting an account means"
+      description="Heading for the screen that explains what happens when a user's account is deleted"
+      id="focused-task-close-account.delete-account.overview.heading"
+      values={Object {}}
+    />
+  </styled.div>
+  <UserInfo
+    user={
+      Object {
+        "avatarUrl": "",
+        "email": "catherine.hirons@acme.com",
+        "fullName": "Catherine Hirons",
+      }
+    }
+  />
+  <FormattedMessage
+    defaultMessage="You're about to delete a user's account, which means:"
+    description="A paragraph explaining that the admin is about to delete another user"
+    id="focused-task-close-account.delete-account.overview.paragraph.about-to-delete.admin"
+    values={Object {}}
+  />
+  <styled.ul>
+    <li>
+      <Fragment>
+        <FormattedMessage
+          defaultMessage="They will immediately lose access to all Atlassian services. {fullName} currently has access to:"
+          description="A paragraph explaining that upon deletion the user will lose access to certain services. The second sentence is to begin a list of services the user-to-be-deleted can currently access. {fullName} is filled in by the web app."
+          id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.admin"
+          values={
+            Object {
+              "fullName": "Catherine Hirons",
+            }
+          }
+        />
+        <styled.ul>
+          <li
+            key="0"
+          >
+            hello.atlassian.net
+          </li>
+          <li
+            key="1"
+          >
+            acme.atlassian.net
+          </li>
+          <li
+            key="2"
+          >
+            test.atlassian.net
+          </li>
+        </styled.ul>
+        <FormattedMessage
+          defaultMessage="They might also have access to other services, such as {atlassianCommunity}"
+          description="A paragraph explaining that upon deletion the user may also lose access to services that weren't listed prior."
+          id="focused-task-close-account.delete-account.overview.paragraph.loseAccess.footnote.admin"
+          tagName="small"
+          values={
+            Object {
+              "atlassianCommunity": "Atlassian Commnuity",
+            }
+          }
+        />
+      </Fragment>
     </li>
     <li>
       <FormattedMessage

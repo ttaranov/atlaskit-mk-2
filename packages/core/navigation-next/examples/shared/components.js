@@ -2,12 +2,62 @@
 /* eslint-disable react/no-multi-comp */
 
 import React, { Fragment, PureComponent } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link, Route } from 'react-router-dom';
+import Avatar from '@atlaskit/avatar';
 import Drawer from '@atlaskit/drawer';
 import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
+import LinkIcon from '@atlaskit/icon/glyph/link';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import { JiraIcon } from '@atlaskit/logo';
 
-import { GlobalNav, ContainerHeader, ItemAvatar, Switcher } from '../../src';
-import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
+import {
+  ConnectedItem,
+  GlobalNav,
+  ContainerHeader,
+  ItemAvatar,
+  Switcher,
+} from '../../src';
+
+export const GlobalLink = ({ className, to, onClick, children }: any) => {
+  return (
+    <Link className={className} to={to} onClick={onClick}>
+      {children}
+    </Link>
+  );
+};
+
+const globalNavPrimaryItems = ({ onSearchClick }: *) => [
+  {
+    id: 'jira',
+    icon: ({ label }: { label: string }) => (
+      <JiraIcon size="medium" label={label} />
+    ),
+    label: 'Jira',
+    to: '/',
+    component: GlobalLink,
+  },
+  { id: 'search', icon: SearchIcon, onClick: onSearchClick },
+  { id: 'create', icon: AddIcon },
+];
+
+const globalNavSecondaryItems = [
+  { id: 'help', icon: QuestionCircleIcon, label: 'Help', size: 'small' },
+  {
+    icon: () => (
+      <Avatar
+        borderColor="transparent"
+        isActive={false}
+        isHover={false}
+        size="small"
+      />
+    ),
+    label: 'Profile',
+    size: 'small',
+    id: 'profile',
+  },
+];
 
 // ==============================
 // Simple global navigation
@@ -114,3 +164,32 @@ class ProjectSwitcherBase extends PureComponent<*, *> {
   }
 }
 export const ProjectSwitcher = withRouter(ProjectSwitcherBase);
+
+export const LinkItem = ({
+  itemComponent: Component = ConnectedItem,
+  to,
+  ...props
+}: *) => {
+  return (
+    <Route
+      render={({ location: { pathname } }) => (
+        <Component
+          after={() => <LinkIcon size="small" />}
+          component={({ children, className, innerRef, draggableProps }) => (
+            <Link
+              className={className}
+              to={to}
+              onClick={props.onClick}
+              innerRef={innerRef}
+              {...draggableProps}
+            >
+              {children}
+            </Link>
+          )}
+          isSelected={pathname === to}
+          {...props}
+        />
+      )}
+    />
+  );
+};

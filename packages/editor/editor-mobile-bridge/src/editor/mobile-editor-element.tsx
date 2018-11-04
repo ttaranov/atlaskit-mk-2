@@ -8,44 +8,17 @@ import {
   ListsState,
   listsStateKey,
 } from '@atlaskit/editor-core';
-import {
-  TaskDecisionProvider,
-  Query,
-  DecisionResponse,
-  TaskResponse,
-  ItemResponse,
-  RecentUpdatesId,
-  RecentUpdateContext,
-  ObjectKey,
-  TaskState,
-  Handler,
-} from '@atlaskit/task-decision';
+
 import { valueOf as valueOfMarkState } from './web-to-native/markState';
 import { valueOf as valueOfListState } from './web-to-native/listState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
 import MobilePicker from './MobileMediaPicker';
-import MediaProvider from '../providers/mediaProvider';
-import MentionProvider from '../providers/mentionProvider';
-
-export class TaskDecisionProviderImpl implements TaskDecisionProvider {
-  getDecisions(query: Query): Promise<DecisionResponse> {
-    return Promise.resolve({ decisions: [] });
-  }
-  getTasks(query: Query): Promise<TaskResponse> {
-    return Promise.resolve({ tasks: [] });
-  }
-  getItems(query: Query): Promise<ItemResponse> {
-    return Promise.resolve({ items: [] });
-  }
-  unsubscribeRecentUpdates(id: RecentUpdatesId) {}
-  notifyRecentUpdates(updateContext?: RecentUpdateContext) {}
-  toggleTask(key: ObjectKey, state: TaskState): Promise<TaskState> {
-    return Promise.resolve('DONE' as TaskState);
-  }
-  subscribe(key: ObjectKey, handler: Handler) {}
-  unsubscribe(key: ObjectKey, handler: Handler) {}
-}
+import {
+  MediaProvider,
+  MentionProvider,
+  TaskDecisionProvider,
+} from '../providers';
 
 const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
 
@@ -151,7 +124,7 @@ export default function mobileEditor(props) {
   return (
     <EditorWithState
       appearance="mobile"
-      mentionProvider={Promise.resolve(new MentionProvider())}
+      mentionProvider={MentionProvider}
       media={{
         customMediaPicker: new MobilePicker(),
         provider: props.mediaProvider || MediaProvider,
@@ -170,7 +143,7 @@ export default function mobileEditor(props) {
       allowTextColor={true}
       allowDate={true}
       allowRule={true}
-      taskDecisionProvider={Promise.resolve(new TaskDecisionProviderImpl())}
+      taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
     />
   );
 }

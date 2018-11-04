@@ -6,7 +6,9 @@ import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-conte
 
 import ContentNavigation from '../../ContentNavigation';
 import LayoutManager, { Page } from '../../LayoutManager';
+import ResizeControl from '../../ResizeControl';
 import ResizeTransition from '../../ResizeTransition';
+import { LayoutEventListener } from '../../LayoutEvent';
 
 import { ContainerNavigationMask, NavigationContainer } from '../../primitives';
 import type { LayoutManagerProps } from '../../types';
@@ -373,6 +375,77 @@ describe('LayoutManager', () => {
         packageName: '@atlaskit/navigation-next',
         packageVersion: expect.any(String),
       });
+    });
+  });
+
+  describe('Sortable item dragging', () => {
+    it('should set itemIsDragging state when onItemDragStart event is fired', () => {
+      const wrapper = shallow(<LayoutManager {...defaultProps} />);
+
+      expect(wrapper.state('itemIsDragging')).toBe(false);
+      wrapper.find(LayoutEventListener).prop('onItemDragStart')();
+      expect(wrapper.state('itemIsDragging')).toBe(true);
+    });
+
+    it('should unset itemIsDragging state when onItemDragEnd event is fired', () => {
+      const wrapper = shallow(<LayoutManager {...defaultProps} />);
+      wrapper.find(LayoutEventListener).prop('onItemDragStart')();
+
+      expect(wrapper.state('itemIsDragging')).toBe(true);
+      wrapper.find(LayoutEventListener).prop('onItemDragEnd')();
+      expect(wrapper.state('itemIsDragging')).toBe(false);
+    });
+
+    it('should disable grab area when item is being dragged', () => {
+      const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+      expect(wrapper.find(ResizeControl).prop('isGrabAreaDisabled')).toBe(
+        false,
+      );
+      wrapper.setState({ itemIsDragging: true });
+      expect(wrapper.find(ResizeControl).prop('isGrabAreaDisabled')).toBe(true);
+    });
+
+    it('should disable interaction on ContainerNavigationMask when item is being dragged', () => {
+      const wrapper = mount(<LayoutManager {...defaultProps} />);
+
+      expect(
+        wrapper.find(ContainerNavigationMask).prop('disableInteraction'),
+      ).toBe(false);
+      wrapper.setState({ itemIsDragging: true });
+      expect(
+        wrapper.find(ContainerNavigationMask).prop('disableInteraction'),
+      ).toBe(true);
+    });
+
+    it('should block render of navigation when `itemIsDragging` state changes', () => {
+      const globalNav: any = jest.fn(() => null);
+      const productNav: any = jest.fn(() => null);
+      const wrapper = mount(
+        <LayoutManager
+          {...defaultProps}
+          globalNavigation={globalNav}
+          productNavigation={productNav}
+        />,
+      );
+
+      expect(globalNav).toHaveBeenCalledTimes(1);
+      expect(productNav).toHaveBeenCalledTimes(1);
+
+      wrapper.setState({ itemIsDragging: true });
+
+      expect(globalNav).toHaveBeenCalledTimes(1);
+      expect(productNav).toHaveBeenCalledTimes(1);
+
+      wrapper.setState({ mouseIsOverNavigation: true });
+
+      expect(globalNav).toHaveBeenCalledTimes(2);
+      expect(productNav).toHaveBeenCalledTimes(2);
+
+      wrapper.setState({ itemIsDragging: false });
+
+      expect(globalNav).toHaveBeenCalledTimes(2);
+      expect(productNav).toHaveBeenCalledTimes(2);
     });
   });
 });

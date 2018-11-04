@@ -119,7 +119,11 @@ class CellView extends ReactNodeView {
   }
 
   ignoreMutation(record: MutationRecord) {
-    return true;
+    // @see https://github.com/ProseMirror/prosemirror/issues/862
+    if (record.attributeName === 'class') {
+      return true;
+    }
+    return false;
   }
 }
 

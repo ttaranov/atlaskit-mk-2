@@ -1,6 +1,8 @@
 // @flow
 
 import type { ComponentType, Node, Ref } from 'react';
+import type { DraggableProps } from 'react-beautiful-dnd';
+import type { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 import type { StyleReducer, ProductTheme } from '../../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
@@ -10,17 +12,16 @@ type Spacing = 'compact' | 'default';
 export type ItemPresentationProps = {
   /** Whether the Item is currently in the 'active' interaction state. */
   isActive: boolean,
+  /** Whether the Item is inside a SortableContext, and is being dragged. */
+  isDragging?: boolean,
   /** Whether the Item is currently in the 'hover' interaction state. */
   isHover: boolean,
   /** Whether the Item should display as being selected. */
   isSelected: boolean,
+  /** Whether the Item is currently in the 'focus' interaction state. */
+  isFocused: boolean,
   /** How tight the spacing between the elements inside the Item should be. */
   spacing: Spacing,
-};
-
-export type ItemRenderComponentProps = {
-  children: Node,
-  className: string,
 };
 
 export type ItemBaseProps = {
@@ -31,11 +32,8 @@ export type ItemBaseProps = {
    * an avatar. This component will be passed the current UI state of the Item.
    * */
   before?: ComponentType<ItemPresentationProps>,
-  /** A custom component to render instead of the default wrapper component.
-   * Could used to render a router Link, for example. The component will be
-   * provided with a className and children, which should be passed on to the
-   * element you render. */
-  component?: ComponentType<ItemRenderComponentProps>,
+  /** Properties exclusive to Items within a SortableContext. */
+  draggableProps?: DraggableProps,
   /** An href which this Item links to. If this prop is provided the Item will
    * render as an <a>. */
   href?: string,
@@ -47,6 +45,8 @@ export type ItemBaseProps = {
   index?: number,
   /* React ref to the outer-most wrapping element */
   innerRef?: Ref<*>,
+  /** Whether the Item is part of a SortableContext, and is being dragged. */
+  isDragging?: boolean,
   /** Whether this Item should display as being selected. */
   isSelected: boolean,
   /** A handler which will be called when the Item is clicked. */
@@ -66,5 +66,20 @@ export type ItemBaseProps = {
   text: Node,
 };
 
-export type ItemProps = ItemBaseProps &
+export type ItemRenderComponentProps = ItemBaseProps & {
+  children: Node,
+  className: string,
+};
+
+export type ItemProps = ItemBaseProps & {
+  /** A custom component to render instead of the default wrapper component.
+   * Could used to render a router Link, for example. The component will be
+   * provided with a className, children and onClick props, which should be passed on to the
+   * element you render. If this is a SortableItem, you will also need to spread `draggableProps` and
+   * set ref of `innerRef` to your outermost DOM element. */
+  component?: ComponentType<ItemRenderComponentProps>,
+};
+
+export type ItemPrimitiveProps = ItemProps &
+  WithAnalyticsEventsProps &
   InteractionState & { theme: ProductTheme };

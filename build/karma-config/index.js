@@ -11,6 +11,7 @@ const entry = require.resolve('./entry');
 const browserFetcher = puppeteer.createBrowserFetcher();
 
 const webpackConfig = {
+  mode: 'development',
   module: {
     rules: [
       {
@@ -103,7 +104,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
     singleRun: !watch,
     concurrency: 20,
     reporters: ['mocha'],
-    browsers: ['ChromeHeadless'],
+    browsers: [watch ? 'Chrome' : 'ChromeHeadless'],
     mochaReporter: {
       showDiff: true,
     },

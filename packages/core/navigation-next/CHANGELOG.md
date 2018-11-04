@@ -1,5 +1,20 @@
 # @atlaskit/navigation-next
 
+## 3.21.0
+- [minor] [9d98f92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d98f92):
+
+  - Add SortableContext, SortableGroup and SortableItem components to enable drag and drop of items within a view.
+
+## 3.20.1
+- [patch] [c2a6561](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2a6561):
+
+  - Fixing section animation on first-page load
+
+## 3.20.0
+- [minor] [3f17176](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f17176):
+
+  - Make GoToItem display arrow icon on focus event
+
 ## 3.19.1
 - [patch] [f3d0351"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3d0351"

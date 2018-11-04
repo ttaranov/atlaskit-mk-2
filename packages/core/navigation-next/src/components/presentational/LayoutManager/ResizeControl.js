@@ -41,7 +41,7 @@ const shouldResetGrabArea = (width: number) => {
 const Outer = (props: *) => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const GrabArea = ({ showHandle, isBold, ...props }: *) => (
+export const GrabArea = ({ showHandle, isBold, ...props }: *) => (
   <div
     css={{
       cursor: 'ew-resize',
@@ -175,6 +175,7 @@ type Props = WithAnalyticsEventsProps & {
   experimental_flyoutOnHover: boolean,
   flyoutIsOpen: boolean,
   isDisabled: boolean,
+  isGrabAreaDisabled: boolean,
   mouseIsOverNavigation: boolean,
   mutationRefs: Array<{
     ref: ElementRef<*>,
@@ -212,6 +213,11 @@ class ResizeControl extends PureComponent<Props, State> {
     showGrabArea: true,
     width: this.props.navigation.state.productNavWidth,
   };
+
+  static defaultProps = {
+    isGrabAreaDisabled: false,
+  };
+
   static getDerivedStateFromProps(props: Props, state: State) {
     const { experimental_flyoutOnHover, flyoutIsOpen, navigation } = props;
     const { isCollapsed } = navigation.state;
@@ -407,6 +413,7 @@ class ResizeControl extends PureComponent<Props, State> {
       expandCollapseAffordanceRef,
       flyoutIsOpen,
       isDisabled,
+      isGrabAreaDisabled,
       mouseIsOverNavigation,
       navigation,
     } = this.props;
@@ -439,15 +446,16 @@ class ResizeControl extends PureComponent<Props, State> {
           <Shadow direction={shadowDirection} isBold={mouseIsDown} />
           {!isResizeDisabled && (
             <Fragment>
-              {showGrabArea && (
-                <GrabArea
-                  isBold={mouseIsDown}
-                  showHandle={mouseIsDown || mouseIsOverGrabArea}
-                  onMouseEnter={this.mouseEnterGrabArea}
-                  onMouseLeave={this.mouseLeaveGrabArea}
-                  onMouseDown={this.handleResizeStart}
-                />
-              )}
+              {!isGrabAreaDisabled &&
+                showGrabArea && (
+                  <GrabArea
+                    isBold={mouseIsDown}
+                    showHandle={mouseIsDown || mouseIsOverGrabArea}
+                    onMouseEnter={this.mouseEnterGrabArea}
+                    onMouseLeave={this.mouseLeaveGrabArea}
+                    onMouseDown={this.handleResizeStart}
+                  />
+                )}
               {collapseToggleTooltipContent ? (
                 <Tooltip
                   content={makeTooltipNode(

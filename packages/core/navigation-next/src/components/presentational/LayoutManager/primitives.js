@@ -36,7 +36,7 @@ export type Resizable = {
   innerRef?: ElementRef<*>,
   disableInteraction: boolean,
 };
-export function applyDisabledProperties(disableInteraction: boolean) {
+export function applyDisabledProperties(disableInteraction?: boolean) {
   return disableInteraction
     ? {
         pointerEvents: 'none',
@@ -62,13 +62,20 @@ export const ContentNavigationWrapper = ({
     {...props}
   />
 );
-export const ContainerNavigationMask = (props: *) => (
+export const ContainerNavigationMask = ({
+  disableInteraction,
+  ...props
+}: {
+  disableInteraction?: boolean,
+  [string]: any,
+}) => (
   <div
     css={{
       display: 'flex',
       flexDirection: 'row',
       overflow: 'hidden',
       height: '100%',
+      ...applyDisabledProperties(disableInteraction),
     }}
     {...props}
   />

@@ -1,5 +1,10 @@
 # @atlaskit/datetime-picker
 
+## 6.3.17
+- [patch] [b332c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b332c91):
+
+  - upgrades verison of react-scrolllock to SSR safe version
+
 ## 6.3.16
 - [patch] Datetime Picker modal sticks to bottom, if needed [0149735](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0149735)
 

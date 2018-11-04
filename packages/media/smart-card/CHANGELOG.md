@@ -1,5 +1,10 @@
 # @atlaskit/smart-card
 
+## 8.6.1
+- [patch] [7bc4461](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc4461):
+
+  - ED-5565: support connecting external React.Context to nodeviews
+
 ## 8.6.0
 - [minor] [1aa57ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1aa57ab):
 

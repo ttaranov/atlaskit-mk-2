@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "6.3.16",
+  "version": "6.3.17",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -34,7 +34,7 @@
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
     "lodash.pick": "^4.4.0",
-    "react-scrolllock": "^3.0.1"
+    "react-scrolllock": "^3.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -46,7 +46,7 @@
     "@atlaskit/docs": "^5.0.8",
     "@atlaskit/field-range": "^5.0.8",
     "@atlaskit/field-text": "^7.0.12",
-    "@atlaskit/modal-dialog": "^7.0.3",
+    "@atlaskit/modal-dialog": "^7.0.5",
     "@atlaskit/webdriver-runner": "^0.1.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "moment": "^2.22.2",

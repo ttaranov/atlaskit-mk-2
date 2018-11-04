@@ -84,20 +84,22 @@ export function createPlugin(
         const html = event.clipboardData.getData('text/html');
 
         const { state, dispatch } = view;
-        const { codeBlock, media } = state.schema.nodes;
-
-        if (handlePasteIntoTaskAndDecision(slice)(state, dispatch)) {
-          return true;
-        }
+        const { codeBlock, media, decisionItem, taskItem } = state.schema.nodes;
 
         if (handlePasteAsPlainText(slice, event)(state, dispatch, view)) {
           return true;
         }
 
-        analyticsService.trackEvent('atlassian.editor.paste', {
-          source: getPasteSource(event),
-        });
-
+        // send analytics
+        if (hasParentNodeOfType([decisionItem, taskItem])(state.selection)) {
+          analyticsService.trackEvent(
+            'atlassian.fabric.action-decision.editor.paste',
+          );
+        } else {
+          analyticsService.trackEvent('atlassian.editor.paste', {
+            source: getPasteSource(event),
+          });
+        }
         let markdownSlice: Slice | undefined;
         if (text && !html) {
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
@@ -116,6 +118,10 @@ export function createPlugin(
           ) {
             return true;
           }
+        }
+
+        if (handlePasteIntoTaskAndDecision(slice)(state, dispatch)) {
+          return true;
         }
 
         // If we're in a code block, append the text contents of clipboard inside it

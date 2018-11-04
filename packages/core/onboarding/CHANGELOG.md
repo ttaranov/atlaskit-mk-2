@@ -1,5 +1,57 @@
 # @atlaskit/onboarding
 
+## 6.1.5
+- [patch] [b332c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b332c91):
+
+  - upgrades verison of react-scrolllock to SSR safe version
+
+## 6.1.4
+- [patch] [9f91ea0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f91ea0):
+
+  - Adds visual regression test for ie11
+
+## 6.1.3
+- [patch] [4872a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4872a19):
+
+  * actions prop officially accepts Node type for text. Adds optional key to action type.
+
+  Previously if you were using the actions prop like:
+
+  ```jsx
+  <Spotlight
+    actions={[
+      {
+        text: <FormattedMessage defaultMessage="Next" />,
+      },
+      {
+        text: <FormattedMessage defaultMessage="Skip" />,
+      },
+    ]}
+  >
+    Look at this feature
+  </Spotlight>
+  ```
+
+  React would complain about duplicate keys. Now you can pass in
+  a key for the action like:
+
+  ```jsx
+  <Spotlight
+    actions={[
+      {
+        text: <FormattedMessage defaultMessage="Next" />,
+        key: 'next',
+      },
+      {
+        text: <FormattedMessage defaultMessage="Skip" />,
+        key: 'skip',
+      },
+    ]}
+  >
+    Look at this feature
+  </Spotlight>
+  ```
+
 ## 6.1.2
 - [patch] [2482922"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2482922"

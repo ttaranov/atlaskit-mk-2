@@ -1,11 +1,15 @@
 import { Schema } from 'prosemirror-model';
-import { blockquoteMacro } from '../macro/blockQuote';
-import { Token } from './';
+import { rawContentProcessor } from './quote-macro';
+import { Token, TokenErrCallback } from './';
 
 // bq. sadfsdf
 const BLOCKQUOTE_REGEXP = /^bq\.\s(.*)/;
 
-export function blockquote(input: string, schema: Schema): Token {
+export function blockquote(
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): Token {
   const match = input.match(BLOCKQUOTE_REGEXP);
 
   if (!match) {
@@ -13,13 +17,13 @@ export function blockquote(input: string, schema: Schema): Token {
   }
 
   const [, rawContent] = match;
-  const nodes = blockquoteMacro({}, rawContent, schema);
-
-  return {
-    type: 'pmnode',
-    nodes,
-    length: match[0].length,
-  };
+  return rawContentProcessor(
+    '',
+    rawContent,
+    match[0].length,
+    schema,
+    tokenErrCallback,
+  );
 }
 
 function fallback(input: string): Token {

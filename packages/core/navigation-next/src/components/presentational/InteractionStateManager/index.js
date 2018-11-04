@@ -11,19 +11,20 @@ export default class InteractionStateManager extends Component<
   state = {
     isActive: false,
     isHover: false,
+    isFocused: false,
   };
 
-  onMouseDown = (e: Event) => {
+  onMouseDown = (e: SyntheticMouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     this.setState({ isActive: true });
   };
 
-  onMouseUp = (e: Event) => {
+  onMouseUp = (e: SyntheticMouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     this.setState({ isActive: false, isHover: true });
   };
 
-  onMouseOver = () => {
+  onMouseEnter = () => {
     if (!this.state.isHover) {
       this.setState({ isHover: true });
     }
@@ -33,14 +34,19 @@ export default class InteractionStateManager extends Component<
     this.setState({ isActive: false, isHover: false });
   };
 
+  onFocus = () => this.setState({ isFocused: true });
+
+  onBlur = () => this.setState({ isFocused: false });
+
   render() {
-    const { styles } = this.props;
     return (
       <div
         onMouseDown={this.onMouseDown}
-        onMouseOver={this.onMouseOver}
+        onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         role="presentation"
         css={{
           width: '100%',
@@ -48,7 +54,6 @@ export default class InteractionStateManager extends Component<
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          ...styles,
         }}
       >
         {this.props.children(this.state)}

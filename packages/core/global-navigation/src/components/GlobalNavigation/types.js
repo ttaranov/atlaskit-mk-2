@@ -60,6 +60,16 @@ export type GlobalNavDrawerProps = {
   /** A callback function which will be called when the notifications drawer is
    * closed. */
   onNotificationDrawerClose?: () => void,
+
+  /** Locale to be passed to the notification iFrame */
+  locale?: string,
+  /** Prop to let notification iframe know which product it's being rendered in*/
+  product?: 'jira' | 'confluence',
+  /** fabricNotificationLogUrl of the user */
+  fabricNotificationLogUrl?: string,
+  /** cloudId of the user */
+  cloudId?: string,
+
   /** A prop to decide if the contents of the drawer should unmount on drawer
    * close. It is true by default. */
   shouldNotificationDrawerUnmountOnExit?: boolean,

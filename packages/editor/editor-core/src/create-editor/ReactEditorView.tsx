@@ -49,7 +49,7 @@ export interface EditorViewProps {
   ) => void;
 }
 
-export default class ReactEditorView<T = {}> extends React.PureComponent<
+export default class ReactEditorView<T = {}> extends React.Component<
   EditorViewProps & T
 > {
   view?: EditorView;
@@ -194,7 +194,6 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
       {
         state: this.editorState,
         dispatchTransaction: (transaction: Transaction) => {
-          transaction.setMeta('isLocal', true);
           if (!this.view) {
             return;
           }

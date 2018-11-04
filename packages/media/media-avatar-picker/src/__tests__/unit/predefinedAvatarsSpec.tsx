@@ -27,8 +27,10 @@ describe('PredefinedAvatarView', () => {
   describe('header text', () => {
     it('should use different caption text when predefinedAvatarsText is passed', () => {
       const { component } = setup();
-
-      expect(component.find('.description').text()).toEqual('Default avatars');
+      expect(
+        (component.find('.description').props() as any).children.props
+          .defaultMessage,
+      ).toEqual('Default avatars');
       component.setProps({
         predefinedAvatarsText: 'default icons',
       });

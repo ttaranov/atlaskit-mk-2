@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ADF => WikiMarkup - Media should convert external image 1`] = `"!https://www.atlassian.com/nice.jpg|width=100,height=100!"`;
+
 exports[`ADF => WikiMarkup - Media should convert mediaGroup node 1`] = `
 "!file1.txt|thumbnail!
 !file2.txt|thumbnail!"

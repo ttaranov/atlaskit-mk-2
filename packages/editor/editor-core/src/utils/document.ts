@@ -147,7 +147,7 @@ function fireAnalyticsEvent(
   type: 'block' | 'inline' | 'mark' = 'block',
 ) {
   const { code } = error;
-  analyticsService.trackEvent('fabric.editor.unsupported.node', {
+  analyticsService.trackEvent('atlassian.editor.unsupported', {
     name: entity.type || 'unknown',
     type,
     errorCode: code,

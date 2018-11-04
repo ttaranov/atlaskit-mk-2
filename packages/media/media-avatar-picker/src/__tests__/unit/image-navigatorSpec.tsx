@@ -2,17 +2,16 @@ declare var global: any; // we need define an interface for the Node global obje
 import * as util from '../../../src/util';
 const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
 import { Ellipsify, Camera, Rectangle } from '@atlaskit/media-ui';
-import {
+import ImageNavigator, {
+  ImageNavigator as ImageNavigatorView,
   CONTAINER_INNER_SIZE,
   containerRect,
-  ImageNavigator,
   Props as ImageNavigatorProps,
 } from '../../../src/image-navigator';
-import { ERROR, MAX_SIZE_MB } from '../../../src/avatar-picker-dialog';
+import { MAX_SIZE_MB } from '../../../src/avatar-picker-dialog';
 import {
   ImageUploader,
   DragZone,
@@ -22,8 +21,13 @@ import {
 } from '../../../src/image-navigator/styled';
 import { ImageCropper } from '../../../src/image-cropper';
 import Slider from '@atlaskit/field-range';
-import { createMouseEvent, smallImage } from '@atlaskit/media-test-helpers';
+import {
+  createMouseEvent,
+  smallImage,
+  mountWithIntlContext,
+} from '@atlaskit/media-test-helpers';
 import { errorIcon } from '../../../src/image-navigator/images';
+import { ReactWrapper } from 'enzyme';
 
 describe('Image navigator', () => {
   let component: any;
@@ -36,8 +40,8 @@ describe('Image navigator', () => {
   let isLoading: boolean;
 
   const setup = (props?: Partial<ImageNavigatorProps>) => {
-    return mount(
-      <ImageNavigator
+    return mountWithIntlContext(
+      <ImageNavigatorView
         imageSource={smallImage}
         onImageLoaded={onImageLoaded}
         onPositionChanged={onPositionChanged}
@@ -46,6 +50,7 @@ describe('Image navigator', () => {
         onImageError={onImageError}
         onImageUploaded={onImageUploaded}
         isLoading={isLoading}
+        intl={{ formatMessage() {} } as any}
         {...props}
       />,
     );
@@ -147,6 +152,8 @@ describe('Image navigator', () => {
       slider()
         .props()
         .onChange(20);
+
+      component.update();
       expect(component.state().scale).toBe(0.2);
     });
 
@@ -154,6 +161,7 @@ describe('Image navigator', () => {
       imageCropper()
         .props()
         .onDragStarted(0, 0);
+
       expect(component.state().isDragging).toBe(true);
     });
 
@@ -258,8 +266,10 @@ describe('Image navigator', () => {
   });
 
   describe('with no imageSource', () => {
+    let viewComponent: ReactWrapper;
+
     beforeEach(() => {
-      component = mount(
+      component = mountWithIntlContext(
         <ImageNavigator
           onImageLoaded={onImageLoaded}
           onPositionChanged={onPositionChanged}
@@ -267,6 +277,17 @@ describe('Image navigator', () => {
           onRemoveImage={onRemoveImage}
           onImageError={onImageError}
           onImageUploaded={onImageUploaded}
+        />,
+      );
+      viewComponent = mountWithIntlContext(
+        <ImageNavigatorView
+          onImageLoaded={onImageLoaded}
+          onPositionChanged={onPositionChanged}
+          onSizeChanged={onSizeChanged}
+          onRemoveImage={onRemoveImage}
+          onImageError={onImageError}
+          onImageUploaded={onImageUploaded}
+          intl={{ formatMessage() {} } as any}
         />,
       );
     });
@@ -284,7 +305,7 @@ describe('Image navigator', () => {
         }
       }
 
-      const mockDropEvent = (file: any) => ({
+      const mockDropEvent = (file: any): any => ({
         stopPropagation: jest.fn(),
         preventDefault: jest.fn(),
         dataTransfer: {
@@ -310,11 +331,10 @@ describe('Image navigator', () => {
       });
 
       it('should set imageFile state with the image', () => {
-        const { onDrop } = component.find(DragZone).props();
+        const { onDrop } = viewComponent.find(DragZone).props();
 
-        onDrop(mockDropEvent(droppedImage));
-
-        expect(component.state('imageFile')).toBe(droppedImage);
+        onDrop!(mockDropEvent(droppedImage));
+        expect(viewComponent.state('imageFile')).toBe(droppedImage);
         expect(onImageUploaded).toHaveBeenCalledWith(droppedImage);
       });
 
@@ -334,8 +354,9 @@ describe('Image navigator', () => {
         fileSizeMbSpy.mockReturnValue(MAX_SIZE_MB + 1);
 
         onDrop(mockDropEvent(droppedImage));
-
-        expect(onImageError).toHaveBeenCalledWith(ERROR.SIZE);
+        expect(onImageError).toHaveBeenCalledWith(
+          'Image is too large, must be no larger than 10Mb',
+        );
         expect(onImageUploaded).not.toHaveBeenCalled();
       });
     });
@@ -343,8 +364,8 @@ describe('Image navigator', () => {
 
   describe('when an image is removed', () => {
     it('should clear state', () => {
-      component = shallow(
-        <ImageNavigator
+      component = mountWithIntlContext(
+        <ImageNavigatorView
           imageSource={smallImage}
           onImageLoaded={onImageLoaded}
           onPositionChanged={onPositionChanged}
@@ -352,6 +373,7 @@ describe('Image navigator', () => {
           onRemoveImage={onRemoveImage}
           onImageError={onImageError}
           onImageUploaded={onImageUploaded}
+          intl={{ formatMessage() {} } as any}
         />,
       );
       const { onRemoveImage: onRemoveImageProp } = component
@@ -367,7 +389,7 @@ describe('Image navigator', () => {
     const errorMessage = 'Error message!';
 
     beforeEach(() => {
-      component = mount(
+      component = mountWithIntlContext(
         <ImageNavigator
           imageSource={smallImage}
           onImageLoaded={onImageLoaded}

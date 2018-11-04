@@ -12,7 +12,6 @@ export default class extends React.Component {
           resultId="issue-id"
           name="jira-issue"
           href="http://www.example.com"
-          type=""
           objectKey="TEST-1"
           containerName="board"
           avatar={getDefaultAvatar(ContentType.JiraIssue)}
@@ -22,7 +21,6 @@ export default class extends React.Component {
           resultId="board-id"
           name="jira-board"
           href="http://www.example.com"
-          type=""
           objectKey="Board"
           containerName="project"
           avatar={getDefaultAvatar(ContentType.JiraBoard)}
@@ -32,7 +30,6 @@ export default class extends React.Component {
           resultId="filter-id"
           name="jira-filter"
           href="http://www.example.com"
-          type=""
           objectKey="Filter"
           containerName="Project"
           avatar={getDefaultAvatar(ContentType.JiraFilter)}

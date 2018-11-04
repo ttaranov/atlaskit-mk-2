@@ -19,6 +19,8 @@ Although it's our job to look after all the components in our repo, we rely heav
 
 ## Open source contribution model
 
+If this is your first time or if you don't have permission to create a branch, follow the instructions under 'Become a contributor' in our [README.md](https://bitbucket.org/atlassian/atlaskit-mk-2/src) to request permission.
+
 We want to keep this model very simple. At it's core, we make the assumptions that developers looking to contribute will look at the `README.md` and thus, be directed to the `CONTRIBUTING.md`. Even so, both of those files are widely known as convention in an open source project and developers will be able to direct themselves there.
 
 The process consists of:

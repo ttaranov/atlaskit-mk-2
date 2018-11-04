@@ -2,6 +2,7 @@ import { find } from '../../../../plugins/quick-insert/search';
 
 describe('Quick Insert Search', () => {
   const getTitles = item => item.title;
+
   const items = [
     { priority: 1, title: 'Table' },
     { priority: 9, title: 'Panel' },
@@ -66,5 +67,21 @@ describe('Quick Insert Search', () => {
 
   it('should not match string when character repeats more times than in original string', () => {
     expect(find('//', [{ title: '/' }])).toEqual([]);
+  });
+
+  it('should find items that match partial query containing trailing space', () => {
+    expect(
+      find('block ', [
+        ...items,
+        { priority: 9, title: 'Block extensions' },
+      ]).map(getTitles),
+    ).toEqual(['Block quote', 'Block extensions']);
+
+    expect(
+      find('block q', [
+        ...items,
+        { priority: 9, title: 'Block extensions' },
+      ]).map(getTitles),
+    ).toEqual(['Block quote']);
   });
 });

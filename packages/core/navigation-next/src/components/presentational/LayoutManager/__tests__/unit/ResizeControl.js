@@ -3,7 +3,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
-import { ResizeControlBase } from '../../ResizeControl';
+import { ResizeControlBase, GrabArea } from '../../ResizeControl';
 import { navigationExpandedCollapsed } from '../../../../../common/analytics';
 
 jest.mock('../../../../../common/analytics', () => ({
@@ -64,61 +64,77 @@ describe('ResizeControlBase', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('should call navigationExpandedCollapsed with chevronHover trigger when clicking on chevron while flyout is open', () => {
-    const wrapper = mount(
-      <ResizeControlBase {...props} flyoutIsOpen>
+  it('should not render GrabArea when `isGrabAreaDisabled` prop is true', () => {
+    const wrapper = shallow(
+      <ResizeControlBase {...props} isGrabAreaDisabled>
         {() => null}
       </ResizeControlBase>,
     );
 
-    wrapper.find(ChevronLeft).simulate('click');
+    expect(wrapper.find(GrabArea)).toHaveLength(0);
+    expect(wrapper).toMatchSnapshot();
 
-    expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-    expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      props.createAnalyticsEvent,
-      {
-        trigger: 'chevronHover',
-        isCollapsed: true,
-      },
-    );
+    wrapper.setProps({ isGrabAreaDisabled: false });
+    expect(wrapper.find(GrabArea)).toHaveLength(1);
   });
 
-  it('should call navigationExpandedCollapsed with chevron trigger when clicking on chevron while flyout is not open', () => {
-    props.navigation.state.isCollapsed = false;
-    const wrapper = mount(
-      <ResizeControlBase {...props} flyoutIsOpen={false}>
-        {() => null}
-      </ResizeControlBase>,
-    );
+  describe('analytics', () => {
+    it('should call navigationExpandedCollapsed with chevronHover trigger when clicking on chevron while flyout is open', () => {
+      const wrapper = mount(
+        <ResizeControlBase {...props} flyoutIsOpen>
+          {() => null}
+        </ResizeControlBase>,
+      );
 
-    wrapper.find(ChevronLeft).simulate('click');
+      wrapper.find(ChevronLeft).simulate('click');
 
-    expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-    expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      props.createAnalyticsEvent,
-      {
-        trigger: 'chevron',
-        isCollapsed: true,
-      },
-    );
-  });
+      expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+      expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+        props.createAnalyticsEvent,
+        {
+          trigger: 'chevronHover',
+          isCollapsed: true,
+        },
+      );
+    });
 
-  it('should call navigationExpandedCollapsed with resizerClick trigger when clicking recollapse on resize area', () => {
-    props.navigation.state.isCollapsed = false;
-    const wrapper = mount(
-      <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
-    );
+    it('should call navigationExpandedCollapsed with chevron trigger when clicking on chevron while flyout is not open', () => {
+      props.navigation.state.isCollapsed = false;
+      const wrapper = mount(
+        <ResizeControlBase {...props} flyoutIsOpen={false}>
+          {() => null}
+        </ResizeControlBase>,
+      );
 
-    wrapper.instance().handleResizeEnd();
+      wrapper.find(ChevronLeft).simulate('click');
 
-    expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-    expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
-      props.createAnalyticsEvent,
-      {
-        trigger: 'resizerClick',
-        isCollapsed: true,
-      },
-    );
+      expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+      expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+        props.createAnalyticsEvent,
+        {
+          trigger: 'chevron',
+          isCollapsed: true,
+        },
+      );
+    });
+
+    it('should call navigationExpandedCollapsed with resizerClick trigger when clicking recollapse on resize area', () => {
+      props.navigation.state.isCollapsed = false;
+      const wrapper = mount(
+        <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+      );
+
+      wrapper.instance().handleResizeEnd();
+
+      expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+      expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+        props.createAnalyticsEvent,
+        {
+          trigger: 'resizerClick',
+          isCollapsed: true,
+        },
+      );
+    });
   });
 
   describe('when the component is resizing', () => {

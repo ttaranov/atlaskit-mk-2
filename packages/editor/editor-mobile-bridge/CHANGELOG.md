@@ -1,5 +1,25 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.2.2
+- [patch] [3756327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3756327):
+
+  - ED-5588: Fixes font size changing when rotating viewport on iOS.
+
+## 5.2.1
+- [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
+
+  - ED-5510: fix deleting last character in a cell in Safari
+
+## 5.2.0
+- [minor] [f5696d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5696d5):
+
+  - ED-5606: Added support for sending task update events to native for handling
+
+## 5.1.0
+- [minor] [d793999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d793999):
+
+  - ED-5583: Pass all link events to native for handling
+
 ## 5.0.4
 - [patch] [e5e040c"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5e040c"

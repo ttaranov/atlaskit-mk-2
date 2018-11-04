@@ -17,6 +17,7 @@ const calendarStyle = {
   padding: borderRadius(),
   borderRadius: borderRadius(),
   boxShadow: `0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A}`,
+  backgroundColor: colors.N0,
 };
 
 export interface Props {
@@ -59,6 +60,8 @@ export default class DatePicker extends React.Component<Props, State> {
       <PopupWithListeners
         target={element!}
         offset={[0, 8]}
+        fitHeight={327}
+        fitWidth={340}
         handleClickOutside={closeDatePicker}
         handleEscapeKeydown={closeDatePicker}
         zIndex={akEditorFloatingDialogZIndex}
