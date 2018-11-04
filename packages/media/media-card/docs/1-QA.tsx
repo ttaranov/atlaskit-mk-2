@@ -22,7 +22,6 @@ export default md`
 
   * Products
     * Stride
-      * sidebar => CardList
       * conversation view => renderer
       * message composition => editor
     * Confluence
