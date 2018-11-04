@@ -4,7 +4,9 @@ import React, { Fragment, Component } from 'react';
 import { Checkbox } from '@atlaskit/checkbox';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import { FieldTextStateless } from '@atlaskit/field-text';
+import Panel from '@atlaskit/panel';
 import Form, { Field } from '@atlaskit/form';
+import { AkCodeBlock } from '@atlaskit/code';
 import Modal from '@atlaskit/modal-dialog';
 import Select from '@atlaskit/select';
 import type { FormFields, SelectValue } from '../types';
@@ -20,6 +22,14 @@ type Props = {|
    * Defaults to false
    **/
   contactInfoRequired?: boolean,
+  /**
+   * Defaults to false
+   */
+  showEnvironmentConsentQuestion?: boolean,
+  /**
+   * Environment info that will be sent (and will be shown to the user if they choose)
+   */
+  environmentInfo?: string,
 |};
 
 export const fieldLabel = {
@@ -42,6 +52,11 @@ const defaultSelectValue = {
   value: 'empty',
 };
 
+const header = (
+  <span>
+    <em>Show what's included?</em>{' '}
+  </span>
+);
 export default class FeedbackForm extends Component<Props, FormFields> {
   state = {
     type: 'empty',
@@ -50,6 +65,7 @@ export default class FeedbackForm extends Component<Props, FormFields> {
     email: '',
     canBeContacted: false,
     enrollInResearchGroup: false,
+    environmentInfo: '',
   };
 
   isTypeSelected = () => this.state.type !== 'empty';
@@ -138,22 +154,24 @@ export default class FeedbackForm extends Component<Props, FormFields> {
               </Field>
 
               {contactInfoRequired && this.state.canBeContacted ? (
-                <Fragment>
-                  <Field label={'Name'}>
-                    <FieldTextStateless
-                      value={this.state.name}
-                      name="name"
-                      onChange={e => this.setState({ name: e.target.value })}
-                    />
-                  </Field>
-                  <Field label={'Email address'}>
-                    <FieldTextStateless
-                      value={this.state.email}
-                      name="email"
-                      onChange={e => this.setState({ email: e.target.value })}
-                    />
-                  </Field>
-                </Fragment>
+                <div style={{ marginLeft: '28px' }}>
+                  <Fragment>
+                    <Field label={'Name'}>
+                      <FieldTextStateless
+                        value={this.state.name}
+                        name="name"
+                        onChange={e => this.setState({ name: e.target.value })}
+                      />
+                    </Field>
+                    <Field label={'Email address'}>
+                      <FieldTextStateless
+                        value={this.state.email}
+                        name="email"
+                        onChange={e => this.setState({ email: e.target.value })}
+                      />
+                    </Field>
+                  </Fragment>
+                </div>
               ) : (
                 <Fragment />
               )}
@@ -170,6 +188,36 @@ export default class FeedbackForm extends Component<Props, FormFields> {
                   }
                 />
               </Field>
+
+              {this.props.showEnvironmentConsentQuestion ? (
+                <Fragment>
+                  <Field>
+                    <Checkbox
+                      value={this.state.canBeContacted}
+                      name="sent-environment-info"
+                      label="Include details, like web browser and URL, to help us better understand your feedback"
+                      onChange={event =>
+                        this.setState({
+                          environmentInfo: event.target.checked
+                            ? this.props.environmentInfo
+                            : '',
+                        })
+                      }
+                    />
+                  </Field>
+                  <div style={{ marginLeft: '24px' }}>
+                    <Panel header={header}>
+                      <AkCodeBlock
+                        language="json"
+                        text={this.props.environmentInfo}
+                        showLineNumbers={false}
+                      />
+                    </Panel>
+                  </div>
+                </Fragment>
+              ) : (
+                <Fragment />
+              )}
             </Fragment>
           ) : (
             <Fragment />

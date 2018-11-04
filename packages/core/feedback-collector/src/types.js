@@ -14,4 +14,5 @@ export type FormFields = {
   enrollInResearchGroup: boolean,
   name?: string,
   email?: string,
+  environmentInfo?: string,
 };

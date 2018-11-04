@@ -76,6 +76,12 @@ type Props = {|
   typeQuestionDefaultValue: FieldValueType,
   /**  Override the default value for the "Empty" type of response in your widget service **/
   typeEmptyDefaultValue: FieldValueType,
+
+  /**  Defaults to false **/
+  showEnvironmentConsentQuestion?: boolean,
+  environmentFieldId?: string,
+  environmentInfo?: '',
+
   /** Function that will be called to initiate the exit transition. */
   onClose: () => void,
   /** Function that will be called optimistically after a delay when the feedback is submitted. */
@@ -115,6 +121,7 @@ export default class FeedbackCollector extends Component<Props> {
     typeSuggestionDefaultValue: { id: '10107' },
     typeQuestionDefaultValue: { id: '10108' },
     typeEmptyDefaultValue: { id: 'empty' },
+    showEnvironmentConsentQuestion: false,
     onClose: () => {},
     onSubmit: () => {},
   };
@@ -226,11 +233,19 @@ export default class FeedbackCollector extends Component<Props> {
   };
 
   render() {
+    const {
+      onClose,
+      email,
+      environmentInfo,
+      showEnvironmentConsentQuestion,
+    } = this.props;
     return (
       <FeedbackForm
         onSubmit={this.postFeedback}
-        onClose={this.props.onClose}
-        contactInfoRequired={!this.props.email}
+        onClose={onClose}
+        contactInfoRequired={!email}
+        environmentInfo={environmentInfo}
+        showEnvironmentConsentQuestion={showEnvironmentConsentQuestion}
       />
     );
   }

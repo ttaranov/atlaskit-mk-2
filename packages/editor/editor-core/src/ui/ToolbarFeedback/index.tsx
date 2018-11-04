@@ -67,6 +67,13 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
     console.log('Basic:', basicEnvironment);
     console.log('sensitive:', sensitiveEnvironment);
+    const environmentInfoString = JSON.stringify(
+      {
+        ...sensitiveEnvironment,
+      },
+      null,
+      2,
+    );
 
     return (
       <div>
@@ -90,6 +97,8 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
             typeCommentDefaultValue={{ id: '10797' }}
             typeSuggestionDefaultValue={{ id: '10798' }}
             typeQuestionDefaultValue={{ id: '10799' }}
+            environmentInfo={environmentInfoString}
+            showEnvironmentConsentQuestion={true}
             additionalFields={
               issueLabels
                 ? [
