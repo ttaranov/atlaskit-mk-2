@@ -221,7 +221,7 @@ export class MediaStore {
   ): Promise<string> => {
     const artifactUrl = getArtifactUrl(artifacts, artifactName);
     if (!artifactUrl) {
-      throw new Error(`${artifactUrl} does not exist in ${artifacts}`);
+      throw new Error(`artifact ${artifactName} not found`);
     }
 
     const auth = await this.config.authProvider({ collectionName });

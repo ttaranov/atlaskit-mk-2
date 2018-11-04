@@ -610,7 +610,7 @@ describe('MediaStore', () => {
         );
       });
 
-      it('should return undefined if the artifact is not valid', async () => {
+      it('should throw if artifact cant be found', async () => {
         const artifacts = {
           'audio.mp3': {
             processingStatus: 'pending',
@@ -618,12 +618,12 @@ describe('MediaStore', () => {
           },
         } as MediaFileArtifacts;
 
-        expect(
-          await mediaStore.getArtifactURL(artifacts, 'video_640.mp4'),
-        ).toBeUndefined();
-        expect(
-          await mediaStore.getArtifactURL(artifacts, 'audio.mp3'),
-        ).toBeUndefined();
+        await expect(
+          mediaStore.getArtifactURL(artifacts, 'video_640.mp4'),
+        ).rejects.toThrow('artifact video_640.mp4 not found');
+        await expect(
+          mediaStore.getArtifactURL(artifacts, 'audio.mp3'),
+        ).rejects.toThrow('artifact audio.mp3 not found');
       });
     });
   });

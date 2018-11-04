@@ -826,7 +826,6 @@ describe('Card', () => {
       });
       component.update();
       expect(component.find(InlinePlayer)).toHaveLength(1);
-      console.log(component.debug());
     });
 
     it('should set isPlayingFile=true when clicking on a video file', () => {
