@@ -36,6 +36,15 @@ describe('Option', () => {
     expect(shallow(<Option {...baseProps} />)).toMatchSnapshot();
   });
 
+  it('should pass expected props to wrapper div', () => {
+    const wrapper = mount(<Option {...baseProps} />);
+    delete baseProps.innerProps.innerRef;
+    expect(wrapper.childAt(0)).toHaveProperty('ref');
+    expect(wrapper.childAt(0).props()).toEqual(
+      expect.objectContaining(baseProps.innerProps),
+    );
+  });
+
   it('should render a <components.Option />', () => {
     const wrapper = mount(<Option {...baseProps} />);
     expect(wrapper.find(components.Option)).toHaveLength(1);
@@ -43,13 +52,8 @@ describe('Option', () => {
 
   it('should pass expected props to <components.Option />', () => {
     const wrapper = mount(<Option {...baseProps} />);
-
     expect(wrapper.find(components.Option).props()).toEqual(
-      expect.objectContaining({
-        getStyles: expect.any(Function),
-        theme: expect.any(Object),
-        cx: expect.any(Function),
-      }),
+      expect.objectContaining(wrapper.props()),
     );
   });
 });

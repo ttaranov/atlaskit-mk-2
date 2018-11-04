@@ -151,7 +151,7 @@ export default class extends React.Component<*, State> {
     );
   }
 }
-
+//eslint-disable-next-line
 export class CustomStyleSwitcher extends React.Component<*, State> {
   state = { selected: projects[0].options[0] };
   create = () => ({

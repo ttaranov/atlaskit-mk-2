@@ -85,8 +85,6 @@ const isEmpty = obj => Object.keys(obj).length === 0;
 type SwitcherPropsExtended = SwitcherProps & {
   // internal `navWidth` property isn't part of the public API
   navWidth: number,
-  // styles overrides for react-select
-  styles: Object,
 };
 
 class Switcher extends PureComponent<SwitcherPropsExtended, SwitcherState> {

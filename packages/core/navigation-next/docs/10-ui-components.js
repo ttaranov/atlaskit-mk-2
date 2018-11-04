@@ -399,9 +399,9 @@ ${(
       />
     )}
 
-${<H> Changing Switcher's style</H>}
+${<H>Switcher styles</H>}
 
-The switcher component takes a styles prop which is a wrapper around ![react-select styles]. It can be used to override some of the default styles.
+The switcher component takes a styles prop which can be used to override the default styles.
 
 ${(
       <Example

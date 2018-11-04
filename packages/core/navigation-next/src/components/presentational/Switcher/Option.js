@@ -81,7 +81,6 @@ type DataType = {
 };
 type InnerProps = {
   'aria-selected': boolean,
-  innerRef: Ref<*>,
   id: string,
   onClick: (*) => void,
   onMouseMove: (*) => void,
@@ -96,17 +95,17 @@ type ItemProps = {
   isFocused: boolean,
   isSelected: boolean,
   onClick?: (SyntheticEvent<MouseEvent>) => void,
-  getStyles: () => void,
-  theme: any,
-  cx: any,
+  getStyles: Function,
+  theme: Object,
+  cx: Function,
 };
 
 export default class Option extends PureComponent<ItemProps> {
   render() {
     const {
-      isFocused,
+      innerProps,
+      innerRef,
       data: { avatar, subText, text },
-      innerProps: { innerRef, ...innerProps },
     } = this.props;
     return (
       <div ref={innerRef} {...innerProps}>
