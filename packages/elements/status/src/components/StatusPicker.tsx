@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { PureComponent, FormEvent } from 'react';
 import styled from 'styled-components';
-import { akGridSize } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import ColorPalette from './internal/color-palette';
 import { FieldTextStateless } from '@atlaskit/field-text';
 import { Color as ColorType } from './Status';
 
 const FieldTextWrapper = styled.div`
-  margin: 0 ${akGridSize};
+  margin: 0 ${gridSize()};
 `;
 
 export interface Props {

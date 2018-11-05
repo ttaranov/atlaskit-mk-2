@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import FieldBase from '@atlaskit/field-base';
-import Search from '../Search';
+import Search from '../../Search';
 
 describe('Search', () => {
   const isInputFocused = wrapper =>

@@ -22,7 +22,8 @@ describe('Snapshot Test: table resizing', () => {
       await snapshot(page);
     });
 
-    it(`snaps back to layout width after column removal`, async () => {
+    // TODO: https://product-fabric.atlassian.net/browse/ED-5688
+    it.skip(`snaps back to layout width after column removal`, async () => {
       await snapshot(page);
       await deleteColumn(page, 1);
       await snapshot(page);
@@ -62,7 +63,8 @@ describe('Snapshot Test: table resizing', () => {
     });
 
     // TODO This test can be merged with column adding above once this is the main table re-sizing.
-    it('Add a column', async () => {
+    // TODO: https://product-fabric.atlassian.net/browse/ED-5688
+    it.skip('Add a column', async () => {
       await snapshot(page);
       await insertColumn(page, 1);
       await snapshot(page);

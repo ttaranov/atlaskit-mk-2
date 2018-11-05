@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "15.1.0",
+  "version": "15.1.1",
   "config": {
     "access": "public"
   },
@@ -27,10 +27,10 @@
     "@atlaskit/avatar": "^14.0.11",
     "@atlaskit/icon": "^14.0.0",
     "@atlaskit/lozenge": "^6.1.4",
+    "@atlaskit/theme": "^6.0.0",
     "@atlaskit/tooltip": "^12.1.1",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^3.0.3",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
     "js-search": "^1.3.7",
     "tslib": "^1.8.0",

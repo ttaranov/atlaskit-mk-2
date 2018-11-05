@@ -134,5 +134,22 @@ describe('inputrules', () => {
         'atlassian.editor.format.horizontalrule.autoformatting',
       );
     });
+
+    it('should convert "---" but keep paragraph below', () => {
+      const trackEvent = jest.fn();
+      const { editorView, sel } = editor(
+        doc(p('test'), p('{<>}'), p('test')),
+        trackEvent,
+      );
+
+      insertText(editorView, '---', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('test'), hr(), p('test')),
+      );
+      expect(trackEvent).toHaveBeenCalledWith(
+        'atlassian.editor.format.horizontalrule.autoformatting',
+      );
+    });
   });
 });

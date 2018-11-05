@@ -25,15 +25,15 @@ We want to keep this model very simple. At it's core, we make the assumptions th
 
 The process consists of:
 
-1. Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
-2. Submit a PR resolving the raised issue.  
+1.  Raise an issue for discussion. This step may not even be necessary as this could all be done in a PR, depending on if the contributor is willing to lose work if the contribution doesn't get accepted.
+2.  Submit a PR resolving the raised issue.
 
 This is super simple and the PR guidelines can be derived from the rest of our conventions and documentation. It's also compatible with the inter-team model, because, at the very worst, internal teams would still be able to follow this process.
 
 The only real downsides here are that:
 
-1. It can take longer to yield a merge due to async discussions.
-2. Discovery of contribution need is mostly up to the contributor, unless we reach out to them.
+1.  It can take longer to yield a merge due to async discussions.
+2.  Discovery of contribution need is mostly up to the contributor, unless we reach out to them.
 
 The inter-team model expands on the open source model to make this process more efficient because we have the privilege of working with internal teams in such a way.
 
@@ -64,9 +64,9 @@ The contribution may be initially sparked by several methods:
 
 Regardless of how the discussion is triggered, we want to be clear on a few things:
 
-1. Any initial action items.
-2. Decide who will be the contributor from the external team.
-3. Decide who will be the shepherd from within the Atlaskit team.
+1.  Any initial action items.
+2.  Decide who will be the contributor from the external team.
+3.  Decide who will be the shepherd from within the Atlaskit team.
 
 This process may come naturally and not require an initial meeting. For example, a contribution may be very simple, a PR may have already been made and it may be good to go out of the gate. Others may require a bit more formality to keep the quality bar high.
 
@@ -91,11 +91,11 @@ _The key here is that everyone shares knowledge and can hold each other accounta
 
 ### Shepherd involvement
 
-Every contribution will have a shepherd, but to the extent at which this shepherd will be involved will vary. For example, a shepherd may not be a developer at all, or might decide that part-time development is a good idea. A shepherd may even take over development at some point. Whatever the case, the shepherd must at the very least be dedicated to:
+Every contribution will have a shepherd, but to the extent at which this shepherd will be involved will vary. For example, a shepherd may or may not write code depending on their workload and the needs of the contributor. At minimum, shepherds must:
 
-* Reviewing relevant PRs.
-* Meeting with contributors, or involved parties.
-* Planning any follow ups after the final contribution and handover has been made.
+* Review relevant PRs.
+* Meet with contributors, or involved parties.
+* Plan any follow ups after the final contribution and handover has been made.
 
 ### Tracking
 
@@ -112,6 +112,6 @@ To keep the quality bar high, we should do our best to ensure the contribution c
 
 ### Handover and maintenance
 
-In an ideal world, the contributor would be able to support the component for some time after mergin. This isn't always the case, however. Either way, we should ensure that both the shepherd and contributor - in that order - are mentioned as the maintainers of the component in the `package.json`. The first person listed - the shepherd - will be the primary point of contact. The second person listed - the contributor - will be the secondary point of contact, just in case, since they were the ones that contributed it.
+In an ideal world, the contributor would be able to support the component for some time after mergin. This isn't always the case, however. Either way, we should ensure that both the shepherd and contributor - in that order - are mentioned as the `maintainers` in the `package.json`. The first person listed - the shepherd - will be the primary point of contact. The second person listed - the contributor - will be the secondary point of contact, just in case, since they were the ones that contributed it.
 
 Over time, this may evolve and both the contributor and shepherd may be removed in favour of a new maintainer. This is fine and should be considered normal.

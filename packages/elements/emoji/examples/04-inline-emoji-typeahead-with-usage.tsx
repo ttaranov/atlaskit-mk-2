@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 
+import { layers } from '@atlaskit/theme';
+
 import EmojiTypeAhead from '../src/components/typeahead/EmojiTypeAhead';
 import debug from '../src/util/logger';
 
@@ -13,7 +15,6 @@ import SearchTextInput from '../example-helpers/demo-search-text-input';
 import { UsageShowAndClearComponent } from '../example-helpers/demo-emoji-usage-components';
 import { lorem, getUsageClearEmojiResource } from '../example-helpers';
 
-import { akZIndexModal } from '@atlaskit/util-shared-styles';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
 const tallPageStyle = {
@@ -116,7 +117,7 @@ class EmojiTextInput extends Component<TypeaheadProps, TypeaheadState> {
           ref={this.handleEmojiTypeAheadRef}
           query={this.state.query}
           emojiProvider={emojiProvider}
-          zIndex={akZIndexModal}
+          zIndex={layers.modal()}
         />
       );
     }

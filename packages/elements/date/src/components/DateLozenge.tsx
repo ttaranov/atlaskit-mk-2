@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as UtilSharedStyles from '@atlaskit/util-shared-styles';
+import { borderRadius, colors } from '@atlaskit/theme';
 import styled from 'styled-components';
 
 export type Color = 'grey' | 'red' | 'blue' | 'green' | 'purple' | 'yellow';
@@ -11,19 +11,11 @@ export type Props = React.HTMLProps<HTMLSpanElement> & {
 
 export const resolveColors = (color?: Color): [string, string, string] => {
   if (!color || color === 'grey') {
-    return [
-      UtilSharedStyles.akColorN30A,
-      UtilSharedStyles.akColorN800,
-      UtilSharedStyles.akColorN40,
-    ];
+    return [colors.N30A, colors.N800, colors.N40];
   }
 
   const letter = color.toUpperCase().charAt(0);
-  return [
-    UtilSharedStyles[`akColor${letter}50`],
-    UtilSharedStyles[`akColor${letter}500`],
-    UtilSharedStyles[`akColor${letter}75`],
-  ];
+  return [colors[`${letter}50`], colors[`${letter}500`], colors[`${letter}75`]];
 };
 
 /**
@@ -31,7 +23,7 @@ export const resolveColors = (color?: Color): [string, string, string] => {
  * add custom props as Generic Parameter to span instead of casting
  */
 export const DateLozenge = styled.span`
-  border-radius: ${UtilSharedStyles.akBorderRadius};
+  border-radius: ${borderRadius()};
   padding: 2px 4px;
   margin: 0 1px;
   position: relative;

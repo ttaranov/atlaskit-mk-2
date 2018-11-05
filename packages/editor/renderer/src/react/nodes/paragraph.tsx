@@ -1,6 +1,11 @@
 import * as React from 'react';
-export default function Paragraph(props: React.Props<any>) {
+export default function Paragraph(props) {
   const { children } = props;
   const childCount = React.Children.toArray(children).length;
-  return <p>{childCount ? children : <br />}</p>;
+
+  if (!childCount) {
+    return <p>&nbsp;</p>;
+  }
+
+  return <p>{children}</p>;
 }

@@ -38,7 +38,6 @@ export default class WidthEmitter extends Component<Props> {
           lineLength: pmDom ? pmDom.clientWidth : undefined,
         });
 
-        tr.setMeta('isLocal', true);
         editorView.dispatch(tr);
         this.width = width;
         this.debounce = null;

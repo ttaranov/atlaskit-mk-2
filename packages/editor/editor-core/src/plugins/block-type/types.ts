@@ -1,6 +1,9 @@
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
 //
+// (there are also different blocks for different types of panel, when
+// they're really all just a panel node)
+//
 // Rather than half-match half-not, this plugin introduces its own
 // nomenclature for what 'block type' is active.
 import { defineMessages } from 'react-intl';
@@ -65,6 +68,26 @@ export const messages = defineMessages<
     defaultMessage: 'Panel',
     description:
       'Visually distinguishes your text by adding a background colour (blue, purple, yellow, green, red)',
+  },
+  notePanel: {
+    id: 'fabric.editor.notePanel',
+    defaultMessage: 'Note panel',
+    description: 'Visually distinguishes your text by adding a note panel',
+  },
+  successPanel: {
+    id: 'fabric.editor.successPanel',
+    defaultMessage: 'Success panel',
+    description: 'Visually distinguishes your text by adding a success panel',
+  },
+  warningPanel: {
+    id: 'fabric.editor.warningPanel',
+    defaultMessage: 'Warning panel',
+    description: 'Visually distinguishes your text by adding a warning panel',
+  },
+  errorPanel: {
+    id: 'fabric.editor.errorPanel',
+    defaultMessage: 'Error panel',
+    description: 'Visually distinguishes your text by adding a error panel',
   },
   other: {
     id: 'fabric.editor.other',
@@ -186,6 +209,10 @@ export type BlockTypeName =
   | 'blockquote'
   | 'codeblock'
   | 'panel'
+  | 'notePanel'
+  | 'successPanel'
+  | 'warningPanel'
+  | 'errorPanel'
   | 'other';
 
 export interface BlockType {

@@ -10,13 +10,17 @@ describe('Renderer - React/Nodes/Paragraph', () => {
   });
 
   it('should render <br> tags in empty paragraphs', () => {
-    const paragraph = mount(
+    const render = mount(
       <>
         <Paragraph />
         <Paragraph>This is a paragraph</Paragraph>
         <Paragraph />
       </>,
     );
-    expect(paragraph.find('br').length).to.equal(2);
+
+    const paragraphs = render.find(Paragraph);
+
+    expect(paragraphs.at(0).html()).to.equal('<p>&nbsp;</p>');
+    expect(paragraphs.at(2).html()).to.equal('<p>&nbsp;</p>');
   });
 });

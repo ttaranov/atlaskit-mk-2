@@ -1,7 +1,5 @@
 import memoizeOne from 'memoize-one';
-import * as React from 'react';
 import { Promisable, User, UserOption } from '../types';
-import UserPickerItem from './UserPickerItem';
 
 export const userToOption = (user: User) => ({
   label: user.name || user.nickname || '',
@@ -9,15 +7,14 @@ export const userToOption = (user: User) => ({
   user,
 });
 
-export const extractUserValue = (value: UserOption | UserOption[]) => {
-  if (Array.isArray(value)) {
-    return value.map(({ user }) => user);
+export const extractUserValue = (value?: UserOption | UserOption[]) => {
+  if (value) {
+    if (Array.isArray(value)) {
+      return value.map(({ user }) => user);
+    }
+    return value.user;
   }
-  return value.user;
-};
-
-export const formatUserLabel = ({ user }, { context, ...other }) => {
-  return <UserPickerItem user={user} context={context} />;
+  return null;
 };
 
 export const isIterable = (
