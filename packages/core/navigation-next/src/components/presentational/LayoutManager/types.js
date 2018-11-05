@@ -2,9 +2,8 @@
 
 import type { ComponentType, ElementRef, Node } from 'react';
 
+import type { CollapseListener } from '../ResizeTransition/types';
 import UIController from '../../../ui-controller/UIController';
-
-export type CollapseListener = (HTMLElement, boolean) => void;
 
 export type CollapseToggleTooltipContent = (
   isCollapsed: boolean,
