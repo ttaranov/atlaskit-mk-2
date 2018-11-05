@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/build-utils", "type": "minor" }],
-  "dependents": []
-}
