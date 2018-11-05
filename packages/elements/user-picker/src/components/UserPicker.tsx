@@ -68,6 +68,8 @@ export class UserPicker extends React.PureComponent<Props, State> {
     }
     if (nextProps.value) {
       derivedState.value = usersToOptions(nextProps.value);
+    } else if (nextProps.defaultValue && !prevState.value) {
+      derivedState.value = usersToOptions(nextProps.defaultValue);
     }
     return derivedState;
   }
@@ -219,7 +221,6 @@ export class UserPicker extends React.PureComponent<Props, State> {
       isLoading,
       appearance,
       subtle,
-      defaultValue,
     } = this.props;
     const {
       users: usersFromState,
@@ -254,7 +255,6 @@ export class UserPicker extends React.PureComponent<Props, State> {
         blurInputOnSelect={!isMulti}
         closeMenuOnSelect={!isMulti}
         openMenuOnFocus
-        defaultValue={usersToOptions(defaultValue)}
       />
     );
   }
