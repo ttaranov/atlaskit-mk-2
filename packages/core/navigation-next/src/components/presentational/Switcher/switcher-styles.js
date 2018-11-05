@@ -37,5 +37,5 @@ type SelectStyles = {
   ) => {},
 };
 
-export const createStyles = (styles: SelectStyles): Object =>
+export const createStyles = (styles: SelectStyles = {}): Object =>
   mergeStyles(defaultStyles, styles);

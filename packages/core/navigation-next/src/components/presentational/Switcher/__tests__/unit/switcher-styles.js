@@ -4,14 +4,14 @@ import { createStyles } from '../../switcher-styles';
 
 describe('createStyles', () => {
   it('should return an object with option property', () => {
-    const styles = createStyles({});
+    const styles = createStyles();
     expect(styles).toEqual({
       option: expect.any(Function),
     });
   });
 
   it('should return default option styles if no custom option styles is given', () => {
-    const styles = createStyles({});
+    const styles = createStyles();
     expect(styles.option({}, {})).toEqual({
       alignItems: 'center',
       border: 'none',
@@ -63,7 +63,7 @@ describe('createStyles', () => {
   });
 
   it('should return expected option styles when isFocused is true', () => {
-    const styles = createStyles({});
+    const styles = createStyles();
     const state = {
       isFocused: true,
       isActive: false,
@@ -90,7 +90,7 @@ describe('createStyles', () => {
   });
 
   it('should return expected option styles when isFocused and isActive are true', () => {
-    const styles = createStyles({});
+    const styles = createStyles();
     const state = {
       isFocused: true,
       isActive: true,
