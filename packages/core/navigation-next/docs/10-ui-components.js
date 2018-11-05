@@ -403,7 +403,7 @@ ${<H>Changing Switcher styles</H>}
 
 The switcher component takes a styles prop which can be used to override the default styles.
 
-In case you want to override just a subset of the default styles, make sure to spread the **provider** argument on your styles Object.
+In case you want to override just a subset of the default styles, make sure to spread the **provided** argument on your styles Object.
 
 
 ${(

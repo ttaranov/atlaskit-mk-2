@@ -81,8 +81,8 @@ const projects = [
 ];
 const items = new Array(8).fill(1).map((x, i) => ({ text: `Item ${i + 1}` }));
 const customStyles = {
-  option: (provider, { isSelected }) => ({
-    ...provider,
+  option: (provided, { isSelected }) => ({
+    ...provided,
     backgroundColor: colors.N0,
     paddingLeft: 16,
     marginBottom: 2,
@@ -91,8 +91,8 @@ const customStyles = {
     },
     color: isSelected ? 'red' : 'blue',
   }),
-  control: provider => ({
-    ...provider,
+  control: provided => ({
+    ...provided,
     color: 'red',
   }),
 };
