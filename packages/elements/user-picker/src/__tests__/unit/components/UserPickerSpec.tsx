@@ -58,6 +58,20 @@ describe('UserPicker', () => {
     expect(onChange).toHaveBeenCalledWith(users[0], 'select-option');
   });
 
+  it('should trigger props.onSelection if onChange with select-option action', () => {
+    const onSelection = jest.fn();
+    const component = shallowUserPicker({ onSelection });
+
+    const select = component.find(Select);
+    select.simulate(
+      'change',
+      { value: 'abc-123', user: users[0] },
+      { action: 'select-option' },
+    );
+
+    expect(onSelection).toHaveBeenCalledWith(users[0]);
+  });
+
   describe('Multiple users select', () => {
     it('should set isMulti in Select', () => {
       const component = shallowUserPicker({ users, isMulti: true });
