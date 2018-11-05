@@ -10,10 +10,6 @@ export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 type Props = {|
   locale?: string,
   product?: string,
-  window?: {
-    addEventListener: (string, (any) => void) => void,
-    removeEventListener: (string, (any) => void) => void,
-  },
 |};
 
 type State = {|
@@ -21,22 +17,16 @@ type State = {|
 |};
 
 class NotificationDrawer extends Component<Props, State> {
-  static defaultProps = {
-    window,
-  };
-
   state = {
     hasIframeLoaded: false,
   };
 
   componentDidMount() {
-    if (this.props.window)
-      this.props.window.addEventListener('message', this.handleMessage);
+    window.addEventListener('message', this.handleMessage);
   }
 
   componentWillUnmount() {
-    if (this.props.window)
-      this.props.window.removeEventListener('message', this.handleMessage);
+    window.removeEventListener('message', this.handleMessage);
   }
 
   iframe = null;

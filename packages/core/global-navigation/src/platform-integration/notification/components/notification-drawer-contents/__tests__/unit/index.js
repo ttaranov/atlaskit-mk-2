@@ -32,36 +32,21 @@ describe('NotificationDrawerContents', () => {
   });
 
   it('should add event listener when mounting', () => {
-    const window = {
-      removeEventListener: () => {},
-      addEventListener: jest.fn(),
-    };
-    const wrapper = mount(
-      <NotificationDrawer locale="en" window={window} product="jira" />,
-    );
+    const spy = jest.spyOn(window, 'addEventListener');
+    const wrapper = mount(<NotificationDrawer locale="en" product="jira" />);
+
     const { handleMessage } = wrapper.instance();
 
-    expect(window.addEventListener).toHaveBeenCalledWith(
-      'message',
-      handleMessage,
-    );
+    expect(spy).toHaveBeenCalledWith('message', handleMessage);
   });
 
   it('should remove event listener when unmounting', () => {
-    const window = {
-      removeEventListener: jest.fn(),
-      addEventListener: () => {},
-    };
-    const wrapper = mount(
-      <NotificationDrawer locale="en" window={window} product="jira" />,
-    );
+    const spy = jest.spyOn(window, 'addEventListener');
+    const wrapper = mount(<NotificationDrawer locale="en" product="jira" />);
     const { handleMessage } = wrapper.instance();
 
     wrapper.unmount();
 
-    expect(window.removeEventListener).toHaveBeenCalledWith(
-      'message',
-      handleMessage,
-    );
+    expect(spy).toHaveBeenCalledWith('message', handleMessage);
   });
 });
