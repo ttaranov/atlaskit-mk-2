@@ -64,7 +64,7 @@ const fullPageStyles = ({ theme, appearance }) => {
       theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
     };
     margin: 0 auto;
-    padding: 0 ${FullPagePadding}px;
+    padding: 0 ${appearance === 'full-page' ? FullPagePadding : 0}px;
   `;
 };
 
