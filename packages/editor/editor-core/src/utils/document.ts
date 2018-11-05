@@ -189,7 +189,7 @@ export function processRawValue(
   try {
     const nodes = Object.keys(schema.nodes);
     const marks = Object.keys(schema.marks);
-    const validate = validator(nodes, marks);
+    const validate = validator(nodes, marks, { allowPrivateAttributes: true });
     const emptyDoc: Entity = { type: 'doc', content: [] };
 
     // ProseMirror always require a child under doc

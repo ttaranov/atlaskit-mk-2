@@ -1,0 +1,6 @@
+{
+  "releases": [
+    { "name": "@atlaskit/adf-utils", "type": "major" }
+  ],
+  "dependents": []
+}
