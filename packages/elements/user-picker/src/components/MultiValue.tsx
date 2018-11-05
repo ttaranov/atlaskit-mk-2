@@ -8,7 +8,7 @@ export const MultiValue = props => {
     data,
     data: {
       label,
-      user: { avatarUrl },
+      user: { avatarUrl, fixed },
     },
     innerProps,
     selectProps,
@@ -24,7 +24,7 @@ export const MultiValue = props => {
         appearance="rounded"
         text={label}
         elemBefore={<Avatar size="xsmall" src={avatarUrl} label={label} />}
-        removeButtonText="remove"
+        removeButtonText={fixed ? undefined : 'remove'}
         onAfterRemoveAction={onRemove}
         color={isFocused ? 'greyLight' : undefined}
       />

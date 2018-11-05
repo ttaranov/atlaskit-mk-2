@@ -8,6 +8,7 @@ import * as debounce from 'lodash.debounce';
 import * as React from 'react';
 import { getStyles } from '../../../components/styles';
 import { Props, UserPicker } from '../../../components/UserPicker';
+import { userToOption } from '../../../components/utils';
 import { User } from '../../../types';
 
 describe('UserPicker', () => {
@@ -181,6 +182,97 @@ describe('UserPicker', () => {
 
         expect(debounce).toHaveBeenCalledWith(expect.any(Function), 200);
       });
+    });
+  });
+
+  describe('with defaultOptions', () => {
+    it('should render with default options', () => {
+      const component = shallowUserPicker({
+        isMulti: true,
+        defaultValue: [users[0]],
+      });
+
+      expect(component.find(Select).prop('defaultValue')).toEqual([
+        { label: 'Jace Beleren', user: users[0], value: 'abc-123' },
+      ]);
+    });
+
+    it('should not remove fixed options', () => {
+      const onChange = jest.fn();
+      const component = shallowUserPicker({
+        isMulti: true,
+        defaultValue: [{ ...users[0], fixed: true }],
+        onChange,
+      });
+
+      const select = component.find(Select);
+      const fixedOption = userToOption({ ...users[0], fixed: true });
+      expect(select.prop('defaultValue')).toEqual([fixedOption]);
+
+      select.simulate('change', [], {
+        action: 'pop-value',
+        removedValue: fixedOption,
+      });
+
+      expect(onChange).not.toHaveBeenCalled();
+
+      expect(select.prop('value')).toBeUndefined();
+    });
+
+    it('should not remove fixed options with other values', () => {
+      const onChange = jest.fn();
+      const fixedUser = { ...users[0], fixed: true };
+      const component = shallowUserPicker({
+        isMulti: true,
+        defaultValue: [fixedUser],
+        onChange,
+      });
+
+      const fixedOption = userToOption(fixedUser);
+      expect(component.find(Select).prop('defaultValue')).toEqual([
+        fixedOption,
+      ]);
+
+      const removableOption = userToOption(users[1]);
+      component
+        .find(Select)
+        .simulate('change', [fixedOption, removableOption], {
+          action: 'select-option',
+        });
+
+      component.update();
+
+      expect(component.find(Select).prop('value')).toEqual([
+        fixedOption,
+        removableOption,
+      ]);
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(
+        [fixedUser, users[1]],
+        'select-option',
+      );
+
+      onChange.mockClear();
+
+      expect(component.find(Select).prop('value')).toEqual([
+        fixedOption,
+        removableOption,
+      ]);
+
+      component.find(Select).simulate('change', [removableOption], {
+        action: 'pop-value',
+        removedValue: fixedOption,
+      });
+
+      component.update();
+
+      expect(onChange).not.toHaveBeenCalled();
+
+      expect(component.find(Select).prop('value')).toEqual([
+        fixedOption,
+        removableOption,
+      ]);
     });
   });
 });

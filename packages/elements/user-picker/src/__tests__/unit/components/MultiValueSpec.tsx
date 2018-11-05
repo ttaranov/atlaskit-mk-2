@@ -77,4 +77,11 @@ describe('MultiValue', () => {
     component.find(Tag).simulate('afterRemoveAction');
     expect(onClick).toHaveBeenCalledTimes(1);
   });
+
+  it('should not render remove button for fixed value', () => {
+    const component = shallowMultiValue({
+      data: { ...data, user: { ...data.user, fixed: true } },
+    });
+    expect(component.find(Tag).prop('removeButtonText')).toBeUndefined();
+  });
 });

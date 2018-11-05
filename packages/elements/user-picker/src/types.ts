@@ -15,6 +15,7 @@ export interface User {
   nickname: string;
   highlight?: Highlight;
   badge?: string;
+  fixed?: boolean;
 }
 
 export type UserValue = User | Array<User> | null | undefined;

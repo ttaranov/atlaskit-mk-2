@@ -1,5 +1,5 @@
 import memoizeOne from 'memoize-one';
-import { Promisable, User, UserOption } from '../types';
+import { Promisable, User, UserOption, UserValue } from '../types';
 
 export const userToOption = (user: User) => ({
   label: user.name || user.nickname || '',
@@ -8,13 +8,13 @@ export const userToOption = (user: User) => ({
 });
 
 export const extractUserValue = (value?: UserOption | UserOption[]) => {
-  if (value) {
-    if (Array.isArray(value)) {
-      return value.map(({ user }) => user);
-    }
-    return value.user;
+  if (!value) {
+    return undefined;
   }
-  return null;
+  if (Array.isArray(value)) {
+    return value.map(({ user }) => user);
+  }
+  return value.user;
 };
 
 export const isIterable = (
@@ -38,3 +38,13 @@ export const getOptions = memoizeOne(
     return undefined;
   },
 );
+
+export const usersToOptions = memoizeOne((defaultValue: UserValue) => {
+  if (!defaultValue) {
+    return undefined;
+  }
+  if (Array.isArray(defaultValue)) {
+    return defaultValue.map(userToOption);
+  }
+  return userToOption(defaultValue);
+});

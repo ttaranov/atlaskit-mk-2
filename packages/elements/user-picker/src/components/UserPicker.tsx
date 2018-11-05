@@ -9,11 +9,18 @@ import {
   OnPicker,
   OnUser,
   User,
+  UserOption,
+  UserValue,
 } from '../types';
 import { batchByKey } from './batch';
 import { getComponents } from './components';
 import { getStyles } from './styles';
-import { extractUserValue, getOptions, isIterable } from './utils';
+import {
+  extractUserValue,
+  getOptions,
+  isIterable,
+  usersToOptions,
+} from './utils';
 
 export type Props = {
   users?: User[];
@@ -32,10 +39,13 @@ export type Props = {
   blurInputOnSelect?: boolean;
   appearance?: 'normal' | 'compact';
   subtle?: boolean;
+  defaultValue?: UserValue;
+  value?: UserValue;
 };
 
 export type State = {
   users: User[];
+  value?: UserOption[];
   resultVersion: number;
   inflightRequest: number;
   count: number;
@@ -52,12 +62,14 @@ export class UserPicker extends React.PureComponent<Props, State> {
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const derivedState: Partial<State> = {};
     if (nextProps.open !== undefined) {
-      return {
-        menuIsOpen: nextProps.open,
-      };
+      derivedState.menuIsOpen = nextProps.open;
     }
-    return null;
+    if (nextProps.value) {
+      derivedState.value = usersToOptions(nextProps);
+    }
+    return derivedState;
   }
 
   private selectRef;
@@ -91,13 +103,19 @@ export class UserPicker extends React.PureComponent<Props, State> {
     select.selectOption(focusedOption);
   });
 
-  private handleChange = (value, { action }) => {
+  private handleChange = (value, { action, removedValue }) => {
+    if (removedValue && removedValue.user.fixed) {
+      return;
+    }
     const { onChange, onSelection } = this.props;
     if (onChange) {
       onChange(extractUserValue(value), action);
     }
     if (action === 'select-option' && onSelection) {
       onSelection(value.user);
+    }
+    if (!this.props.value) {
+      this.setState({ value });
     }
   };
 
@@ -201,15 +219,18 @@ export class UserPicker extends React.PureComponent<Props, State> {
       isLoading,
       appearance,
       subtle,
+      defaultValue,
     } = this.props;
     const {
       users: usersFromState,
       count,
       hoveringClearIndicator,
       menuIsOpen,
+      value,
     } = this.state;
     return (
       <Select
+        value={value}
         ref={this.handleSelectRef}
         isMulti={isMulti}
         options={getOptions(usersFromState, users)}
@@ -233,6 +254,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
         blurInputOnSelect={!isMulti}
         closeMenuOnSelect={!isMulti}
         openMenuOnFocus
+        defaultValue={usersToOptions(defaultValue)}
       />
     );
   }
