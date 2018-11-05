@@ -224,7 +224,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
         onInputChange={this.handleInputChange}
         menuPlacement="auto"
         placeholder="Find a person..." // TODO i18n
-        classNamePrefix="atlassian-user-picker"
+        classNamePrefix="fabric-user-picker"
         onClearIndicatorHover={this.handleClearIndicatorHover}
         hoveringClearIndicator={hoveringClearIndicator}
         appearance={isMulti ? 'compact' : appearance}

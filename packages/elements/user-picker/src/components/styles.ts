@@ -12,7 +12,7 @@ export const getStyles = memoizeOne(width => ({
         ? 'transparent'
         : colors.N40,
     backgroundColor: state.selectProps.subtle ? 'transparent' : colors.N10,
-    '&:hover .atlassian-user-picker__clear-indicator': {
+    '&:hover .fabric-user-picker__clear-indicator': {
       opacity: 1,
     },
     ':hover': {
