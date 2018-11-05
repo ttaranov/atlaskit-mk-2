@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactWrapper } from 'enzyme';
+import { Selection } from 'prosemirror-state';
 import {
   createEditor,
   doc,
@@ -121,11 +122,11 @@ describe('Status - NodeView', () => {
         text: 'In progress',
         color: 'blue',
         localId: '666',
-      })(view.state, view.dispatch);
+      })(view);
 
       getPos = jest.fn();
 
-      wrapper = mount(
+      wrapper = mountWithIntl(
         <StatusNodeView
           view={view}
           node={view.state.selection.$from.nodeBefore!}

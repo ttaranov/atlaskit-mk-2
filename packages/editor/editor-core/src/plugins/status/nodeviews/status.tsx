@@ -54,8 +54,8 @@ export interface State {
   selected: boolean;
 }
 
-default class StatusNodeView extends React.Component<Props & InjectedIntlProp, State> {
-  constructor(props: Props) {
+class StatusNodeView extends React.Component<Props & InjectedIntlProps, State> {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selected: false,
@@ -101,7 +101,11 @@ default class StatusNodeView extends React.Component<Props & InjectedIntlProp, S
     const statusText = text ? text : formatMessage(messages.placeholder);
 
     return (
-      <StatusContainer onClick={this.handleClick} selected={selected} placeholderStyle={!text}>
+      <StatusContainer
+        onClick={this.handleClick}
+        selected={selected}
+        placeholderStyle={!text}
+      >
         <Status text={statusText} color={color} localId={localId} />
       </StatusContainer>
     );
@@ -117,4 +121,3 @@ default class StatusNodeView extends React.Component<Props & InjectedIntlProp, S
 }
 
 export default injectIntl(StatusNodeView);
-
