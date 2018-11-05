@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 import { ContainerNavigation, ProductNavigation } from '../../primitives';
 import { light } from '../../../../../theme';
 
-describe('NavigationNext components: ContentNavigation primitives', () => {
+describe('ContentNavigation primitives', () => {
   describe('ContainerNavigation', () => {
     it('should ALWAYS use the `light` theme', () => {
       const wrapper = mount(

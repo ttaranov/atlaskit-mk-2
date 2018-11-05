@@ -68,7 +68,7 @@ export const ContainerNavigationMask = ({
       flexDirection: 'row',
       overflow: 'hidden',
       height: '100%',
-      ...applyDisabledProperties(disableInteraction),
+      ...applyDisabledProperties(!!disableInteraction),
     }}
     {...props}
   />
