@@ -50,7 +50,7 @@ export interface Props {
    */
   getDisplayedResults?(results: GenericResultMap | null): GenericResultMap;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
-  handleSearchSubmit?({ target: string }): void;
+  handleSearchSubmit?(event: React.KeyboardEvent<HTMLInputElement>): void;
   isSendSearchTermsEnabled?: boolean;
   placeholder?: string;
 }

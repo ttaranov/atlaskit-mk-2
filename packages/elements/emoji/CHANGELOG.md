@@ -1,5 +1,15 @@
 # @atlaskit/emoji
 
+## 46.0.0
+- Updated dependencies [2c21466](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c21466):
+  - @atlaskit/util-data-test@10.0.20
+  - @atlaskit/media-core@24.4.0
+
+## 45.0.4
+- [patch] [36c362f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c362f):
+
+  - FS-3174 - Fix usage of gridSize() and borderRadius()
+
 ## 45.0.3
 - [patch] [527b954](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/527b954):
 

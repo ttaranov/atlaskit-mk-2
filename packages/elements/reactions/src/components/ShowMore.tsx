@@ -12,7 +12,7 @@ const moreButtonStyle = style({
   outline: 'none',
   backgroundColor: 'transparent',
   border: 0,
-  borderRadius: borderRadius(),
+  borderRadius: `${borderRadius()}px`,
   cursor: 'pointer',
   margin: '4px 4px 4px 0',
   padding: '4px',

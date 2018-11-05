@@ -26,7 +26,7 @@ export const bodiedExtension: NodeSpec = {
   inline: false,
   group: 'block',
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | applicationCard | decisionList | taskList | table | blockCard | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | applicationCard | decisionList | taskList | table | blockCard | extension | unsupportedBlock)+',
   defining: true,
   selectable: true,
   isolating: true,

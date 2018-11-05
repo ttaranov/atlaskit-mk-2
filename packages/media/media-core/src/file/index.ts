@@ -7,6 +7,7 @@ import {
   UploadableFile,
   UploadController,
   uploadFile,
+  MediaFileArtifacts,
 } from '@atlaskit/media-store';
 import {
   FilePreview,
@@ -36,6 +37,18 @@ export class FileFetcher {
 
       return fileStream$;
     });
+  }
+
+  getArtifactURL(
+    artifacts: MediaFileArtifacts,
+    artifactName: keyof MediaFileArtifacts,
+    collectionName?: string,
+  ): Promise<string> {
+    return this.mediaStore.getArtifactURL(
+      artifacts,
+      artifactName,
+      collectionName,
+    );
   }
 
   private createDownloadFileStream = (

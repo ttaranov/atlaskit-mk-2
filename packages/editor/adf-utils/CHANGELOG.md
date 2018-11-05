@@ -1,5 +1,47 @@
 # @atlaskit/adf-utils
 
+## 5.0.1
+- Updated dependencies [2c21466](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c21466):
+  - @atlaskit/editor-common@21.0.0
+
+## 5.0.0
+- [major] [e1db106](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1db106):
+
+  * New validator API
+
+  ### Breaking Change
+
+  **Old API**
+
+  ```
+  export type ValidationMode = 'strict' | 'loose';
+
+  validator(
+    nodes?: Array<string>,
+    marks?: Array<string>,
+    validationMode?: ValidationMode,
+  )
+  ```
+
+  **New API**
+
+  We introduced a new `allowPrivateAttributes` option. It allows attributes starting with `__` without validation.
+
+  ```
+  export type ValidationMode = 'strict' | 'loose';
+
+  export interface ValidationOptions {
+    mode?: ValidationMode;
+    allowPrivateAttributes?: boolean;
+  }
+
+  validator(
+    nodes?: Array<string>,
+    marks?: Array<string>,
+    options?: ValidationOptions,
+  )
+  ```
+
 ## 4.1.0
 - [minor] [4f5830f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5830f):
 

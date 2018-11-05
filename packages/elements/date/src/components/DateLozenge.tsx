@@ -23,7 +23,7 @@ export const resolveColors = (color?: Color): [string, string, string] => {
  * add custom props as Generic Parameter to span instead of casting
  */
 export const DateLozenge = styled.span`
-  border-radius: ${borderRadius()};
+  border-radius: ${borderRadius()}px;
   padding: 2px 4px;
   margin: 0 1px;
   position: relative;

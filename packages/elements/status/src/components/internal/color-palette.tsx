@@ -17,7 +17,7 @@ const palette: [ColorType, string, string, string][] = [
 ];
 
 const ColorPaletteWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  margin: ${gridSize()} ${gridSize()} 0 ${gridSize()};
+  margin: ${gridSize()}px ${gridSize()}px 0 ${gridSize()}px;
   /* Firefox bug fix: https://product-fabric.atlassian.net/browse/ED-1789 */
   display: flex;
   flex-wrap: wrap;

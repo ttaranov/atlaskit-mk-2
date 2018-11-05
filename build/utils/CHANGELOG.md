@@ -1,5 +1,10 @@
 # @atlaskit/build-utils
 
+## 2.1.0
+- [minor] [fd6a020](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd6a020):
+
+  - Add new git command: getChangedChangesetFilesSinceMaster
+
 ## 2.0.3
 - [patch] [536456a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/536456a):
 

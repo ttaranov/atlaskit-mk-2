@@ -15,7 +15,7 @@ export const MentionListErrorStyle: ComponentClass<
   background-color: white;
   color: ${colors.N500};
   border: 1px solid #fff;
-  border-radius: ${borderRadius()};
+  border-radius: ${borderRadius()}px;
 `;
 
 export const GenericErrorVisualStyle: ComponentClass<

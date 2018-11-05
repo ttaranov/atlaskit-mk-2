@@ -138,12 +138,14 @@ export interface CardProps extends SharedCardProps, CardEventProps {
 
   // only relevant to file card with image appearance
   readonly disableOverlay?: boolean;
+  readonly useInlinePlayer?: boolean;
 }
 
 export interface CardState {
   status: CardStatus;
   isCardVisible: boolean;
   previewOrientation: number;
+  readonly isPlayingFile: boolean;
   metadata?: MediaItemDetails;
   dataURI?: string;
   progress?: number;

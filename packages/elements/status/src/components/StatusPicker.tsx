@@ -7,7 +7,7 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import { Color as ColorType } from './Status';
 
 const FieldTextWrapper = styled.div`
-  margin: 0 ${gridSize()};
+  margin: 0 ${gridSize()}px;
 `;
 
 export interface Props {

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "18.2.11",
+  "version": "18.2.12",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -24,9 +24,9 @@
   "dependencies": {
     "@atlaskit/dropdown-menu": "^6.1.17",
     "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/media-card": "^42.0.0",
-    "@atlaskit/media-core": "^24.3.1",
-    "@atlaskit/media-store": "^8.2.0",
+    "@atlaskit/media-card": "^43.0.0",
+    "@atlaskit/media-core": "^24.4.0",
+    "@atlaskit/media-store": "^8.3.0",
     "@atlaskit/media-ui": "^7.0.0",
     "@atlaskit/select": "^6.0.2",
     "axios": "^0.17.1",

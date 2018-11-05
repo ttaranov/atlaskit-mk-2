@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
+import { messages } from '../../messages';
 import NoResults from '../NoResults';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import JiraAdvancedSearch from './JiraAdvancedSearch';
@@ -23,8 +24,8 @@ export default class NoResultsState extends React.Component<Props> {
       <>
         <NoResults
           key="no-results"
-          title={<FormattedMessage id="global-search.jira.no-results-title" />}
-          body={<FormattedMessage id="global-search.jira.no-results-body" />}
+          title={<FormattedMessage {...messages.jira_no_results_title} />}
+          body={<FormattedMessage {...messages.jira_no_results_body} />}
         />
         <ResultItemGroup title="" key="advanced-search">
           <Container>

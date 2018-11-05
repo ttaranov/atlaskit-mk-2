@@ -37,7 +37,6 @@ const mockResultsGroup = [
       },
     ],
     key: 'issues',
-    titleI18nId: 'issues.key',
   },
 ];
 

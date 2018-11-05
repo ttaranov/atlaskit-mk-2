@@ -47,12 +47,14 @@ for (const child of fs.getDirectories(packageDirs.children)) {
 }
 
 /* If a package is related to an Atlassian products, it will appear at the bottom of the navigation */
-publicPackages.children.sort(
-  (a, b) =>
-    productPackages.indexOf(a.id) !== -1
-      ? 1 /* Move it to the bottom */
-      : 0 /* Keep it the same */,
-);
+let productsPkgs = [];
+let non_productsPkgs = [];
+for (let pkg of publicPackages.children) {
+  if (productPackages.includes(pkg.id)) productsPkgs.push(pkg);
+  else non_productsPkgs.push(pkg);
+}
+
+publicPackages.children = non_productsPkgs.concat(productsPkgs);
 
 export const getConfig = (groupId: string, pkgId: string) => {
   return NAV_DATA[groupId] && NAV_DATA[groupId].find(pkg => pkg.name === pkgId);

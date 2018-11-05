@@ -1,8 +1,5 @@
-import en from '../../i18n/global-search_en';
-import fr from '../../i18n/global-search_fr';
-import pt_BR from '../../i18n/global-search_pt_BR';
-
-import { getMessagesForLocale } from '../../i18n';
+import { en, fr, pt_BR } from '../../i18n';
+import { getMessagesForLocale } from '../../util/i18n-util';
 
 describe('i18n', () => {
   it('should resolve country[underscore]territory locale', () => {

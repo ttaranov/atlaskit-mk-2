@@ -21,6 +21,7 @@ import {
   mapResponseToVoid,
   mapResponseToBlob,
 } from './utils/request';
+import { MediaFileArtifacts, getArtifactUrl } from './models/artifacts';
 
 const defaultImageOptions: MediaStoreGetFileImageParams = {
   'max-age': 3600,
@@ -209,6 +210,24 @@ export class MediaStore {
 
     return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
       params: { dl: true, collection: collectionName },
+      auth,
+    });
+  };
+
+  getArtifactURL = async (
+    artifacts: MediaFileArtifacts,
+    artifactName: keyof MediaFileArtifacts,
+    collectionName?: string,
+  ): Promise<string> => {
+    const artifactUrl = getArtifactUrl(artifacts, artifactName);
+    if (!artifactUrl) {
+      throw new Error(`artifact ${artifactName} not found`);
+    }
+
+    const auth = await this.config.authProvider({ collectionName });
+
+    return createUrl(`${auth.baseUrl}${artifactUrl}`, {
+      params: { collection: collectionName },
       auth,
     });
   };

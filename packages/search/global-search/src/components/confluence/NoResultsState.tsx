@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { ResultItemGroup } from '@atlaskit/quick-search';
 import { FormattedMessage } from 'react-intl';
+import { messages } from '../../messages';
 import NoResults from '../NoResults';
 import SearchConfluenceItem from '../SearchConfluenceItem';
 import SearchPeopleItem from '../SearchPeopleItem';
@@ -24,8 +25,8 @@ export default class NoResultsState extends React.Component<Props> {
       <>
         <NoResults
           key="no-results"
-          title={<FormattedMessage id="global-search.no-results-title" />}
-          body={<FormattedMessage id="global-search.no-results-body" />}
+          title={<FormattedMessage {...messages.no_results_title} />}
+          body={<FormattedMessage {...messages.no_results_body} />}
         />
         <ResultItemGroup title="" key="advanced-search">
           <Container>
@@ -35,7 +36,9 @@ export default class NoResultsState extends React.Component<Props> {
               query={query}
               text={
                 <Button appearance="primary" shouldFitContainer={true}>
-                  <FormattedMessage id="global-search.confluence.advanced-search-filters" />
+                  <FormattedMessage
+                    {...messages.confluence_advanced_search_filters}
+                  />
                 </Button>
               }
             />
@@ -45,7 +48,7 @@ export default class NoResultsState extends React.Component<Props> {
               query={query}
               text={
                 <Button appearance="default" shouldFitContainer>
-                  <FormattedMessage id="global-search.people.advanced-search" />
+                  <FormattedMessage {...messages.people_advanced_search} />
                 </Button>
               }
             />

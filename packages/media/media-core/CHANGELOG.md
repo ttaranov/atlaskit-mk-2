@@ -1,5 +1,10 @@
 # @atlaskit/media-core
 
+## 24.4.0
+- [minor] [2c21466](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c21466):
+
+  - Allow to inline play video files in media-card
+
 ## 24.3.1
 - Updated dependencies [04c7192](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04c7192):
   - @atlaskit/media-test-helpers@18.2.11

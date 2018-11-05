@@ -5,6 +5,17 @@ const {
 } = require('../utils/packages');
 const git = require('../utils/git');
 const spawndamnit = require('spawndamnit');
+const fse = require('fs-extra');
+const path = require('path');
+const bolt = require('bolt');
+
+async function getNewFSChangesets(cwd) {
+  const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
+  const paths = await git.getChangedChangesetFilesSinceMaster();
+
+  // $ExpectError
+  return paths.map(filePath => require(path.join(projectRoot, filePath)));
+}
 
 /**
  * This is a helper to run a script if a certaing package changed.
@@ -30,8 +41,11 @@ const spawndamnit = require('spawndamnit');
   }
 
   // Take packages that are going to be released,
-  // because using only files is not enough in cases where pacakges is only dependent of other package
-  let unpublishedChangesets = await git.getUnpublishedChangesetCommits();
+  // because using only files is not enough in cases where packages is only dependent of other package
+  let newChangesets = await getNewFSChangesets(path.join(cwd, '.changeset'));
+  let oldChangesets = await git.getUnpublishedChangesetCommits();
+  let unpublishedChangesets = oldChangesets.concat(newChangesets);
+
   let packagesToRelease = unpublishedChangesets
     .reduce(
       (acc, changeset) =>

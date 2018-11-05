@@ -8,6 +8,7 @@ import DropdownMenu, {
   DropdownItemGroup,
   DropdownItem,
 } from '@atlaskit/dropdown-menu';
+import { messages } from '../../messages';
 import AdvancedSearchResult from '../AdvancedSearchResult';
 import { AnalyticsType } from '../../model/Result';
 import {
@@ -51,11 +52,10 @@ const itemI18nKeySuffix = [
   JiraEntityTypes.Boards,
 ];
 
-const getI18nItemName = i18nKeySuffix => (
-  <FormattedMessage
-    id={`global-search.jira.advanced-search-${i18nKeySuffix}`}
-  />
-);
+const getI18nItemName = (i18nKeySuffix: string) => {
+  const id = `jira_advanced_search_${i18nKeySuffix}`;
+  return <FormattedMessage {...messages[id]} />;
+};
 
 export default class JiraAdvancedSearch extends React.Component<Props> {
   state = {
@@ -97,7 +97,7 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
         text={
           <Container>
             <TextContainer>
-              <FormattedMessage id="global-search.jira.advanced-search" />
+              <FormattedMessage {...messages.jira_advanced_search} />
             </TextContainer>
             <StyledButton>
               {getI18nItemName(this.state.selectedItem)}

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "11.0.1",
+  "version": "11.0.2",
   "config": {
     "access": "public"
   },
@@ -50,10 +50,10 @@
     "@atlaskit/analytics-listeners": "^4.0.3",
     "@atlaskit/avatar": "^14.0.11",
     "@atlaskit/docs": "^5.0.8",
-    "@atlaskit/editor-common": "^20.0.0",
-    "@atlaskit/renderer": "^29.0.0",
+    "@atlaskit/editor-common": "^21.0.0",
+    "@atlaskit/renderer": "^30.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.16",
+    "@atlaskit/util-data-test": "^10.0.20",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "fetch-mock": "^6.5.2",
