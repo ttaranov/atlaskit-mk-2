@@ -403,8 +403,8 @@ ${<H>Changing Switcher styles</H>}
 
 The switcher component takes a styles prop which can be used to override the default styles.
 
-In case you override the default styles, make sure to cover all the pseudo-class selectors
-such as hover, active, focus, on the **styles** object.
+In case you override the default styles, make sure to pass the needed properties and pseudo-class selectors
+such as hover and active on the **styles** object. As can be seen in the example below.
 
 ${(
       <Example
