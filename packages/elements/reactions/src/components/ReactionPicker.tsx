@@ -9,7 +9,7 @@ import { style } from 'typestyle';
 import { Selector } from './Selector';
 import { Trigger } from './Trigger';
 
-const akBorderRadius = borderRadius();
+const akBorderRadius = `${borderRadius()}px`;
 const akColorN0 = colors.N0;
 const akColorN50A = colors.N50A;
 const akColorN60A = colors.N60A;

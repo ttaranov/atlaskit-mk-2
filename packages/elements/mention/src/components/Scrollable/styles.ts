@@ -18,5 +18,5 @@ export const ScrollableStyle: ComponentClass<
   background: white;
   max-height: ${scrollableMaxHeight};
 
-  border-radius: ${borderRadius()};
+  border-radius: ${borderRadius()}px;
 `;

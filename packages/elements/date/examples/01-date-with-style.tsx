@@ -17,7 +17,7 @@ const SelectableDate = styled(Date)`
             border: 2px solid ${colors.B200};
             display: 'absolute';
             background: transparent;
-            border-radius: ${borderRadius()};
+            border-radius: ${borderRadius()}px;
             box-sizing: border-box;
             position: absolute;
             top: 0;

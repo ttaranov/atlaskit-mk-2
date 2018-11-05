@@ -17,7 +17,7 @@ import { FlashAnimation } from './FlashAnimation';
 import { ReactionTooltip } from './ReactionTooltip';
 import { isLeftClick } from './utils';
 
-const akBorderRadius = borderRadius();
+const akBorderRadius = `${borderRadius()}px`;
 const akColorN30A = colors.N30A;
 const akColorN400 = colors.N400;
 
