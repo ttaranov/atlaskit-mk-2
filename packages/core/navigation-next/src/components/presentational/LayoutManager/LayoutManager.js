@@ -230,7 +230,11 @@ export default class LayoutManager extends Component<
   };
 
   renderNavigation = () => {
-    const { navigationUIController, experimental_flyoutOnHover } = this.props;
+    const {
+      navigationUIController,
+      experimental_flyoutOnHover,
+      collapseToggleTooltipContent,
+    } = this.props;
     const { flyoutIsOpen, mouseIsOverNavigation, itemIsDragging } = this.state;
     const {
       isCollapsed,
@@ -278,8 +282,7 @@ export default class LayoutManager extends Component<
                 >
                   <ResizeControl
                     collapseToggleTooltipContent={
-                      // $FlowFixMe
-                      this.props.collapseToggleTooltipContent
+                      collapseToggleTooltipContent || null
                     }
                     expandCollapseAffordanceRef={
                       this.nodeRefs.expandCollapseAffordance
