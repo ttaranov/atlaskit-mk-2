@@ -33,6 +33,7 @@ describe('NotificationDrawerContents', () => {
 
   it('should add event listener when mounting', () => {
     const window = {
+      removeEventListener: () => {},
       addEventListener: jest.fn(),
     };
     const wrapper = mount(
