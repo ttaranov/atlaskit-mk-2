@@ -538,29 +538,6 @@ describe('GlobalNavigation', () => {
       expect(wrapper.find('NotificationDrawer').exists()).toBeTruthy();
     });
 
-    it('should render the iframe with the correct url', () => {
-      const wrapper = mount(
-        <GlobalNavigation
-          product="jira"
-          locale="en"
-          fabricNotificationLogUrl={fabricNotificationLogUrl}
-          cloudId={cloudId}
-        />,
-      );
-      const icon = wrapper.find('NotificationIcon');
-      icon.simulate('click');
-
-      expect(
-        wrapper
-          .find('NotificationDrawer')
-          .children('iframe')
-          .props()
-          .src.endsWith(
-            '/home/notificationsDrawer/iframe.html?locale=en&product=jira',
-          ),
-      ).toBeTruthy();
-    });
-
     it('should not render iframe in drawer when notificationDrawerContents is passed', () => {
       const wrapper = mount(
         <GlobalNavigation
@@ -617,14 +594,64 @@ describe('GlobalNavigation', () => {
         />,
       );
 
-      wrapper.update();
       wrapper.setState({
         notificationCount: 5,
       });
+      wrapper.update();
 
       expect(wrapper.find('NotificationIndicator').props().refreshRate).toEqual(
         180000,
       );
+    });
+
+    it('should call the notification API when notificationCount is the NOT same as cachedCount', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+
+      localStorage.setItem('notificationBadgeCountCache', (2).toString());
+      wrapper.setState({
+        notificationCount: 5,
+      });
+
+      const spy = jest.spyOn(wrapper.instance(), 'onCountUpdating');
+      const spyReturn = spy(1); // 1 is the visibilityChangesSinceTimer, passed by NotificationIndicator
+
+      expect(spyReturn).toMatchObject({
+        countOverride: 2,
+      });
+    });
+
+    it('should skip the notification API call when notificationCount is the same as cachedCount', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+
+      const notificationCount = 5;
+      localStorage.setItem(
+        'notificationBadgeCountCache',
+        notificationCount.toString(),
+      );
+      wrapper.setState({
+        notificationCount,
+      });
+
+      const spy = jest.spyOn(wrapper.instance(), 'onCountUpdating');
+      const spyReturn = spy(1);
+
+      expect(spyReturn).toMatchObject({
+        skip: true,
+      });
     });
   });
 
