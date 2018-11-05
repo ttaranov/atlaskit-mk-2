@@ -1,0 +1,1 @@
+- ED-5197: bold toolbar button is inverted in table header cells
