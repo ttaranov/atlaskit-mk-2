@@ -1,1 +1,0 @@
-- Change style of status selection

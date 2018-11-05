@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.9.4
+- [patch] [bce23bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bce23bc):
+
+  - Change style of status selection
+
 ## 87.9.3
 - [patch] [e6c4231](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6c4231):
 
