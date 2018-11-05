@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { AkCodeBlock } from '@atlaskit/code';
+import overflowShadow, { OverflowShadowProps } from '../../ui/overflow-shadow';
 
 const identity = (text: string): string => {
   return text;
@@ -10,9 +11,9 @@ export interface Props {
   language: string;
 }
 
-export default class CodeBlock extends PureComponent<Props, {}> {
+class CodeBlock extends PureComponent<Props & OverflowShadowProps, {}> {
   render() {
-    const { children, language } = this.props;
+    const { children, language, handleRef, shadowClassNames } = this.props;
 
     const codeProps = {
       language,
@@ -20,9 +21,14 @@ export default class CodeBlock extends PureComponent<Props, {}> {
     };
 
     return (
-      <div className="CodeBlock">
+      <div className={`CodeBlock ${shadowClassNames}`} ref={handleRef}>
         <AkCodeBlock {...codeProps} />
       </div>
     );
   }
 }
+
+export default overflowShadow(CodeBlock, {
+  overflowSelector: 'span',
+  scrollableSelector: 'code',
+});

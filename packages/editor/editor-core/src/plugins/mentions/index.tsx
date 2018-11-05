@@ -84,6 +84,7 @@ const mentionsPlugin: EditorPlugin = {
     quickInsert: ({ formatMessage }) => [
       {
         title: formatMessage(messages.mention),
+        keywords: ['@'],
         priority: 400,
         icon: () => <MentionIcon label={formatMessage(messages.mention)} />,
         action(insert, state) {

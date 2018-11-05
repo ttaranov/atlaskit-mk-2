@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import ResultBase from '../ResultBase';
-import { ResultContextType } from '../../context';
+import ResultBase from '../../ResultBase';
+import { ResultContextType } from '../../../context';
 
 describe('Result Base', () => {
   let resultWrapper;

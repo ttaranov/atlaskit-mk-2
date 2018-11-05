@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "20.3.4",
+  "version": "20.3.7",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@atlaskit/emoji": "^45.0.0",
     "@atlaskit/icon": "^14.0.0",
-    "@atlaskit/media-card": "^41.1.0",
+    "@atlaskit/media-card": "^42.0.0",
     "@atlaskit/mention": "^15.0.10",
     "@atlaskit/profilecard": "^5.0.0",
     "@atlaskit/size-detector": "^5.0.7",
@@ -40,20 +40,20 @@
     "date-fns": "^1.29.0",
     "linkify-it": "^2.0.3",
     "prosemirror-model": "^1.6.1",
-    "prosemirror-view": "^1.6.0",
+    "prosemirror-view": "^1.6.5",
     "raf-schd": "^2.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^24.3.0",
+    "@atlaskit/media-core": "^24.3.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/editor-json-transformer": "^4.0.20",
-    "@atlaskit/editor-test-helpers": "^6.2.11",
+    "@atlaskit/editor-test-helpers": "^6.2.15",
     "@atlaskit/json-schema-generator": "^1.2.0",
-    "@atlaskit/media-core": "^24.3.0",
+    "@atlaskit/media-core": "^24.3.1",
     "@atlaskit/webdriver-runner": "^0.1.0",
     "@types/chai": "^4.0.4",
     "@types/prosemirror-state": "^1.0.0",

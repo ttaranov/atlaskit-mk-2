@@ -38,6 +38,7 @@ export default class ExampleDisplay extends Component<Props> {
   componentWillUnmount() {
     if (
       this.iframeRef &&
+      this.iframeRef.contentWindow &&
       typeof this.iframeRef.contentWindow.unmountApp === 'function'
     ) {
       this.iframeRef.contentWindow.unmountApp();

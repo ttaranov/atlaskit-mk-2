@@ -194,7 +194,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
       {
         state: this.editorState,
         dispatchTransaction: (transaction: Transaction) => {
-          transaction.setMeta('isLocal', true);
           if (!this.view) {
             return;
           }

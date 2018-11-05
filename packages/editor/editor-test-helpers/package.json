@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-test-helpers",
-  "version": "6.2.14",
+  "version": "6.2.15",
   "description": "Test Helpers for Atlassian Editor components",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,8 +17,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^20.1.6",
-    "@atlaskit/editor-core": "^87.1.5",
+    "@atlaskit/editor-common": "^20.3.6",
+    "@atlaskit/editor-core": "^87.8.2",
     "@atlaskit/icon": "^14.2.0",
     "@atlaskit/media-core": "^24.3.0",
     "@atlaskit/media-test-helpers": "^18.2.9",
@@ -27,7 +27,7 @@
     "prosemirror-keymap": "^1.0.1",
     "prosemirror-model": "^1.6.1",
     "prosemirror-state": "^1.2.2",
-    "prosemirror-view": "^1.6.0",
+    "prosemirror-view": "^1.6.5",
     "react-intl": "^2.6.0"
   },
   "peerDependencies": {

@@ -2,6 +2,9 @@
   "type": "doc",
   "version": 1,
   "content": [{
+    "type": "paragraph",
+    "content": []
+  },{
       "type": "table",
       "attrs": {
           "isNumberColumnEnabled": false,
@@ -646,5 +649,14 @@
               }]
           }]
       }]
+  }, {
+    "type": "codeBlock",
+    "attrs": {},
+    "content": [
+      {
+        "type": "text",
+        "text": "class Table extends React.Component<TableProps, TableState> {\n  wrapper: HTMLElement;\n  table: HTMLElement;\n\n  state = {\n    showLeftShadow: false,\n    showRightShadow: false,\n  };\n\n  componentWillUnmount() {\n    if (this.wrapper && !isIE11) {\n      this.wrapper.removeEventListener('scroll', this.handleScrollDebounced) && let i = 0;\n    }\n\n    this.handleScrollDebounced.cancel();\n  }\n}"
+      }
+    ]
   }]
 }

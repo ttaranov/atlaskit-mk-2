@@ -1,14 +1,14 @@
+jest.mock('../../../components/styles', () => ({
+  getStyles: jest.fn(),
+}));
+
 import Select from '@atlaskit/select';
 import { shallow } from 'enzyme';
 import * as debounce from 'lodash.debounce';
 import * as React from 'react';
+import { getStyles } from '../../../components/styles';
 import { Props, UserPicker } from '../../../components/UserPicker';
-import UserPickerItem from '../../../components/UserPickerItem';
 import { User } from '../../../types';
-
-type Styles = {
-  [key: string]: <T extends {}>(css: T) => T;
-};
 
 describe('UserPicker', () => {
   const shallowUserPicker = (props: Partial<Props> = {}) =>
@@ -34,41 +34,14 @@ describe('UserPicker', () => {
       { value: 'abc-123', user: users[0], label: 'Jace Beleren' },
       { value: '123-abc', user: users[1], label: 'Chandra Nalaar' },
     ]);
-    const styles: Styles = select.prop('styles');
-    expect(styles.menu({})).toMatchObject({
-      width: 350,
-    });
-
-    expect(styles.control({})).toMatchObject({
-      width: 350,
-      flexWrap: 'nowrap',
-    });
-
-    expect(styles.input({})).toMatchObject({
-      lineHeight: '44px',
-    });
-
-    expect(styles.valueContainer({})).toMatchObject({
-      flexGrow: 1,
-      overflow: 'hidden',
-    });
-
+    expect(getStyles).toHaveBeenCalledWith(350);
     expect(select.prop('menuPlacement')).toBeTruthy();
   });
 
   it('should set width', () => {
-    const component = shallowUserPicker({ width: 500 });
+    shallowUserPicker({ width: 500 });
 
-    const select = component.find(Select);
-    const styles: Styles = select.prop('styles');
-    expect(styles.menu({})).toMatchObject({
-      width: 500,
-    });
-
-    expect(styles.control({})).toMatchObject({
-      width: 500,
-      flexWrap: 'nowrap',
-    });
+    expect(getStyles).toHaveBeenCalledWith(500);
   });
 
   it('should trigger onChange with User', () => {
@@ -99,53 +72,11 @@ describe('UserPicker', () => {
     expect(onSelection).toHaveBeenCalledWith(users[0]);
   });
 
-  it('should render UserPickerItem as label', () => {
-    const component = shallowUserPicker({ users });
-    const formatOptionLabel: Function = component
-      .find(Select)
-      .prop('formatOptionLabel');
-
-    expect(
-      formatOptionLabel(
-        { id: 'abc-123', user: users[0], label: 'Jace Beleren' },
-        { context: 'menu' },
-      ),
-    ).toEqual(<UserPickerItem user={users[0]} context="menu" />);
-  });
-
-  it('should call onFocus handler', () => {
-    const onFocus = jest.fn();
-    const component = shallowUserPicker({ onFocus });
-
-    component.simulate('focus');
-    expect(onFocus).toHaveBeenCalled();
-  });
-
-  it('should call onBlur handler', () => {
-    const onBlur = jest.fn();
-    const component = shallowUserPicker({ onBlur });
-
-    component.simulate('blur');
-    expect(onBlur).toHaveBeenCalled();
-  });
-
   describe('Multiple users select', () => {
     it('should set isMulti in Select', () => {
       const component = shallowUserPicker({ users, isMulti: true });
       const select = component.find(Select);
       expect(select.prop('isMulti')).toBeTruthy();
-
-      const styles: Styles = select.prop('styles');
-      expect(styles.multiValue({})).toMatchObject({
-        borderRadius: 24,
-      });
-
-      expect(styles.multiValueRemove({})).toMatchObject({
-        backgroundColor: 'transparent',
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-      });
     });
 
     it('should call onChange with an array of users', () => {
@@ -170,31 +101,31 @@ describe('UserPicker', () => {
     });
   });
 
+  it('should set hovering clear indicator', () => {
+    const component = shallowUserPicker();
+    const select = component.find(Select);
+    select.simulate('clearIndicatorHover', true);
+    expect(component.state()).toHaveProperty('hoveringClearIndicator', true);
+  });
+
+  it('should open menu onFocus', () => {
+    const component = shallowUserPicker();
+    const select = component.find(Select);
+    select.simulate('focus');
+    expect(component.state()).toHaveProperty('menuIsOpen', true);
+  });
+
+  it('should close menu onBlur', () => {
+    const component = shallowUserPicker();
+    component.setState({ menuIsOpen: true });
+    const select = component.find(Select);
+    select.simulate('blur');
+    expect(component.state()).toHaveProperty('menuIsOpen', false);
+  });
+
   describe('async load', () => {
     beforeEach(() => jest.useFakeTimers());
     afterEach(() => jest.useRealTimers());
-
-    it('should load users Async on focus', () => {
-      const usersPromise = new Promise<User[]>(resolve =>
-        setTimeout(() => resolve(users), 500),
-      );
-
-      const loadUsers = jest.fn(() => usersPromise);
-      const component = shallowUserPicker({ loadUsers });
-
-      const select = component.find(Select);
-      select.simulate('focus');
-      jest.runAllTimers();
-
-      expect(loadUsers).toHaveBeenCalled();
-
-      return usersPromise.then(() => {
-        jest.runAllTimers();
-        expect(component.state()).toMatchObject({
-          users,
-        });
-      });
-    });
 
     it('should load users when picker open', () => {
       const usersPromise = new Promise<User[]>(resolve =>

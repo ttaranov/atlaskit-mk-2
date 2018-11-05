@@ -3,7 +3,7 @@ import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import {
   HighlightDetail,
   MentionDescription,
@@ -142,7 +142,7 @@ export default class MentionItem extends React.PureComponent<Props, {}> {
 
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
-    const borderColor = selected ? akColorN30 : undefined;
+    const borderColor = selected ? colors.N30 : undefined;
 
     return (
       <MentionItemStyle

@@ -3,11 +3,10 @@ import { md } from '@atlaskit/docs';
 export default md`
   # MediaCard
 
-  Exports 3 components:
+  Exports 2 components:
 
   1.  Card
   2.  CardView
-  3.  CardList
 
   ## Installation
 

@@ -1,5 +1,20 @@
 # @atlaskit/editor-common
 
+## 20.3.7
+- Updated dependencies [04c7192](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04c7192):
+  - @atlaskit/media-core@24.3.1
+  - @atlaskit/media-card@42.0.0
+
+## 20.3.6
+- [patch] [a9eb99f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9eb99f):
+
+  - ED-5510: fix deleting last character in a cell in Safari
+
+## 20.3.5
+- [patch] [ed15858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed15858):
+
+  - ED-5552: Adds shadow to overflow elements in the renderer.
+
 ## 20.3.4
 - [patch] [8f1073c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f1073c):
 

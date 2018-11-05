@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, SyntheticEvent } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
 import { isTableSelected, isCellSelection } from 'prosemirror-utils';
@@ -227,11 +227,12 @@ export default class ColumnControls extends Component<Props, any> {
     );
   }
 
-  private handleMouseDown = event => {
+  private handleMouseDown = (event: SyntheticEvent) => {
     event.preventDefault();
   };
 
-  private deleteColumns = () => {
+  private deleteColumns = (event: SyntheticEvent) => {
+    event.preventDefault();
     const { state, dispatch } = this.props.editorView;
     deleteSelectedColumns(state, dispatch);
     this.clearHoverSelection();

@@ -394,7 +394,7 @@
     "prosemirror-tables": "^0.7.9",
     "prosemirror-transform": "^1.1.3",
     "prosemirror-utils": "^0.6.7",
-    "prosemirror-view": "^1.6.0",
+    "prosemirror-view": "^1.6.5",
     "pubnub": "^4.20.3",
     "puppeteer": "^1.4.0",
     "query-string": "^4.3.2",

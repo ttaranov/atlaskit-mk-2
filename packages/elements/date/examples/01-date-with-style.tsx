@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Date, DateProps } from '../src';
 import styled, { css } from 'styled-components';
-import { akColorB200, akBorderRadius } from '@atlaskit/util-shared-styles';
+import { colors, borderRadius } from '@atlaskit/theme';
 
 type Props = {
   selected?: boolean;
@@ -14,10 +14,10 @@ const SelectableDate = styled(Date)`
           display: 'relative';
           &:before {
             content: '';
-            border: 2px solid ${akColorB200};
+            border: 2px solid ${colors.B200};
             display: 'absolute';
             background: transparent;
-            border-radius: ${akBorderRadius};
+            border-radius: ${borderRadius()};
             box-sizing: border-box;
             position: absolute;
             top: 0;

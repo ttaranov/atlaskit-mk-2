@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { akZIndexLayer } from '@atlaskit/util-shared-styles';
+import { layers } from '@atlaskit/theme';
 import MentionTextInput from '../example-helpers/demo-mention-text-input';
 import {
   onSelection,
@@ -26,7 +26,7 @@ export default function Example() {
           resourceProvider={slowResourceProvider}
           presenceProvider={new MockPresenceResource(200, 500)}
           relativePosition="above"
-          zIndex={akZIndexLayer}
+          zIndex={layers.modal()}
         />
       </div>
     </div>

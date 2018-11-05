@@ -52,7 +52,7 @@ async function run(opts) {
     const changesetID = await writeChangeset(newChangeset, config);
     if (config.commit) {
       await git.add(path.resolve(changesetBase, changesetID));
-      await git.commit(`Added new changeset with ID: ${changesetID}`);
+      await git.commit(`CHANGESET: ${changesetID}. ${newChangeset.summary}`);
       logger.log(green('Changeset added and committed'));
     } else {
       logger.log(green('Changeset added! - you can now commit it'));

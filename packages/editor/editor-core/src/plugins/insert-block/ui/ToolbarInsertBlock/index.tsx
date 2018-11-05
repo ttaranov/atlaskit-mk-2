@@ -65,6 +65,16 @@ export const messages = defineMessages({
     defaultMessage: 'Action item',
     description: 'Also known as a “task”, “to do item”, or a checklist',
   },
+  bulletList: {
+    id: 'fabric.editor.bulletList',
+    defaultMessage: 'Bullet list',
+    description: 'Also known as a “unordered list”',
+  },
+  orderedList: {
+    id: 'fabric.editor.orderedList',
+    defaultMessage: 'Ordered list',
+    description: 'Also known as a “numbered list”',
+  },
   link: {
     id: 'fabric.editor.link',
     defaultMessage: 'Link',
@@ -634,14 +644,18 @@ class ToolbarInsertBlock extends React.PureComponent<
   @analyticsDecorator('atlassian.editor.format.horizontalrule.button')
   private insertHorizontalRule = (): boolean => {
     const { editorView } = this.props;
-    editorView.dispatch(
-      createHorizontalRule(
-        editorView.state,
-        editorView.state.selection.from,
-        editorView.state.selection.to,
-      ),
+    const tr = createHorizontalRule(
+      editorView.state,
+      editorView.state.selection.from,
+      editorView.state.selection.to,
     );
-    return true;
+
+    if (tr) {
+      editorView.dispatch(tr);
+      return true;
+    }
+
+    return false;
   };
 
   @analyticsDecorator('atlassian.editor.emoji.button')

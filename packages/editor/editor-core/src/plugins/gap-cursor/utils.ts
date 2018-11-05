@@ -5,6 +5,7 @@ import { tableMarginTop } from '@atlaskit/editor-common';
 
 import { GapCursorSelection, Side } from './selection';
 import { TableCssClassName } from '../table/types';
+import { tableInsertColumnButtonSize } from '../table/ui/styles';
 
 // we don't show gap cursor for those nodes
 const INGORED_NODES = [
@@ -154,8 +155,9 @@ export const fixCursorAlignment = (view: EditorView) => {
 
   // table nodeView margin fix
   if (targetNode.type === schema.nodes.table) {
-    height -= tableMarginTop;
-    marginTop = tableMarginTop;
+    const tableFullMarginTop = tableMarginTop + tableInsertColumnButtonSize / 2;
+    height -= tableFullMarginTop;
+    marginTop = tableFullMarginTop;
     gapCursorRef.style.paddingLeft = `${paddingLeft}px`;
   }
 
