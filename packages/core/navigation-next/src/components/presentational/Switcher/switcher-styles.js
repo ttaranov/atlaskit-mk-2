@@ -4,7 +4,7 @@ import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import { mergeStyles } from '@atlaskit/select';
 
 const gridSize = gridSizeFn();
-
+//TODO: move control default styles to here
 const defaultStyles = {
   option: (provided, { isActive, isFocused }) => {
     return {
@@ -33,7 +33,12 @@ const defaultStyles = {
 type SelectStyles = {
   [component: string]: (
     baseStyles: {},
-    { isActive: boolean, isHover: boolean, isFocused: boolean },
+    {
+      isActive: boolean,
+      isHover: boolean,
+      isFocused: boolean,
+      isSelected: boolean,
+    },
   ) => {},
 };
 

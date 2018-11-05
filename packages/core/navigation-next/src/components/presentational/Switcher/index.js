@@ -93,7 +93,12 @@ type ComponentsType = { [key: string]: ComponentType<any> };
 type SelectStyles = {
   [component: string]: (
     baseStyles: {},
-    { isActive: boolean, isHover: boolean, isFocused: boolean },
+    {
+      isActive: boolean,
+      isHover: boolean,
+      isFocused: boolean,
+      isSelected: boolean,
+    },
   ) => {},
 };
 

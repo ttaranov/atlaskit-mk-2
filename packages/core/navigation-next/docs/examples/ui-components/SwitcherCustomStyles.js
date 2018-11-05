@@ -81,7 +81,7 @@ const projects = [
 ];
 const items = new Array(8).fill(1).map((x, i) => ({ text: `Item ${i + 1}` }));
 const customStyles = {
-  option: (provider, { isSelected }: { isSelected: boolean }) => ({
+  option: (provider, { isSelected }) => ({
     ...provider,
     backgroundColor: colors.N0,
     paddingLeft: 16,
