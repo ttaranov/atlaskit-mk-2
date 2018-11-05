@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { components } from '@atlaskit/select';
-import Option from '../Option';
+import Option from '../../Option';
 
 describe('Option', () => {
   let baseProps;

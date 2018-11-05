@@ -9,20 +9,46 @@ import React, {
 } from 'react';
 import NodeResolver from 'react-node-resolver';
 import shallowEqualObjects from 'shallow-equal/objects';
-import { components, PopupSelect } from '@atlaskit/select';
+import { components, PopupSelect, mergeStyles } from '@atlaskit/select';
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
 import Option from './Option';
 import { UIControllerSubscriber } from '../../../ui-controller';
 import { CONTENT_NAV_WIDTH } from '../../../common/constants';
-import { createStyles } from './switcher-styles';
 
 const gridSize = gridSizeFn();
+
+const defaultStyles = {
+  option: (provided, { isActive, isFocused }) => {
+    return {
+      ...provided,
+      alignItems: 'center',
+      border: 'none',
+      backgroundColor: isFocused ? colors.N30 : 'transparent',
+      boxSizing: 'border-box',
+      color: 'inherit',
+      cursor: 'default',
+      display: 'flex',
+      flexShrink: 0,
+      fontSize: 'inherit',
+      height: gridSize * 6,
+      outline: 'none',
+      paddingRight: gridSize,
+      paddingLeft: gridSize,
+      textAlign: 'left',
+      textDecoration: 'none',
+      width: '100%',
+      ...(isActive && { backgroundColor: colors.B50 }),
+    };
+  },
+};
 
 // ==============================
 // Custom Functions
 // ==============================
+const createStyles = (styles: SelectStyles = {}): Object =>
+  mergeStyles(defaultStyles, styles);
 
 function filterOption({ data }, input) {
   return data.text.toLowerCase().includes(input.toLowerCase());
@@ -227,7 +253,10 @@ class Switcher extends PureComponent<SwitcherProps, SwitcherState> {
   }
 }
 
+export { createStyles };
+
 export { Switcher as BaseSwitcher };
+
 export default (props: SwitcherBaseProps) => (
   <UIControllerSubscriber>
     {({ state }) => <Switcher navWidth={state.productNavWidth} {...props} />}
