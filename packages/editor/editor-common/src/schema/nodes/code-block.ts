@@ -5,7 +5,7 @@ import { NoMark, MarksObject } from './doc';
 import { BreakoutMarkDefinition } from '../marks/breakout';
 
 /**
- * @name codeBlock_base_node
+ * @name codeBlock_node
  */
 export type CodeBlockBaseDefinition = {
   type: 'codeBlock';

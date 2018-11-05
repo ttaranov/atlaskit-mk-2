@@ -1,4 +1,4 @@
 export default [
-  'codeBlock_base',
+  'codeBlock',
   { props: { marks: { type: 'array', items: ['breakout'], optional: true } } },
 ];

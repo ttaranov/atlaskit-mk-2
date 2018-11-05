@@ -161,6 +161,8 @@ function getOptionsForType(type: string, list?: Content): false | object {
     return {};
   }
 
+  console.log({ list });
+
   for (let i = 0, len = list.length; i < len; i++) {
     const spec = list[i];
     let name = spec;
@@ -325,6 +327,7 @@ export function validator(
 
     if (type) {
       const options = getOptionsForType(type, allowed);
+      console.log({ type, allowed, options });
       if (options === false) {
         return err(VALIDATION_ERRORS.INVALID_TYPE, 'type not allowed here');
       }
@@ -537,6 +540,8 @@ export function validator(
                       );
                     }
 
+                    console.log({ set });
+
                     /**
                      * When there's multiple possible branches try all of them.
                      * If all of them fails, throw the first one.
@@ -582,8 +587,11 @@ export function validator(
           // Marks
           if (entity.marks) {
             if (validator.props.marks) {
+              console.log({ entity });
+              console.log(validator.props!.marks);
               const { items } = validator.props!.marks!;
               const marksSet = items.length ? items[0] : [];
+              console.log({ marksSet });
               const newMarks = entity.marks
                 .filter(
                   mark =>
