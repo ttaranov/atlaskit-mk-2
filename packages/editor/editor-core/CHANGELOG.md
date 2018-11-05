@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 87.9.5
+- [patch] [e1db106](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1db106):
+
+  * ED-5696 Allow private properties in adf-validator
+
+  `table` with `__autoSize`, `link` with `__confluenceMetadata` will render properly.
+
 ## 87.9.4
 - [patch] [bce23bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bce23bc):
 
