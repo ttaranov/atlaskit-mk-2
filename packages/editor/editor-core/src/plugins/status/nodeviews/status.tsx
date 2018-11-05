@@ -64,14 +64,18 @@ class StatusNodeView extends React.Component<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     const { view } = this.props;
-    const pluginState: StatusState = pluginKey.getState(view.state);
-    pluginState.selectionChanges.subscribe(this.handleSelectionChange);
+    const { selectionChanges } = pluginKey.getState(view.state);
+    if (selectionChanges) {
+      selectionChanges.subscribe(this.handleSelectionChange);
+    }
   }
 
   componentWillUnmount() {
     const { view } = this.props;
-    const pluginState: StatusState = pluginKey.getState(view.state);
-    pluginState.selectionChanges.unsubscribe(this.handleSelectionChange);
+    const { selectionChanges } = pluginKey.getState(view.state);
+    if (selectionChanges) {
+      selectionChanges.unsubscribe(this.handleSelectionChange);
+    }
   }
 
   private handleSelectionChange = (

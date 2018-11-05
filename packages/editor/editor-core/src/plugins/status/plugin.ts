@@ -87,7 +87,9 @@ const createPlugin: PMPluginFactory = ({ dispatch, portalProviderAPI }) =>
             // selection changed
             const pluginState: StatusState = pluginKey.getState(view.state);
             const { selectionChanges } = pluginState;
-            selectionChanges.notifyNewSelection(newSelection, prevSelection);
+            if (selectionChanges) {
+              selectionChanges.notifyNewSelection(newSelection, prevSelection);
+            }
           }
         },
       };
