@@ -280,32 +280,24 @@ export default class GlobalNavigation
 
   renderNotificationBadge = () => {
     const { cloudId, fabricNotificationLogUrl } = this.props;
+    const refreshRate = this.state.notificationCount ? 180000 : 60000;
 
-    if (this.isNotificationInbuilt) {
-      const refreshRate = this.state.notificationCount ? 180000 : 60000;
-      return (
-        <NotificationIndicator
-          notificationLogProvider={
-            new NotificationLogClient(fabricNotificationLogUrl, cloudId)
-          }
-          refreshRate={refreshRate}
-          onCountUpdated={this.onCountUpdated}
-          onCountUpdating={this.onCountUpdating}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <NotificationIndicator
+        notificationLogProvider={
+          new NotificationLogClient(fabricNotificationLogUrl, cloudId)
+        }
+        refreshRate={refreshRate}
+        onCountUpdated={this.onCountUpdated}
+        onCountUpdating={this.onCountUpdating}
+      />
+    );
   };
 
   renderNotificationDrawerContents = () => {
     const { locale, product } = this.props;
 
-    if (this.isNotificationInbuilt) {
-      return <NotificationDrawerContents product={product} locale={locale} />;
-    }
-
-    return null;
+    return <NotificationDrawerContents product={product} locale={locale} />;
   };
 
   constructNavItems = () => {

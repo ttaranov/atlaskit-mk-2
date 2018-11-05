@@ -26,7 +26,6 @@ describe('NotificationDrawerContents', () => {
 
   it('should remove spinner when iframe is finished loading', () => {
     const wrapper = mount(<NotificationDrawer locale="en" product="jira" />);
-
     wrapper.find('iframe').simulate('load');
 
     expect(wrapper.find('Spinner').exists()).toBeFalsy();
