@@ -192,7 +192,7 @@ describe('UserPicker', () => {
         defaultValue: [users[0]],
       });
 
-      expect(component.find(Select).prop('defaultValue')).toEqual([
+      expect(component.find(Select).prop('value')).toEqual([
         { label: 'Jace Beleren', user: users[0], value: 'abc-123' },
       ]);
     });
@@ -207,7 +207,7 @@ describe('UserPicker', () => {
 
       const select = component.find(Select);
       const fixedOption = userToOption({ ...users[0], fixed: true });
-      expect(select.prop('defaultValue')).toEqual([fixedOption]);
+      expect(select.prop('value')).toEqual([fixedOption]);
 
       select.simulate('change', [], {
         action: 'pop-value',
@@ -216,7 +216,7 @@ describe('UserPicker', () => {
 
       expect(onChange).not.toHaveBeenCalled();
 
-      expect(select.prop('value')).toBeUndefined();
+      expect(select.prop('value')).toEqual([fixedOption]);
     });
 
     it('should not remove fixed options with other values', () => {
@@ -229,9 +229,7 @@ describe('UserPicker', () => {
       });
 
       const fixedOption = userToOption(fixedUser);
-      expect(component.find(Select).prop('defaultValue')).toEqual([
-        fixedOption,
-      ]);
+      expect(component.find(Select).prop('value')).toEqual([fixedOption]);
 
       const removableOption = userToOption(users[1]);
       component
