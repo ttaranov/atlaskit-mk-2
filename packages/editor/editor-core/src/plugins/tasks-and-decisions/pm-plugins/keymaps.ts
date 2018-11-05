@@ -2,6 +2,7 @@ import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
+import { hasParentNodeOfType } from 'prosemirror-utils';
 import { isSupportedSourceNode, splitListAtSelection } from '../commands';
 
 // tries to find a valid cursor position
@@ -11,6 +12,11 @@ const setTextSelection = (pos: number) => (tr: Transaction) => {
     tr.setSelection(newSelection);
   }
   return tr;
+};
+
+const isInsideTaskOrDecisionItem = (state: EditorState) => {
+  const { decisionItem, taskItem } = state.schema.nodes;
+  return hasParentNodeOfType([decisionItem, taskItem])(state.selection);
 };
 
 export function keymapPlugin(schema: Schema): Plugin | undefined {
@@ -82,9 +88,13 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         schema: { nodes },
         tr,
       } = state;
+      const nodeIsTaskOrDecisionItem = isInsideTaskOrDecisionItem(state);
       const { decisionList, decisionItem, taskList, taskItem } = nodes;
 
-      if ((!decisionItem || !decisionList) && (!taskList || !taskItem)) {
+      if (
+        ((!decisionItem || !decisionList) && (!taskList || !taskItem)) ||
+        !nodeIsTaskOrDecisionItem
+      ) {
         return false;
       }
 
@@ -147,16 +157,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     },
 
     Enter: (state: EditorState, dispatch) => {
-      const {
-        selection,
-        tr,
-        schema: { nodes },
-      } = state;
+      const { selection, tr } = state;
       const { $from } = selection;
+      const nodeIsTaskOrDecisionItem = isInsideTaskOrDecisionItem(state);
       const node = $from.node($from.depth);
       const nodeType = node && node.type;
-      const nodeIsTaskOrDecisionItem =
-        nodeType === nodes.decisionItem || nodeType === nodes.taskItem;
       const isEmpty = node && node.textContent.length === 0;
 
       if (nodeIsTaskOrDecisionItem) {
