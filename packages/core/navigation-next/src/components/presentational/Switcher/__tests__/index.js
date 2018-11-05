@@ -53,12 +53,10 @@ describe('Switcher', () => {
     expect(wrapper.find(PopupSelect).prop('styles')).toEqual(styles);
   });
 
-  it('should pass custom styles to PopupSelect />', () => {
+  it('should pass merged custom styles to <PopupSelect />', () => {
     const customStyles = {
       option: base => ({
         ...base,
-        display: 'flex',
-        backgroundColor: 'green',
         color: 'green',
         paddingLeft: 16,
         marginBottom: 2,
@@ -67,10 +65,19 @@ describe('Switcher', () => {
         ...base,
         color: 'red',
       }),
+      groupHeading: base => ({ ...base, color: 'red' }),
+      singleValue: base => ({ ...base, color: 'red' }),
     };
     const wrapper = shallow(
       <BaseSwitcher {...baseProps} styles={customStyles} />,
     );
-    expect(wrapper.find(PopupSelect).prop('styles')).toEqual(customStyles);
+    expect(wrapper.find(PopupSelect).prop('styles')).toEqual(
+      expect.objectContaining({
+        option: expect.any(Function),
+        control: expect.any(Function),
+        groupHeading: expect.any(Function),
+        singleValue: expect.any(Function),
+      }),
+    );
   });
 });

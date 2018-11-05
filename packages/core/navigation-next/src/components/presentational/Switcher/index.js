@@ -16,6 +16,7 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import Option from './Option';
 import { UIControllerSubscriber } from '../../../ui-controller';
 import { CONTENT_NAV_WIDTH } from '../../../common/constants';
+import { createStyles } from './switcher-styles';
 
 const gridSize = gridSizeFn();
 
@@ -89,6 +90,13 @@ const isEmpty = obj => Object.keys(obj).length === 0;
 
 type ComponentsType = { [key: string]: ComponentType<any> };
 
+type SelectStyles = {
+  [component: string]: (
+    baseStyles: {},
+    { isActive: boolean, isHover: boolean, isFocused: boolean },
+  ) => {},
+};
+
 type SwitcherBaseProps = {
   /* Close the menu when the user clicks create */
   closeMenuOnCreate?: boolean,
@@ -103,7 +111,7 @@ type SwitcherBaseProps = {
   /* The target element, which invokes the select menu */
   target: Element<*>,
   /* A react-select Style object, which overrides the default components styles. */
-  styles?: Object,
+  styles?: SelectStyles,
 };
 
 type SwitcherProps = SwitcherBaseProps & {
@@ -127,33 +135,6 @@ class Switcher extends PureComponent<SwitcherProps, SwitcherState> {
   static defaultProps = {
     closeMenuOnCreate: true,
     components: {},
-    styles: {
-      option: (base: Object, { isFocused }: { isFocused: boolean }) => ({
-        ...base,
-        alignItems: 'center',
-        border: 'none',
-        backgroundColor: isFocused ? colors.N30 : 'transparent',
-        boxSizing: 'border-box',
-        color: 'inherit',
-        cursor: 'default',
-        display: 'flex',
-        flexShrink: 0,
-        fontSize: 'inherit',
-        height: gridSize * 6,
-        outline: 'none',
-        paddingRight: gridSize,
-        paddingLeft: gridSize,
-        textAlign: 'left',
-        textDecoration: 'none',
-        width: '100%',
-        '&:hover': {
-          textDecoration: 'none',
-        },
-        '&:active': {
-          backgroundColor: colors.B50,
-        },
-      }),
-    },
   };
   static getDerivedStateFromProps(props: SwitcherProps, state: SwitcherState) {
     const newState = {};
@@ -234,6 +215,7 @@ class Switcher extends PureComponent<SwitcherProps, SwitcherState> {
           </NodeResolver>
         }
         {...props}
+        styles={createStyles(this.props.styles)}
         components={mergedComponents}
       />
     );
