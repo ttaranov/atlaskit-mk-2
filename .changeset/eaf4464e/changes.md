@@ -1,0 +1,1 @@
+- ED-5651: Typing // causes editor to disregard text
