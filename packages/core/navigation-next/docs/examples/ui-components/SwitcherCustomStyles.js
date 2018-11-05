@@ -81,19 +81,18 @@ const projects = [
 ];
 const items = new Array(8).fill(1).map((x, i) => ({ text: `Item ${i + 1}` }));
 const customStyles = {
-  option: (base, state) => ({
-    ...base,
-    display: 'flex',
+  option: (provider, { isSelected }: { isSelected: boolean }) => ({
+    ...provider,
     backgroundColor: colors.N0,
     paddingLeft: 16,
     marginBottom: 2,
     '&:hover': {
       backgroundColor: colors.N20,
     },
-    color: state.isSelected ? 'red' : 'blue',
+    color: isSelected ? 'red' : 'blue',
   }),
-  control: base => ({
-    ...base,
+  control: provider => ({
+    ...provider,
     color: 'red',
   }),
 };
