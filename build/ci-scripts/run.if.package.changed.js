@@ -7,31 +7,14 @@ const git = require('../utils/git');
 const spawndamnit = require('spawndamnit');
 const fse = require('fs-extra');
 const path = require('path');
+const bolt = require('bolt');
 
-// To provide a quick fix, this function is shared with build-releases version command
-// It should be abstracted into a single shared source, but I didn't feel quite right
-// putting it in build-tools. TODO: Give this logic a shared home - BC
-async function getNewFSChangesets(changesetBase) {
-  if (!fse.existsSync(changesetBase)) {
-    throw new Error('There is no .changeset directory in this project');
-  }
+async function getNewFSChangesets(cwd) {
+  const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
+  const paths = await git.getChangedChangesetFilesSinceMaster();
 
-  const dirs = fse.readdirSync(changesetBase);
-  // this needs to support just not dealing with dirs that aren't set up properly
-  const changesets = dirs
-    .filter(file => fse.lstatSync(path.join(changesetBase, file)).isDirectory())
-    .map(async changesetDir => {
-      const summary = fse.readFileSync(
-        path.join(changesetBase, changesetDir, 'changes.md'),
-        'utf-8',
-      );
-      const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
-      // $ExpectError - we are fine with dynamic require here
-      const json = require(jsonPath);
-      const commit = await git.getCommitThatAddsFile(jsonPath);
-      return { ...json, summary, commit };
-    });
-  return Promise.all(changesets);
+  // $ExpectError
+  return paths.map(filePath => require(path.join(projectRoot, filePath)));
 }
 
 /**
