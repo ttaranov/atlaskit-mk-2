@@ -17,6 +17,7 @@ export interface Props {
   theme?: 'dark';
   title?: string;
   titlePosition?: string;
+  ariaLabel?: string;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
@@ -31,6 +32,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         ariaHaspopup={true}
         className={this.props.className}
         href={this.props.href}
+        ariaLabel={this.props.ariaLabel}
         iconAfter={this.props.iconAfter}
         iconBefore={this.props.iconBefore}
         isDisabled={this.props.disabled}

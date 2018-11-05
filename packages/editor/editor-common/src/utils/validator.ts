@@ -542,6 +542,7 @@ export const getValidNode = (
         return {
           type,
           content: content || [],
+          marks,
         };
       }
       case 'rule': {
@@ -577,6 +578,7 @@ export const getValidNode = (
             return {
               type,
               content,
+              marks,
               attrs: {
                 level,
               },
@@ -751,6 +753,7 @@ export const getValidNode = (
             type,
             content: wrapInlineNodes(content),
             attrs: attrs ? cellAttrs : undefined,
+            marks,
           };
         }
         break;

@@ -11,6 +11,7 @@ import Subsup from './subsup';
 import TextColor from './textColor';
 import Underline from './underline';
 import Action from './action';
+import Alignment from './alignment';
 
 // Stage0
 import ConfluenceInlineComment from './confluence-inline-comment';
@@ -28,6 +29,7 @@ export const markToReact = {
 
   // Stage0
   confluenceInlineComment: ConfluenceInlineComment,
+  alignment: Alignment,
 };
 
 export const toReact = (mark: Mark): ComponentClass<any> => {

@@ -24,6 +24,7 @@ export const listItem: NodeSpec = {
   content:
     '(paragraph | mediaSingle) (paragraph | bulletList | orderedList | mediaSingle)*',
   defining: true,
+  marks: 'alignment',
   parseDOM: [{ tag: 'li' }],
   toDOM() {
     return ['li', 0];

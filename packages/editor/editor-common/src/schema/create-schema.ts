@@ -15,6 +15,7 @@ import {
   textColor,
   confluenceInlineComment,
   action,
+  alignment,
 } from './marks';
 
 import {
@@ -183,6 +184,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'typeAheadQuery', spec: typeAheadQuery },
   { name: 'textColor', spec: textColor },
   { name: 'action', spec: action },
+  { name: 'alignment', spec: alignment },
   { name: 'confluenceInlineComment', spec: confluenceInlineComment },
   ...markGroupDeclarations,
 ];

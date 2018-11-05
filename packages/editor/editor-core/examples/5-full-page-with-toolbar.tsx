@@ -87,6 +87,7 @@ export class ExampleEditor extends React.Component<Props> {
                 allowCodeBlocks={{ enableKeybindingsForIDE: true }}
                 allowLists={true}
                 allowTextColor={true}
+                allowTextAlignment={true}
                 allowTables={{
                   allowColumnResizing: true,
                   allowMergeCells: true,

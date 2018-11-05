@@ -2,6 +2,8 @@ import { EditorState, Transaction, Plugin, PluginKey } from 'prosemirror-state';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { isWrappingPossible } from '../utils';
 import { Dispatch } from '../../../event-dispatcher';
+import { EditorView } from 'prosemirror-view';
+import { removeAlignment } from '../../alignment/utils';
 
 export const pluginKey = new PluginKey('listsPlugin');
 
@@ -67,6 +69,25 @@ export const createPlugin = (dispatch: Dispatch) =>
 
         return pluginState;
       },
+    },
+    view: editorView => {
+      return {
+        update: (view: EditorView) => {
+          const { bulletList, orderedList } = view.state.schema.nodes;
+          const listParent = findParentNodeOfType([bulletList, orderedList])(
+            view.state.tr.selection,
+          );
+          if (!listParent) {
+            return;
+          }
+
+          /** Alignment if exists should be removed when toggled to list items */
+          const removeAlign = removeAlignment(view.state);
+          if (removeAlign) {
+            view.dispatch(removeAlign);
+          }
+        },
+      };
     },
 
     key: pluginKey,

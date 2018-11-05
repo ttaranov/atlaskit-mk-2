@@ -90,6 +90,19 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .mediaGroupView-content-wrap ul {
     padding: 0;
   }
+
+  .align-right {
+    text-align: right;
+  }
+
+  .align-left {
+    text-align: left;
+  }
+
+  .align-center {
+    text-align: center;
+  }
+
 `;
 
 export default ContentStyles;

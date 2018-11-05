@@ -1,5 +1,6 @@
 import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
-import { Inline } from './doc';
+import { Inline, MarksObject } from './doc';
+import { AlignmentMarkDefinition } from '..';
 
 /**
  * @name paragraph_node
@@ -21,3 +22,6 @@ export const paragraph: NodeSpec = {
     return pDOM;
   },
 };
+
+export type ParagraphWithAlignment = ParagraphDefinition &
+  MarksObject<AlignmentMarkDefinition>;

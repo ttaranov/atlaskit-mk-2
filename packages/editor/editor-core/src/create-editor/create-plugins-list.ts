@@ -43,6 +43,7 @@ import {
   floatingToolbarPlugin,
   statusPlugin,
   gridPlugin,
+  alignment,
 } from '../plugins';
 
 /**
@@ -68,6 +69,10 @@ export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
  */
 export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList(props);
+
+  if (props.allowTextAlignment) {
+    plugins.push(alignment);
+  }
 
   if (props.quickInsert) {
     plugins.push(quickInsertPlugin);

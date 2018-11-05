@@ -27,3 +27,8 @@ export {
   ActionMarkAttributes,
   ActionDefinition,
 } from './action';
+export {
+  alignment,
+  AlignmentAttributes,
+  AlignmentMarkDefinition,
+} from './alignment';

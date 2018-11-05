@@ -122,13 +122,29 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           pInfo = { parentIsIncompleteTask: true };
         }
 
-        return this.serializeFragment(
+        const serializedContent = this.serializeFragment(
           (node as Node).content,
           props,
           toReact(node as Node),
           `${node.type.name}-${index}`,
           pInfo,
         );
+
+        if ((node as Node).marks && (node as Node).marks.length) {
+          return ([] as Array<Mark>)
+            .concat((node as Node).marks)
+            .reverse()
+            .reduce((acc, mark) => {
+              return this.renderMark(
+                markToReact(mark),
+                this.getMarkProps(mark),
+                `${mark.type.name}-${index}`,
+                acc,
+              );
+            }, serializedContent);
+        }
+
+        return serializedContent;
       },
     );
 

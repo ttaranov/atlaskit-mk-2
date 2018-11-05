@@ -81,6 +81,7 @@ export {
   blockCard,
   clean,
   status,
+  alignment,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
