@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "11.1.0",
+  "version": "11.1.1",
   "config": {
     "access": "public"
   },
@@ -26,11 +26,11 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.0",
     "@atlaskit/avatar": "^14.0.6",
-    "@atlaskit/comment": "^6.0.23",
-    "@atlaskit/editor-common": "^20.1.2",
-    "@atlaskit/editor-core": "^87.0.0",
-    "@atlaskit/reactions": "^15.0.1",
-    "@atlaskit/renderer": "^29.0.0",
+    "@atlaskit/comment": "^6.0.24",
+    "@atlaskit/editor-common": "^21.0.0",
+    "@atlaskit/editor-core": "^88.0.0",
+    "@atlaskit/reactions": "^15.0.3",
+    "@atlaskit/renderer": "^30.0.0",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "prop-types": "^15.5.10",
@@ -44,7 +44,7 @@
     "@atlaskit/analytics-listeners": "^4.0.0",
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/single-select": "^6.0.3",
-    "@atlaskit/util-data-test": "^10.0.16",
+    "@atlaskit/util-data-test": "^10.0.20",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

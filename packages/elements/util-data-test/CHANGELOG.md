@@ -1,5 +1,10 @@
 # @atlaskit/util-data-test
 
+## 10.0.20
+- Updated dependencies [2c21466](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c21466):
+  - @atlaskit/emoji@46.0.0
+  - @atlaskit/task-decision@11.0.2
+
 ## 10.0.19
 - [patch] FS-3012 add async functionality to user-picker [832fdc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/832fdc1)
 

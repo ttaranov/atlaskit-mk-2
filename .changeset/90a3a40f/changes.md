@@ -1,1 +1,0 @@
-- Allow to inline play video files in media-card
