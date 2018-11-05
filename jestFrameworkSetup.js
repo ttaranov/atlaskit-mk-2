@@ -1,10 +1,10 @@
 /* eslint-disable */
 import 'jest-styled-components';
-import snakeCase from 'snake-case';
 import { toMatchSnapshot } from 'jest-snapshot';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 import * as emotion from 'emotion';
 import { createSerializer } from 'jest-emotion';
+import { validator } from './packages/editor/adf-utils';
 
 let consoleError;
 let consoleWarn;
@@ -103,26 +103,17 @@ if (typeof window !== 'undefined' && !('cancelAnimationFrame' in window)) {
   };
 }
 
-function isNodeOrFragment(thing) {
-  // Using a simple `instanceof` check is intentionally avoided here to make
-  // this code agnostic to a specific instance of a Schema.
-  return thing && typeof thing.eq === 'function';
-}
+const walk = fn => node => {
+  const { content = [], ...rest } = node;
+  const transformedNode = fn(rest);
+  const walkWithFn = walk(fn);
+  if (content.length) {
+    transformedNode.content = content.map(walkWithFn);
+  }
+  return transformedNode;
+};
 
-function transformDoc(fn) {
-  return doc => {
-    const walk = fn => node => {
-      const { content = [], ...rest } = node;
-      const transformedNode = fn(rest);
-      const walkWithFn = walk(fn);
-      if (content.length) {
-        transformedNode.content = content.map(walkWithFn);
-      }
-      return transformedNode;
-    };
-    return walk(fn)(doc);
-  };
-}
+const transformDoc = fn => doc => walk(fn)(doc);
 
 const hasLocalId = type =>
   type === 'taskItem' ||
@@ -195,7 +186,8 @@ expect.extend({
       };
     }
 
-    if (expected.type.schema !== actual.type.schema) {
+    const actualSchema = actual.type.schema;
+    if (expected.type.schema !== actualSchema) {
       return {
         pass: false,
         actual,
@@ -205,7 +197,25 @@ expect.extend({
       };
     }
 
-    const pass = this.equals(actual.toJSON(), expected.toJSON());
+    const nodes = Object.keys(actualSchema.nodes);
+    const marks = Object.keys(actualSchema.marks);
+
+    const validate = validator(nodes, marks, { allowPrivateAttributes: true });
+    const actualJSON = actual.toJSON();
+
+    try {
+      validate({ ...actualJSON, version: 1 });
+    } catch (error) {
+      return {
+        pass: false,
+        actual,
+        expected,
+        name: 'toEqualDocument',
+        message: () => error.message,
+      };
+    }
+
+    const pass = this.equals(actualJSON, expected.toJSON());
     const message = pass
       ? () =>
           `${this.utils.matcherHint('.not.toEqualDocument')}\n\n` +
@@ -251,6 +261,22 @@ expect.extend({
 
     // remove ids that may change from the document so snapshots are repeatable
     const transformedDoc = removeIdsFromDoc(actual);
+
+    const validate = validator(undefined, undefined, {
+      allowPrivateAttributes: true,
+    });
+
+    try {
+      validate({ ...transformedDoc, version: 1 });
+    } catch (error) {
+      return {
+        pass: false,
+        actual,
+        expected,
+        name: 'toMatchDocSnapshot',
+        message: () => error.message,
+      };
+    }
 
     // since the test runner fires off multiple browsers for a single test, map each snapshot to the same one
     // (otherwise we'll try to create as many snapshots as there are browsers)
