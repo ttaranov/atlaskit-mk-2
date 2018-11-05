@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 20.3.8
+- [patch] [1ec58fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ec58fb):
+
+  - Fix bodied extension node blows up with unsupportedBlock
+
 ## 20.3.7
 - Updated dependencies [04c7192](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04c7192):
   - @atlaskit/media-core@24.3.1

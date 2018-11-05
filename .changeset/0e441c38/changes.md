@@ -1,1 +1,0 @@
-- Fix bodied extension node blows up with unsupportedBlock
