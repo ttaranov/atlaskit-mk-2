@@ -11,8 +11,8 @@ type Props = {|
   locale?: string,
   product?: string,
   window?: {
-    addEventListener: () => void,
-    removeEventListener: () => void,
+    addEventListener: (string, (any) => void) => void,
+    removeEventListener: (string, (any) => void) => void,
   },
 |};
 
@@ -30,11 +30,13 @@ class NotificationDrawer extends Component<Props, State> {
   };
 
   componentDidMount() {
-    this.props.window.addEventListener('message', this.handleMessage);
+    if (this.props.window)
+      this.props.window.addEventListener('message', this.handleMessage);
   }
 
   componentWillUnmount() {
-    this.props.window.removeEventListener('message', this.handleMessage);
+    if (this.props.window)
+      this.props.window.removeEventListener('message', this.handleMessage);
   }
 
   iframe = null;
