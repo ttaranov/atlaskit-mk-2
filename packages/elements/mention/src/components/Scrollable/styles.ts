@@ -2,7 +2,7 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { borderRadius } from '@atlaskit/theme';
 import { scrollableMaxHeight } from '../../shared-styles';
 
 export const ScrollableStyle: ComponentClass<
@@ -18,5 +18,5 @@ export const ScrollableStyle: ComponentClass<
   background: white;
   max-height: ${scrollableMaxHeight};
 
-  border-radius: ${akBorderRadius};
+  border-radius: ${borderRadius()};
 `;

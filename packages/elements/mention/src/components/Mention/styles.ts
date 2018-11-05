@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 import { HTMLAttributes, ComponentClass } from 'react';
-import {
-  akColorB400,
-  akColorN20,
-  akColorN30A,
-  akColorN500,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { MentionType } from '../../types';
 
 export interface MentionStyleProps {
@@ -14,19 +9,19 @@ export interface MentionStyleProps {
 
 const mentionStyle = {};
 mentionStyle[MentionType.SELF] = {
-  background: akColorB400,
+  background: colors.B400,
   border: 'transparent',
-  text: akColorN20,
+  text: colors.N20,
 };
 mentionStyle[MentionType.RESTRICTED] = {
   background: 'transparent',
-  border: akColorN500,
-  text: akColorN500,
+  border: colors.N500,
+  text: colors.N500,
 };
 mentionStyle[MentionType.DEFAULT] = {
-  background: akColorN30A,
+  background: colors.N30A,
   border: 'transparent',
-  text: akColorN500,
+  text: colors.N500,
 };
 
 export const MentionStyle: ComponentClass<

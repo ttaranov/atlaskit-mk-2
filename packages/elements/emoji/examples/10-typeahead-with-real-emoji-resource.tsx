@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
+
+import { layers } from '@atlaskit/theme';
+
 import EmojiTypeAhead from '../src/components/typeahead/EmojiTypeAhead';
 import SearchTextInput from '../example-helpers/demo-search-text-input';
 import ResourcedEmojiControl, {
@@ -12,7 +15,6 @@ import {
   TypeaheadProps,
   TypeaheadState,
 } from '../example-helpers/typeahead-props';
-import { akZIndexModal } from '@atlaskit/util-shared-styles';
 import { emojiTypeAheadMaxHeight } from '../src/shared-styles';
 
 class EmojiTypeAheadTextInput extends Component<
@@ -107,7 +109,7 @@ class EmojiTypeAheadTextInput extends Component<
           ref={this.handleEmojiTypeAheadRef}
           query={this.state.query}
           emojiProvider={emojiProvider}
-          zIndex={akZIndexModal}
+          zIndex={layers.modal()}
         />
       );
     }
