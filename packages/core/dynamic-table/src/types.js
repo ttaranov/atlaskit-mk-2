@@ -41,7 +41,7 @@ export type StatelessProps = {
   isRankingDisabled?: boolean,
   onRankStart?: RankStart => void,
   onRankEnd?: (RankEnd, ?UIAnalyticsEvent) => void,
-  paginationi18n?: i18nShape,
+  paginationi18n: i18nShape,
 };
 
 export type StatefulProps = {

@@ -1,5 +1,6 @@
 //@flow
 import React, { Component, Fragment } from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import Pagination, { collapseRange } from '@atlaskit/pagination';
 
 type Props = {
@@ -15,8 +16,8 @@ type Props = {
 const MAX_VISIBLE_PAGES = 7;
 
 export default class ManagedPagination extends Component<Props> {
-  onChange = (newValue: number) => {
-    this.props.onChange(newValue);
+  onChange = (newValue: number, analyticsEvent?: UIAnalyticsEvent) => {
+    this.props.onChange(newValue, analyticsEvent);
   };
 
   render() {
@@ -30,7 +31,9 @@ export default class ManagedPagination extends Component<Props> {
             <LeftNavigator
               ariaLabel={i18n.prev}
               isDisabled={value === 1}
-              onClick={() => this.onChange(value - 1)}
+              onClick={(_, analyticsEvent) =>
+                this.onChange(value - 1, analyticsEvent)
+              }
             />
             {pageLinksCollapsed.map((pageNumber, key) => {
               if (pageNumber === '...') {
@@ -41,7 +44,9 @@ export default class ManagedPagination extends Component<Props> {
                 <Page
                   key={`${pageNumber}`}
                   isSelected={pageNumber === this.props.value}
-                  onClick={() => this.onChange(pageNumber)}
+                  onClick={(_, analyticsEvent) =>
+                    this.onChange(pageNumber, analyticsEvent)
+                  }
                 >
                   {pageNumber}
                 </Page>
@@ -50,7 +55,9 @@ export default class ManagedPagination extends Component<Props> {
             <RightNavigator
               ariaLabel={i18n.next}
               isDisabled={value === total}
-              onClick={() => this.onChange(value + 1)}
+              onClick={(_, analyticsEvent) =>
+                this.onChange(value + 1, analyticsEvent)
+              }
             />
           </Fragment>
         )}
