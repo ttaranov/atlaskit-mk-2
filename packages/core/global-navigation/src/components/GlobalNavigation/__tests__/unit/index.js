@@ -538,29 +538,6 @@ describe('GlobalNavigation', () => {
       expect(wrapper.find('NotificationDrawer').exists()).toBeTruthy();
     });
 
-    it('should render the iframe with the correct url', () => {
-      const wrapper = mount(
-        <GlobalNavigation
-          product="jira"
-          locale="en"
-          fabricNotificationLogUrl={fabricNotificationLogUrl}
-          cloudId={cloudId}
-        />,
-      );
-      const icon = wrapper.find('NotificationIcon');
-      icon.simulate('click');
-
-      expect(
-        wrapper
-          .find('NotificationDrawer')
-          .children('iframe')
-          .props()
-          .src.endsWith(
-            '/home/notificationsDrawer/iframe.html?locale=en&product=jira',
-          ),
-      ).toBeTruthy();
-    });
-
     it('should not render iframe in drawer when notificationDrawerContents is passed', () => {
       const wrapper = mount(
         <GlobalNavigation
