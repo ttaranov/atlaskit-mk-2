@@ -98,7 +98,7 @@ const datePlugin: EditorPlugin = {
 
           const tr = insert(dateNode, { selectInlineNode: true });
           return tr.setMeta(pluginKey, {
-            showDatePickerAt: tr.selection.from - 2,
+            showDatePickerAt: tr.selection.from,
           });
         },
       },
