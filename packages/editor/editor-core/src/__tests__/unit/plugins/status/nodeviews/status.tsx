@@ -11,6 +11,7 @@ import StatusNodeView, {
   Props as StatusNodeViewProps,
   State as StatusNodeViewState,
   StatusContainer,
+  messages,
 } from '../../../../../plugins/status/nodeviews/status';
 import statusPlugin from '../../../../../plugins/status';
 import {
@@ -46,6 +47,30 @@ describe('Status - NodeView', () => {
     );
     expect(wrapper.find(Status).length).toBe(1);
     expect(wrapper.find(Status).prop('text')).toBe('In progress');
+    expect(wrapper.find(Status).prop('color')).toBe('blue');
+    expect(wrapper.find(Status).prop('localId')).toBe('666');
+  });
+
+  it('should use status as placeholder when no text', () => {
+    const { editorView: view } = editor(doc(p('Status: {<>}')));
+
+    Actions.insertStatus({
+      text: '',
+      color: 'blue',
+      localId: '666',
+    })(view);
+
+    const wrapper = mountWithIntl(
+      <StatusNodeView
+        view={view}
+        node={view.state.selection.$from.nodeBefore!}
+        getPos={jest.fn()}
+      />,
+    );
+    expect(wrapper.find(Status).length).toBe(1);
+    expect(wrapper.find(Status).prop('text')).toBe(
+      messages.placeholder.defaultMessage,
+    );
     expect(wrapper.find(Status).prop('color')).toBe('blue');
     expect(wrapper.find(Status).prop('localId')).toBe('666');
   });

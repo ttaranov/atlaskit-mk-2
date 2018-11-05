@@ -35,7 +35,7 @@ export const StatusContainer = styled.span`
   }
 `;
 
-const messages = defineMessages({
+export const messages = defineMessages({
   placeholder: {
     id: 'fabric.editor.statusPlaceholder',
     defaultMessage: 'Set a status',
