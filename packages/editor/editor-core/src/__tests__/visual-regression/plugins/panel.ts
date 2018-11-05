@@ -21,7 +21,7 @@ describe('Snapshot Test: Panel', () => {
 
   afterEach(async () => {
     await page.waitFor(1000);
-    await snapshot(page);
+    await snapshot(page, 0);
   });
 
   describe('Long link text', () => {
@@ -32,6 +32,9 @@ describe('Snapshot Test: Panel', () => {
       await page.click(insertPanelSelector);
 
       await page.waitForSelector(panelNodeSelector);
+      await page.evaluate(() => {
+        window.scrollBy(0, window.innerHeight);
+      });
       await page.click(panelNodeSelector);
       await page.type(
         editable,
@@ -41,6 +44,9 @@ describe('Snapshot Test: Panel', () => {
   });
   describe('Long text without spaces', () => {
     it("shouldn't overflow ", async () => {
+      await page.evaluate(() => {
+        window.scrollBy(0, window.innerHeight);
+      });
       await page.click(insertMenuSelector);
 
       await page.waitForSelector(insertPanelSelector);

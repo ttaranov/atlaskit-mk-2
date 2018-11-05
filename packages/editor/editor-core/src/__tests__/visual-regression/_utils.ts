@@ -356,7 +356,7 @@ export const setTests = forInput => {
   });
 };
 
-export const snapshot = async page => {
+export const snapshot = async (page, tolerance?: number) => {
   const editor = await page.$('.akEditor');
 
   // Try to take a screenshot of only the editor.
@@ -368,8 +368,16 @@ export const snapshot = async page => {
     image = await page.screenshot();
   }
 
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
+  if (tolerance !== undefined) {
+    // @ts-ignore
+    expect(image).toMatchProdImageSnapshot({
+      failureThreshold: '0',
+      failureThresholdType: 'percent',
+    });
+  } else {
+    // @ts-ignore
+    expect(image).toMatchProdImageSnapshot();
+  }
 };
 
 export const insertMedia = async (page, filenames = ['one.svg']) => {
