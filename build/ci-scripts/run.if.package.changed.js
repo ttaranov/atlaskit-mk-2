@@ -5,6 +5,34 @@ const {
 } = require('../utils/packages');
 const git = require('../utils/git');
 const spawndamnit = require('spawndamnit');
+const fse = require('fs-extra');
+const path = require('path');
+
+// To provide a quick fix, this function is shared with build-releases version command
+// It should be abstracted into a single shared source, but I didn't feel quite right
+// putting it in build-tools. TODO: Give this logic a shared home - BC
+async function getNewFSChangesets(changesetBase) {
+  if (!fse.existsSync(changesetBase)) {
+    throw new Error('There is no .changeset directory in this project');
+  }
+
+  const dirs = fse.readdirSync(changesetBase);
+  // this needs to support just not dealing with dirs that aren't set up properly
+  const changesets = dirs
+    .filter(file => fse.lstatSync(path.join(changesetBase, file)).isDirectory())
+    .map(async changesetDir => {
+      const summary = fse.readFileSync(
+        path.join(changesetBase, changesetDir, 'changes.md'),
+        'utf-8',
+      );
+      const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
+      // $ExpectError - we are fine with dynamic require here
+      const json = require(jsonPath);
+      const commit = await git.getCommitThatAddsFile(jsonPath);
+      return { ...json, summary, commit };
+    });
+  return Promise.all(changesets);
+}
 
 /**
  * This is a helper to run a script if a certaing package changed.
@@ -30,8 +58,10 @@ const spawndamnit = require('spawndamnit');
   }
 
   // Take packages that are going to be released,
-  // because using only files is not enough in cases where pacakges is only dependent of other package
-  let unpublishedChangesets = await git.getUnpublishedChangesetCommits();
+  // because using only files is not enough in cases where packages is only dependent of other package
+  let unpublishedChangesets = await getNewFSChangesets(
+    path.join(cwd, '.changeset'),
+  );
   let packagesToRelease = unpublishedChangesets
     .reduce(
       (acc, changeset) =>
