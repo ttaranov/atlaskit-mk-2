@@ -42,6 +42,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  labels?: string[];
 }
 
 export interface State {
@@ -300,8 +301,6 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
       showOptOutOption: false,
     });
 
-    const product = this.props.product || 'n/a';
-
     // triggerFunction is executed as soon as JIRA issue collector script is loaded
     window.ATL_JQ_PAGE_PROPS = {
       triggerFunction: showCollectorDialog => {
@@ -317,25 +316,21 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         }
       },
       fieldValues: {
-        description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${
-          this.props.packageName
-        }@${
+        description: `Please describe the problem you're having or feature you'd like to see:\n\n\n`,
+        // 11711 is the field ID for the Feedback Labels field on Product Fabric.
+        // this is found by clicking "configure" on the field and inspecting the URL
+        customfield_11711: [this.props.product, ...(this.props.labels || [])],
+        customfield_11712: `version: ${this.props.packageName}@${
           this.props.packageVersion
-        } (${coreVersion})\n product: ${product}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\nBrowser: ${getBrowserInfo(
-          navigator.userAgent,
-        )}\nOS: ${getDeviceInfo(
-          navigator.userAgent,
-          navigator.appVersion,
-        )}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n
-        `,
+        } (${coreVersion})
+        Browser: ${getBrowserInfo(navigator.userAgent)}
+        OS: ${getDeviceInfo(navigator.userAgent, navigator.appVersion)}`,
       },
       environment: {
         'Editor Package': this.props.packageName,
         'Editor Version': this.props.packageVersion,
         'Editor Core Version': coreVersion,
       },
-      priority: '1',
-      components: '15306', // Fix here
     };
 
     this.loadJiraIssueCollectorScript();

@@ -130,6 +130,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                         packageVersion={version}
                         packageName={name}
                         key="toolbar-feedback"
+                        labels={['atlaskit-comment-bitbucket']}
                       />,
                       <ToolbarHelp key="toolbar-help" />,
                     ]}
