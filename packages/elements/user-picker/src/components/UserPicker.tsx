@@ -67,7 +67,7 @@ export class UserPicker extends React.PureComponent<Props, State> {
       derivedState.menuIsOpen = nextProps.open;
     }
     if (nextProps.value) {
-      derivedState.value = usersToOptions(nextProps);
+      derivedState.value = usersToOptions(nextProps.value);
     }
     return derivedState;
   }
