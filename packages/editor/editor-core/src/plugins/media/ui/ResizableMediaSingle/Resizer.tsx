@@ -129,7 +129,7 @@ export default class Resizer extends React.Component<
         }}
         className={classnames(
           'media-single',
-          this.props.layout,
+          `image-${this.props.layout}`,
           this.props.className,
           {
             'is-loading': this.props.isLoading,

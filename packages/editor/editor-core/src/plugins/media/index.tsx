@@ -144,6 +144,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             node.attrs.width > akEditorFullPageMaxWidth
           );
           const allowLayout = !!mediaState.isLayoutSupported();
+          const { allowResizing } = mediaState.getMediaOptions();
           return (
             <MediaSingleEdit
               pluginState={mediaState}
@@ -151,6 +152,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               allowLayout={allowLayout}
               layout={layout}
               target={target}
+              allowResizing={allowResizing}
             />
           );
         }}

@@ -45,7 +45,7 @@ export default function MediaSingle({
       height={height}
       containerWidth={containerWidth}
       pctWidth={pctWidth}
-      className={classnames('media-single', layout, className, {
+      className={classnames('media-single', `image-${layout}`, className, {
         'is-loading': isLoading,
         'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',
       })}

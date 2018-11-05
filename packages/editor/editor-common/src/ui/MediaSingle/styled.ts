@@ -69,6 +69,17 @@ function calcMargin(layout: MediaSingleLayout): string {
   }
 }
 
+function isImageAligned(layout: MediaSingleLayout): string {
+  switch (layout) {
+    case 'align-right':
+      return 'margin-right: 0';
+    case 'align-left':
+      return 'margin-left: 0';
+    default:
+      return '';
+  }
+}
+
 export interface WrapperProps {
   layout: MediaSingleLayout;
   width: number;
@@ -89,14 +100,14 @@ export const MediaSingleDimensionHelper = ({
   containerWidth = 0,
   pctWidth,
 }: WrapperProps) => css`
+  tr & {
+    max-width: 100%;
+  }
   width: ${pctWidth ? `${width}px` : calcWidth(layout, width, containerWidth)};
   max-width: ${calcMaxWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
-
-  tr & {
-    max-width: 100%;
-  }
+  ${isImageAligned(layout)};
 `;
 
 const Wrapper: React.ComponentClass<

@@ -24,7 +24,12 @@ export default class ResizableMediaSingle extends React.Component<
 
   get wrappedLayout() {
     const { layout } = this.props;
-    return layout === 'wrap-left' || layout === 'wrap-right';
+    return (
+      layout === 'wrap-left' ||
+      layout === 'wrap-right' ||
+      layout === 'align-right' ||
+      layout === 'align-left'
+    );
   }
 
   calcNewSize = (newWidth: number, stop: boolean) => {
@@ -174,7 +179,7 @@ export default class ResizableMediaSingle extends React.Component<
     handleSides.forEach(side => {
       const oppositeSide = side === 'left' ? 'right' : 'left';
       enable[side] =
-        ['full-width', 'wide', 'center']
+        ['full-width', 'wide', 'center', 'align-right', 'align-left']
           .concat(`wrap-${oppositeSide}` as MediaSingleLayout)
           .indexOf(layout) > -1;
 

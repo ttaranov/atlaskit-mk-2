@@ -8,6 +8,8 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import EditorAlignImageLeft from '@atlaskit/icon/glyph/editor/align-image-left';
+import EditorAlignImageRight from '@atlaskit/icon/glyph/editor/align-image-right';
 import { MediaSingleLayout } from '@atlaskit/editor-common';
 import { colors } from '@atlaskit/theme';
 
@@ -29,6 +31,16 @@ export const messages = defineMessages({
     defaultMessage: 'Wrap right',
     description: 'Aligns your image to the right and wraps text around it.',
   },
+  alignLeft: {
+    id: 'fabric.editor.alignLeft',
+    defaultMessage: 'Align left',
+    description: 'Aligns your image to the left',
+  },
+  alignRight: {
+    id: 'fabric.editor.alignRight',
+    defaultMessage: 'Align right',
+    description: 'Aligns your image to the right',
+  },
 });
 
 export interface Props {
@@ -37,12 +49,21 @@ export interface Props {
   allowBreakout: boolean;
   allowLayout: boolean;
   pluginState: MediaPluginState;
+  allowResizing?: boolean;
 }
 
 const icons = {
   'wrap-left': WrapLeftIcon,
-  center: CenterIcon,
   'wrap-right': WrapRightIcon,
+  center: CenterIcon,
+};
+
+const alignIcons = {
+  'align-left': EditorAlignImageLeft,
+  'align-right': EditorAlignImageRight,
+};
+
+const breakoutIcons = {
   wide: WideIcon,
   'full-width': FullWidthIcon,
 };
@@ -53,6 +74,8 @@ const layoutToMessages = {
   'wrap-right': messages.wrapRight,
   wide: commonMessages.layoutWide,
   'full-width': commonMessages.layoutFullWidth,
+  'align-right': commonMessages.layoutFullWidth,
+  'align-left': commonMessages.layoutFullWidth,
 };
 
 const ToolbarButton = styled(UiToolbarButton)`
@@ -91,6 +114,15 @@ const ToolbarButtonDestructive = styled(ToolbarButton)`
 `;
 
 class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
+  getItems(allowResizing, allowBreakout) {
+    /** case 1: resizing is allowed */
+    if (!allowResizing && allowBreakout) {
+      return { ...icons, ...breakoutIcons };
+    }
+
+    return { ...icons, ...alignIcons };
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const {
@@ -98,6 +130,7 @@ class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
       layout: selectedLayout,
       allowBreakout,
       allowLayout,
+      allowResizing,
     } = this.props;
     if (
       target &&
@@ -105,6 +138,7 @@ class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
       !closestElement(target, 'table')
     ) {
       const labelRemove = formatMessage(commonMessages.remove);
+      const items = this.getItems(allowResizing, allowBreakout);
       return (
         <FloatingToolbar
           target={target}
@@ -112,12 +146,9 @@ class MediaSingleEdit extends React.Component<Props & InjectedIntlProps, {}> {
           fitHeight={32}
           alignX="center"
         >
-          {Object.keys(icons).map((layout, index) => {
+          {Object.keys(items).map((layout, index) => {
             // Don't render Wide and Full width button for image smaller than editor content width
-            if (index > 2 && !allowBreakout) {
-              return;
-            }
-            const Icon = icons[layout];
+            const Icon = items[layout];
             const label = formatMessage(layoutToMessages[layout]);
             return (
               <ToolbarButton
