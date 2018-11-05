@@ -13,6 +13,7 @@ import ScreenTracker from '../../../ScreenTracker';
 
 const DrawerContents = () => <div>drawer</div>;
 const EmojiAtlassianIcon = () => <button>EmojiAtlassianIcon</button>;
+const noop = () => {};
 
 const escKeyDown = () => {
   const event = document.createEvent('Events');
@@ -266,15 +267,15 @@ describe('GlobalNavigation', () => {
         productIcon={EmojiAtlassianIcon}
         productHref="#"
         productTooltip="product tooltip"
-        onProductClick={() => console.log('product clicked')}
+        onProductClick={noop}
         createTooltip="create tooltip"
-        onCreateClick={() => console.log('create clicked')}
+        onCreateClick={noop}
         searchTooltip="search tooltip"
-        onSearchClick={() => console.log('search clicked')}
+        onSearchClick={noop}
         starredTooltip="starred tooltip"
-        onStarredClick={() => console.log('your work clicked')}
+        onStarredClick={noop}
         notificationTooltip="notification tooltip"
-        onNotificationClick={() => console.log('notification clicked')}
+        onNotificationClick={noop}
         profileTooltip="profile tooltip"
         loginHref="#login"
         helpItems={() => <div>items</div>}
@@ -285,11 +286,11 @@ describe('GlobalNavigation', () => {
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
-        onProductClick={() => console.log('product clicked')}
-        onCreateClick={() => console.log('create clicked')}
-        onSearchClick={() => console.log('search clicked')}
-        onStarredClick={() => console.log('your work clicked')}
-        onNotificationClick={() => console.log('notification clicked')}
+        onProductClick={noop}
+        onCreateClick={noop}
+        onSearchClick={noop}
+        onStarredClick={noop}
+        onNotificationClick={noop}
         loginHref="#login"
         helpItems={() => <div>items</div>}
       />,
@@ -365,11 +366,11 @@ describe('GlobalNavigation', () => {
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
-        onProductClick={() => console.log('product clicked')}
-        onCreateClick={() => console.log('create clicked')}
-        onSearchClick={() => console.log('search clicked')}
-        onStarredClick={() => console.log('your work clicked')}
-        onNotificationClick={() => console.log('notification clicked')}
+        onProductClick={noop}
+        onCreateClick={noop}
+        onSearchClick={noop}
+        onStarredClick={noop}
+        onNotificationClick={noop}
         loginHref="#login"
         helpItems={() => <div>items</div>}
       />,
@@ -669,11 +670,11 @@ describe('GlobalNavigation', () => {
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
-        onProductClick={() => console.log('product clicked')}
-        onCreateClick={() => console.log('create clicked')}
-        onSearchClick={() => console.log('search clicked')}
-        onStarredClick={() => console.log('your work clicked')}
-        onNotificationClick={() => console.log('notification clicked')}
+        onProductClick={noop}
+        onCreateClick={noop}
+        onSearchClick={noop}
+        onStarredClick={noop}
+        onNotificationClick={noop}
         appSwitcherComponent={AppSwitcher}
         appSwitcherTooltip="appSwitcher tooltip"
         loginHref="#login"
