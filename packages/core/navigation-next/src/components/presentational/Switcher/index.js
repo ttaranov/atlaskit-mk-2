@@ -89,7 +89,7 @@ const isEmpty = obj => Object.keys(obj).length === 0;
 
 type ComponentsType = { [key: string]: ComponentType<any> };
 
-type SwitcherProps = {
+type SwitcherBaseProps = {
   /* Close the menu when the user clicks create */
   closeMenuOnCreate?: boolean,
   /* Replaceable components */
@@ -106,17 +106,17 @@ type SwitcherProps = {
   styles?: Object,
 };
 
-type SwitcherBaseProps = SwitcherProps & {
+type SwitcherProps = SwitcherBaseProps & {
   // internal `navWidth` property isn't part of the public API
   navWidth: number,
 };
 
-export type SwitcherState = {
+type SwitcherState = {
   isOpen: boolean,
   mergedComponents: ComponentsType,
 };
 
-class Switcher extends PureComponent<SwitcherBaseProps, SwitcherState> {
+class Switcher extends PureComponent<SwitcherProps, SwitcherState> {
   state = {
     isOpen: false,
     mergedComponents: defaultComponents,
@@ -170,7 +170,7 @@ class Switcher extends PureComponent<SwitcherBaseProps, SwitcherState> {
   componentDidMount() {
     this.setTargetWidth();
   }
-  componentDidUpdate({ navWidth }: SwitcherBaseProps) {
+  componentDidUpdate({ navWidth }: SwitcherProps) {
     // reset the target width if the user has resized the navigation pane
     if (navWidth !== this.props.navWidth) {
       this.setTargetWidth();
@@ -240,7 +240,7 @@ class Switcher extends PureComponent<SwitcherBaseProps, SwitcherState> {
 }
 
 export { Switcher as BaseSwitcher };
-export default (props: SwitcherProps) => (
+export default (props: SwitcherBaseProps) => (
   <UIControllerSubscriber>
     {({ state }) => <Switcher navWidth={state.productNavWidth} {...props} />}
   </UIControllerSubscriber>
