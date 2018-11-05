@@ -9,19 +9,17 @@ import { metadata } from '../src';
 import IconExplorerCell from './utils/IconExplorerCell';
 
 const allIcons = Promise.all(
-  Object.keys(metadata).map(async name => {
-    // $FlowFixMe - we are fine with this being dynamic
+  Object.keys(metadata).map(async (name: $Keys<typeof metadata>) => {
+    // $ExpectError
     const icon = await import(`../glyph/${name}.js`);
     return { name, icon: icon.default };
   }),
 ).then(newData =>
-  newData.reduce(
-    (acc, icon) => {
-      acc[icon.name].component = icon.icon;
-      return acc;
-    },
-    { ...metadata },
-  ),
+  newData
+    .map(icon => ({
+      [icon.name]: { ...metadata[icon.name], component: icon.icon },
+    }))
+    .reduce((acc, b) => ({ ...acc, ...b })),
 );
 
 const IconGridWrapper = styled.div`
@@ -72,7 +70,6 @@ class IconAllExample extends Component<{}, State> {
   };
 
   componentDidMount() {
-    // $FlowFixMe
     allIcons.then(iconsMap => this.setState({ allIcons: iconsMap }));
   }
 

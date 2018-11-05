@@ -18,49 +18,47 @@ import logoIcons from '../utils/logoIcons';
 // them correctly
 
 const iconIconInfo = Promise.all(
-  Object.keys(metadata).map(async name => {
-    // $FlowFixMe - we are fine with this being dynamic
+  Object.keys(metadata).map(async (name: $Keys<typeof metadata>) => {
+    // $ExpectError - we are fine with this being dynamic
     const icon = await import(`../glyph/${name}.js`);
     return { name, icon: icon.default };
   }),
 ).then(newData =>
-  newData.reduce(
-    (acc, icon) => {
-      acc[icon.name].component = icon.icon;
-      return acc;
-    },
-    { ...metadata },
-  ),
+  newData
+    .map(icon => ({
+      [icon.name]: { ...metadata[icon.name], component: icon.icon },
+    }))
+    .reduce((acc, b) => ({ ...acc, ...b })),
 );
 const objectIconInfo = Promise.all(
-  Object.keys(objectIconMetadata).map(async name => {
-    // $FlowFixMe - we are fine with this being dynamic
-    const icon = await import(`@atlaskit/icon-object/glyph/${name}.js`);
-    return { name, icon: icon.default };
-  }),
-).then(newData =>
-  newData.reduce(
-    (acc, icon) => {
-      acc[icon.name].component = icon.icon;
-      return acc;
+  Object.keys(objectIconMetadata).map(
+    async (name: $Keys<typeof objectIconMetadata>) => {
+      // $ExpectError - we are fine with this being dynamic
+      const icon = await import(`@atlaskit/icon-object/glyph/${name}.js`);
+      return { name, icon: icon.default };
     },
-    { ...objectIconMetadata },
   ),
+).then(newData =>
+  newData
+    .map(icon => ({
+      [icon.name]: { ...objectIconMetadata[icon.name], component: icon.icon },
+    }))
+    .reduce((acc, b) => ({ ...acc, ...b })),
 );
 const fileTypeIconInfo = Promise.all(
-  Object.keys(fileTypeIconMetadata).map(async name => {
-    // $FlowFixMe - we are fine with this being dynamic
-    const icon = await import(`@atlaskit/icon-file-type/glyph/${name}.js`);
-    return { name, icon: icon.default };
-  }),
-).then(newData =>
-  newData.reduce(
-    (acc, icon) => {
-      acc[icon.name].component = icon.icon;
-      return acc;
+  Object.keys(fileTypeIconMetadata).map(
+    async (name: $Keys<typeof fileTypeIconMetadata>) => {
+      // $ExpectError - we are fine with this being dynamic
+      const icon = await import(`@atlaskit/icon-file-type/glyph/${name}.js`);
+      return { name, icon: icon.default };
     },
-    { ...fileTypeIconMetadata },
   ),
+).then(newData =>
+  newData
+    .map(icon => ({
+      [icon.name]: { ...fileTypeIconMetadata[icon.name], component: icon.icon },
+    }))
+    .reduce((acc, b) => ({ ...acc, ...b })),
 );
 
 const getAllIcons = async () => {
@@ -158,7 +156,6 @@ class IconAllExample extends Component<{}, State> {
   };
 
   componentDidMount() {
-    // $FlowFixMe
     allIconsPromise.then(allIcons => this.setState({ allIcons }));
   }
 

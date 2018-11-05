@@ -10,7 +10,7 @@
  * Add synonyms in icon/icons/synonyms.js.
  */
 
-export default {
+const metadata = {
   'blog/16': {
     keywords: ['blog/16', 'blog16', 'object', 'icon-object'],
     componentName: 'Blog16Icon',
@@ -202,3 +202,5 @@ export default {
     package: '@atlaskit/icon-object/glyph/task/24',
   },
 };
+
+export default metadata;
