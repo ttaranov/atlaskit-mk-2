@@ -1,0 +1,1 @@
+- Add new git command: getChangedChangesetFilesSinceMaster

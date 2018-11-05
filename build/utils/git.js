@@ -31,6 +31,27 @@ async function getChangedFilesSince(ref, fullPath = false) {
   return files.map(file => path.resolve(file));
 }
 
+async function getChangedChangesetFilesSinceMaster(fullPath = false) {
+  let ref = await getMasterRef();
+  // First we need to find the commit where we diverged from `ref` at using `git merge-base`
+  let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
+  const divergedAt = cmd.stdout.trim();
+  // Now we can find which files we added
+  cmd = await spawn('git', [
+    'diff',
+    '--name-only',
+    '--diff-filter=d',
+    'master',
+  ]);
+
+  const files = cmd.stdout
+    .trim()
+    .split('\n')
+    .filter(file => file.includes('changes.json'));
+  if (!fullPath) return files;
+  return files.map(file => path.resolve(file));
+}
+
 async function getBranchName() {
   const gitCmd = await spawn('git', ['rev-parse', '--abrev-ref', 'HEAD']);
   return gitCmd.stdout.trim().split('\n');
@@ -254,6 +275,7 @@ module.exports = {
   rebase,
   rebaseAndPush,
   getUnpublishedChangesetCommits,
+  getChangedChangesetFilesSinceMaster,
   getAllReleaseCommits,
   getAllChangesetCommits,
   getLastPublishCommit,
