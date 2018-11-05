@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 45.0.4
+- [patch] [36c362f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36c362f):
+
+  - FS-3174 - Fix usage of gridSize() and borderRadius()
+
 ## 45.0.3
 - [patch] [527b954](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/527b954):
 
