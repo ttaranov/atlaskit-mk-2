@@ -23,7 +23,7 @@ export const emojiPicker = style({
   justifyContent: 'space-between',
   background: 'white',
   border: `${emojiPickerBorderColor} 1px solid`,
-  borderRadius: borderRadius(),
+  borderRadius: `${borderRadius()}px`,
   boxShadow: emojiPickerBoxShadow,
   height: `${emojiPickerHeight}px`,
   width: `${emojiPickerWidth}px`,
@@ -253,7 +253,7 @@ export const emojiItem = style({
 
 export const addEmoji = style({
   border: '2px dashed #ccc',
-  borderRadius: borderRadius(),
+  borderRadius: `${borderRadius()}px`,
   backgroundColor: 'transparent',
   width: '32px',
   height: '32px',
