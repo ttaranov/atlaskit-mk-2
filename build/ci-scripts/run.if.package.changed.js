@@ -42,9 +42,10 @@ async function getNewFSChangesets(cwd) {
 
   // Take packages that are going to be released,
   // because using only files is not enough in cases where packages is only dependent of other package
-  let unpublishedChangesets = await getNewFSChangesets(
-    path.join(cwd, '.changeset'),
-  );
+  let newChangesets = await getNewFSChangesets(path.join(cwd, '.changeset'));
+  let oldChangesets = await git.getUnpublishedChangesetCommits();
+  let unpublishedChangesets = oldChangesets.concat(newChangesets);
+
   let packagesToRelease = unpublishedChangesets
     .reduce(
       (acc, changeset) =>
