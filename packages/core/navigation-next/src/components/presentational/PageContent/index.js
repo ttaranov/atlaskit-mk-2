@@ -20,16 +20,6 @@ type PageProps = CollapseListeners & {
   productNavWidth: number,
 };
 
-// FIXME: Move to separate file
-// eslint-disable-next-line react/no-multi-comp
-class PageInner extends PureComponent<{ children: Node }> {
-  render() {
-    return this.props.children;
-  }
-}
-
-// FIXME: Move to separate file
-// eslint-disable-next-line react/no-multi-comp
 export default class PageContent extends PureComponent<PageProps> {
   render() {
     const {
@@ -65,7 +55,7 @@ export default class PageContent extends PureComponent<PageProps> {
             offset={GLOBAL_NAV_WIDTH}
             style={transitionStyle}
           >
-            <PageInner>{this.props.children}</PageInner>
+            {this.props.children}
           </PageWrapper>
         )}
       </ResizeTransition>
