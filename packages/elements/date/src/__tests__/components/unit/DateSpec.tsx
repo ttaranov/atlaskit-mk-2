@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Date, DateLozenge, DateProps } from '../../';
+import { Date, DateLozenge, DateProps } from '../../..';
 
 describe('Date', () => {
   const shallowDate = (props: Partial<DateProps> = {}) =>

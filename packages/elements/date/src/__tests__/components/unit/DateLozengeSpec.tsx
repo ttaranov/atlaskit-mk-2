@@ -1,4 +1,4 @@
-import { resolveColors } from '../../components/DateLozenge';
+import { resolveColors } from '../../../components/DateLozenge';
 import { colors } from '@atlaskit/theme';
 
 describe('resolveColors', () => {
