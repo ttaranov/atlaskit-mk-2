@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 87.9.3
+- [patch] [e6c4231](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6c4231):
+
+  - ED-5639: fix deleting columns in Safari
+
 ## 87.9.2
 - Updated dependencies [04c7192](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04c7192):
   - @atlaskit/editor-common@20.3.7
