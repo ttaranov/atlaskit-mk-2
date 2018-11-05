@@ -1,5 +1,10 @@
 # @atlaskit/editor-mobile-bridge
 
+## 5.2.3
+- [patch] [f6c3f01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6c3f01):
+
+  - ED-5586: Removes padding from editor and renderer for mobile.
+
 ## 5.2.2
 - [patch] [3756327](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3756327):
 

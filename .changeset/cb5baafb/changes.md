@@ -1,1 +1,0 @@
-- ED-5586: Removes padding from editor and renderer for mobile.

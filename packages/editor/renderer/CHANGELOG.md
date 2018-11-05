@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 29.5.2
+- [patch] [f6c3f01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6c3f01):
+
+  - ED-5586: Removes padding from editor and renderer for mobile.
+
 ## 29.5.1
 - Updated dependencies [04c7192](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04c7192):
   - @atlaskit/editor-common@20.3.7
