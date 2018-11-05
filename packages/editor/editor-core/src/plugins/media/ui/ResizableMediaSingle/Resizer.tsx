@@ -110,8 +110,8 @@ export default class Resizer extends React.Component<
     } else if (this.props.isInlineLike) {
       highlight.push(this.props.getColumnLeft() + columnWidth);
     } else {
-      highlight.push(Math.round(this.props.gridSize / 2 - columnWidth / 2));
-      highlight.push(Math.round(this.props.gridSize / 2 + columnWidth / 2));
+      highlight.push(Math.floor(this.props.gridSize / 2 - columnWidth / 2));
+      highlight.push(Math.ceil(this.props.gridSize / 2 + columnWidth / 2));
     }
 
     return highlight;

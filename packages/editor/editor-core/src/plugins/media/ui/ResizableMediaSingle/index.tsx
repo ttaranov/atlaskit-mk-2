@@ -146,7 +146,7 @@ export default class ResizableMediaSingle extends React.Component<
     const isTopLevel = $pos.parent.type.name === 'doc';
     if (isTopLevel && appearance === 'full-page') {
       snapPoints.push(akEditorWideLayoutWidth);
-      const fullWidthPoint = containerWidth - 128;
+      const fullWidthPoint = containerWidth - akEditorBreakoutPadding / 2;
       if (fullWidthPoint > akEditorWideLayoutWidth) {
         snapPoints.push(fullWidthPoint);
       }
