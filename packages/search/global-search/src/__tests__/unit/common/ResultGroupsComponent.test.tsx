@@ -11,6 +11,7 @@ import {
 } from '../_test-util';
 import { mountWithIntl } from '../helpers/_intl-enzyme-test-helper';
 import ResultGroup from '../../../components/ResultGroup';
+import { messages } from '../../../messages';
 
 function render(partialProps: Partial<Props>) {
   const props: Props = {
@@ -41,17 +42,17 @@ it('should render passed objects', () => {
     {
       items: [makeConfluenceObjectResult(), makeConfluenceObjectResult()],
       key: 'recentlyViewedPages',
-      titleI18nId: 'recentlyViewedPages.key',
+      title: messages.confluence_recent_pages_heading,
     },
     {
       items: [makeConfluenceContainerResult()],
       key: 'recentlyViewedSpaces',
-      titleI18nId: 'recentlyViewedSpaces.key',
+      title: messages.confluence_spaces_heading,
     },
     {
       items: [makePersonResult(), makePersonResult(), makePersonResult()],
       key: 'recentlyInteractedPeople',
-      titleI18nId: 'recentlyInteractedPeople.key',
+      title: messages.people_recent_people_heading,
     },
   ];
 
@@ -76,22 +77,22 @@ it('should filter out empty groups', () => {
     {
       items: [makeConfluenceObjectResult(), makeConfluenceObjectResult()],
       key: 'recentlyViewedPages',
-      titleI18nId: 'recentlyViewedPages.key',
+      title: messages.confluence_recent_pages_heading,
     },
     {
       items: [],
       key: 'empty',
-      titleI18nId: 'empty',
+      title: messages.confluence_search_placeholder,
     },
     {
       items: [],
       key: 'empty2',
-      titleI18nId: 'empty2',
+      title: messages.confluence_search_placeholder,
     },
     {
       items: [makePersonResult(), makePersonResult(), makePersonResult()],
       key: 'recentlyInteractedPeople',
-      titleI18nId: 'recentlyInteractedPeople.key',
+      title: messages.people_recent_people_heading,
     },
   ];
 
@@ -124,7 +125,7 @@ it('should fire pre query screen event', () => {
       {
         items: [makeConfluenceContainerResult()],
         key: 'recentlyViewedSpaces',
-        titleI18nId: 'recentlyViewedSpaces.key',
+        title: messages.confluence_recent_spaces_heading,
       },
     ],
     screenCounter: preQueryScreenCounter,

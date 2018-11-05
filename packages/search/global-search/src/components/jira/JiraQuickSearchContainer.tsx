@@ -19,6 +19,7 @@ import {
   Logger,
 } from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
+import { messages } from '../../messages';
 import { sliceResults } from './JiraSearchResultsMapper';
 import SearchResultsComponent from '../common/SearchResults';
 import NoResultsState from './NoResultsState';
@@ -124,7 +125,7 @@ export class JiraQuickSearchContainer extends React.Component<
         referralContextIdentifiers={this.props.referralContextIdentifiers}
         renderNoRecentActivity={() => (
           <>
-            <FormattedHTMLMessage id="global-search.jira.no-recent-activity-body" />
+            <FormattedHTMLMessage {...messages.jira_no_recent_activity_body} />
             <NoResultsAdvancedSearchContainer>
               <JiraAdvancedSearch
                 query={query}
@@ -304,9 +305,9 @@ export class JiraQuickSearchContainer extends React.Component<
 
     return (
       <QuickSearchContainer
-        placeholder={this.props.intl.formatMessage({
-          id: 'global-search.jira.search-placeholder',
-        })}
+        placeholder={this.props.intl.formatMessage(
+          messages.jira_search_placeholder,
+        )}
         linkComponent={linkComponent}
         getDisplayedResults={sliceResults}
         getSearchResultsComponent={this.getSearchResultsComponent}
