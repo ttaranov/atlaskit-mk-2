@@ -149,6 +149,7 @@ class MediaNode extends Component<
         selected={selected}
         disableOverlay={true}
         onClick={onClick}
+        useInlinePlayer={true}
       />
     );
   }

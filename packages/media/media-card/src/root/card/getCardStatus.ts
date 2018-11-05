@@ -16,7 +16,7 @@ export const getCardStatus = (
 
   if (metadata) {
     const { size, mediaType, name } = metadata as FileDetails;
-    if (mediaType === 'image') {
+    if (mediaType === 'image' || mediaType === 'video') {
       if (status === 'complete' && !dataURI) {
         return 'processing';
       }
