@@ -1,5 +1,10 @@
 # @atlaskit/build-releases
 
+## 3.0.1
+- [patch] [494c1fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/494c1fe):
+
+  - Update git commit message to match previous tooling.
+
 ## 3.0.0
 - [major] [44ec8bf"
 d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44ec8bf"

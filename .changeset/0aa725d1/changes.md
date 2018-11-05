@@ -1,1 +1,0 @@
-- Update git commit message to match previous tooling.
