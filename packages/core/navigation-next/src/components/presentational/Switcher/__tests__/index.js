@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { PopupSelect } from '@atlaskit/select';
-import { BaseSwitcher } from '..';
+import { BaseSwitcher } from '../index';
 
 const Target = () => 'A target';
 

@@ -403,6 +403,9 @@ ${<H>Changing Switcher styles</H>}
 
 The switcher component takes a styles prop which can be used to override the default styles.
 
+In case you override the default styles, make sure to cover all the pseudo-class selectors
+such as hover, active, focus, on the **styles** object.
+
 ${(
       <Example
         packageName="@atlaskit/navigation-next"
