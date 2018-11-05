@@ -10,7 +10,10 @@ export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 type Props = {|
   locale?: string,
   product?: string,
-  window?: {},
+  window?: {
+    addEventListener: () => void,
+    removeEventListener: () => void,
+  },
 |};
 
 type State = {|
