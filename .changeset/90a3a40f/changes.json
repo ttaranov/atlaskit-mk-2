@@ -1,0 +1,260 @@
+{
+  "releases": [
+    { "name": "@atlaskit/media-card", "type": "minor" },
+    { "name": "@atlaskit/media-core", "type": "minor" },
+    { "name": "@atlaskit/media-store", "type": "minor" }
+  ],
+  "dependents": [
+    {
+      "name": "@atlaskit/editor-common",
+      "type": "major",
+      "dependencies": [
+        "@atlaskit/emoji",
+        "@atlaskit/media-card",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-core",
+      "type": "major",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/renderer",
+        "@atlaskit/emoji",
+        "@atlaskit/media-card",
+        "@atlaskit/media-filmstrip",
+        "@atlaskit/media-picker",
+        "@atlaskit/adf-utils",
+        "@atlaskit/editor-bitbucket-transformer",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-markdown-transformer",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/task-decision",
+        "@atlaskit/util-data-test",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core"
+      ]
+    },
+    {
+      "name": "@atlaskit/renderer",
+      "type": "major",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/media-card",
+        "@atlaskit/media-filmstrip",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/task-decision",
+        "@atlaskit/util-data-test",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core"
+      ]
+    },
+    {
+      "name": "@atlaskit/emoji",
+      "type": "major",
+      "dependencies": ["@atlaskit/util-data-test", "@atlaskit/media-core"]
+    },
+    {
+      "name": "@atlaskit/media-card",
+      "type": "major",
+      "dependencies": ["@atlaskit/media-test-helpers", "@atlaskit/media-core"]
+    },
+    {
+      "name": "@atlaskit/media-editor",
+      "type": "major",
+      "dependencies": ["@atlaskit/media-test-helpers", "@atlaskit/media-core"]
+    },
+    {
+      "name": "@atlaskit/media-filmstrip",
+      "type": "major",
+      "dependencies": [
+        "@atlaskit/media-card",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core"
+      ]
+    },
+    {
+      "name": "@atlaskit/media-picker",
+      "type": "major",
+      "dependencies": [
+        "@atlaskit/media-card",
+        "@atlaskit/media-editor",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core",
+        "@atlaskit/media-store"
+      ]
+    },
+    {
+      "name": "@atlaskit/media-viewer",
+      "type": "major",
+      "dependencies": [
+        "@atlaskit/media-card",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core",
+        "@atlaskit/media-store"
+      ]
+    },
+    {
+      "name": "@atlaskit/adf-utils",
+      "type": "patch",
+      "dependencies": ["@atlaskit/editor-common"]
+    },
+    {
+      "name": "@atlaskit/conversation",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/renderer",
+        "@atlaskit/comment",
+        "@atlaskit/reactions",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-bitbucket-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-confluence-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-jira-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-json-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-markdown-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-mobile-bridge",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/renderer",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/task-decision",
+        "@atlaskit/media-core"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-test-helpers",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-core"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-wikimarkup-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-core",
+        "@atlaskit/renderer",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-test-helpers",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/task-decision",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/renderer",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/comment",
+      "type": "patch",
+      "dependencies": ["@atlaskit/editor-core"]
+    },
+    {
+      "name": "@atlaskit/embedded-document",
+      "type": "patch",
+      "dependencies": ["@atlaskit/editor-core", "@atlaskit/renderer"]
+    },
+    {
+      "name": "@atlaskit/reactions",
+      "type": "patch",
+      "dependencies": ["@atlaskit/emoji", "@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/util-data-test",
+      "type": "patch",
+      "dependencies": ["@atlaskit/emoji", "@atlaskit/task-decision"]
+    },
+    {
+      "name": "@atlaskit/media-test-helpers",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/media-card",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core",
+        "@atlaskit/media-store"
+      ]
+    },
+    {
+      "name": "@atlaskit/website",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/media-card",
+        "@atlaskit/media-filmstrip",
+        "@atlaskit/media-test-helpers",
+        "@atlaskit/media-card",
+        "@atlaskit/media-core"
+      ]
+    }
+  ]
+}

@@ -133,10 +133,9 @@ export const ExternalIdentifierWrapper = styled.div`
   }
 `;
 
-export const InlineCardVideoWrapper = styled.div`
-  > div {
-    display: inline-block;
-    width: initial;
-    margin: 10px;
-  }
+export const InlineCardVideoWrapper = styled.div``;
+export const InlineCardVideoWrapperItem = styled.div`
+  padding: 10px;
+  border: 1px solid;
+  margin: 10px;
 `;
