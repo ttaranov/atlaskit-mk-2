@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import ContentNavigation from '../../index';
-import { transitionDurationMs } from '../../../../../../common/constants';
+import { transitionDurationMs } from '../../../../../common/constants';
 
 const defaultProps = {
   isPeekHinting: false,

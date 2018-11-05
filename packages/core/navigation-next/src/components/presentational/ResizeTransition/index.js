@@ -2,7 +2,7 @@
 
 import React, { PureComponent, type Node } from 'react';
 import Transition from 'react-transition-group/Transition';
-import type { CollapseListener } from './types';
+import type { CollapseListener } from '../LayoutManager/types';
 
 const DURATION = 300;
 

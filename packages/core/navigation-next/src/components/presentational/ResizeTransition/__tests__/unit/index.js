@@ -3,7 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import ResizeTransition from '../../ResizeTransition';
+import ResizeTransition from '../../index';
 
 const defaultProps = {
   from: [0],

@@ -3,9 +3,7 @@
 import React, { PureComponent, type Ref, type Node } from 'react';
 import { PageWrapper } from './primitives';
 import type { CollapseListeners } from '../LayoutManager/types';
-import ResizeTransition, {
-  isTransitioning,
-} from '../LayoutManager/ResizeTransition';
+import ResizeTransition, { isTransitioning } from '../ResizeTransition';
 
 import {
   CONTENT_NAV_WIDTH_COLLAPSED,

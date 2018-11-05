@@ -22,7 +22,7 @@ export const PageWrapper = ({
       flex: '1 1 auto',
       marginLeft: offset,
       width: 0, // fix flexbox growth to available width instead of 100%
-      ...applyDisabledProperties(disableInteraction),
+      ...applyDisabledProperties(!!disableInteraction),
     }}
     {...props}
   />

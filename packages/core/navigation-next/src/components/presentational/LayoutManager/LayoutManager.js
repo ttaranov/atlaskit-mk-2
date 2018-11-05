@@ -15,7 +15,7 @@ import PageContent from '../PageContent';
 import ResizeTransition, {
   isTransitioning,
   type TransitionState,
-} from './ResizeTransition';
+} from '../ResizeTransition';
 import ResizeControl from './ResizeControl';
 import {
   ContainerNavigationMask,
