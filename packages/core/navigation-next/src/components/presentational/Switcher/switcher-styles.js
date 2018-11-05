@@ -6,9 +6,9 @@ import { mergeStyles } from '@atlaskit/select';
 const gridSize = gridSizeFn();
 
 const defaultStyles = {
-  option: (css, { isHover, isActive, isFocused }) => {
+  option: (provided, { isActive, isFocused }) => {
     return {
-      ...css,
+      ...provided,
       alignItems: 'center',
       border: 'none',
       backgroundColor: isFocused ? colors.N30 : 'transparent',
@@ -26,11 +26,16 @@ const defaultStyles = {
       textDecoration: 'none',
       width: '100%',
       ...(isActive && { backgroundColor: colors.B50 }),
-      ...(isHover && { textDecoration: 'none' }),
     };
   },
 };
 
-export default function createStyle(styles: Object) {
-  return mergeStyles(defaultStyles, styles);
-}
+type SelectStyles = {
+  [component: string]: (
+    baseStyles: {},
+    { isActive: boolean, isHover: boolean, isFocused: boolean },
+  ) => {},
+};
+
+export const createStyles = (styles: SelectStyles): Object =>
+  mergeStyles(defaultStyles, styles);
