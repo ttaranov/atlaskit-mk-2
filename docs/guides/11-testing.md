@@ -62,6 +62,19 @@ For further details or a test template, please consult this [link](https://hello
 
 For further details or a test template, please consult this [link](https://hello.atlassian.net/wiki/spaces/AtlasKit/pages/136113035/How+to+add+visual+regression+tests+in+Atlaskit).
 
+### Flow tests
+
+- flow tests can be used to explicitly verify that components are being typed correctly from the consumers perspective.
+- they are especially useful for testing that HOC are typed correctly and don't result in types from the original component being lost
+- these tests are unique in that they are just code that is typechecked by flow instead of executed
+- to test valid component usages, simply use your component with valid props and flow will error if there is a problem
+- to test invalid component usages, use your component with missing/invalid props and add an `// $ExpectError - invalid xxx prop` comment above it. Flow will then warn when
+it does *not* detect any flow errors from an invalid usage of your component
+- *flow tests* for packages should be structured under `<pkg>/src/__tests__/flow`
+- on both local and CI, these will be executed as part of flow typechecking, `yarn typecheck:flow`.
+- there is no way to only test a specific directory as flow is executed on an app level.
+- to disable specific tests, you will need to comment out code failing flow typechecking or remove/edit $ExpectError comments so they are not flagged as unused.
+
 ## We use a forked version of Enzyme
 
 Why? Please [see the explanation on Github](https://github.com/petegleeson/enzyme#this-is-a-forked-version-of-enzyme-%EF%B8%8F).
