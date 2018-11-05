@@ -49,7 +49,7 @@ export const setStatusPickerAt = (showStatusPickerAt: number | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  dispatch(state.tr.setMeta(pluginKey, { showStatusPickerAt }));
+  dispatch(state.tr.setMeta(pluginKey, { showStatusPickerAt, autoFocus: false }));
   return true;
 };
 
@@ -68,7 +68,7 @@ export const commitStatusPicker = () => (editorView: EditorView) => {
   }
 
   let tr = state.tr;
-  tr = tr.setMeta(pluginKey, { showStatusPickerAt: null });
+  tr = tr.setMeta(pluginKey, { showStatusPickerAt: null, autoFocus: false });
 
   if (statusNode.attrs.text) {
     // still has content - keep content

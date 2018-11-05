@@ -41,6 +41,7 @@ const statusPlugin: EditorPlugin = {
 
           return (
             <StatusPicker
+              autoFocus={statusState.autoFocus}
               element={element}
               onSelect={status => {
                 insertStatus(status)(editorView);
@@ -77,7 +78,7 @@ const statusPlugin: EditorPlugin = {
           const tr = insert(statusNode);
           const showStatusPickerAt = tr.selection.from - 2;
           tr.setSelection(NodeSelection.create(tr.doc, showStatusPickerAt));
-          return tr.setMeta(pluginKey, { showStatusPickerAt });
+          return tr.setMeta(pluginKey, { showStatusPickerAt, autoFocus: true });
         },
       },
     ],

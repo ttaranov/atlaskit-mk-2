@@ -2,8 +2,8 @@ import * as React from 'react';
 import { PureComponent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
-import ColorPalette from './internal/color-palette';
 import { FieldTextStateless } from '@atlaskit/field-text';
+import ColorPalette from './internal/color-palette';
 import { Color as ColorType } from './Status';
 
 const FieldTextWrapper = styled.div`
@@ -16,28 +16,36 @@ export interface Props {
   onEnter: () => void;
   onColorClick: (value: ColorType) => void;
   onTextChanged: (value: string) => void;
+  autoFocus?: boolean;
 }
 
 export class StatusPicker extends PureComponent<Props, any> {
+  private fieldTextWrapperKey = Math.random().toString();
+  private colorPaletteKey = Math.random().toString();
+
+  static defaultProps = {
+    autoFocus: true,
+  };
+
   render() {
-    const { text, selectedColor, onColorClick } = this.props;
+    const { autoFocus, text, selectedColor, onColorClick } = this.props;
 
     // Using <React.Fragment> instead of [] to workaround Enzyme
     // (https://github.com/airbnb/enzyme/issues/1149)
     return (
       <React.Fragment>
-        <FieldTextWrapper key={Math.random().toString()}>
+        <FieldTextWrapper key={this.fieldTextWrapperKey}>
           <FieldTextStateless
             value={text}
             isLabelHidden={true}
             shouldFitContainer={true}
             onChange={this.onChange}
-            autoFocus={true}
+            autoFocus={autoFocus}
             onKeyPress={this.onKeyPress}
           />
         </FieldTextWrapper>
         <ColorPalette
-          key={Math.random().toString()}
+          key={this.colorPaletteKey}
           onClick={onColorClick}
           selectedColor={selectedColor}
         />
