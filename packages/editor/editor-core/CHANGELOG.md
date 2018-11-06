@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 88.0.4
+- [patch] [2e1b194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1b194):
+
+  - Revert collab changes
+
 ## 88.0.3
 - [patch] [222082a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/222082a):
 
