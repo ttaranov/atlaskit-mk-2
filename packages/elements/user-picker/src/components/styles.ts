@@ -41,7 +41,7 @@ export const getStyles = memoizeOne(width => ({
     ...css
   }) => ({
     ...css,
-    opacity: 0,
+    opacity: 1,
     transition: css.transition + ', opacity 150ms',
     paddingTop: 0,
     padding: 0,
@@ -70,10 +70,11 @@ export const getStyles = memoizeOne(width => ({
   }),
   placeholder: css => ({
     ...css,
-    marginLeft: 4,
+    marginLeft: 48,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: 2,
   }),
   option: css => ({
     ...css,

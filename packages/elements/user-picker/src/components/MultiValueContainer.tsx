@@ -1,7 +1,6 @@
 import { components } from '@atlaskit/select';
 import * as React from 'react';
 import styled from 'styled-components';
-
 export const ScrollAnchor = styled.div`
   align-self: flex-end;
 `;
@@ -11,7 +10,7 @@ export type State = {
   previousValueSize: number;
 };
 
-export class ValueContainer extends React.PureComponent<any, State> {
+export class MultiValueContainer extends React.PureComponent<any, State> {
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
       valueSize: nextProps.getValue ? nextProps.getValue().length : 0,

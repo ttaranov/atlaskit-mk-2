@@ -266,10 +266,10 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       this.cacheComponents(nextProps.components);
     }
     cacheComponents = (components?: {}) => {
-      this.components = makeAnimated({
+      this.components = {
         ...defaultComponents,
         ...components,
-      });
+      };
     };
     focus() {
       this.select.focus();

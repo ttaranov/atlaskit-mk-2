@@ -2,8 +2,8 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 import {
   ScrollAnchor,
-  ValueContainer,
-} from '../../../components/ValueContainer';
+  MultiValueContainer,
+} from '../../../components/MultiValueContainer';
 
 describe('ValueContainer', () => {
   beforeEach(() => {
@@ -13,7 +13,8 @@ describe('ValueContainer', () => {
     jest.useRealTimers();
   });
 
-  const shallowValueContainer = props => shallow(<ValueContainer {...props} />);
+  const shallowValueContainer = props =>
+    shallow(<MultiValueContainer {...props} />);
 
   it('should render ValueContainer with children', () => {
     const component = shallowValueContainer({ children: 'some text' });

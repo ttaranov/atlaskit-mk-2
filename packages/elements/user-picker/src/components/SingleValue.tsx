@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const AvatarItemComponent = styled.div`
   border: none;
   padding: 0;
-  margin-left: 4px;
   width: auto;
   overflow: hidden;
 
@@ -15,7 +14,6 @@ const AvatarItemComponent = styled.div`
 
   &:hover {
     width: auto;
-    margin-left: 4px;
     padding: 0;
     border: none;
   }

@@ -1,11 +1,10 @@
-import { components } from '@atlaskit/select';
 import memoizeOne from 'memoize-one';
 import { ClearIndicator } from './ClearIndicator';
 import { MultiValue } from './MultiValue';
 import { Option } from './Option';
-import { Placeholder } from './Placeholder';
 import { SingleValue } from './SingleValue';
-import { ValueContainer } from './ValueContainer';
+import { MultiValueContainer } from './MultiValueContainer';
+import { SingleValueContainer } from './SingleValueContainer';
 
 /**
  * Memoize getComponents to avoid rerenders.
@@ -15,7 +14,7 @@ export const getComponents = memoizeOne(
     if (anchor) {
       return {
         Control: anchor,
-        Option: Option,
+        Option,
       };
     } else {
       return {
@@ -23,9 +22,8 @@ export const getComponents = memoizeOne(
         DropdownIndicator: null,
         SingleValue,
         ClearIndicator: multi ? null : ClearIndicator,
-        Placeholder,
-        Option: Option,
-        ValueContainer: multi ? ValueContainer : components.ValueContainer,
+        Option,
+        ValueContainer: multi ? MultiValueContainer : SingleValueContainer,
       };
     }
   },
