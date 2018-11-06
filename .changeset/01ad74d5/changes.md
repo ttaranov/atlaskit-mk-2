@@ -1,1 +1,0 @@
-- Updated type definitions for prosemirror packages

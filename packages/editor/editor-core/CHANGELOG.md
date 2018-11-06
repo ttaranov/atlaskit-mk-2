@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 88.0.5
+- [patch] [beefae2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/beefae2):
+
+  - Updated type definitions for prosemirror packages
+
 ## 88.0.4
 - [patch] [2e1b194](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1b194):
 
