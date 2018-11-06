@@ -31,7 +31,7 @@ describe('NotificationDrawerContents', () => {
     expect(wrapper.find('Spinner').exists()).toBeFalsy();
   });
 
-  it('should add event listener when mounting', () => {
+  it('should add an event listener to listen to "postMessage" messages when mounting', () => {
     const spy = jest.spyOn(window, 'addEventListener');
     const wrapper = mount(<NotificationDrawer locale="en" product="jira" />);
 
@@ -40,8 +40,8 @@ describe('NotificationDrawerContents', () => {
     expect(spy).toHaveBeenCalledWith('message', handleMessage);
   });
 
-  it('should remove event listener when unmounting', () => {
-    const spy = jest.spyOn(window, 'addEventListener');
+  it('should remove the event listener listening to "postMessage" messages when unmounting', () => {
+    const spy = jest.spyOn(window, 'removeEventListener');
     const wrapper = mount(<NotificationDrawer locale="en" product="jira" />);
     const { handleMessage } = wrapper.instance();
 
