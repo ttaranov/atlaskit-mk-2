@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 88.0.2
+- [patch] [ffcaedd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ffcaedd):
+
+  - FS-2964 Implement status node placeholder support. Handle removing if no content in node
+
 ## 88.0.1
 - [patch] [8059325](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8059325):
 

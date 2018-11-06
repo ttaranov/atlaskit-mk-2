@@ -1,1 +1,0 @@
-- FS-2964 Implement status node placeholder support. Handle removing if no content in node
