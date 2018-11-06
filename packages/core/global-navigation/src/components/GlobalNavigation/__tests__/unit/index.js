@@ -615,7 +615,7 @@ describe('GlobalNavigation', () => {
         />,
       );
 
-      localStorage.setItem('notificationBadgeCountCache', (2).toString());
+      localStorage.setItem('notificationBadgeCountCache', '2');
       wrapper.setState({
         notificationCount: 5,
       });
@@ -638,13 +638,9 @@ describe('GlobalNavigation', () => {
         />,
       );
 
-      const notificationCount = 5;
-      localStorage.setItem(
-        'notificationBadgeCountCache',
-        notificationCount.toString(),
-      );
+      localStorage.setItem('notificationBadgeCountCache', '5');
       wrapper.setState({
-        notificationCount,
+        notificationCount: 5,
       });
 
       const spy = jest.spyOn(wrapper.instance(), 'onCountUpdating');
