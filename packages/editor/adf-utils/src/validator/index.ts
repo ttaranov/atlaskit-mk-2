@@ -590,7 +590,11 @@ export function validator(
               console.log({ entity });
               console.log(validator.props!.marks);
               const { items } = validator.props!.marks!;
-              const marksSet = items.length ? items[0] : [];
+              const marksSet = items.length
+                ? Array.isArray(items[0])
+                  ? items[0]
+                  : items
+                : [];
               console.log({ marksSet });
               const newMarks = entity.marks
                 .filter(
