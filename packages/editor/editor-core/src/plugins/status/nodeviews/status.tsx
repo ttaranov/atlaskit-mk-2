@@ -5,7 +5,7 @@ import { Node as PMNode } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { Status } from '@atlaskit/status';
-import { pluginKey, StatusState } from '../plugin';
+import { pluginKey } from '../plugin';
 import { setStatusPickerAt } from '../actions';
 import { colors } from '@atlaskit/theme';
 

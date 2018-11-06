@@ -33,7 +33,7 @@ describe('Status - NodeView', () => {
   it('should use status component', () => {
     const { editorView: view } = editor(doc(p('Status: {<>}')));
 
-    Actions.insertStatus({
+    Actions.updateStatus({
       text: 'In progress',
       color: 'blue',
       localId: '666',
@@ -55,7 +55,7 @@ describe('Status - NodeView', () => {
   it('should use status as placeholder when no text', () => {
     const { editorView: view } = editor(doc(p('Status: {<>}')));
 
-    Actions.insertStatus({
+    Actions.updateStatus({
       text: '',
       color: 'blue',
       localId: '666',
@@ -80,7 +80,7 @@ describe('Status - NodeView', () => {
     const setStatusPickerAtSpy = jest.spyOn(Actions, 'setStatusPickerAt');
     const { editorView: view } = editor(doc(p('Status: {<>}')));
 
-    Actions.insertStatus({
+    Actions.updateStatus({
       text: 'In progress',
       color: 'blue',
       localId: '666',
@@ -118,7 +118,7 @@ describe('Status - NodeView', () => {
       const pluginState: StatusState = pluginKey.getState(view.state);
       selectionChanges = pluginState.selectionChanges;
 
-      Actions.insertStatus({
+      Actions.updateStatus({
         text: 'In progress',
         color: 'blue',
         localId: '666',

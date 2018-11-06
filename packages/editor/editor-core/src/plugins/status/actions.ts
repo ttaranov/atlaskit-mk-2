@@ -1,5 +1,11 @@
-import { EditorState, Transaction, Selection } from 'prosemirror-state';
+import {
+  EditorState,
+  NodeSelection,
+  Transaction,
+  Selection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { uuid } from '@atlaskit/editor-common';
 import { pluginKey } from './plugin';
 import { Color as ColorType } from '@atlaskit/status';
 
@@ -14,7 +20,23 @@ export const DEFAULT_STATUS: StatusType = {
   color: 'neutral',
 };
 
-export const insertStatus = (status?: StatusType) => (
+export const createStatus = (showStatusPickerAtOffset: number) => (
+  insert: (node?: Node | Object | string) => Transaction,
+  state: EditorState,
+): Transaction => {
+  const statusNode = state.schema.nodes.status.createChecked({
+    ...DEFAULT_STATUS,
+    localId: uuid.generate(),
+  });
+
+  const tr = insert(statusNode);
+  const showStatusPickerAt = tr.selection.from + showStatusPickerAtOffset;
+  return tr
+    .setSelection(NodeSelection.create(tr.doc, showStatusPickerAt))
+    .setMeta(pluginKey, { showStatusPickerAt, autoFocus: true });
+};
+
+export const updateStatus = (status?: StatusType) => (
   editorView: EditorView,
 ): boolean => {
   const { state, dispatch } = editorView;
@@ -22,7 +44,7 @@ export const insertStatus = (status?: StatusType) => (
 
   const statusProps = { ...DEFAULT_STATUS, ...status };
 
-  const tr = state.tr;
+  let tr = state.tr;
   const { showStatusPickerAt } = pluginKey.getState(state);
 
   if (!showStatusPickerAt) {
@@ -36,7 +58,7 @@ export const insertStatus = (status?: StatusType) => (
       tr
         .setNodeMarkup(showStatusPickerAt, schema.nodes.status, statusProps)
         .setSelection(Selection.near(tr.doc.resolve(showStatusPickerAt + 1)))
-        .setMeta(pluginKey, { showStatusPickerAt: showStatusPickerAt })
+        .setMeta(pluginKey, { showStatusPickerAt })
         .scrollIntoView(),
     );
     return true;
@@ -49,7 +71,9 @@ export const setStatusPickerAt = (showStatusPickerAt: number | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  dispatch(state.tr.setMeta(pluginKey, { showStatusPickerAt, autoFocus: false }));
+  dispatch(
+    state.tr.setMeta(pluginKey, { showStatusPickerAt, autoFocus: false }),
+  );
   return true;
 };
 
@@ -64,7 +88,7 @@ export const commitStatusPicker = () => (editorView: EditorView) => {
   const statusNode = state.tr.doc.nodeAt(showStatusPickerAt);
 
   if (!statusNode) {
-    return true;
+    return;
   }
 
   let tr = state.tr;
