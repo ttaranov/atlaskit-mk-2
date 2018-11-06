@@ -37,7 +37,6 @@ import {
   SelectedItem,
   State,
 } from '../../../domain';
-import { menuEdit } from '../editor/phrases';
 import {
   Wrapper,
   SpinnerWrapper,
@@ -48,11 +47,14 @@ import {
 } from './styled';
 import { RECENTS_COLLECTION } from '../../../config';
 
-const createEditCardAction = (handler: CardEventHandler): CardAction => {
+const createEditCardAction = (
+  handler: CardEventHandler,
+  label: string,
+): CardAction => {
   return {
-    label: menuEdit,
+    label,
     handler,
-    icon: <AnnotateIcon label={menuEdit} size="small" />,
+    icon: <AnnotateIcon label={label} size="small" />,
   };
 };
 
@@ -289,6 +291,7 @@ export class StatelessUploadView extends Component<
       onFileClick,
       onEditRemoteImage,
       setUpfrontIdDeferred,
+      intl: { formatMessage },
     } = this.props;
     const { items } = recents;
     const selectedRecentFiles = selectedItems
@@ -341,7 +344,9 @@ export class StatelessUploadView extends Component<
       const actions: CardAction[] = [];
 
       if ((details as FileDetails).mediaType === 'image') {
-        actions.push(createEditCardAction(editHandler));
+        actions.push(
+          createEditCardAction(editHandler, formatMessage(messages.annotate)),
+        );
       }
 
       return {

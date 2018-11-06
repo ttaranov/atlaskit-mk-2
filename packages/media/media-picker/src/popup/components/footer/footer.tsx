@@ -52,7 +52,7 @@ export class Footer extends Component<FooterProps> {
         onClick={onClick}
         isDisabled={!canInsert}
       >
-        {/* TODO [i18n] */}
+        {/* TODO [i18n] [MS-1031] FIX ME! */}
         {itemCount > 1 ? `Insert  ${itemCount} files` : 'Insert a file'}
       </InsertButton>
     );

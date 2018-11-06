@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Tool, Color } from '@atlaskit/media-editor';
-
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { LineWidthButton } from './buttons/lineWidthButton';
 import { ColorButton } from './buttons/colorButton';
 import { ToolButton } from './buttons/toolButton';
@@ -13,7 +13,7 @@ import {
   RightButtons,
   RightButton,
 } from './styles';
-import { buttonSave, buttonCancel } from '../../phrases';
+import { messages } from '@atlaskit/media-ui';
 
 export type PopupState = 'none' | 'color' | 'lineWidth';
 
@@ -42,14 +42,19 @@ export interface ToolbarState {
   readonly popup: PopupState;
 }
 
-export class Toolbar extends Component<ToolbarProps, ToolbarState> {
-  constructor(props: ToolbarProps) {
-    super(props);
-    this.state = { popup: 'none' };
-  }
+export class Toolbar extends Component<
+  ToolbarProps & InjectedIntlProps,
+  ToolbarState
+> {
+  state: ToolbarState = { popup: 'none' };
 
   render() {
-    const { color } = this.props;
+    const {
+      color,
+      onSave,
+      onCancel,
+      intl: { formatMessage },
+    } = this.props;
 
     const onColorButtonClick = () => this.showOrHidePopup('color');
     const onLineWidthButtonClick = () => this.showOrHidePopup('lineWidth');
@@ -73,19 +78,11 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
         </CenterButtons>
 
         <RightButtons>
-          <RightButton
-            appearance="primary"
-            theme="dark"
-            onClick={this.props.onSave}
-          >
-            {buttonSave}
+          <RightButton appearance="primary" theme="dark" onClick={onSave}>
+            {formatMessage(messages.save)}
           </RightButton>
-          <RightButton
-            appearance="subtle"
-            onClick={this.props.onCancel}
-            theme="dark"
-          >
-            {buttonCancel}
+          <RightButton appearance="subtle" onClick={onCancel} theme="dark">
+            {formatMessage(messages.cancel)}
           </RightButton>
         </RightButtons>
 
@@ -146,3 +143,5 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
     return null;
   }
 }
+
+export default injectIntl(Toolbar);

@@ -234,4 +234,34 @@ export const messages = defineMessages({
     defaultMessage: 'Actions',
     description: 'TODO',
   },
+  error_hint_retry: {
+    id: 'fabric.media.error_hint_retry',
+    defaultMessage: "Try again and we'll give it another shot.",
+    description: 'TODO',
+  },
+  error_hint_critical: {
+    id: 'fabric.media.error_hint_critical',
+    defaultMessage: 'If the problem keeps happening contact support.',
+    description: 'TODO',
+  },
+  close: {
+    id: 'fabric.media.close',
+    defaultMessage: 'Close',
+    description: 'TODO',
+  },
+  could_not_load_editor: {
+    id: 'fabric.media.could_not_load_editor',
+    defaultMessage: 'Ouch! We could not load the editor',
+    description: 'TODO',
+  },
+  could_not_save_image: {
+    id: 'fabric.media.could_not_save_image',
+    defaultMessage: 'Ouch! We could not save the image',
+    description: 'TODO',
+  },
+  annotate: {
+    id: 'fabric.media.annotate',
+    defaultMessage: 'Annotate',
+    description: 'TODO',
+  },
 });

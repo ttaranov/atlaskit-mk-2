@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { BinaryUploader } from '../../../../components/binary';
 import { State, EditorData, EditorError, FileReference } from '../../../domain';
-import { ErrorView } from './errorView/errorView';
+import ErrorView from './errorView/errorView';
 import { SpinnerView } from './spinnerView/spinnerView';
 import { MainContainer } from './styles';
 import { Selection, editorClose } from '../../../actions/editorClose';
