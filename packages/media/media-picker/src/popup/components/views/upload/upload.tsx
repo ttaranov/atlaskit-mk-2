@@ -19,7 +19,7 @@ import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { messages, InfiniteScroll } from '@atlaskit/media-ui';
 import { Browser } from '../../../../components/browser';
 import { isWebGLAvailable } from '../../../tools/webgl';
@@ -90,7 +90,8 @@ export interface UploadViewDispatchProps {
 
 export type UploadViewProps = UploadViewOwnProps &
   UploadViewStateProps &
-  UploadViewDispatchProps;
+  UploadViewDispatchProps &
+  InjectedIntlProps;
 
 export interface UploadViewState {
   readonly hasPopupBeenVisible: boolean;
@@ -196,19 +197,30 @@ export class StatelessUploadView extends Component<
       }
     };
   }
-  // TODO [i18n]
-  private renderWebGLWarningFlag = (): JSX.Element => (
-    <FlagGroup onDismissed={this.onFlagDismissed}>
-      <Flag
-        shouldDismiss={this.state.shouldDismissWebGLWarningFlag}
-        description="Your browser does not support WebGL. Use a WebGL enabled browser to annotate images."
-        icon={<EditorInfoIcon label="info" />}
-        id="webgl-warning-flag"
-        title="You're unable to annotate this image"
-        actions={[{ content: 'Learn More', onClick: this.onLearnMoreClicked }]}
-      />
-    </FlagGroup>
-  );
+
+  private renderWebGLWarningFlag = (): JSX.Element => {
+    const {
+      intl: { formatMessage },
+    } = this.props;
+
+    return (
+      <FlagGroup onDismissed={this.onFlagDismissed}>
+        <Flag
+          shouldDismiss={this.state.shouldDismissWebGLWarningFlag}
+          description={formatMessage(messages.webgl_warning_description)}
+          icon={<EditorInfoIcon label="info" />}
+          id="webgl-warning-flag"
+          title={formatMessage(messages.unable_to_annotate_image)}
+          actions={[
+            {
+              content: formatMessage(messages.learn_more),
+              onClick: this.onLearnMoreClicked,
+            },
+          ]}
+        />
+      </FlagGroup>
+    );
+  };
 
   private renderCards() {
     const recentFilesCards = this.recentFilesCards();
@@ -408,4 +420,4 @@ export default connect<
   UploadViewStateProps,
   UploadViewDispatchProps,
   UploadViewOwnProps
->(mapStateToProps, mapDispatchToProps)(StatelessUploadView);
+>(mapStateToProps, mapDispatchToProps)(injectIntl(StatelessUploadView));

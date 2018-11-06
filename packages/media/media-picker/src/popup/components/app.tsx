@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
-import { IntlShape } from 'react-intl';
+import { IntlShape, intlShape } from 'react-intl';
 import { Context, ContextFactory } from '@atlaskit/media-core';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
 import {
@@ -214,6 +214,11 @@ export class App extends Component<AppProps, AppState> {
   componentWillUnmount(): void {
     this.mpDropzone.deactivate();
   }
+
+  // TODO: Do we need this?
+  static contextTypes = {
+    intl: intlShape,
+  };
 
   render() {
     const {

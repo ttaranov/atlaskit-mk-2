@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import * as debounce from 'lodash.debounce';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { messages } from '@atlaskit/media-ui';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
@@ -53,7 +53,9 @@ export interface GiphyViewDispatchProps {
   ) => void;
 }
 
-export type GiphyViewProps = GiphyViewStateProps & GiphyViewDispatchProps;
+export type GiphyViewProps = GiphyViewStateProps &
+  GiphyViewDispatchProps &
+  InjectedIntlProps;
 
 export interface GiphyViewState {
   query: string;
@@ -83,6 +85,9 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
   }
 
   render(): JSX.Element {
+    const {
+      intl: { formatMessage },
+    } = this.props;
     const { query } = this.state;
 
     return (
@@ -90,7 +95,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
         <Title>GIPHY</Title>
         <FieldText
           label=""
-          placeholder="Search all the GIFs!" // TODO [i18n][MS-1031]
+          placeholder={formatMessage(messages.search_all_gifs)}
           onChange={this.searchChangeHandler}
           shouldFitContainer={true}
           value={query}
@@ -298,4 +303,4 @@ export default connect<GiphyViewStateProps, GiphyViewDispatchProps, {}>(
     setUpfrontIdDeferred: (id, resolver, rejecter) =>
       dispatch(setUpfrontIdDeferred(id, resolver, rejecter)),
   }),
-)(GiphyView);
+)(injectIntl(GiphyView));

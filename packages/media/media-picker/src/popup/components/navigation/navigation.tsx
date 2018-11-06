@@ -7,7 +7,7 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { messages } from '@atlaskit/media-ui';
 import { requestUnlinkCloudAccount, startAuth } from '../../actions';
 import { changeCloudAccountFolder } from '../../actions/changeCloudAccountFolder';
@@ -60,20 +60,18 @@ export interface NavigationDispatchProps {
   ) => void;
 }
 
-export type NavigationProps = NavigationStateProps & NavigationDispatchProps;
+export type NavigationProps = NavigationStateProps &
+  NavigationDispatchProps &
+  InjectedIntlProps;
 
 export interface NavigationState {
   readonly dropdownOpen: boolean;
 }
 
 export class Navigation extends Component<NavigationProps, NavigationState> {
-  constructor(props: NavigationProps) {
-    super(props);
-
-    this.state = {
-      dropdownOpen: false,
-    };
-  }
+  state: NavigationState = {
+    dropdownOpen: false,
+  };
 
   render(): JSX.Element {
     const { service, path } = this.props;
@@ -128,7 +126,11 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
   };
 
   getAccountsDropdownItems() {
-    const { service, accounts } = this.props;
+    const {
+      service,
+      accounts,
+      intl: { formatMessage },
+    } = this.props;
     const availableAccounts = accounts.filter(
       account => account.type === service.name,
     );
@@ -151,12 +153,14 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
       </DropdownItem>,
     ];
 
-    // TODO [i18n][MS-1031]
     return [
-      <DropdownItemGroup key="accounts" title="Accounts">
+      <DropdownItemGroup
+        key="accounts"
+        title={formatMessage(messages.accounts)}
+      >
         {dropdownAccountItems}
       </DropdownItemGroup>,
-      <DropdownItemGroup key="actions" title="Actions">
+      <DropdownItemGroup key="actions" title={formatMessage(messages.actions)}>
         {dropdownActionItems}
       </DropdownItemGroup>,
     ];
@@ -248,4 +252,4 @@ export default connect<NavigationStateProps, NavigationDispatchProps, {}>(
         }),
       ),
   }),
-)(Navigation);
+)(injectIntl(Navigation));

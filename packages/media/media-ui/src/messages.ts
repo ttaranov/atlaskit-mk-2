@@ -208,4 +208,30 @@ export const messages = defineMessages({
     defaultMessage: 'Try downloading the file to view it.',
     description: 'We show this message to allow users to download a file',
   },
+  webgl_warning_description: {
+    id: 'fabric.media.webgl_warning_description',
+    defaultMessage:
+      'Your browser does not support WebGL. Use a WebGL enabled browser to annotate images.',
+    description: 'TODO',
+  },
+  unable_to_annotate_image: {
+    id: 'fabric.media.unable_to_annotate_image',
+    defaultMessage: "You're unable to annotate this image",
+    description: 'TODO',
+  },
+  learn_more: {
+    id: 'fabric.media.learn_more',
+    defaultMessage: 'Learn More',
+    description: 'TODO',
+  },
+  accounts: {
+    id: 'fabric.media.accounts',
+    defaultMessage: 'Accounts',
+    description: 'TODO',
+  },
+  actions: {
+    id: 'fabric.media.actions',
+    defaultMessage: 'Actions',
+    description: 'TODO',
+  },
 });
