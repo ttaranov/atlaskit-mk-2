@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 88.0.3
+- [patch] [222082a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/222082a):
+
+  - Fix incorrect import of PanelType
+
 ## 88.0.2
 - [patch] [ffcaedd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ffcaedd):
 
