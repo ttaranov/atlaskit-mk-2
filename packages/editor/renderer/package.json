@@ -51,7 +51,7 @@
     "@atlaskit/size-detector": "^5.0.3",
     "@atlaskit/util-data-test": "^10.0.20",
     "@atlaskit/visual-regression": "^0.0.1",
-    "@types/prosemirror-model": "^1.0.0",
+    "@types/prosemirror-model": "^1.5.0",
     "@types/react-loadable": "^5.4.1",
     "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

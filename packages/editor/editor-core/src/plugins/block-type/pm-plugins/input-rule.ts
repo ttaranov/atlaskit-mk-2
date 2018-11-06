@@ -6,7 +6,7 @@ import {
   InputRule,
 } from 'prosemirror-inputrules';
 import { Schema, NodeType } from 'prosemirror-model';
-import { Plugin, Transaction } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../../analytics';
 import {
   createInputRule,
@@ -56,7 +56,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       createInputRule(
         new RegExp(`${leafNodeReplacementCharacter}(#{1,6})\\s$`),
-        (state, match, start, end): Transaction | undefined => {
+        (state, match, start, end) => {
           const level = match[1].length;
           return insertBlock(
             state,
@@ -86,7 +86,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       createInputRule(
         new RegExp(`${leafNodeReplacementCharacter}\\s*>\\s$`),
-        (state, match, start, end): Transaction | undefined => {
+        (state, match, start, end) => {
           return insertBlock(
             state,
             schema.nodes.blockquote,
@@ -104,7 +104,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       createInputRule(
         /((^`{3,})|(\s`{3,}))(\S*)$/,
-        (state, match, start, end): Transaction | undefined => {
+        (state, match, start, end) => {
           const attributes: any = {};
           if (match[4]) {
             attributes.language = match[4];
@@ -121,6 +121,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
                 .scrollIntoView()
             );
           }
+          return null;
         },
         true,
       ),
@@ -130,7 +131,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
         new RegExp(
           `((${leafNodeReplacementCharacter}\`{3,})|(\\s\`{3,}))(\\S*)$`,
         ),
-        (state, match, start, end): Transaction | undefined => {
+        (state, match, start, end) => {
           const attributes: any = {};
           if (match[4]) {
             attributes.language = match[4];

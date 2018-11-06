@@ -58,7 +58,7 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
         (state, match, start, end) => {
           const { hardBreak } = state.schema.nodes;
           if (state.doc.resolve(start).nodeAfter!.type !== hardBreak) {
-            return;
+            return null;
           }
           return createHorizontalRuleAutoformat(state, start, end);
         },

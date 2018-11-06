@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { InputRule, inputRules } from 'prosemirror-inputrules';
-import { Transaction, Plugin } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import {
   createInputRule,
   leafNodeReplacementCharacter,
@@ -13,17 +13,15 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
     const regex = new RegExp(`(^|[\\s\(${leafNodeReplacementCharacter}])@$`);
-    const mentionQueryRule = createInputRule(regex, (state, match, start, end):
-      | Transaction
-      | undefined => {
+    const mentionQueryRule = createInputRule(regex, state => {
       const mentionsState = mentionPluginKey.getState(state) as MentionsState;
 
       if (!mentionsState.mentionProvider) {
-        return undefined;
+        return null;
       }
 
       if (!mentionsState.isEnabled()) {
-        return undefined;
+        return null;
       }
 
       const mark = schema.mark('mentionQuery');

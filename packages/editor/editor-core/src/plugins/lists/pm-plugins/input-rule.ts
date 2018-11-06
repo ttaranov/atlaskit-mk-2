@@ -4,7 +4,7 @@ import {
   wrappingInputRule,
 } from 'prosemirror-inputrules';
 import { NodeType, Schema, NodeRange, Node as PMNode } from 'prosemirror-model';
-import { Plugin, Transaction, EditorState } from 'prosemirror-state';
+import { Plugin, EditorState } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../../analytics';
 import {
   createInputRule as defaultCreateInputRule,
@@ -29,16 +29,16 @@ export const insertList = (
   start: number,
   end: number,
   matchSize: number,
-): Transaction | undefined => {
+) => {
   // To ensure that match is done after HardBreak.
   const { hardBreak } = state.schema.nodes;
   if (state.doc.resolve(start).nodeAfter!.type !== hardBreak) {
-    return;
+    return null;
   }
 
   // To ensure no nesting is done.
   if (state.doc.resolve(start).depth > 1) {
-    return;
+    return null;
   }
 
   // Track event
@@ -83,7 +83,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       defaultCreateInputRule(
         new RegExp(`${leafNodeReplacementCharacter}\\s*([\\*\\-]) $`),
-        (state, match, start, end): Transaction | undefined => {
+        (state, match, start, end) => {
           return insertList(
             state,
             schema.nodes.bulletList,
@@ -115,7 +115,7 @@ export default function inputRulePlugin(schema: Schema): Plugin | undefined {
     rules.push(
       defaultCreateInputRule(
         new RegExp(`${leafNodeReplacementCharacter}(1)[\\.\\)] $`),
-        (state, match, start, end): Transaction | undefined => {
+        (state, match, start, end) => {
           return insertList(
             state,
             schema.nodes.orderedList,

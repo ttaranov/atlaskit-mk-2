@@ -15,7 +15,7 @@ export function createLinkInputRule(
     (state: EditorState, match: Match[], start: number, end: number) => {
       const { schema } = state;
       if (state.doc.rangeHasMark(start, end, schema.marks.link)) {
-        return;
+        return null;
       }
       const [link] = match;
 

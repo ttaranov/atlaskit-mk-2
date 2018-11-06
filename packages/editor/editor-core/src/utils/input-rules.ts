@@ -8,7 +8,7 @@ export type InputRuleHandler = ((
   match,
   start,
   end,
-) => Transaction | null | undefined);
+) => Transaction | null);
 
 export function defaultInputRuleHandler(
   inputRule: InputRuleWithHandler,

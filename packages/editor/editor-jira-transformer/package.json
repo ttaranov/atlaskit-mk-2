@@ -32,7 +32,7 @@
     "@atlaskit/editor-test-helpers": "^6.2.16",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-data-test": "^10.0.20",
-    "@types/prosemirror-model": "^1.0.0",
+    "@types/prosemirror-model": "^1.5.0",
     "chai-as-promised": "^6.0.0"
   }
 }
