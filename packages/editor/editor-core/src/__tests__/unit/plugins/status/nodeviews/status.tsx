@@ -1,12 +1,18 @@
 import * as React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import { Selection } from 'prosemirror-state';
-import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
+import {
+  createEditor,
+  doc,
+  p,
+  mountWithIntl,
+} from '@atlaskit/editor-test-helpers';
 import { Status } from '@atlaskit/status';
 import StatusNodeView, {
   Props as StatusNodeViewProps,
   State as StatusNodeViewState,
   StatusContainer,
+  messages,
 } from '../../../../../plugins/status/nodeviews/status';
 import statusPlugin from '../../../../../plugins/status';
 import {
@@ -31,9 +37,9 @@ describe('Status - NodeView', () => {
       text: 'In progress',
       color: 'blue',
       localId: '666',
-    })(view.state, view.dispatch);
+    })(view);
 
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <StatusNodeView
         view={view}
         node={view.state.selection.$from.nodeBefore!}
@@ -46,6 +52,30 @@ describe('Status - NodeView', () => {
     expect(wrapper.find(Status).prop('localId')).toBe('666');
   });
 
+  it('should use status as placeholder when no text', () => {
+    const { editorView: view } = editor(doc(p('Status: {<>}')));
+
+    Actions.insertStatus({
+      text: '',
+      color: 'blue',
+      localId: '666',
+    })(view);
+
+    const wrapper = mountWithIntl(
+      <StatusNodeView
+        view={view}
+        node={view.state.selection.$from.nodeBefore!}
+        getPos={jest.fn()}
+      />,
+    );
+    expect(wrapper.find(Status).length).toBe(1);
+    expect(wrapper.find(Status).prop('text')).toBe(
+      messages.placeholder.defaultMessage,
+    );
+    expect(wrapper.find(Status).prop('color')).toBe('blue');
+    expect(wrapper.find(Status).prop('localId')).toBe('666');
+  });
+
   it('should call setStatusPickerAt on click', () => {
     const setStatusPickerAtSpy = jest.spyOn(Actions, 'setStatusPickerAt');
     const { editorView: view } = editor(doc(p('Status: {<>}')));
@@ -54,9 +84,9 @@ describe('Status - NodeView', () => {
       text: 'In progress',
       color: 'blue',
       localId: '666',
-    })(view.state, view.dispatch);
+    })(view);
 
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <StatusNodeView
         view={view}
         node={view.state.selection.$from.nodeBefore!}
@@ -92,11 +122,11 @@ describe('Status - NodeView', () => {
         text: 'In progress',
         color: 'blue',
         localId: '666',
-      })(view.state, view.dispatch);
+      })(view);
 
       getPos = jest.fn();
 
-      wrapper = mount(
+      wrapper = mountWithIntl(
         <StatusNodeView
           view={view}
           node={view.state.selection.$from.nodeBefore!}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
@@ -10,8 +11,9 @@ import { colors } from '@atlaskit/theme';
 
 const { B100 } = colors;
 
-interface StatusContainerProps {
+export interface StatusContainerProps {
   selected: boolean;
+  placeholderStyle: boolean;
 }
 
 export const StatusContainer = styled.span`
@@ -21,6 +23,9 @@ export const StatusContainer = styled.span`
   line-height: 1;
   border-radius: 5px;
 
+  opacity: ${(props: StatusContainerProps) =>
+    props.placeholderStyle ? 0.5 : 1};
+
   border: 2px solid ${(props: StatusContainerProps) =>
     props.selected ? B100 : 'transparent'};
   }
@@ -29,6 +34,15 @@ export const StatusContainer = styled.span`
     background-color: transparent;
   }
 `;
+
+export const messages = defineMessages({
+  placeholder: {
+    id: 'fabric.editor.statusPlaceholder',
+    defaultMessage: 'Set a status',
+    description:
+      'Placeholder description for an empty (new) status item in the editor',
+  },
+});
 
 export interface Props {
   node: PMNode;
@@ -40,8 +54,8 @@ export interface State {
   selected: boolean;
 }
 
-export default class StatusNodeView extends React.Component<Props, State> {
-  constructor(props: Props) {
+class StatusNodeView extends React.Component<Props & InjectedIntlProps, State> {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selected: false,
@@ -78,13 +92,21 @@ export default class StatusNodeView extends React.Component<Props, State> {
 
   render() {
     const {
-      attrs: { text, color, localId },
-    } = this.props.node;
+      node: {
+        attrs: { text, color, localId },
+      },
+      intl: { formatMessage },
+    } = this.props;
     const { selected } = this.state;
+    const statusText = text ? text : formatMessage(messages.placeholder);
 
     return (
-      <StatusContainer onClick={this.handleClick} selected={selected}>
-        <Status text={text} color={color} localId={localId} />
+      <StatusContainer
+        onClick={this.handleClick}
+        selected={selected}
+        placeholderStyle={!text}
+      >
+        <Status text={statusText} color={color} localId={localId} />
       </StatusContainer>
     );
   }
@@ -97,3 +119,5 @@ export default class StatusNodeView extends React.Component<Props, State> {
     setStatusPickerAt(state.selection.from)(state, dispatch);
   };
 }
+
+export default injectIntl(StatusNodeView);

@@ -51,7 +51,7 @@ export default class StatusPicker extends React.Component<Props, State> {
     const state = { ...DEFAULT_STATUS };
     if (element) {
       state.color = (element.getAttribute('color') || 'neutral') as Color;
-      state.text = element.getAttribute('text') || 'Default';
+      state.text = element.getAttribute('text') || '';
     }
 
     return state;

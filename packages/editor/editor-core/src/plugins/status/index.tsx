@@ -7,12 +7,7 @@ import { EditorPlugin } from '../../types';
 import createStatusPlugin, { StatusState, pluginKey } from './plugin';
 import WithPluginState from '../../ui/WithPluginState';
 import StatusPicker from './ui/statusPicker';
-import {
-  setStatusPickerAt,
-  insertStatus,
-  closeStatusPicker,
-  DEFAULT_STATUS,
-} from './actions';
+import { commitStatusPicker, DEFAULT_STATUS, insertStatus } from './actions';
 
 const statusPlugin: EditorPlugin = {
   nodes() {
@@ -29,7 +24,6 @@ const statusPlugin: EditorPlugin = {
   },
 
   contentComponent({ editorView }) {
-    const { dispatch } = editorView;
     return (
       <WithPluginState
         plugins={{
@@ -48,17 +42,17 @@ const statusPlugin: EditorPlugin = {
           return (
             <StatusPicker
               element={element}
-              onSelect={status =>
-                insertStatus(status)(editorView.state, dispatch)
-              }
-              onTextChanged={status =>
-                insertStatus(status)(editorView.state, dispatch)
-              }
-              closeStatusPicker={() =>
-                setStatusPickerAt(null)(editorView.state, dispatch)
-              }
+              onSelect={status => {
+                insertStatus(status)(editorView);
+              }}
+              onTextChanged={status => {
+                insertStatus(status)(editorView);
+              }}
+              closeStatusPicker={() => {
+                commitStatusPicker()(editorView);
+              }}
               onEnter={() => {
-                closeStatusPicker()(editorView);
+                commitStatusPicker()(editorView);
               }}
             />
           );
