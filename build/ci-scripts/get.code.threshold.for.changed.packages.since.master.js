@@ -24,7 +24,7 @@ const TEST_ONLY_PATTERN = process.env.TEST_ONLY_PATTERN || '';
   const changedPackages = await packages.getChangedPackagesSinceMaster();
   const testOnlyIsRemovingPattern = TEST_ONLY_PATTERN.startsWith('!');
 
-  const changedPackagesRelativePaths = changedPackages
+  const changedPackagesName = changedPackages
     .map(pkg => pkg.relativeDir)
     // Because jest.config.js relies on `TEST_ONLY_PATTERN` logic
     // We need to add a filter to check if
@@ -36,7 +36,8 @@ const TEST_ONLY_PATTERN = process.env.TEST_ONLY_PATTERN || '';
         !TEST_ONLY_PATTERN ||
         pkg.startsWith(TEST_ONLY_PATTERN) ||
         (testOnlyIsRemovingPattern && !pkg.startsWith(TEST_ONLY_PATTERN)),
-    );
+    )
+    .map(changedPkg => changedPkg.split('/').pop());
 
   const atlaskitCoverageReducer = (result, { coverage, pkg }) => ({
     ...result,
@@ -51,9 +52,14 @@ const TEST_ONLY_PATTERN = process.env.TEST_ONLY_PATTERN || '';
   });
 
   const reducedData = Object.keys(codeCoverageByPackage)
-    .filter(pkg =>
-      changedPackagesRelativePaths.find(changedPkg => pkg.includes(changedPkg)),
-    )
+    .filter(pkg => {
+      const pkgName = pkg
+        .replace('/src', '')
+        .split('/')
+        .pop();
+
+      return changedPackagesName.find(changedPkg => pkgName === changedPkg);
+    })
     .map(pkg => ({ pkg, coverage: codeCoverageByPackage[pkg] }))
     .reduce(atlaskitCoverageReducer, {
       collectCoverageFrom: [],
