@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 88.0.1
+- [patch] [8059325](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8059325):
+
+  - Fix delete doing nothing
+
 ## 88.0.0
 - Updated dependencies [2c21466](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c21466):
   - @atlaskit/editor-common@21.0.0
