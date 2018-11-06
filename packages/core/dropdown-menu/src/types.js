@@ -50,8 +50,6 @@ type DropdownMenuBaseProps = {
    * Tall menu has no scroll until the height exceeds the height of the viewport.
    */
   appearance: 'default' | 'tall',
-  /** Value passed to the Layer component to determine when to reposition the droplist */
-  boundariesElement: 'viewport' | 'window' | 'scrollParent',
   /** Content that will be rendered inside the layer element. Should typically be
    * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
   children?: Node,
@@ -64,19 +62,13 @@ type DropdownMenuBaseProps = {
   /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
   onItemActivated: OnItemActivatedArgs => void,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
-  position: string,
-  /** Determines if the dropdown menu should be positioned fixed. Useful for breaking out of overflow scroll/hidden containers, however, extra layout
-   management will be required to control scroll behaviour when this property is enabled as the menu will not update position with the target on scroll. */
-  isMenuFixed: boolean,
+  placement: string,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
    */
   shouldAllowMultilineItems: boolean,
   /** Option to fit dropdown menu width to its parent width */
   shouldFitContainer: boolean,
-  /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
-   * fit in the viewport. */
-  shouldFlip: boolean,
   /** Content which will trigger the dropdown menu to open and close. Use with `triggerType`
    * to easily get a button trigger. */
   trigger?: Node | string,
@@ -88,7 +80,7 @@ type DropdownMenuBaseProps = {
    * button. */
   triggerType: 'default' | 'button',
   /** Callback to know when the menu is correctly positioned after it is opened */
-  onPositioned?: Function,
+  // onPositioned?: Function,
 };
 
 export type OnOpenChangeArgs = {

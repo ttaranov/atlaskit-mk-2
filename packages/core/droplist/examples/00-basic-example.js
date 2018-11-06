@@ -5,9 +5,10 @@ import Button from '@atlaskit/button';
 import Item, { ItemGroup } from '@atlaskit/item';
 import DropList from '../src';
 
-type State = {|
+type State = {
   eventResult: string,
-|};
+};
+
 export default class BasicExample extends PureComponent<void, State> {
   state = {
     eventResult: 'Click into and out of the content to trigger event handlers',
@@ -51,24 +52,23 @@ export default class BasicExample extends PureComponent<void, State> {
         >
           {this.state.eventResult}
         </div>
-        <DropList
-          appearance="default"
-          position="right top"
-          isTriggerNotTabbable
-          onOpenChange={this.onOpenChange}
-          onClick={this.onClick}
-          isOpen
-          trigger={<Button isSelected>...</Button>}
-        >
-          <ItemGroup title="Australia">
-            <Item href="//atlassian.com" target="_blank">
-              Sydney
-            </Item>
-            <Item isHidden>Hidden item</Item>
-            <Item isDisabled>Brisbane</Item>
-            <Item onActivated={this.onItemActivated}>Melbourne</Item>
-          </ItemGroup>
-        </DropList>
+        <div style={{ padding: 20 }}>
+          <DropList
+            onOpenChange={this.onOpenChange}
+            onClick={this.onClick}
+            isOpen
+            trigger={<Button isSelected>...</Button>}
+          >
+            <ItemGroup title="Australia">
+              <Item href="//atlassian.com" target="_blank">
+                Sydney
+              </Item>
+              <Item isHidden>Hidden item</Item>
+              <Item isDisabled>Brisbane</Item>
+              <Item onActivated={this.onItemActivated}>Melbourne</Item>
+            </ItemGroup>
+          </DropList>
+        </div>
       </div>
     );
   }

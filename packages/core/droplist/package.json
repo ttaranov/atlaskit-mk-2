@@ -22,15 +22,15 @@
     "@atlaskit/analytics-next": "^3.0.10",
     "@atlaskit/icon": "^14.0.2",
     "@atlaskit/item": "^8.0.10",
-    "@atlaskit/layer": "^5.0.8",
+    "@atlaskit/popper": "^0.3.1",
     "@atlaskit/spinner": "^9.0.10",
     "@atlaskit/theme": "^6.1.1",
     "@atlaskit/tooltip": "^12.1.4",
     "@babel/runtime": "^7.0.0",
-    "babel-runtime": "^6.26.0",
     "classnames": "^2.2.5",
     "keycode": "^2.1.7",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "react-node-resolver": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^16.4.0",

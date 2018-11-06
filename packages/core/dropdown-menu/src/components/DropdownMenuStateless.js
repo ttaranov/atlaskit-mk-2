@@ -52,19 +52,16 @@ class DropdownMenuStateless extends Component<
 
   static defaultProps = {
     appearance: 'default',
-    boundariesElement: 'viewport',
     isLoading: false,
     isOpen: false,
     items: [],
     onItemActivated: () => {},
     onOpenChange: () => {},
-    position: 'bottom left',
-    isMenuFixed: false,
+    placement: 'bottom-start',
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
-    shouldFlip: true,
     triggerType: 'default',
-    onPositioned: () => {},
+    // onPositioned: () => {},
   };
 
   state = {
@@ -401,15 +398,15 @@ class DropdownMenuStateless extends Component<
   };
 
   /** Ensure droplist is positioned before focussing to avoid container scrolling to top */
-  onDroplistPositioned = () => {
-    this.dropdownListPositioned = true;
-    // Trigger render so item focus manager can auto focus for keyboard trigger
-    this.setState({
-      autoFocusDropdownItems: this.sourceOfIsOpen === 'keydown',
-    });
+  // onDroplistPositioned = () => {
+  //   this.dropdownListPositioned = true;
+  //   // Trigger render so item focus manager can auto focus for keyboard trigger
+  //   this.setState({
+  //     autoFocusDropdownItems: this.sourceOfIsOpen === 'keydown',
+  //   });
 
-    if (this.props.onPositioned) this.props.onPositioned();
-  };
+  //   if (this.props.onPositioned) this.props.onPositioned();
+  // };
 
   /** Render focusManager only after droplist has been positioned when trigger via keyboard */
   renderDropdownItems = () => {
@@ -429,15 +426,12 @@ class DropdownMenuStateless extends Component<
   render() {
     const {
       appearance,
-      boundariesElement,
       isLoading,
       isOpen,
       onOpenChange,
-      position,
-      isMenuFixed,
+      placement,
       shouldAllowMultilineItems,
       shouldFitContainer,
-      shouldFlip,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
@@ -454,17 +448,14 @@ class DropdownMenuStateless extends Component<
       <DropdownItemSelectionCache>
         <Droplist
           appearance={appearance}
-          boundariesElement={boundariesElement}
           isLoading={isLoading}
           isOpen={isOpen}
           onClick={this.handleClick}
           onOpenChange={onOpenChange}
-          position={position}
-          isMenuFixed={isMenuFixed}
+          placement={placement}
           shouldFitContainer={shouldFitContainer}
-          shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
-          onPositioned={this.onDroplistPositioned}
+          // onPositioned={this.onDroplistPositioned}
           {...deprecatedProps}
           analyticsContext={{
             componentName: 'dropdownMenu',

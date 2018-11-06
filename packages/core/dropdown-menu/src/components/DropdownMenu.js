@@ -19,20 +19,16 @@ export default class DropdownMenu extends Component<
 > {
   static defaultProps = {
     appearance: 'default',
-    boundariesElement: 'viewport',
     defaultOpen: false,
     isLoading: false,
     isOpen: false,
     items: [],
     onItemActivated: () => {},
     onOpenChange: () => {},
-    position: 'bottom left',
-    isMenuFixed: false,
+    placement: 'bottom-start',
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
-    shouldFlip: true,
     triggerType: 'default',
-    onPositioned: () => {},
   };
 
   state = {
@@ -98,39 +94,31 @@ export default class DropdownMenu extends Component<
     const { isOpen } = this.state;
     const {
       appearance,
-      boundariesElement,
       children,
       isLoading,
       items,
-      position,
-      isMenuFixed,
+      placement,
       shouldAllowMultilineItems,
       shouldFitContainer,
-      shouldFlip,
       trigger,
       triggerButtonProps,
       triggerType,
-      onPositioned,
     } = this.props;
 
     return (
       <StatelessMenu
         appearance={appearance}
-        boundariesElement={boundariesElement}
         isOpen={isOpen}
         isLoading={isLoading}
         items={items}
         onItemActivated={this.handleItemActivation}
         onOpenChange={this.handleOpenChange}
-        position={position}
-        isMenuFixed={isMenuFixed}
+        placement={placement}
         shouldAllowMultilineItems={shouldAllowMultilineItems}
         shouldFitContainer={shouldFitContainer}
-        shouldFlip={shouldFlip}
         trigger={trigger}
         triggerButtonProps={triggerButtonProps}
         triggerType={triggerType}
-        onPositioned={onPositioned}
       >
         {children}
       </StatelessMenu>

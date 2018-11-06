@@ -11,13 +11,21 @@ export default class BoundingExample extends Component<void, void> {
         <div
           style={{
             border: '1px solid black',
+            boxSizing: 'border-box',
             height: '200px',
             width: '300px',
-            overflow: 'scroll',
+            overflow: 'auto',
+            position: 'relative',
           }}
         >
-          <div style={{ width: '300px', height: '600px', paddingTop: '200px' }}>
-            <DropList boundariesElement="scrollParent" isOpen>
+          <div
+            style={{
+              width: '600px',
+              height: '2000px',
+              padding: '200px 0 0 200px',
+            }}
+          >
+            <DropList isOpen trigger={<span>Trigger</span>}>
               <ItemGroup title="Australia">
                 <Item>Sydney</Item>
                 <Item isHidden>Darwin</Item>

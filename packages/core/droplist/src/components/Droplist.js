@@ -7,23 +7,19 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
+import NodeResolver from 'react-node-resolver';
 import { ThemeProvider } from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
+import { Manager, Reference, Popper } from '@atlaskit/popper';
+import type { Placement } from '@atlaskit/popper';
 import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
-import Wrapper, {
-  Content,
-  SpinnerContainer,
-  Trigger,
-} from '../styled/Droplist';
+import { Content, SpinnerContainer } from '../styled/Droplist';
 import itemTheme from '../theme/item-theme';
 
 const halfFocusRing = 1;
-const dropOffset = `0 ${gridSize()}px`;
 
 type Props = {
   /**
@@ -31,57 +27,43 @@ type Props = {
    * Default menu has scroll after its height exceeds the pre-defined amount.
    * Tall menu has no scroll until the height exceeds the height of the viewport.
    */
-  appearance?: 'default' | 'tall',
-  /** Value passed to the Layer component to determine when to reposition the droplist */
-  boundariesElement?: 'viewport' | 'window' | 'scrollParent',
+  appearance: 'default' | 'tall',
   /** Content that will be rendered inside the layer element. Should typically be
    * `ItemGroup` or `Item`, or checkbox / radio variants of those. */
-  children?: Node,
+  children: Node,
   /** If true, a Spinner is rendered instead of the items */
-  isLoading?: boolean,
+  isLoading: boolean,
   /** Controls the open state of the drop list. */
-  isOpen?: boolean,
-  onClick?: any => mixed,
-  onKeyDown?: any => mixed,
-  onOpenChange?: any => mixed,
+  isOpen: boolean,
+  onClick: any => mixed,
+  onKeyDown: any => mixed,
+  onOpenChange: any => mixed,
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
-  position?: string,
-  /** Value passed to the Layer component to determine if the list will be fixed positioned. Useful for breaking out of overflow scroll/hidden containers. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
-  isMenuFixed: boolean,
+  placement: Placement,
   /** Deprecated. Option to display multiline items when content is too long.
    * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
    */
-  shouldAllowMultilineItems?: boolean,
+  shouldAllowMultilineItems: boolean,
   /** Option to fit dropdown menu width to its parent width */
-  shouldFitContainer?: boolean,
-  /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
-   * fit in the viewport. */
-  shouldFlip?: boolean,
+  shouldFitContainer: boolean,
   /** Controls the height at which scroll bars will appear on the drop list. */
   maxHeight?: number,
   /** Content which will trigger the drop list to open and close. */
-  trigger?: Node,
-  /** Callback to know when the list is first correctly positioned within it's Layer */
-  onPositioned?: Function,
+  trigger: Node,
 };
 
 class Droplist extends Component<Props, void> {
   static defaultProps = {
     appearance: 'default',
-    boundariesElement: 'viewport',
-    children: null,
     isLoading: false,
     isOpen: false,
     onClick: () => {},
     onKeyDown: () => {},
     onOpenChange: () => {},
-    position: 'bottom left',
-    isMenuFixed: false,
+    placement: 'bottom-start',
     shouldAllowMultilineItems: false,
     shouldFitContainer: false,
-    shouldFlip: true,
     trigger: null,
-    onPositioned: () => {},
   };
 
   static childContextTypes = {
@@ -158,75 +140,65 @@ class Droplist extends Component<Props, void> {
     }
   };
 
-  handleContentRef = (ref: HTMLElement) => {
-    this.dropContentRef = ref;
-
-    // If the dropdown has just been opened, we focus on the containing element so the
-    // user can tab to the first dropdown item. We will only receive this ref if isOpen
-    // is true or null, so no need to check for truthiness here.
-    if (ref) {
-      ref.focus();
-    }
-  };
-
-  handleTriggerRef = (ref: HTMLElement) => {
-    this.triggerRef = ref;
-  };
-
   render() {
     const {
       appearance,
-      boundariesElement,
       children,
       isLoading,
       isOpen,
       maxHeight,
       onClick,
       onKeyDown,
-      position,
-      isMenuFixed,
-      shouldFitContainer,
-      shouldFlip,
+      placement,
       trigger,
-      onPositioned,
     } = this.props;
 
     const layerContent = isOpen ? (
-      <Content
-        data-role="droplistContent"
-        isTall={appearance === 'tall'}
-        innerRef={this.handleContentRef}
-        maxHeight={maxHeight}
-      >
-        {isLoading ? (
-          <SpinnerContainer>
-            <Spinner size="small" />
-          </SpinnerContainer>
-        ) : (
-          <ThemeProvider theme={itemTheme}>
-            <div>{children}</div>
-          </ThemeProvider>
+      <Popper placement={placement}>
+        {({ ref, style, outOfBoundaries }) => (
+          <Content
+            onClick={onClick}
+            onKeyDown={onKeyDown}
+            data-role="droplistContent"
+            isTall={appearance === 'tall'}
+            outOfBoundaries={outOfBoundaries}
+            innerRef={node => {
+              this.dropContentRef = node;
+              ref(node);
+            }}
+            maxHeight={maxHeight}
+            style={style}
+          >
+            {isLoading ? (
+              <SpinnerContainer>
+                <Spinner size="small" />
+              </SpinnerContainer>
+            ) : (
+              <ThemeProvider theme={itemTheme}>
+                <div>{children}</div>
+              </ThemeProvider>
+            )}
+          </Content>
         )}
-      </Content>
+      </Popper>
     ) : null;
 
     return (
-      <Wrapper fit={shouldFitContainer} onClick={onClick} onKeyDown={onKeyDown}>
-        <Layer
-          autoFlip={shouldFlip}
-          boundariesElement={boundariesElement}
-          content={layerContent}
-          offset={dropOffset}
-          // $FlowFixMe - Cannot create `Layer` element because in property `position
-          position={position}
-          isAlwaysFixed={isOpen && isMenuFixed}
-          onPositioned={onPositioned}
-        >
-          <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
-            {trigger}
-          </Trigger>
-        </Layer>
-      </Wrapper>
+      <Manager>
+        <Reference>
+          {({ ref }) => (
+            <NodeResolver
+              innerRef={node => {
+                this.triggerRef = node;
+                ref(node);
+              }}
+            >
+              {trigger}
+            </NodeResolver>
+          )}
+        </Reference>
+        {layerContent}
+      </Manager>
     );
   }
 }

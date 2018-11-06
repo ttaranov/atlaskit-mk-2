@@ -16,17 +16,6 @@ const getMaxHeight = ({ isTall, maxHeight }) => {
   return isTall ? '90vh' : `${defaultMaxHeight}px`;
 };
 
-export default styled.div`
-  display: inline-flex;
-
-  ${props =>
-    props.fit &&
-    `
-    display: block;
-    flex: 1 1 auto;
-  `};
-`;
-
 const backgroundColor = colors.backgroundOnLayer;
 const boxShadow = css`
   box-shadow: 0 ${math.divide(gridSize, 2)}px ${gridSize}px -${math.divide(
@@ -51,17 +40,4 @@ export const SpinnerContainer = styled.div`
   justify-content: center;
   min-width: ${math.multiply(gridSize, 20)}px;
   padding: ${math.multiply(gridSize, 2.5)}px;
-`;
-
-export const Trigger = styled.div`
-  display: inline-flex;
-  transition-duration: 0.2s;
-  transition: box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
-
-  ${props =>
-    props.fit &&
-    `
-    box-sizing: border-box;
-    display: block;
-  `};
 `;
