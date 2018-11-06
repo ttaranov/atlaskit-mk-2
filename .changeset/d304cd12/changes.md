@@ -1,0 +1,1 @@
+- Fix incorrect import of PanelType
