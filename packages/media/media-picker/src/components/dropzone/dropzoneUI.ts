@@ -1,17 +1,29 @@
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { parseHTML } from '../../util/parseHTML';
 import { wrapperStyles } from './styled';
 import { getAssetUrl } from '../../util/getAssetUrl';
 
 // TODO [MSW-385]: Remove template string and use React
 // TODO [i18n][MS-1030]: Translate non React MediaPicker locales
-export default parseHTML(
-  `<div class="mediaPickerDropzone">
+
+export default (
+  formatMessage: (
+    messageDescriptor: FormattedMessage.MessageDescriptor,
+  ) => string,
+) =>
+  parseHTML(
+    `<div class="mediaPickerDropzone">
     <style>${wrapperStyles}</style>
     <div class="mp-content">
         <div class="mp-circle">
             <div class="mp-text">
-                <span class="mp-title">Drop your files here</span>
-                <span class="mp-description">We'll share them instantly</span>
+                <span class="mp-title">${formatMessage(
+                  messages.drop_your_files_here,
+                )}</span>
+                <span class="mp-description">${formatMessage(
+                  messages.share_files_instantly,
+                )}</span>
             </div>
             <img class="mp-fileIcon mp-iconAtlassianDoc" src="${getAssetUrl(
               'pie-chart-icon.png',
@@ -25,4 +37,4 @@ export default parseHTML(
         </div>
     </div>
   </div>`,
-);
+  );

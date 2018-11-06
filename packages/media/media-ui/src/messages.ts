@@ -264,4 +264,14 @@ export const messages = defineMessages({
     defaultMessage: 'Annotate',
     description: 'TODO',
   },
+  drop_your_files_here: {
+    id: 'fabric.media.drop_your_files_here',
+    defaultMessage: 'Drop your files here',
+    description: 'TODO',
+  },
+  share_files_instantly: {
+    id: 'fabric.media.share_files_instantly',
+    defaultMessage: "We'll share them instantly",
+    description: 'TODO',
+  },
 });
