@@ -605,7 +605,7 @@ describe('GlobalNavigation', () => {
       );
     });
 
-    it('should call the notification API when notificationCount is the NOT same as cachedCount', () => {
+    it('should pass "countOverride" to NotificationIndicator when local notificationCount is the NOT same as cachedCount', () => {
       const wrapper = mount(
         <GlobalNavigation
           product="jira"
@@ -628,7 +628,7 @@ describe('GlobalNavigation', () => {
       });
     });
 
-    it('should skip the notification API call when notificationCount is the same as cachedCount', () => {
+    it('should pass "skip" to NotificationIndicator when local notificationCount is the same as cachedCount', () => {
       const wrapper = mount(
         <GlobalNavigation
           product="jira"
