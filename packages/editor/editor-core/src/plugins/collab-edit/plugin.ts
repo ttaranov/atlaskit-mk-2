@@ -41,7 +41,7 @@ export const createPlugin = (
       apply(tr, prevPluginState: PluginState, oldState, newState) {
         const pluginState = prevPluginState.apply(tr);
 
-        if (tr.getMeta('isRemote') !== true) {
+        if (tr.getMeta('isLocal')) {
           if (collabEditProvider) {
             collabEditProvider.send(tr, oldState, newState);
           }

@@ -24,7 +24,6 @@ export const handleInit = (
   if (doc) {
     const { state } = view;
     const tr = replaceDocument(doc, state, version, options);
-    tr.setMeta('isRemote', true);
     const newState = state.apply(tr);
     view.updateState(newState);
   } else if (json) {
@@ -89,7 +88,6 @@ export const applyRemoteSteps = (
 
   if (tr) {
     tr.setMeta('addToHistory', false);
-    tr.setMeta('isRemote', true);
     tr.scrollIntoView();
     const newState = state.apply(tr);
     view.updateState(newState);
