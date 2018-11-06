@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 3.22.0
+- [minor] [b8bda3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8bda3a):
+
+  - Make Switcher option components styles customizable
+
 ## 3.21.0
 - [minor] [9d98f92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d98f92):
 

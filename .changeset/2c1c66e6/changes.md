@@ -1,1 +1,0 @@
-- Make Switcher option components styles customizable
