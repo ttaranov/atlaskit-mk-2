@@ -1,0 +1,1 @@
+- Adds tests to global-navigation. Removes a bit of dead code

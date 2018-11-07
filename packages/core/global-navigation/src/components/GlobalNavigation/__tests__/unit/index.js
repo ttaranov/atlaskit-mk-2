@@ -13,6 +13,7 @@ import ScreenTracker from '../../../ScreenTracker';
 
 const DrawerContents = () => <div>drawer</div>;
 const EmojiAtlassianIcon = () => <button>EmojiAtlassianIcon</button>;
+const noop = () => {};
 
 const escKeyDown = () => {
   const event = document.createEvent('Events');
@@ -266,15 +267,15 @@ describe('GlobalNavigation', () => {
         productIcon={EmojiAtlassianIcon}
         productHref="#"
         productTooltip="product tooltip"
-        onProductClick={() => console.log('product clicked')}
+        onProductClick={noop}
         createTooltip="create tooltip"
-        onCreateClick={() => console.log('create clicked')}
+        onCreateClick={noop}
         searchTooltip="search tooltip"
-        onSearchClick={() => console.log('search clicked')}
+        onSearchClick={noop}
         starredTooltip="starred tooltip"
-        onStarredClick={() => console.log('your work clicked')}
+        onStarredClick={noop}
         notificationTooltip="notification tooltip"
-        onNotificationClick={() => console.log('notification clicked')}
+        onNotificationClick={noop}
         profileTooltip="profile tooltip"
         loginHref="#login"
         helpItems={() => <div>items</div>}
@@ -285,11 +286,11 @@ describe('GlobalNavigation', () => {
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
-        onProductClick={() => console.log('product clicked')}
-        onCreateClick={() => console.log('create clicked')}
-        onSearchClick={() => console.log('search clicked')}
-        onStarredClick={() => console.log('your work clicked')}
-        onNotificationClick={() => console.log('notification clicked')}
+        onProductClick={noop}
+        onCreateClick={noop}
+        onSearchClick={noop}
+        onStarredClick={noop}
+        onNotificationClick={noop}
         loginHref="#login"
         helpItems={() => <div>items</div>}
       />,
@@ -365,11 +366,11 @@ describe('GlobalNavigation', () => {
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
-        onProductClick={() => console.log('product clicked')}
-        onCreateClick={() => console.log('create clicked')}
-        onSearchClick={() => console.log('search clicked')}
-        onStarredClick={() => console.log('your work clicked')}
-        onNotificationClick={() => console.log('notification clicked')}
+        onProductClick={noop}
+        onCreateClick={noop}
+        onSearchClick={noop}
+        onStarredClick={noop}
+        onNotificationClick={noop}
         loginHref="#login"
         helpItems={() => <div>items</div>}
       />,
@@ -538,29 +539,6 @@ describe('GlobalNavigation', () => {
       expect(wrapper.find('NotificationDrawer').exists()).toBeTruthy();
     });
 
-    it('should render the iframe with the correct url', () => {
-      const wrapper = mount(
-        <GlobalNavigation
-          product="jira"
-          locale="en"
-          fabricNotificationLogUrl={fabricNotificationLogUrl}
-          cloudId={cloudId}
-        />,
-      );
-      const icon = wrapper.find('NotificationIcon');
-      icon.simulate('click');
-
-      expect(
-        wrapper
-          .find('NotificationDrawer')
-          .children('iframe')
-          .props()
-          .src.endsWith(
-            '/home/notificationsDrawer/iframe.html?locale=en&product=jira',
-          ),
-      ).toBeTruthy();
-    });
-
     it('should not render iframe in drawer when notificationDrawerContents is passed', () => {
       const wrapper = mount(
         <GlobalNavigation
@@ -617,14 +595,60 @@ describe('GlobalNavigation', () => {
         />,
       );
 
-      wrapper.update();
       wrapper.setState({
         notificationCount: 5,
       });
+      wrapper.update();
 
       expect(wrapper.find('NotificationIndicator').props().refreshRate).toEqual(
         180000,
       );
+    });
+
+    it('should pass "countOverride" to NotificationIndicator when local notificationCount is the NOT same as cachedCount', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+
+      localStorage.setItem('notificationBadgeCountCache', '2');
+      wrapper.setState({
+        notificationCount: 5,
+      });
+
+      const spy = jest.spyOn(wrapper.instance(), 'onCountUpdating');
+      const spyReturn = spy(1); // 1 is the visibilityChangesSinceTimer, passed by NotificationIndicator
+
+      expect(spyReturn).toMatchObject({
+        countOverride: 2,
+      });
+    });
+
+    it('should pass "skip" to NotificationIndicator when local notificationCount is the same as cachedCount', () => {
+      const wrapper = mount(
+        <GlobalNavigation
+          product="jira"
+          locale="en"
+          fabricNotificationLogUrl={fabricNotificationLogUrl}
+          cloudId={cloudId}
+        />,
+      );
+
+      localStorage.setItem('notificationBadgeCountCache', '5');
+      wrapper.setState({
+        notificationCount: 5,
+      });
+
+      const spy = jest.spyOn(wrapper.instance(), 'onCountUpdating');
+      const spyReturn = spy(1);
+
+      expect(spyReturn).toMatchObject({
+        skip: true,
+      });
     });
   });
 
@@ -642,11 +666,11 @@ describe('GlobalNavigation', () => {
       <GlobalNavigation
         productIcon={EmojiAtlassianIcon}
         productHref="#"
-        onProductClick={() => console.log('product clicked')}
-        onCreateClick={() => console.log('create clicked')}
-        onSearchClick={() => console.log('search clicked')}
-        onStarredClick={() => console.log('your work clicked')}
-        onNotificationClick={() => console.log('notification clicked')}
+        onProductClick={noop}
+        onCreateClick={noop}
+        onSearchClick={noop}
+        onStarredClick={noop}
+        onNotificationClick={noop}
         appSwitcherComponent={AppSwitcher}
         appSwitcherTooltip="appSwitcher tooltip"
         loginHref="#login"
